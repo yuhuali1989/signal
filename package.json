@@ -1,0 +1,41 @@
+{
+  "name": "maxwell-knowledge",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build",
+    "agents:run": "python3 agents/run_crew.py",
+    "agents:column": "python3 agents/run_crew.py --mode column",
+    "agents:book": "python3 agents/run_crew.py --mode book",
+    "test": "jest --verbose"
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.22",
+    "date-fns": "^3.6.0",
+    "gray-matter": "^4.0.3",
+    "js-tiktoken": "^1.0.21",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "recharts": "^3.8.1",
+    "rehype-katex": "^7.0.1",
+    "rehype-raw": "^7.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark": "^15.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-html": "^16.0.0",
+    "remark-math": "^6.0.0",
+    "remark-rehype": "^11.1.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@tailwindcss/typography": "^0.5.0",
+    "autoprefixer": "^10.4.0",
+    "jest": "^29.7.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0"
+  }
+}

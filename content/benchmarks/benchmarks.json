@@ -1,0 +1,95 @@
+[
+  {
+    "id": "coding-2026q1",
+    "title": "编码能力大模型排行榜（2026 Q1）",
+    "description": "基于 SWE-bench Pro / HumanEval+ / CodeContests 的综合编码能力评测",
+    "category": "coding",
+    "categoryName": "编码能力",
+    "categoryIcon": "💻",
+    "date": "2026-04-10",
+    "models": [
+      { "rank": 1, "name": "Claude Opus 4.6", "provider": "Anthropic", "score": 92.1, "swebench": 72.3, "humaneval": 98.2, "codecontests": 45.8, "change": "→", "badge": "👑" },
+      { "rank": 2, "name": "GLM-5.1", "provider": "智谱 AI", "score": 90.8, "swebench": 71.5, "humaneval": 97.8, "codecontests": 43.2, "change": "🆕", "badge": "🏆" },
+      { "rank": 3, "name": "GPT-5.4", "provider": "OpenAI", "score": 89.5, "swebench": 68.9, "humaneval": 97.5, "codecontests": 42.1, "change": "↓1", "badge": "" },
+      { "rank": 4, "name": "DeepSeek-R2", "provider": "DeepSeek", "score": 88.2, "swebench": 67.2, "humaneval": 96.8, "codecontests": 40.5, "change": "🆕", "badge": "" },
+      { "rank": 5, "name": "Gemini 3.1 Ultra", "provider": "Google", "score": 87.1, "swebench": 65.8, "humaneval": 96.2, "codecontests": 39.3, "change": "↑1", "badge": "" },
+      { "rank": 6, "name": "Llama 4 Maverick", "provider": "Meta", "score": 84.5, "swebench": 62.1, "humaneval": 95.3, "codecontests": 36.2, "change": "🆕", "badge": "" },
+      { "rank": 7, "name": "Qwen 3.6 Max", "provider": "阿里", "score": 83.2, "swebench": 60.5, "humaneval": 94.8, "codecontests": 34.3, "change": "↑2", "badge": "" },
+      { "rank": 8, "name": "Mistral Large 3 Ultra", "provider": "Mistral", "score": 81.8, "swebench": 58.2, "humaneval": 94.1, "codecontests": 33.1, "change": "🆕", "badge": "" }
+    ]
+  },
+  {
+    "id": "reasoning-2026q1",
+    "title": "推理能力大模型排行榜（2026 Q1）",
+    "description": "基于 GPQA Diamond / MATH-500 / ARC-AGI-2 的综合推理能力评测",
+    "category": "reasoning",
+    "categoryName": "推理能力",
+    "categoryIcon": "🧠",
+    "date": "2026-04-10",
+    "models": [
+      { "rank": 1, "name": "GPT-5.4 (High)", "provider": "OpenAI", "score": 94.2, "gpqa": 78.5, "math500": 99.1, "arcagi": 55.2, "change": "→", "badge": "👑" },
+      { "rank": 2, "name": "DeepSeek-R2", "provider": "DeepSeek", "score": 93.1, "gpqa": 76.8, "math500": 98.7, "arcagi": 53.8, "change": "🆕", "badge": "🏆" },
+      { "rank": 3, "name": "Claude Opus 4.6 (Extended)", "provider": "Anthropic", "score": 91.5, "gpqa": 75.2, "math500": 97.8, "arcagi": 51.5, "change": "→", "badge": "" },
+      { "rank": 4, "name": "Gemini 3.1 Ultra (Think)", "provider": "Google", "score": 90.8, "gpqa": 74.1, "math500": 97.2, "arcagi": 51.1, "change": "↑1", "badge": "" },
+      { "rank": 5, "name": "GLM-5.1 (Reason)", "provider": "智谱 AI", "score": 88.5, "gpqa": 71.3, "math500": 96.5, "arcagi": 47.8, "change": "🆕", "badge": "" },
+      { "rank": 6, "name": "Qwen 3.6 Reasoner", "provider": "阿里", "score": 86.2, "gpqa": 68.5, "math500": 95.8, "arcagi": 44.3, "change": "↑2", "badge": "" }
+    ]
+  },
+  {
+    "id": "overall-2026q1",
+    "title": "综合能力大模型排行榜（2026 Q1）",
+    "description": "MMLU-Pro / Arena Elo / 多维度综合评估",
+    "category": "overall",
+    "categoryName": "综合能力",
+    "categoryIcon": "📊",
+    "date": "2026-04-14",
+    "models": [
+      { "rank": 1, "name": "GPT-5.5 Spud", "provider": "OpenAI", "score": 95.2, "arena_elo": 1402, "mmlu_pro": 91.5, "change": "→", "badge": "👑" },
+      { "rank": 2, "name": "Claude Opus 4.6", "provider": "Anthropic", "score": 93.5, "arena_elo": 1385, "mmlu_pro": 89.2, "change": "→", "badge": "🏆" },
+      { "rank": 3, "name": "Gemini 4 Ultra", "provider": "Google", "score": 93.1, "arena_elo": 1382, "mmlu_pro": 89.0, "change": "🆕", "badge": "" },
+      { "rank": 4, "name": "GPT-5.4", "provider": "OpenAI", "score": 92.8, "arena_elo": 1378, "mmlu_pro": 88.8, "change": "↓1", "badge": "" },
+      { "rank": 5, "name": "DeepSeek-R2", "provider": "DeepSeek", "score": 90.5, "arena_elo": 1358, "mmlu_pro": 86.8, "change": "→", "badge": "" },
+      { "rank": 6, "name": "Meta Muse Spark", "provider": "Meta", "score": 89.8, "arena_elo": 1350, "mmlu_pro": 86.2, "change": "→", "badge": "" },
+      { "rank": 7, "name": "GLM-5.1", "provider": "智谱 AI", "score": 89.2, "arena_elo": 1345, "mmlu_pro": 85.5, "change": "→", "badge": "" },
+      { "rank": 8, "name": "Llama 4 Maverick", "provider": "Meta", "score": 87.8, "arena_elo": 1332, "mmlu_pro": 84.2, "change": "→", "badge": "" },
+      { "rank": 9, "name": "Qwen 3.6 Max", "provider": "阿里", "score": 86.5, "arena_elo": 1320, "mmlu_pro": 83.1, "change": "→", "badge": "" },
+      { "rank": 10, "name": "Mistral Large 3 Ultra", "provider": "Mistral", "score": 85.2, "arena_elo": 1310, "mmlu_pro": 82.5, "change": "→", "badge": "" }
+    ]
+  },
+  {
+    "id": "agent-2026q1",
+    "title": "Agent 能力排行榜（2026 Q1）",
+    "description": "基于 SWE-bench / WebArena / ToolBench 的智能体能力评测",
+    "category": "agent",
+    "categoryName": "Agent 能力",
+    "categoryIcon": "🤖",
+    "date": "2026-04-10",
+    "models": [
+      { "rank": 1, "name": "Claude Opus 4.6 + Computer Use", "provider": "Anthropic", "score": 88.5, "swebench_full": 52.3, "webarena": 45.8, "toolbench": 82.1, "change": "→", "badge": "👑" },
+      { "rank": 2, "name": "GPT-5.4 + Codex Agent", "provider": "OpenAI", "score": 86.2, "swebench_full": 48.5, "webarena": 43.2, "toolbench": 79.5, "change": "↑1", "badge": "" },
+      { "rank": 3, "name": "Gemini 3.1 + Project Mariner", "provider": "Google", "score": 84.1, "swebench_full": 45.2, "webarena": 42.8, "toolbench": 76.3, "change": "↑1", "badge": "" },
+      { "rank": 4, "name": "DeepSeek-R2 + AutoDev", "provider": "DeepSeek", "score": 82.5, "swebench_full": 43.8, "webarena": 40.1, "toolbench": 74.5, "change": "🆕", "badge": "" },
+      { "rank": 5, "name": "GLM-5.1 + AutoGLM", "provider": "智谱 AI", "score": 80.2, "swebench_full": 41.2, "webarena": 38.5, "toolbench": 71.8, "change": "→", "badge": "" },
+      { "rank": 6, "name": "Qwen 3.6-Plus + Agent", "provider": "阿里", "score": 78.5, "swebench_full": 39.8, "webarena": 37.2, "toolbench": 69.5, "change": "🆕", "badge": "" }
+    ]
+  },
+  {
+    "id": "cost-2026q1",
+    "title": "性价比排行榜（2026 Q1）",
+    "description": "综合能力 / 价格比，找到最佳性价比模型",
+    "category": "cost",
+    "categoryName": "性价比",
+    "categoryIcon": "💰",
+    "date": "2026-04-10",
+    "models": [
+      { "rank": 1, "name": "DeepSeek-R2", "provider": "DeepSeek", "input_price": 0.55, "output_price": 2.19, "score": 90.5, "value_score": 98.2, "change": "🆕", "badge": "👑" },
+      { "rank": 2, "name": "GLM-5.1", "provider": "智谱 AI", "input_price": 1.0, "output_price": 3.2, "score": 89.2, "value_score": 92.5, "change": "🆕", "badge": "🏆" },
+      { "rank": 3, "name": "Gemini 3.1 Flash-Lite", "provider": "Google", "input_price": 0.025, "output_price": 0.1, "score": 78.5, "value_score": 91.8, "change": "🆕", "badge": "" },
+      { "rank": 4, "name": "Qwen 3.6 Max", "provider": "阿里", "input_price": 0.8, "output_price": 2.5, "score": 86.5, "value_score": 88.5, "change": "↑1", "badge": "" },
+      { "rank": 5, "name": "Llama 4 Maverick (Self-hosted)", "provider": "Meta", "input_price": 0, "output_price": 0, "score": 87.8, "value_score": 85.2, "change": "🆕", "badge": "" },
+      { "rank": 6, "name": "GPT-4o-mini", "provider": "OpenAI", "input_price": 0.15, "output_price": 0.6, "score": 75.2, "value_score": 82.1, "change": "↓2", "badge": "" },
+      { "rank": 7, "name": "Claude Sonnet 4.6", "provider": "Anthropic", "input_price": 3.0, "output_price": 15.0, "score": 88.5, "value_score": 65.2, "change": "→", "badge": "" },
+      { "rank": 8, "name": "GPT-5.4", "provider": "OpenAI", "input_price": 10.0, "output_price": 30.0, "score": 92.8, "value_score": 52.8, "change": "→", "badge": "" }
+    ]
+  }
+]
