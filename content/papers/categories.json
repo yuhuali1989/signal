@@ -1,0 +1,30 @@
+[
+  {
+    "id": "arch",
+    "name": "模型架构",
+    "icon": "🏗️",
+    "color": "purple",
+    "description": "Transformer 变体、MoE、Mamba/SSM、多模态架构"
+  },
+  {
+    "id": "alignment",
+    "name": "训练与对齐",
+    "icon": "🎯",
+    "color": "blue",
+    "description": "预训练、SFT、RLHF/DPO/GRPO、Scaling Law"
+  },
+  {
+    "id": "inference",
+    "name": "推理优化",
+    "icon": "⚡",
+    "color": "green",
+    "description": "KV Cache、量化、投机采样、推理框架"
+  },
+  {
+    "id": "data",
+    "name": "数据与合成",
+    "icon": "📊",
+    "color": "orange",
+    "description": "数据工程、合成数据、数据配方、自动标注"
+  }
+]

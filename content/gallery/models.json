@@ -1,0 +1,1455 @@
+[
+  {
+    "id": "gpt-oss-120b",
+    "name": "GPT-OSS 120B",
+    "org": "OpenAI",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "120B",
+    "date": "2026-01",
+    "context": "200K tokens",
+    "attention": "MHA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/gpt-oss-120b.webp",
+    "factSheet": {
+      "params": "120B",
+      "architecture": "Dense Transformer, Decoder-only",
+      "attention": "MHA",
+      "context": "200K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "OpenAI 首个开源大模型",
+      "200K 上下文"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│      GPT-OSS 120B (Dense)       │\n├─────────────────────────────────┤\n│ Input Tokens                    │\n│   ↓                             │\n│ Embedding (128K vocab)          │\n│   + Rotary Position Encoding    │\n│   ↓                             │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block × 96L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ Multi-Head Attention │    ║  │\n│ ║ │  H=96, d=128        │    ║  │\n│ ║ │  GQA: 96Q / 8KV     │    ║  │\n│ ║ │  + RoPE              │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ FFN (SwiGLU)        │    ║  │\n│ ║ │  12288→49152→12288  │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ RMSNorm → LM Head → Logits     │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "llama-3-8b",
+    "name": "Llama 3 8B",
+    "org": "Meta",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "8B / 70B / 405B",
+    "date": "2024-04",
+    "context": "128K tokens",
+    "attention": "GQA (8 KV heads)",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/llama-3-8b.webp",
+    "factSheet": {
+      "params": "8B (系列: 8B/70B/405B)",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "layers": "32",
+      "hiddenSize": "4096",
+      "heads": "32",
+      "kvHeads": "8",
+      "vocab": "128K tokens",
+      "positionalEncoding": "RoPE",
+      "normalization": "RMSNorm",
+      "activation": "SwiGLU",
+      "training": "15T tokens",
+      "license": "Llama 3 Community"
+    },
+    "highlights": [
+      "GQA 注意力",
+      "128K 词表",
+      "15T tokens 训练"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│       Llama 3 8B (Dense)        │\n├─────────────────────────────────┤\n│ Input Tokens                    │\n│   ↓                             │\n│ Embedding (128K vocab, BPE)     │\n│   ↓                             │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block × 32L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ Grouped-Query Attn  │    ║  │\n│ ║ │  H=32, d=128        │    ║  │\n│ ║ │  GQA: 32Q / 8KV     │    ║  │\n│ ║ │  + RoPE (θ=500000)  │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ FFN (SwiGLU)        │    ║  │\n│ ║ │  4096→14336→4096    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ RMSNorm → LM Head (128K)       │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "Meta"
+    ]
+  },
+  {
+    "id": "llama-4-maverick",
+    "name": "Llama 4 Maverick 400B",
+    "org": "Meta",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "400B MoE",
+    "date": "2025-04",
+    "context": "1M tokens",
+    "attention": "Interleaved Attention",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/llama-4-maverick-400b.webp",
+    "factSheet": {
+      "params": "400B total",
+      "architecture": "MoE Transformer",
+      "attention": "Interleaved Global+Local",
+      "context": "1M tokens",
+      "experts": "128 experts, Top-2",
+      "license": "Llama 4 Community"
+    },
+    "highlights": [
+      "首个原生 MoE 开源",
+      "1M 原生上下文",
+      "128 专家"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│      Llama 4 Maverick 400B       │\n│  (400B MoE, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ Interleaved Global+L │    ║  │\n│ ║ │  Context: 1M tokens     │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  128 experts, Top-2   │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "Meta"
+    ]
+  },
+  {
+    "id": "gemma-4-31b",
+    "name": "Gemma 4 31B",
+    "org": "Google",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "31B",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "MQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/gemma-4-31b.webp",
+    "factSheet": {
+      "params": "31B",
+      "architecture": "Dense Transformer",
+      "attention": "MQA",
+      "context": "128K tokens",
+      "vocab": "256K (SentencePiece)",
+      "activation": "GeGLU",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "原生多模态",
+      "Apache 2.0",
+      "Gemini 同源"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│           Gemma 4 31B            │\n│  (31B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ MQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (GeGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "Google"
+    ]
+  },
+  {
+    "id": "gemma-4-26b-a4b",
+    "name": "Gemma 4 26B-A4B",
+    "org": "Google",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "26B/4B active",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "MQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/gemma-4-26b-a4b.webp",
+    "factSheet": {
+      "params": "26B/4B active",
+      "architecture": "MoE Transformer",
+      "attention": "MQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "MoE 高性价比",
+      "4B 成本 13B 性能"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│         Gemma 4 26B-A4B          │\n│  (26B/4B active, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ MQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "Google"
+    ]
+  },
+  {
+    "id": "gemma-3-27b",
+    "name": "Gemma 3 27B",
+    "org": "Google",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "27B",
+    "date": "2025-03",
+    "context": "128K tokens",
+    "attention": "Sliding+Global",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/gemma-3-27b.webp",
+    "factSheet": {
+      "params": "27B",
+      "architecture": "Dense Transformer",
+      "attention": "Sliding Window + Global",
+      "context": "128K tokens",
+      "license": "Gemma License"
+    },
+    "highlights": [
+      "混合注意力机制"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│           Gemma 3 27B            │\n│  (27B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ Sliding Window + Glo │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "Google"
+    ]
+  },
+  {
+    "id": "mistral-small-3-1",
+    "name": "Mistral Small 3.1 24B",
+    "org": "Mistral AI",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "24B",
+    "date": "2025-03",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/mistral-3-1-small-24b.webp",
+    "factSheet": {
+      "params": "24B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "高性价比",
+      "单卡可部署"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│      Mistral Small 3.1 24B       │\n│  (24B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "Mistral"
+    ]
+  },
+  {
+    "id": "mistral-small-4",
+    "name": "Mistral Small 4",
+    "org": "Mistral AI",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "未公开",
+    "date": "2026-03",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/mistral-small-4.webp",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "Mistral 最新小模型"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│         Mistral Small 4          │\n│  (未公开, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "Mistral"
+    ]
+  },
+  {
+    "id": "olmo-3-7b",
+    "name": "OLMo 3 7B",
+    "org": "AI2",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "7B",
+    "date": "2025-08",
+    "context": "32K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/olmo-3-7b.webp",
+    "factSheet": {
+      "params": "7B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "32K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "完全开放(数据+代码+权重)",
+      "学术首选"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│            OLMo 3 7B             │\n│  (7B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 32K tokens    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "olmo-3-32b",
+    "name": "OLMo 3 32B",
+    "org": "AI2",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "32B",
+    "date": "2025-10",
+    "context": "32K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/olmo-3-32b.webp",
+    "factSheet": {
+      "params": "32B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "32K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "AI2 旗舰开放模型"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│            OLMo 3 32B            │\n│  (32B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 32K tokens    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "deepseek-v3",
+    "name": "DeepSeek-V3",
+    "org": "DeepSeek",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "671B/37B active",
+    "date": "2024-12",
+    "context": "128K tokens",
+    "attention": "MLA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/deepseek-v3-r1-671-billion.webp",
+    "factSheet": {
+      "params": "671B/37B active",
+      "architecture": "MoE Transformer",
+      "attention": "MLA (Multi-head Latent Attention)",
+      "context": "128K tokens",
+      "training": "14.8T tokens, 2048×H800, $5.57M",
+      "vocab": "128K",
+      "positionalEncoding": "RoPE",
+      "normalization": "RMSNorm",
+      "activation": "SwiGLU",
+      "precision": "FP8 (全程)",
+      "experts": "256 细粒度专家+1共享, Top-8",
+      "license": "MIT"
+    },
+    "highlights": [
+      "MLA 32x KV压缩",
+      "FP8 全程训练",
+      "$5.57M 极低成本"
+    ],
+    "textArch": "┌──────────────────────────────────┐\n│ DeepSeek-V3 671B (MoE, 37B act)  │\n├──────────────────────────────────┤\n│ Input Tokens                      │\n│   ↓                               │\n│ Embedding (128K vocab)            │\n│   ↓                               │\n│ Layer 1-3: Dense FFN              │\n│   ↓                               │\n│ ╔══════════════════════════════╗   │\n│ ║ MoE Block × 58L (Layer 4-61)║   │\n│ ║ ┌────────────────────────┐   ║   │\n│ ║ │ RMSNorm                │   ║   │\n│ ║ │ Multi-head Latent Attn │   ║   │\n│ ║ │  (MLA)                 │   ║   │\n│ ║ │  KV压缩: d→512 (32×)  │   ║   │\n│ ║ │  H=128, d_h=128       │   ║   │\n│ ║ │  + RoPE (解耦)        │   ║   │\n│ ║ └───────┬────────────────┘   ║   │\n│ ║         │ + Residual         ║   │\n│ ║ ┌───────┴────────────────┐   ║   │\n│ ║ │ RMSNorm                │   ║   │\n│ ║ │ DeepSeekMoE            │   ║   │\n│ ║ │  1 shared + 256 routed │   ║   │\n│ ║ │  Top-8 (sigmoid route) │   ║   │\n│ ║ │  Aux-loss-free balance │   ║   │\n│ ║ │  SwiGLU (d_ff=2048)   │   ║   │\n│ ║ └───────┬────────────────┘   ║   │\n│ ║         │ + Residual         ║   │\n│ ╚═════════╪════════════════════╝   │\n│           ↓                        │\n│ RMSNorm → LM Head                  │\n│   + MTP Module (depth=1)           │\n└──────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "DeepSeek"
+    ]
+  },
+  {
+    "id": "deepseek-v3-2",
+    "name": "DeepSeek V3.2",
+    "org": "DeepSeek",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "671B",
+    "date": "2025-06",
+    "context": "128K tokens",
+    "attention": "MLA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/deepseek-v3-2-671b.webp",
+    "factSheet": {
+      "params": "671B",
+      "architecture": "MoE Transformer",
+      "attention": "MLA",
+      "context": "128K tokens",
+      "license": "MIT"
+    },
+    "highlights": [
+      "V3 改进版",
+      "推理增强"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│          DeepSeek V3.2           │\n│  (671B, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ MLA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "DeepSeek"
+    ]
+  },
+  {
+    "id": "mistral-large-3",
+    "name": "Mistral Large 3",
+    "org": "Mistral AI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "673B MoE",
+    "date": "2025-11",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/mistral-3-large-673-billion.webp",
+    "factSheet": {
+      "params": "673B MoE",
+      "architecture": "MoE Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "Mistral 最大模型"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│         Mistral Large 3          │\n│  (673B MoE, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "Mistral"
+    ]
+  },
+  {
+    "id": "qwen3-235b",
+    "name": "Qwen3 235B-A22B",
+    "org": "阿里",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "235B/22B active",
+    "date": "2025-04",
+    "context": "128K→1M",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/qwen3-235b-a22b.webp",
+    "factSheet": {
+      "params": "235B/22B active",
+      "architecture": "MoE Transformer",
+      "attention": "GQA",
+      "context": "128K→1M (YaRN)",
+      "vocab": "152K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "最完整开源家族",
+      "152K 大词表",
+      "思考/非思考切换"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│         Qwen3 235B-A22B          │\n│  (235B/22B active, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K→1M (YaR  │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "阿里"
+    ]
+  },
+  {
+    "id": "qwen3-32b",
+    "name": "Qwen3 32B",
+    "org": "阿里",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "32B",
+    "date": "2025-04",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/qwen3-32b.webp",
+    "factSheet": {
+      "params": "32B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "Qwen 旗舰密集模型"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│            Qwen3 32B             │\n│  (32B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "阿里"
+    ]
+  },
+  {
+    "id": "qwen3-8b",
+    "name": "Qwen3 8B",
+    "org": "阿里",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🧱",
+    "open": true,
+    "params": "8B",
+    "date": "2025-04",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/qwen3-8b.webp",
+    "factSheet": {
+      "params": "8B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "轻量高效"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│             Qwen3 8B             │\n│  (8B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "Dense",
+      "Decoder-Only",
+      "阿里"
+    ]
+  },
+  {
+    "id": "glm-5-744b",
+    "name": "GLM-5 744B",
+    "org": "智谱 AI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "744B/40B active",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "MQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/glm-5-744b.webp",
+    "factSheet": {
+      "params": "744B/40B active",
+      "architecture": "MoE Transformer",
+      "attention": "MQA",
+      "context": "128K tokens",
+      "license": "MIT"
+    },
+    "highlights": [
+      "MIT 开源",
+      "SWE-Bench 超越 GPT-5.4"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│            GLM-5 744B            │\n│  (744B/40B active, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ MQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "智谱"
+    ]
+  },
+  {
+    "id": "glm-4-5-355b",
+    "name": "GLM-4.5 355B",
+    "org": "智谱 AI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "355B",
+    "date": "2025-06",
+    "context": "128K tokens",
+    "attention": "MQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/glm-4-5-355b.webp",
+    "factSheet": {
+      "params": "355B",
+      "architecture": "MoE Transformer",
+      "attention": "MQA",
+      "context": "128K tokens",
+      "license": "智谱 License"
+    },
+    "highlights": [
+      "智谱旗舰"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│           GLM-4.5 355B           │\n│  (355B, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ MQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "智谱"
+    ]
+  },
+  {
+    "id": "kimi-k2",
+    "name": "Kimi K2 1T",
+    "org": "月之暗面",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "1T MoE",
+    "date": "2025-07",
+    "context": "128K tokens",
+    "attention": "MLA-like",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/kimi-k2-1-trillion.webp",
+    "factSheet": {
+      "params": "1T MoE",
+      "architecture": "MoE Transformer",
+      "attention": "MLA-like",
+      "context": "128K tokens",
+      "license": "开源"
+    },
+    "highlights": [
+      "万亿参数",
+      "MLA 类注意力"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│            Kimi K2 1T            │\n│  (1T MoE, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ MLA-like             │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only",
+      "月之暗面"
+    ]
+  },
+  {
+    "id": "minimax-m2",
+    "name": "MiniMax M2 230B",
+    "org": "MiniMax",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "230B",
+    "date": "2025-09",
+    "context": "1M tokens",
+    "attention": "Lightning Attention",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/minimax-m2-230b.webp",
+    "factSheet": {
+      "params": "230B",
+      "architecture": "MoE + Lightning Attention",
+      "context": "1M tokens",
+      "license": "MiniMax License"
+    },
+    "highlights": [
+      "Lightning Attention",
+      "原生 1M 上下文"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│         MiniMax M2 230B          │\n│  (230B, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ Attention            │    ║  │\n│ ║ │  Context: 1M tokens     │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "grok-2-5",
+    "name": "Grok 2.5 270B",
+    "org": "xAI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "270B",
+    "date": "2025-12",
+    "context": "128K tokens",
+    "attention": "未公开",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/grok-2-5-270b.webp",
+    "factSheet": {
+      "params": "270B",
+      "architecture": "MoE Transformer",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "xAI 首个开源"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│          Grok 2.5 270B           │\n│  (270B, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ Attention            │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "nemotron-3-nano",
+    "name": "Nemotron 3 Nano 30B-A3B",
+    "org": "NVIDIA",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "30B/3B active",
+    "date": "2025-10",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/nemotron-3-nano-30b-a3b.webp",
+    "factSheet": {
+      "params": "30B/3B active",
+      "architecture": "MoE Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "NVIDIA License"
+    },
+    "highlights": [
+      "NVIDIA 自研",
+      "极小激活参数"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│     Nemotron 3 Nano 30B-A3B      │\n│  (30B/3B active, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "arcee-trinity",
+    "name": "Arcee Trinity Large 400B",
+    "org": "Arcee AI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "400B",
+    "date": "2025-11",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/arcee-ai-trinity-large-400b.webp",
+    "factSheet": {
+      "params": "400B",
+      "architecture": "MoE Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "模型合并技术先驱"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│     Arcee Trinity Large 400B     │\n│  (400B, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "Transformer",
+      "MoE",
+      "Decoder-Only"
+    ]
+  },
+  {
+    "id": "deepseek-r1",
+    "name": "DeepSeek-R1",
+    "org": "DeepSeek",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": true,
+    "params": "671B MoE",
+    "date": "2025-01",
+    "context": "128K tokens",
+    "attention": "MLA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/deepseek-v3-r1-671-billion.webp",
+    "factSheet": {
+      "params": "671B MoE (同V3架构)",
+      "architecture": "MoE Transformer + RL",
+      "attention": "MLA",
+      "context": "128K tokens",
+      "training": "纯 RL, 无 SFT",
+      "license": "MIT"
+    },
+    "highlights": [
+      "纯 RL 涌现思维链",
+      "GRPO 方法",
+      "MIT 开源"
+    ],
+    "textArch": "┌──────────────────────────────────┐\n│  DeepSeek-R1 671B (MoE + 推理)   │\n├──────────────────────────────────┤\n│ Input (Question/Problem)          │\n│   ↓                               │\n│ ╔══════════════════════════════╗   │\n│ ║ Base: DeepSeek-V3 架构       ║   │\n│ ║ (MLA + MoE, 671B/37B)       ║   │\n│ ╠══════════════════════════════╣   │\n│ ║ RL Training (GRPO)           ║   │\n│ ║                              ║   │\n│ ║ Stage 1: 纯 RL (无 SFT)     ║   │\n│ ║   规则奖励 (准确性+格式)     ║   │\n│ ║   ↓ 涌现 CoT                ║   │\n│ ║   ↓ 涌现 反思 & 验证        ║   │\n│ ║   ↓ 涌现 \"aha moment\"       ║   │\n│ ║                              ║   │\n│ ║ Stage 2: RL + SFT            ║   │\n│ ║   长 CoT 过滤 → SFT          ║   │\n│ ║   继续 RL (多场景奖励)       ║   │\n│ ╚══════════════════════════════╝   │\n│   ↓                               │\n│ <think>推理过程</think>            │\n│ <answer>最终答案</answer>          │\n│                                    │\n│ ★ 纯 RL 涌现推理能力              │\n│ ★ AIME 79.8%, MATH 97.3%          │\n└──────────────────────────────────┘",
+    "tags": [
+      "推理",
+      "强化学习",
+      "MoE",
+      "DeepSeek"
+    ]
+  },
+  {
+    "id": "xlstm-7b",
+    "name": "xLSTM 7B",
+    "org": "NXAI",
+    "type": "ssm",
+    "typeLabel": "SSM/线性",
+    "typeIcon": "🌊",
+    "open": true,
+    "params": "7B",
+    "date": "2024-05",
+    "context": "可扩展",
+    "attention": "mLSTM (线性)",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/xlstm-7b.webp",
+    "factSheet": {
+      "params": "7B",
+      "architecture": "xLSTM (mLSTM+sLSTM)",
+      "attention": "线性注意力 O(N)",
+      "context": "理论无限",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "LSTM 复兴",
+      "线性复杂度",
+      "无需 KV Cache"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│             xLSTM 7B             │\n│  (7B, SSM)                │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ SSM Block ×   ?L            ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ Norm → Linear → Conv │    ║  │\n│ ║ │   ↓                  │    ║  │\n│ ║ │ Selective SSM         │    ║  │\n│ ║ │  x'=Ax+Bu, y=Cx+Du  │    ║  │\n│ ║ │   ↓  ⊗  Gate        │    ║  │\n│ ║ │ Linear → Output      │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ Norm → LM Head                  │\n│ ★ O(N) 线性复杂度               │\n└─────────────────────────────────┘",
+    "tags": [
+      "SSM",
+      "线性复杂度",
+      "非Transformer"
+    ]
+  },
+  {
+    "id": "kimi-linear",
+    "name": "Kimi Linear 48B-A3B",
+    "org": "月之暗面",
+    "type": "ssm",
+    "typeLabel": "SSM/线性",
+    "typeIcon": "🌊",
+    "open": true,
+    "params": "48B/3B active",
+    "date": "2025-11",
+    "context": "128K tokens",
+    "attention": "线性注意力",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/kimi-linear-48b-a3b.webp",
+    "factSheet": {
+      "params": "48B/3B active",
+      "architecture": "Linear Attention MoE",
+      "attention": "线性注意力",
+      "context": "128K tokens",
+      "license": "开源"
+    },
+    "highlights": [
+      "线性注意力+MoE",
+      "极低推理成本"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│       Kimi Linear 48B-A3B        │\n│  (48B/3B active, SSM)                │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ SSM Block ×   ?L            ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ Norm → Linear → Conv │    ║  │\n│ ║ │   ↓                  │    ║  │\n│ ║ │ Selective SSM         │    ║  │\n│ ║ │  x'=Ax+Bu, y=Cx+Du  │    ║  │\n│ ║ │   ↓  ⊗  Gate        │    ║  │\n│ ║ │ Linear → Output      │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ Norm → LM Head                  │\n│ ★ O(N) 线性复杂度               │\n└─────────────────────────────────┘",
+    "tags": [
+      "SSM",
+      "线性复杂度",
+      "月之暗面"
+    ]
+  },
+  {
+    "id": "phi-4",
+    "name": "Phi-4",
+    "org": "Microsoft",
+    "type": "small",
+    "typeLabel": "小模型",
+    "typeIcon": "🔬",
+    "open": true,
+    "params": "14B",
+    "date": "2024-12",
+    "context": "16K tokens",
+    "attention": "Full Attention",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/phi-4.webp",
+    "factSheet": {
+      "params": "14B",
+      "architecture": "Dense Transformer",
+      "attention": "Full Attention",
+      "context": "16K tokens",
+      "layers": "40",
+      "hiddenSize": "5120",
+      "heads": "40",
+      "vocab": "100K",
+      "activation": "GELU",
+      "training": "合成数据为主 (~50%)",
+      "license": "MIT"
+    },
+    "highlights": [
+      "合成数据驱动",
+      "14B 超越 GPT-4o-mini"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│      Phi-4 14B (Dense, 小模型)   │\n├─────────────────────────────────┤\n│ Input Tokens                    │\n│   ↓                             │\n│ Embedding (100K vocab)          │\n│   ↓                             │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block × 40L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ Full Attention      │    ║  │\n│ ║ │  H=40, d=128        │    ║  │\n│ ║ │  Full KV (no GQA)   │    ║  │\n│ ║ │  + RoPE              │    ║  │\n│ ║ │  Context: 16K        │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ FFN (SwiGLU)        │    ║  │\n│ ║ │  5120→17920→5120    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ RMSNorm → LM Head (100K)       │\n│ ★ 合成数据驱动                  │\n│ ★ 14B 超越 GPT-4o-mini         │\n└─────────────────────────────────┘",
+    "tags": [
+      "小模型",
+      "端侧部署",
+      "Microsoft"
+    ]
+  },
+  {
+    "id": "smollm3-3b",
+    "name": "SmolLM3 3B",
+    "org": "HuggingFace",
+    "type": "small",
+    "typeLabel": "小模型",
+    "typeIcon": "🔬",
+    "open": true,
+    "params": "3B",
+    "date": "2025-12",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/smollm3-3b.webp",
+    "factSheet": {
+      "params": "3B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "HuggingFace 自研"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│            SmolLM3 3B            │\n│  (3B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "小模型",
+      "端侧部署"
+    ]
+  },
+  {
+    "id": "llama-3-2-1b",
+    "name": "Llama 3.2 1B",
+    "org": "Meta",
+    "type": "small",
+    "typeLabel": "小模型",
+    "typeIcon": "🔬",
+    "open": true,
+    "params": "1B",
+    "date": "2024-09",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/llama-3-2-1b.webp",
+    "factSheet": {
+      "params": "1B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Llama 3.2 Community"
+    },
+    "highlights": [
+      "超轻量端侧"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│           Llama 3.2 1B           │\n│  (1B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "小模型",
+      "端侧部署",
+      "Meta"
+    ]
+  },
+  {
+    "id": "qwen3-4b",
+    "name": "Qwen3 4B",
+    "org": "阿里",
+    "type": "small",
+    "typeLabel": "小模型",
+    "typeIcon": "🔬",
+    "open": true,
+    "params": "4B",
+    "date": "2025-04",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/qwen3-4b.webp",
+    "factSheet": {
+      "params": "4B",
+      "architecture": "Dense Transformer",
+      "attention": "GQA",
+      "context": "128K tokens",
+      "license": "Apache 2.0"
+    },
+    "highlights": [
+      "端侧友好"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│             Qwen3 4B             │\n│  (4B, Dense)              │\n├─────────────────────────────────┤\n│ Embedding                       │\n│ ╔═════════════════════════════╗  │\n│ ║ Transformer Block ×   ?L    ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ GQA                  │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ FFN (SwiGLU)    │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
+    "tags": [
+      "小模型",
+      "端侧部署",
+      "阿里"
+    ]
+  },
+  {
+    "id": "gpt4o-mm",
+    "name": "GPT-4o (多模态)",
+    "org": "OpenAI",
+    "type": "multimodal",
+    "params": "未公开",
+    "context": "128K",
+    "date": "2024-05",
+    "attention": "未公开",
+    "description": "原生六模态统一端到端训练",
+    "highlights": [
+      "首个原生全模态",
+      "320ms语音响应"
+    ],
+    "tags": [
+      "多模态",
+      "Transformer",
+      "OpenAI",
+      "闭源"
+    ],
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "统一 Transformer",
+      "attention": "推测 GQA",
+      "context": "128K",
+      "vocab": "200K",
+      "license": "闭源"
+    },
+    "textArch": "┌─────────────────────────────────┐\n│  GPT-4o — 原生六模态 Transformer │\n├─────────────────────────────────┤\n│ ┌────┐ ┌─────┐ ┌─────┐ ┌─────┐ │\n│ │Text│ │Image│ │Audio│ │Video│ │\n│ └──┬─┘ └──┬──┘ └──┬──┘ └──┬──┘ │\n│    └───┬──┴───┬───┘       │    │\n│        ↓      ↓           ↓    │\n│   ┌─────────────────────────┐  │\n│   │ 统一 Embedding 空间      │  │\n│   └───────────┬─────────────┘  │\n│               ↓                │\n│  ╔═════════════════════════╗   │\n│  ║ Transformer Decoder     ║   │\n│  ║ (推测 GQA, 128K ctx)    ║   │\n│  ║ MHA → FFN (SwiGLU)      ║   │\n│  ╚═══════════╤═════════════╝   │\n│              ↓                 │\n│  ┌───────┐ ┌────────┐          │\n│  │Text出力│ │Audio出力│          │\n│  └───────┘ └────────┘          │\n└─────────────────────────────────┘"
+  },
+  {
+    "id": "llava-next",
+    "name": "LLaVA-NeXT 34B",
+    "org": "UW / MSRA",
+    "type": "multimodal",
+    "params": "34B",
+    "context": "32K",
+    "date": "2024-01",
+    "attention": "GQA",
+    "description": "开源视觉-语言模型，动态高分辨率",
+    "highlights": [
+      "开源最强视觉理解",
+      "AnyRes动态分辨率"
+    ],
+    "tags": [
+      "多模态",
+      "开源",
+      "视觉理解",
+      "Transformer"
+    ],
+    "factSheet": {
+      "params": "34B",
+      "architecture": "CLIP ViT-L + Yi-34B",
+      "attention": "GQA",
+      "context": "32K",
+      "resolution": "AnyRes 5tiles",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌───────────────────────────────┐\n│ LLaVA-NeXT 34B — 双塔 VLM     │\n├───────────────────────────────┤\n│ ┌──────┐    ┌──────────┐      │\n│ │ Image │    │ Text     │      │\n│ └──┬───┘    └────┬─────┘      │\n│    ↓             ↓             │\n│ ┌──────────┐ ┌──────────┐     │\n│ │CLIP ViT-L│ │ Tokenizer│     │\n│ │14×14 ptch│ │ (64K)    │     │\n│ └────┬─────┘ └────┬─────┘     │\n│      ↓            │           │\n│ ┌──────────┐      │           │\n│ │ AnyRes   │      │           │\n│ │ (5 tiles)│      │           │\n│ └────┬─────┘      │           │\n│      ↓            │           │\n│ ┌──────────┐      │           │\n│ │MLP 投影层 │      │           │\n│ └────┬─────┘      │           │\n│      └──────┬─────┘           │\n│             ↓                  │\n│ ╔═══════════════════════╗     │\n│ ║ Yi-34B LLM × 60L     ║     │\n│ ║ GQA + RMSNorm + SwiGLU║     │\n│ ╚══════════╤════════════╝     │\n│            ↓                   │\n│       LM Head → Text          │\n└───────────────────────────────┘"
+  },
+  {
+    "id": "sora",
+    "name": "Sora",
+    "org": "OpenAI",
+    "type": "video",
+    "params": "未公开 (3B+)",
+    "context": "≤1min 1080p",
+    "date": "2024-02",
+    "attention": "3D Full Attention",
+    "description": "文本→视频 DiT，时空 Patch，支持 1 分钟 1080p",
+    "highlights": [
+      "首个长视频生成",
+      "时空Patch统一",
+      "物理世界理解"
+    ],
+    "tags": [
+      "视频生成",
+      "DiT",
+      "扩散模型",
+      "OpenAI",
+      "闭源"
+    ],
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "DiT",
+      "attention": "3D Full (时空)",
+      "context": "≤1min 1080p",
+      "scheduler": "Flow Matching",
+      "license": "闭源"
+    },
+    "textArch": "┌──────────────────────────────────┐\n│ Sora — DiT (Diffusion Transformer)│\n├──────────────────────────────────┤\n│ Text: \"A cat on Mars...\"          │\n│      ↓                            │\n│ ┌────────────┐                    │\n│ │ CLIP/T5    │                    │\n│ │ Text Enc.  │                    │\n│ └─────┬──────┘                    │\n│       ↓ Cross-Attn               │\n│                                   │\n│ ┌────────────────────────────┐   │\n│ │ 视频 VAE Encoder            │   │\n│ │ 帧→潜在 → 时空Patch化       │   │\n│ │ [T×H×W] → [N patches]      │   │\n│ └───────────┬────────────────┘   │\n│             ↓ + Noise (t)        │\n│ ╔════════════════════════════╗   │\n│ ║ DiT Block × ?L            ║   │\n│ ║ ┌────────────────────────┐║   │\n│ ║ │ AdaLN-Zero (t, text)   │║   │\n│ ║ │ 3D Self-Attention      │║   │\n│ ║ │ (空间+时间联合)          │║   │\n│ ║ │ Cross-Attn (text)      │║   │\n│ ║ │ FFN (GELU)             │║   │\n│ ║ └────────────────────────┘║   │\n│ ╚═══════════╤════════════════╝   │\n│             ↓                    │\n│ ┌────────────────────────┐       │\n│ │ VAE Decoder → 视频帧   │       │\n│ │ ≤1min 1080p 可变时长    │       │\n│ └────────────────────────┘       │\n└──────────────────────────────────┘"
+  },
+  {
+    "id": "cogvideox",
+    "name": "CogVideoX 5B",
+    "org": "智谱 AI",
+    "type": "video",
+    "params": "5B",
+    "context": "6s 720p",
+    "date": "2024-08",
+    "attention": "3D Full Attention",
+    "description": "开源视频生成，3D 因果 VAE + Expert Transformer",
+    "highlights": [
+      "开源最强视频生成",
+      "3D因果VAE"
+    ],
+    "tags": [
+      "视频生成",
+      "DiT",
+      "开源",
+      "智谱",
+      "3D VAE"
+    ],
+    "factSheet": {
+      "params": "5B",
+      "architecture": "Expert Transformer + 3D Causal VAE",
+      "attention": "3D Full",
+      "context": "6s 720p",
+      "patchSize": "4×8×8",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌───────────────────────────────┐\n│ CogVideoX 5B — 开源视频生成    │\n├───────────────────────────────┤\n│ Text: \"一只猫在火星...\"          │\n│      ↓                         │\n│ ┌─────────┐                    │\n│ │ T5-XXL  │                    │\n│ └────┬────┘                    │\n│      ↓                         │\n│ ┌──────────────────────────┐  │\n│ │ 3D Causal VAE            │  │\n│ │ 帧→潜在 (4×8×8 压缩)     │  │\n│ │ 因果卷积保持时序一致       │  │\n│ └───────────┬──────────────┘  │\n│             ↓ + Noise         │\n│ ╔══════════════════════════╗  │\n│ ║ Expert Transformer × 30L ║  │\n│ ║ AdaLN + 3D Self-Attn    ║  │\n│ ║ + Expert FFN             ║  │\n│ ╚═══════════╤══════════════╝  │\n│             ↓                  │\n│  VAE Decoder → 49帧 720p      │\n└───────────────────────────────┘"
+  },
+  {
+    "id": "uniad",
+    "name": "UniAD",
+    "org": "上海AI实验室",
+    "type": "autonomous",
+    "params": "~50M",
+    "context": "多帧BEV",
+    "date": "2023-03",
+    "attention": "Deformable + Cross",
+    "description": "统一自动驾驶：感知→预测→规划端到端，CVPR 2023 Best Paper",
+    "highlights": [
+      "CVPR 2023 Best Paper",
+      "感知-预测-规划统一",
+      "Query-based全栈"
+    ],
+    "tags": [
+      "自动驾驶",
+      "端到端",
+      "BEV",
+      "感知",
+      "规划",
+      "开源"
+    ],
+    "factSheet": {
+      "params": "~50M (不含Backbone)",
+      "architecture": "统一 Query Transformer",
+      "backbone": "ResNet-101",
+      "BEV": "200×200, 0.5m",
+      "tasks": "检测+跟踪+建图+预测+规划",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌────────────────────────────────────┐\n│ UniAD — 统一自动驾驶 (CVPR Best)    │\n├────────────────────────────────────┤\n│ 6 Cameras (多帧)                    │\n│      ↓                              │\n│ ┌────────────┐                      │\n│ │ ResNet+FPN │                      │\n│ └─────┬──────┘                      │\n│       ↓                             │\n│ ┌────────────────────┐              │\n│ │ BEV Encoder (LSS)  │              │\n│ │ 图像→200×200 BEV    │              │\n│ └────────┬───────────┘              │\n│          ↓                           │\n│ ┌─ TrackFormer ──────────────┐      │\n│ │ 检测Query→3D BBox + 跟踪   │      │\n│ └─────────┬──────────────────┘      │\n│           ↓                          │\n│ ┌─ MapFormer ────────────────┐      │\n│ │ 地图Query→车道线/人行道     │      │\n│ └─────────┬──────────────────┘      │\n│           ↓                          │\n│ ┌─ MotionFormer ─────────────┐      │\n│ │ Agent×Map→未来轨迹 (6 modes)│      │\n│ └─────────┬──────────────────┘      │\n│           ↓                          │\n│ ┌─ Planner ──────────────────┐      │\n│ │ GRU + 占用网格碰撞检查      │      │\n│ │ → 未来 3s 规划轨迹          │      │\n│ └────────────────────────────┘      │\n└────────────────────────────────────┘"
+  },
+  {
+    "id": "driveworld-vla",
+    "name": "DriveWorld-VLA",
+    "org": "多机构",
+    "type": "autonomous",
+    "params": "~7B",
+    "context": "多帧多相机",
+    "date": "2026-02",
+    "attention": "Cross+Causal",
+    "description": "VLA+世界模型统一，特征级可控想象，碰撞率-36%",
+    "highlights": [
+      "VLA+世界模型",
+      "特征级想象",
+      "碰撞率-36%"
+    ],
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "世界模型",
+      "端到端",
+      "开源"
+    ],
+    "factSheet": {
+      "params": "~7B",
+      "architecture": "VLA + Latent World Model",
+      "attention": "Cross+Causal",
+      "tasks": "感知+预测+想象+规划",
+      "training": "nuScenes",
+      "license": "开源"
+    },
+    "textArch": "┌──────────────────────────────────┐\n│ DriveWorld-VLA — VLA+世界模型     │\n├──────────────────────────────────┤\n│ 6 Cameras + 导航指令              │\n│ ┌────────┐  ┌──────────────┐     │\n│ │ Images │  │ \"Turn left\"  │     │\n│ └───┬────┘  └──────┬───────┘     │\n│     ↓              ↓              │\n│ ┌────────┐  ┌────────────┐       │\n│ │ViT Enc│  │LLM Tokenize│       │\n│ └───┬────┘  └──────┬─────┘       │\n│     └───────┬──────┘             │\n│             ↓                     │\n│ ╔══════════════════════════╗     │\n│ ║ VLA Backbone             ║     │\n│ ║ (视觉-语言 Cross-Attn)    ║     │\n│ ╚═══════════╤══════════════╝     │\n│             ↓                     │\n│ ┌─ World Model ──────────────┐  │\n│ │ 潜在空间「想象」未来 N 步    │  │\n│ │ (特征级, 不生成像素)        │  │\n│ └────────────┬───────────────┘  │\n│              ↓                   │\n│ ┌─ Action Decoder ───────────┐  │\n│ │ Causal Transformer          │  │\n│ │ → (x,y,θ) 碰撞率 -36%      │  │\n│ └────────────────────────────┘  │\n└──────────────────────────────────┘"
+  },
+  {
+    "id": "bevformer",
+    "name": "BEVFormer",
+    "org": "上海AI实验室",
+    "type": "autonomous",
+    "params": "~70M",
+    "context": "多帧BEV (时序)",
+    "date": "2022-03",
+    "attention": "Deformable + Temporal",
+    "description": "首个将 Transformer 引入 BEV 感知的里程碑工作。通过空间交叉注意力将多相机图像投影到 BEV 空间，时序自注意力融合历史帧，ECCV 2022 最具影响力论文之一。",
+    "keyInnovation": "空间交叉注意力 + 时序自注意力，纯视觉 BEV 感知奠基之作",
+    "highlights": [
+      "首个 Transformer BEV 感知",
+      "时序 BEV 特征融合",
+      "ECCV 2022 高引用",
+      "nuScenes 3D检测 SOTA (2022)"
+    ],
+    "paperUrl": "https://arxiv.org/abs/2203.17270",
+    "blogUrl": "https://github.com/fundamentalvision/BEVFormer",
+    "factSheet": {
+      "params": "~70M (ResNet-101 backbone)",
+      "architecture": "Encoder-only Transformer",
+      "attention": "Deformable Spatial + Temporal Self-Attn",
+      "BEV分辨率": "200×200, 0.512m/格",
+      "输入": "6路环视相机 (多帧)",
+      "输出": "BEV特征图 → 3D检测/分割",
+      "训练数据": "nuScenes",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ BEVFormer — 时序 BEV Transformer      │\n├──────────────────────────────────────┤\n│ 6 Cameras (当前帧 + 历史帧)            │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ Backbone (ResNet-101 + FPN)      │  │\n│ │ → 多尺度 2D 特征图               │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓                      │\n│ ╔════════════════════════════════╗    │\n│ ║ BEVFormer Encoder × 6L        ║    │\n│ ║ ┌──────────────────────────┐  ║    │\n│ ║ │ Temporal Self-Attention  │  ║    │\n│ ║ │ BEV Query ← 历史BEV特征  │  ║    │\n│ ║ │ (时序融合, 保留运动信息)  │  ║    │\n│ ║ └────────────┬─────────────┘  ║    │\n│ ║              │ + Residual     ║    │\n│ ║ ┌────────────┴─────────────┐  ║    │\n│ ║ │ Spatial Cross-Attention  │  ║    │\n│ ║ │ BEV Query → 2D 特征      │  ║    │\n│ ║ │ (Deformable, 4 参考点)   │  ║    │\n│ ║ │ 3D→2D 投影 (相机内外参)  │  ║    │\n│ ║ └────────────┬─────────────┘  ║    │\n│ ║              │ + FFN          ║    │\n│ ╚══════════════╪════════════════╝    │\n│                ↓                      │\n│ BEV 特征图 (200×200×256)             │\n│      ↓              ↓                │\n│ ┌──────────┐  ┌──────────────┐       │\n│ │ 3D 检测头 │  │ 语义分割头    │       │\n│ │ DETR-3D  │  │ BEV Seg      │       │\n│ └──────────┘  └──────────────┘       │\n└──────────────────────────────────────┘",
+    "tags": [
+      "自动驾驶",
+      "BEV",
+      "感知",
+      "3D检测",
+      "Transformer",
+      "开源"
+    ],
+    "status": "open",
+    "category": "autonomous"
+  },
+  {
+    "id": "sparsedrive",
+    "name": "SparseDrive",
+    "org": "Horizon Robotics",
+    "type": "autonomous",
+    "params": "~80M",
+    "context": "多帧稀疏表示",
+    "date": "2024-05",
+    "attention": "Sparse Deformable",
+    "description": "用稀疏实例表示替代密集 BEV 特征图，统一感知与运动规划。通过稀疏 3D 实例 Query 直接在 3D 空间建模，避免 BEV 特征图的计算开销，推理速度提升 2x。",
+    "keyInnovation": "稀疏实例表示统一感知+规划，无需密集 BEV 特征图",
+    "highlights": [
+      "稀疏 3D 实例 Query",
+      "无密集 BEV，推理快 2x",
+      "感知+规划统一框架",
+      "nuScenes 端到端 SOTA (2024)"
+    ],
+    "paperUrl": "https://arxiv.org/abs/2405.19620",
+    "blogUrl": "https://github.com/swc-17/SparseDrive",
+    "factSheet": {
+      "params": "~80M",
+      "architecture": "Sparse Instance Transformer",
+      "attention": "Sparse Deformable Cross-Attn",
+      "实例Query数": "900 个稀疏 3D Query",
+      "输入": "6路环视相机 (多帧)",
+      "输出": "3D检测 + 运动预测 + 规划轨迹",
+      "训练数据": "nuScenes",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ SparseDrive — 稀疏端到端驾驶          │\n├──────────────────────────────────────┤\n│ 6 Cameras (多帧)                      │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ Backbone (InternImage / ResNet)  │  │\n│ │ → 多尺度 2D 特征图               │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓                      │\n│ ╔════════════════════════════════╗    │\n│ ║ Sparse Perception Module       ║    │\n│ ║ ┌──────────────────────────┐  ║    │\n│ ║ │ 900 × 3D Instance Query  │  ║    │\n│ ║ │ (可学习 3D 位置 + 特征)  │  ║    │\n│ ║ └────────────┬─────────────┘  ║    │\n│ ║              ↓                ║    │\n│ ║ ┌────────────────────────┐    ║    │\n│ ║ │ Sparse Deformable Attn │    ║    │\n│ ║ │ Query → 2D 特征 (投影) │    ║    │\n│ ║ │ 无需密集 BEV 特征图    │    ║    │\n│ ║ └────────────┬───────────┘    ║    │\n│ ║              ↓                ║    │\n│ ║ ┌────────────────────────┐    ║    │\n│ ║ │ 时序融合 (历史实例)     │    ║    │\n│ ║ └────────────┬───────────┘    ║    │\n│ ╚══════════════╪════════════════╝    │\n│                ↓                      │\n│ 稀疏实例特征 (900 × D)               │\n│      ↓              ↓                │\n│ ┌──────────┐  ┌──────────────────┐   │\n│ │ 3D检测   │  │ 运动预测+规划     │   │\n│ │ +跟踪    │  │ (GRU Planner)    │   │\n│ └──────────┘  └──────────────────┘   │\n└──────────────────────────────────────┘",
+    "tags": [
+      "自动驾驶",
+      "稀疏表示",
+      "端到端",
+      "感知",
+      "规划",
+      "开源"
+    ],
+    "status": "open",
+    "category": "autonomous"
+  },
+  {
+    "id": "vad",
+    "name": "VAD",
+    "org": "Horizon Robotics",
+    "type": "autonomous",
+    "params": "~60M",
+    "context": "向量化场景表示",
+    "date": "2023-03",
+    "attention": "Deformable + Agent-Map",
+    "description": "用向量化场景表示替代栅格化 BEV，将地图元素和 Agent 轨迹均表示为向量序列。通过 Agent-Map 交互注意力建模交通参与者与地图的关系，规划效率大幅提升。",
+    "keyInnovation": "向量化场景表示 + Agent-Map 交互，端到端规划效率提升",
+    "highlights": [
+      "向量化地图+轨迹表示",
+      "Agent-Map 交互注意力",
+      "nuScenes 规划 SOTA (2023)",
+      "推理速度比 UniAD 快 2.5x"
+    ],
+    "paperUrl": "https://arxiv.org/abs/2303.12077",
+    "blogUrl": "https://github.com/hustvl/VAD",
+    "factSheet": {
+      "params": "~60M",
+      "architecture": "向量化 Transformer",
+      "attention": "Deformable + Agent-Map Cross-Attn",
+      "场景表示": "向量化地图 + 向量化轨迹",
+      "输入": "6路环视相机 (多帧)",
+      "输出": "向量化地图 + 多模态轨迹 + 规划",
+      "训练数据": "nuScenes",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ VAD — 向量化自动驾驶                  │\n├──────────────────────────────────────┤\n│ 6 Cameras (多帧)                      │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ Backbone + BEV Encoder (BEVFormer)│  │\n│ └──────────────┬───────────────────┘  │\n│                ↓                      │\n│ ╔════════════════════════════════╗    │\n│ ║ 向量化场景编码                 ║    │\n│ ║ ┌──────────────────────────┐  ║    │\n│ ║ │ Map Vectorization        │  ║    │\n│ ║ │ BEV → 车道线/边界向量序列 │  ║    │\n│ ║ └────────────┬─────────────┘  ║    │\n│ ║ ┌────────────┴─────────────┐  ║    │\n│ ║ │ Agent Vectorization      │  ║    │\n│ ║ │ 检测框 → 轨迹向量序列    │  ║    │\n│ ║ └────────────┬─────────────┘  ║    │\n│ ╚══════════════╪════════════════╝    │\n│                ↓                      │\n│ ╔════════════════════════════════╗    │\n│ ║ Agent-Map 交互 Transformer     ║    │\n│ ║ Agent Query ↔ Map Query        ║    │\n│ ║ (建模交通参与者与地图关系)      ║    │\n│ ╚══════════════╪════════════════╝    │\n│                ↓                      │\n│ ┌──────────────────────────────────┐  │\n│ │ 多模态轨迹预测 (6 modes)          │  │\n│ │ + Ego Planner (GRU)              │  │\n│ │ → 未来 3s 规划轨迹               │  │\n│ └──────────────────────────────────┘  │\n└──────────────────────────────────────┘",
+    "tags": [
+      "自动驾驶",
+      "向量化",
+      "端到端",
+      "规划",
+      "运动预测",
+      "开源"
+    ],
+    "status": "open",
+    "category": "autonomous"
+  },
+  {
+    "id": "opendrivevla",
+    "name": "OpenDriveVLA",
+    "org": "阿里巴巴 / 西安交通大学",
+    "type": "autonomous",
+    "params": "~7B",
+    "context": "多相机 + 语言指令",
+    "date": "2025-03",
+    "attention": "Cross-Attn (视觉-语言)",
+    "description": "首个基于开源 LLM 的端到端自动驾驶 VLA 模型。通过 Cross-Attention Adapter 将视觉 token 压缩 70%，统一输出场景描述、轨迹规划和控制信号，nuScenes L2(3s) 达到 0.87m。",
+    "keyInnovation": "开源 LLM + Token 压缩 + 多任务统一输出，首证 VLA 端到端驾驶可行",
+    "highlights": [
+      "首个开源 LLM 端到端驾驶",
+      "Token 压缩减少 70%，推理快 3x",
+      "统一场景理解+规划+控制",
+      "nuScenes L2(3s) 0.87m SOTA (2025)"
+    ],
+    "paperUrl": "https://arxiv.org/abs/2503.23463",
+    "blogUrl": "https://github.com/DriveVLA/OpenDriveVLA",
+    "factSheet": {
+      "params": "~7B (开源 LLM 主干)",
+      "architecture": "ViT + Cross-Attn Adapter + LLM",
+      "attention": "Cross-Attention (视觉-语言)",
+      "Token压缩": "6相机 3456 tokens → ~1000 tokens",
+      "输入": "6路环视相机 + 语言导航指令",
+      "输出": "场景描述 + 轨迹 waypoints + 控制信号",
+      "训练数据": "nuScenes + DriveLM",
+      "license": "Apache 2.0"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ OpenDriveVLA — 开源 LLM 端到端驾驶   │\n├──────────────────────────────────────┤\n│ 6 Cameras + 语言指令                  │\n│ ┌──────────┐    ┌──────────────────┐ │\n│ │  Images  │    │ \"Turn left at    │ │\n│ │  (6路)   │    │  intersection\"   │ │\n│ └────┬─────┘    └────────┬─────────┘ │\n│      ↓                   ↓           │\n│ ┌──────────────┐  ┌─────────────┐   │\n│ │ ViT Encoder  │  │  Tokenizer  │   │\n│ │ (多尺度特征) │  │  (LLM词表)  │   │\n│ └──────┬───────┘  └──────┬──────┘   │\n│        ↓                  │          │\n│ ┌──────────────────────┐  │          │\n│ │ Cross-Attn Adapter   │  │          │\n│ │ 3456 → ~1000 tokens  │  │          │\n│ │ (压缩 70% 视觉token) │  │          │\n│ └──────────┬───────────┘  │          │\n│            └──────┬────────┘          │\n│                   ↓                   │\n│ ╔═════════════════════════════════╗   │\n│ ║ 开源 LLM 主干 (~7B)            ║   │\n│ ║ Cross-Attention (视觉-语言)     ║   │\n│ ║ 三阶段训练:                     ║   │\n│ ║  Stage1: 场景理解预训练         ║   │\n│ ║  Stage2: 轨迹规划微调           ║   │\n│ ║  Stage3: 端到端控制微调         ║   │\n│ ╚═══════════════╤═════════════════╝   │\n│                 ↓                     │\n│ ┌───────────┬───────────┬──────────┐  │\n│ │ 场景描述  │ 轨迹规划  │ 控制信号 │  │\n│ │ (文本)    │ (waypts)  │ (steer)  │  │\n│ └───────────┴───────────┴──────────┘  │\n└──────────────────────────────────────┘",
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "端到端",
+      "开源LLM",
+      "多任务",
+      "开源"
+    ],
+    "status": "open",
+    "category": "autonomous"
+  },
+  {
+    "id": "gemini-4-nano",
+    "name": "Gemini 4 Nano",
+    "org": "Google DeepMind",
+    "type": "moe",
+    "typeLabel": "MoE 端侧模型",
+    "typeIcon": "📱",
+    "open": false,
+    "params": "100B MoE (12B active)",
+    "date": "2026-04",
+    "context": "32K tokens + On-Device RAG",
+    "attention": "GQA (16Q / 2KV)",
+    "factSheet": {
+      "params": "100B MoE (8 专家, Top-2, 12B 活跃)",
+      "architecture": "Decoder-only MoE Transformer",
+      "attention": "GQA (16Q / 2KV, d=128)",
+      "context": "32K tokens",
+      "modality": "文本 + 图像 + 音频 + 视频",
+      "deployment": "Pixel 10 Pro / Android 17",
+      "speed": "40 tok/s (端侧)",
+      "mmlu_pro": "82.1%"
+    },
+    "highlights": [
+      "首个端侧 100B MoE 多模态模型",
+      "Expert Paging 策略实现内存高效加载",
+      "On-Device RAG 支持 10 万文档本地检索",
+      "INT4 混合精度量化 (QAT)"
+    ],
+    "textArch": "┌────────────────────────────────────┐\n│   Gemini 4 Nano (100B MoE, 端侧)   │\n├────────────────────────────────────┤\n│ 多模态输入:                         │\n│   文本 + SigLIP(图像) + USM(音频)  │\n│         ↓                           │\n│ ╔════════════════════════════════╗  │\n│ ║ MoE Transformer × 48L        ║  │\n│ ║  Self-Attn: GQA 16Q/2KV      ║  │\n│ ║  FFN: 8 Expert Router (Top-2) ║  │\n│ ║  每专家: 768→3072 (SwiGLU)   ║  │\n│ ║  活跃参数: ~12B / token       ║  │\n│ ║  Expert Paging (LRU Cache)    ║  │\n│ ╚══════════════╤═══════════════╝  │\n│                ↓                    │\n│ INT4 量化 (GPTQ-R + Rotation)      │\n│ On-Device RAG (ScaNN + 64d Embed)  │\n│                ↓                    │\n│ 40 tok/s @ Pixel 10 Pro             │\n└────────────────────────────────────┘",
+    "tags": ["MoE", "端侧AI", "多模态", "量化", "On-Device"],
+    "status": "released",
+    "category": "general"
+  },
+  {
+    "id": "vla-drive-3b",
+    "name": "VLA-Drive 3B (SuperDrive 2.0)",
+    "org": "Horizon Robotics",
+    "type": "dense",
+    "typeLabel": "端到端 VLA",
+    "typeIcon": "🚗",
+    "open": false,
+    "params": "3B",
+    "date": "2026-04",
+    "context": "BEV + 4 历史帧",
+    "attention": "GQA + Cross-Attention",
+    "factSheet": {
+      "params": "3B (ViT-L + BEV Fusion + LLM 3B + Diffusion Head)",
+      "architecture": "多传感器 BEV Fusion + LLM + Diffusion Action",
+      "attention": "GQA 16Q/4KV + Cross-Attention",
+      "sensors": "11 相机 + 1 LiDAR + 5 Radar",
+      "latency": "68ms (INT4/INT8 @ Journey 6E)",
+      "deployment": "地平线 Journey 6E (560 TOPS)",
+      "takeover_rate": "0.3 次/百公里 (城区 NOA)",
+      "coverage": "300+ 城市 (无图 NOA)"
+    },
+    "highlights": [
+      "首个量产 L3 端到端 VLA 系统",
+      "Diffusion Action Head 生成多模态轨迹",
+      "城区接管率 0.3 次/百公里 (行业最低)",
+      "量产车型：理想 L9 Max / 蔚来 ET9"
+    ],
+    "textArch": "┌────────────────────────────────────┐\n│  VLA-Drive 3B (SuperDrive 2.0)     │\n├────────────────────────────────────┤\n│ 11 Cameras + LiDAR + 5 Radar       │\n│         ↓                           │\n│ ┌──────────────────────────────┐   │\n│ │ ViT-L + BEV Fusion           │   │\n│ │ (空间+时序, 4 历史帧)        │   │\n│ └────────────┬─────────────────┘   │\n│              ↓                      │\n│ ╔════════════════════════════════╗  │\n│ ║ LLM 3B (场景理解+决策推理)     ║  │\n│ ║  GQA 16Q/4KV + SwiGLU         ║  │\n│ ║  导航意图 + 车辆状态条件       ║  │\n│ ╚══════════════╤═══════════════╝  │\n│                ↓                    │\n│ ┌──────────────────────────────┐   │\n│ │ Diffusion Action Head        │   │\n│ │ DDIM 10步 → 30 waypoints    │   │\n│ │ 多模态轨迹采样 + 评分选优    │   │\n│ └────────────┬─────────────────┘   │\n│              ↓                      │\n│ RSS Safety Verifier → 10Hz 控制     │\n│ 端到端延迟: 68ms @ Journey 6E       │\n└────────────────────────────────────┘",
+    "tags": ["自动驾驶", "VLA", "端到端", "量产", "L3", "Diffusion"],
+    "status": "production",
+    "category": "autonomous"
+  },
+  {
+    "id": "hybridvla",
+    "name": "HybridDriveVLA",
+    "org": "CVPR 2026 研究团队",
+    "type": "vla",
+    "typeLabel": "VLA 推理模型",
+    "typeIcon": "🚗",
+    "open": false,
+    "params": "~5B（推估）",
+    "date": "2026-04",
+    "context": "BEV + V-CoT 多步预测",
+    "attention": "Cross-Attention + V-CoT + ToT",
+    "factSheet": {
+      "params": "~5B (ViT + BEV Encoder + V-CoT Predictor + Multi-Planner + ToT Evaluator)",
+      "architecture": "Visual CoT + Tree-of-Thought 评估的多序列 VLA",
+      "attention": "Cross-Attention + Latent Diffusion 预测",
+      "inference_pipeline": "V-CoT预测(35ms) + 9轨迹生成(40ms) + ToT筛选(25ms) + 解释(20ms) = 120ms",
+      "planning_dimensions": "安全性/舒适性/通行效率 三维 × K=3 候选",
+      "explainability": "逐层筛选理由 + 自然语言决策解释",
+      "L2_3s": "0.55m (nuScenes SOTA)",
+      "collision_3s": "0.12% (nuScenes SOTA)"
+    },
+    "highlights": [
+      "首个 Visual CoT + ToT 推理的 VLA 自动驾驶",
+      "9→1 多序列审慎推理 + 可解释决策",
+      "nuScenes L2(3s) 0.55m / 碰撞率 0.12% 双 SOTA",
+      "Orin 上 120ms 满足 10Hz 规划",
+      "CVPR 2026 录用"
+    ],
+    "textArch": "┌────────────────────────────────────┐\n│     HybridDriveVLA (CVPR 2026)     │\n├────────────────────────────────────┤\n│ Multi-Camera Input + History       │\n│         ↓                           │\n│ ┌──────────────────────────────┐   │\n│ │ BEV Encoder + Temporal Fusion │   │\n│ └────────────┬─────────────────┘   │\n│              ↓                      │\n│ ╔════════════════════════════════╗  │\n│ ║ Visual Chain-of-Thought (35ms) ║  │\n│ ║  预测未来 T=3/5/8s 占用网格     ║  │\n│ ║  潜在空间(非像素)→高速推理      ║  │\n│ ╚══════════════╤═══════════════╝  │\n│                ↓                    │\n│ ┌──────────────────────────────┐   │\n│ │ Multi-Sequence Planner(40ms) │   │\n│ │  Safety ×3 / Comfort ×3 /    │   │\n│ │  Progress ×3 = 9 候选轨迹    │   │\n│ └────────────┬─────────────────┘   │\n│              ↓                      │\n│ ╔════════════════════════════════╗  │\n│ ║ ToT Evaluator (25ms)           ║  │\n│ ║  Layer1: 安全硬约束筛选         ║  │\n│ ║  Layer2: 场景一致性检查         ║  │\n│ ║  Layer3: Pareto最优选择         ║  │\n│ ╚══════════════╤═══════════════╝  │\n│                ↓                    │\n│ 最优轨迹 + 决策理由链 → 10Hz 控制   │\n│ 总延迟: 120ms @ NVIDIA Orin         │\n└────────────────────────────────────┘",
+    "tags": ["自动驾驶", "VLA", "CoT", "ToT", "可解释", "CVPR 2026"],
+    "status": "research",
+    "category": "autonomous"
+  },
+  {
+    "id": "glm-5-1",
+    "name": "GLM-5.1 744B MoE",
+    "org": "智谱 AI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "744B (MoE, 40B 活跃)",
+    "date": "2026-04",
+    "context": "200K tokens",
+    "attention": "GQA + MoE Router",
+    "factSheet": {
+      "params": "744B 总参数, 每次前向 40B 活跃",
+      "architecture": "MoE Transformer, Decoder-only",
+      "attention": "GQA",
+      "context": "200K tokens",
+      "experts": "128 细粒度专家, Top-4 路由",
+      "training_chip": "华为昇腾",
+      "license": "MIT (最宽松)",
+      "SWE_bench_Pro": "第一 (超越 GPT-5.4 和 Claude Opus 4.6)",
+      "pricing": "$1/$3.2 每百万 token; 自托管完全免费"
+    },
+    "highlights": [
+      "MIT 开源, SWE-bench Pro 编码能力第一",
+      "首个使用华为昇腾芯片训练的前沿 MoE 模型",
+      "200K 上下文, 128 细粒度专家 Top-4 路由",
+      "定价约 Opus 4.6 的 1/6",
+      "智谱成为全球首家上市的 LLM 原生公司"
+    ],
+    "textArch": "┌─────────────────────────────────┐\n│    GLM-5.1 744B MoE (智谱 AI)    │\n├─────────────────────────────────┤\n│ Input Tokens                    │\n│   ↓                             │\n│ Embedding (200K vocab)          │\n│   + Rotary Position Encoding    │\n│   ↓                             │\n│ ╔═════════════════════════════╗  │\n│ ║ MoE Block × 80L             ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ GQA Attention        │    ║  │\n│ ║ │  + RoPE              │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ RMSNorm             │    ║  │\n│ ║ │ MoE Layer            │    ║  │\n│ ║ │  128 experts, Top-4  │    ║  │\n│ ║ │  每次激活 40B 参数    │    ║  │\n│ ║ │  + Load Balancing     │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ RMSNorm → LM Head → Logits     │\n└─────────────────────────────────┘",
+    "tags": ["MoE", "开源", "MIT", "华为昇腾", "编码"],
+    "status": "production",
+    "category": "general"
+  }
+]

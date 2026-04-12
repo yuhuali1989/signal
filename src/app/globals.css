@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Signal 设计系统：浅色高级感 ─── */
+
+:root {
+  --color-brand: #6c5ce7;
+  --color-brand-light: #a29bfe;
+  --color-brand-soft: #f0edff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fafbfc;
+  --color-border: #e8ecf1;
+  --color-text-primary: #1a1d23;
+  --color-text-secondary: #5a6270;
+  --color-text-tertiary: #8f96a3;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-text-primary);
+  background: #f7f8fa;
+}
+
+/* ─── 排版：让内容呼吸 ─── */
+
+.prose {
+  --tw-prose-body: #374151;
+  --tw-prose-headings: #111827;
+  --tw-prose-links: #6c5ce7;
+  --tw-prose-counters: #6b7280;
+  --tw-prose-bullets: #9ca3af;
+  --tw-prose-code: #6c5ce7;
+  line-height: 1.85;
+  font-size: 0.9375rem;
+}
+
+.prose h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  letter-spacing: -0.01em;
+}
+
+.prose h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: #374151;
+}
+
+.prose p {
+  margin-bottom: 1.25rem;
+}
+
+.prose a {
+  color: var(--color-brand);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.prose a:hover {
+  border-bottom-color: var(--color-brand);
+}
+
+/* ─── 代码块：干净的技术感 ─── */
+
+.prose pre {
+  background: #1e1e2e !important;
+  color: #cdd6f4 !important;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  border: 1px solid #313244;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.prose code:not(pre code) {
+  background: var(--color-brand-soft);
+  color: var(--color-brand);
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+/* ─── 表格：清晰的数据展示 ─── */
+
+.prose table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  font-size: 0.8125rem;
+}
+
+.prose th {
+  background: var(--color-surface-raised);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prose td {
+  padding: 0.5rem 0.875rem;
+  border-bottom: 1px solid #f0f2f5;
+  color: var(--color-text-secondary);
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+.prose tr:hover td {
+  background: #f8f9fb;
+}
+
+/* ─── blockquote：引用 ─── */
+
+.prose blockquote {
+  border-left: 3px solid var(--color-brand);
+  background: var(--color-brand-soft);
+  padding: 0.875rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  color: var(--color-text-secondary);
+  font-style: normal;
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+/* ─── 卡片系统 ─── */
+
+.card {
+  background: var(--color-surface);
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  border-color: #d4d0f0;
+  box-shadow: 0 4px 20px rgba(108, 92, 231, 0.06);
+  transform: translateY(-1px);
+}
+
+.card-hover {
+  transition: all 0.25s ease;
+}
+
+.card-hover:hover {
+  border-color: #d4d0f0;
+  box-shadow: 0 4px 20px rgba(108, 92, 231, 0.06);
+  transform: translateY(-1px);
+}
+
+/* ─── 进化机制卡片 ─── */
+
+.evo-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.evo-card:hover {
+  border-color: var(--color-brand-light);
+  box-shadow: 0 8px 30px rgba(108, 92, 231, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ─── 状态指示灯 ─── */
+
+.status-glow {
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 6px rgba(34, 197, 94, 0.5); }
+  50% { box-shadow: 0 0 12px rgba(34, 197, 94, 0.8); }
+}
+
+/* ─── KaTeX 数学公式 ─── */
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.75rem 0;
+}
+
+.katex { font-size: 1.05em; }
+
+/* ─── 滚动条 ─── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ─── 选中高亮 ─── */
+
+::selection {
+  background: rgba(108, 92, 231, 0.15);
+  color: inherit;
+}

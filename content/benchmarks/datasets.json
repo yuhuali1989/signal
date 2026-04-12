@@ -1,0 +1,965 @@
+[
+  {
+    "id": "mmlu",
+    "name": "MMLU",
+    "fullName": "Massive Multitask Language Understanding",
+    "category": "综合能力",
+    "tags": [
+      "语言理解",
+      "知识",
+      "多选题",
+      "学术"
+    ],
+    "description": "涵盖 57 个学科（STEM、人文、社科等）的多选题基准，测试模型的广泛知识和推理能力。Pro 版本增加了更难的问题和思维链评估。",
+    "metrics": "准确率 (Accuracy)",
+    "scale": "14,042 题 (MMLU) / 12,032 题 (MMLU-Pro)",
+    "construction": "从考试题目和教材中人工收集，涵盖初中到专业级别",
+    "source": "UC Berkeley / ICLR 2021",
+    "url": "https://github.com/hendrycks/test",
+    "paperUrl": "https://arxiv.org/abs/2009.03300",
+    "topModels": [
+      {
+        "name": "GPT-5.4",
+        "score": "92.3%",
+        "date": "2026-03"
+      },
+      {
+        "name": "Claude Opus 4.6",
+        "score": "91.8%",
+        "date": "2026-02"
+      },
+      {
+        "name": "Gemini 3.1 Ultra",
+        "score": "90.5%",
+        "date": "2026-01"
+      },
+      {
+        "name": "DeepSeek-R2",
+        "score": "89.7%",
+        "date": "2026-03"
+      },
+      {
+        "name": "GLM-5.1",
+        "score": "88.2%",
+        "date": "2026-03"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "minimal",
+      "score": 5,
+      "note": "几乎所有模型训练数据均包含 MMLU 题目。Yang et al. 2023 证实严重数据泄露"
+    }
+  },
+  {
+    "id": "swe-bench",
+    "name": "SWE-bench",
+    "fullName": "Software Engineering Benchmark",
+    "category": "编码能力",
+    "tags": [
+      "代码",
+      "工程",
+      "Bug修复",
+      "GitHub"
+    ],
+    "description": "从 12 个流行 Python 开源库的真实 GitHub Issue 中抽取，要求模型理解代码库并生成正确的 Pull Request 修复补丁。Verified 子集经人工验证。",
+    "metrics": "解决率 (% Resolved)",
+    "scale": "2,294 题 (Full) / 500 题 (Verified) / 300 题 (Pro)",
+    "construction": "从 GitHub 真实 Issue+PR 自动化抽取，人工验证测试用例",
+    "source": "Princeton / ICLR 2024",
+    "url": "https://www.swebench.com/",
+    "paperUrl": "https://arxiv.org/abs/2310.06770",
+    "topModels": [
+      {
+        "name": "Claude Opus 4.6",
+        "score": "72.3%",
+        "date": "2026-02"
+      },
+      {
+        "name": "GLM-5.1",
+        "score": "70.1%",
+        "date": "2026-03"
+      },
+      {
+        "name": "GPT-5.4",
+        "score": "68.5%",
+        "date": "2026-03"
+      },
+      {
+        "name": "DeepSeek-R2",
+        "score": "65.8%",
+        "date": "2026-03"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "medium",
+      "score": 55,
+      "note": "基于真实 GitHub Issue，部分数据可能在预训练语料中"
+    }
+  },
+  {
+    "id": "gpqa",
+    "name": "GPQA",
+    "fullName": "Graduate-Level Google-Proof QA",
+    "category": "推理能力",
+    "tags": [
+      "推理",
+      "研究生级",
+      "物理",
+      "化学",
+      "生物"
+    ],
+    "description": "由领域专家编写的研究生难度问答题，设计为 Google 搜不到答案的难题，测试模型的深度推理和专业知识。Diamond 子集难度最高。",
+    "metrics": "准确率 (Accuracy)",
+    "scale": "448 题 (Main) / 198 题 (Diamond)",
+    "construction": "领域 PhD 专家手写，其他领域专家验证无法通过搜索引擎回答",
+    "source": "NYU / ICLR 2024",
+    "url": "https://github.com/idavidrein/gpqa",
+    "paperUrl": "https://arxiv.org/abs/2311.12022",
+    "topModels": [
+      {
+        "name": "GPT-5.4 High",
+        "score": "78.4%",
+        "date": "2026-03"
+      },
+      {
+        "name": "Claude Opus 4.6",
+        "score": "76.9%",
+        "date": "2026-02"
+      },
+      {
+        "name": "DeepSeek-R2",
+        "score": "74.1%",
+        "date": "2026-03"
+      },
+      {
+        "name": "Gemini 3.1 Ultra",
+        "score": "72.8%",
+        "date": "2026-01"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "medium",
+      "score": 80,
+      "note": "2024 年发布的专家级博士题目，但部分题目可能已被纳入训练数据"
+    }
+  },
+  {
+    "id": "humaneval",
+    "name": "HumanEval / HumanEval+",
+    "fullName": "HumanEval Code Generation Benchmark",
+    "category": "编码能力",
+    "tags": [
+      "代码",
+      "函数生成",
+      "Python",
+      "单元测试"
+    ],
+    "description": "164 个手写的 Python 编程问题，要求模型根据函数签名和 docstring 生成正确实现。HumanEval+ 增加了 80x 的测试用例。",
+    "metrics": "Pass@1",
+    "scale": "164 题",
+    "construction": "OpenAI 研究员手工编写，每题附带单元测试",
+    "source": "OpenAI / 2021",
+    "url": "https://github.com/openai/human-eval",
+    "paperUrl": "https://arxiv.org/abs/2107.03374",
+    "topModels": [
+      {
+        "name": "Claude Opus 4.6",
+        "score": "95.7%",
+        "date": "2026-02"
+      },
+      {
+        "name": "GPT-5.4",
+        "score": "94.2%",
+        "date": "2026-03"
+      },
+      {
+        "name": "DeepSeek-R2",
+        "score": "92.8%",
+        "date": "2026-03"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "low",
+      "score": 20,
+      "note": "代码评测集被广泛用于训练，HumanEval+ 试图缓解"
+    }
+  },
+  {
+    "id": "lmsys-arena",
+    "name": "LMSYS Chatbot Arena",
+    "fullName": "LMSYS Crowdsourced LLM Arena",
+    "category": "综合能力",
+    "tags": [
+      "对话",
+      "人类评估",
+      "ELO评分",
+      "众包"
+    ],
+    "description": "基于众包的盲评平台，用户与两个匿名模型对话后投票选择更好的回答。使用 ELO 评分系统排名，是最接近真实用户体验的评测。",
+    "metrics": "ELO Rating",
+    "scale": "100万+ 投票",
+    "construction": "众包：真实用户盲评对比，Bradley-Terry 模型计算 ELO",
+    "source": "UC Berkeley LMSYS",
+    "url": "https://chat.lmsys.org/",
+    "paperUrl": "https://arxiv.org/abs/2403.04132",
+    "topModels": [
+      {
+        "name": "GPT-5.4",
+        "score": "1378",
+        "date": "2026-03"
+      },
+      {
+        "name": "Claude Opus 4.6",
+        "score": "1385",
+        "date": "2026-02"
+      },
+      {
+        "name": "Gemini 3.1 Ultra",
+        "score": "1362",
+        "date": "2026-01"
+      },
+      {
+        "name": "DeepSeek-R2",
+        "score": "1348",
+        "date": "2026-03"
+      },
+      {
+        "name": "GLM-5.1",
+        "score": "1335",
+        "date": "2026-03"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "excellent",
+      "score": 95,
+      "note": "在线人工盲评，无法被训练数据泄露影响，最可靠的评测"
+    }
+  },
+  {
+    "id": "math-500",
+    "name": "MATH-500 / AIME 2024",
+    "fullName": "Mathematics Benchmark",
+    "category": "推理能力",
+    "tags": [
+      "数学",
+      "推理",
+      "竞赛",
+      "链式推理"
+    ],
+    "description": "MATH-500 来自高中数学竞赛的 500 道代表性题目；AIME 是美国数学邀请赛真题。测试模型的数学推理和多步骤问题求解。",
+    "metrics": "准确率 (Accuracy)",
+    "scale": "500 题 (MATH) / 30 题 (AIME 2024)",
+    "construction": "MATH: 从竞赛题库筛选, 7 个难度级别; AIME: 官方竞赛真题",
+    "source": "UC Berkeley / AMC",
+    "url": "https://github.com/hendrycks/math",
+    "paperUrl": "https://arxiv.org/abs/2103.03874",
+    "topModels": [
+      {
+        "name": "DeepSeek-R2",
+        "score": "96.7% / 83.3%",
+        "date": "2026-03"
+      },
+      {
+        "name": "GPT-5.4 High",
+        "score": "95.2% / 80.0%",
+        "date": "2026-03"
+      },
+      {
+        "name": "Claude Opus 4.6",
+        "score": "94.8% / 76.7%",
+        "date": "2026-02"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "low",
+      "score": 25,
+      "note": "自 2021 年公开，被大量用于数学推理训练"
+    }
+  },
+  {
+    "id": "agent-bench",
+    "name": "AgentBench / τ-bench",
+    "fullName": "LLM-as-Agent Benchmark",
+    "category": "Agent 能力",
+    "tags": [
+      "Agent",
+      "工具使用",
+      "多步骤",
+      "环境交互"
+    ],
+    "description": "测试 LLM 作为智能体在真实环境中执行复杂任务的能力。AgentBench 覆盖 8 种环境（Web、数据库、终端等），τ-bench 聚焦零售/航空客服场景。",
+    "metrics": "成功率 (Success Rate)",
+    "scale": "AgentBench: 8 环境 / τ-bench: 115 任务",
+    "construction": "AgentBench: 手动设计+自动生成; τ-bench: 模拟真实客服对话",
+    "source": "Tsinghua / Sierra AI / 2024",
+    "url": "https://github.com/THUDM/AgentBench",
+    "paperUrl": "https://arxiv.org/abs/2308.03688",
+    "topModels": [
+      {
+        "name": "Claude Opus 4.6",
+        "score": "88.5%",
+        "date": "2026-02"
+      },
+      {
+        "name": "GPT-5.4",
+        "score": "85.2%",
+        "date": "2026-03"
+      },
+      {
+        "name": "Gemini 3.1 Ultra",
+        "score": "82.1%",
+        "date": "2026-01"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "high",
+      "score": 85,
+      "note": "交互式评测环境，较难被静态训练数据泄露影响"
+    }
+  },
+  {
+    "id": "nuscenes",
+    "name": "nuScenes",
+    "fullName": "nuScenes: A Multimodal Dataset for Autonomous Driving",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "3D检测",
+      "多传感器",
+      "点云",
+      "BEV",
+      "激光雷达"
+    ],
+    "description": "最广泛使用的自动驾驶多模态数据集。包含 1000 个场景（波士顿+新加坡），每个场景 20 秒，配备 6 摄像头 + 1 激光雷达 + 5 毫米波雷达。标注 23 类 3D 目标框 + 10 种属性。",
+    "metrics": "NDS (nuScenes Detection Score), mAP",
+    "scale": "1000 场景, 140 万 3D bbox, 40K 关键帧",
+    "construction": "自动采集 + 专业团队人工标注 3D 框和属性",
+    "source": "Motional (nuTonomy) / CVPR 2020",
+    "url": "https://www.nuscenes.org/",
+    "paperUrl": "https://arxiv.org/abs/1903.11027",
+    "topModels": [
+      {
+        "name": "StreamPETR",
+        "score": "NDS 63.6 / mAP 55.0",
+        "date": "2024"
+      },
+      {
+        "name": "BEVFormer v2",
+        "score": "NDS 62.8 / mAP 54.1",
+        "date": "2024"
+      },
+      {
+        "name": "Far3D",
+        "score": "NDS 63.5 / mAP 53.1",
+        "date": "2024"
+      },
+      {
+        "name": "SparseDrive",
+        "score": "NDS 60.2 / mAP 50.3",
+        "date": "2025"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "medium",
+      "score": 60,
+      "note": "经典公开数据集，相关论文和代码广泛传播"
+    }
+  },
+  {
+    "id": "waymo-open",
+    "name": "Waymo Open Dataset",
+    "fullName": "Waymo Open Dataset: Large-Scale Autonomous Driving",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "3D检测",
+      "点云",
+      "运动预测",
+      "激光雷达",
+      "大规模"
+    ],
+    "description": "Google Waymo 发布的大规模自动驾驶数据集。v2.0 包含 1150 个场景，高质量 64 线 LiDAR + 5 摄像头。标注精度和数据规模均为业界顶级。Motion 子集专注轨迹预测。",
+    "metrics": "APH (Average Precision with Heading) L1/L2",
+    "scale": "1150 场景, 1200 万 3D bbox, 2000 万 2D bbox",
+    "construction": "Waymo 自动驾驶车队采集 + 半自动标注 + 人工验证",
+    "source": "Waymo / CVPR 2020",
+    "url": "https://waymo.com/open/",
+    "paperUrl": "https://arxiv.org/abs/1912.04838",
+    "topModels": [
+      {
+        "name": "CenterFormer",
+        "score": "APH L2: Vehicle 77.8",
+        "date": "2024"
+      },
+      {
+        "name": "PV-RCNN++",
+        "score": "APH L2: Vehicle 76.3",
+        "date": "2024"
+      },
+      {
+        "name": "SWFormer",
+        "score": "APH L2: Vehicle 77.5",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "high",
+      "score": 75,
+      "note": "需申请获取，直接泄露风险低"
+    }
+  },
+  {
+    "id": "kitti",
+    "name": "KITTI",
+    "fullName": "Karlsruhe Institute of Technology and Toyota Technological Institute",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "3D检测",
+      "经典",
+      "立体视觉",
+      "光流"
+    ],
+    "description": "自动驾驶领域最经典的基准数据集（2012 年发布）。包含 2D/3D 目标检测、光流、深度估计、语义分割等多个子任务。虽然规模较小，但仍是算法验证的基础基准。",
+    "metrics": "AP (Average Precision) @ IoU 0.7",
+    "scale": "7481 训练帧, 7518 测试帧, 80,256 标注目标",
+    "construction": "实车采集（Velodyne 64E + 双目相机），人工标注",
+    "source": "KIT & TTIC / CVPR 2012",
+    "url": "https://www.cvlibs.net/datasets/kitti/",
+    "paperUrl": "https://www.cvlibs.net/publications/Geiger2012CVPR.pdf",
+    "topModels": [
+      {
+        "name": "DSGN++",
+        "score": "Car AP: 83.5 (Moderate)",
+        "date": "2024"
+      },
+      {
+        "name": "MonoDETR",
+        "score": "Car AP: 28.8 (3D, Moderate)",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "low",
+      "score": 30,
+      "note": "2012 年发布的经典基准，几乎所有 CV 论文都用过"
+    }
+  },
+  {
+    "id": "once",
+    "name": "ONCE",
+    "fullName": "One Million Scenes for Autonomous Driving",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "3D检测",
+      "大规模",
+      "半监督",
+      "点云"
+    ],
+    "description": "百万级场景的自动驾驶数据集，专为半监督和无监督 3D 检测研究设计。只有 1.5 万帧有标注（小标注集），但提供 100 万帧无标注数据。",
+    "metrics": "mAP (3D Detection)",
+    "scale": "100 万帧 (1.5 万标注 + 98.5 万未标注)",
+    "construction": "华为诺亚方舟实验室采集，小标注集人工标注",
+    "source": "Huawei Noah's Ark Lab / NeurIPS 2021",
+    "url": "https://once-for-auto-driving.github.io/",
+    "paperUrl": "https://arxiv.org/abs/2106.11037",
+    "topModels": [
+      {
+        "name": "HSSDA",
+        "score": "mAP 67.3 (半监督)",
+        "date": "2024"
+      },
+      {
+        "name": "Proficient Teachers",
+        "score": "mAP 65.1 (半监督)",
+        "date": "2023"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "high",
+      "score": 85,
+      "note": "半监督设定，使用面较窄"
+    }
+  },
+  {
+    "id": "nuscenes-planning",
+    "name": "nuScenes Planning / nuPlan",
+    "fullName": "nuPlan: A Closed-Loop Planning Benchmark",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "规划",
+      "闭环",
+      "端到端",
+      "决策"
+    ],
+    "description": "首个大规模闭环自动驾驶规划基准。nuPlan 包含 1300 小时驾驶数据，支持开环和闭环评估。专门测试规划模块的安全性和舒适性，而非感知精度。",
+    "metrics": "Score (加权: 碰撞率、舒适度、进度)",
+    "scale": "1300 小时, 150+ 场景类型",
+    "construction": "Motional 真实路测数据 + 仿真器闭环回放",
+    "source": "Motional / ICRA 2023",
+    "url": "https://www.nuscenes.org/nuplan",
+    "paperUrl": "https://arxiv.org/abs/2106.11810",
+    "topModels": [
+      {
+        "name": "PDM-Open",
+        "score": "Score 92.1 (开环)",
+        "date": "2024"
+      },
+      {
+        "name": "PlanTF",
+        "score": "Score 85.3 (闭环)",
+        "date": "2024"
+      },
+      {
+        "name": "GameFormer",
+        "score": "Score 84.7 (闭环)",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "medium",
+      "score": 60,
+      "note": "经典公开数据集，相关论文和代码广泛传播"
+    }
+  },
+  {
+    "id": "carla-bench",
+    "name": "CARLA Leaderboard / Bench2Drive",
+    "fullName": "CARLA Autonomous Driving Leaderboard",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "仿真",
+      "端到端",
+      "闭环",
+      "安全"
+    ],
+    "description": "基于 CARLA 仿真器的闭环驾驶评测平台。Bench2Drive 在 CARLA v2 中设计了 44 个交互场景类型，从简单直行到复杂交叉路口，端到端评估驾驶系统的安全性。",
+    "metrics": "DS (Driving Score), RC (Route Completion), IS (Infraction Score)",
+    "scale": "CARLA: 10 路线 / Bench2Drive: 44 场景类型 × 多天气",
+    "construction": "仿真环境自动生成 + 规则定义评估指标",
+    "source": "CARLA Team / NeurIPS 2024",
+    "url": "https://leaderboard.carla.org/",
+    "paperUrl": "https://arxiv.org/abs/2406.03877",
+    "topModels": [
+      {
+        "name": "ThinkTwice",
+        "score": "DS 70.9",
+        "date": "2024"
+      },
+      {
+        "name": "TCP",
+        "score": "DS 75.1 (Town05 Long)",
+        "date": "2023"
+      },
+      {
+        "name": "UniAD",
+        "score": "DS 63.4",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "excellent",
+      "score": 95,
+      "note": "仿真环境动态生成场景，无法被预训练数据泄露影响"
+    }
+  },
+  {
+    "id": "drivelm",
+    "name": "DriveLM / DriveLM-nuScenes",
+    "fullName": "Drive Language Model Benchmark",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "VLM",
+      "语言模型",
+      "QA",
+      "可解释性",
+      "端到端"
+    ],
+    "description": "专为驾驶场景中的视觉—语言大模型设计的基准。标注了感知、预测、规划三个层次的 QA 对，评估模型对驾驶场景的语言理解能力和可解释决策。",
+    "metrics": "Accuracy / BLEU-4 / ChatGPT Score",
+    "scale": "34K 帧, 420K QA 对, 3 层次",
+    "construction": "基于 nuScenes 帧，人工+GPT-4 辅助生成 QA 对",
+    "source": "Shanghai AI Lab / ECCV 2024",
+    "url": "https://github.com/OpenDriveLab/DriveLM",
+    "paperUrl": "https://arxiv.org/abs/2312.14150",
+    "topModels": [
+      {
+        "name": "DriveLM-Agent",
+        "score": "ChatGPT Score: 3.72",
+        "date": "2024"
+      },
+      {
+        "name": "LLaVA-1.5 (ft)",
+        "score": "ChatGPT Score: 3.45",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "medium",
+      "score": 60,
+      "note": "经典公开数据集，相关论文和代码广泛传播"
+    }
+  },
+  {
+    "id": "openscene",
+    "name": "OpenScene",
+    "fullName": "OpenScene: 3D Open-Vocabulary Scene Understanding",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "3D场景",
+      "开放词汇",
+      "语义",
+      "大规模"
+    ],
+    "description": "面向自动驾驶的大规模 3D 场景理解数据集。包含 120K 帧多视角图像 + LiDAR，支持开放词汇 3D 语义分割和 3D 目标检测。是 nuScenes 的超集扩展。",
+    "metrics": "mAP / mIoU (3D Segmentation)",
+    "scale": "120K 帧, 1000+ 场景",
+    "construction": "基于 nuScenes 扩展，自动化流水线 + 人工校验",
+    "source": "NVIDIA / CVPR 2024",
+    "url": "https://github.com/OpenDriveLab/OpenScene",
+    "paperUrl": "https://arxiv.org/abs/2211.15654",
+    "topModels": [
+      {
+        "name": "OpenScene-Sparse",
+        "score": "3D mIoU: 44.2",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "high",
+      "score": 85,
+      "note": "大规模 3D 场景，数据量大"
+    }
+  },
+  {
+    "id": "ood-ad",
+    "name": "CODA / StreetHazards / BDD-Anomaly",
+    "fullName": "Corner Case & OOD Detection for Autonomous Driving",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "OOD检测",
+      "安全",
+      "Corner Case",
+      "异常检测",
+      "长尾"
+    ],
+    "description": "专门测试自动驾驶系统对 OOD (Out-of-Distribution) 目标和 Corner Case 的检测能力。CODA 包含真实世界罕见物体，StreetHazards 是合成异常场景，BDD-Anomaly 聚焦异常行为检测。",
+    "metrics": "AUROC / FPR95 / AP (OOD Detection)",
+    "scale": "CODA: 1500 帧, 34 类 corner case / StreetHazards: 5.4K 帧",
+    "construction": "CODA: 真实路测数据人工标注 / StreetHazards: 合成渲染",
+    "source": "多个团队 / ICCV 2023 / NeurIPS 2022",
+    "url": "https://coda-dataset.github.io/",
+    "paperUrl": "https://arxiv.org/abs/2203.07724",
+    "topModels": [
+      {
+        "name": "VOS + EnergyOOD",
+        "score": "AUROC: 87.3 (CODA)",
+        "date": "2024"
+      },
+      {
+        "name": "SAFE",
+        "score": "AUROC: 85.1 (StreetHazards)",
+        "date": "2024"
+      },
+      {
+        "name": "WM-SAID (图像级)",
+        "score": "研究中",
+        "date": "2026"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "excellent",
+      "score": 90,
+      "note": "Corner Case 和 OOD 专用评测，极度垂直"
+    }
+  },
+  {
+    "id": "mt-bench",
+    "name": "MT-Bench",
+    "fullName": "Multi-Turn Benchmark for LLM Conversation",
+    "category": "综合能力",
+    "tags": [
+      "对话",
+      "多轮",
+      "GPT-4评分",
+      "指令遵循"
+    ],
+    "description": "测试 LLM 多轮对话能力的基准。80 个精心设计的多轮对话，涵盖写作、推理、数学、编码等 8 个类别。使用 GPT-4 作为评委打分（1-10 分）。",
+    "metrics": "GPT-4 Score (1-10)",
+    "scale": "80 题 × 2 轮 = 160 回答",
+    "construction": "LMSYS 团队手工设计，覆盖 8 个能力维度",
+    "source": "UC Berkeley LMSYS / 2023",
+    "url": "https://github.com/lm-sys/FastChat",
+    "paperUrl": "https://arxiv.org/abs/2306.05685",
+    "topModels": [
+      {
+        "name": "GPT-5.4",
+        "score": "9.52",
+        "date": "2026-03"
+      },
+      {
+        "name": "Claude Opus 4.6",
+        "score": "9.48",
+        "date": "2026-02"
+      },
+      {
+        "name": "Gemini 3.1 Ultra",
+        "score": "9.35",
+        "date": "2026-01"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "medium",
+      "score": 50,
+      "note": "评测 Prompt 已公开，模型可通过类似数据间接优化"
+    }
+  },
+  {
+    "id": "aider-polyglot",
+    "name": "Aider Polyglot / LiveCodeBench",
+    "fullName": "Aider Code Editing & LiveCodeBench",
+    "category": "编码能力",
+    "tags": [
+      "代码",
+      "多语言",
+      "编辑",
+      "实时",
+      "竞赛"
+    ],
+    "description": "Aider Polyglot 测试模型在多种编程语言中的代码编辑和生成能力。LiveCodeBench 从 LeetCode/Codeforces 实时抓取新题防止数据泄漏。",
+    "metrics": "Pass Rate / Accuracy",
+    "scale": "Aider: 225 题 × 5 语言 / LiveCodeBench: 持续增长",
+    "construction": "Aider: 跨语言编码任务 / LiveCodeBench: 自动从竞赛平台抓取",
+    "source": "Aider.chat / Tsinghua 2024",
+    "url": "https://aider.chat/docs/leaderboards/",
+    "paperUrl": "https://arxiv.org/abs/2403.07974",
+    "topModels": [
+      {
+        "name": "Claude Opus 4.6",
+        "score": "Aider: 89.4%",
+        "date": "2026-02"
+      },
+      {
+        "name": "GPT-5.4",
+        "score": "Aider: 87.1%",
+        "date": "2026-03"
+      },
+      {
+        "name": "DeepSeek-R2",
+        "score": "Aider: 84.7%",
+        "date": "2026-03"
+      }
+    ],
+    "updatedAt": "2026-04-11",
+    "contamination": {
+      "level": "excellent",
+      "score": 90,
+      "note": "动态更新的代码编辑任务，数据重叠风险低"
+    }
+  },
+  {
+    "id": "navsim",
+    "name": "NAVSIM",
+    "fullName": "Non-Reactive Autonomous Vehicle Simulation",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "规划",
+      "VLA",
+      "端到端",
+      "非反应式仿真",
+      "闭环"
+    ],
+    "description": "基于 nuPlan 数据的非反应式仿真评测平台，专为端到端驾驶规划设计。NAVSIMv1 提供 1100 个场景片段，NAVSIMv2 扩展了更多长尾场景。DriveWorld-VLA、OpenDriveVLA 等 VLA 模型的主要评测基准。",
+    "metrics": "PDMS (Planning-Driven Metric Score), EPDMS (Extended PDMS)",
+    "scale": "NAVSIMv1: 1100 场景 / NAVSIMv2: 扩展版含更多长尾",
+    "construction": "基于 nuPlan 真实路测数据，非反应式仿真回放，自动生成评测场景",
+    "source": "CVPR 2024 Workshop / 多机构联合",
+    "url": "https://github.com/autonomousvision/navsim",
+    "paperUrl": "https://arxiv.org/abs/2406.15349",
+    "topModels": [
+      {
+        "name": "DriveWorld-VLA",
+        "score": "PDMS 91.3 (v1) / EPDMS 86.8 (v2)",
+        "date": "2026"
+      },
+      {
+        "name": "Alpamayo-R1",
+        "score": "EPDMS 83.1 (v2)",
+        "date": "2026"
+      },
+      {
+        "name": "OpenDriveVLA",
+        "score": "PDMS 88.0 (v1)",
+        "date": "2025"
+      },
+      {
+        "name": "Transfuser",
+        "score": "PDMS 82.4 (v1)",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-13",
+    "contamination": {
+      "level": "excellent",
+      "score": 92,
+      "note": "非反应式仿真动态生成，VLA 评测专用，泄露风险极低"
+    }
+  },
+  {
+    "id": "opendv-2k",
+    "name": "OpenDV-2K",
+    "fullName": "Open Driving Video Dataset 2K Hours",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "视频预训练",
+      "VLA",
+      "大规模",
+      "无标注",
+      "世界模型"
+    ],
+    "description": "2000 小时开放驾驶视频数据集，专为 VLA 和世界模型的视觉预训练设计。涵盖多国城市、高速、乡村等多样化场景，无需精细标注，通过自监督方式训练视觉编码器。DriveWorld-VLA Stage1 预训练的核心数据源。",
+    "metrics": "下游任务迁移性能 (nuScenes NDS / NAVSIM PDMS)",
+    "scale": "2000 小时驾驶视频，约 1.4 亿帧",
+    "construction": "互联网公开驾驶视频 + 自动质量过滤 + 场景多样性采样",
+    "source": "OpenDriveLab / arXiv 2024",
+    "url": "https://github.com/OpenDriveLab/DriveX",
+    "paperUrl": "https://arxiv.org/abs/2407.16273",
+    "topModels": [
+      {
+        "name": "DriveWorld-VLA (预训练)",
+        "score": "PDMS +5.2 vs 无预训练",
+        "date": "2026"
+      },
+      {
+        "name": "OpenDriveVLA (预训练)",
+        "score": "L2(3s) 0.87m",
+        "date": "2025"
+      }
+    ],
+    "updatedAt": "2026-04-13",
+    "contamination": {
+      "level": "high",
+      "score": 80,
+      "note": "无精细标注，仅用于预训练，评测基准独立"
+    }
+  },
+  {
+    "id": "nuscenes-qa",
+    "name": "nuScenes-QA",
+    "fullName": "nuScenes Question Answering Benchmark",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "VLM",
+      "QA",
+      "场景理解",
+      "语言",
+      "多模态"
+    ],
+    "description": "基于 nuScenes 场景自动生成的大规模问答数据集，覆盖目标计数、距离估计、存在性判断、场景描述等 5 类任务，约 46 万 QA 对。是 VLA 模型视觉-语言对齐预训练的重要数据源。",
+    "metrics": "Accuracy (各子任务分类准确率)",
+    "scale": "460K QA 对，34K 场景帧，5 类任务",
+    "construction": "基于 nuScenes 3D 标注自动生成 QA 模板 + 人工验证",
+    "source": "AAAI 2023 / 多机构",
+    "url": "https://github.com/qiantianwen/NuScenes-QA",
+    "paperUrl": "https://arxiv.org/abs/2305.14836",
+    "topModels": [
+      {
+        "name": "NuScenes-QA Baseline",
+        "score": "Acc 57.3%",
+        "date": "2023"
+      },
+      {
+        "name": "DriveVLM (ft)",
+        "score": "Acc 71.2%",
+        "date": "2024"
+      },
+      {
+        "name": "OpenDriveVLA (ft)",
+        "score": "Acc 78.5%",
+        "date": "2025"
+      }
+    ],
+    "updatedAt": "2026-04-13",
+    "contamination": {
+      "level": "medium",
+      "score": 55,
+      "note": "基于 nuScenes 自动生成，模板固定，存在一定泄露风险"
+    }
+  },
+  {
+    "id": "bench2drive",
+    "name": "Bench2Drive",
+    "fullName": "Bench2Drive: Towards Driving with Large Language Models",
+    "category": "自动驾驶",
+    "tags": [
+      "自动驾驶",
+      "仿真",
+      "端到端",
+      "闭环",
+      "LLM",
+      "安全",
+      "长尾"
+    ],
+    "description": "基于 CARLA v2 的新一代闭环驾驶评测基准，设计了 220 个交互场景（44 类 × 5 天气），覆盖从简单直行到复杂交叉路口的全场景。专为测试 LLM/VLA 驾驶系统的安全性和泛化能力。",
+    "metrics": "DS (Driving Score), RC (Route Completion), IS (Infraction Score), L2",
+    "scale": "220 个场景，44 类交互类型，5 种天气条件",
+    "construction": "CARLA v2 仿真环境自动生成 + 专家规则定义评估指标",
+    "source": "NeurIPS 2024 / 多机构",
+    "url": "https://github.com/Thinklab-SJTU/Bench2Drive",
+    "paperUrl": "https://arxiv.org/abs/2406.03877",
+    "topModels": [
+      {
+        "name": "DriveWorld-VLA",
+        "score": "DS 78.3 / RC 91.2%",
+        "date": "2026"
+      },
+      {
+        "name": "ThinkTwice",
+        "score": "DS 70.9",
+        "date": "2024"
+      },
+      {
+        "name": "TCP",
+        "score": "DS 68.4",
+        "date": "2024"
+      },
+      {
+        "name": "UniAD",
+        "score": "DS 63.4",
+        "date": "2024"
+      }
+    ],
+    "updatedAt": "2026-04-13",
+    "contamination": {
+      "level": "excellent",
+      "score": 95,
+      "note": "仿真环境动态生成，220 个场景组合多样，无法被预训练数据泄露"
+    }
+  }
+]

@@ -1,0 +1,726 @@
+[
+  {
+    "date": "2026-04-15 11:00",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：HybridDriveVLA (CVPR 2026 Visual CoT+ToT 自动驾驶审慎推理) + MARTI (ICLR 2026 多Agent LLM RL训练框架)（→40 篇精读）"
+  },
+  {
+    "date": "2026-04-15 11:00",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：HybridDriveVLA Visual CoT+ToT 自动驾驶决策推理范式 + AI商业化加速300亿ARR与门控发布分析（→53 篇专栏）"
+  },
+  {
+    "date": "2026-04-15 11:00",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：自驾-Ch6 安全与长尾(+HybridDriveVLA审慎推理安全框架/Project Glasswing AI辅助安全测试) + 推理-Ch3 SGLang(+LiteRT-LM端侧推理/AMD ROCm7.0生态)"
+  },
+  {
+    "date": "2026-04-15 11:00",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(HybridDriveVLA CVPR 2026/LiteRT-LM端侧推理/Anthropic 300亿ARR)，合并2022年5条旧闻为年度总结（→101 条）"
+  },
+  {
+    "date": "2026-04-14 11:00",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：OccWorld (ECCV 2024 首个 3D 占用世界模型) + GenAD (CVPR 2025 Instance-centric 生成式预测)（→38 篇精读）"
+  },
+  {
+    "date": "2026-04-14 11:00",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：Gemini 4 Nano 端侧 100B MoE 推理技术拆解 + 端到端 VLA 量产落地 SuperDrive 2.0 技术全景（→51 篇专栏）"
+  },
+  {
+    "date": "2026-04-14 11:00",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：自驾-Ch5 VLA架构(+SuperDrive 2.0量产案例/训练数据工程/安全V&V框架) + Agent-Ch3 工具调用(+MCP 2.0 Streamable HTTP/A2A协议/Tool Orchestration/Injection防护)"
+  },
+  {
+    "date": "2026-04-14 11:00",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Gemini 4 Nano端侧MoE/SuperDrive 2.0量产L3/AMD MI450量产)，合并 2021 年 3 条旧闻为年度总结，总计→91 条"
+  },
+  {
+    "date": "2026-04-13 11:00",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：FlashOcc (AAAI 2024 Channel-to-Height 高效占用预测) + World Models AD Survey (CVPR 2026 自动驾驶世界模型综述)（→36 篇精读）"
+  },
+  {
+    "date": "2026-04-13 11:00",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：GPT-5.5 Spud 200万上下文超级应用技术拆解 + 2026 世界模型元年 Genie 3 UniSim 2 具身AI（→49 篇专栏）"
+  },
+  {
+    "date": "2026-04-13 11:00",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：PyTorch-Ch6 分布式训练(7→16KB+ Context Parallel/4D并行/HSDP/通信调优) + 自驾-Ch4 BEV占用网络(8→16KB+ FlashOcc/SparseOcc/StreamPETR v2/VLA融合)"
+  },
+  {
+    "date": "2026-04-13 11:00",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(GPT-5.5 Spud正式发布/世界模型元年Genie 3+UniSim 2/NVIDIA CMX推理内存扩展)，合并 2022 年 3 条旧闻为年度总结，总计 91 条"
+  },
+  {
+    "date": "2026-04-12 12:17",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：Prediction Collapse (Transformer 在高噪声域的扩展极限 arXiv 2604.00064) + Emotion Vectors (LLM 12种结构化情绪向量 arXiv 2604.00005)（→34 篇精读）"
+  },
+  {
+    "date": "2026-04-12 12:17",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：Transformer 预测崩溃与扩展极限 + LLM 情绪向量可解释性里程碑（→53 篇专栏）"
+  },
+  {
+    "date": "2026-04-12 12:17",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Meta Muse Spark 发布/Google TurboQuant KV压缩/千亿芯片协议)，合并 2015 年旧闻为年度总结，总计 91 条"
+  },
+  {
+    "date": "2026-04-12 10:56",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：CircuitProbe (Transformer 推理电路稳定区域检测) + AP-MCTS (自适应并行推理时计算扩展)（→32 篇精读）"
+  },
+  {
+    "date": "2026-04-12 10:56",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：MCP v2.1+A2A 智能体协议栈成熟化 + 异构推理硬件格局 2026（→51 篇专栏）"
+  },
+  {
+    "date": "2026-04-12 10:56",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：推理框架-Ch2 vLLM(7.56→14KB+ PD分离/v0.8/APC哈希/调优) + Agent-Ch2 单Agent架构(11→14KB+ Reflexion/FC版ReAct/DAG规划)"
+  },
+  {
+    "date": "2026-04-12 10:56",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(xAI Grok 4.20多代理架构/AMD MI355X MLPerf创纪录/MCP v2.1 Server Cards)，合并 2020 年旧闻为年度总结，总计 89 条"
+  },
+  {
+    "date": "2026-04-12 08:33",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：Scaling Monosemanticity (Anthropic SAE 3400万特征) + Genie 2 (DeepMind 通用世界模型)（→30 篇精读）"
+  },
+  {
+    "date": "2026-04-12 08:33",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：AI 推理成本经济学 GPU FinOps 实战 + Agent 运行时安全治理全链路（→49 篇专栏）"
+  },
+  {
+    "date": "2026-04-12 08:33",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：PyTorch-Ch7 性能分析(5.37→14KB+ Roofline/MBU-MFU/Nsight/CUDA Graph) + 自驾-Ch3 训练部署(8.6→14KB+ VLA推理/Dynamo集成/世界模型仿真)"
+  },
+  {
+    "date": "2026-04-12 08:33",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(GPT-5.5 Spud泄露/微软Agent Governance Toolkit/WEF推理基础设施)，合并 2025 上半年 4 条零散旧闻为年中总结，总计 88 条"
+  },
+  {
+    "date": "2026-04-12 06:11",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：RECAP 鲁棒安全对齐 + SnapKV KV Cache 自动压缩（→28 篇精读）"
+  },
+  {
+    "date": "2026-04-12 06:11",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：AlphaProof 2 IMO 金牌数学推理 + MCP 生态 2026 标准化之路（→48 篇专栏）"
+  },
+  {
+    "date": "2026-04-12 06:11",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：LLM入门-Ch6 Agent与工具使用(5.7→14KB) + 推理-Ch7 前沿与未来(5→14KB)"
+  },
+  {
+    "date": "2026-04-12 06:11",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Claude Opus 4.6登顶/AlphaProof 2/HF+Dynamo)，合并 2024 年 8 条零散旧新闻为年度总结"
+  },
+  {
+    "date": "2026-04-12 03:46",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第15轮: +3新增(GLM-5V-Turbo/Curriculum RL/MAI-1.5开源), 合并K8s DRA 3条为1条+Iceberg 2条为1条, 总计92条"
+  },
+  {
+    "date": "2026-04-12 03:46",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: 课程强化学习提升LLM推理 + MAI-1.5与2026多模态开源模型格局",
+    "slug": "curriculum-rl-llm-reasoning-easy-to-hard"
+  },
+  {
+    "date": "2026-04-12 03:46",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订3章: LLM-Ch4推理优化(+Roofline/MBU/Goodput/PagedAttention代码/EAGLE-2/Dynamo) 5.93→14KB+ | LLM-Ch7前沿展望(+Curriculum RL/BLT/Agent安全/VLA/Embodied AI) 5.21→14KB+ | 推理-Ch5量化(+AWQ代码/SmoothQuant/FP8/EAGLE-2/H2O驱逐) 4.88→16KB+"
+  },
+  {
+    "date": "2026-04-12 03:46",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增精读: ReSearch(RL驱动推理时搜索) + SWE-RL(RL提升软件工程推理), 总计26篇全部精读",
+    "slug": "swe-rl"
+  },
+  {
+    "date": "2026-04-12 02:20",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第14轮: +3新增(NVIDIA Rubin Ultra路线图/Meta×CoreWeave $210亿/Intel×Google Cloud AI合作), URL统一#, categoryName修复, 总计92条"
+  },
+  {
+    "date": "2026-04-12 02:20",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: NVIDIA Rubin架构与Dynamo推理框架 + GPU云经济学CoreWeave万亿美元竞赛",
+    "slug": "nvidia-rubin-dynamo-inference-framework"
+  },
+  {
+    "date": "2026-04-12 02:20",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订3章: LLM-Ch2预训练(+Scaling Law MoE/FP8训练/FineWeb pipeline/课程学习) 6.78→14KB+ | LLM-Ch3对齐(+QLoRA实战/GRPO深度/CAI/SimPO/DPO训练代码) 6.1→15KB+ | 推理-Ch3 SGLang(+RadixTree实现/FSM编译/FlashInfer/Dynamo集成) 6.08→14KB+"
+  },
+  {
+    "date": "2026-04-12 02:20",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增精读: BLT(Meta字节级Transformer无Tokenizer) + DAPO(ByteDance开源RL对齐系统), 总计24篇全部精读",
+    "slug": "byte-latent-transformer"
+  },
+  {
+    "date": "2026-04-12 01:12",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第13轮: +3新增(Llama 4 Behemoth 288B/Apple Intelligence 3.0/Claude Code Agent SWE-Bench 68%), 大规模合并2015-2026独立旧新闻为年度总结, 总计24条精选"
+  },
+  {
+    "date": "2026-04-12 01:12",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Llama 4 Behemoth——开源推理模型的登顶之路",
+    "slug": "llama4-behemoth-open-source-reasoning-revolution"
+  },
+  {
+    "date": "2026-04-12 01:12",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: AI 编程 Agent 2026——从代码补全到自主软件工程",
+    "slug": "ai-coding-agent-2026-autonomous-software-engineering"
+  },
+  {
+    "date": "2026-04-12 01:12",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订3章: LLM入门 Ch5 多模态(+Gemma4/SigLIP/语音Token化/代码推理) | 推理框架 Ch1 瓶颈分析(+H200/B200硬件对比/MLA/Goodput/Profiling) | AI Agent Ch1 概述(+MCP协议/2026生态/安全防线)"
+  },
+  {
+    "date": "2026-04-12 01:12",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增2篇论文精读: Quiet-STaR(COLM 2024 内部推理方法，影响o1/R1) + MoE Meets Instruction Tuning(ICLR 2024 Spotlight，指导DeepSeek/Llama4训练策略)",
+    "slug": "quiet-star"
+  },
+  {
+    "date": "2026-04-11 23:52",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第12轮: +3新增(GPT-6 Eve发布倒计时/NVIDIA Rubin架构路线图/Cohere Command A企业RAG), 大规模合并旧新闻→保留25条精选(含年度总结), URL全部统一为#"
+  },
+  {
+    "date": "2026-04-11 23:52",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: GPT-6 Eve——200万上下文与超级应用的终局之战",
+    "slug": "gpt6-eve-unified-super-app-2m-context"
+  },
+  {
+    "date": "2026-04-11 23:52",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Cohere Command A——当RAG不再是补丁而是模型的原生能力",
+    "slug": "cohere-command-a-enterprise-rag-grounded-generation"
+  },
+  {
+    "date": "2026-04-11 23:52",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订3章: PyTorch Ch4 优化器(+8bit Adam/LAMB/Adafactor/LR调试) | PyTorch Ch5 torch.compile(+FlexAttention/编译栈全景/分布式) | 推理框架 Ch6 Disaggregated Serving(+DistServe/Mooncake/MoE推理实战)"
+  },
+  {
+    "date": "2026-04-11 23:52",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增2篇论文精读: DistServe(OSDI 2024 PD分离推理) + Test-Time Compute Scaling(ICML 2025 推理时计算缩放)",
+    "slug": "distserve"
+  },
+  {
+    "date": "2026-04-11 22:36",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第11轮: +3新增(Claude Mythos受限发布/GLM-5.1 MIT开源击败GPT-5.4/Gemma 4全系开源多模态), 合并4条→2条, 总计10条(2模型+2行业+4技术+2开源)"
+  },
+  {
+    "date": "2026-04-11 22:36",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Claude Mythos——当AI实验室说「太危险了，不能公开」",
+    "slug": "claude-mythos-too-dangerous-to-release"
+  },
+  {
+    "date": "2026-04-11 22:36",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: 开源首次登顶——GLM-5.1击败GPT-5.4意味着什么",
+    "slug": "glm51-opensource-beats-gpt54-frontier"
+  },
+  {
+    "date": "2026-04-11 22:36",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订2章: 推理框架 Ch4 TensorRT-LLM(+FP4量化/B200/完整部署示例) | PyTorch Ch6 分布式(+FSDP2/DTensor/2D并行/通信调优)"
+  },
+  {
+    "date": "2026-04-11 22:36",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增2篇论文解读: OpenDriveVLA(端到端自动驾驶VLA SOTA) + Gemma 4(Google开源多模态全系)",
+    "slug": "opendrivevla"
+  },
+  {
+    "date": "2026-04-11 22:15",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第10轮: +3新增(DeepSeek V4正式发布Engram架构/OpenClaw 10万Star+Claw Code/DriveWorld-VLA自动驾驶新范式), 合并2条→1条行业综合, 总计10条(2模型+2行业+3技术+3开源)"
+  },
+  {
+    "date": "2026-04-11 22:15",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: DriveWorld-VLA——世界模型与 VLA 深度融合的自动驾驶新范式",
+    "slug": "driveworld-vla-world-model-autonomous-driving"
+  },
+  {
+    "date": "2026-04-11 22:15",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: DeepSeek V4 正式发布——Engram 记忆架构与万亿参数开源的产业冲击",
+    "slug": "deepseek-v4-engram-trillion-parameter-launch"
+  },
+  {
+    "date": "2026-04-11 22:15",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订4章: 自动驾驶大模型 Ch5 VLA架构(含OpenDriveVLA/DriveWorld-VLA/BEV/占用网络) + Ch6 安全与长尾(含WM-SAID/OOD检测/SOTIF) + Ch7 未来趋势(VLA量产/端云协同/2030路线图) | AI Agent Ch7 案例研究(Signal平台完整复现)"
+  },
+  {
+    "date": "2026-04-11 22:15",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增论文精读2篇: DriveWorld-VLA (潜在空间统一世界模型+VLA, arXiv 2026) + LLM4AD (IEEE TITS 2026综述, 150+篇论文梳理), 已精读 15/15 篇",
+    "slug": "driveworld-vla-llm4ad"
+  },
+  {
+    "date": "2026-04-11 21:26",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第9轮: +3新增(DeepSeek V4华为昇腾确认/微软Agent Framework 1.0/Qwen 3.6+GLM-5V-Turbo), 合并4条→1条技术突破月报, 总计10条(4模型+2行业+1技术+3开源)"
+  },
+  {
+    "date": "2026-04-11 21:26",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: DeepSeek V4 前瞻——华为昇腾芯片上的万亿参数 AI",
+    "slug": "deepseek-v4-ascend-trillion-parameter"
+  },
+  {
+    "date": "2026-04-11 21:26",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: 微软 Agent Framework 1.0 解析——多智能体编排的生产化之路",
+    "slug": "microsoft-agent-framework-production-multi-agent"
+  },
+  {
+    "date": "2026-04-11 21:26",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订2章: AI Agent Ch5 记忆与状态管理 + Ch6 生产级部署与监控 (模板→完整章节, 含代码示例/架构图/选型指南)"
+  },
+  {
+    "date": "2026-04-11 21:02",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第8轮: +3新增(Copilot多仓库/MCP注册中心+Conductor/ALTK-Evolve在线学习), 合并3条旧合并新闻→1条月度综合, 删除rag-20重复, 总计11条"
+  },
+  {
+    "date": "2026-04-11 21:02",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: AI 开发者工具 2026 新格局——从代码补全到系统级智能协作",
+    "slug": "ai-devtools-2026-system-level-intelligence"
+  },
+  {
+    "date": "2026-04-11 21:02",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: ALTK-Evolve 与 Agent 在线学习——从静态模型到动态自适应",
+    "slug": "altk-evolve-agent-online-learning-paradigm"
+  },
+  {
+    "date": "2026-04-11 21:02",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订4章: 自动驾驶大模型 Ch2 数据平台闭环 + Ch4 BEV/占用网络 | AI Agent Ch2 ReAct/Plan-Execute + Ch3 工具使用/MCP + Ch4 多Agent协作 (模板→完整章节, 含代码示例和架构图)"
+  },
+  {
+    "date": "2026-04-11 21:02",
+    "type": "article",
+    "agent": "质检智能体",
+    "message": "新增自动化测试框架: Jest 配置 + 12个测试用例覆盖数据完整性/JSON格式/Markdown frontmatter/路由一致性"
+  },
+  {
+    "date": "2026-04-11 20:24",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第7轮: +3新增(Stanford HAI/Mistral Large 3 Ultra/苹果WWDC泄露), 合并旧闻, 总计12条"
+  },
+  {
+    "date": "2026-04-11 20:24",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: MCP 协议深度解析——AI Agent 的 USB 接口标准",
+    "slug": "mcp-protocol-ai-agent-usb-standard"
+  },
+  {
+    "date": "2026-04-11 20:24",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: AI 基础模型 2026 年 4 月格局——从混战到分层",
+    "slug": "foundation-model-landscape-april-2026"
+  },
+  {
+    "date": "2026-04-11 20:24",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "深度修订: RAG 2.0 + AI Coding 工具对比 + AI Agent 框架大战 (3篇短文章扩充为完整深度内容)",
+    "slug": "rag-2-0"
+  },
+  {
+    "date": "2026-04-11 20:24",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订: 自动驾驶大模型 第1章 数据全链路 + AI Agent 实战指南 第1章 概述与核心概念 (模板→完整章节)",
+    "slug": "ad-llm-ch01-agent-ch01"
+  },
+  {
+    "date": "2026-04-11 20:24",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "精读论文: FineWeb — 大规模高质量网页数据蒸馏 (NeurIPS 2024)，全部 13/13 篇论文精读完成",
+    "slug": "fineweb"
+  },
+  {
+    "date": "2026-04-11 19:54",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "精读论文: Fast Inference from Transformers via Speculative Decoding (ICML 2023)",
+    "slug": "speculative-decoding"
+  },
+  {
+    "date": "2026-04-11 19:54",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "精读论文: The Llama 3 Herd of Models (Meta AI)",
+    "slug": "llama-3"
+  },
+  {
+    "date": "2026-04-11 19:54",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订: 自动驾驶大模型深度研究 第3章 训练平台与推理部署",
+    "slug": "ad-llm-ch03"
+  },
+  {
+    "date": "2026-04-11 19:54",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: 语音合成新范式：从 TTS 到无分词器端到端模型",
+    "slug": "tts-tokenizer-free-voxcpm2-speech-synthesis"
+  },
+  {
+    "date": "2026-04-11 19:54",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: AI 编程基准测试的标准化革命：从 SWE-bench 到 Archon",
+    "slug": "ai-coding-benchmark-archon-swebench"
+  },
+  {
+    "date": "2026-04-11 19:54",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新闻更新第6轮: +3新增(AITune/VoxCPM2/芯片出口延迟), -5合并→2(Anthropic综合/马斯克帝国), 总计13条"
+  },
+  {
+    "date": "2026-04-11 18:57",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot",
+    "slug": "ai-coding-cursor-vs-windsurf-vs-github-copilot"
+  },
+  {
+    "date": "2026-04-11 18:57",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: RAG 2.0：从朴素检索到自适应知识增强",
+    "slug": "rag-2-0"
+  },
+  {
+    "date": "2026-04-11 18:57",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: AI Agent 框架大战：CrewAI vs LangGraph vs AutoGen",
+    "slug": "ai-agent-crewai-vs-langgraph-vs-autogen"
+  },
+  {
+    "date": "2026-04-11 18:57",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "生成/修订书籍: 自动驾驶大模型深度研究 (7 章)",
+    "slug": "ad-llm"
+  },
+  {
+    "date": "2026-04-11 18:57",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "生成/修订书籍: AI Agent 实战指南 (7 章)",
+    "slug": "ai-agent"
+  },
+  {
+    "date": "2026-04-11 18:57",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "生成/修订书籍: 大语言模型从入门到前沿 (7 章)",
+    "slug": "93f28994"
+  },
+  {
+    "date": "2026-04-11 18:38",
+    "type": "article",
+    "agent": "新闻智能体",
+    "message": "更新新闻频道: 新增 3 条最新新闻 (Meta-CoreWeave $210亿/Optimus V3 量产/ClawLess Agent 安全框架)，合并 4 条旧新闻为 2 条综合摘要 (OpenAI 战略综合/安全治理月报)，总计 13 条",
+    "slug": "news-update"
+  },
+  {
+    "date": "2026-04-11 18:38",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: AI 算力军备竞赛——万亿美元基础设施的赢家与输家",
+    "slug": "ai-compute-arms-race-trillion-infrastructure"
+  },
+  {
+    "date": "2026-04-11 18:38",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: 从 Optimus 到 Digital Optimus——当机器人遇见大模型",
+    "slug": "optimus-v3-digital-optimus-embodied-ai"
+  },
+  {
+    "date": "2026-04-11 18:38",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订章节: 自动驾驶大模型 - 第6章 安全与长尾问题 (从 47 行扩展至完整章节，新增 OOD 检测深度内容、世界模型方法、Apollo Go 事件分析)",
+    "slug": "ad-llm-ch06"
+  },
+  {
+    "date": "2026-04-11 18:38",
+    "type": "article",
+    "agent": "论文智能体",
+    "message": "新增论文精读: PagedAttention (vLLM 核心技术，OS 分页思想管理 KV Cache) + Self-Instruct (合成数据开创性工作)，已精读 10/13 篇",
+    "slug": "papers-paged-attention-self-instruct"
+  },
+  {
+    "date": "2026-04-11 18:11",
+    "type": "article",
+    "agent": "新闻智能体",
+    "message": "更新新闻频道: 新增 3 条最新新闻 (SpaceX-xAI 合并/GPT-6 发布日锁定/Gemini 3.1 Flash-Lite)，合并 5 条旧新闻为 1 条综合摘要，总计 12 条。所有外部链接清理为 #",
+    "slug": "news-update"
+  },
+  {
+    "date": "2026-04-11 18:11",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: 星际智能帝国——SpaceX-xAI 合并背后的 AI 基础设施终局",
+    "slug": "spacex-xai-merge-orbital-ai-infrastructure"
+  },
+  {
+    "date": "2026-04-11 18:11",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: GPT-6 前夜——四月大模型混战与超级应用时代的开启",
+    "slug": "gpt6-eve-april-model-war-super-app"
+  },
+  {
+    "date": "2026-04-11 18:11",
+    "type": "article",
+    "agent": "论文智能体",
+    "message": "新增论文精读: Attention Is All You Need (Transformer 架构基石) + Chinchilla (Scaling Law 修正)，已精读 8/13 篇",
+    "slug": "papers-transformer-chinchilla"
+  },
+  {
+    "date": "2026-04-11 17:39",
+    "type": "article",
+    "agent": "新闻智能体",
+    "message": "更新新闻频道: 新增 4 条最新新闻 (Sora关停/Anthropic RSP 3.0/Google $1850亿AI投资/DeepSeek V4传闻)，合并 5 条旧新闻为 3 条摘要（开源模型汇总/行业动态汇总/AI治理月报），总计 17 条",
+    "slug": "news-update"
+  },
+  {
+    "date": "2026-04-11 17:39",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Sora 之死与 AI Agent 之生——OpenAI 的战略大转向",
+    "slug": "sora-death-openai-agent-pivot"
+  },
+  {
+    "date": "2026-04-11 17:39",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Anthropic RSP 3.0——当安全标杆放弃了自己的红线",
+    "slug": "anthropic-rsp3-safety-compromise"
+  },
+  {
+    "date": "2026-04-11 17:39",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "修订章节: 大语言模型从入门到前沿 - 第7章 前沿方向与未来展望 + AI Agent 实战指南 - 第7章 案例研究 (模板→实质内容，全书模板章节清零)",
+    "slug": "93f28994-ch07-agent-ch07"
+  },
+  {
+    "date": "2026-04-11 17:39",
+    "type": "article",
+    "agent": "论文智能体",
+    "message": "新增论文精读: DeepSeek-R1 (GRPO算法涌现推理能力) + Mamba (线性时间选择性状态空间模型)，已精读 6/13 篇",
+    "slug": "papers-r1-mamba"
+  },
+  {
+    "date": "2026-04-11 17:23",
+    "type": "article",
+    "agent": "新闻智能体",
+    "message": "更新新闻频道: 新增 5 条最新新闻 (GPT-6 Spud/Anthropic 营收超 OpenAI/Meta Muse Spark/AI Agent 安全危机/LLM 妄想螺旋)，合并 4 条旧新闻为 2 条摘要，总计 17 条",
+    "slug": "news-update"
+  },
+  {
+    "date": "2026-04-11 17:23",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: GPT-6 前瞻：从 Spud 代号看 OpenAI 的超级应用野心",
+    "slug": "gpt6-spud-openai-super-app"
+  },
+  {
+    "date": "2026-04-11 17:23",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: AI 安全周报：当 Agent 学会撒谎、供应链被攻破",
+    "slug": "ai-security-agent-supply-chain-crisis"
+  },
+  {
+    "date": "2026-04-11 17:23",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "修订章节: 大语言模型从入门到前沿 - 第5章 多模态扩展 + 第6章 Agent 与工具使用 (模板→实质内容)",
+    "slug": "93f28994-ch05-ch06"
+  },
+  {
+    "date": "2026-04-11 17:23",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "修订章节: AI Agent 实战指南 - 第5章 记忆与状态管理 + 第6章 生产级部署与监控 (模板→实质内容)",
+    "slug": "ai-agent-ch05-ch06"
+  },
+  {
+    "date": "2026-04-11 16:20",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度文章: 开源逆袭：GLM-5.1 如何用 MIT 许可击败 GPT-5.4 和 Claude Opus",
+    "slug": "opensource-glm51-vs-gpt54"
+  },
+  {
+    "date": "2026-04-11 16:20",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度文章: AI 安全的十字路口：当 Anthropic 对峙五角大楼",
+    "slug": "ai-safety-anthropic-pentagon"
+  },
+  {
+    "date": "2026-04-11 16:20",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "修订章节: AI Agent 实战指南 - 第4章 多 Agent 协作框架 (模板→实质内容)",
+    "slug": "ai-agent-ch04"
+  },
+  {
+    "date": "2026-04-11 16:20",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "修订章节: 大语言模型从入门到前沿 - 第4章 推理优化 (模板→实质内容)",
+    "slug": "93f28994-ch04"
+  },
+  {
+    "date": "2026-04-11 16:20",
+    "type": "article",
+    "agent": "新闻智能体",
+    "message": "更新新闻频道: 新增 8 条最新新闻 (Claude Mythos/GLM-5.1/OpenAI $122B等)，合并 6 条旧新闻为 2 条摘要",
+    "slug": "news-update"
+  },
+  {
+    "date": "2026-04-10 12:04",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: Claude 4 Opus 深度评测：代码能力、推理与长文本表现",
+    "slug": "claude-4-opus"
+  },
+  {
+    "date": "2026-04-10 12:04",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: Transformer 注意力机制的未来：从 MHA 到 MLA",
+    "slug": "transformer-mha-mla"
+  },
+  {
+    "date": "2026-04-10 12:04",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot",
+    "slug": "ai-coding-cursor-vs-windsurf-vs-github-copilot"
+  },
+  {
+    "date": "2026-04-10 12:04",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度文章: AI 训练基础设施：万卡集群的架构设计与调度优化",
+    "slug": "ai-305cb957"
+  }
+]
