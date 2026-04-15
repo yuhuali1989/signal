@@ -10,9 +10,9 @@ const footerLinks = [
     ],
   },
   {
-    group: '模型与研究',
+    group: '模型与论文',
     links: [
-      { name: '模型中心', href: '/models/' },
+      { name: '模型', href: '/models/' },
       { name: '自动驾驶', href: '/vla/' },
       { name: '工具箱', href: '/tools/' },
     ],

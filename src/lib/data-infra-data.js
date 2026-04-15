@@ -14,6 +14,8 @@ export const INFRA_TABS = [
   { id: 'mlops',      label: 'MLOps 实验',   icon: '🧪', color: '#3fb950', desc: '实验管理 · 模型注册 · CI/CD · 自动评测 · A/B 测试' },
   { id: 'observability', label: '可观测性',  icon: '📊', color: '#ffa657', desc: 'Prometheus · Grafana · ELK · 分布式追踪 · 告警' },
   { id: 'vectordb',   label: '向量 & 特征',  icon: '🧬', color: '#d2a8ff', desc: '向量数据库 · 特征仓库 · 嵌入检索 · 场景挖掘' },
+  { id: 'dedup',      label: '图像去重',     icon: '🔍', color: '#e17055', desc: 'SemDeDup · D³ · SSL-Dedup · 多级去重 Pipeline · 长尾保护' },
+  { id: 'synth',      label: '数据合成',     icon: '🧫', color: '#a29bfe', desc: '场景合成 · 长尾生成 · Sim2Real · 轨迹合成 · 自动标注 · 质量评估' },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -483,5 +485,403 @@ export const VECTOR_DATA = {
         color: '#ffa657',
       },
     ],
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 8. 图像去重
+// ═══════════════════════════════════════════════════════════════
+export const DEDUP_DATA = {
+  // 去重层级体系（自动驾驶 & 具身机器人）
+  dedupLevels: [
+    {
+      level: 'Level 1',
+      name: '帧级去重（时间冗余）',
+      icon: '🎬',
+      color: '#79c0ff',
+      desc: '消除连续帧之间的时间冗余，20Hz→3Hz 关键帧提取',
+      approaches: [
+        { name: '固定间隔采样', desc: '每 N 帧取 1 帧，简单但丢失关键事件', paper: null },
+        { name: '帧间差异检测', desc: '光流/SSIM 检测变化，变化大时保留', paper: null },
+        { name: 'DINOv2 帧级嵌入', desc: '相邻帧语义嵌入余弦相似度 > 0.98 则跳过', paper: 'SSL-Dedup (NeurIPS 2024)' },
+        { name: '运动状态感知', desc: '结合 IMU/速度信号，静止时大幅降采样', paper: null },
+      ],
+      redundancy: '~85%',
+      papers: ['SSL-Dedup (NeurIPS 2024)', 'SemDeDup (ICLR 2023)'],
+    },
+    {
+      level: 'Level 2',
+      name: '片段级去重（空间冗余）',
+      icon: '🗺️',
+      color: '#e17055',
+      desc: '消除不同采集轮次中对同一地理区域/路段的重复覆盖，是自动驾驶和具身机器人场景中数据量最大的冗余来源',
+      approaches: [
+        {
+          name: 'GPS/位姿聚类去重',
+          desc: '基于 GPS 轨迹或 SLAM 位姿将片段按地理位置聚类，同一区域保留最优版本（标注质量/天气多样性/传感器完整性）',
+          paper: 'D³: Scaling Up Data Deduplication for Driving (CVPR 2025)',
+          detail: '将轨迹投影到栅格地图，同一栅格内的片段视为空间重复候选，再用多模态特征精排',
+        },
+        {
+          name: 'NetVLAD / CosPlace 视觉位置识别',
+          desc: '用视觉位置识别（VPR）模型判断两个片段是否拍摄同一地点。将每帧编码为全局描述子，片段级聚合后检索相似片段',
+          paper: 'CosPlace: Revisiting and Improving Visual Place Recognition (CVPR 2023)',
+          detail: 'CosPlace 用余弦相似度替代三元组损失训练 VPR 模型，在 Pittsburgh30k/Tokyo24/7 上 SOTA。片段去重时将连续帧描述子聚合为片段级向量',
+        },
+        {
+          name: 'EigenPlaces 特征空间去重',
+          desc: '基于 PCA 白化的视觉位置识别，在特征空间中发现空间冗余片段。相比 NetVLAD 更紧凑（512d→256d），检索更快',
+          paper: 'EigenPlaces: Training Viewpoint Robust Models for VPR (ICCV 2023)',
+          detail: '通过 PCA 降维保留最具判别力的方向，对视角变化更鲁棒。适合多车不同视角采集同一路段的去重',
+        },
+        {
+          name: 'BEV 语义地图匹配',
+          desc: '将片段的 BEV 语义地图（车道线/路沿/建筑轮廓）作为指纹，通过地图匹配发现空间重复。对光照/天气/季节变化完全鲁棒',
+          paper: 'MapTR: Structured Modeling and Learning for Online Vectorized HD Map Construction (ICLR 2023)',
+          detail: '用 MapTR 生成在线矢量化地图，将地图元素编码为结构化特征，片段间地图相似度 > 阈值则判定为空间重复',
+        },
+        {
+          name: 'LiDAR 点云子地图匹配',
+          desc: '将片段的 LiDAR 扫描累积为子地图（submap），通过 ICP/NDT 配准或学习型描述子匹配发现重叠区域',
+          paper: 'OverlapTransformer: An Efficient and Yaw-Angle-Invariant Transformer Network for LiDAR-Based Place Recognition (RA-L 2022)',
+          detail: 'OverlapTransformer 将 LiDAR 扫描转为 Range Image，用 Transformer 提取旋转不变描述子。片段级去重时将多帧 Range Image 聚合',
+        },
+        {
+          name: '轨迹形状匹配',
+          desc: '用 DTW（动态时间规整）或 Fréchet 距离比较两条轨迹的几何形状相似度，发现重复路段。不依赖 GPS 精度，对 SLAM 漂移鲁棒',
+          paper: 'Computing the Fréchet Distance Between Two Polygonal Curves (IJCGA 1995)',
+          detail: '经典算法在自动驾驶中的应用：将轨迹离散化后计算 Fréchet 距离，< 5m 阈值判定为同一路段。结合方向一致性过滤反向行驶',
+        },
+        {
+          name: '多模态融合片段指纹',
+          desc: '融合视觉 VPR + LiDAR 子地图 + 轨迹形状 + BEV 地图的多模态片段指纹，综合判断空间冗余',
+          paper: 'D³: Scaling Up Data Deduplication for Driving (CVPR 2025)',
+          detail: 'D³ 的片段级去重核心：4 种模态特征加权融合为片段指纹 → Milvus 向量检索 → 层次聚类 → 每簇保留最优版本',
+        },
+        {
+          name: 'Habitat/Gibson 场景去重（具身机器人）',
+          desc: '具身机器人场景中，基于 3D 场景图（Scene Graph）或房间拓扑结构判断不同采集轮次是否覆盖同一空间区域',
+          paper: 'ConceptGraphs: Open-Vocabulary 3D Scene Graphs for Perception and Planning (ICRA 2024)',
+          detail: '用开放词汇 3D 场景图表示空间语义，通过图匹配发现重复覆盖区域。适用于室内具身机器人的数据去重',
+        },
+      ],
+      redundancy: '~60%',
+      papers: [
+        { paper: 'D³', venue: 'CVPR 2025', task: '多模态驾驶数据去重', method: '视觉+LiDAR+轨迹+地图融合', highlight: '首个 AD 专用多级去重框架，片段级去重核心' },
+        { paper: 'CosPlace', venue: 'CVPR 2023', task: '视觉位置识别', method: '余弦相似度训练 VPR', highlight: '简洁高效的 VPR 方法，适合大规模片段检索' },
+        { paper: 'EigenPlaces', venue: 'ICCV 2023', task: '视角鲁棒位置识别', method: 'PCA 白化 + 视角不变训练', highlight: '对多车不同视角采集同一路段的去重效果最佳' },
+        { paper: 'MixVPR', venue: 'WACV 2023', task: '全局视觉位置识别', method: 'Feature Mixing + MLP', highlight: '无需局部特征聚合，全 MLP 架构，推理极快' },
+        { paper: 'OverlapTransformer', venue: 'RA-L 2022', task: 'LiDAR 位置识别', method: 'Range Image + Transformer', highlight: '旋转不变 LiDAR 描述子，适合点云片段匹配' },
+        { paper: 'MapTR', venue: 'ICLR 2023', task: '在线矢量化地图构建', method: 'Transformer + 结构化建模', highlight: 'BEV 地图指纹用于空间冗余检测' },
+        { paper: 'ConceptGraphs', venue: 'ICRA 2024', task: '开放词汇 3D 场景图', method: 'VLM + 3D 场景图', highlight: '具身机器人场景的空间语义去重' },
+        { paper: 'Patch-NetVLAD', venue: 'CVPR 2021', task: '局部特征位置识别', method: 'NetVLAD + Patch 匹配', highlight: '局部+全局特征融合，细粒度空间匹配' },
+        { paper: 'AnyLoc', venue: 'RA-L 2024', task: '通用位置识别', method: 'DINOv2 + VLAD 聚合', highlight: '基于基础模型的零样本 VPR，跨域泛化强' },
+      ],
+    },
+    {
+      level: 'Level 3',
+      name: '场景级去重（语义冗余）',
+      icon: '🎭',
+      color: '#3fb950',
+      desc: '消除语义相似但地理位置不同的场景冗余，如大量相似的直行道路、停车场',
+      approaches: [
+        { name: 'CLIP 场景分类', desc: '按场景类型（高速/城区/停车场/十字路口）分类后均衡采样', paper: 'SemDeDup (ICLR 2023)' },
+        { name: 'DINOv2 场景聚类', desc: '场景级嵌入聚类，大簇降采样、小簇全保留', paper: 'SSL-Dedup (NeurIPS 2024)' },
+        { name: 'D³ 多模态场景指纹', desc: '融合多模态特征的场景级去重，保持场景多样性', paper: 'D³ (CVPR 2025)' },
+      ],
+      redundancy: '~40%',
+      papers: ['SemDeDup (ICLR 2023)', 'SSL-Dedup (NeurIPS 2024)', 'D³ (CVPR 2025)'],
+    },
+  ],
+  // 去重方法演进
+  methods: [
+    {
+      name: '精确哈希去重',
+      tech: 'MD5 / SHA-256',
+      granularity: '像素级完全相同',
+      dedup_rate: '~3%',
+      precision: '100%',
+      recall: '~5%',
+      cost: '极低',
+      icon: '#️⃣',
+      color: '#94a3b8',
+      desc: '计算文件哈希值，完全相同的文件直接去除。速度极快但只能发现完全相同的副本。',
+    },
+    {
+      name: '感知哈希去重',
+      tech: 'pHash / dHash / aHash',
+      granularity: '近似像素级',
+      dedup_rate: '~5%',
+      precision: '99%',
+      recall: '~23%',
+      cost: '低',
+      icon: '🔢',
+      color: '#79c0ff',
+      desc: '将图像缩放+DCT变换为紧凑哈希，汉明距离<5判定为重复。对裁剪/缩放鲁棒，但对视角/光照变化敏感。',
+    },
+    {
+      name: 'CLIP 语义去重',
+      tech: 'CLIP ViT-L/14 + 余弦相似度',
+      granularity: '语义级',
+      dedup_rate: '~40%',
+      precision: '91%',
+      recall: '~79%',
+      cost: '中',
+      icon: '📎',
+      color: '#ffa657',
+      desc: '利用 CLIP 视觉编码器提取语义嵌入，余弦相似度>阈值判定为重复。语义理解强但对细粒度视觉差异不敏感。',
+    },
+    {
+      name: 'DINOv2 自监督去重',
+      tech: 'DINOv2 ViT-L/G + FAISS/Milvus',
+      granularity: '视觉语义级',
+      dedup_rate: '~50%',
+      precision: '97%',
+      recall: '~95%',
+      cost: '中高',
+      icon: '🦕',
+      color: '#3fb950',
+      desc: 'SSL-Dedup 方法，DINOv2 自蒸馏嵌入保留更多视觉细节，对视角/光照/遮挡变化鲁棒，图像去重最佳选择。',
+    },
+    {
+      name: 'D³ 多模态去重',
+      tech: 'CLIP + PointPillar + Trajectory + MapTR',
+      granularity: '多模态场景级',
+      dedup_rate: '~70%',
+      precision: '96%',
+      recall: '~92%',
+      cost: '高',
+      icon: '🎯',
+      color: '#e17055',
+      desc: '融合视觉+LiDAR+轨迹+地图四种模态，层次化去重（帧级/片段级/场景级），自动驾驶专用，长尾保护机制。',
+    },
+  ],
+  // 推荐的多级去重 Pipeline
+  pipeline: [
+    {
+      stage: 'Stage 1',
+      name: '精确去重',
+      method: 'MD5 / SHA-256',
+      target: '完全相同的文件副本',
+      dedup: '~3%',
+      time: '<1 min / 1M images',
+      color: '#94a3b8',
+    },
+    {
+      stage: 'Stage 2',
+      name: '近似像素去重',
+      method: 'pHash (汉明距离 < 5)',
+      target: '裁剪/缩放/轻微修改的副本',
+      dedup: '~5%',
+      time: '~5 min / 1M images',
+      color: '#79c0ff',
+    },
+    {
+      stage: 'Stage 3',
+      name: 'SSL 语义去重',
+      method: 'DINOv2 ViT-L + Milvus (cos > 0.95)',
+      target: '不同视角/光照/天气的相同场景',
+      dedup: '~40%',
+      time: '~2 hr / 10M images (8×A100)',
+      color: '#3fb950',
+    },
+    {
+      stage: 'Stage 4',
+      name: '多模态场景去重',
+      method: 'D³ (视觉+LiDAR+轨迹+地图)',
+      target: '多车重复路段 / 时间冗余片段',
+      dedup: '~20%',
+      time: '~3 hr / 10M frames (8×A100)',
+      color: '#e17055',
+    },
+  ],
+  // 自动驾驶场景去重效果
+  adScenarios: [
+    { scenario: '连续帧 (20Hz)', redundancy: '~85%', method: 'DINOv2 帧级', retained: '~3Hz 关键帧', icon: '🎬' },
+    { scenario: '多车同路段', redundancy: '~60%', method: 'D³ 片段级', retained: '保留最佳标注版本', icon: '🚗' },
+    { scenario: '静态场景 (停车/等灯)', redundancy: '~90%', method: 'DINOv2 + 运动检测', retained: '每类保留 10 样本', icon: '🅿️' },
+    { scenario: '天气重复 (晴天过多)', redundancy: '~40%', method: 'CLIP 天气分类 + 均衡采样', retained: '各天气均衡', icon: '☀️' },
+    { scenario: '夜间低质量', redundancy: '~30%', method: '质量评分 + DINOv2', retained: '保留高质量夜间', icon: '🌙' },
+    { scenario: '长尾稀有场景', redundancy: '0%', method: '小簇全保留策略', retained: '全部保留', icon: '⚠️' },
+  ],
+  // 论文对比
+  paperComparison: [
+    { paper: 'SemDeDup', venue: 'ICLR 2023', modality: '单模态 (视觉/文本)', domain: '通用', maxDedup: '~50%', perfDrop: '<0.5%', highlight: '开创语义去重范式' },
+    { paper: 'D³', venue: 'CVPR 2025', modality: '多模态 (视觉+LiDAR+轨迹+地图)', domain: '自动驾驶', maxDedup: '~70%', perfDrop: '<1%', highlight: '首个 AD 专用多级去重框架' },
+    { paper: 'SSL-Dedup', venue: 'NeurIPS 2024', modality: '单模态 (视觉)', domain: '通用', maxDedup: '~50%', perfDrop: '<0.2%', highlight: 'DINOv2 > CLIP 去重' },
+    { paper: 'CosPlace', venue: 'CVPR 2023', modality: '单模态 (视觉)', domain: 'VPR / 片段去重', maxDedup: '~60%', perfDrop: '<0.5%', highlight: '余弦相似度训练 VPR，片段级空间去重' },
+    { paper: 'EigenPlaces', venue: 'ICCV 2023', modality: '单模态 (视觉)', domain: 'VPR / 片段去重', maxDedup: '~60%', perfDrop: '<0.5%', highlight: 'PCA 白化视角鲁棒，多车同路段去重' },
+    { paper: 'OverlapTransformer', venue: 'RA-L 2022', modality: '单模态 (LiDAR)', domain: 'LiDAR 位置识别', maxDedup: '~55%', perfDrop: '<0.3%', highlight: '旋转不变 LiDAR 描述子' },
+    { paper: 'AnyLoc', venue: 'RA-L 2024', modality: '单模态 (视觉)', domain: '通用 VPR', maxDedup: '~55%', perfDrop: '<0.5%', highlight: 'DINOv2 零样本 VPR，跨域泛化' },
+    { paper: 'ConceptGraphs', venue: 'ICRA 2024', modality: '多模态 (视觉+3D)', domain: '具身机器人', maxDedup: '~50%', perfDrop: '<1%', highlight: '3D 场景图空间语义去重' },
+  ],
+  // 工程架构
+  architecture: {
+    edgeDedup: {
+      name: '车端去重 (Edge)',
+      steps: [
+        { name: '关键帧提取', desc: '20Hz → 3Hz，基于帧间差异的关键帧选择', tech: 'OpenCV + 光流' },
+        { name: '轻量编码', desc: 'MobileNet-V3 提取 256d 嵌入，本地缓存', tech: 'TensorRT + ONNX' },
+        { name: '本地去重', desc: '与最近 1000 帧比较，cos > 0.98 跳过上传', tech: 'FAISS (CPU)' },
+      ],
+      compression: '~85% 帧被过滤',
+    },
+    cloudDedup: {
+      name: '云端去重 (Cloud)',
+      steps: [
+        { name: 'MD5 + pHash', desc: '精确 + 近似像素级去重', tech: 'Spark UDF' },
+        { name: 'DINOv2 编码', desc: '6路相机分别编码 → 帧级嵌入聚合', tech: 'DINOv2 ViT-L + A100' },
+        { name: 'Milvus 检索', desc: '新数据 vs 全量索引，cos > 0.95 标记重复', tech: 'Milvus IVF_PQ' },
+        { name: 'D³ 多模态', desc: '融合 LiDAR + 轨迹 + 地图的场景级去重', tech: 'D³ Pipeline' },
+        { name: '长尾保护', desc: '小簇全保留 + FPS 多样性采样', tech: 'K-Means + FPS' },
+      ],
+      compression: '额外去除 ~40%',
+    },
+    storage: {
+      embeddings: 'Milvus (10B+ 向量) + Feast (特征缓存)',
+      index: 'IVF_PQ (离线) + HNSW (在线增量)',
+      metadata: 'Iceberg (去重标记 + 血缘追踪)',
+    },
+  },
+  // 效果指标
+  metrics: {
+    before: { totalFrames: '~500M', storage: '~500 PB', trainData: '~50 PB' },
+    after: { totalFrames: '~150M', storage: '~150 PB', trainData: '~15 PB', savedCost: '~70%' },
+    quality: { nds: '0.714 → 0.711 (-0.003)', map: '0.672 → 0.668 (-0.004)', l2: '0.42m → 0.43m (+0.01m)' },
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 9. 数据合成
+// ═══════════════════════════════════════════════════════════════
+export const SYNTH_DATA = {
+  // 数据合成在闭环中的定位
+  overview: {
+    role: '数据合成是数据闭环的关键加速器，解决长尾场景数据不足和标注成本高昂两大核心痛点',
+    position: '位于数据闭环的「数据增强」环节，连接场景挖掘（上游）和模型训练（下游）',
+    value: [
+      { name: '长尾补充', desc: '定向生成稀有场景（施工区/动物/极端天气），补充真实数据中的长尾缺口', icon: '🎯', color: '#e17055' },
+      { name: '标注降本', desc: 'VLM 自动标注替代人工，标注成本降低 90%+', icon: '💰', color: '#3fb950' },
+      { name: '数据多样性', desc: '同一场景生成多种变体（天气/光照/交通流），提升模型泛化能力', icon: '🌈', color: '#ffa657' },
+      { name: '仿真闭环', desc: 'Sim2Real 打通仿真→真实链路，仿真数据直接可训练', icon: '🔄', color: '#79c0ff' },
+      { name: '轨迹增强', desc: '扩散模型生成多样化轨迹，解决规划模型训练中的分布偏差', icon: '🛤️', color: '#d2a8ff' },
+      { name: '质量闭环', desc: '合成数据质量自动评估，形成生成→评估→优化的闭环', icon: '✅', color: '#6c5ce7' },
+    ],
+  },
+  // 合成方法分类
+  methods: [
+    {
+      name: 'VLM 自动标注',
+      category: '标注合成',
+      tech: 'InternVL + Grounded-SAM2 + Metric3D',
+      input: '原始图像 (无标注)',
+      output: '3D 检测框 + 语义分割 + 场景描述',
+      quality: 'mAP ~0.65 (vs 人工 0.72)',
+      cost: '~$0.01/帧 (vs 人工 ~$2/帧)',
+      icon: '🤖',
+      color: '#e17055',
+      desc: '利用视觉大模型自动生成高质量 3D 标注，完全替代人工标注流程。InternVL 提供场景理解，Grounded-SAM2 精确分割，Metric3D 深度估计，几何投影生成 3D 框。',
+    },
+    {
+      name: '长尾场景定向合成',
+      category: '图像合成',
+      tech: 'InstructPix2Pix + ControlNet + LoRA',
+      input: '真实图像 + 文本指令',
+      output: '编辑后的驾驶图像 (保持结构)',
+      quality: 'FID ~35, 结构保持率 >95%',
+      cost: '~$0.005/张 (GPU 推理)',
+      icon: '🎨',
+      color: '#ffa657',
+      desc: '通过自然语言指令编辑真实驾驶图像，定向生成长尾稀有场景。ControlNet 保持场景几何结构，InstructPix2Pix 根据指令修改目标属性（天气/光照/物体）。',
+    },
+    {
+      name: 'LLM 场景布局生成',
+      category: '场景合成',
+      tech: 'GPT-4 / Claude + Transformer Decoder',
+      input: '自然语言场景描述',
+      output: 'BEV 布局 (物体位置/朝向/类别)',
+      quality: '碰撞率 <2%, 车道合规 >98%',
+      cost: '~$0.02/场景 (API 调用)',
+      icon: '📝',
+      color: '#79c0ff',
+      desc: '用 LLM 将自然语言描述解析为结构化场景，Transformer Decoder 生成 BEV 布局。支持多样性采样，同一描述生成多种合理布局。可与 MagicDrive 联合渲染为多视角图像。',
+    },
+    {
+      name: 'Sim-to-Real 域适配',
+      category: '域迁移',
+      tech: 'CUT / CycleGAN + CARLA',
+      input: 'CARLA 仿真渲染图',
+      output: '真实风格驾驶图像',
+      quality: 'FID ~42, 下游 mAP +3.2%',
+      cost: '~$0.002/张 (GPU 推理)',
+      icon: '🔄',
+      color: '#3fb950',
+      desc: '将仿真器渲染图像转换为真实风格，使仿真数据可直接用于真实场景模型训练。CUT 用对比学习实现高效单向翻译，PatchNCE Loss 保持局部结构一致性。',
+    },
+    {
+      name: '扩散轨迹合成',
+      category: '轨迹合成',
+      tech: 'DDPM + VectorNet + 条件注入',
+      input: '地图 + 周围 Agent 状态',
+      output: '多条多样化驾驶轨迹',
+      quality: 'minADE ~0.8m, 碰撞率 <1%',
+      cost: '~$0.001/组 (GPU 推理)',
+      icon: '🛤️',
+      color: '#d2a8ff',
+      desc: '用扩散模型在轨迹空间扩散/去噪，条件注入地图和周围 Agent 特征，采样时生成多条多样化轨迹。支持可行性过滤（碰撞检测 + 车道合规 + 运动学约束）。',
+    },
+  ],
+  // 合成数据在闭环中的架构
+  architecture: {
+    pipeline: [
+      { stage: '触发', name: '长尾发现', desc: '场景挖掘发现数据缺口 → 生成合成需求', source: '向量 DB + 主动学习', icon: '🔍', color: '#6c5ce7' },
+      { stage: '生成', name: '数据合成', desc: '根据需求选择合成方法 → 批量生成数据', source: '合成引擎集群 (A100)', icon: '🧫', color: '#a29bfe' },
+      { stage: '质检', name: '质量评估', desc: '自动评估合成数据质量 → 过滤低质量样本', source: 'FID / CLIP Score / 下游指标', icon: '✅', color: '#3fb950' },
+      { stage: '入库', name: '数据入湖', desc: '合成数据标记来源 → 写入 Iceberg Gold 层', source: 'Iceberg + LakeFS tag', icon: '🏞️', color: '#00cec9' },
+      { stage: '混合', name: '数据混合', desc: '真实数据 + 合成数据按比例混合 → 训练集', source: 'WebDataset + 采样策略', icon: '🔀', color: '#fd79a8' },
+      { stage: '训练', name: '模型训练', desc: '混合数据训练 → 评估长尾场景提升', source: 'Volcano + MLflow', icon: '🧠', color: '#ffa657' },
+      { stage: '反馈', name: '效果反馈', desc: '训练效果反馈 → 调整合成策略和比例', source: '指标对比 + A/B 测试', icon: '📊', color: '#79c0ff' },
+    ],
+    mixStrategy: {
+      name: '真实-合成数据混合策略',
+      rules: [
+        { scenario: '常规场景', realRatio: '90%', synthRatio: '10%', method: '随机混合', reason: '真实数据充足，合成数据作为增强' },
+        { scenario: '长尾场景 (施工区)', realRatio: '30%', synthRatio: '70%', method: '过采样合成', reason: '真实数据极少，合成数据为主' },
+        { scenario: '极端天气', realRatio: '40%', synthRatio: '60%', method: '天气均衡采样', reason: '暴雨/大雪真实数据不足' },
+        { scenario: '夜间场景', realRatio: '50%', synthRatio: '50%', method: '时间均衡采样', reason: '夜间数据质量差，合成补充' },
+        { scenario: '新城市/新路段', realRatio: '20%', synthRatio: '80%', method: 'Sim2Real 为主', reason: '无真实数据，仿真+域适配' },
+      ],
+    },
+  },
+  // 质量评估体系
+  qualityMetrics: [
+    { name: 'FID (Fréchet Inception Distance)', desc: '衡量合成图像与真实图像分布的距离', target: '< 50', icon: '📐' },
+    { name: 'CLIP Score', desc: '合成图像与文本描述的语义一致性', target: '> 0.28', icon: '📎' },
+    { name: '结构保持率 (SSIM)', desc: '编辑前后场景结构的保持程度', target: '> 0.85', icon: '🏗️' },
+    { name: '下游 mAP 提升', desc: '加入合成数据后检测模型 mAP 变化', target: '> +1.0%', icon: '📈' },
+    { name: '碰撞率 (轨迹)', desc: '合成轨迹与其他 Agent/边界的碰撞比例', target: '< 1%', icon: '💥' },
+    { name: '标注一致性', desc: '自动标注与人工标注的一致性 (IoU)', target: '> 0.75', icon: '🎯' },
+  ],
+  // 论文参考
+  papers: [
+    { paper: 'MagicDrive', venue: 'ICLR 2024', task: '可控多视角街景生成', method: 'SD + ControlNet + LoRA', highlight: 'BEV 布局条件 → 6 路一致环视图像' },
+    { paper: 'ChatScene', venue: 'CVPR 2024', task: '文本→场景布局生成', method: 'LLM + Transformer Decoder', highlight: '自然语言描述 → BEV 物体布局' },
+    { paper: 'InstructPix2Pix', venue: 'CVPR 2023', task: '指令式图像编辑', method: 'Diffusion + 文本条件', highlight: '"make it rainy" → 天气变换' },
+    { paper: 'CTG++', venue: 'CoRL 2023', task: '可控轨迹生成', method: 'Diffusion + 约束引导', highlight: '条件扩散 → 多样化安全轨迹' },
+    { paper: 'GeoDiffusion', venue: 'ICLR 2024', task: '几何可控场景生成', method: 'Diffusion + 3D 布局条件', highlight: '3D 框条件 → 几何一致图像' },
+    { paper: 'DriveEditor', venue: 'ECCV 2024', task: '驾驶场景编辑', method: 'ControlNet + 区域编辑', highlight: '局部编辑保持全局一致性' },
+    { paper: 'Grounded-SAM', venue: '2024', task: '开放词汇分割', method: 'Grounding-DINO + SAM', highlight: '文本提示 → 精确实例分割' },
+    { paper: 'CUT', venue: 'ECCV 2020', task: '无配对图像翻译', method: '对比学习 + PatchNCE', highlight: '单向翻译，高效 Sim2Real' },
+  ],
+  // 效果指标
+  metrics: {
+    synthVolume: { daily: '~100K 帧/天', monthly: '~3M 帧/月', total: '~50M 帧 (累计)' },
+    costSaving: { labelCost: '标注成本降低 90% ($2→$0.01/帧)', dataCost: '长尾数据获取成本降低 80%', trainCost: '训练数据准备周期缩短 70%' },
+    qualityImpact: {
+      longtail_mAP: '长尾场景 mAP: 0.32 → 0.48 (+50%)',
+      weather_robustness: '极端天气鲁棒性: +12% mAP',
+      planning_collision: '规划碰撞率: 2.1% → 1.3% (-38%)',
+      overall_nds: '整体 NDS: 0.714 → 0.728 (+1.4%)',
+    },
   },
 };

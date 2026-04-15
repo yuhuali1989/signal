@@ -358,19 +358,100 @@ VLA V&V 分层框架:
   - ODD 覆盖率 > 99.5%（已验证场景）
 ```
 
-## 5.8 开放问题与研究方向
+## 5.8 VLA 推理优化：从 2 秒到 45 毫秒（FlashDrive 2026）
+
+Reasoning VLA 的最大工程瓶颈是推理延迟（2s+），FlashDrive 论文首次证明了 Reasoning VLA 可以满足车规实时要求（< 100ms）：
+
+### 5.8.1 三大核心技术
+
+```python
+# FlashDrive 推理优化技术栈
+class FlashDriveOptimizer:
+    def __init__(self, main_model, draft_model):
+        self.main = main_model      # 7B VLA (Alpamayo-R1)
+        self.draft = draft_model     # 700M Draft VLA (10% 主模型)
+        self.action_vqvae = ActionVQVAE(codebook_size=4096)  # 动作压缩
+        self.prefill_pipeline = LatentPrefillPipeline()       # 流水线预填充
+
+    def speculative_reasoning(self, bev_features):
+        """1. 推理投机执行：小模型生成草稿，大模型验证"""
+        draft_steps = self.draft.reason(bev_features, max_steps=8)  # ~8ms
+        accepted = self.main.verify_batch(draft_steps)               # ~20ms
+        # 接受率 > 85%，有效加速 ~6.7x
+        return accepted
+
+    def compressed_action_decode(self, reasoning_output):
+        """2. 动作 Token 压缩：180 维 → 22 码本 token"""
+        compressed = self.action_vqvae.encode(reasoning_output)  # 8x 压缩
+        actions = self.action_vqvae.parallel_decode(compressed)  # 单次前向传播
+        return actions
+
+    def pipeline_infer(self, frame_t, frame_t_plus_1):
+        """3. 潜在空间预填充：利用帧间时间冗余"""
+        # 帧 t 推理的同时预填充帧 t+1 的 BEV 特征
+        with concurrent_execution():
+            result_t = self.reason_and_plan(frame_t)
+            self.prefill_pipeline.prepare(frame_t_plus_1)  # 隐藏感知延迟
+        return result_t
+```
+
+### 5.8.2 性能对比
+
+| 优化阶段 | 延迟 | 累计加速 | L2 精度 |
+|---------|------|---------|--------|
+| 原始 Alpamayo-R1 | 2,100ms | — | 0.71m |
+| + Speculative Reasoning | 312ms | 6.7x | 0.71m |
+| + Action Compression | 89ms | 24x | 0.72m |
+| + Latent Prefill | **45ms** | **44x** | 0.72m |
+
+精度损失 < 1.5%，首次满足车规 100ms 延迟要求。
+
+### 5.8.3 技术迁移：LLM Infra → AD Infra
+
+FlashDrive 的意义超越自动驾驶本身——它证明了 LLM 推理优化技术可以系统性迁移到 VLA：
+
+| LLM 技术 | VLA 适配 | 核心难点 |
+|---------|---------|---------|
+| Speculative Decoding | Speculative Reasoning | 连续输出 vs 离散 token |
+| KV Cache 压缩 | Action Token 压缩 | 需要 VQ-VAE 训练 |
+| Chunked Prefill | Latent Prefill | 帧间冗余天然可利用 |
+
+## 5.9 开源量产 VLA：小鹏 VLA 2.0 全景
+
+2026 年 4 月小鹏在北京车展全面展示 VLA 2.0 生态，标志着开源量产 VLA 的成熟：
+
+### 5.9.1 架构特点
+
+- **72B MoE 基座**：8 专家 × 9B，活跃参数 ~9B，阿里云 3 万卡训练
+- **脑内推理**：latent space CoT，延迟远低于文本 CoT，安全性保持
+- **5 天全链路迭代**：数据采集→自动标注→训练→仿真→OTA 的完整闭环
+
+### 5.9.2 量产数据
+
+| 指标 | VLA 2.0 | 对比 |
+|------|---------|------|
+| 接管率 | 0.25 次/百公里 | 行业领先 |
+| 窄路能力 | 13x 提升 | vs VLA 1.0 |
+| 覆盖城市 | 300+ | 无图 NOA |
+| 推理延迟 | 52ms (Orin X) | 满足车规 |
+
+### 5.9.3 开源与商用生态
+
+大众汽车成为首发商用客户（2026 年 ID.7 搭载），Apache 2.0 协议开源权重+推理代码+训练框架。这是中国自动驾驶技术向全球输出的标志性事件。
+
+## 5.10 开放问题与研究方向
 
 1. **VLA 的可解释性**：端到端模型的决策过程如何解释？Latent CoT 是否足够？注意力可视化 + 概念探针是有前景的方向
 2. **长尾场景泛化**：如何让 VLA 在罕见场景（施工区、极端天气）中表现稳健？世界模型对抗生成 + 在线学习
-3. **实时性约束**：7B+ 参数的 VLA 如何在 100ms 延迟内完成推理？稀疏化 + Speculative Decoding
+3. **实时性约束**：FlashDrive 证明 Reasoning VLA 可满足车规要求，但长尾场景接受率下降（85% → 60%）仍需解决
 4. **仿真与真实的 Gap**：世界模型生成的训练数据与真实场景的分布差异——Domain Randomization + Sim2Real 迁移
 5. **规模化验证**：如何在有限路测里程下证明 VLA 的安全性？形式化方法 + 统计置信区间
 6. **多芯片协同**：Thor/J6E 双芯片方案下 VLA 的流水线并行推理
 
 ## 小结
 
-本章系统梳理了自动驾驶模型架构从模块化到 VLA 端到端的演进路径。VLA 架构通过统一视觉感知、语言理解和动作生成，正在成为下一代自动驾驶的核心范式。DriveWorld-VLA 等工作证明了世界模型与 VLA 的深度融合可以显著提升数据效率和泛化能力。地平线 SuperDrive 2.0 的量产交付标志着端到端 VLA 从论文走向现实。未来的关键挑战在于部署效率、安全验证和规模化数据工程。
+本章系统梳理了自动驾驶模型架构从模块化到 VLA 端到端的演进路径。VLA 架构通过统一视觉感知、语言理解和动作生成，正在成为下一代自动驾驶的核心范式。DriveWorld-VLA 等工作证明了世界模型与 VLA 的深度融合可以显著提升数据效率和泛化能力。FlashDrive 解决了 Reasoning VLA 的实时性瓶颈（44x 加速到 45ms），小鹏 VLA 2.0 开源和大众商用标志着量产 VLA 生态的成熟。未来的关键挑战在于长尾场景优化、安全验证和全球化部署。
 
 ---
 
-*本章由 Signal 知识平台 AI 智能体自动生成并深度修订。最后更新：2026-04-14*
+*本章由 Signal 知识平台 AI 智能体自动生成并深度修订。最后更新：2026-04-18*

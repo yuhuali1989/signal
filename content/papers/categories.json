@@ -26,5 +26,12 @@
     "icon": "📊",
     "color": "orange",
     "description": "数据工程、合成数据、数据配方、自动标注"
+  },
+  {
+    "id": "autonomous-driving",
+    "name": "自动驾驶",
+    "icon": "🚗",
+    "color": "teal",
+    "description": "VLA 模型、世界模型、BEV 感知、端到端驾驶、数据飞轮"
   }
 ]

@@ -5,7 +5,7 @@ chapter: "4"
 chapterTitle: "多 Agent 协作框架"
 description: "从零构建 AI 智能体系统"
 date: "2026-04-11"
-updatedAt: "2026-04-11 21:02"
+updatedAt: "2026-04-16 11:00"
 agent: "研究员→编辑→审校员"
 tags:
   - "Agent"
@@ -301,6 +301,140 @@ class ResearchOutput(BaseModel):
 # 实践 4: 监控和观测
 # 每个 Agent 调用记录：输入 token、输出 token、延迟、工具调用
 ```
+
+## 4.7 MARTI: 多 Agent RL 训练的统一框架
+
+2026 年 ICLR 上，清华 C3I 实验室发布 MARTI（Multi-Agent Reinforced Training and Inference）框架，首次将 RL 训练引入多 Agent LLM 系统：
+
+```
+┌────────────────────────────────────────┐
+│         MARTI 训练框架                  │
+├────────────────────────────────────────┤
+│                                         │
+│  ┌─────────┐    ┌─────────┐            │
+│  │ Agent A  │ ←→ │ Agent B  │  消息传递 │
+│  │ (LLM)   │    │ (LLM)   │  梯度回传 │
+│  └────┬────┘    └────┬────┘            │
+│       │              │                  │
+│       └──────┬───────┘                  │
+│              ↓                          │
+│  ┌──────────────────────────┐          │
+│  │ Multi-Agent GRPO         │          │
+│  │ ├── 联合奖励函数         │          │
+│  │ ├── Agent 间消息梯度回传 │          │
+│  │ ├── Tree Search 扩展     │          │
+│  │ └── 经验回放共享池       │          │
+│  └──────────────────────────┘          │
+│                                         │
+│  关键创新:                              │
+│  1. Agent 间消息可以传递梯度           │
+│  2. 支持 Tree Search 扩展推理树        │
+│  3. 联合优化而非独立优化               │
+└────────────────────────────────────────┘
+```
+
+MARTI 的核心发现：**联合 RL 训练的多 Agent 系统比独立训练的多 Agent 系统在复杂推理任务上提升 23%**。这意味着多 Agent 不仅是推理时的协作，还可以是训练时的协同进化。
+
+```python
+# MARTI 多Agent训练伪代码
+from marti import MultiAgentGRPO, AgentConfig
+
+# 配置 Agent 团队
+agents = [
+    AgentConfig(role="researcher", backbone="qwen3-32b"),
+    AgentConfig(role="coder", backbone="deepseek-r2"),
+    AgentConfig(role="reviewer", backbone="glm-5.1"),
+]
+
+# 联合 RL 训练
+trainer = MultiAgentGRPO(
+    agents=agents,
+    reward_fn=joint_task_completion_reward,
+    message_gradient=True,   # 消息传递支持梯度
+    tree_search_width=4,     # Tree Search 宽度
+    shared_replay_buffer=True # 共享经验池
+)
+
+# 训练时 Agent 间消息可以回传梯度
+# → Agent A 学会生成更有用的研究报告
+# → Agent B 学会更好地利用研究报告编码
+# → Agent C 学会更精准地发现 Bug
+trainer.train(episodes=10000)
+```
+
+## 4.8 A2A 与 MCP: 多 Agent 通信标准化
+
+### 4.8.1 Google A2A 协议
+
+Google 于 2025 年提出 Agent-to-Agent (A2A) 协议，定义了 Agent 间的标准通信接口：
+
+```
+A2A 协议核心:
+  ├── Agent Card: 声明 Agent 的能力和接口
+  ├── Task Protocol: 标准化任务请求/响应格式
+  ├── Streaming: 长任务的实时进度更新
+  └── Security: OAuth 2.0 + Agent 身份验证
+```
+
+### 4.8.2 MCP + A2A 的协同
+
+```
+MCP (Agent ↔ 工具) + A2A (Agent ↔ Agent) = 完整生态
+
+┌──────────┐  A2A  ┌──────────┐
+│ Agent A   │ ←──→ │ Agent B   │
+│ (规划者)  │      │ (执行者)  │
+└─────┬────┘      └─────┬────┘
+      │ MCP             │ MCP
+      ↓                 ↓
+┌─────┴────┐      ┌─────┴────┐
+│ 搜索工具  │      │ 代码执行  │
+│ 数据库    │      │ 文件系统  │
+└──────────┘      └──────────┘
+```
+
+2026 年 4 月，MCP v2.1 月下载量突破 9700 万次，A2A 被 Linux 基金会 AAIF 接纳为永久治理标准。这两个协议正在成为多 Agent 系统的"HTTP + REST"。
+
+## 4.9 微软 Agent Framework: 生产级编排
+
+微软于 2026 年初开源 Agent Framework（GitHub 8 万+ Star），特点：
+
+```python
+# Microsoft Agent Framework 编排示例
+from agent_framework import AgentRuntime, TypedAgent, Orchestrator
+
+# Type-safe Agent 定义
+@TypedAgent(
+    input=ResearchQuery,
+    output=ResearchReport,
+    tools=[web_search, arxiv_api],
+    mcp_servers=["browser", "filesystem"]
+)
+class ResearcherAgent:
+    system_prompt = "你是 AI 前沿研究员..."
+
+# 生产级编排
+orchestrator = Orchestrator(
+    agents=[ResearcherAgent, EditorAgent, ReviewerAgent],
+    strategy="sequential_with_retry",
+    max_retries=2,
+    timeout=300,
+    observability=OpenTelemetryTracer(),
+    guardrails=AgentShield(
+        sandbox=True,
+        intent_classifier=True,
+        audit_log=True
+    )
+)
+
+result = await orchestrator.run(query="分析数据飞轮在自动驾驶中的应用")
+```
+
+关键特性：
+- **Type-safe**: 编译时检查 Agent 间接口兼容性
+- **原生 MCP 支持**: Agent 通过 MCP 协议调用外部工具
+- **AgentShield 集成**: 零信任沙箱 + 实时意图分类 + 审计日志
+- **OpenTelemetry 可观测性**: Agent 调用链全链路追踪
 
 ## 小结
 

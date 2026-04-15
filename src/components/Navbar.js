@@ -7,10 +7,12 @@ const navItems = [
   { name: '首页', href: '/' },
   { name: '书架', href: '/books/' },
   { name: '文章', href: '/articles/' },
-  { name: '研究', href: '/papers/', title: '论文解读 · 研究趋势 · 四大方向追踪' },
-  { name: '模型中心', href: '/models/', title: '架构图库 · 排行榜 · 评测数据集' },
+  { name: '论文', href: '/papers/', title: '论文解读 · 研究趋势 · 四大方向追踪' },
+  { name: '模型', href: '/models/', title: '架构图库 · 排行榜 · 评测数据集' },
   { name: '自动驾驶', href: '/vla/', title: 'DriveWorld-VLA · Alpamayo-R1 · 自动驾驶前沿' },
   { name: '数据闭环', href: '/data-infra/', title: 'K8s · 数据湖仓 · MLOps · 闭环链路 · 向量DB' },
+  { name: '实验室', href: '/lab/', title: 'NeRF · 占用网络 · 扩散模型 · 蒸馏 · 轻量可复现' },
+{ name: '业务原生', href: '/strategy/', title: 'AI 时代困境 · Palantir 模式 · 应对框架 · 业务原生转型' },
   { name: '声浪', href: '/news/', title: 'AI 前沿动态 · 每日聚合' },
   { name: '工具箱', href: '/tools/', title: 'Prompt 对比 · 模型参数速查 · 评测维度解析' },
   { name: '日志', href: '/evolution/', title: 'AI 智能体进化记录 · 全部更新透明可追溯' },
@@ -32,13 +34,13 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-0.5">
+          <div className="hidden lg:flex items-center gap-0">
             {navItems.map(item => (
               <Link
                 key={item.name}
                 href={item.href}
                 title={item.title}
-                className="px-3 py-1.5 text-[13px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all"
+                className="px-2 py-1.5 text-[12px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap"
               >
                 {item.name}
               </Link>
@@ -53,7 +55,7 @@ export default function Navbar() {
             </div>
 
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-gray-50"
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-50"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +71,7 @@ export default function Navbar() {
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <div className="md:hidden pb-3 border-t border-gray-50 mt-1 pt-2">
+          <div className="lg:hidden pb-3 border-t border-gray-50 mt-1 pt-2">
             {navItems.map(item => (
               <Link
                 key={item.name}

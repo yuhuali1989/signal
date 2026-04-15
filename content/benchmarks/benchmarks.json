@@ -42,7 +42,7 @@
     "category": "overall",
     "categoryName": "综合能力",
     "categoryIcon": "📊",
-    "date": "2026-04-14",
+    "date": "2026-04-16",
     "models": [
       { "rank": 1, "name": "GPT-5.5 Spud", "provider": "OpenAI", "score": 95.2, "arena_elo": 1402, "mmlu_pro": 91.5, "change": "→", "badge": "👑" },
       { "rank": 2, "name": "Claude Opus 4.6", "provider": "Anthropic", "score": 93.5, "arena_elo": 1385, "mmlu_pro": 89.2, "change": "→", "badge": "🏆" },
@@ -90,6 +90,23 @@
       { "rank": 6, "name": "GPT-4o-mini", "provider": "OpenAI", "input_price": 0.15, "output_price": 0.6, "score": 75.2, "value_score": 82.1, "change": "↓2", "badge": "" },
       { "rank": 7, "name": "Claude Sonnet 4.6", "provider": "Anthropic", "input_price": 3.0, "output_price": 15.0, "score": 88.5, "value_score": 65.2, "change": "→", "badge": "" },
       { "rank": 8, "name": "GPT-5.4", "provider": "OpenAI", "input_price": 10.0, "output_price": 30.0, "score": 92.8, "value_score": 52.8, "change": "→", "badge": "" }
+    ]
+  },
+  {
+    "id": "ad-vla-2026q1",
+    "title": "自动驾驶 VLA 排行榜（2026 Q1）",
+    "description": "基于 nuScenes Planning / NAVSIM / CARLA 的自动驾驶视觉-语言-动作模型评测",
+    "category": "autonomous-driving",
+    "categoryName": "自动驾驶",
+    "categoryIcon": "🚗",
+    "date": "2026-04-16",
+    "models": [
+      { "rank": 1, "name": "VLA-World", "provider": "学术界", "score": 92.5, "l2_3s": 0.82, "collision_rate": 0.24, "change": "🆕", "badge": "👑" },
+      { "rank": 2, "name": "HybridDriveVLA", "provider": "学术界", "score": 90.1, "l2_3s": 0.95, "collision_rate": 0.31, "change": "→", "badge": "🏆" },
+      { "rank": 3, "name": "Tesla FSD v13 (VLA)", "provider": "Tesla", "score": 88.8, "l2_3s": 1.02, "collision_rate": 0.35, "change": "→", "badge": "" },
+      { "rank": 4, "name": "DriveWorld-VLA", "provider": "学术界", "score": 86.5, "l2_3s": 1.08, "collision_rate": 0.38, "change": "↓1", "badge": "" },
+      { "rank": 5, "name": "SuperDrive 2.0 (VLA)", "provider": "Horizon", "score": 84.2, "l2_3s": 1.15, "collision_rate": 0.42, "change": "→", "badge": "" },
+      { "rank": 6, "name": "OpenDriveVLA", "provider": "学术界", "score": 82.1, "l2_3s": 1.28, "collision_rate": 0.48, "change": "→", "badge": "" }
     ]
   }
 ]

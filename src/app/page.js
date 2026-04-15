@@ -56,13 +56,13 @@ export default function Home() {
               href="/papers/"
               className="px-5 py-2 bg-white text-gray-700 text-sm font-medium rounded-full border border-gray-200 hover:border-[#a29bfe] hover:text-[#6c5ce7] transition-all"
             >
-              研究
+              论文
             </Link>
             <Link
               href="/models/"
               className="px-5 py-2 bg-white text-gray-700 text-sm font-medium rounded-full border border-gray-200 hover:border-[#a29bfe] hover:text-[#6c5ce7] transition-all"
             >
-              模型中心
+              模型
             </Link>
             <Link
               href="/news/"
@@ -95,14 +95,14 @@ export default function Home() {
             <Link href="/models/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-cyan-50/60 border border-cyan-100/60 hover:border-cyan-300/60 hover:shadow-sm transition-all group">
               <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">📊</span>
               <div>
-                <p className="text-sm font-semibold text-gray-800 group-hover:text-cyan-600 transition-colors">模型中心 · 评测</p>
+<p className="text-sm font-semibold text-gray-800 group-hover:text-cyan-600 transition-colors">模型 · 评测</p>
                 <p className="text-xs text-gray-400">模型排行 + 评测可信度，同步 SOTA 进展</p>
               </div>
             </Link>
             <Link href="/papers/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-50/60 border border-indigo-100/60 hover:border-indigo-300/60 hover:shadow-sm transition-all group">
               <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">🔬</span>
               <div>
-                <p className="text-sm font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">研究 · 论文解读</p>
+<p className="text-sm font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">论文 · 解读</p>
                 <p className="text-xs text-gray-400">必读论文精选，覆盖四大方向追踪</p>
               </div>
             </Link>
@@ -118,6 +118,13 @@ export default function Home() {
               <div>
                 <p className="text-sm font-semibold text-gray-800 group-hover:text-emerald-600 transition-colors">数据闭环</p>
                 <p className="text-xs text-gray-400">K8s · 数据湖仓 · MLOps · 闭环链路</p>
+              </div>
+            </Link>
+            <Link href="/lab/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-violet-50/60 border border-violet-100/60 hover:border-violet-300/60 hover:shadow-sm transition-all group">
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">🔬</span>
+              <div>
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">前沿实验室</p>
+                <p className="text-xs text-gray-400">NeRF · 占用网络 · 扩散模型 · 单卡可跑</p>
               </div>
             </Link>
             <Link href="/tools/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-orange-50/60 border border-orange-100/60 hover:border-orange-300/60 hover:shadow-sm transition-all group">
