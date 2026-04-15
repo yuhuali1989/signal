@@ -6,8 +6,8 @@ import ModelHub from '@/components/ModelHub';
 import { getBenchmarks, getBenchmarkDatasets } from '@/lib/content';
 
 export const metadata = {
-  title: '模型中心 — Signal',
-  description: '一站式 LLM 模型中心：架构图库、Fact Sheet、技术对比、性能排行榜与数据集评测全景',
+  title: '模型 — Signal',
+  description: '一站式 LLM 模型：架构图库、Fact Sheet、技术对比、性能排行榜与数据集评测全景',
 };
 
 export default function ModelsPage() {
@@ -22,7 +22,7 @@ export default function ModelsPage() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            🤖 模型中心
+            🤖 模型
           </h1>
           <p className="text-sm text-gray-500">
             LLM 全景——架构图库 · 技术对比 · 性能排行榜 · 评测数据集，一站式查阅

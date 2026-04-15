@@ -10,6 +10,8 @@ import {
   MLOPS_DATA,
   OBSERVABILITY_DATA,
   VECTOR_DATA,
+  DEDUP_DATA,
+  SYNTH_DATA,
 } from '@/lib/data-infra-data';
 
 // ─────────────────────────────────────────────────────────────
@@ -641,6 +643,472 @@ function VectorTab() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────
+// 8. 图像去重
+// ─────────────────────────────────────────────────────────────
+function DedupTab() {
+  const { dedupLevels, methods, pipeline, adScenarios, paperComparison, architecture, metrics } = DEDUP_DATA;
+
+  return (
+    <div className="space-y-4">
+      {/* 去重层级体系 */}
+      <SectionCard icon="🏗️" title="去重层级体系" desc="自动驾驶 & 具身机器人场景下的三级去重架构">
+        <div className="space-y-4">
+          {dedupLevels.map(lv => (
+            <div key={lv.level} className="rounded-xl border p-4"
+              style={{ borderColor: lv.color + '33', background: lv.color + '04' }}>
+              {/* 层级标题 */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{lv.icon}</span>
+                  <span className="text-sm font-bold" style={{ color: lv.color }}>{lv.level}: {lv.name}</span>
+                  <Badge color={lv.color}>冗余率 {lv.redundancy}</Badge>
+                </div>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-3">{lv.desc}</p>
+
+              {/* 具体做法 */}
+              <div className="space-y-2 mb-3">
+                {lv.approaches.map(a => (
+                  <div key={a.name} className="rounded-lg border border-gray-100 bg-white/80 p-2.5">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-semibold text-gray-700">{a.name}</span>
+                      {a.paper && <Badge color={lv.color}>{a.paper}</Badge>}
+                    </div>
+                    <div className="text-[10px] text-gray-500">{a.desc}</div>
+                    {a.detail && <div className="text-[9px] text-gray-400 mt-1 font-mono">{a.detail}</div>}
+                  </div>
+                ))}
+              </div>
+
+              {/* Level 2 专属论文表格 */}
+              {lv.papers && typeof lv.papers[0] === 'object' && (
+                <div className="mt-3">
+                  <div className="text-[10px] font-semibold text-gray-600 mb-2">📄 相关论文</div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-[10px]">
+                      <thead>
+                        <tr className="border-b border-gray-100">
+                          <th className="text-left py-1.5 px-2 text-gray-500 font-medium">论文</th>
+                          <th className="text-center py-1.5 px-2 text-gray-500 font-medium">会议</th>
+                          <th className="text-center py-1.5 px-2 text-gray-500 font-medium">任务</th>
+                          <th className="text-left py-1.5 px-2 text-gray-500 font-medium">亮点</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {lv.papers.map(p => (
+                          <tr key={p.paper} className="border-b border-gray-50">
+                            <td className="py-1.5 px-2 font-semibold" style={{ color: lv.color }}>{p.paper}</td>
+                            <td className="py-1.5 px-2 text-center text-gray-500">{p.venue}</td>
+                            <td className="py-1.5 px-2 text-center text-gray-500">{p.task}</td>
+                            <td className="py-1.5 px-2 text-gray-600">{p.highlight}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 去重方法演进 */}
+      <SectionCard icon="📈" title="去重方法演进" desc="从精确哈希到多模态语义去重的技术演进">
+        <div className="space-y-2">
+          {methods.map((m, i) => (
+            <div key={m.name} className="rounded-xl border p-4"
+              style={{ borderColor: m.color + '33', background: m.color + '04' }}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{m.icon}</span>
+                  <span className="text-sm font-semibold text-gray-800">{m.name}</span>
+                  <Badge color={m.color}>{m.tech}</Badge>
+                </div>
+                <span className="text-xs font-mono" style={{ color: m.color }}>去重率: {m.dedup_rate}</span>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-2">{m.desc}</p>
+              <div className="flex items-center gap-4 text-[9px] text-gray-400 font-mono">
+                <span>粒度: {m.granularity}</span>
+                <span>精确率: {m.precision}</span>
+                <span>召回率: {m.recall}</span>
+                <span>成本: {m.cost}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 推荐多级 Pipeline */}
+      <SectionCard icon="⚙️" title="推荐多级去重 Pipeline" desc="4 阶段渐进式去重，从粗到细逐步过滤">
+        <div className="space-y-2">
+          {pipeline.map((p, i) => (
+            <div key={p.stage}>
+              <div className="flex items-center gap-3 rounded-xl border p-3"
+                style={{ borderColor: p.color + '33', background: p.color + '06' }}>
+                <div className="w-16 flex-shrink-0 text-center">
+                  <div className="text-[10px] font-bold" style={{ color: p.color }}>{p.stage}</div>
+                  <div className="text-[9px] text-gray-400">{p.name}</div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] text-gray-600 mb-1">
+                    <span className="font-mono">{p.method}</span>
+                  </div>
+                  <div className="text-[10px] text-gray-500">目标: {p.target}</div>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <div className="text-xs font-bold font-mono" style={{ color: p.color }}>{p.dedup}</div>
+                  <div className="text-[9px] text-gray-400">{p.time}</div>
+                </div>
+              </div>
+              {i < pipeline.length - 1 && (
+                <div className="text-center text-[9px] text-gray-300 py-0.5">↓</div>
+              )}
+            </div>
+          ))}
+          <div className="rounded-xl border border-[#e17055]/20 bg-[#e17055]/5 p-3 text-center">
+            <span className="text-xs font-semibold text-[#e17055]">最终保留: ~32% 高质量非重复数据</span>
+            <span className="text-[10px] text-gray-500 ml-2">（存储成本降低 ~70%，训练效率提升 ~3x）</span>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 自动驾驶场景去重效果 */}
+      <SectionCard icon="🚗" title="自动驾驶场景去重效果" desc="不同场景类型的冗余率和去重策略">
+        <div className="space-y-2">
+          {adScenarios.map(s => (
+            <div key={s.scenario} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+              <span className="text-lg flex-shrink-0">{s.icon}</span>
+              <span className="text-xs font-semibold text-gray-700 w-32">{s.scenario}</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full bg-[#e17055]/30"
+                      style={{ width: s.redundancy }} />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#e17055] w-10">{s.redundancy}</span>
+                </div>
+                <div className="text-[9px] text-gray-400 mt-0.5">{s.method} → {s.retained}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 论文对比 */}
+      <SectionCard icon="📄" title="核心论文对比" desc="图像去重领域 3 篇关键论文">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">论文</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">会议</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">模态</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">领域</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">最大去重</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">性能损失</th>
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">亮点</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paperComparison.map(p => (
+                <tr key={p.paper} className="border-b border-gray-50">
+                  <td className="py-2 px-2 font-semibold text-[#e17055]">{p.paper}</td>
+                  <td className="py-2 px-2 text-center text-gray-500">{p.venue}</td>
+                  <td className="py-2 px-2 text-center text-gray-500">{p.modality}</td>
+                  <td className="py-2 px-2 text-center text-gray-500">{p.domain}</td>
+                  <td className="py-2 px-2 text-center font-mono text-[#e17055]">{p.maxDedup}</td>
+                  <td className="py-2 px-2 text-center font-mono text-[#3fb950]">{p.perfDrop}</td>
+                  <td className="py-2 px-2 text-gray-600">{p.highlight}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* 工程架构：车端 + 云端 */}
+      <SectionCard icon="🏗️" title="去重工程架构" desc="车端边缘去重 + 云端深度去重的两级架构">
+        {/* 车端 */}
+        <div className="mb-4">
+          <div className="text-[10px] font-semibold text-gray-700 mb-2">🚗 {architecture.edgeDedup.name}</div>
+          <div className="space-y-1.5">
+            {architecture.edgeDedup.steps.map(s => (
+              <div key={s.name} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/30 p-2">
+                <span className="text-[10px] font-semibold text-gray-700 w-20">{s.name}</span>
+                <span className="text-[10px] text-gray-500 flex-1">{s.desc}</span>
+                <Badge color="#6c5ce7">{s.tech}</Badge>
+              </div>
+            ))}
+            <div className="text-[9px] text-[#6c5ce7] font-mono text-right">压缩效果: {architecture.edgeDedup.compression}</div>
+          </div>
+        </div>
+        {/* 云端 */}
+        <div className="mb-4">
+          <div className="text-[10px] font-semibold text-gray-700 mb-2">☁️ {architecture.cloudDedup.name}</div>
+          <div className="space-y-1.5">
+            {architecture.cloudDedup.steps.map(s => (
+              <div key={s.name} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/30 p-2">
+                <span className="text-[10px] font-semibold text-gray-700 w-24">{s.name}</span>
+                <span className="text-[10px] text-gray-500 flex-1">{s.desc}</span>
+                <Badge color="#e17055">{s.tech}</Badge>
+              </div>
+            ))}
+            <div className="text-[9px] text-[#e17055] font-mono text-right">压缩效果: {architecture.cloudDedup.compression}</div>
+          </div>
+        </div>
+        {/* 存储 */}
+        <div className="rounded-lg border border-[#e17055]/20 bg-[#e17055]/5 p-3">
+          <div className="text-[9px] font-semibold text-gray-600 mb-2">💾 存储基础设施</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {Object.entries(architecture.storage).map(([key, value]) => {
+              const labels = { embeddings: '嵌入存储', index: '索引策略', metadata: '元数据' };
+              return (
+                <div key={key} className="rounded-md border border-[#e17055]/15 bg-white/80 p-2">
+                  <div className="text-[8px] text-gray-400">{labels[key]}</div>
+                  <div className="text-[10px] font-mono text-gray-700">{value}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 效果指标 */}
+      <SectionCard icon="📊" title="去重效果总览" desc="去重前后的数据规模和模型性能对比">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div className="text-[10px] font-semibold text-gray-600 mb-2">📦 数据规模变化</div>
+            <div className="space-y-2">
+              {[['总帧数', metrics.before.totalFrames, metrics.after.totalFrames],
+                ['存储量', metrics.before.storage, metrics.after.storage],
+                ['训练数据', metrics.before.trainData, metrics.after.trainData],
+              ].map(([label, before, after]) => (
+                <div key={label} className="flex items-center gap-2">
+                  <span className="text-[10px] text-gray-500 w-14">{label}</span>
+                  <span className="text-[10px] font-mono text-gray-400 line-through">{before}</span>
+                  <span className="text-[10px]">→</span>
+                  <span className="text-[10px] font-mono font-semibold text-[#3fb950]">{after}</span>
+                </div>
+              ))}
+              <div className="text-xs font-bold text-[#e17055] mt-1">💰 节省成本: {metrics.after.savedCost}</div>
+            </div>
+          </div>
+          <div>
+            <div className="text-[10px] font-semibold text-gray-600 mb-2">🎯 模型性能影响 (nuScenes)</div>
+            <div className="space-y-2">
+              {Object.entries(metrics.quality).map(([key, value]) => {
+                const labels = { nds: 'NDS', map: 'mAP', l2: 'L2 (3s)' };
+                return (
+                  <div key={key} className="flex items-center gap-2">
+                    <span className="text-[10px] text-gray-500 w-14">{labels[key]}</span>
+                    <span className="text-[10px] font-mono text-gray-600">{value}</span>
+                  </div>
+                );
+              })}
+              <div className="text-[10px] text-[#3fb950] font-medium mt-1">✅ 性能损失 &lt; 1%，可忽略不计</div>
+            </div>
+          </div>
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// 9. 数据合成
+// ─────────────────────────────────────────────────────────────
+function SynthTab() {
+  const { overview, methods, architecture, qualityMetrics, papers, metrics } = SYNTH_DATA;
+
+  return (
+    <div className="space-y-4">
+      {/* 数据合成在闭环中的价值 */}
+      <SectionCard icon="🎯" title="数据合成在闭环中的价值" desc={overview.role}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {overview.value.map(v => (
+            <div key={v.name} className="flex items-start gap-2 rounded-xl border p-3"
+              style={{ borderColor: v.color + '33', background: v.color + '06' }}>
+              <span className="text-lg flex-shrink-0">{v.icon}</span>
+              <div>
+                <div className="text-xs font-semibold text-gray-700">{v.name}</div>
+                <div className="text-[10px] text-gray-500">{v.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 合成方法分类 */}
+      <SectionCard icon="🧪" title="合成方法分类" desc="5 大合成方向覆盖标注、图像、场景、域适配、轨迹">
+        <div className="space-y-3">
+          {methods.map(m => (
+            <div key={m.name} className="rounded-xl border p-4"
+              style={{ borderColor: m.color + '33', background: m.color + '04' }}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{m.icon}</span>
+                  <span className="text-sm font-semibold text-gray-800">{m.name}</span>
+                  <Badge color={m.color}>{m.category}</Badge>
+                </div>
+                <Badge color="#3fb950">{m.cost}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-2">{m.desc}</p>
+              <div className="flex items-center gap-4 text-[9px] text-gray-400 font-mono flex-wrap">
+                <span>技术: {m.tech}</span>
+                <span>输入: {m.input}</span>
+                <span>输出: {m.output}</span>
+                <span style={{ color: m.color }}>质量: {m.quality}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 合成数据在闭环中的架构 */}
+      <SectionCard icon="🔄" title="合成数据闭环架构" desc="从长尾发现到效果反馈的 7 阶段闭环">
+        <div className="space-y-2">
+          {architecture.pipeline.map((p, i) => (
+            <div key={p.stage}>
+              <div className="flex items-center gap-3 rounded-xl border p-3"
+                style={{ borderColor: p.color + '33', background: p.color + '06' }}>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0"
+                  style={{ background: p.color + '15' }}>
+                  {p.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="text-xs font-semibold text-gray-700">{p.name}</span>
+                    <Badge color={p.color}>{p.stage}</Badge>
+                  </div>
+                  <div className="text-[10px] text-gray-500">{p.desc}</div>
+                  <div className="text-[9px] text-gray-400 mt-0.5 font-mono">{p.source}</div>
+                </div>
+              </div>
+              {i < architecture.pipeline.length - 1 && (
+                <div className="text-center text-[9px] text-gray-300 py-0.5">↓</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 真实-合成数据混合策略 */}
+      <SectionCard icon="🔀" title="真实-合成数据混合策略" desc={architecture.mixStrategy.name}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">场景类型</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">真实数据</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">合成数据</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">混合方式</th>
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">原因</th>
+              </tr>
+            </thead>
+            <tbody>
+              {architecture.mixStrategy.rules.map(r => (
+                <tr key={r.scenario} className="border-b border-gray-50">
+                  <td className="py-2 px-2 font-semibold text-gray-700">{r.scenario}</td>
+                  <td className="py-2 px-2 text-center font-mono text-[#3fb950]">{r.realRatio}</td>
+                  <td className="py-2 px-2 text-center font-mono text-[#a29bfe]">{r.synthRatio}</td>
+                  <td className="py-2 px-2 text-center"><Badge color="#a29bfe">{r.method}</Badge></td>
+                  <td className="py-2 px-2 text-gray-500">{r.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* 质量评估体系 */}
+      <SectionCard icon="✅" title="合成数据质量评估体系" desc="6 维度自动化质量评估">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {qualityMetrics.map(m => (
+            <div key={m.name} className="flex items-start gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+              <span className="text-lg flex-shrink-0">{m.icon}</span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-xs font-semibold text-gray-700">{m.name}</span>
+                  <Badge color="#a29bfe">目标: {m.target}</Badge>
+                </div>
+                <div className="text-[10px] text-gray-500">{m.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 核心论文 */}
+      <SectionCard icon="📄" title="核心论文参考" desc="数据合成领域关键论文">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">论文</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">会议</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">任务</th>
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">亮点</th>
+              </tr>
+            </thead>
+            <tbody>
+              {papers.map(p => (
+                <tr key={p.paper} className="border-b border-gray-50">
+                  <td className="py-2 px-2 font-semibold text-[#a29bfe]">{p.paper}</td>
+                  <td className="py-2 px-2 text-center text-gray-500">{p.venue}</td>
+                  <td className="py-2 px-2 text-center text-gray-500">{p.task}</td>
+                  <td className="py-2 px-2 text-gray-600">{p.highlight}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* 效果指标 */}
+      <SectionCard icon="📊" title="合成数据效果总览" desc="合成数据对模型性能的提升效果">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <div className="text-[10px] font-semibold text-gray-600 mb-2">📦 合成规模</div>
+            <div className="space-y-1.5">
+              {Object.entries(metrics.synthVolume).map(([key, value]) => {
+                const labels = { daily: '日产量', monthly: '月产量', total: '累计总量' };
+                return (
+                  <div key={key} className="flex items-center gap-2">
+                    <span className="text-[10px] text-gray-500 w-14">{labels[key]}</span>
+                    <span className="text-[10px] font-mono font-semibold text-[#a29bfe]">{value}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div>
+            <div className="text-[10px] font-semibold text-gray-600 mb-2">💰 成本节省</div>
+            <div className="space-y-1.5">
+              {Object.entries(metrics.costSaving).map(([key, value]) => (
+                <div key={key} className="text-[10px] text-gray-600">
+                  <span className="text-[#3fb950]">✅</span> {value}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="text-[10px] font-semibold text-gray-600 mb-2">🎯 质量提升</div>
+            <div className="space-y-1.5">
+              {Object.entries(metrics.qualityImpact).map(([key, value]) => (
+                <div key={key} className="text-[10px] text-gray-600">
+                  <span className="text-[#3fb950]">📈</span> {value}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════
 // 主组件
 // ═══════════════════════════════════════════════════════════════
@@ -655,6 +1123,8 @@ export default function DataInfraViz() {
     mlops: <MLOpsTab />,
     observability: <ObservabilityTab />,
     vectordb: <VectorTab />,
+    dedup: <DedupTab />,
+    synth: <SynthTab />,
   }), []);
 
   const activeInfo = INFRA_TABS.find(t => t.id === activeTab);

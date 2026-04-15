@@ -4,7 +4,7 @@ import PapersList from '@/components/PapersList';
 import ResearchTrends from '@/components/ResearchTrends';
 import { getPapersIndex, getPaperCategories } from '@/lib/content';
 
-export const metadata = { title: '研究 — Signal' };
+export const metadata = { title: '论文 — Signal' };
 
 export default function PapersPage() {
   const papers = getPapersIndex();
@@ -32,7 +32,7 @@ export default function PapersPage() {
 
         {/* ── 页面标题 ── */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">🔬 研究</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">🔬 论文</h1>
           <p className="text-sm text-gray-500">
             大模型领域必读论文精选，覆盖模型架构、训练对齐、推理优化、数据合成四大方向
           </p>

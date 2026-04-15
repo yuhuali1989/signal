@@ -356,16 +356,60 @@ Prefill 延迟高     → Prefix Caching (Ch3)
                     → Medusa/EAGLE (Ch7)
 ```
 
-## 1.8 本章小结
+## 1.8 推理优化的跨域迁移：从 LLM 到 VLA
+
+2026 年的一个重要趋势是 LLM 推理优化技术向其他领域的迁移，最典型的案例是 **VLA（Vision-Language-Action）自动驾驶模型**：
+
+### 1.8.1 VLA 推理的独特挑战
+
+| 挑战 | LLM 推理 | VLA 推理 |
+|------|---------|---------|
+| 延迟要求 | ~1s 可接受 | < 100ms 硬实时 |
+| 输出类型 | 离散 token | 连续动作向量 |
+| 输入模态 | 文本 | BEV 特征（多相机融合） |
+| 安全要求 | 输出有害内容 | 碰撞/伤亡 |
+
+### 1.8.2 FlashDrive：推理优化技术迁移范例
+
+FlashDrive（2026）将三种 LLM 推理优化技术成功迁移到 VLA，实现 44x 加速：
+
+```python
+# LLM → VLA 技术迁移对照
+llm_to_vla_mapping = {
+    "Speculative Decoding":  "Speculative Reasoning (小模型草稿+大模型验证)",
+    "KV Cache Compression":  "Action Token Compression (VQ-VAE 8x 压缩)",
+    "Chunked Prefill":       "Latent Prefill Pipeline (帧间时间冗余利用)",
+}
+# 结果: Reasoning VLA 延迟从 2.1s → 45ms，精度损失 < 1.5%
+```
+
+这说明**推理优化的核心原理是通用的**——Memory-Bound 分析、投机执行、数据压缩这些思想不仅适用于文本生成，也适用于任何自回归或序列生成任务。
+
+### 1.8.3 Claude Opus 4.7 的 xhigh 推理级别
+
+Anthropic 在 Opus 4.7 中新增 `xhigh` 推理努力级别（介于 `high` 和 `max` 之间），体现了推理时计算精细控制的趋势：
+
+```
+推理努力级别体系:
+low → medium → high → xhigh(新增) → max
+
+关键发现: "低努力 Opus 4.7 ≈ 中等努力 Opus 4.6"
+意义: 基础模型能力提升正在让推理优化的收益递增
+```
+
+这与 Test-Time Compute Scaling 理论一致——在推理阶段的精细计算分配（而非简单增加计算量）是效率的关键。
+
+## 1.9 本章小结
 
 LLM 推理的核心矛盾：
 - **Decode 阶段是 Memory-Bound**（99% 时间等数据，MBU 仅 15-75%）
 - **KV Cache 吃光显存**（长序列 + 高并发，128K×100 需要 4TB）
 - **自回归无法并行**（必须一个 token 一个 token 生成）
 - **Prefill 和 Decode 需求相反**（算力 vs 带宽）
+- **推理优化原理是跨域通用的**（LLM → VLA → 任何序列生成）
 
 理解这些瓶颈是选择和使用推理框架的前提。后续章节将看到 vLLM、TensorRT-LLM、SGLang 等框架如何系统性地解决这些问题。
 
 ---
 
-*Signal 知识平台 · LLM 推理框架 · 第 1 章 · 最后更新：2026-04-12*
+*Signal 知识平台 · LLM 推理框架 · 第 1 章 · 最后更新：2026-04-18*

@@ -1,5 +1,77 @@
 [
   {
+    "date": "2026-04-18 00:19",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Claude Opus 4.7正式发布/小鹏北京车展VLA 2.0开源/FlashDrive VLA实时推理44x加速)，合并 2023 年 4 条旧闻到年度总结，总计→97 条"
+  },
+  {
+    "date": "2026-04-18 00:19",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：Claude Opus 4.7 xhigh推理级别技术拆解 + FlashDrive VLA实时推理加速解析（→59 篇专栏）"
+  },
+  {
+    "date": "2026-04-18 00:19",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：自驾-Ch5 VLA架构(+FlashDrive 44x加速/小鹏VLA 2.0开源量产/脑内推理) + 推理-Ch1 瓶颈分析(+LLM→VLA推理优化迁移/xhigh推理级别/FlashDrive范例)"
+  },
+  {
+    "date": "2026-04-18 00:19",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：FlashDrive (VLA 实时推理加速 Speculative Reasoning+Action Compression 44x) + XPeng VLA 2.0 (开源量产VLA 72B基座大众商用)（→53 篇精读）"
+  },
+  {
+    "date": "2026-04-16 12:52",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(VLA-World CVPR 2026/Supermicro 芯片走私案/蒸馏战争爆发)，合并 2024 年 8 条旧闻到年度总结，总计→98 条"
+  },
+  {
+    "date": "2026-04-16 12:52",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：蒸馏战争与 AI 知识产权保护 + VLA-World 想象-反思自动驾驶解读（→57 篇专栏）"
+  },
+  {
+    "date": "2026-04-16 12:52",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：推理框架-Ch4(+NVIDIA Dynamo/LiteRT-LM 端侧推理/推理成本经济学) + 自驾-Ch1(+蒸馏战争启示/VLA-World 生成推理数据集/合规合成数据)"
+  },
+  {
+    "date": "2026-04-16 12:52",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：VLA-World (CVPR 2026 Findings 想象+反思统一框架) + DriveVLA-W0 (ICML 2026 世界模型放大数据 Scaling Law)（→51 篇精读）"
+  },
+  {
+    "date": "2026-04-16 11:00",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Tesla Cybercab数据飞轮1.6PB/天/NVIDIA Physical AI Data Factory开源/中国端到端路线分裂)，总计→103 条"
+  },
+  {
+    "date": "2026-04-16 11:00",
+    "type": "article",
+    "agent": "专栏智能体",
+    "message": "新增 2 篇文章：自动驾驶数据飞轮闭环工程(Tesla/Waymo/华为三大范式) + NVIDIA Physical AI Data Factory 开放标准解读（→55 篇专栏）"
+  },
+  {
+    "date": "2026-04-16 11:00",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "深度修订 2 章：自驾-Ch7 未来趋势(+数据飞轮工程/Physical AI Data Factory/中国路线分裂/三种范式对比) + Agent-Ch4 多Agent协作(+MARTI RL训练/A2A协议/微软Agent Framework)"
+  },
+  {
+    "date": "2026-04-16 11:00",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇论文精读：NVIDIA Data Flywheel Blueprint (Agent蒸馏优化闭环) + Tesla FSD 4D Auto-Labeling (回溯标注$0.01/帧)（→49 篇精读）"
+  },
+  {
     "date": "2026-04-15 11:00",
     "type": "paper",
     "agent": "论文智能体",

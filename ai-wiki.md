@@ -33,12 +33,12 @@
 - ✅ 文章列表 + 标签筛选
 - ✅ 文章详情页 `/articles/[slug]/`：Markdown 渲染
 
-### 4. 研究 `/papers/`
-- ✅ 研究趋势区块（四大方向：模型架构 / 训练对齐 / 推理优化 / 数据合成）
+### 4. 论文 `/papers/`
+- ✅ 论文趋势区块（四大方向：模型架构 / 训练对齐 / 推理优化 / 数据合成）
 - ✅ 论文列表：分类筛选 + 重要性标记 + 已解读标记
 - ✅ 论文详情页 `/papers/[slug]/`：解读内容渲染
 
-### 5. 模型中心 `/models/`
+### 5. 模型 `/models/`
 - ✅ 模型图库（ModelGallery）：架构图 + Fact Sheet
 - ✅ 评测排行榜（BenchmarkBoard）：多维度对比
 - ✅ 数据集探索（DatasetExplorer）：覆盖 LLM / 编码 / 推理 / Agent / 自动驾驶
@@ -67,6 +67,13 @@
 ### 8. 进化日志 `/evolution/`
 - ✅ 时间线展示所有 AI 智能体操作记录
 - ✅ 类型分类（书籍 / 文章 / 论文 / 声浪）
+
+### 9. 业务原生 `/strategy/`
+- ✅ **行业困境分析** Tab：AI Coding 发展时间线 + 五大核心困境（代码商品化/人才断裂/价值侵蚀/复杂度爆炸/差异化坍缩）
+- ✅ **全球破局思路** Tab：5 大破局策略（Palantir 模式/垂直 AI/平台生态/复合 AI/数据飞轮）
+- ✅ **Palantir 模式深度解析** Tab：产品矩阵（Foundry/Gotham/AIP）+ 四大护城河 + 财务数据
+- ✅ **应对框架** Tab：四层架构（数据基座→业务本体→AI 平台→决策应用）+ 18 月路线图 + 团队转型 + KPI
+- ✅ **行业对标** Tab：Palantir/Databricks/Salesforce/Tesla 模式对比矩阵
 
 ---
 
@@ -137,22 +144,25 @@ maxwell-knowledge/
 │   │   ├── page.js              # 首页
 │   │   ├── books/               # 书架
 │   │   ├── articles/            # 文章
-│   │   ├── papers/              # 研究（论文）
-│   │   ├── models/              # 模型中心
+│   │   ├── papers/              # 论文
+│   │   ├── models/              # 模型
 │   │   ├── vla/                 # VLA 实验室
 │   │   ├── news/                # 声浪
 │   │   ├── evolution/           # 进化日志
+│   │   ├── strategy/            # 业务原生
 │   │   ├── benchmarks/          # 评测榜（待完善）
 │   │   └── gallery/             # 图库（待完善）
 │   ├── components/
 │   │   ├── VlaArchViz.js        # VLA 架构可视化（大文件 120KB）
 │   │   ├── VlaNotebook.js       # 全链路实验 Notebook（大文件 83KB）
 │   │   ├── VlaTrainRunner.js    # 训练运行器（61KB）
-│   │   ├── ModelHub.js          # 模型中心主组件
+│   │   ├── ModelHub.js          # 模型主组件
 │   │   ├── DatasetExplorer.js   # 数据集探索
+│   │   ├── StrategyViz.js       # 业务原生可视化
 │   │   └── ...
 │   └── lib/
-│       └── content.js           # 内容读取工具函数
+│       ├── content.js           # 内容读取工具函数
+│       └── strategy-data.js     # 业务原生数据定义
 └── content/                     # 内容数据目录（Markdown + JSON）
 ```
 
