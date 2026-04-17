@@ -77,6 +77,7 @@
 - ✅ **交付形态** Tab：内部 SaaS 共用六大困境 + 爆炸半径深度分析 + 交付形态演进（大一统→微服务→领域平台→嵌入式能力）+ 决策框架 + 真实案例
 - ✅ **行业对标** Tab：Palantir/Databricks/Salesforce/Tesla 模式对比矩阵
 - ✅ **模型安全** Tab：外部大模型（Claude/GPT/Gemini）接触公司内部代码和数据的风险论证与可控性方案。核心问题定义（四方利益相关者关切）+ 六大风险全景图（数据泄露/知识产权/合规监管/供应链依赖/代码质量/提示注入，每项含真实案例+缓解措施）+ 数据分级管控体系（L1公开→L4绝密，差异化模型访问策略）+ 技术管控架构（安全网关→模型路由→终端管控→审计响应四层）+ 主流模型提供商安全对比（Anthropic/OpenAI/Google/DeepSeek/Qwen 八维度评估）+ 推荐方案四阶段（快速启用→安全网关→多模型路由→持续运营）+ 成本效益分析（管控成本 vs 使用收益 vs 不用的隐性成本）+ 行业实践参考（Google/Microsoft/Stripe/JPMorgan/Shopify）+ 五大关键结论
+  - 💡 **代码生成隔离模式**（Schema-aware Code Generation with Local Execution）：AI 只接触数据的 Schema / 元数据，生成处理代码，**不接触真实数据**；代码在本地/私有环境执行，数据不出域。即"AI writes the code, data never leaves the perimeter"。对应 Palantir AIP 的核心安全设计——AI 操作 Ontology（数据本体/Schema），而非原始数据本身。相关术语：Code-as-Proxy / Federated Code Execution / Data Residency + AI Assist / Sandboxed Code Execution
 - ✅ **中国借鉴** Tab：四大障碍（政府市场/数据主权/价格敏感/大厂自建）+ 四大可行赛道（制造出海/工业能源/医疗/金融）+ 本土化四原则（私有化部署/产品化降本/垂直切入/绑定数据本体）+ 一句话总结
 
 ---
@@ -184,4 +185,4 @@ maxwell-knowledge/
 
 ---
 
-*最后更新：2026-04-18（Navbar 改回平铺展示，色点+竖线分隔分组，解决内容藏太深问题）*
+*最后更新：2026-04-18（补充模型安全 Tab：代码生成隔离模式 Schema-aware Code Generation with Local Execution）*
