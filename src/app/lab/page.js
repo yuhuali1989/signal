@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const LabExplorer = dynamic(() => import('@/components/LabExplorer'), {
@@ -19,7 +18,7 @@ const LabExplorer = dynamic(() => import('@/components/LabExplorer'), {
 export default function LabPage() {
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Hero */}
         <div className="mb-8">

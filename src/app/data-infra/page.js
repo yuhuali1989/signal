@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const DataInfraViz = dynamic(() => import('@/components/DataInfraViz'), {
@@ -79,7 +78,7 @@ export default function DataInfraPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Hero */}
         <div className="mb-8">

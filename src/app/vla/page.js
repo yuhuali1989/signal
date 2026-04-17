@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const ArchViz = dynamic(() => import('@/components/VlaArchViz'), { ssr: false, loading: () => <LoadingBlock /> });
@@ -191,7 +190,7 @@ export default function VlaPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <PageHero activeProject={activeProject} setActiveProject={setActiveProject} />
 

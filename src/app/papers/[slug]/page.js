@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import { getPapersIndex, getPaperReview } from '@/lib/content';
 
@@ -21,7 +20,7 @@ export default async function PaperDetailPage({ params }) {
   if (!review || !paperMeta) {
     return (
       <>
-        <Navbar />
+        
         <main className="max-w-4xl mx-auto px-4 py-20 text-center">
           <p className="text-gray-400">论文解读不存在</p>
           <Link href="/papers/" className="text-maxwell-500 text-sm mt-4 inline-block">← 返回论文列表</Link>
@@ -32,7 +31,7 @@ export default async function PaperDetailPage({ params }) {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">

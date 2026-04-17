@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ModelHub from '@/components/ModelHub';
 import { getBenchmarks, getBenchmarkDatasets } from '@/lib/content';
@@ -18,7 +17,7 @@ export default function ModelsPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">

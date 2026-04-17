@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 // ─── Prompt 模板库 ────────────────────────────────────────────
@@ -660,7 +659,7 @@ export default function ToolsPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Header */}
         <div className="mb-8">

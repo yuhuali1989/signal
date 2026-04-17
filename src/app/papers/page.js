@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PapersList from '@/components/PapersList';
 import ResearchTrends from '@/components/ResearchTrends';
@@ -27,7 +26,7 @@ export default function PapersPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
 
         {/* ── 页面标题 ── */}

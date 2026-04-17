@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ArticleFilter from '@/components/ArticleFilter';
 import { getAllContent } from '@/lib/content';
@@ -10,7 +9,7 @@ export default function ArticlesPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">📝 文章</h1>
