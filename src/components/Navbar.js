@@ -24,38 +24,25 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-white/85 backdrop-blur-xl border-b border-gray-100/80">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-14">
+
+        {/* 第一行：Logo + 右侧状态 + 移动端汉堡 */}
+        <div className="flex items-center justify-between h-10 pt-1">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6c5ce7] to-[#a29bfe] flex items-center justify-center text-white font-bold text-xs shadow-sm shadow-purple-200/50 group-hover:shadow-purple-300/60 transition-shadow">
+          <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6c5ce7] to-[#a29bfe] flex items-center justify-center text-white font-bold text-xs shadow-sm shadow-purple-200/50 group-hover:shadow-purple-300/60 transition-shadow">
               S
             </div>
-            <span className="text-base font-semibold text-gray-900 tracking-tight">Signal</span>
+            <span className="text-sm font-semibold text-gray-900 tracking-tight">Signal</span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-0 overflow-x-auto max-w-[680px] scrollbar-none">
-            {navItems.map(item => (
-              <Link
-                key={item.name}
-                href={item.href}
-                title={item.title}
-                className="px-2 py-1.5 text-[11.5px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap flex-shrink-0"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-
           {/* Right */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-green-50/80 rounded-full border border-green-100/60">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full status-glow" />
               <span className="text-[11px] text-green-700 font-medium">自主进化中</span>
             </div>
-
             <button
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-50"
+              className="md:hidden p-1.5 rounded-lg hover:bg-gray-50"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,9 +56,23 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* 第二行：桌面导航（全宽横向滚动） */}
+        <div className="hidden md:flex items-center gap-0 overflow-x-auto scrollbar-none pb-1">
+          {navItems.map(item => (
+            <Link
+              key={item.name}
+              href={item.href}
+              title={item.title}
+              className="px-2.5 py-1 text-[12px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap flex-shrink-0"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
         {/* Mobile Nav */}
         {mobileOpen && (
-          <div className="lg:hidden pb-3 border-t border-gray-50 mt-1 pt-2">
+          <div className="md:hidden pb-3 border-t border-gray-50 mt-1 pt-2">
             {navItems.map(item => (
               <Link
                 key={item.name}
