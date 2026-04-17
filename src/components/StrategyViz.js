@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { INDUSTRY_CRISIS, GLOBAL_BREAKOUT, PALANTIR_DEEP_DIVE, RESPONSE_FRAMEWORK, SAAS_DELIVERY, FDE_BP_FLYWHEEL, BENCHMARKS } from '@/lib/strategy-data';
+import { INDUSTRY_CRISIS, GLOBAL_BREAKOUT, PALANTIR_DEEP_DIVE, RESPONSE_FRAMEWORK, SAAS_DELIVERY, FDE_BP_FLYWHEEL, EXTERNAL_MODEL_SECURITY, BENCHMARKS } from '@/lib/strategy-data';
 
 // ═══════════════════════════════════════════════════════════════
 // 通用 UI 组件
@@ -1317,6 +1317,341 @@ function DeliveryTab() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Tab 8: 外部模型安全
+// ═══════════════════════════════════════════════════════════════
+function SecurityTab() {
+  const { coreProblem, riskLandscape, dataClassification, technicalArchitecture, providerComparison, recommendedApproach, costBenefitAnalysis, industryPractices, keyConclusions } = EXTERNAL_MODEL_SECURITY;
+  const [expandedRisk, setExpandedRisk] = useState(null);
+  const [expandedProvider, setExpandedProvider] = useState(null);
+
+  return (
+    <div className="space-y-4">
+      {/* 核心问题定义 */}
+      <SectionCard icon="🎯" title={coreProblem.title} desc={coreProblem.desc}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+          {coreProblem.stakeholders.map(s => (
+            <div key={s.role} className="rounded-xl border border-gray-100 bg-gray-50/30 p-3 text-center">
+              <div className="text-xl mb-1">{s.icon}</div>
+              <div className="text-[10px] font-semibold text-gray-700">{s.role}</div>
+              <div className="text-[9px] text-gray-400 mt-0.5">{s.concern}</div>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-xl border border-[#3fb950]/30 bg-[#3fb950]/5 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lg">💡</span>
+            <span className="text-sm font-bold text-[#3fb950]">{coreProblem.verdict.summary}</span>
+          </div>
+          <p className="text-xs text-gray-600 leading-relaxed">{coreProblem.verdict.explanation}</p>
+        </div>
+      </SectionCard>
+
+      {/* 风险全景图 */}
+      <SectionCard icon="⚠️" title={riskLandscape.title} desc={riskLandscape.desc}>
+        <div className="space-y-3">
+          {riskLandscape.risks.map(r => (
+            <div key={r.id} className="rounded-xl border p-4 cursor-pointer transition-all hover:shadow-sm"
+              style={{ borderColor: r.color + '33', background: r.color + '04' }}
+              onClick={() => setExpandedRisk(expandedRisk === r.id ? null : r.id)}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{r.icon}</span>
+                  <span className="text-sm font-bold text-gray-800">{r.name}</span>
+                  <Badge color={r.color}>{r.severity}</Badge>
+                </div>
+                <span className="text-xs text-gray-400">{expandedRisk === r.id ? '收起 ▲' : '展开 ▼'}</span>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-2">{r.desc}</p>
+
+              {expandedRisk === r.id && (
+                <div className="mt-3 space-y-4 animate-fadeIn">
+                  {/* 风险场景 */}
+                  <div>
+                    <div className="text-[10px] font-semibold text-gray-600 mb-1.5">🎯 典型风险场景</div>
+                    <div className="space-y-1">
+                      {r.scenarios.map((s, i) => (
+                        <div key={i} className="flex items-start gap-2 text-[10px] text-gray-500">
+                          <span className="text-gray-300 mt-0.5">•</span>
+                          <span>{s}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* 真实案例 */}
+                  {r.realCases && (
+                    <div>
+                      <div className="text-[10px] font-semibold text-[#e17055] mb-1.5">📰 真实案例</div>
+                      <div className="space-y-2">
+                        {r.realCases.map((c, i) => (
+                          <div key={i} className="rounded-lg border border-gray-100 bg-white/80 p-2.5">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-[9px] font-mono text-gray-400">{c.date}</span>
+                              <span className="text-[10px] font-semibold text-gray-700">{c.event}</span>
+                            </div>
+                            <div className="text-[9px] text-gray-400">💥 影响：{c.impact}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {/* 缓解措施 */}
+                  <div>
+                    <div className="text-[10px] font-semibold text-[#3fb950] mb-1.5">🛡️ 缓解措施</div>
+                    <div className="space-y-1.5">
+                      {r.mitigations.map((m, i) => (
+                        <div key={i} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2">
+                          <div className="flex-1 min-w-0">
+                            <span className="text-[10px] font-semibold text-gray-700">{m.name}</span>
+                            <span className="text-[10px] text-gray-500 ml-2">{m.desc}</span>
+                          </div>
+                          <span className="text-[10px] flex-shrink-0">{m.effectiveness}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 数据分级管控体系 */}
+      <SectionCard icon="📊" title={dataClassification.title} desc={dataClassification.desc}>
+        <div className="space-y-3">
+          {dataClassification.levels.map(l => (
+            <div key={l.level} className="rounded-xl border p-4" style={{ borderColor: l.color + '33', background: l.color + '04' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">{l.icon}</span>
+                <span className="text-sm font-bold" style={{ color: l.color }}>{l.level}: {l.name}</span>
+                <Badge color={l.color}>{l.modelAccess}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-3">{l.desc}</p>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {l.examples.map(e => (
+                  <span key={e} className="text-[9px] px-1.5 py-0.5 rounded-full border"
+                    style={{ borderColor: l.color + '44', color: l.color, background: l.color + '0c' }}>{e}</span>
+                ))}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="rounded-lg border border-gray-100 bg-white/60 p-2">
+                  <span className="text-[9px] text-gray-400">📋 管控策略：</span>
+                  <span className="text-[10px] text-gray-600">{l.policy}</span>
+                </div>
+                <div className="rounded-lg border border-gray-100 bg-white/60 p-2">
+                  <span className="text-[9px] text-gray-400">🔍 审计要求：</span>
+                  <span className="text-[10px] text-gray-600">{l.auditLevel}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 技术管控架构 */}
+      <SectionCard icon="🏗️" title={technicalArchitecture.title} desc={technicalArchitecture.desc}>
+        <div className="space-y-4">
+          {technicalArchitecture.layers.map((layer, idx) => (
+            <div key={layer.name}>
+              <div className="rounded-xl border p-4" style={{ borderColor: layer.color + '33', background: layer.color + '04' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-lg">{layer.icon}</span>
+                  <div>
+                    <div className="text-sm font-bold" style={{ color: layer.color }}>{layer.name}</div>
+                    <div className="text-[9px] text-gray-400">{layer.desc}</div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {layer.components.map((c, i) => (
+                    <div key={c.name} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2.5">
+                      <div className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0"
+                        style={{ background: layer.color }}>
+                        {i + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-0.5">
+                          <span className="text-[10px] font-semibold text-gray-700">{c.name}</span>
+                          <span className="text-[8px] font-mono text-gray-400">{c.tech}</span>
+                        </div>
+                        <div className="text-[10px] text-gray-500">{c.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {idx < technicalArchitecture.layers.length - 1 && (
+                <div className="text-center text-gray-300 py-1 text-sm">⬇</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 模型提供商安全对比 */}
+      <SectionCard icon="🔐" title={providerComparison.title} desc={providerComparison.desc}>
+        <div className="space-y-3">
+          {providerComparison.providers.map(p => (
+            <div key={p.name} className="rounded-xl border p-4 cursor-pointer transition-all hover:shadow-sm"
+              style={{ borderColor: p.color + '33', background: p.color + '04' }}
+              onClick={() => setExpandedProvider(expandedProvider === p.name ? null : p.name)}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{p.icon}</span>
+                  <span className="text-sm font-bold" style={{ color: p.color }}>{p.name}</span>
+                  <Badge color={p.color}>{p.tier}</Badge>
+                </div>
+                <span className="text-xs text-gray-400">{expandedProvider === p.name ? '收起 ▲' : '展开 ▼'}</span>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-2">{p.verdict}</p>
+
+              {expandedProvider === p.name && (
+                <div className="mt-3 space-y-1.5 animate-fadeIn">
+                  {Object.entries(p.features).map(([key, value]) => (
+                    <div key={key} className="flex items-center justify-between rounded-lg border border-gray-100 bg-white/80 p-2">
+                      <span className="text-[10px] text-gray-500">{providerComparison.featureLabels[key]}</span>
+                      <span className="text-[10px] font-medium text-gray-700">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 推荐方案 */}
+      <SectionCard icon="🗺️" title={recommendedApproach.title} desc={recommendedApproach.desc}>
+        <div className="space-y-3">
+          {recommendedApproach.phases.map((phase, i) => (
+            <div key={phase.phase}>
+              <div className="rounded-xl border p-4" style={{ borderColor: phase.color + '33', background: phase.color + '04' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{phase.icon}</span>
+                    <span className="text-sm font-bold" style={{ color: phase.color }}>{phase.phase}: {phase.name}</span>
+                  </div>
+                  <Badge color={phase.color}>风险: {phase.risk}</Badge>
+                </div>
+                <div className="space-y-1 mb-3">
+                  {phase.actions.map((a, j) => (
+                    <div key={j} className="flex items-start gap-2 text-[10px] text-gray-500">
+                      <span className="text-gray-300 mt-0.5">•</span>
+                      <span>{a}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {phase.deliverables.map(d => (
+                    <Badge key={d} color={phase.color}>{d}</Badge>
+                  ))}
+                </div>
+              </div>
+              {i < recommendedApproach.phases.length - 1 && (
+                <div className="text-center text-gray-300 py-1 text-xs">↓</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 成本效益分析 */}
+      <SectionCard icon="💰" title={costBenefitAnalysis.title} desc={costBenefitAnalysis.desc}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* 管控成本 */}
+          <div>
+            <div className="text-[10px] font-semibold text-gray-600 mb-2">📉 {costBenefitAnalysis.costs.title}</div>
+            <div className="space-y-1.5">
+              {costBenefitAnalysis.costs.items.map(item => (
+                <div key={item.name} className="rounded-lg border border-gray-100 bg-gray-50/30 p-2">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span className="text-sm">{item.icon}</span>
+                    <span className="text-[10px] font-semibold text-gray-700">{item.name}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-[9px]">
+                    <span className="font-mono text-gray-600">{item.cost}</span>
+                    <Badge color="#636e72">{item.type}</Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* 使用收益 */}
+          <div>
+            <div className="text-[10px] font-semibold text-[#3fb950] mb-2">📈 {costBenefitAnalysis.benefits.title}</div>
+            <div className="space-y-1.5">
+              {costBenefitAnalysis.benefits.items.map(item => (
+                <div key={item.name} className="rounded-lg border border-[#3fb950]/20 bg-[#3fb950]/5 p-2">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span className="text-sm">{item.icon}</span>
+                    <span className="text-[10px] font-semibold text-gray-700">{item.name}</span>
+                    <span className="text-[10px] font-bold font-mono text-[#3fb950] ml-auto">{item.value}</span>
+                  </div>
+                  <div className="text-[9px] text-gray-500">{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* 不用的成本 */}
+          <div>
+            <div className="text-[10px] font-semibold text-[#e17055] mb-2">🚫 {costBenefitAnalysis.notUsingCosts.title}</div>
+            <div className="space-y-1.5">
+              {costBenefitAnalysis.notUsingCosts.items.map(item => (
+                <div key={item.name} className="rounded-lg border p-2" style={{ borderColor: item.color + '33', background: item.color + '08' }}>
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <span className="text-sm">{item.icon}</span>
+                    <span className="text-[10px] font-semibold text-gray-700">{item.name}</span>
+                    <span className="text-[10px] font-bold font-mono ml-auto" style={{ color: item.color }}>{item.value}</span>
+                  </div>
+                  <div className="text-[9px] text-gray-500">{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 行业实践参考 */}
+      <SectionCard icon="🏢" title={industryPractices.title} desc={industryPractices.desc}>
+        <div className="space-y-3">
+          {industryPractices.practices.map(p => (
+            <div key={p.company} className="rounded-xl border p-4" style={{ borderColor: p.color + '33', background: p.color + '04' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">{p.icon}</span>
+                <span className="text-sm font-bold" style={{ color: p.color }}>{p.company}</span>
+                <Badge color={p.color}>{p.approach}</Badge>
+              </div>
+              <div className="space-y-1">
+                {p.details.map((d, i) => (
+                  <div key={i} className="flex items-start gap-2 text-[10px] text-gray-500">
+                    <span className="text-gray-300 mt-0.5">•</span>
+                    <span>{d}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 关键结论 */}
+      <div className="space-y-3">
+        {keyConclusions.points.map((p, i) => (
+          <div key={i} className="rounded-2xl border p-5" style={{ borderColor: p.color + '33', background: p.color + '05' }}>
+            <div className="flex items-start gap-3">
+              <span className="text-2xl flex-shrink-0">{p.icon}</span>
+              <div>
+                <p className="text-sm font-semibold text-gray-800 mb-1">{p.title}</p>
+                <p className="text-xs text-gray-600 leading-relaxed">{p.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // 中国借鉴 Tab
 // ═══════════════════════════════════════════════════════════════
 function ChinaTab() {
@@ -1587,6 +1922,7 @@ const TABS = [
   { id: 'flywheel', label: 'FDE × 飞轮', icon: '🔄', color: '#e17055', desc: 'FDE 驻场模式 × 业务 BP × 交付飞轮' },
   { id: 'delivery', label: '交付形态', icon: '📦', color: '#fd79a8', desc: '内部 SaaS 共用困境与交付形态演进' },
   { id: 'benchmark', label: '行业对标', icon: '📊', color: '#ffa657', desc: '四家标杆企业模式对比' },
+  { id: 'security', label: '模型安全', icon: '🔐', color: '#d63031', desc: '外部模型接触内部数据的风险论证与可控性方案' },
   { id: 'china', label: '中国借鉴', icon: '🇨🇳', color: '#00b894', desc: 'Palantir 模式在中国的可行路径与本土化策略' },
 ];
 
@@ -1601,6 +1937,7 @@ export default function StrategyViz() {
     flywheel: <FlywheelTab />,
     delivery: <DeliveryTab />,
     benchmark: <BenchmarkTab />,
+    security: <SecurityTab />,
     china: <ChinaTab />,
   };
 
