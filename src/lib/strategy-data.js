@@ -314,6 +314,31 @@ export const PALANTIR_DEEP_DIVE = {
       analogy: '每个客户的 Ontology 都是独一无二的"数字基因组"，随时间指数级增值。',
     },
   ],
+  // Code as Proxy 设计哲学
+  codeAsProxy: {
+    title: 'Code as Proxy — 更高级的设计哲学',
+    desc: 'Palantir AIP 的核心设计原则：AI 不直接操作数据，而是生成"代理代码"，让代码替 AI 去触碰数据',
+    tagline: '"Don\'t give AI your data. Give AI the ability to write code that touches your data."',
+    principle: 'AI 理解业务语义（Ontology），生成操作指令（Action/Code），指令在受控环境中执行，AI 只看到结果摘要——而非原始数据。这是 Palantir 解决"AI 能力 vs 数据安全"根本矛盾的核心答案。',
+    why: [
+      { icon: '🔒', point: '数据安全', desc: 'LLM 永远不接触原始数据，消除数据泄露的根本风险' },
+      { icon: '🎯', point: '消除幻觉', desc: 'AI 操作有类型约束的 Ontology 对象，而非自由文本，幻觉率大幅降低' },
+      { icon: '✅', point: '可审计', desc: '每一个 AI 生成的 Action 都可被记录、回放、审计，满足合规要求' },
+      { icon: '🔄', point: '人机协作', desc: 'AI 建议 → 人工审批 → 系统执行，保留人类决策权' },
+    ],
+    layers: [
+      { layer: '业务语义层', role: 'Ontology', desc: 'AI 理解的不是原始数据，而是业务对象（订单/用户/设备）及其关系', color: '#6c5ce7' },
+      { layer: '代理生成层', role: 'Code / Action Gen', desc: 'AI 根据自然语言意图，生成操作 Ontology 的代码或结构化 Action', color: '#e17055' },
+      { layer: '受控执行层', role: 'Foundry Runtime', desc: '代码在 Foundry 沙箱中执行，权限受 Ontology ACL 约束，数据不出域', color: '#0984e3' },
+      { layer: '结果摘要层', role: 'Result Summary', desc: 'AI 只收到执行结果的摘要（聚合统计/状态变更），不接触原始行数据', color: '#00b894' },
+    ],
+    vsTraditional: {
+      traditional: { label: '传统 AI 助手', flow: '用户数据 → LLM → 直接回答', risk: '数据直接暴露给 LLM' },
+      proxy: { label: 'Code as Proxy', flow: 'Ontology Schema → LLM → 生成 Action → 本地执行 → 结果摘要', risk: null },
+    },
+    impact: '这一设计让 Palantir AIP 成为唯一能在 IL6（最高机密）环境中运行 LLM 的商业产品，也是其在政府和金融客户中无可替代的核心原因。',
+  },
+
   // 财务数据
   financials: {
     revenue: [
