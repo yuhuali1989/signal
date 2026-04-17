@@ -231,3 +231,12 @@ body {
   background: rgba(108, 92, 231, 0.15);
   color: inherit;
 }
+
+/* ─── 隐藏滚动条（保留滚动功能）─── */
+.scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
