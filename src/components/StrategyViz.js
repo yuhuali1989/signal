@@ -125,17 +125,33 @@ function CrisisTab() {
 // Tab 2: 全球破局思路
 // ═══════════════════════════════════════════════════════════════
 function BreakoutTab() {
-  const { strategies } = GLOBAL_BREAKOUT;
+  const { strategies, lastUpdated } = GLOBAL_BREAKOUT;
   const [activeStrategy, setActiveStrategy] = useState('palantir');
+  const [showDeep, setShowDeep] = useState(false);
 
   const current = strategies.find(s => s.id === activeStrategy);
 
+  const levelStyle = {
+    hot:   { bg: '#e17055' + '18', color: '#e17055', label: '🔥 热点' },
+    watch: { bg: '#ffa657' + '18', color: '#ffa657', label: '👀 关注' },
+    note:  { bg: '#636e72' + '12', color: '#636e72', label: '📌 备注' },
+  };
+
   return (
     <div className="space-y-4">
+      {/* 更新时间提示 */}
+      <div className="flex items-center gap-2 text-[11px] text-gray-400">
+        <span>🕐</span>
+        <span>最后更新：<span className="font-medium text-gray-500">{lastUpdated}</span></span>
+        <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-amber-50 border border-amber-100 text-amber-600">
+          💡 声浪信号需定期人工更新
+        </span>
+      </div>
+
       {/* 策略选择器 */}
       <div className="flex flex-wrap gap-2 p-1.5 bg-gray-50 rounded-2xl border border-gray-100">
         {strategies.map(s => (
-          <button key={s.id} onClick={() => setActiveStrategy(s.id)}
+          <button key={s.id} onClick={() => { setActiveStrategy(s.id); setShowDeep(false); }}
             className="flex items-center gap-1.5 py-2 px-3 rounded-xl text-xs font-medium transition-all whitespace-nowrap"
             style={activeStrategy === s.id
               ? { background: '#fff', color: s.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${s.color}33` }
@@ -147,61 +163,158 @@ function BreakoutTab() {
       </div>
 
       {current && (
-        <SectionCard icon={current.icon} title={current.name} desc={current.subtitle}>
-          {/* 核心洞察 */}
-          <div className="rounded-xl border p-4 mb-4" style={{ borderColor: current.color + '33', background: current.color + '06' }}>
-            <div className="text-[10px] font-semibold text-gray-600 mb-1">💡 核心洞察</div>
-            <p className="text-xs text-gray-700 font-medium">{current.keyInsight}</p>
-          </div>
+        <>
+          <SectionCard icon={current.icon} title={current.name} desc={current.subtitle}>
+            {/* 核心洞察 */}
+            <div className="rounded-xl border p-4 mb-4" style={{ borderColor: current.color + '33', background: current.color + '06' }}>
+              <div className="text-[10px] font-semibold text-gray-600 mb-1">💡 核心洞察</div>
+              <p className="text-xs text-gray-700 font-medium">{current.keyInsight}</p>
+            </div>
 
-          {/* Palantir 特殊展示 */}
-          {current.id === 'palantir' && (
-            <>
-              <div className="flex items-center gap-4 mb-4 text-[10px] text-gray-500 font-mono">
-                <span>市值: <span className="font-semibold" style={{ color: current.color }}>{current.marketCap}</span></span>
-                <span>营收: <span className="font-semibold" style={{ color: current.color }}>{current.revenue}</span></span>
-                <span>增长: <span className="font-semibold text-[#3fb950]">{current.growth}</span></span>
-              </div>
-              <div className="space-y-2 mb-4">
-                {current.pillars.map(p => (
-                  <div key={p.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-                    <span className="text-lg flex-shrink-0">{p.icon}</span>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-700">{p.name}</div>
-                      <div className="text-[10px] text-gray-500 mt-0.5">{p.desc}</div>
+            {/* Palantir 特殊展示 */}
+            {current.id === 'palantir' && (
+              <>
+                <div className="flex items-center gap-4 mb-4 text-[10px] text-gray-500 font-mono">
+                  <span>市值: <span className="font-semibold" style={{ color: current.color }}>{current.marketCap}</span></span>
+                  <span>营收: <span className="font-semibold" style={{ color: current.color }}>{current.revenue}</span></span>
+                  <span>增长: <span className="font-semibold text-[#3fb950]">{current.growth}</span></span>
+                </div>
+                <div className="space-y-2 mb-4">
+                  {current.pillars.map(p => (
+                    <div key={p.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                      <span className="text-lg flex-shrink-0">{p.icon}</span>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-700">{p.name}</div>
+                        <div className="text-[10px] text-gray-500 mt-0.5">{p.desc}</div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+                <div className="rounded-lg border border-[#6c5ce7]/20 bg-[#6c5ce7]/5 p-3">
+                  <div className="text-[10px] font-semibold text-[#6c5ce7] mb-1">🏰 护城河</div>
+                  <div className="text-[10px] text-gray-600">{current.moat}</div>
+                </div>
+              </>
+            )}
+
+            {/* 垂直 AI / 平台 / 复合 AI / 数据飞轮 */}
+            {current.examples && (
+              <div className="space-y-2">
+                {current.examples.map((ex, i) => (
+                  <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs font-semibold text-gray-700">{ex.company}</span>
+                        {ex.domain && <Badge color={current.color}>{ex.domain}</Badge>}
+                      </div>
+                      <div className="text-[10px] text-gray-500">{ex.desc}</div>
+                    </div>
+                    {ex.revenue && (
+                      <div className="text-xs font-mono font-semibold flex-shrink-0" style={{ color: current.color }}>
+                        {ex.revenue}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
-              <div className="rounded-lg border border-[#6c5ce7]/20 bg-[#6c5ce7]/5 p-3">
-                <div className="text-[10px] font-semibold text-[#6c5ce7] mb-1">🏰 护城河</div>
-                <div className="text-[10px] text-gray-600">{current.moat}</div>
+            )}
+          </SectionCard>
+
+          {/* 近期声浪信号 */}
+          {current.signals && (
+            <SectionCard icon="📡" title="近期声浪信号" desc="来自财报 / 产品发布 / 行业动态的最新信号">
+              <div className="space-y-2">
+                {current.signals.map((sig, i) => {
+                  const style = levelStyle[sig.level] || levelStyle.note;
+                  return (
+                    <div key={i} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white/60 p-3 hover:bg-gray-50/60 transition-colors">
+                      <div className="flex flex-col items-center gap-1 flex-shrink-0 pt-0.5">
+                        <span className="text-[9px] font-mono text-gray-400">{sig.date}</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
+                          style={{ background: style.bg, color: style.color }}>{style.label}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md"
+                            style={{ background: current.color + '15', color: current.color }}>{sig.tag}</span>
+                        </div>
+                        <p className="text-xs text-gray-700 leading-relaxed">{sig.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </>
+            </SectionCard>
           )}
 
-          {/* 垂直 AI / 平台 / 复合 AI / 数据飞轮 */}
-          {current.examples && (
-            <div className="space-y-2">
-              {current.examples.map((ex, i) => (
-                <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-xs font-semibold text-gray-700">{ex.company}</span>
-                      {ex.domain && <Badge color={current.color}>{ex.domain}</Badge>}
-                    </div>
-                    <div className="text-[10px] text-gray-500">{ex.desc}</div>
-                  </div>
-                  {ex.revenue && (
-                    <div className="text-xs font-mono font-semibold flex-shrink-0" style={{ color: current.color }}>
-                      {ex.revenue}
-                    </div>
-                  )}
+          {/* 深度展开（折叠） */}
+          {current.deepDive && (
+            <div className="rounded-2xl border overflow-hidden" style={{ borderColor: current.color + '33' }}>
+              <button
+                className="w-full flex items-center justify-between p-4 hover:bg-gray-50/60 transition-colors"
+                onClick={() => setShowDeep(!showDeep)}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-base">🔬</span>
+                  <span className="text-sm font-semibold text-gray-800">深度展开</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full"
+                    style={{ background: current.color + '15', color: current.color }}>
+                    为什么 · 风险 · 机会 · 关注指标
+                  </span>
                 </div>
-              ))}
+                <span className="text-gray-300 text-sm">{showDeep ? '▲' : '▼'}</span>
+              </button>
+              {showDeep && (
+                <div className="px-4 pb-4 border-t space-y-4" style={{ borderColor: current.color + '22', background: current.color + '03' }}>
+                  {/* 为什么有效 */}
+                  <div className="pt-4">
+                    <div className="text-[10px] font-semibold text-gray-500 mb-2">🧠 为什么这个模式有效</div>
+                    <p className="text-xs text-gray-700 leading-relaxed bg-white/70 rounded-xl border border-gray-100 p-3">
+                      {current.deepDive.why}
+                    </p>
+                  </div>
+                  {/* 风险 & 机会 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <div className="text-[10px] font-semibold text-[#e17055] mb-2">⚠️ 主要风险</div>
+                      <div className="space-y-1.5">
+                        {current.deepDive.risks.map((r, i) => (
+                          <div key={i} className="flex items-start gap-2 text-[11px] text-gray-600 bg-red-50/40 rounded-lg border border-red-100/60 p-2">
+                            <span className="text-[#e17055] flex-shrink-0 mt-0.5">•</span>
+                            <span>{r}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-semibold text-[#3fb950] mb-2">🚀 核心机会</div>
+                      <div className="space-y-1.5">
+                        {current.deepDive.opportunities.map((o, i) => (
+                          <div key={i} className="flex items-start gap-2 text-[11px] text-gray-600 bg-green-50/40 rounded-lg border border-green-100/60 p-2">
+                            <span className="text-[#3fb950] flex-shrink-0 mt-0.5">•</span>
+                            <span>{o}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {/* 关注指标 */}
+                  <div>
+                    <div className="text-[10px] font-semibold text-gray-500 mb-2">📊 需要持续关注的指标</div>
+                    <div className="flex flex-wrap gap-2">
+                      {current.deepDive.watchMetrics.map((m, i) => (
+                        <span key={i} className="text-[11px] px-2.5 py-1 rounded-full border font-medium"
+                          style={{ borderColor: current.color + '44', color: current.color, background: current.color + '0c' }}>
+                          {m}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
-        </SectionCard>
+        </>
       )}
     </div>
   );

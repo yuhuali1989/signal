@@ -31,7 +31,7 @@ export default function StrategyPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-8">
           {[
             { icon: '⚠️', label: '5 大困境', desc: '系统性冲击分析', color: '#e17055' },
-            { icon: '🌍', label: '5 大破局', desc: '全球标杆策略', color: '#3fb950' },
+            { icon: '🌍', label: '5 大破局', desc: '策略 · 信号 · 深度展开', color: '#3fb950' },
             { icon: '🏛️', label: 'Palantir', desc: '决策操作系统', color: '#6c5ce7' },
             { icon: '🏗️', label: '4 层架构', desc: '应对框架体系', color: '#326ce5' },
             { icon: '🔄', label: 'FDE × 飞轮', desc: '驻场交付闭环', color: '#e17055' },

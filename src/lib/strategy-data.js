@@ -96,6 +96,7 @@ export const INDUSTRY_CRISIS = {
 export const GLOBAL_BREAKOUT = {
   title: '全球软件行业破局思路',
   subtitle: '从"卖代码"到"卖决策"——价值链重构',
+  lastUpdated: '2026-04',
   strategies: [
     {
       id: 'palantir',
@@ -114,6 +115,18 @@ export const GLOBAL_BREAKOUT = {
         { name: 'TITAN（边缘部署）', desc: '将 AI 能力部署到战场/工厂/油田等断网环境，离线自主决策', icon: '🛡️' },
       ],
       moat: '深度业务绑定 + 数据飞轮 + 安全合规壁垒 → 客户迁移成本极高',
+      signals: [
+        { date: '2025-02', tag: '财报', level: 'hot', text: 'Q4 2024 商业营收 +54% YoY，Rule of 40 达 68，首次实现全年 GAAP 盈利' },
+        { date: '2025-03', tag: '产品', level: 'hot', text: 'AIP for Defense 发布，将 LLM 直接接入战场指挥系统，TITAN 边缘节点量产' },
+        { date: '2025-04', tag: '市场', level: 'watch', text: '欧洲商业客户增速加快，Airbus/Philips 等大客户续约并扩容，FDE 团队扩至 800+' },
+        { date: '2025-04', tag: '竞争', level: 'watch', text: 'Microsoft 推 Fabric + Copilot 正面竞争 Foundry，Palantir 强调 Ontology 差异化' },
+      ],
+      deepDive: {
+        why: 'Palantir 的核心不是技术领先，而是"业务理解深度"。FDE 驻场 6-18 个月后，客户的 Ontology 已经成为业务运转的神经系统，任何替换都意味着重建整个数字孪生。',
+        risks: ['FDE 模式人力成本高，规模化难度大', '政府收入占比 55%，受政策预算波动影响大', '商业客户集中度高，前 20 客户贡献 40%+ 营收'],
+        opportunities: ['AIP 将 LLM 与 Ontology 结合，打开中小企业市场', 'Agent 时代 Ontology 成为 AI 行动的"地图"，价值倍增', '国防 AI 预算持续增长，TITAN 边缘部署打开新市场'],
+        watchMetrics: ['商业 NRR（目标 >120%）', '商业客户数（目标 1000+）', 'AIP 收入占比（目前 ~15%）', 'FDE 人均产出'],
+      },
     },
     {
       id: 'vertical_ai',
@@ -129,6 +142,18 @@ export const GLOBAL_BREAKOUT = {
         { company: 'Waymo / Momenta', domain: '自动驾驶', desc: '数据闭环 + 世界模型 + 端到端驾驶', revenue: '—' },
       ],
       keyInsight: '通用 AI 工具无法替代深度领域知识。垂直场景的数据壁垒 + 合规要求 + 行业 know-how 构成真正的护城河。',
+      signals: [
+        { date: '2025-03', tag: '医疗', level: 'hot', text: 'Abridge（AI 医疗记录）完成 $250M C 轮，Epic 系统集成，覆盖 500+ 医院' },
+        { date: '2025-03', tag: '法律', level: 'hot', text: 'Harvey AI 估值 $3B，Allen & Overy 等顶级律所全面部署，合同审查效率提升 10x' },
+        { date: '2025-04', tag: '金融', level: 'watch', text: 'Ramp（AI 财务）ARR 突破 $500M，AI 支出分析 + 自动报销成为标配' },
+        { date: '2025-04', tag: '制造', level: 'watch', text: 'Sight Machine（工厂 AI）被 Rockwell Automation 收购，工业 AI 整合加速' },
+      ],
+      deepDive: {
+        why: '垂直 AI 的护城河来自三层叠加：①行业数据（无法公开获取）②合规认证（FDA/FedRAMP/金融牌照）③工作流嵌入（替换成本 = 重新培训所有员工）。通用 LLM 能做 80% 的事，但最后 20% 的行业特殊性决定了生死。',
+        risks: ['市场天花板相对较低，单一垂直难以支撑大市值', '大模型能力提升可能压缩垂直 AI 的差异化空间', '行业监管变化可能颠覆现有合规壁垒'],
+        opportunities: ['医疗/法律/金融三大高价值垂直仍处于早期', 'AI Agent 让垂直 SaaS 从"工具"升级为"员工"', '出海：中国垂直 AI 在制造/供应链有独特数据优势'],
+        watchMetrics: ['行业 NRR（健康垂直 >120%）', '合规认证数量', 'AI 功能渗透率', '人均 ARR（衡量 AI 杠杆）'],
+      },
     },
     {
       id: 'platform_play',
@@ -143,6 +168,18 @@ export const GLOBAL_BREAKOUT = {
         { company: 'Snowflake (Cortex)', desc: '数据云 + AI 推理，让 AI 直接在数据仓库内运行' },
       ],
       keyInsight: '不做 AI 本身，做 AI Agent 运行的基础设施。掌握数据层和工作流层，成为 Agent 时代的"水电煤"。',
+      signals: [
+        { date: '2025-02', tag: 'Salesforce', level: 'hot', text: 'Agentforce 发布 6 个月 ARR 突破 $1B，Marc Benioff 称"Agent 是 SaaS 的终结者"' },
+        { date: '2025-03', tag: 'Databricks', level: 'hot', text: '估值 $62B，收购 Tabular（Apache Iceberg 创始团队），统一数据湖仓格局' },
+        { date: '2025-04', tag: 'ServiceNow', level: 'watch', text: 'AI Agent 处理 40% 的 IT 工单无需人工介入，客户 ROI 平均 4.2x' },
+        { date: '2025-04', tag: '竞争', level: 'watch', text: 'Microsoft 365 Copilot + Power Platform 形成闭环，传统平台厂商面临降维打击' },
+      ],
+      deepDive: {
+        why: '平台战略的本质是"控制 Agent 的行动空间"。当 AI Agent 需要读写数据、触发工作流、调用 API 时，谁控制了这些接口，谁就控制了 Agent 的能力边界。Salesforce 的 Agentforce 本质上是把 CRM 数据变成 Agent 的"行动地图"。',
+        risks: ['平台战略需要极强的生态号召力，中小公司难以复制', 'OpenAI/Anthropic 可能直接做企业平台，绕过中间层', 'Agent 标准化（MCP/A2A 协议）可能削弱平台锁定效应'],
+        opportunities: ['MCP（Model Context Protocol）标准化后，平台价值从"连接"转向"数据质量"', '垂直平台（行业 Agent OS）比通用平台更容易建立壁垒', '中国企业微信/钉钉生态有机会成为中国版 Agentforce'],
+        watchMetrics: ['Agent 数量 & 活跃度', '平台 API 调用量', '开发者生态规模', 'Agent 完成任务成功率'],
+      },
     },
     {
       id: 'compound_ai',
@@ -157,6 +194,18 @@ export const GLOBAL_BREAKOUT = {
         { company: 'Glean', desc: '企业知识 AI，连接所有内部系统的统一搜索和问答' },
       ],
       keyInsight: '单个 LLM 调用无法解决复杂业务问题。需要多 Agent 编排、工具调用、记忆管理、人机协作的复合系统。',
+      signals: [
+        { date: '2025-02', tag: 'Anthropic', level: 'hot', text: 'Claude 3.7 Sonnet 发布"扩展思考"模式，复杂推理任务成功率大幅提升，Agent 可靠性拐点出现' },
+        { date: '2025-03', tag: '框架', level: 'hot', text: 'Google A2A（Agent-to-Agent）协议发布，多 Agent 协作标准化进程加速' },
+        { date: '2025-03', tag: 'Coding', level: 'hot', text: 'Cursor + Claude 组合在真实工程任务中达到 Senior 工程师水平，SWE-bench 突破 70%' },
+        { date: '2025-04', tag: '企业', level: 'watch', text: 'Glean 估值 $4.6B，企业知识 AI 成为 CIO 预算第一优先级，替代传统搜索' },
+      ],
+      deepDive: {
+        why: '复合 AI 的价值在于"可靠性"而非"智能"。单个 LLM 的幻觉率 ~5%，但 10 步 Agent 链路的成功率只有 0.95^10 ≈ 60%。复合系统通过验证层、回滚机制、人工审批节点，将可靠性提升到企业可接受的水平（>95%）。',
+        risks: ['Agent 可靠性仍是核心瓶颈，复杂任务失败率高', '多 Agent 系统的调试和可观测性极其困难', '安全风险：Agent 被注入攻击或执行有害操作'],
+        opportunities: ['Claude 3.7 / GPT-5 的推理能力突破正在解决可靠性问题', 'MCP + A2A 协议标准化后，Agent 生态将爆发', '中国 DeepSeek R2 + 国产 Agent 框架有机会弯道超车'],
+        watchMetrics: ['SWE-bench 得分（代码 Agent 基准）', 'Agent 任务完成率', '人工干预率', '平均任务完成时长'],
+      },
     },
     {
       id: 'data_moat',
@@ -171,6 +220,18 @@ export const GLOBAL_BREAKOUT = {
         { company: 'Scale AI', desc: '标注数据 → 更好的标注模型 → 更低成本 → 更多客户数据' },
       ],
       keyInsight: '在 AI 时代，数据是唯一不会被 AI 自动生成的稀缺资源。拥有独特数据源的公司拥有真正的护城河。',
+      signals: [
+        { date: '2025-02', tag: 'Tesla', level: 'hot', text: 'FSD V13 在美国无监督驾驶里程突破 10 亿英里，数据飞轮效应显现，Waymo 数据量仍差 100x' },
+        { date: '2025-03', tag: '合成数据', level: 'hot', text: 'Scale AI 发布合成数据平台，真实数据 + 合成数据混合训练成为主流，数据壁垒被部分稀释' },
+        { date: '2025-03', tag: '数据要素', level: 'watch', text: '中国数据要素市场化政策落地，数据交易所成交额同比 +300%，数据资产入表加速' },
+        { date: '2025-04', tag: '隐私计算', level: 'watch', text: '联邦学习 + 隐私计算让"数据不动模型动"成为可能，打破数据孤岛同时保护主权' },
+      ],
+      deepDive: {
+        why: '数据飞轮的核心不是"数据量"，而是"数据独特性"。合成数据的崛起正在稀释通用数据的价值，但行为数据（用户真实操作）、传感器数据（物理世界）、专有业务数据（内部流程）仍然无法被合成。飞轮的关键是：你的数据是否能让你的 AI 做到竞争对手做不到的事。',
+        risks: ['合成数据技术成熟后，数据壁垒被大幅稀释', '数据隐私法规（GDPR/个保法）限制数据收集和使用', '大模型预训练数据趋于饱和，增量数据边际价值下降'],
+        opportunities: ['物理世界数据（机器人/自动驾驶/工厂）仍极度稀缺', '中国数据要素政策为数据资产化提供制度支撑', '隐私计算让数据在不共享的前提下产生联合价值'],
+        watchMetrics: ['数据独特性评分（无法被公开数据替代的比例）', '数据新鲜度（实时 vs 历史）', '数据飞轮转速（新数据→模型更新周期）', '数据变现效率（$/TB）'],
+      },
     },
   ],
 };
