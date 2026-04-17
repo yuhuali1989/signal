@@ -1823,6 +1823,66 @@ export const EXTERNAL_MODEL_SECURITY = {
     ],
   },
 
+  // 代码生成隔离模式
+  codeIsolation: {
+    title: '代码生成隔离模式',
+    desc: 'AI 生成代码，数据不出域——解决"AI 需要理解数据"与"数据不能离开边界"之间的根本矛盾',
+    tagline: '"AI writes the code, data never leaves the perimeter"',
+    corePrinciple: 'AI 只接触数据的 Schema / 元数据，生成处理代码；代码在本地/私有环境执行，真实数据全程不出域。',
+    comparison: {
+      traditional: {
+        label: '传统模式',
+        icon: '❌',
+        color: '#e17055',
+        steps: [
+          { step: '1', text: '真实数据上传给 AI', risk: '数据泄露' },
+          { step: '2', text: 'AI 分析处理数据', risk: '合规违规' },
+          { step: '3', text: '返回分析结果', risk: '结果可能含敏感信息' },
+        ],
+      },
+      isolated: {
+        label: '隔离模式',
+        icon: '✅',
+        color: '#3fb950',
+        steps: [
+          { step: '1', text: 'Schema / 元数据 → AI', risk: null },
+          { step: '2', text: 'AI 生成处理代码', risk: null },
+          { step: '3', text: '代码在本地执行（数据不出域）', risk: null },
+          { step: '4', text: '仅返回聚合结果', risk: null },
+        ],
+      },
+    },
+    terms: [
+      { name: 'Code-as-Proxy', desc: 'AI 生成代码作为数据访问代理，AI 本身不碰数据', origin: 'Palantir 内部说法' },
+      { name: 'Schema-Driven Code Gen', desc: '基于 Schema 而非真实数据生成代码', origin: '通用工程术语' },
+      { name: 'Federated Code Execution', desc: '代码下发到数据所在地执行，数据不出域', origin: '联邦学习衍生概念' },
+      { name: 'Data Residency + AI Assist', desc: '数据留存本地，AI 仅辅助生成逻辑', origin: '合规领域术语' },
+      { name: 'Sandboxed Code Execution', desc: 'AI 生成代码在隔离沙箱中执行，AI 看不到原始输出', origin: '安全工程术语' },
+    ],
+    palantirConnection: {
+      title: 'Palantir AIP 的核心安全设计',
+      desc: 'AIP 中 AI 操作的是 Ontology（数据本体/Schema），而非原始数据本身。LLM 理解业务对象的结构和关系，生成操作 Ontology 的代码/动作，真实数据在 Foundry 内部执行，LLM 只看到结果摘要。',
+      layers: [
+        { layer: 'LLM 层', sees: 'Ontology Schema + 业务语义', color: '#6c5ce7' },
+        { layer: 'AIP 层', sees: '生成操作代码 / Action', color: '#0984e3' },
+        { layer: 'Foundry 层', sees: '执行代码，访问真实数据', color: '#00b894' },
+        { layer: '数据层', sees: '原始数据（LLM 不可见）', color: '#636e72' },
+      ],
+    },
+    useCases: [
+      { icon: '📊', title: '数据分析', desc: 'AI 根据表结构生成 SQL/Python，在本地数据库执行，返回聚合统计' },
+      { icon: '🔍', title: '数据质量检测', desc: 'AI 根据 Schema 生成数据校验规则代码，在数据仓库内执行' },
+      { icon: '🤖', title: 'ML 特征工程', desc: 'AI 根据字段描述生成特征提取代码，训练数据不离开私有环境' },
+      { icon: '📋', title: '合规报告', desc: 'AI 生成报告生成代码，敏感字段在本地脱敏后再输出' },
+    ],
+    limitations: [
+      'Schema 需要足够详细才能让 AI 生成高质量代码',
+      '复杂业务逻辑仍需人工审核生成的代码',
+      '代码执行环境需要安全隔离，防止恶意代码注入',
+      '不适用于需要 AI 直接理解数据内容的场景（如图像识别、文本分类）',
+    ],
+  },
+
   // 关键结论
   keyConclusions: {
     title: '关键结论',
