@@ -28,7 +28,7 @@ export default function StrategyPage() {
         </div>
 
         {/* 核心亮点 */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-8">
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-9 gap-3 mb-8">
           {[
             { icon: '⚠️', label: '5 大困境', desc: '系统性冲击分析', color: '#e17055' },
             { icon: '🌍', label: '5 大破局', desc: '策略 · 信号 · 深度展开', color: '#3fb950' },
@@ -37,6 +37,7 @@ export default function StrategyPage() {
             { icon: '🔄', label: 'FDE × 飞轮', desc: '驻场交付闭环', color: '#e17055' },
             { icon: '📦', label: '交付形态', desc: 'SaaS 共用困境', color: '#fd79a8' },
             { icon: '📊', label: '行业对标', desc: '4 家标杆对比', color: '#ffa657' },
+            { icon: '🔐', label: '模型安全', desc: '外部模型风险管控', color: '#d63031' },
             { icon: '🇨🇳', label: '中国借鉴', desc: '本土化可行路径', color: '#00b894' },
           ].map(item => (
             <div key={item.label} className="rounded-xl border p-3 text-center"
@@ -59,8 +60,8 @@ export default function StrategyPage() {
           并提出借鉴 <span className="font-mono text-gray-600">Ontology + AIP + Forward Deployed</span> 思想的平台产品应对框架。
           核心理念：从"卖代码"转向"卖决策能力"，构建数据基座 → 业务本体 → AI 平台 → 决策应用的四层架构。
           路线图覆盖 2026 Q1 至 2027 Q4，分 4 个阶段渐进实施。
-          <span className="font-medium text-[#00b894]">「中国借鉴」</span>模块深度分析 Palantir 模式在中国的四大障碍与可行赛道，
-          提出私有化部署 + 垂直行业切入 + 数据本体绑定的本土化四原则。
+          <span className="font-medium text-[#00b894]">「中国借鉴」</span>模块深度分析 Palantir 模式在中国的四大障碍与可行赛道。
+          <span className="font-medium text-[#d63031]">「模型安全」</span>模块论证外部大模型接触内部数据的风险与分级管控方案。
         </div>
       </main>
       <Footer />

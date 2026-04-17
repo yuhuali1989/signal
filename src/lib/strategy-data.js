@@ -1263,7 +1263,605 @@ export const FDE_BP_FLYWHEEL = {
   },
 };
 
-// 7. 行业对标分析
+// 7. 外部模型接触内部数据的风险与可控性方案
+export const EXTERNAL_MODEL_SECURITY = {
+  title: '外部模型接触内部数据的风险与可控性方案',
+  subtitle: '类 Claude 等外部大模型接触公司内部代码和数据的安全论证',
+
+  // 核心问题定义
+  coreProblem: {
+    title: '核心问题',
+    desc: '当团队使用 Claude / GPT-4 / Gemini 等外部大模型辅助编码和数据分析时，公司内部代码、业务数据、架构设计等敏感信息不可避免地被发送到第三方服务器。这带来了哪些风险？如何在"效率提升"和"安全合规"之间找到平衡？',
+    stakeholders: [
+      { role: '工程团队', concern: '效率提升 vs 代码泄露', icon: '👨‍💻' },
+      { role: '安全团队', concern: '数据保护 vs 工具可用性', icon: '🔒' },
+      { role: '法务合规', concern: '合同条款 vs 监管要求', icon: '⚖️' },
+      { role: '管理层', concern: '竞争力 vs 风险敞口', icon: '📊' },
+    ],
+    verdict: {
+      summary: '不用外部模型的风险 > 用外部模型的风险',
+      explanation: '在 AI Coding 时代，不使用外部模型意味着团队效率落后竞争对手 3-5x，人才流失加速。关键不是"用不用"，而是"怎么用"——建立分级管控体系，让风险可控、可审计、可追溯。',
+    },
+  },
+
+  // 风险全景图
+  riskLandscape: {
+    title: '风险全景图',
+    desc: '系统性梳理外部模型接触内部数据的六大风险维度',
+    risks: [
+      {
+        id: 'data_leakage',
+        name: '数据泄露风险',
+        icon: '🔓',
+        color: '#e17055',
+        severity: '🔴 高',
+        desc: '发送给外部模型的代码和数据可能被模型提供商存储、用于训练、或因安全漏洞泄露给第三方。',
+        scenarios: [
+          '工程师将包含数据库密码、API Key 的配置文件发送给 Claude 调试',
+          '将核心算法/交易策略代码粘贴到外部模型进行优化',
+          '将用户 PII（个人身份信息）数据发送给模型进行分析',
+          '将内部架构设计文档发送给模型生成技术方案',
+        ],
+        realCases: [
+          { date: '2023-04', event: 'Samsung 工程师将芯片源代码粘贴到 ChatGPT，导致核心 IP 泄露', impact: '全面禁用 ChatGPT，后改为内部部署方案' },
+          { date: '2024-01', event: '某金融公司员工将客户交易数据发送给 GPT-4 做分析，违反 GDPR', impact: '被监管机构罚款 €2M，CTO 引咎辞职' },
+          { date: '2024-06', event: 'OpenAI 内部安全事件，部分企业 API 调用日志短暂暴露', impact: '多家企业紧急审查 API 调用历史' },
+          { date: '2025-03', event: '某科技公司发现员工通过 Cursor 将整个代码仓库索引发送到 Claude API', impact: '紧急部署代码扫描网关' },
+        ],
+        mitigations: [
+          { name: 'API 模式 + 零留存协议', desc: '使用 API 而非 Web 界面，签署数据零留存（Zero Data Retention）协议', effectiveness: '⭐⭐⭐⭐' },
+          { name: '敏感信息过滤网关', desc: '在请求发送前自动检测并脱敏 API Key、密码、PII 等敏感信息', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '代码分级管控', desc: '按代码敏感度分级（公开/内部/机密/绝密），不同级别不同策略', effectiveness: '⭐⭐⭐⭐' },
+          { name: '审计日志', desc: '记录所有发送给外部模型的内容，支持事后审计和追溯', effectiveness: '⭐⭐⭐⭐' },
+        ],
+      },
+      {
+        id: 'ip_risk',
+        name: '知识产权风险',
+        icon: '©️',
+        color: '#6c5ce7',
+        severity: '🔴 高',
+        desc: '核心代码和算法发送给外部模型后，可能丧失商业秘密保护资格；模型生成的代码可能存在版权争议。',
+        scenarios: [
+          '核心推荐算法代码被发送给外部模型，可能不再满足"商业秘密"的保密性要件',
+          '模型生成的代码可能包含开源代码片段，引入 GPL 等传染性许可证风险',
+          '竞争对手使用同一模型，可能获得相似的技术方案',
+          '专利申请中的技术方案被发送给模型，可能影响新颖性',
+        ],
+        realCases: [
+          { date: '2024-03', event: 'GitHub Copilot 集体诉讼：开发者指控 Copilot 生成的代码直接复制开源项目', impact: '案件仍在审理，但已引发行业对 AI 生成代码版权的广泛讨论' },
+          { date: '2024-09', event: '美国版权局裁定：纯 AI 生成的代码不受版权保护', impact: '企业需要证明"人类创造性贡献"才能获得版权' },
+          { date: '2025-01', event: '某公司因将专利申请中的算法发送给 ChatGPT，被专利审查员质疑新颖性', impact: '专利申请被驳回，损失数百万研发投入' },
+        ],
+        mitigations: [
+          { name: '核心 IP 隔离', desc: '核心算法、交易策略、专利技术禁止发送给外部模型', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '开源合规扫描', desc: '对模型生成的代码进行开源许可证扫描（如 FOSSA / Snyk）', effectiveness: '⭐⭐⭐⭐' },
+          { name: '版权声明策略', desc: '在 AI 辅助代码中标注人类贡献部分，确保版权可主张', effectiveness: '⭐⭐⭐' },
+          { name: '竞业隔离', desc: '与模型提供商签署竞业条款，禁止将数据用于竞品训练', effectiveness: '⭐⭐⭐⭐' },
+        ],
+      },
+      {
+        id: 'compliance_risk',
+        name: '合规监管风险',
+        icon: '⚖️',
+        color: '#fd79a8',
+        severity: '🔴 高',
+        desc: '跨境数据传输、行业监管要求、数据保护法规等合规风险。不同行业和地区的监管要求差异巨大。',
+        scenarios: [
+          '中国公司使用美国 Claude API，涉及数据出境安全评估',
+          '金融行业数据发送给外部模型，违反银保监会数据治理要求',
+          '医疗数据发送给外部模型，违反 HIPAA / 医疗数据安全管理办法',
+          '欧洲业务数据发送给美国模型，违反 GDPR 跨境传输规定',
+        ],
+        realCases: [
+          { date: '2023-06', event: '意大利数据保护局暂时禁止 ChatGPT，理由是违反 GDPR', impact: 'OpenAI 紧急增加欧洲数据处理选项和隐私控制' },
+          { date: '2024-08', event: '中国网信办发布《生成式人工智能服务管理暂行办法》', impact: '要求境内服务使用合法数据训练，跨境数据需安全评估' },
+          { date: '2025-02', event: '某银行因使用外部 AI 分析客户数据被银保监会约谈', impact: '全行暂停外部 AI 工具使用，启动合规整改' },
+        ],
+        mitigations: [
+          { name: '数据出境评估', desc: '按《数据出境安全评估办法》完成评估，或使用境内部署的模型', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '行业合规映射', desc: '建立行业监管要求与 AI 使用策略的映射表，按行业定制管控', effectiveness: '⭐⭐⭐⭐' },
+          { name: '合规审计链', desc: '完整记录数据流向、处理目的、法律依据，支持监管审查', effectiveness: '⭐⭐⭐⭐' },
+          { name: '境内模型备选', desc: '为高合规要求场景准备境内部署的模型（DeepSeek / Qwen / GLM）', effectiveness: '⭐⭐⭐⭐⭐' },
+        ],
+      },
+      {
+        id: 'supply_chain_risk',
+        name: '供应链依赖风险',
+        icon: '🔗',
+        color: '#ffa657',
+        severity: '🟡 中',
+        desc: '过度依赖单一外部模型提供商，面临服务中断、价格上涨、政策变化等供应链风险。',
+        scenarios: [
+          'Anthropic 突然调整 API 价格，成本翻倍',
+          '模型提供商因政策原因停止对某些地区的服务',
+          'API 服务中断导致开发流程停滞',
+          '模型版本更新导致生成质量波动，影响开发效率',
+        ],
+        realCases: [
+          { date: '2024-03', event: 'OpenAI 对中国区 API 访问施加限制', impact: '大量中国开发者被迫迁移到其他模型' },
+          { date: '2024-11', event: 'Anthropic Claude API 价格调整，部分企业成本增加 40%', impact: '企业开始评估多模型策略' },
+          { date: '2025-01', event: '某公司核心开发流程深度绑定 Cursor + Claude，Claude API 故障 4 小时导致全员停工', impact: '紧急建立多模型 Fallback 机制' },
+        ],
+        mitigations: [
+          { name: '多模型策略', desc: '同时接入 Claude / GPT / Gemini / DeepSeek，避免单点依赖', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '本地模型兜底', desc: '部署本地开源模型（Llama / Qwen）作为降级方案', effectiveness: '⭐⭐⭐⭐' },
+          { name: '抽象层封装', desc: '通过统一 API 网关封装多模型调用，业务层无感切换', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '成本监控', desc: '实时监控 API 调用量和成本，设置预算告警和自动限流', effectiveness: '⭐⭐⭐⭐' },
+        ],
+      },
+      {
+        id: 'code_quality_risk',
+        name: '代码质量与安全风险',
+        icon: '🐛',
+        color: '#00cec9',
+        severity: '🟡 中',
+        desc: 'AI 生成的代码可能包含安全漏洞、逻辑错误或不符合公司编码规范，且开发者可能因过度信任而降低审查标准。',
+        scenarios: [
+          'AI 生成的代码包含 SQL 注入、XSS 等常见安全漏洞',
+          '开发者直接采纳 AI 建议而跳过代码审查',
+          'AI 生成的代码不符合公司内部编码规范和架构约定',
+          'AI 引入的第三方依赖存在已知漏洞',
+        ],
+        realCases: [
+          { date: '2024-05', event: 'Stanford 研究：使用 AI 辅助编码的开发者产出的代码安全漏洞率高 40%', impact: '因为开发者过度信任 AI 输出，降低了人工审查标准' },
+          { date: '2025-01', event: 'Snyk 2025 报告：AI 生成代码中 36% 包含至少一个已知安全漏洞', impact: '企业开始在 CI/CD 中强制增加 AI 代码安全扫描步骤' },
+          { date: '2025-03', event: '某公司因 AI 生成的认证代码存在逻辑漏洞，导致用户数据泄露', impact: '紧急修复 + 安全审计 + 流程整改' },
+        ],
+        mitigations: [
+          { name: '强制安全扫描', desc: 'CI/CD 流水线中强制 SAST/DAST 扫描，AI 生成代码与人工代码同等标准', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '代码审查不降级', desc: 'AI 生成的代码必须经过与人工代码相同的 Code Review 流程', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '编码规范集成', desc: '将公司编码规范注入 AI 工具的 System Prompt / Rules 文件', effectiveness: '⭐⭐⭐⭐' },
+          { name: '依赖审计', desc: 'AI 引入的新依赖必须经过安全审计和许可证检查', effectiveness: '⭐⭐⭐⭐' },
+        ],
+      },
+      {
+        id: 'social_engineering_risk',
+        name: '提示注入与社工风险',
+        icon: '🎭',
+        color: '#636e72',
+        severity: '🟡 中',
+        desc: 'AI Agent 在处理外部输入时可能被提示注入攻击，执行非预期操作；员工可能被社工手段诱导泄露敏感信息。',
+        scenarios: [
+          'AI Agent 处理用户提交的 Issue 时，Issue 中嵌入恶意 Prompt 导致 Agent 执行危险操作',
+          '攻击者在代码注释中嵌入 Prompt Injection，AI 工具读取后执行恶意指令',
+          '员工被钓鱼邮件诱导，将内部代码粘贴到伪装的"AI 助手"网站',
+          'AI 工具的 MCP 插件被恶意篡改，窃取传输的代码和数据',
+        ],
+        realCases: [
+          { date: '2024-07', event: '研究者演示通过 Markdown 图片链接在 ChatGPT 中实现数据外泄', impact: 'OpenAI 紧急修复，但暴露了 AI 工具的攻击面' },
+          { date: '2025-02', event: '恶意 VS Code 插件伪装为 AI 助手，窃取用户代码和 API Key', impact: 'VS Code 市场加强插件审核，企业限制插件安装权限' },
+          { date: '2025-04', event: '某公司 AI Agent 被 Prompt Injection 攻击，自动执行了删除数据库的操作', impact: '紧急回滚 + 增加 Agent 操作审批机制' },
+        ],
+        mitigations: [
+          { name: 'Agent 操作审批', desc: '高风险操作（删除/修改/部署）必须经过人工审批，Agent 不能自主执行', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '输入净化', desc: '对 AI 处理的外部输入进行 Prompt Injection 检测和净化', effectiveness: '⭐⭐⭐⭐' },
+          { name: '最小权限原则', desc: 'AI 工具和 Agent 只授予完成任务所需的最小权限', effectiveness: '⭐⭐⭐⭐⭐' },
+          { name: '工具链审计', desc: '定期审计 AI 工具链（插件/MCP Server/扩展）的安全性', effectiveness: '⭐⭐⭐⭐' },
+        ],
+      },
+    ],
+  },
+
+  // 数据分级管控体系
+  dataClassification: {
+    title: '数据分级管控体系',
+    desc: '不是所有数据都需要同等保护——按敏感度分级，差异化管控',
+    levels: [
+      {
+        level: 'L1',
+        name: '公开数据',
+        icon: '🟢',
+        color: '#3fb950',
+        desc: '已公开或可公开的信息，无保密要求',
+        examples: ['开源代码', '公开文档', '技术博客内容', '公开 API 文档', '开源依赖代码'],
+        policy: '可自由使用任何外部模型，无限制',
+        modelAccess: '✅ 所有外部模型',
+        auditLevel: '无需审计',
+      },
+      {
+        level: 'L2',
+        name: '内部数据',
+        icon: '🟡',
+        color: '#ffa657',
+        desc: '公司内部使用的非敏感信息，泄露不会造成重大损失',
+        examples: ['内部工具代码', '非核心业务逻辑', '内部技术文档', '测试数据（已脱敏）', '内部流程文档'],
+        policy: '可使用签署 ZDR 协议的外部模型 API，需脱敏处理',
+        modelAccess: '✅ 签署 ZDR 的外部模型 API',
+        auditLevel: '月度抽查审计',
+      },
+      {
+        level: 'L3',
+        name: '机密数据',
+        icon: '🟠',
+        color: '#e17055',
+        desc: '核心业务代码、用户数据、商业策略等，泄露会造成重大损失',
+        examples: ['核心算法代码', '用户 PII 数据', '商业策略文档', '财务数据', '客户合同信息', '内部架构设计'],
+        policy: '仅可使用私有化部署的模型，或经过安全网关过滤后使用外部 API',
+        modelAccess: '⚠️ 仅私有化模型 / 安全网关过滤后的外部 API',
+        auditLevel: '每次使用实时审计',
+      },
+      {
+        level: 'L4',
+        name: '绝密数据',
+        icon: '🔴',
+        color: '#d63031',
+        desc: '最高机密信息，泄露会造成不可逆的重大损失',
+        examples: ['加密密钥 / 证书', '安全漏洞详情', '未公开的并购信息', '核心交易策略', '军工/国防相关数据'],
+        policy: '严禁使用任何外部模型，仅限离线环境的本地模型',
+        modelAccess: '❌ 禁止外部模型 / 仅离线本地模型',
+        auditLevel: '全量实时审计 + 告警',
+      },
+    ],
+  },
+
+  // 技术管控架构
+  technicalArchitecture: {
+    title: '技术管控架构',
+    desc: '从网络层到应用层的多层防护体系',
+    layers: [
+      {
+        name: 'AI 安全网关层',
+        icon: '🛡️',
+        color: '#e17055',
+        desc: '所有外部模型请求必须经过安全网关，实现统一管控',
+        components: [
+          { name: '敏感信息检测引擎', desc: '正则 + NER + 自定义规则，自动识别 API Key、密码、PII、内部域名等', tech: 'Presidio · Custom NER · Regex Engine' },
+          { name: '自动脱敏处理', desc: '检测到敏感信息后自动替换为占位符，响应返回时还原', tech: 'Token Mapping · Reversible Masking' },
+          { name: '请求审计日志', desc: '完整记录请求/响应内容、用户身份、时间戳、数据分级', tech: 'ELK · ClickHouse · 不可篡改日志' },
+          { name: '策略引擎', desc: '根据数据分级、用户角色、时间窗口动态决定放行/拦截/脱敏', tech: 'OPA · Custom Policy Engine' },
+        ],
+      },
+      {
+        name: '模型路由层',
+        icon: '🔀',
+        color: '#6c5ce7',
+        desc: '根据数据敏感度和任务类型，智能路由到最合适的模型',
+        components: [
+          { name: '多模型接入', desc: '统一接入 Claude / GPT / Gemini / DeepSeek / 本地 Llama 等', tech: 'LiteLLM · OpenRouter · Custom Gateway' },
+          { name: '智能路由', desc: '根据数据分级自动选择模型：L1-L2 → 外部 API，L3 → 私有化，L4 → 本地离线', tech: 'Rule Engine · ML Router' },
+          { name: '降级策略', desc: '外部模型不可用时自动降级到本地模型，保证可用性', tech: 'Circuit Breaker · Fallback Chain' },
+          { name: '成本优化', desc: '简单任务路由到低成本模型，复杂任务路由到高能力模型', tech: 'Task Classifier · Cost Optimizer' },
+        ],
+      },
+      {
+        name: '终端管控层',
+        icon: '💻',
+        color: '#3fb950',
+        desc: '在开发者终端（IDE / CLI / Web）层面实施管控',
+        components: [
+          { name: 'IDE 插件管控', desc: '统一管理 Cursor / Copilot / Continue 等 AI 插件的配置和权限', tech: 'MDM · Custom Plugin · VS Code Policy' },
+          { name: '剪贴板监控', desc: '检测开发者复制敏感代码到外部 AI 工具的行为（可选，需平衡隐私）', tech: 'DLP Agent · Endpoint Protection' },
+          { name: '.cursorrules 统一', desc: '通过统一的 Rules 文件注入安全规范和编码标准', tech: 'Git Template · CI Check' },
+          { name: 'MCP Server 白名单', desc: '仅允许经过安全审计的 MCP Server 连接', tech: 'MCP Registry · Certificate Pinning' },
+        ],
+      },
+      {
+        name: '审计与响应层',
+        icon: '📊',
+        color: '#ffa657',
+        desc: '持续监控、异常检测和事件响应',
+        components: [
+          { name: '实时仪表盘', desc: '展示 AI 工具使用量、数据分级分布、异常事件、成本趋势', tech: 'Grafana · Custom Dashboard' },
+          { name: '异常检测', desc: '检测异常模式：大量代码外发、非工作时间使用、敏感数据突增', tech: 'Anomaly Detection · Alert Rules' },
+          { name: '事件响应', desc: '发现安全事件后自动触发：阻断 → 通知 → 取证 → 修复 → 复盘', tech: 'SOAR · Incident Playbook' },
+          { name: '合规报告', desc: '自动生成合规审计报告，满足监管要求', tech: 'Report Generator · Compliance Template' },
+        ],
+      },
+    ],
+  },
+
+  // 模型提供商安全对比
+  providerComparison: {
+    title: '主流模型提供商安全能力对比',
+    desc: '选择模型提供商时的安全维度评估',
+    providers: [
+      {
+        name: 'Anthropic (Claude)',
+        icon: '🟣',
+        color: '#6c5ce7',
+        tier: 'Tier 1',
+        features: {
+          zdr: '✅ 支持 API 零留存（ZDR）',
+          soc2: '✅ SOC 2 Type II',
+          gdpr: '✅ GDPR 合规',
+          training: '✅ API 数据不用于训练（明确承诺）',
+          encryption: '✅ 传输加密 TLS 1.3 + 静态加密 AES-256',
+          region: '⚠️ 美国/欧洲数据中心，无中国区',
+          privateDeployment: '❌ 不支持私有化部署（仅 API）',
+          auditLog: '✅ 企业版支持审计日志',
+        },
+        verdict: '代码辅助首选，安全承诺最明确，但无私有化部署选项',
+      },
+      {
+        name: 'OpenAI (GPT-4)',
+        icon: '🟢',
+        color: '#3fb950',
+        tier: 'Tier 1',
+        features: {
+          zdr: '✅ 企业版支持 ZDR',
+          soc2: '✅ SOC 2 Type II',
+          gdpr: '✅ GDPR 合规',
+          training: '✅ API 数据不用于训练（企业版）',
+          encryption: '✅ 传输加密 TLS 1.3 + 静态加密',
+          region: '⚠️ 美国/欧洲数据中心，Azure 可选更多区域',
+          privateDeployment: '⚠️ Azure OpenAI 支持私有网络部署',
+          auditLog: '✅ 企业版支持审计日志',
+        },
+        verdict: 'Azure OpenAI 是企业级首选，支持私有网络，但成本较高',
+      },
+      {
+        name: 'Google (Gemini)',
+        icon: '🔵',
+        color: '#4285f4',
+        tier: 'Tier 1',
+        features: {
+          zdr: '✅ Vertex AI 支持 ZDR',
+          soc2: '✅ SOC 2 / ISO 27001',
+          gdpr: '✅ GDPR 合规',
+          training: '✅ API 数据不用于训练',
+          encryption: '✅ Google 级加密标准',
+          region: '✅ 全球多区域，含亚太',
+          privateDeployment: '⚠️ Vertex AI 支持 VPC 内部署',
+          auditLog: '✅ Cloud Audit Logs',
+        },
+        verdict: 'GCP 生态内最佳选择，多区域部署灵活',
+      },
+      {
+        name: 'DeepSeek',
+        icon: '🔷',
+        color: '#0984e3',
+        tier: 'Tier 2',
+        features: {
+          zdr: '⚠️ 需确认具体协议条款',
+          soc2: '⚠️ 安全认证体系待完善',
+          gdpr: '⚠️ 主要面向中国市场',
+          training: '⚠️ 数据使用政策需确认',
+          encryption: '✅ 传输加密',
+          region: '✅ 中国境内数据中心',
+          privateDeployment: '✅ 开源模型可完全私有化部署',
+          auditLog: '⚠️ 需自建',
+        },
+        verdict: '中国合规首选，开源可私有化部署是最大优势，安全认证待加强',
+      },
+      {
+        name: 'Qwen (通义千问)',
+        icon: '🟠',
+        color: '#ff6b35',
+        tier: 'Tier 2',
+        features: {
+          zdr: '✅ 阿里云企业版支持',
+          soc2: '✅ 等保三级 / ISO 27001',
+          gdpr: '⚠️ 主要面向中国市场',
+          training: '✅ 企业版数据不用于训练',
+          encryption: '✅ 阿里云级加密标准',
+          region: '✅ 中国境内多区域',
+          privateDeployment: '✅ 开源模型可完全私有化部署',
+          auditLog: '✅ 阿里云日志服务',
+        },
+        verdict: '国内企业级场景优选，阿里云生态完善，开源可私有化',
+      },
+    ],
+    featureLabels: {
+      zdr: '零数据留存 (ZDR)',
+      soc2: '安全认证',
+      gdpr: 'GDPR/合规',
+      training: '数据不用于训练',
+      encryption: '加密标准',
+      region: '数据中心区域',
+      privateDeployment: '私有化部署',
+      auditLog: '审计日志',
+    },
+  },
+
+  // 推荐方案
+  recommendedApproach: {
+    title: '推荐方案：分级管控 + 多模型策略',
+    desc: '不是"用不用"的问题，而是"怎么用"的问题',
+    phases: [
+      {
+        phase: 'Phase 1',
+        name: '快速启用（1-2 周）',
+        icon: '🚀',
+        color: '#3fb950',
+        actions: [
+          '与 Anthropic/OpenAI 签署企业版 ZDR 协议',
+          '发布《AI 工具使用安全规范 v1.0》，明确红线',
+          '统一 AI 工具配置（Cursor Rules / .cursorrules），注入安全规范',
+          '建立 AI 工具使用登记制度，明确谁在用、用什么、用在哪',
+        ],
+        deliverables: ['ZDR 协议签署', '安全规范文档', '统一配置模板'],
+        risk: '低——主要是流程和规范层面',
+      },
+      {
+        phase: 'Phase 2',
+        name: '安全网关（1-2 月）',
+        icon: '🛡️',
+        color: '#e17055',
+        actions: [
+          '部署 AI 安全网关，所有外部模型请求必须经过网关',
+          '实现敏感信息自动检测和脱敏（API Key / 密码 / PII / 内部域名）',
+          '建立请求审计日志，支持事后追溯',
+          '实现数据分级策略引擎，按 L1-L4 自动管控',
+        ],
+        deliverables: ['AI 安全网关 v1.0', '敏感信息检测引擎', '审计日志系统'],
+        risk: '中——需要工程投入，但技术方案成熟',
+      },
+      {
+        phase: 'Phase 3',
+        name: '多模型路由（2-3 月）',
+        icon: '🔀',
+        color: '#6c5ce7',
+        actions: [
+          '部署私有化模型（DeepSeek / Qwen / Llama）处理 L3 级数据',
+          '实现智能路由：根据数据分级自动选择外部/私有化/本地模型',
+          '建立模型降级链：外部 → 私有化 → 本地，保证可用性',
+          '成本优化：简单任务路由到低成本模型',
+        ],
+        deliverables: ['私有化模型部署', '智能路由引擎', '降级策略'],
+        risk: '中——私有化模型部署需要 GPU 资源',
+      },
+      {
+        phase: 'Phase 4',
+        name: '持续运营（持续）',
+        icon: '📊',
+        color: '#ffa657',
+        actions: [
+          '建立 AI 安全运营仪表盘，实时监控使用情况和风险',
+          '定期安全审计（月度），输出合规报告',
+          '持续更新敏感信息检测规则，覆盖新场景',
+          '跟踪模型提供商安全政策变化，及时调整策略',
+          '定期开展 AI 安全意识培训',
+        ],
+        deliverables: ['安全运营仪表盘', '月度合规报告', '培训材料'],
+        risk: '低——持续运营投入',
+      },
+    ],
+  },
+
+  // 成本效益分析
+  costBenefitAnalysis: {
+    title: '成本效益分析',
+    desc: '"不用"的隐性成本远大于"安全地用"的显性成本',
+    costs: {
+      title: '安全管控成本',
+      items: [
+        { name: 'AI 安全网关开发', cost: '2-3 人月', type: '一次性', icon: '🛡️' },
+        { name: '私有化模型部署', cost: '4-8 张 A100 GPU', type: '持续', icon: '🖥️' },
+        { name: '安全运营人力', cost: '0.5-1 人', type: '持续', icon: '👤' },
+        { name: '企业版 API 订阅', cost: '$5-20K/月', type: '持续', icon: '💳' },
+        { name: '安全审计与合规', cost: '1-2 人月/年', type: '周期性', icon: '📋' },
+      ],
+    },
+    benefits: {
+      title: '使用外部模型的收益',
+      items: [
+        { name: '开发效率提升', value: '3-5x', desc: 'AI 辅助编码显著提升开发速度', icon: '⚡' },
+        { name: '代码质量提升', value: '+30%', desc: 'AI 辅助 Code Review 和 Bug 检测', icon: '✅' },
+        { name: '人才吸引力', value: '显著', desc: '优秀工程师期望使用最先进的 AI 工具', icon: '🧲' },
+        { name: '知识传播效率', value: '5-10x', desc: 'AI 辅助文档生成、知识问答、Onboarding', icon: '📚' },
+        { name: '创新速度', value: '2-3x', desc: '快速原型验证、技术方案探索', icon: '🚀' },
+      ],
+    },
+    notUsingCosts: {
+      title: '不使用外部模型的隐性成本',
+      items: [
+        { name: '效率差距', value: '3-5x', desc: '竞争对手使用 AI 工具后效率远超我们', icon: '📉', color: '#e17055' },
+        { name: '人才流失', value: '高', desc: '优秀工程师因"工具落后"而离职', icon: '🚪', color: '#e17055' },
+        { name: '招聘困难', value: '高', desc: '"不让用 AI 工具"成为候选人拒绝 Offer 的理由', icon: '❌', color: '#e17055' },
+        { name: '技术债务', value: '加速', desc: '没有 AI 辅助，代码审查和重构效率低下', icon: '🏚️', color: '#ffa657' },
+        { name: '创新停滞', value: '严重', desc: '无法快速验证新想法，错过市场窗口', icon: '🐌', color: '#ffa657' },
+      ],
+    },
+  },
+
+  // 行业实践参考
+  industryPractices: {
+    title: '行业实践参考',
+    desc: '看看头部公司怎么做的',
+    practices: [
+      {
+        company: 'Google',
+        icon: '🔵',
+        color: '#4285f4',
+        approach: '内部 AI 工具为主 + 严格数据分级',
+        details: [
+          '内部开发 Gemini Code Assist，代码不出 Google 网络',
+          '25%+ 新代码由 AI 生成（2025 Q1 财报）',
+          '严格的数据分级制度，不同级别数据使用不同 AI 工具',
+          '所有 AI 工具使用记录纳入安全审计',
+        ],
+      },
+      {
+        company: 'Microsoft',
+        icon: '🟦',
+        color: '#0078d4',
+        approach: 'Azure OpenAI 私有网络 + GitHub Copilot Enterprise',
+        details: [
+          'Azure OpenAI 部署在企业私有网络内，数据不出 Azure 租户',
+          'GitHub Copilot Enterprise 支持组织级策略管控',
+          '代码建议基于组织内部代码库，减少外部数据依赖',
+          'IP 赔偿承诺：如果 Copilot 生成的代码引发版权诉讼，Microsoft 承担赔偿',
+        ],
+      },
+      {
+        company: 'Stripe',
+        icon: '🟣',
+        color: '#635bff',
+        approach: 'AI 安全网关 + 多模型策略',
+        details: [
+          '自建 AI Proxy，所有外部模型请求经过统一网关',
+          '自动检测和脱敏 PII、API Key、内部 URL 等敏感信息',
+          '按代码仓库敏感度分级，核心支付代码禁止使用外部模型',
+          '内部部署开源模型处理敏感代码的辅助需求',
+        ],
+      },
+      {
+        company: 'JPMorgan',
+        icon: '🏦',
+        color: '#003087',
+        approach: '私有化部署 + 严格合规',
+        details: [
+          '内部开发 LLM Suite，基于开源模型私有化部署',
+          '所有 AI 工具使用需经过合规审批',
+          '交易相关代码和数据严禁使用任何外部 AI 服务',
+          '建立 AI 使用委员会，定期审查和更新策略',
+        ],
+      },
+      {
+        company: 'Shopify',
+        icon: '🛒',
+        color: '#96bf48',
+        approach: '全面拥抱 + 安全护栏',
+        details: [
+          'CEO Tobi 要求所有员工使用 AI 工具，AI 使用纳入绩效考核',
+          '但同时建立了完善的安全护栏和使用规范',
+          '敏感数据自动脱敏后才能发送给外部模型',
+          '定期安全培训，强调"AI 是工具，人是责任人"',
+        ],
+      },
+    ],
+  },
+
+  // 关键结论
+  keyConclusions: {
+    title: '关键结论',
+    points: [
+      {
+        icon: '✅',
+        color: '#3fb950',
+        title: '必须用，但要安全地用',
+        desc: '在 AI Coding 时代，不使用外部模型等于主动放弃 3-5x 的效率优势。关键是建立分级管控体系，而非一刀切禁用。',
+      },
+      {
+        icon: '🛡️',
+        color: '#e17055',
+        title: '安全网关是核心基础设施',
+        desc: 'AI 安全网关应该像 API Gateway 一样成为标配基础设施。所有外部模型请求必须经过网关，实现统一的检测、脱敏、审计。',
+      },
+      {
+        icon: '🔀',
+        color: '#6c5ce7',
+        title: '多模型策略是必然选择',
+        desc: '外部模型处理非敏感数据，私有化模型处理敏感数据，本地模型处理绝密数据。智能路由让开发者无感知。',
+      },
+      {
+        icon: '📊',
+        color: '#ffa657',
+        title: '持续运营比一次性建设更重要',
+        desc: '安全不是一次性项目，而是持续运营。定期审计、规则更新、培训教育、策略迭代缺一不可。',
+      },
+      {
+        icon: '⚖️',
+        color: '#00cec9',
+        title: '平衡效率与安全，而非二选一',
+        desc: '最好的安全策略是让开发者几乎无感知的安全策略。安全网关自动处理，开发者专注编码。',
+      },
+    ],
+  },
+};
+
+// 8. 行业对标分析
 export const BENCHMARKS = {
   title: '行业对标分析',
   companies: [
