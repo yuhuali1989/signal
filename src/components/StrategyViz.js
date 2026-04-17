@@ -324,7 +324,7 @@ function BreakoutTab() {
 // Tab 3: Palantir 模式深度解析
 // ═══════════════════════════════════════════════════════════════
 function PalantirTab() {
-  const { products, moats, financials } = PALANTIR_DEEP_DIVE;
+  const { products, moats, codeAsProxy, financials } = PALANTIR_DEEP_DIVE;
 
   return (
     <div className="space-y-4">
@@ -374,6 +374,73 @@ function PalantirTab() {
               </div>
             </div>
           ))}
+        </div>
+      </SectionCard>
+
+      {/* Code as Proxy */}
+      <SectionCard icon="🧩" title={codeAsProxy.title} desc={codeAsProxy.desc}>
+        {/* 核心理念 */}
+        <div className="rounded-xl border border-[#6c5ce7]/30 bg-[#6c5ce7]/05 p-4 mb-4">
+          <div className="text-[10px] font-mono font-bold text-[#6c5ce7] mb-2">"{codeAsProxy.tagline}"</div>
+          <p className="text-xs text-gray-600 leading-relaxed">{codeAsProxy.principle}</p>
+        </div>
+
+        {/* 传统 vs Code as Proxy */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          <div className="rounded-xl border border-[#e17055]/30 bg-[#e17055]/05 p-3">
+            <div className="flex items-center gap-1.5 mb-2">
+              <span className="text-base">❌</span>
+              <span className="text-xs font-bold text-[#e17055]">{codeAsProxy.vsTraditional.traditional.label}</span>
+            </div>
+            <div className="text-[10px] font-mono text-gray-600 mb-1">{codeAsProxy.vsTraditional.traditional.flow}</div>
+            <div className="text-[9px] text-[#e17055]">⚠️ {codeAsProxy.vsTraditional.traditional.risk}</div>
+          </div>
+          <div className="rounded-xl border border-[#3fb950]/30 bg-[#3fb950]/05 p-3">
+            <div className="flex items-center gap-1.5 mb-2">
+              <span className="text-base">✅</span>
+              <span className="text-xs font-bold text-[#3fb950]">{codeAsProxy.vsTraditional.proxy.label}</span>
+            </div>
+            <div className="text-[10px] font-mono text-gray-600">{codeAsProxy.vsTraditional.proxy.flow}</div>
+          </div>
+        </div>
+
+        {/* 四层架构 */}
+        <div className="mb-4">
+          <div className="text-[10px] font-semibold text-gray-600 mb-2">🏗️ AIP 四层执行架构</div>
+          <div className="space-y-1.5">
+            {codeAsProxy.layers.map((l, i) => (
+              <div key={l.layer} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2.5">
+                <div className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0"
+                  style={{ background: l.color }}>{i + 1}</div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] font-semibold text-gray-700">{l.layer}</span>
+                  <span className="text-[9px] font-mono text-gray-400 ml-2">({l.role})</span>
+                  <div className="text-[9px] text-gray-500 mt-0.5">{l.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 为什么重要 */}
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          {codeAsProxy.why.map(w => (
+            <div key={w.point} className="rounded-lg border border-gray-100 bg-gray-50/30 p-2.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className="text-base">{w.icon}</span>
+                <span className="text-[10px] font-semibold text-gray-700">{w.point}</span>
+              </div>
+              <p className="text-[9px] text-gray-500 leading-relaxed">{w.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* 战略影响 */}
+        <div className="rounded-xl border border-[#ffa657]/30 bg-[#ffa657]/05 p-3">
+          <div className="flex items-start gap-2">
+            <span className="text-base flex-shrink-0">🏆</span>
+            <p className="text-[10px] text-gray-700 leading-relaxed">{codeAsProxy.impact}</p>
+          </div>
         </div>
       </SectionCard>
 
