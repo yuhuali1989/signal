@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import TableOfContents from '@/components/TableOfContents';
 import BookSidebar from '@/components/BookSidebar';
 import Link from 'next/link';
@@ -20,7 +19,7 @@ export default async function BookDetailPage({ params }) {
   if (!post) {
     return (
       <>
-        <Navbar />
+        
         <main className="max-w-4xl mx-auto px-4 py-20 text-center">
           <p className="text-gray-400">内容不存在</p>
           <Link href="/books/" className="text-maxwell-500 text-sm mt-4 inline-block">← 返回书架</Link>
@@ -40,7 +39,7 @@ export default async function BookDetailPage({ params }) {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
         {/* 面包屑 */}
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">

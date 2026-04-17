@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContentCard from '@/components/ContentCard';
 import Link from 'next/link';
@@ -14,7 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      
 
       {/* Hero */}
       <section className="pt-20 pb-14 text-center">

@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import NewsFeed from '@/components/NewsFeed';
 import { getNewsFeed, getNewsCategories } from '@/lib/content';
@@ -14,7 +13,7 @@ export default function NewsPage() {
 
   return (
     <>
-      <Navbar />
+      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">

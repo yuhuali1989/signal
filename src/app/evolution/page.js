@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getEvolutionLogs } from '@/lib/content';
 
@@ -30,7 +29,7 @@ export default function EvolutionPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">🔄 进化日志</h1>

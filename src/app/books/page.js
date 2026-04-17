@@ -1,4 +1,3 @@
-import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { getAllContent } from '@/lib/content';
@@ -35,7 +34,7 @@ export default function BooksPage() {
 
   return (
     <>
-      <Navbar />
+      
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         {/* Header */}
         <div className="mb-8">
