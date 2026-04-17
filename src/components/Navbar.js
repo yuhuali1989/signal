@@ -12,7 +12,7 @@ const navItems = [
   { name: '自动驾驶', href: '/vla/', title: 'DriveWorld-VLA · Alpamayo-R1 · 自动驾驶前沿' },
   { name: '数据闭环', href: '/data-infra/', title: 'K8s · 数据湖仓 · MLOps · 闭环链路 · 向量DB' },
   { name: '实验室', href: '/lab/', title: 'NeRF · 占用网络 · 扩散模型 · 蒸馏 · 轻量可复现' },
-{ name: '业务原生', href: '/strategy/', title: 'AI 时代困境 · Palantir 模式 · 应对框架 · 业务原生转型' },
+  { name: '业务原生', href: '/strategy/', title: 'AI 时代困境 · Palantir 模式 · 应对框架 · 业务原生转型' },
   { name: '声浪', href: '/news/', title: 'AI 前沿动态 · 每日聚合' },
   { name: '工具箱', href: '/tools/', title: 'Prompt 对比 · 模型参数速查 · 评测维度解析' },
   { name: '日志', href: '/evolution/', title: 'AI 智能体进化记录 · 全部更新透明可追溯' },
@@ -34,13 +34,13 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-0">
+          <div className="hidden lg:flex items-center gap-0 overflow-x-auto max-w-[680px] scrollbar-none">
             {navItems.map(item => (
               <Link
                 key={item.name}
                 href={item.href}
                 title={item.title}
-                className="px-2 py-1.5 text-[12px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap"
+                className="px-2 py-1.5 text-[11.5px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap flex-shrink-0"
               >
                 {item.name}
               </Link>
