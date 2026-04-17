@@ -475,7 +475,734 @@ export const RESPONSE_FRAMEWORK = {
   ],
 };
 
-// 5. 行业对标分析
+// 5. 内部 SaaS 共用困境与交付形态
+export const SAAS_DELIVERY = {
+  title: '内部 SaaS 共用困境与交付形态',
+  subtitle: '多部门共用一个大 SaaS 好不好？爆炸半径、交付形态到底怎么做？',
+
+  // 大一统 SaaS 的核心困境
+  sharedPlatformProblems: {
+    title: '大一统 SaaS 平台的六大困境',
+    desc: '公司内部做一个大 SaaS 让所有部门共用，看似降本增效，实则暗藏系统性风险',
+    problems: [
+      {
+        id: 'blast_radius',
+        name: '爆炸半径失控',
+        icon: '💥',
+        color: '#e17055',
+        severity: '🔴 致命',
+        desc: '一个部门的变更或故障，波及所有使用方。平台越大，爆炸半径越大，一次事故可能导致全公司业务瘫痪。',
+        cases: [
+          '某次数据库 Schema 变更导致 12 个业务线同时报错，恢复耗时 6 小时',
+          '一个部门的流量突增触发限流，其他部门的正常请求被误杀',
+          '安全漏洞修复需要所有业务线同时升级，协调成本远超修复成本',
+          '一个低优先级功能的 Bug 导致核心交易链路降级',
+        ],
+        metrics: [
+          { label: '平均故障影响范围', value: '5-12', unit: '个业务线' },
+          { label: '变更协调周期', value: '2-4', unit: '周' },
+          { label: '回滚复杂度', value: '指数级', unit: '' },
+        ],
+      },
+      {
+        id: 'requirement_conflict',
+        name: '需求冲突与优先级博弈',
+        icon: '⚔️',
+        color: '#6c5ce7',
+        severity: '🔴 致命',
+        desc: '不同部门的需求方向、优先级、时间线完全不同，共用平台团队成为"需求漏斗"的瓶颈。',
+        cases: [
+          'A 部门要求高并发低延迟，B 部门要求强一致性，架构设计互相矛盾',
+          '平台团队 80% 时间在协调需求优先级，20% 时间写代码',
+          '小部门的紧急需求永远排在大部门后面，被迫自建"影子系统"',
+          '版本发布节奏被最慢的业务线拖累，快速迭代的团队被迫等待',
+        ],
+        metrics: [
+          { label: '需求排队周期', value: '4-8', unit: '周' },
+          { label: '需求满足率', value: '<40%', unit: '' },
+          { label: '影子系统数量', value: '持续增长', unit: '' },
+        ],
+      },
+      {
+        id: 'iteration_speed',
+        name: '迭代速度塌陷',
+        icon: '🐌',
+        color: '#ffa657',
+        severity: '🟡 严重',
+        desc: '平台越大，每次变更的测试范围越广、回归成本越高、发布流程越长。创新速度被系统复杂度拖死。',
+        cases: [
+          '一个简单功能从需求到上线需要 6-8 周（需求评审→排期→开发→全量回归→灰度→全量）',
+          '回归测试覆盖 200+ 场景，每次发布需要 3 天测试周期',
+          '灰度发布需要所有业务线确认，一个部门不同意就无法推进',
+          '技术债务累积导致每次迭代的边际成本递增',
+        ],
+        metrics: [
+          { label: '发布周期', value: '2-4', unit: '周/次' },
+          { label: '回归测试时间', value: '3-5', unit: '天' },
+          { label: '年迭代次数', value: '<20', unit: '次' },
+        ],
+      },
+      {
+        id: 'org_coupling',
+        name: '组织耦合',
+        icon: '🔗',
+        color: '#fd79a8',
+        severity: '🟡 严重',
+        desc: '康威定律的反面——共用平台迫使不同业务线在组织上深度耦合，决策链路过长，责任边界模糊。',
+        cases: [
+          '平台团队成为所有业务线的"公共依赖"，任何决策都需要多方会议',
+          '出了问题互相甩锅：业务方说"平台不稳定"，平台方说"业务方用法不对"',
+          '平台团队 KPI 与业务团队 KPI 冲突（稳定性 vs 快速上线）',
+          '人员流动导致领域知识丢失，新人无法理解跨业务线的复杂逻辑',
+        ],
+        metrics: [
+          { label: '跨团队会议', value: '5-10', unit: '次/周' },
+          { label: '决策周期', value: '2-3x', unit: '倍' },
+          { label: '责任归属争议', value: '频繁', unit: '' },
+        ],
+      },
+      {
+        id: 'customization_tax',
+        name: '定制化税',
+        icon: '🏷️',
+        color: '#00cec9',
+        severity: '🟡 严重',
+        desc: '为满足不同部门的差异化需求，平台被迫引入大量配置项、开关、插件机制，系统复杂度指数级增长。',
+        cases: [
+          '配置项从最初的 20 个膨胀到 500+，没人能完全理解所有配置的交互效果',
+          '为 A 部门加的"特殊逻辑"成为 B 部门的 Bug 来源',
+          '插件机制设计不当，第三方插件导致主系统崩溃',
+          '"万能平台"最终变成"万能屎山"，重构成本远超重建成本',
+        ],
+        metrics: [
+          { label: '配置项数量', value: '500+', unit: '个' },
+          { label: '条件分支', value: '指数增长', unit: '' },
+          { label: '代码可读性', value: '持续下降', unit: '' },
+        ],
+      },
+      {
+        id: 'innovation_ceiling',
+        name: '创新天花板',
+        icon: '🚧',
+        color: '#636e72',
+        severity: '🟡 严重',
+        desc: '平台必须向后兼容所有使用方，无法大胆采用新技术或新架构。技术选型被最保守的业务线锁定。',
+        cases: [
+          '想升级到新框架，但 3 个业务线还在用旧 API，迁移遥遥无期',
+          '新技术 PoC 效果很好，但"全量推广影响面太大"被否决',
+          '竞争对手已经用上新架构，我们还在维护 5 年前的技术栈',
+          '优秀工程师因为"只能做维护，没有创新空间"而离职',
+        ],
+        metrics: [
+          { label: '技术栈年龄', value: '3-5', unit: '年' },
+          { label: '新技术采纳周期', value: '12-18', unit: '月' },
+          { label: '工程师满意度', value: '偏低', unit: '' },
+        ],
+      },
+    ],
+  },
+
+  // 爆炸半径深度分析
+  blastRadiusAnalysis: {
+    title: '爆炸半径深度分析',
+    desc: '理解故障传播路径，才能设计有效的隔离策略',
+    dimensions: [
+      {
+        name: '故障传播维度',
+        icon: '🔥',
+        color: '#e17055',
+        layers: [
+          { name: '基础设施层', desc: '数据库/缓存/消息队列故障 → 所有依赖方受影响', risk: '🔴 极高', isolation: '物理隔离 / 多集群' },
+          { name: '服务层', desc: '核心服务异常 → 级联故障 → 雪崩效应', risk: '🔴 极高', isolation: '熔断 / 限流 / 降级' },
+          { name: '数据层', desc: '数据污染/Schema 变更 → 下游数据错误 → 业务决策失误', risk: '🟡 高', isolation: '数据版本化 / 多租户隔离' },
+          { name: '配置层', desc: '配置错误 → 行为异常 → 难以定位', risk: '🟡 高', isolation: '配置灰度 / 回滚机制' },
+          { name: '业务逻辑层', desc: '规则冲突 → A 部门的正确是 B 部门的 Bug', risk: '🟡 中', isolation: '领域隔离 / 规则引擎' },
+        ],
+      },
+      {
+        name: '变更风险维度',
+        icon: '🔄',
+        color: '#6c5ce7',
+        layers: [
+          { name: 'API 变更', desc: '接口修改影响所有调用方，版本管理复杂', risk: '🔴 极高', isolation: 'API 版本化 / 契约测试' },
+          { name: '数据模型变更', desc: 'Schema 演进需要所有消费方同步适配', risk: '🔴 极高', isolation: 'Schema Registry / 向后兼容' },
+          { name: '依赖升级', desc: '底层库升级可能破坏上层业务逻辑', risk: '🟡 高', isolation: '依赖隔离 / 渐进式升级' },
+          { name: '性能变更', desc: '优化 A 场景可能劣化 B 场景', risk: '🟡 中', isolation: '性能基线 / A/B 测试' },
+        ],
+      },
+      {
+        name: '组织传播维度',
+        icon: '👥',
+        color: '#3fb950',
+        layers: [
+          { name: '知识依赖', desc: '关键人员离职 → 领域知识断裂 → 系统不可维护', risk: '🔴 极高', isolation: '文档化 / 知识图谱 / Pair Programming' },
+          { name: '流程耦合', desc: '发布/审批/测试流程互相阻塞', risk: '🟡 高', isolation: '独立发布流水线 / 自动化测试' },
+          { name: '沟通成本', desc: '跨团队协调的时间成本随团队数量平方级增长', risk: '🟡 高', isolation: '明确接口契约 / 异步沟通' },
+        ],
+      },
+    ],
+  },
+
+  // 软件交付形态演进
+  deliveryEvolution: {
+    title: '软件交付形态演进',
+    desc: '从大一统到领域自治的演进路径',
+    stages: [
+      {
+        id: 'monolith',
+        name: '大一统平台',
+        subtitle: 'Monolithic Shared Platform',
+        icon: '🏢',
+        color: '#636e72',
+        era: '2010-2018',
+        desc: '一个平台服务所有部门，统一技术栈、统一数据库、统一发布',
+        pros: ['初期开发效率高', '技术栈统一易管理', '数据天然互通', '人力集中投入'],
+        cons: ['爆炸半径大', '迭代速度慢', '需求冲突严重', '创新受限'],
+        blastRadius: '🔴 全公司',
+        autonomy: '⭐',
+        scalability: '⭐⭐',
+        bestFor: '初创期 / 业务线 < 3 / 团队 < 30 人',
+      },
+      {
+        id: 'microservice',
+        name: '微服务化',
+        subtitle: 'Microservices Architecture',
+        icon: '🧩',
+        color: '#326ce5',
+        era: '2015-2022',
+        desc: '按技术能力拆分为独立服务，各服务独立部署、独立扩展',
+        pros: ['服务级别隔离', '独立部署', '技术栈灵活', '团队自治'],
+        cons: ['分布式复杂度', '数据一致性难题', '运维成本高', '服务间调用链长'],
+        blastRadius: '🟡 单服务 + 下游',
+        autonomy: '⭐⭐⭐',
+        scalability: '⭐⭐⭐⭐',
+        bestFor: '中等规模 / 技术团队成熟 / 有 DevOps 基础',
+      },
+      {
+        id: 'domain_platform',
+        name: '领域平台',
+        subtitle: 'Domain-Oriented Platform',
+        icon: '🏗️',
+        color: '#6c5ce7',
+        era: '2020-2025',
+        desc: '按业务领域划分平台边界，每个领域平台独立演进，通过标准化接口互通',
+        pros: ['领域自治', '爆炸半径可控', '业务语义清晰', '独立演进节奏'],
+        cons: ['领域边界划分难', '跨域协调成本', '重复建设风险', '需要强治理'],
+        blastRadius: '🟢 单领域',
+        autonomy: '⭐⭐⭐⭐',
+        scalability: '⭐⭐⭐⭐',
+        bestFor: '大型组织 / 多业务线 / 领域边界清晰',
+      },
+      {
+        id: 'embedded_capability',
+        name: '嵌入式能力',
+        subtitle: 'Embedded AI-Native Capability',
+        icon: '🧬',
+        color: '#3fb950',
+        era: '2025+',
+        desc: '不再是"共用平台"，而是将核心能力（数据/AI/安全）以 SDK/Agent/API 形式嵌入各业务线，业务线拥有完全自主权',
+        pros: ['零爆炸半径', '完全自治', 'AI 原生', '按需组合', '极速迭代'],
+        cons: ['能力一致性挑战', '版本碎片化', '需要强标准', '治理复杂度转移'],
+        blastRadius: '🟢 单业务线',
+        autonomy: '⭐⭐⭐⭐⭐',
+        scalability: '⭐⭐⭐⭐⭐',
+        bestFor: 'AI 时代 / 业务线高度自治 / 有平台工程能力',
+      },
+    ],
+  },
+
+  // 最佳实践：交付形态决策框架
+  deliveryFramework: {
+    title: '交付形态决策框架',
+    subtitle: '没有银弹，只有适合的选择',
+    principles: [
+      {
+        name: '爆炸半径最小化原则',
+        icon: '🛡️',
+        color: '#e17055',
+        desc: '任何单点故障的影响范围必须可控。设计时先画"爆炸半径图"，再决定架构边界。',
+        practices: [
+          '故障域隔离：不同业务线的数据、计算、网络物理隔离',
+          '变更灰度：任何变更先在最小范围验证，逐步扩大',
+          '熔断降级：下游故障时自动降级，不传播到上游',
+          '混沌工程：定期注入故障，验证隔离机制有效性',
+        ],
+      },
+      {
+        name: '领域自治原则',
+        icon: '🏛️',
+        color: '#6c5ce7',
+        desc: '每个业务领域拥有自己的数据、服务和发布节奏。跨域通过契约而非共享数据库交互。',
+        practices: [
+          '领域驱动设计（DDD）：明确限界上下文和领域边界',
+          '数据所有权：每个领域拥有自己的数据存储，禁止跨域直接读写',
+          '契约优先：API 契约先于实现，变更需要消费方确认',
+          '独立发布：每个领域可以独立发布，不需要全局协调',
+        ],
+      },
+      {
+        name: '能力下沉原则',
+        icon: '⬇️',
+        color: '#3fb950',
+        desc: '通用能力（认证/监控/日志/AI）以 SDK/Sidecar 形式下沉到业务线，而非集中式平台。',
+        practices: [
+          'SDK 化：核心能力封装为版本化 SDK，业务线按需引入',
+          'Sidecar 模式：基础设施能力通过 Sidecar 代理注入，对业务透明',
+          'Platform as a Product：平台团队像产品团队一样运营，SDK 是产品',
+          '版本兼容：SDK 严格遵循语义化版本，向后兼容至少 2 个大版本',
+        ],
+      },
+      {
+        name: 'AI Agent 原生原则',
+        icon: '🤖',
+        color: '#ffa657',
+        desc: 'AI 时代的交付形态应该是 Agent 原生的——能力以 Agent 可调用的工具/API 形式存在。',
+        practices: [
+          'MCP/Tool 化：所有平台能力注册为 AI Agent 可调用的工具',
+          '自描述 API：API 自带语义描述，Agent 无需人工编排即可理解和调用',
+          '意图驱动：业务方表达意图（"我要分析用户留存"），Agent 自动编排底层能力',
+          '反馈闭环：Agent 调用结果自动反馈，持续优化工具质量',
+        ],
+      },
+    ],
+    // 决策矩阵
+    decisionMatrix: [
+      { dimension: '团队规模', monolith: '< 30 人 ✅', microservice: '30-200 人 ✅', domain: '200-1000 人 ✅', embedded: '> 200 人 ✅' },
+      { dimension: '业务线数量', monolith: '1-3 ✅', microservice: '3-10 ✅', domain: '5-20 ✅', embedded: '> 10 ✅' },
+      { dimension: '迭代速度要求', monolith: '月级 ✅', microservice: '周级 ✅', domain: '周级 ✅', embedded: '天级 ✅' },
+      { dimension: '爆炸半径容忍度', monolith: '高（可接受全局影响）', microservice: '中（服务级隔离）', domain: '低（领域级隔离）', embedded: '极低（业务线级隔离）' },
+      { dimension: '技术团队成熟度', monolith: '初级 ✅', microservice: '中级 ✅', domain: '高级 ✅', embedded: '高级 ✅' },
+      { dimension: 'AI 能力需求', monolith: '低', microservice: '中', domain: '中-高', embedded: '高（AI 原生）' },
+      { dimension: '运维复杂度', monolith: '⭐', microservice: '⭐⭐⭐⭐', domain: '⭐⭐⭐', embedded: '⭐⭐⭐' },
+      { dimension: '初始建设成本', monolith: '⭐', microservice: '⭐⭐⭐', domain: '⭐⭐⭐⭐', embedded: '⭐⭐⭐⭐' },
+    ],
+    // 推荐路径
+    recommendedPath: {
+      title: '推荐演进路径',
+      desc: '不要一步到位，渐进式演进才是正道',
+      steps: [
+        {
+          phase: 'Phase 1',
+          name: '识别爆炸半径',
+          duration: '1-2 月',
+          icon: '🔍',
+          color: '#e17055',
+          actions: [
+            '梳理当前平台的所有使用方和依赖关系',
+            '绘制故障传播图，标记高风险路径',
+            '统计过去 12 个月的故障影响范围数据',
+            '识别"必须隔离"的核心业务线',
+          ],
+        },
+        {
+          phase: 'Phase 2',
+          name: '领域边界划分',
+          duration: '2-3 月',
+          icon: '✂️',
+          color: '#6c5ce7',
+          actions: [
+            '用 DDD 方法识别限界上下文',
+            '按业务领域（而非技术层）划分平台边界',
+            '定义领域间的接口契约和数据所有权',
+            '选择 1-2 个领域做试点拆分',
+          ],
+        },
+        {
+          phase: 'Phase 3',
+          name: '能力 SDK 化',
+          duration: '3-6 月',
+          icon: '📦',
+          color: '#3fb950',
+          actions: [
+            '将通用能力（认证/监控/日志）封装为 SDK',
+            '建立 SDK 版本管理和兼容性策略',
+            '试点业务线从"调用平台 API"迁移到"引入 SDK"',
+            '建立 Platform as a Product 的运营机制',
+          ],
+        },
+        {
+          phase: 'Phase 4',
+          name: 'Agent 原生化',
+          duration: '6-12 月',
+          icon: '🤖',
+          color: '#ffa657',
+          actions: [
+            '所有平台能力注册为 MCP Tool',
+            '构建 AI Agent 编排层，支持意图驱动调用',
+            '业务线通过 Agent 而非直接 API 使用平台能力',
+            '建立反馈闭环，持续优化工具质量和 Agent 效果',
+          ],
+        },
+      ],
+    },
+  },
+
+  // 真实案例与教训
+  realWorldLessons: {
+    title: '真实案例与教训',
+    cases: [
+      {
+        name: '某大厂统一中台翻车',
+        icon: '🏢',
+        color: '#e17055',
+        scenario: '2019 年某互联网大厂推行"大中台"战略，将所有业务线的通用能力收归中台团队统一建设。',
+        problems: [
+          '中台团队成为全公司瓶颈，需求排队 3-6 个月',
+          '一次中台升级导致 8 个业务线同时故障，损失数千万',
+          '业务线为绕过中台，私建"影子系统"，数据孤岛反而更多',
+          '中台团队 KPI 是"平台稳定性"，业务团队 KPI 是"快速上线"，根本性冲突',
+        ],
+        lesson: '中台不是万能药。当中台成为瓶颈时，它的存在反而降低了整体效率。正确做法是"能力下沉"而非"能力集中"。',
+      },
+      {
+        name: 'Shopify 的 Modular Monolith',
+        icon: '🛒',
+        color: '#3fb950',
+        scenario: 'Shopify 没有走微服务路线，而是选择了"模块化单体"——在单体应用内部划分清晰的模块边界，模块间通过接口通信。',
+        problems: [
+          '初期微服务化尝试导致运维复杂度爆炸',
+          '分布式事务和数据一致性问题消耗大量工程资源',
+          '服务间调用链过长，排查问题困难',
+        ],
+        lesson: '微服务不是唯一答案。Shopify 证明了"模块化单体"在特定规模下可以兼顾隔离性和简单性。关键是模块边界清晰，而非物理拆分。',
+      },
+      {
+        name: 'Amazon 的 Two-Pizza Team',
+        icon: '🍕',
+        color: '#ffa657',
+        scenario: 'Amazon 的"两个披萨团队"原则——每个团队足够小（6-10 人），拥有自己的服务、数据和发布流程，对外提供 API。',
+        problems: [
+          '初期大量重复建设，同一功能被多个团队独立实现',
+          '跨团队协调依赖严格的 API 契约和文档',
+          '需要强大的基础设施团队支撑（AWS 就是这么诞生的）',
+        ],
+        lesson: '小团队 + 明确所有权 + API 契约 = 最大化自治和创新速度。重复建设的成本远低于协调成本。AWS 本身就是"内部平台能力产品化"的最佳案例。',
+      },
+      {
+        name: 'Palantir 的 Forward Deployed 模式',
+        icon: '🏛️',
+        color: '#6c5ce7',
+        scenario: 'Palantir 不做"通用 SaaS"，而是派工程师驻场客户，基于通用平台（Foundry）为每个客户深度定制。',
+        problems: [
+          '人力成本高，扩展速度受限',
+          '每个客户的定制化代码难以复用',
+          '工程师驻场模式对人才要求极高',
+        ],
+        lesson: '通用平台 + 深度定制的组合模式。平台提供 80% 的通用能力，剩下 20% 由驻场工程师根据客户业务深度定制。这 20% 才是真正的价值和护城河。',
+      },
+    ],
+  },
+};
+
+// 6. FDE × 业务 BP × 交付飞轮
+export const FDE_BP_FLYWHEEL = {
+  title: 'FDE × 业务 BP × 交付飞轮',
+  subtitle: '从"远程交付"到"嵌入式共创"——Palantir FDE 模式的本土化演进',
+
+  // FDE 与业务 BP 概念对比
+  roleComparison: {
+    title: '角色定义与对比',
+    desc: '理解 FDE 和业务 BP 的本质区别，才能设计正确的交付模式',
+    roles: [
+      {
+        id: 'fde',
+        name: 'Forward Deployed Engineer (FDE)',
+        origin: 'Palantir',
+        icon: '🪖',
+        color: '#6c5ce7',
+        tagline: '技术军师，驻场作战',
+        definition: '由平台方派出的高级工程师，驻场到客户/业务方 6-18 个月，深度理解业务后基于平台能力构建定制化解决方案。不是"外包"，而是"技术特种兵"。',
+        keyTraits: [
+          { trait: '技术深度', desc: '精通平台底层架构，能快速将平台能力适配到业务场景', level: '⭐⭐⭐⭐⭐' },
+          { trait: '业务理解', desc: '驻场期间深度学习业务领域知识，成为"懂技术的业务专家"', level: '⭐⭐⭐⭐' },
+          { trait: '交付能力', desc: '独立完成从需求分析到上线部署的全链路，不依赖后方团队', level: '⭐⭐⭐⭐⭐' },
+          { trait: '知识回流', desc: '将业务场景中的通用需求抽象回平台，驱动平台进化', level: '⭐⭐⭐⭐⭐' },
+        ],
+        dayInLife: [
+          '09:00 参加业务方晨会，了解当日业务重点和痛点',
+          '10:00 与业务方 1:1 深挖某个决策流程的瓶颈',
+          '11:00 基于平台 Ontology 建模业务实体和规则',
+          '14:00 开发定制化 AI Agent / 决策仪表盘',
+          '16:00 与平台团队同步，提交通用能力需求',
+          '17:00 给业务方演示 Demo，收集反馈迭代',
+        ],
+        antiPatterns: [
+          '❌ 不是外包——FDE 代表平台方利益，目标是让业务方深度绑定平台',
+          '❌ 不是售前——FDE 真正写代码、做交付，不是画 PPT',
+          '❌ 不是驻场运维——FDE 创造新价值，不是维护旧系统',
+          '❌ 不是一次性项目——FDE 建立的是持续运转的系统，不是交付后就走',
+        ],
+      },
+      {
+        id: 'bp',
+        name: 'Business Partner (业务 BP)',
+        origin: '互联网大厂',
+        icon: '🤝',
+        color: '#3fb950',
+        tagline: '业务翻译官，需求桥梁',
+        definition: '由平台/中台团队派出的业务对接人，负责理解业务方需求并翻译为技术方案，协调平台团队排期交付。本质是"需求中转站"和"沟通桥梁"。',
+        keyTraits: [
+          { trait: '技术深度', desc: '了解平台能力边界，但通常不直接写代码', level: '⭐⭐⭐' },
+          { trait: '业务理解', desc: '理解业务方的语言和需求，但深度有限', level: '⭐⭐⭐' },
+          { trait: '交付能力', desc: '依赖后方平台团队排期开发，自身不直接交付', level: '⭐⭐' },
+          { trait: '知识回流', desc: '传递需求信息，但抽象和沉淀能力有限', level: '⭐⭐' },
+        ],
+        dayInLife: [
+          '09:00 收集业务方本周需求清单',
+          '10:00 与平台产品经理对齐需求优先级',
+          '11:00 编写需求文档，翻译业务语言为技术语言',
+          '14:00 参加平台团队排期会，争取资源',
+          '16:00 向业务方同步排期结果和预期交付时间',
+          '17:00 跟进上周需求的开发进度',
+        ],
+        antiPatterns: [
+          '⚠️ 容易变成"传话筒"——两头传话，两头不满意',
+          '⚠️ 容易变成"需求漏斗"——收集了 100 个需求，平台只能做 10 个',
+          '⚠️ 容易变成"背锅侠"——业务方怪排期慢，平台方怪需求不清',
+          '⚠️ 容易变成"信息孤岛"——BP 离职后，业务知识随之丢失',
+        ],
+      },
+    ],
+    // 核心差异对比
+    comparison: [
+      { dimension: '核心定位', fde: '技术特种兵，独立作战', bp: '沟通桥梁，协调资源', winner: 'fde' },
+      { dimension: '交付方式', fde: '自己写代码，直接交付', bp: '写需求文档，等后方排期', winner: 'fde' },
+      { dimension: '业务深度', fde: '驻场 6-18 月，深度浸泡', bp: '定期对接，表层理解', winner: 'fde' },
+      { dimension: '响应速度', fde: '当天需求当天响应', bp: '需求排队 4-8 周', winner: 'fde' },
+      { dimension: '知识沉淀', fde: '抽象为平台能力 + Ontology', bp: '停留在需求文档层面', winner: 'fde' },
+      { dimension: '可扩展性', fde: '人力密集，扩展受限', bp: '轻量级，易复制', winner: 'bp' },
+      { dimension: '人才要求', fde: '全栈 + 业务理解，极稀缺', bp: '沟通能力为主，较易招聘', winner: 'bp' },
+      { dimension: '成本', fde: '高（高级工程师驻场）', bp: '中（协调角色）', winner: 'bp' },
+    ],
+    // 进化方向：FDE + AI = 超级 BP
+    evolution: {
+      title: 'FDE + AI Agent = 超级业务 BP',
+      desc: '用 AI Agent 替代 FDE 的重复性工作，让 FDE 聚焦高价值的业务理解和架构设计',
+      icon: '🚀',
+      color: '#e17055',
+      stages: [
+        { name: '传统 BP', desc: '需求传话筒，等排期', icon: '📋', efficiency: '1x', color: '#636e72' },
+        { name: 'FDE 驻场', desc: '独立交付，深度绑定', icon: '🪖', efficiency: '5x', color: '#6c5ce7' },
+        { name: 'FDE + AI Copilot', desc: 'AI 辅助编码，FDE 聚焦架构', icon: '🤖', efficiency: '10x', color: '#3fb950' },
+        { name: 'AI Agent + FDE 督导', desc: 'Agent 自主交付，FDE 做质量把关和业务决策', icon: '🧠', efficiency: '20x', color: '#e17055' },
+      ],
+    },
+  },
+
+  // 交付飞轮模型
+  deliveryFlywheel: {
+    title: '交付飞轮模型',
+    desc: 'FDE 驻场不是一次性项目，而是驱动平台持续进化的飞轮引擎',
+    // 飞轮的四个阶段
+    stages: [
+      {
+        id: 'embed',
+        name: '嵌入',
+        subtitle: 'Embed & Understand',
+        icon: '🔍',
+        color: '#6c5ce7',
+        desc: 'FDE 驻场业务方，深度理解业务流程、决策逻辑、数据流向和痛点',
+        inputs: ['业务方的领域知识', '真实业务流程和数据', '一线用户的痛点反馈'],
+        outputs: ['业务领域 Ontology 模型', '关键决策流程图', '数据资产清单'],
+        duration: '1-3 月',
+        keyActions: [
+          '跟随业务方日常工作，观察真实决策过程',
+          '绘制业务实体关系图和决策流程图',
+          '识别"AI 可以替代"和"必须人工判断"的环节',
+          '建立业务方信任，成为"自己人"',
+        ],
+        metrics: [
+          { label: '业务流程覆盖', value: '>80%' },
+          { label: '关键决策点识别', value: '>20 个' },
+          { label: '业务方信任度', value: '高' },
+        ],
+      },
+      {
+        id: 'deliver',
+        name: '交付',
+        subtitle: 'Build & Deliver',
+        icon: '⚡',
+        color: '#e17055',
+        desc: '基于平台能力快速构建定制化解决方案，让业务方看到即时价值',
+        inputs: ['业务 Ontology 模型', '平台核心能力（数据/AI/工具）', '业务方的优先级排序'],
+        outputs: ['定制化 AI Agent / Copilot', '决策仪表盘', '自动化工作流', '业务方的"Aha Moment"'],
+        duration: '2-6 月',
+        keyActions: [
+          '选择 1-2 个高价值场景快速交付 MVP',
+          '基于平台 SDK/API 构建，而非从零开发',
+          '每周 Demo，快速迭代，让业务方参与共创',
+          '记录所有定制化需求，标记"可通用化"的部分',
+        ],
+        metrics: [
+          { label: '首个 MVP 交付', value: '<4 周' },
+          { label: '业务方满意度', value: '>4.5/5' },
+          { label: '决策效率提升', value: '3-5x' },
+        ],
+      },
+      {
+        id: 'abstract',
+        name: '抽象',
+        subtitle: 'Abstract & Generalize',
+        icon: '🧬',
+        color: '#3fb950',
+        desc: '将业务场景中的定制化方案抽象为平台通用能力，反哺平台进化',
+        inputs: ['多个业务场景的定制化代码', '跨业务线的共性需求', 'FDE 的业务洞察'],
+        outputs: ['新的平台 SDK 模块', '通用 Ontology 模板', '最佳实践 Playbook', '平台能力升级'],
+        duration: '持续进行',
+        keyActions: [
+          '识别 3+ 个业务线都需要的共性能力',
+          '将定制化代码重构为可配置的平台模块',
+          '编写 Ontology 模板和最佳实践文档',
+          '与平台团队协作，将模块合入平台主线',
+        ],
+        metrics: [
+          { label: '通用化模块', value: '>5 个/季度' },
+          { label: '代码复用率', value: '>60%' },
+          { label: '平台能力增长', value: '持续' },
+        ],
+      },
+      {
+        id: 'scale',
+        name: '规模化',
+        subtitle: 'Scale & Replicate',
+        icon: '🚀',
+        color: '#ffa657',
+        desc: '通用化的能力让下一个业务线的接入更快、成本更低，飞轮加速转动',
+        inputs: ['平台通用能力库', 'Ontology 模板库', '最佳实践 Playbook'],
+        outputs: ['新业务线快速接入', 'FDE 效率倍增', '平台 NRR 提升', '数据飞轮启动'],
+        duration: '持续加速',
+        keyActions: [
+          '新业务线接入时间从 6 月缩短到 2 月',
+          'FDE 从"从零建设"变为"模板化部署 + 定制化调优"',
+          '业务方自助使用平台能力的比例持续提升',
+          '数据越多 → AI 越准 → 业务越依赖 → 更多数据',
+        ],
+        metrics: [
+          { label: '新业务接入周期', value: '<2 月' },
+          { label: 'FDE 人效', value: '3x 提升' },
+          { label: '业务自助率', value: '>50%' },
+        ],
+      },
+    ],
+    // 飞轮加速器
+    accelerators: [
+      {
+        name: 'AI Agent 替代重复工作',
+        icon: '🤖',
+        color: '#6c5ce7',
+        desc: 'FDE 在第一个业务线手动做的事，AI Agent 在后续业务线自动做',
+        examples: [
+          '数据接入：FDE 手动写 ETL → Agent 自动生成数据管道',
+          'Ontology 建模：FDE 手动建模 → Agent 基于数据自动推荐实体关系',
+          '仪表盘搭建：FDE 手动配置 → Agent 根据业务目标自动生成',
+          '异常检测规则：FDE 手动编写 → Agent 从历史数据中自动学习',
+        ],
+      },
+      {
+        name: 'Ontology 模板复用',
+        icon: '🧬',
+        color: '#3fb950',
+        desc: '同行业/同类型业务线的 Ontology 高度相似，模板化后可快速复用',
+        examples: [
+          '电商 Ontology：用户/商品/订单/支付/物流 → 90% 可复用',
+          '金融 Ontology：账户/交易/风控/合规 → 85% 可复用',
+          '制造 Ontology：设备/产线/工单/质检 → 80% 可复用',
+          '自动驾驶 Ontology：场景/传感器/标注/模型 → 75% 可复用',
+        ],
+      },
+      {
+        name: 'Playbook 标准化',
+        icon: '📖',
+        color: '#e17055',
+        desc: '将 FDE 的驻场经验编码为可执行的 Playbook，新 FDE 可快速上手',
+        examples: [
+          'Week 1 Playbook：业务方关系建立 + 核心流程梳理',
+          'Week 2-4 Playbook：数据资产盘点 + Ontology 初版',
+          'Month 2-3 Playbook：MVP 交付 + 快速迭代',
+          'Month 4-6 Playbook：能力抽象 + 平台回流',
+        ],
+      },
+      {
+        name: '数据飞轮效应',
+        icon: '🔄',
+        color: '#ffa657',
+        desc: '每个业务线接入后，平台数据量增加 → AI 模型更准 → 吸引更多业务线',
+        examples: [
+          '业务线 A 的数据训练出的异常检测模型，在业务线 B 直接可用',
+          '跨业务线的用户行为数据，让推荐算法效果提升 30%',
+          '多业务线的运营数据，让预测模型的泛化能力显著增强',
+          '数据量每翻一倍，AI 准确率提升 5-10%',
+        ],
+      },
+    ],
+    // 飞轮效果量化
+    flywheelMetrics: {
+      title: '飞轮效果量化',
+      rounds: [
+        { round: '第 1 轮', bizLines: '1-2', fdeCount: '2-3', deliveryCycle: '6 月', platformModules: '5', reuse: '0%', desc: '从零建设，全部定制化' },
+        { round: '第 2 轮', bizLines: '3-5', fdeCount: '3-5', deliveryCycle: '3 月', platformModules: '15', reuse: '40%', desc: '模板复用开始生效' },
+        { round: '第 3 轮', bizLines: '5-10', fdeCount: '5-8', deliveryCycle: '6 周', platformModules: '30', reuse: '60%', desc: 'AI Agent 开始替代重复工作' },
+        { round: '第 4 轮', bizLines: '10-20', fdeCount: '8-12', deliveryCycle: '2 周', platformModules: '50+', reuse: '80%', desc: '业务方可自助接入，FDE 聚焦高价值场景' },
+      ],
+    },
+  },
+
+  // FDE 团队建设
+  fdeTeamBuilding: {
+    title: 'FDE 团队建设',
+    desc: '如何在公司内部建立 FDE 能力',
+    talentProfile: {
+      title: 'FDE 人才画像',
+      must: [
+        { trait: '全栈工程能力', desc: '前后端 + 数据 + AI，能独立完成端到端交付', icon: '💻' },
+        { trait: '快速学习能力', desc: '2-4 周内理解一个新业务领域的核心逻辑', icon: '🧠' },
+        { trait: '沟通与共情', desc: '能用业务方的语言沟通，理解他们的真实痛点', icon: '🗣️' },
+        { trait: '抽象思维', desc: '从具体场景中提炼通用模式，驱动平台进化', icon: '🔬' },
+      ],
+      nice: [
+        { trait: '行业经验', desc: '有目标行业的从业经验，缩短业务理解周期', icon: '🏭' },
+        { trait: 'AI/ML 能力', desc: '能训练和部署模型，构建 AI Agent', icon: '🤖' },
+        { trait: '产品思维', desc: '不只是完成需求，而是思考"什么才是正确的需求"', icon: '🎯' },
+      ],
+    },
+    careerPath: {
+      title: 'FDE 职业发展路径',
+      levels: [
+        { level: 'FDE I', duration: '0-2 年', desc: '跟随资深 FDE 驻场，学习业务理解和快速交付', focus: '执行力 + 技术深度', color: '#79c0ff' },
+        { level: 'FDE II', duration: '2-4 年', desc: '独立负责 1 个业务线的驻场交付，开始抽象通用能力', focus: '独立交付 + 知识回流', color: '#6c5ce7' },
+        { level: 'Senior FDE', duration: '4-6 年', desc: '同时负责 2-3 个业务线，指导 FDE I/II，驱动平台进化', focus: '架构设计 + 团队培养', color: '#e17055' },
+        { level: 'FDE Lead', duration: '6+ 年', desc: '负责整个 FDE 团队的战略规划、人才培养和飞轮运转', focus: '战略规划 + 组织建设', color: '#3fb950' },
+      ],
+    },
+    operatingModel: {
+      title: 'FDE 运营模式',
+      principles: [
+        {
+          name: '轮岗制',
+          icon: '🔄',
+          desc: 'FDE 每 6-12 个月轮换业务线，避免"被业务方绑架"，同时积累跨领域经验',
+        },
+        {
+          name: '双线汇报',
+          icon: '📊',
+          desc: 'FDE 向平台团队和业务方双线汇报。平台团队考核"能力回流"，业务方考核"交付价值"',
+        },
+        {
+          name: '知识共享会',
+          icon: '📢',
+          desc: '每月 FDE 团队内部分享会，交流不同业务线的经验和通用化机会',
+        },
+        {
+          name: 'AI 工具赋能',
+          icon: '🤖',
+          desc: '为 FDE 配备最强 AI 工具链（Cursor + Claude + MCP），让 FDE 的人效最大化',
+        },
+      ],
+    },
+  },
+};
+
+// 7. 行业对标分析
 export const BENCHMARKS = {
   title: '行业对标分析',
   companies: [
