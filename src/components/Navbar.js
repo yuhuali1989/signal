@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const NAV_GROUPS = [
   {
@@ -30,6 +30,8 @@ const NAV_GROUPS = [
     label: '战略',
     icon: '🧭',
     color: '#e17055',
+    // 单条目直接跳转，不用下拉
+    href: '/strategy/',
     items: [
       { name: '业务原生', href: '/strategy/', desc: 'Palantir 模式 · 应对框架' },
     ],
@@ -47,42 +49,79 @@ const NAV_GROUPS = [
 
 function DropdownGroup({ group }) {
   const [open, setOpen] = useState(false);
+  const timerRef = useRef(null);
+
+  // 单条目分组直接渲染为链接
+  if (group.href) {
+    return (
+      <Link
+        href={group.href}
+        className="flex items-center gap-1 px-3 py-1.5 text-[12px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap"
+      >
+        <span>{group.icon}</span>
+        <span>{group.label}</span>
+      </Link>
+    );
+  }
+
+  const handleMouseEnter = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // 延迟 120ms 关闭，消除按钮与面板之间的空隙问题
+    timerRef.current = setTimeout(() => setOpen(false), 120);
+  };
 
   return (
     <div
       className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* 触发按钮 */}
       <button
-        className="flex items-center gap-1 px-3 py-1.5 text-[12px] font-medium text-gray-500 hover:text-[#6c5ce7] rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap"
-        style={open ? { color: group.color } : {}}
+        className="flex items-center gap-1 px-3 py-1.5 text-[12px] font-medium rounded-lg hover:bg-purple-50/50 transition-all whitespace-nowrap"
+        style={{ color: open ? group.color : '#6b7280' }}
       >
         <span>{group.icon}</span>
         <span>{group.label}</span>
-        <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className={`w-3 h-3 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
-      {/* 下拉面板 */}
+      {/* 下拉面板：顶部 pt-2 填充空隙，防止鼠标经过空白区域时关闭 */}
       {open && (
-        <div className="absolute top-full left-0 mt-1 min-w-[180px] bg-white rounded-xl border border-gray-100 shadow-lg shadow-gray-100/60 py-1.5 z-50">
-          {group.items.map(item => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex flex-col px-3 py-2 hover:bg-purple-50/60 transition-colors group"
-            >
-              <span className="text-[12px] font-medium text-gray-700 group-hover:text-[#6c5ce7] transition-colors">
-                {item.name}
-              </span>
-              {item.desc && (
-                <span className="text-[10px] text-gray-400 mt-0.5">{item.desc}</span>
-              )}
-            </Link>
-          ))}
+        <div
+          className="absolute top-full left-0 pt-2 z-50"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div
+            className="min-w-[190px] bg-white rounded-xl border border-gray-100 shadow-xl shadow-gray-200/50 py-1.5 animate-fadeIn"
+            style={{ animation: 'fadeInDown 0.12s ease-out' }}
+          >
+            {group.items.map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex flex-col px-3.5 py-2.5 hover:bg-purple-50/70 transition-colors group/item"
+                onClick={() => setOpen(false)}
+              >
+                <span className="text-[12.5px] font-medium text-gray-700 group-hover/item:text-[#6c5ce7] transition-colors leading-tight">
+                  {item.name}
+                </span>
+                {item.desc && (
+                  <span className="text-[10px] text-gray-400 mt-0.5 leading-tight">{item.desc}</span>
+                )}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -136,36 +175,53 @@ export default function Navbar() {
 
         {/* 移动端菜单：分组折叠 */}
         {mobileOpen && (
-          <div className="md:hidden pb-3 border-t border-gray-50 mt-0.5 pt-2 space-y-1">
+          <div className="md:hidden pb-3 border-t border-gray-50 mt-0.5 pt-2 space-y-0.5">
             {NAV_GROUPS.map(group => (
               <div key={group.label}>
-                <button
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
-                  onClick={() => setMobileGroup(mobileGroup === group.label ? null : group.label)}
-                >
-                  <span className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                {/* 单条目分组直接显示链接 */}
+                {group.href ? (
+                  <Link
+                    href={group.href}
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#6c5ce7] hover:bg-purple-50/50 rounded-lg transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
                     <span>{group.icon}</span>
                     <span>{group.label}</span>
-                  </span>
-                  <svg className={`w-4 h-4 text-gray-400 transition-transform ${mobileGroup === group.label ? 'rotate-180' : ''}`}
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {mobileGroup === group.label && (
-                  <div className="ml-4 mt-0.5 space-y-0.5">
-                    {group.items.map(item => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="block px-3 py-2 text-sm text-gray-600 hover:text-[#6c5ce7] hover:bg-purple-50/50 rounded-lg transition-colors"
-                        onClick={() => setMobileOpen(false)}
+                    <span className="text-[10px] text-gray-400 ml-1">{group.items[0].desc}</span>
+                  </Link>
+                ) : (
+                  <>
+                    <button
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                      onClick={() => setMobileGroup(mobileGroup === group.label ? null : group.label)}
+                    >
+                      <span className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                        <span>{group.icon}</span>
+                        <span>{group.label}</span>
+                      </span>
+                      <svg
+                        className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${mobileGroup === group.label ? 'rotate-180' : ''}`}
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
                       >
-                        {item.name}
-                        {item.desc && <span className="text-[10px] text-gray-400 ml-1.5">{item.desc}</span>}
-                      </Link>
-                    ))}
-                  </div>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {mobileGroup === group.label && (
+                      <div className="ml-4 mt-0.5 space-y-0.5 pb-1">
+                        {group.items.map(item => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className="flex items-center justify-between px-3 py-2 text-sm text-gray-600 hover:text-[#6c5ce7] hover:bg-purple-50/50 rounded-lg transition-colors"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            <span>{item.name}</span>
+                            {item.desc && <span className="text-[10px] text-gray-400">{item.desc}</span>}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             ))}
