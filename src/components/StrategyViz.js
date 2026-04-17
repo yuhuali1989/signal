@@ -1320,7 +1320,7 @@ function DeliveryTab() {
 // Tab 8: 外部模型安全
 // ═══════════════════════════════════════════════════════════════
 function SecurityTab() {
-  const { coreProblem, riskLandscape, dataClassification, technicalArchitecture, providerComparison, recommendedApproach, costBenefitAnalysis, industryPractices, keyConclusions } = EXTERNAL_MODEL_SECURITY;
+  const { coreProblem, riskLandscape, dataClassification, technicalArchitecture, providerComparison, recommendedApproach, costBenefitAnalysis, industryPractices, codeIsolation, keyConclusions } = EXTERNAL_MODEL_SECURITY;
   const [expandedRisk, setExpandedRisk] = useState(null);
   const [expandedProvider, setExpandedProvider] = useState(null);
 
@@ -1630,6 +1630,110 @@ function SecurityTab() {
               </div>
             </div>
           ))}
+        </div>
+      </SectionCard>
+
+      {/* 代码生成隔离模式 */}
+      <SectionCard icon="🧩" title={codeIsolation.title} desc={codeIsolation.desc}>
+        {/* 核心原则 */}
+        <div className="rounded-xl border border-[#6c5ce7]/30 bg-[#6c5ce7]/05 p-4 mb-4">
+          <div className="flex items-start gap-2 mb-2">
+            <span className="text-lg">💡</span>
+            <div>
+              <div className="text-sm font-bold text-[#6c5ce7] mb-1">{codeIsolation.tagline}</div>
+              <p className="text-xs text-gray-600 leading-relaxed">{codeIsolation.corePrinciple}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 传统 vs 隔离 对比 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          {[codeIsolation.comparison.traditional, codeIsolation.comparison.isolated].map(mode => (
+            <div key={mode.label} className="rounded-xl border p-3" style={{ borderColor: mode.color + '33', background: mode.color + '05' }}>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="text-base">{mode.icon}</span>
+                <span className="text-xs font-bold" style={{ color: mode.color }}>{mode.label}</span>
+              </div>
+              <div className="space-y-1.5">
+                {mode.steps.map(s => (
+                  <div key={s.step} className="flex items-start gap-2">
+                    <span className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5"
+                      style={{ background: mode.color }}>{s.step}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] text-gray-700">{s.text}</span>
+                      {s.risk && (
+                        <span className="ml-1 text-[9px] text-[#e17055] font-medium">⚠️ {s.risk}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Palantir AIP 连接 */}
+        <div className="rounded-xl border border-[#0984e3]/30 bg-[#0984e3]/04 p-4 mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-base">🏛️</span>
+            <span className="text-xs font-bold text-[#0984e3]">{codeIsolation.palantirConnection.title}</span>
+          </div>
+          <p className="text-[10px] text-gray-600 leading-relaxed mb-3">{codeIsolation.palantirConnection.desc}</p>
+          <div className="space-y-1.5">
+            {codeIsolation.palantirConnection.layers.map((l, i) => (
+              <div key={l.layer} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2">
+                <div className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0"
+                  style={{ background: l.color }}>{i + 1}</div>
+                <span className="text-[10px] font-semibold text-gray-700 w-16 flex-shrink-0">{l.layer}</span>
+                <span className="text-[9px] text-gray-500">{l.sees}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 相关术语 */}
+        <div className="mb-4">
+          <div className="text-[10px] font-semibold text-gray-600 mb-2">📚 相关术语</div>
+          <div className="space-y-1.5">
+            {codeIsolation.terms.map(t => (
+              <div key={t.name} className="flex items-start gap-2 rounded-lg border border-gray-100 bg-white/80 p-2.5">
+                <span className="text-[10px] font-mono font-bold text-[#6c5ce7] flex-shrink-0 w-40">{t.name}</span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] text-gray-700">{t.desc}</span>
+                  <span className="ml-2 text-[9px] text-gray-400">({t.origin})</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 适用场景 */}
+        <div className="mb-4">
+          <div className="text-[10px] font-semibold text-gray-600 mb-2">🎯 典型应用场景</div>
+          <div className="grid grid-cols-2 gap-2">
+            {codeIsolation.useCases.map(u => (
+              <div key={u.title} className="rounded-lg border border-gray-100 bg-gray-50/30 p-2.5">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="text-base">{u.icon}</span>
+                  <span className="text-[10px] font-semibold text-gray-700">{u.title}</span>
+                </div>
+                <p className="text-[9px] text-gray-500 leading-relaxed">{u.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 局限性 */}
+        <div className="rounded-xl border border-[#ffa657]/30 bg-[#ffa657]/05 p-3">
+          <div className="text-[10px] font-semibold text-[#ffa657] mb-2">⚠️ 局限性 & 注意事项</div>
+          <div className="space-y-1">
+            {codeIsolation.limitations.map((l, i) => (
+              <div key={i} className="flex items-start gap-2 text-[10px] text-gray-500">
+                <span className="text-gray-300 mt-0.5">•</span>
+                <span>{l}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </SectionCard>
 
