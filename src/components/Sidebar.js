@@ -26,6 +26,7 @@ const NAV_GROUPS = [
     items: [
       { name: '自动驾驶', href: '/vla/',  icon: '🚗' },
       { name: '实验室',   href: '/lab/',  icon: '🧪' },
+      { name: '量化业务', href: '/quant/', icon: '📈' },
     ],
   },
   {
