@@ -110,6 +110,64 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-04-18（第22轮更新）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2201,
+    category: 'data',
+    region: 'global',
+    title: 'Databricks 发布 DBRX 2.0：132B MoE 开源模型，Text-to-SQL 准确率 91.3% 超越 GPT-4o',
+    summary: 'Databricks 发布 DBRX 2.0，132B MoE 架构专为数据分析优化：Text-to-SQL 准确率 91.3%（超 GPT-4o 的 88.7%），与 Unity Catalog 深度集成，可直接理解企业数据 Schema 生成查询。Apache 2.0 开源，支持 Databricks 平台一键微调。',
+    source: 'Databricks Blog',
+    date: '2026-04-15',
+    tags: ['Databricks', 'DBRX', 'Text-to-SQL', '开源模型'],
+    hot: true,
+  },
+  {
+    id: 2202,
+    category: 'software',
+    region: 'global',
+    title: 'Salesforce Agentforce 2.0：AI Agent 自主完成 78% 的客服工单，CSAT 提升 23%',
+    summary: 'Salesforce 发布 Agentforce 2.0，新增多 Agent 协作能力：销售 Agent + 服务 Agent 可自主协作处理复杂客户请求。内测数据：78% 的 L1 客服工单由 Agent 自主完成，客户满意度（CSAT）提升 23%，人工处理时间降低 65%。已向 Salesforce Enterprise 客户全量开放。',
+    source: 'Salesforce Blog',
+    date: '2026-04-16',
+    tags: ['Salesforce', 'Agentforce', 'AI Agent', 'CRM'],
+    hot: true,
+  },
+  {
+    id: 2203,
+    category: 'startup',
+    region: 'global',
+    title: 'Cursor 确认 $500 亿估值完成 $20 亿融资：a16z + Thrive 领投，AI IDE 三巨头格局成型',
+    summary: 'AI 代码编辑器 Cursor 以约 $500 亿估值完成超 $20 亿新一轮融资，由 a16z 和 Thrive Capital 联合领投。2025 ARR 突破 $10 亿，企业年消费超百万的客户超 200 家。JetBrains 调查显示市占率 23%，与 Copilot（38%）和 Claude Code（18%）构成三巨头格局。',
+    source: 'TechCrunch',
+    date: '2026-04-18',
+    tags: ['Cursor', '融资', 'AI IDE', '开发者工具'],
+    hot: true,
+  },
+  {
+    id: 2204,
+    category: 'security',
+    region: 'global',
+    title: 'Wiz 完成 $10 亿 D 轮融资，估值升至 $160 亿：CNAPP 市场格局基本确立',
+    summary: 'Wiz 完成 $10 亿 D 轮融资，估值升至 $160 亿（去年 Google 出价 $230 亿收购被拒后）。ARR 突破 $7 亿，增速 85% YoY。新增 AI Security Posture Management（AI-SPM）模块，专门检测 AI 模型和 Agent 的安全风险。CrowdStrike、Palo Alto、Wiz 三家基本确立云安全市场三足鼎立格局。',
+    source: 'Bloomberg',
+    date: '2026-04-17',
+    tags: ['Wiz', '融资', '云安全', 'CNAPP'],
+    hot: true,
+  },
+  {
+    id: 2205,
+    category: 'market',
+    region: 'china',
+    title: '阿里云 2026 Q1 财报：云收入 $45 亿同比增 28%，AI 相关收入占比首超 20%',
+    summary: '阿里云发布 2026 Q1 财报：云收入 $45 亿（同比 +28%），AI 相关收入（模型 API + AI 应用 + GPU 算力）占比首次超过 20%。通义千问 API 日调用量突破 100 亿次，百炼平台企业客户超 10 万家。Qwen 3 发布后 API 调用量环比增长 3 倍。',
+    source: '阿里巴巴财报',
+    date: '2026-04-18',
+    tags: ['阿里云', '财报', 'AI收入', '云计算'],
+    hot: true,
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-04-18（第21轮更新）
   // ══════════════════════════════════════════════════════
   {

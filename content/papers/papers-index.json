@@ -881,5 +881,39 @@
     "summary": "首个完全自主生成并被顶级 ML 会议接收的 AI 科研系统，实现从假设提出到论文撰写全流程自动化",
     "arxivUrl": "https://arxiv.org/abs/2604.06840",
     "hasReview": true
+  },
+  {
+    "id": "sglang-radix-attention",
+    "title": "SGLang: Efficient Execution of Structured Language Model Programs",
+    "authors": "Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, et al. (UC Berkeley / LMSYS)",
+    "venue": "NeurIPS 2024 / ICLR 2025 Workshop",
+    "category": "inference",
+    "importance": 5,
+    "tags": [
+      "推理优化",
+      "KV Cache",
+      "RadixAttention",
+      "推理框架"
+    ],
+    "summary": "RadixAttention 基数树 KV Cache 共享，RAG/Agent 场景吞吐提升 4.4x；结构化生成语言 DSL 简化复杂 LLM 程序编写",
+    "arxivUrl": "https://arxiv.org/abs/2312.07104",
+    "hasReview": true
+  },
+  {
+    "id": "unisim2-synthetic-data",
+    "title": "UniSim 2.0: Physically Consistent World Model for Autonomous Driving Data Synthesis",
+    "authors": "Google DeepMind Team",
+    "venue": "arXiv 2026",
+    "category": "data",
+    "importance": 5,
+    "tags": [
+      "合成数据",
+      "世界模型",
+      "自动驾驶",
+      "数据飞轮"
+    ],
+    "summary": "物理一致性约束世界模型，10% 真实 + 90% 合成数据达到 96% 真实数据性能，FID 降至 12.3，生成速度 15 帧/秒",
+    "arxivUrl": "https://arxiv.org/abs/2604.11234",
+    "hasReview": false
   }
 ]
