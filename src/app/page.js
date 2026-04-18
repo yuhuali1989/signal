@@ -108,15 +108,14 @@ export default function Home() {
             <Link href="/news/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-teal-50/60 border border-teal-100/60 hover:border-teal-300/60 hover:shadow-sm transition-all group">
               <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">🌊</span>
               <div>
-                <p className="text-sm font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">声浪 · AI 动态</p>
-                <p className="text-xs text-gray-400">YouTube · 播客 · X，每日自动聚合</p>
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-teal-600 transition-colors">声浪 · AI 动态</p>                <p className="text-xs text-gray-400">YouTube · 播客 · X，每日自动聚合</p>
               </div>
             </Link>
             <Link href="/data-infra/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50/60 border border-emerald-100/60 hover:border-emerald-300/60 hover:shadow-sm transition-all group">
               <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">🔄</span>
               <div>
-                <p className="text-sm font-semibold text-gray-800 group-hover:text-emerald-600 transition-colors">数据闭环</p>
-                <p className="text-xs text-gray-400">K8s · 数据湖仓 · MLOps · 闭环链路</p>
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-emerald-600 transition-colors">AI Infra 全景</p>
+                <p className="text-xs text-gray-400">K8s · 数据湖仓 · MLOps · 数据闭环链路</p>
               </div>
             </Link>
             <Link href="/lab/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-violet-50/60 border border-violet-100/60 hover:border-violet-300/60 hover:shadow-sm transition-all group">
@@ -261,8 +260,8 @@ export default function Home() {
             <span className="w-1.5 h-1.5 bg-orange-400 rounded-full" />
             <span className="text-sm text-gray-400"><strong className="text-gray-700">{stats.autoUpdates}</strong> 次进化</span>
           </div>
-          <Link href="/evolution/" className="text-sm text-[#6c5ce7] hover:text-[#5a4bd4] font-medium transition-colors">
-            查看进化日志 →
+          <Link href="/evolution/" className="text-xs text-gray-400 hover:text-[#6c5ce7] transition-colors">
+            进化日志 →
           </Link>
         </div>
       </section>
@@ -332,7 +331,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">AI 动态</h2>
+                <h2 className="text-lg font-semibold text-gray-800">声浪</h2>
                 <p className="text-xs text-gray-400 mt-0.5">精选 YouTube · 播客 · X 前沿讨论，每日自动聚合</p>
               </div>
               <a href="/news/" className="text-sm text-[#6c5ce7] hover:text-[#5a4bd4] font-medium">查看全部 →</a>

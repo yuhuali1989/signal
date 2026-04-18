@@ -10,14 +10,14 @@ export default function ArticlesPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">📝 文章</h1>
           <p className="text-sm text-gray-500">热点追踪 + 深度解读，AI 智能体自动生成的技术文章</p>
         </div>
 
         <ArticleFilter articles={articles} />
-      </main>
+      </div>
       <Footer />
     </>
   );

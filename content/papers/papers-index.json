@@ -634,5 +634,53 @@
     "summary": "首个开源量产级 VLA 模型，72B MoE 基座 + 阿里云 3 万卡训练 + 5 天全链路迭代，大众首发商用，接管率 0.25 次/百公里",
     "arxivUrl": "https://www.xpeng.com/pressroom/news/019cae5e67b99c0960ee8a028129016a",
     "hasReview": true
+  },
+  {
+    "id": "turboquant",
+    "title": "TurboQuant: Online KV Cache Quantization with Zero Accuracy Loss",
+    "authors": "Google DeepMind & Google Research",
+    "venue": "arXiv 2026",
+    "category": "inference",
+    "importance": 5,
+    "tags": ["llm", "推理优化", "量化", "KV Cache"],
+    "summary": "首个实现零精度损失的 3-bit KV Cache 在线量化方法，通过 Rotation + Outlier-Aware Clipping 实现 6x 内存减少和 8x 注意力加速，Llama-3.1-405B 在单 8xH100 节点上实现量化前不可能的部署",
+    "arxivUrl": "https://arxiv.org/abs/2604.xxxxx",
+    "hasReview": true
+  },
+  {
+    "id": "dreamzero",
+    "title": "DreamZero: World-Action Model for Zero-Shot Robot Manipulation",
+    "authors": "NVIDIA Research",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 5,
+    "tags": ["世界模型", "具身AI", "VLA", "机器人"],
+    "summary": "NVIDIA 提出世界动作模型（World-Action Model）范式，14B 参数视频扩散骨干统一视觉预测和动作生成，零样本实际机器人任务进度 62.2%，标志着从 VLA 到 WA 模型的范式跃迁",
+    "arxivUrl": "https://arxiv.org/abs/2604.xxxxx",
+    "hasReview": true
+  },
+  {
+    "id": "uni-world-vla",
+    "title": "Uni-World VLA: Interleaved World Modeling and Planning for Autonomous Driving",
+    "authors": "Multi-institution",
+    "venue": "arXiv 2026",
+    "category": "autonomous-driving",
+    "importance": 5,
+    "tags": ["自动驾驶", "VLA", "世界模型", "交替推理"],
+    "summary": "提出世界模型与 VLA 交替执行（Interleaved）新范式：每步规划前先想象一步未来，比串行方案延迟降 47%，精度提升 23%，L2(3s) 0.63m / 碰撞率 0.18% 双 SOTA",
+    "arxivUrl": "https://arxiv.org/abs/2603.27287",
+    "hasReview": true
+  },
+  {
+    "id": "uni-world-vla-interleaved",
+    "title": "GenericAgent: Self-Evolving AI Agents with Skill Tree Growth",
+    "authors": "lsdefine et al.",
+    "venue": "GitHub 2026",
+    "category": "arch",
+    "importance": 4,
+    "tags": ["Agent", "自进化", "效率优化", "技能学习"],
+    "summary": "从 3.3K 行种子代码自行生长技能树的自进化 Agent 框架，通过经验复用将 Token 消耗降低 6 倍，100 任务后积累 84 个可复用技能",
+    "arxivUrl": "https://github.com/lsdefine/GenericAgent",
+    "hasReview": true
   }
 ]

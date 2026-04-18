@@ -40,7 +40,7 @@ const TABS = [
     id: 'dataloop',
     label: '数据闭环',
     icon: '🔄',
-    desc: '数据采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全容器化云原生架构',
+    desc: '数据采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 自动驾驶专项闭环架构',
     color: '#00cec9',
   },
 ];
@@ -191,7 +191,7 @@ export default function VlaPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <PageHero activeProject={activeProject} setActiveProject={setActiveProject} />
 
         {/* 仅 DriveWorld 展示可视化 Tab */}
@@ -233,7 +233,7 @@ export default function VlaPage() {
             </div>
           </>
         )}
-      </main>
+      </div>
       <Footer />
     </>
   );

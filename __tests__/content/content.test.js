@@ -330,7 +330,7 @@ describe('文件系统完整性', () => {
     const booksDir = path.join(CONTENT_DIR, 'books');
     const files = getMdFiles(booksDir);
     
-    const bookPrefixes = ['93f28994', 'ad-llm', 'ai-agent', 'ai-interview', 'inference', 'pytorch'];
+    const bookPrefixes = ['93f28994', 'ad-llm', 'ai-agent', 'ai-interview', 'inference', 'pytorch', 'code-as-proxy'];
     bookPrefixes.forEach(prefix => {
       const chapters = files.filter(f => f.startsWith(prefix));
       expect(chapters.length).toBe(7);
@@ -566,12 +566,12 @@ describe('书籍完成度与论文覆盖度', () => {
 
   test('文章数量 >= 36', () => {
     const articles = getMdFiles(path.join(CONTENT_DIR, 'articles'));
-    expect(articles.length).toBeGreaterThanOrEqual(59);
+    expect(articles.length).toBeGreaterThanOrEqual(63);
   });
 
   test('论文解读数量 >= 20', () => {
     const papers = readJSON(PAPERS_INDEX);
-    expect(papers.length).toBeGreaterThanOrEqual(53);
+    expect(papers.length).toBeGreaterThanOrEqual(57);
   });
 });
 

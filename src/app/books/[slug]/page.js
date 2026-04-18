@@ -20,10 +20,10 @@ export default async function BookDetailPage({ params }) {
     return (
       <>
         
-        <main className="max-w-4xl mx-auto px-4 py-20 text-center">
+        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
           <p className="text-gray-400">内容不存在</p>
           <Link href="/books/" className="text-maxwell-500 text-sm mt-4 inline-block">← 返回书架</Link>
-        </main>
+        </div>
       </>
     );
   }
@@ -40,7 +40,7 @@ export default async function BookDetailPage({ params }) {
   return (
     <>
       
-      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
         {/* 面包屑 */}
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
           <Link href="/" className="hover:text-maxwell-500">首页</Link>
@@ -130,7 +130,7 @@ export default async function BookDetailPage({ params }) {
             <TableOfContents contentHtml={post.contentHtml} />
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }

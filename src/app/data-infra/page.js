@@ -79,11 +79,11 @@ export default function DataInfraPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Hero */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-2xl font-bold text-gray-900">🔄 数据闭环 & AI Infra</h1>
+            <h1 className="text-2xl font-bold text-gray-900">🔄 AI Infra & 数据闭环</h1>
             <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-100 font-medium">
               全容器化
             </span>
@@ -165,7 +165,7 @@ export default function DataInfraPage() {
           向量检索基于 <span className="font-mono text-gray-600">Milvus</span> 支持 10B+ 规模场景挖掘。
           MLOps 流水线覆盖从代码提交到模型灰度发布的全自动化链路。
         </div>
-      </main>
+      </div>
       <Footer />
     </>
   );

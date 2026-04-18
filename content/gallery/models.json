@@ -1550,5 +1550,35 @@
     "tags": ["MoE", "华为昇腾", "开源", "中国AI"],
     "status": "production",
     "category": "language"
+  },
+  {
+    "id": "hesai-ext-fusion",
+    "name": "Hesai EXT Fusion",
+    "org": "禾赛科技",
+    "type": "autonomous",
+    "typeLabel": "感知融合",
+    "typeIcon": "🚗",
+    "open": false,
+    "params": "N/A (硬件+软件)",
+    "date": "2026-04",
+    "context": "3D点云 + RGB色彩",
+    "attention": "N/A",
+    "factSheet": {
+      "params": "Picasso 自研芯片驱动",
+      "architecture": "RGB-LiDAR 融合感知",
+      "sensors": "空间3D映射 + 色彩检测",
+      "innovation": "业界首个激光雷达空间+颜色同步检测",
+      "deployment": "车规级量产"
+    },
+    "highlights": [
+      "业界首个 RGB+3D 融合激光雷达",
+      "Picasso 自研芯片",
+      "空间与色彩同步检测",
+      "车规级量产就绪"
+    ],
+    "textArch": "┌────────────────────────────────────┐\n│     Hesai EXT — RGB+3D 融合感知    │\n├────────────────────────────────────┤\n│ 激光发射 + 色彩检测单元             │\n│         ↓                           │\n│ ┌──────────────────────────────┐   │\n│ │ Picasso 芯片                  │   │\n│ │ ├── 空间 3D 映射模块          │   │\n│ │ │   ToF 测距 → 点云 (x,y,z)  │   │\n│ │ ├── 色彩检测模块              │   │\n│ │ │   波长分析 → RGB 值          │   │\n│ │ └── 融合输出                  │   │\n│ │     每点: (x,y,z,r,g,b,intensity)│ │\n│ └──────────────────────────────┘   │\n│                ↓                    │\n│ 彩色点云输出 → 下游感知算法         │\n│ (物体识别精度显著提升)              │\n└────────────────────────────────────┘",
+    "tags": ["自动驾驶", "激光雷达", "感知融合", "RGB+3D", "车规级"],
+    "status": "production",
+    "category": "autonomous"
   }
 ]

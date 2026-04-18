@@ -18,7 +18,7 @@ export default function ModelsPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
             🤖 模型
@@ -36,7 +36,7 @@ export default function ModelsPage() {
         </div>
 
         <ModelHub models={models} benchmarks={benchmarks} datasets={datasets} />
-      </main>
+      </div>
       <Footer />
     </>
   );

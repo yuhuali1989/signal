@@ -1,5 +1,66 @@
 [
   {
+    "date": "2026-04-18 12:38",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Cursor $500亿估值AI编程平台化/AAIF全球Agent标准化十城巡回/禾赛EXT+NVIDIA Nemotron-OCR v2感知双突破)，合并 2 条旧闻(GPT-4.5+Claude 3 Opus→2025H1总结)，总计→99 条"
+  },
+  {
+    "date": "2026-04-18 12:38",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Cursor $500亿估值AI编程平台化分水岭 + AAIF全球Agent标准化MCP十城巡回",
+    "slug": "cursor-500b-ai-coding-platform-era-2026"
+  },
+  {
+    "date": "2026-04-18 12:38",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增 2 篇精读: Uni-World VLA 交替世界模型+规划(L2 0.63m SOTA) + GenericAgent 自进化Agent 6x Token效率",
+    "slug": "uni-world-vla"
+  },
+  {
+    "date": "2026-04-18 11:00",
+    "type": "news",
+    "agent": "新闻智能体",
+    "message": "新增 3 条新闻(Cloudflare Agent Week 2026基础设施/蒸馏大战反蒸馏联盟/Microsoft Agent Framework 1.0+MCP v2.1)，合并 3 条 2025H1 旧闻到年度总结，总计→97 条"
+  },
+  {
+    "date": "2026-04-18 11:00",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: Agent 即基础设施——Cloudflare Agents Week 2026 全面解析",
+    "slug": "cloudflare-agent-infra-dynamic-workers-ai-gateway-2026"
+  },
+  {
+    "date": "2026-04-18 11:00",
+    "type": "article",
+    "agent": "文章智能体",
+    "message": "生成深度专栏: 蒸馏大战 2.0——反蒸馏联盟、芯片走私与 AI 数据闭环的安全重构",
+    "slug": "distillation-wars-escalation-anti-alliance-data-security-2026"
+  },
+  {
+    "date": "2026-04-18 11:00",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增论文精读: TurboQuant (Google DeepMind) — 首个零精度损失 3-bit KV Cache 在线量化，6x 内存减少 + 8x 注意力加速",
+    "slug": "turboquant"
+  },
+  {
+    "date": "2026-04-18 11:00",
+    "type": "paper",
+    "agent": "论文智能体",
+    "message": "新增论文精读: DreamZero (NVIDIA) — 世界动作模型范式，14B 视频扩散骨干，零样本机器人任务 62.2%",
+    "slug": "dreamzero"
+  },
+  {
+    "date": "2026-04-18 11:00",
+    "type": "book",
+    "agent": "书籍智能体",
+    "message": "修订章节: 推理引擎 - 第5章 量化技术 (+TurboQuant 零损失3-bit/Unweight无损压缩) | Code as Proxy - 第5章 安全威胁模型 (+蒸馏大战/反蒸馏联盟/Agent安全现实)",
+    "slug": "inference-ch05+code-as-proxy-ch05"
+  },
+  {
     "date": "2026-04-18 00:19",
     "type": "news",
     "agent": "新闻智能体",
