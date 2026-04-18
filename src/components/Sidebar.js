@@ -34,6 +34,7 @@ const NAV_GROUPS = [
     color: '#e17055',
     items: [
       { name: '业务原生', href: '/strategy/', icon: '🧭' },
+      { name: '创业雷达', href: '/idea/',     icon: '💡' },
     ],
   },
   {
@@ -41,8 +42,9 @@ const NAV_GROUPS = [
     label: '动态',
     color: '#3fb950',
     items: [
-      { name: 'AI 声浪',  href: '/news/',       icon: '🌊' },
-      { name: '进化日志', href: '/evolution/',  icon: '📜' },
+      { name: 'AI 声浪',    href: '/news/',            icon: '🌊' },
+      { name: '全行业动态', href: '/industry-news/',   icon: '📡' },
+      { name: '进化日志',   href: '/evolution/',       icon: '📜' },
     ],
   },
 ];
