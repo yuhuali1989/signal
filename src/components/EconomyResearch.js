@@ -330,18 +330,27 @@ function ForecastTab() {
       <div>
         <h4 className="text-sm font-semibold text-gray-700 mb-3">历史汇率走势</h4>
         <div className="bg-white rounded-xl border border-gray-100 p-4">
-          <div className="flex items-end gap-2 h-32">
+          {/* 固定总高度 128px，柱子用 px 高度 */}
+          <div className="flex items-end gap-2" style={{ height: 128 }}>
             {USD_CNY_HISTORY.map((d, i) => {
-              const min = 6.3, max = 7.5;
-              const height = ((d.rate - min) / (max - min)) * 100;
+              const min = 6.3, max = 7.5, totalPx = 96; // 留 32px 给标签
+              const barH = Math.round(((d.rate - min) / (max - min)) * totalPx);
               const isLast = i === USD_CNY_HISTORY.length - 1;
               return (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
+                <div key={i} className="flex-1 flex flex-col items-center group relative" style={{ height: totalPx + 32 }}>
+                  {/* 汇率数值 */}
+                  <div className="text-[9px] font-bold text-gray-500 mb-0.5">{d.rate}</div>
+                  {/* 弹性占位，把柱子推到底部 */}
+                  <div className="flex-1" />
+                  {/* 柱子 */}
                   <div
                     className={`w-full rounded-t-sm transition-all ${isLast ? 'bg-purple-500' : 'bg-purple-200 group-hover:bg-purple-400'}`}
-                    style={{ height: `${height}%` }}
+                    style={{ height: barH }}
                   />
-                  <div className="text-[9px] text-gray-400 text-center leading-tight">{d.period.replace('年', '\n').replace(' ', '\n')}</div>
+                  {/* 标签 */}
+                  <div className="text-[8px] text-gray-400 text-center leading-tight mt-1 w-full truncate px-0.5">
+                    {d.period.split(' ')[0]}
+                  </div>
                   {/* tooltip */}
                   <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
                     {d.rate} — {d.note}
