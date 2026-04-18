@@ -316,7 +316,7 @@ function ForecastTab() {
           基于美联储货币政策路径、中美经济基本面、贸易格局、资本流动等多维度数据综合研判。
           当前即期汇率：<span className="font-bold text-purple-700">6.81</span>，
           央行中间价：<span className="font-bold text-purple-700">6.83</span>，
-          CNY/HKD：<span className="font-bold text-purple-700">1.1464</span>（港币联系汇率 7.83，随美元联动）。
+          CNY/HKD：<span className="font-bold text-purple-700">1.1464</span>（即 1 港币 ≈ <span className="font-bold text-purple-700">0.8724</span> 人民币，港币联系汇率 USD/HKD=7.83，随美元联动）。
         </p>
         <div className="mt-2 text-xs text-orange-600 font-medium bg-orange-50 rounded-lg px-3 py-2">
           ⚡ 重要背景：2026 年 4 月美国大规模关税政策冲击美元信用，DXY 跌破 100，人民币从年初 7.24 大幅升值至 6.81，升幅约 6%，为近年罕见走势。
