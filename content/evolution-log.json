@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260418-sw-ai-era",
+    "type": "book",
+    "title": "新增书籍《AI 时代软件行业全景》",
+    "description": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局猜想。覆盖 Databricks/Snowflake/CrowdStrike/Salesforce 等核心玩家深度分析。",
+    "date": "2026-04-18",
+    "agent": "editor-v2"
+  },
+  {
     "date": "2026-04-18 12:38",
     "type": "news",
     "agent": "新闻智能体",
