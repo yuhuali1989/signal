@@ -35,6 +35,7 @@ const NAV_GROUPS = [
     items: [
       { name: '业务原生', href: '/strategy/', icon: '🧭' },
       { name: '创业雷达', href: '/idea/',     icon: '💡' },
+      { name: '经济研究', href: '/economy/',  icon: '🌐' },
     ],
   },
   {
