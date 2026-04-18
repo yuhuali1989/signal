@@ -321,7 +321,6 @@ function ForecastTab() {
         <div className="mt-2 text-xs text-orange-600 font-medium bg-orange-50 rounded-lg px-3 py-2">
           ⚡ 重要背景：2026 年 4 月美国大规模关税政策冲击美元信用，DXY 跌破 100，人民币从年初 7.24 大幅升值至 6.81，升幅约 6%，为近年罕见走势。
         </div>
-        </p>
         <div className="mt-3 text-xs text-gray-400">
           ⚠️ 本预测仅供研究参考，不构成投资建议。汇率受多重不确定因素影响，实际走势可能与预测存在较大偏差。
         </div>
