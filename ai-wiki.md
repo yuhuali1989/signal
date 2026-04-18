@@ -115,7 +115,14 @@
 
 ---
 
-### 10. 侧边栏导航 `Sidebar.js`
+### 10. 数据闭环 `/data-infra/`
+- ✅ **AI Infra 技术栈** Section（DataInfraViz 组件，10 个 Tab）：
+  - 全景总览 · K8s & 容器 · 数据湖仓 · 数据流水线 · MLOps 实验 · 可观测性 · 向量 & 特征 · 图像去重 · 数据合成
+  - ⚡ **推理 & 训练优化**（新增）：分布式训练框架对比（DeepSpeed/FSDP/Megatron-LM）· 混合精度策略（FP32→INT4 全光谱）· 推理引擎对比（TensorRT/vLLM/SGLang/ONNX Runtime/TGI）· 编译优化（torch.compile/FlashAttention-3/Triton/CUDA Graph）· 车端推理优化（Orin 平台量化/蒸馏/剪枝/多模型调度/延迟预算）· 分布式通信优化 · 框架选型决策矩阵 · 核心论文 · 效果指标
+- ✅ **数据闭环链路** Section（DataLoopArch 组件，7 层闭环）：
+  - 数据采集 → 数据上传 → 数据处理 → 数据存储 → 模型训练 → 模型部署 → 效果监控
+
+### 11. 侧边栏导航 `Sidebar.js`
 - ✅ **左侧竖向固定侧边栏**，按四大分组清晰展示所有 13 个导航条目
   - 🟣 知识（紫）：书架 · 文章 · 论文 · 模型 · 数据闭环 · 工具箱
   - 🩵 业务（青）：自动驾驶 · 实验室
@@ -226,7 +233,7 @@ maxwell-knowledge/
 
 ---
 
-*最后更新：2026-04-18（新增创业雷达 /idea 和全行业动态 /industry-news 两个模块；修复 layout.js SidebarLayout 引用错误；新增自动化任务提示词章节）*
+*最后更新：2026-04-18（数据闭环模块新增「推理 & 训练优化」Tab，覆盖训练框架/推理引擎/量化编译/车端优化/框架选型决策矩阵）*
 
 ---
 
