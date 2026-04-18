@@ -16,6 +16,7 @@ export const INFRA_TABS = [
   { id: 'vectordb',   label: '向量 & 特征',  icon: '🧬', color: '#d2a8ff', desc: '向量数据库 · 特征仓库 · 嵌入检索 · 场景挖掘' },
   { id: 'dedup',      label: '图像去重',     icon: '🔍', color: '#e17055', desc: 'SemDeDup · D³ · SSL-Dedup · 多级去重 Pipeline · 长尾保护' },
   { id: 'synth',      label: '数据合成',     icon: '🧫', color: '#a29bfe', desc: '场景合成 · 长尾生成 · Sim2Real · 轨迹合成 · 自动标注 · 质量评估' },
+  { id: 'framework',  label: '推理 & 训练优化', icon: '⚡', color: '#ff6b6b', desc: '训练框架 · 推理引擎 · 量化编译 · 车端优化 · 框架选型对比' },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -882,6 +883,303 @@ export const SYNTH_DATA = {
       weather_robustness: '极端天气鲁棒性: +12% mAP',
       planning_collision: '规划碰撞率: 2.1% → 1.3% (-38%)',
       overall_nds: '整体 NDS: 0.714 → 0.728 (+1.4%)',
+    },
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 10. 推理 & 训练框架优化
+// ═══════════════════════════════════════════════════════════════
+export const FRAMEWORK_DATA = {
+  // 总览
+  overview: {
+    role: '推理与训练框架优化是数据闭环中模型迭代速度的核心瓶颈，直接决定从数据到模型部署的端到端效率',
+    dimensions: [
+      { name: '训练吞吐', desc: '分布式训练框架选型与通信优化，最大化 GPU 利用率', icon: '🏋️', color: '#ff6b6b' },
+      { name: '推理延迟', desc: '推理引擎与量化策略，满足车端实时性要求 (<50ms)', icon: '⚡', color: '#ffa657' },
+      { name: '显存效率', desc: '混合精度、梯度检查点、KV Cache 优化，降低显存占用', icon: '💾', color: '#3fb950' },
+      { name: '编译加速', desc: 'torch.compile / Triton / CUDA Graph，算子融合与图优化', icon: '🔧', color: '#79c0ff' },
+      { name: '车端部署', desc: 'Orin 平台推理优化，模型裁剪与多模型并行调度', icon: '🚗', color: '#d2a8ff' },
+      { name: '成本控制', desc: '训练成本 vs 推理成本的全局优化，ROI 最大化', icon: '💰', color: '#6c5ce7' },
+    ],
+  },
+
+  // 训练框架对比
+  trainFrameworks: [
+    {
+      name: 'DeepSpeed ZeRO',
+      org: 'Microsoft',
+      icon: '🔵',
+      color: '#326ce5',
+      desc: '业界最成熟的大模型分布式训练框架，ZeRO 三阶段渐进式优化显存',
+      stages: [
+        { name: 'ZeRO-1', desc: '优化器状态分片', memSave: '~4×', overhead: '极低', scenario: '中等模型 (<10B)' },
+        { name: 'ZeRO-2', desc: '+ 梯度分片', memSave: '~8×', overhead: '低', scenario: '大模型 (10-70B)' },
+        { name: 'ZeRO-3', desc: '+ 参数分片', memSave: '~N×', overhead: '中', scenario: '超大模型 (>70B)' },
+        { name: 'ZeRO-Infinity', desc: '+ NVMe 卸载', memSave: '∞', overhead: '高', scenario: '极端显存受限' },
+      ],
+      pros: ['生态最成熟', '与 HuggingFace 深度集成', '配置简单', 'Offload 支持'],
+      cons: ['通信开销随 ZeRO 阶段增加', '大规模集群调优复杂'],
+      bestFor: 'VLA 模型训练 (7B-70B 参数量)',
+    },
+    {
+      name: 'PyTorch FSDP',
+      org: 'Meta',
+      icon: '🔴',
+      color: '#ee4c2c',
+      desc: 'PyTorch 原生全分片数据并行，与 PyTorch 生态无缝集成',
+      stages: [
+        { name: 'FULL_SHARD', desc: '参数+梯度+优化器全分片', memSave: '~N×', overhead: '中', scenario: '大模型训练' },
+        { name: 'SHARD_GRAD_OP', desc: '梯度+优化器分片', memSave: '~8×', overhead: '低', scenario: '中等模型' },
+        { name: 'NO_SHARD', desc: '不分片 (DDP)', memSave: '1×', overhead: '极低', scenario: '小模型 / 基线' },
+      ],
+      pros: ['PyTorch 原生', '无额外依赖', 'torch.compile 兼容', '社区活跃'],
+      cons: ['成熟度略低于 DeepSpeed', '高级功能较少'],
+      bestFor: '需要 torch.compile 加速的场景',
+    },
+    {
+      name: 'Megatron-LM',
+      org: 'NVIDIA',
+      icon: '🟢',
+      color: '#76b900',
+      desc: 'NVIDIA 官方大模型训练框架，支持 3D 并行（TP + PP + DP）',
+      stages: [
+        { name: 'Tensor Parallel', desc: '层内张量切分', memSave: '~T×', overhead: '低 (NVLink)', scenario: '单节点多卡' },
+        { name: 'Pipeline Parallel', desc: '层间流水线', memSave: '~P×', overhead: '中 (气泡)', scenario: '跨节点' },
+        { name: 'Sequence Parallel', desc: '序列维度切分', memSave: '~S×', overhead: '低', scenario: '长序列' },
+      ],
+      pros: ['3D 并行最成熟', 'NVIDIA 硬件深度优化', '吞吐量最高', 'FP8 原生支持'],
+      cons: ['代码侵入性强', '模型适配成本高', '社区生态较封闭'],
+      bestFor: '超大规模预训练 (>100B)，NVIDIA 集群',
+    },
+  ],
+
+  // 混合精度策略
+  precisionStrategies: [
+    { name: 'FP32', bits: 32, memPerParam: '4B', trainSpeed: '1×', quality: '基线', scenario: '调试 / 精度敏感任务', color: '#94a3b8' },
+    { name: 'BF16', bits: 16, memPerParam: '2B', trainSpeed: '~2×', quality: '≈FP32', scenario: '主流训练精度（推荐）', color: '#3fb950' },
+    { name: 'FP16 + Loss Scaling', bits: 16, memPerParam: '2B', trainSpeed: '~2×', quality: '需调参', scenario: '无 BF16 硬件支持时', color: '#ffa657' },
+    { name: 'FP8 (E4M3/E5M2)', bits: 8, memPerParam: '1B', trainSpeed: '~3×', quality: '略降', scenario: 'H100/H200 训练加速', color: '#ff6b6b' },
+    { name: 'INT8 (W8A8)', bits: 8, memPerParam: '1B', trainSpeed: 'N/A', quality: '推理用', scenario: '推理量化（PTQ/QAT）', color: '#79c0ff' },
+    { name: 'INT4 (GPTQ/AWQ)', bits: 4, memPerParam: '0.5B', trainSpeed: 'N/A', quality: '有损', scenario: '极致推理压缩', color: '#d2a8ff' },
+  ],
+
+  // 推理引擎对比
+  inferenceEngines: [
+    {
+      name: 'TensorRT',
+      org: 'NVIDIA',
+      icon: '🟩',
+      color: '#76b900',
+      desc: '车端推理首选，深度优化 NVIDIA GPU/Orin 平台',
+      features: ['INT8/FP8 量化', '算子融合', '动态 Shape', 'CUDA Graph', 'DLA 加速'],
+      latency: '<30ms (Orin)',
+      throughput: '高',
+      platform: 'NVIDIA GPU / Orin / Xavier',
+      bestFor: '车端实时推理（VLA 模型部署）',
+    },
+    {
+      name: 'vLLM',
+      org: 'UC Berkeley',
+      icon: '🟦',
+      color: '#326ce5',
+      desc: '云端 LLM 推理首选，PagedAttention 显存管理革命',
+      features: ['PagedAttention', '连续批处理', 'Speculative Decoding', 'Prefix Caching', 'LoRA 热切换'],
+      latency: '~100ms (首 Token)',
+      throughput: '极高 (批处理)',
+      platform: 'NVIDIA GPU (云端)',
+      bestFor: '云端 VLM/LLM 推理服务（标注/场景理解）',
+    },
+    {
+      name: 'ONNX Runtime',
+      org: 'Microsoft',
+      icon: '🟧',
+      color: '#e17055',
+      desc: '跨平台推理引擎，支持多硬件后端',
+      features: ['跨平台', '图优化', '量化工具链', 'DirectML', 'CUDA EP'],
+      latency: '~50ms',
+      throughput: '中',
+      platform: 'CPU / GPU / NPU / 多平台',
+      bestFor: '跨平台部署、非 NVIDIA 硬件',
+    },
+    {
+      name: 'TGI (Text Generation Inference)',
+      org: 'Hugging Face',
+      icon: '🟨',
+      color: '#ffa657',
+      desc: 'HuggingFace 官方推理服务，开箱即用',
+      features: ['Flash Attention', 'Paged Attention', '水印', '流式输出', 'Safetensors'],
+      latency: '~120ms (首 Token)',
+      throughput: '高',
+      platform: 'NVIDIA GPU (云端)',
+      bestFor: '快速部署 HuggingFace 模型',
+    },
+    {
+      name: 'SGLang',
+      org: 'LMSYS',
+      icon: '🟪',
+      color: '#a29bfe',
+      desc: '新一代 LLM 推理引擎，RadixAttention 前缀共享',
+      features: ['RadixAttention', '自动前缀缓存', '结构化输出', '多模态支持', 'DP Attention'],
+      latency: '~80ms (首 Token)',
+      throughput: '极高',
+      platform: 'NVIDIA GPU (云端)',
+      bestFor: '高并发 VLM 推理、结构化输出场景',
+    },
+  ],
+
+  // 编译优化
+  compileOptimizations: [
+    {
+      name: 'torch.compile',
+      desc: 'PyTorch 2.x 图编译器，自动算子融合与内存优化',
+      speedup: '训练 10-30%↑, 推理 20-50%↑',
+      effort: '一行代码',
+      maturity: '成熟',
+      icon: '🔥',
+      color: '#ee4c2c',
+      details: ['TorchDynamo 图捕获', 'TorchInductor 代码生成', '自动算子融合', '内存规划优化', '支持动态 Shape'],
+    },
+    {
+      name: 'FlashAttention-3',
+      desc: '硬件感知的注意力计算优化，IO 感知算法',
+      speedup: 'Attention 2-4×↑, 显存 5-20×↓',
+      effort: '替换 Attention 层',
+      maturity: '成熟',
+      icon: '⚡',
+      color: '#ffa657',
+      details: ['IO 感知 tiling', 'Online softmax', '异步流水线 (H100)', 'FP8 支持', '变长序列优化'],
+    },
+    {
+      name: 'Triton',
+      desc: 'OpenAI 开源 GPU 编程语言，Python 写 CUDA kernel',
+      speedup: '自定义算子 2-5×↑',
+      effort: '需编写 Triton kernel',
+      maturity: '活跃发展',
+      icon: '🔺',
+      color: '#3fb950',
+      details: ['Python 语法写 GPU kernel', '自动 tiling 与调度', '与 torch.compile 集成', '跨 GPU 架构', '社区 kernel 库丰富'],
+    },
+    {
+      name: 'CUDA Graph',
+      desc: '将多个 CUDA 操作录制为图，减少 CPU-GPU 同步开销',
+      speedup: '推理 10-30%↑ (小 batch)',
+      effort: '需适配动态 Shape',
+      maturity: '成熟',
+      icon: '📊',
+      color: '#79c0ff',
+      details: ['消除 kernel launch 开销', '减少 CPU-GPU 同步', '适合固定 Shape 推理', 'TensorRT 自动使用', 'vLLM 集成'],
+    },
+  ],
+
+  // 车端推理优化
+  edgeOptimization: {
+    platform: {
+      name: 'NVIDIA Orin',
+      specs: [
+        { name: 'GPU', value: '2048 CUDA + 64 Tensor Cores', icon: '🖥️' },
+        { name: '算力', value: '275 TOPS (INT8) / 138 TFLOPS (FP16)', icon: '⚡' },
+        { name: '内存', value: '32GB LPDDR5 (204.8 GB/s)', icon: '💾' },
+        { name: '功耗', value: '15-60W (可配置)', icon: '🔋' },
+        { name: 'DLA', value: '2× Deep Learning Accelerator', icon: '🧠' },
+      ],
+    },
+    strategies: [
+      {
+        name: '模型量化',
+        desc: 'FP32 → FP16 → INT8 逐步量化，精度-延迟 Pareto 优化',
+        techniques: ['PTQ (训练后量化)', 'QAT (量化感知训练)', '混合精度量化 (敏感层 FP16 + 其余 INT8)', 'DLA INT8 卸载'],
+        impact: '延迟 ↓50%, 显存 ↓60%',
+        icon: '📐',
+        color: '#ff6b6b',
+      },
+      {
+        name: '知识蒸馏',
+        desc: '大模型 (Teacher) → 小模型 (Student)，保留核心能力',
+        techniques: ['特征蒸馏 (BEV 特征对齐)', '输出蒸馏 (轨迹 KL 散度)', '渐进式蒸馏 (多阶段)', '任务特定蒸馏'],
+        impact: '参数量 ↓70%, 精度损失 <2%',
+        icon: '🎓',
+        color: '#3fb950',
+      },
+      {
+        name: '结构剪枝',
+        desc: '移除冗余通道/注意力头，减少计算量',
+        techniques: ['通道剪枝 (L1 范数)', '注意力头剪枝', '层剪枝 (浅层冗余)', '结构化稀疏 (2:4)'],
+        impact: 'FLOPs ↓40%, 延迟 ↓30%',
+        icon: '✂️',
+        color: '#ffa657',
+      },
+      {
+        name: '多模型调度',
+        desc: '感知/预测/规划多模型在 Orin 上的并行调度',
+        techniques: ['CUDA Stream 并行', 'GPU + DLA 异构调度', '优先级抢占 (安全优先)', '动态 batch 合并'],
+        impact: 'GPU 利用率 ↑40%, 端到端延迟 <50ms',
+        icon: '🔄',
+        color: '#79c0ff',
+      },
+    ],
+    latencyBudget: [
+      { module: '图像预处理', target: '3ms', actual: '2.5ms', status: 'good', color: '#3fb950' },
+      { module: 'BEV 编码器', target: '10ms', actual: '8.2ms', status: 'good', color: '#3fb950' },
+      { module: 'VLA 推理', target: '15ms', actual: '14.1ms', status: 'good', color: '#3fb950' },
+      { module: '世界模型预测', target: '8ms', actual: '7.8ms', status: 'good', color: '#3fb950' },
+      { module: '轨迹规划', target: '5ms', actual: '4.2ms', status: 'good', color: '#3fb950' },
+      { module: '安全校验', target: '3ms', actual: '2.1ms', status: 'good', color: '#3fb950' },
+      { module: '控制输出', target: '2ms', actual: '1.5ms', status: 'good', color: '#3fb950' },
+      { module: '端到端总计', target: '<50ms', actual: '40.4ms', status: 'good', color: '#6c5ce7' },
+    ],
+  },
+
+  // 通信优化
+  communicationOpt: [
+    { name: 'NCCL AllReduce', desc: '梯度同步的标准通信原语', bandwidth: '~180 GB/s (IB HDR)', scenario: '数据并行梯度聚合', icon: '📡', color: '#326ce5' },
+    { name: 'GDR (GPUDirect RDMA)', desc: 'GPU 直接通过 RDMA 通信，绕过 CPU', bandwidth: '~200 GB/s', scenario: '跨节点张量并行', icon: '🔗', color: '#76b900' },
+    { name: '梯度压缩', desc: 'Top-K / 随机稀疏化 / 1-bit Adam', bandwidth: '压缩比 10-100×', scenario: '带宽受限场景', icon: '📦', color: '#ffa657' },
+    { name: '计算-通信重叠', desc: '前向/反向计算与梯度通信流水线化', bandwidth: '隐藏 50-80% 通信', scenario: 'ZeRO-3 / FSDP', icon: '⏱️', color: '#fd79a8' },
+    { name: 'NVLink / NVSwitch', desc: '节点内 GPU 高速互联', bandwidth: '900 GB/s (NVLink 4)', scenario: '节点内张量并行', icon: '🔌', color: '#d2a8ff' },
+  ],
+
+  // 框架选型决策矩阵
+  decisionMatrix: [
+    { scenario: 'VLA 预训练 (7B)', framework: 'DeepSpeed ZeRO-2', inference: 'N/A', precision: 'BF16', compile: 'torch.compile', reason: '成熟稳定，HuggingFace 集成好' },
+    { scenario: 'VLA+WM 联合训练 (20B)', framework: 'DeepSpeed ZeRO-3', inference: 'N/A', precision: 'BF16 + FP8', compile: 'FlashAttention-3', reason: '显存需求大，需参数分片' },
+    { scenario: '超大预训练 (>100B)', framework: 'Megatron-LM 3D', inference: 'N/A', precision: 'FP8', compile: 'Triton kernels', reason: '3D 并行吞吐量最高' },
+    { scenario: '云端 VLM 推理 (标注)', framework: 'N/A', inference: 'vLLM / SGLang', precision: 'INT8 (W8A8)', compile: 'CUDA Graph', reason: '高并发批处理，PagedAttention' },
+    { scenario: '车端实时推理 (Orin)', framework: 'N/A', inference: 'TensorRT', precision: 'INT8 + DLA', compile: 'TRT 图优化', reason: '延迟最低，Orin 深度优化' },
+    { scenario: '快速原型验证', framework: 'FSDP', inference: 'ONNX Runtime', precision: 'FP16', compile: 'torch.compile', reason: 'PyTorch 原生，零额外依赖' },
+  ],
+
+  // 核心论文
+  papers: [
+    { paper: 'FlashAttention-3', venue: 'NeurIPS 2024', topic: '注意力优化', highlight: 'H100 异步流水线 + FP8，Attention 速度 2-4×' },
+    { paper: 'DeepSpeed ZeRO++', venue: 'ICML 2024', topic: '通信优化', highlight: '量化权重通信 + 分层分片，通信量减少 4×' },
+    { paper: 'vLLM (PagedAttention)', venue: 'SOSP 2023', topic: 'LLM 推理', highlight: 'OS 虚拟内存思想管理 KV Cache，吞吐量 24×' },
+    { paper: 'SGLang (RadixAttention)', venue: 'ICML 2024', topic: 'LLM 推理', highlight: '前缀树共享 KV Cache，多轮对话加速 5×' },
+    { paper: 'GPTQ', venue: 'ICLR 2023', topic: '模型量化', highlight: '一次性 INT4 量化，精度损失极小' },
+    { paper: 'AWQ', venue: 'MLSys 2024', topic: '模型量化', highlight: '激活感知权重量化，保护显著通道' },
+    { paper: 'Speculative Decoding', venue: 'ICML 2023', topic: '推理加速', highlight: '小模型草稿 + 大模型验证，无损加速 2-3×' },
+    { paper: 'Triton', venue: 'MAPL 2019', topic: 'GPU 编程', highlight: 'Python 写 GPU kernel，性能接近手写 CUDA' },
+  ],
+
+  // 效果指标
+  metrics: {
+    training: {
+      throughput: '128×A100 集群: ~45K tokens/s (VLA 7B, ZeRO-2)',
+      gpuUtil: 'MFU (Model FLOPs Utilization): ~52%',
+      costPerEpoch: '~$8,500 / epoch (AWS p4d.24xlarge)',
+      iterationCycle: '数据→模型→部署: 72 小时',
+    },
+    inference: {
+      cloudLatency: '云端 VLM 推理: ~120ms/请求 (vLLM, A100)',
+      cloudThroughput: '云端批处理: ~500 请求/s (INT8)',
+      edgeLatency: '车端端到端: <50ms (Orin, TensorRT INT8)',
+      edgePower: '车端功耗: ~35W (Orin, 275 TOPS)',
+    },
+    optimization: {
+      compileSpeedup: 'torch.compile: 训练 +22%, 推理 +38%',
+      flashAttnSpeedup: 'FlashAttention-3: Attention 层 3.2× 加速',
+      quantizationSaving: 'INT8 量化: 显存 ↓50%, 延迟 ↓45%',
+      distillationResult: '蒸馏: 参数 ↓70%, NDS 仅降 0.8%',
     },
   },
 };

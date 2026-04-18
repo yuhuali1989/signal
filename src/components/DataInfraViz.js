@@ -12,6 +12,7 @@ import {
   VECTOR_DATA,
   DEDUP_DATA,
   SYNTH_DATA,
+  FRAMEWORK_DATA,
 } from '@/lib/data-infra-data';
 
 // ─────────────────────────────────────────────────────────────
@@ -1110,6 +1111,336 @@ function SynthTab() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// 10. 推理 & 训练框架优化
+// ═══════════════════════════════════════════════════════════════
+function FrameworkTab() {
+  const { overview, trainFrameworks, precisionStrategies, inferenceEngines, compileOptimizations, edgeOptimization, communicationOpt, decisionMatrix, papers, metrics } = FRAMEWORK_DATA;
+
+  return (
+    <div className="space-y-4">
+      {/* 总览 */}
+      <SectionCard icon="⚡" title="推理 & 训练优化总览" desc={overview.role}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {overview.dimensions.map(d => (
+            <div key={d.name} className="flex items-start gap-2 rounded-xl border p-3"
+              style={{ borderColor: d.color + '33', background: d.color + '06' }}>
+              <span className="text-lg flex-shrink-0">{d.icon}</span>
+              <div>
+                <div className="text-xs font-semibold text-gray-700">{d.name}</div>
+                <div className="text-[10px] text-gray-500">{d.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 训练框架对比 */}
+      <SectionCard icon="🏋️" title="分布式训练框架对比" desc="DeepSpeed vs FSDP vs Megatron-LM 三大主流框架">
+        <div className="space-y-4">
+          {trainFrameworks.map(fw => (
+            <div key={fw.name} className="rounded-xl border p-4"
+              style={{ borderColor: fw.color + '33', background: fw.color + '04' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-lg">{fw.icon}</span>
+                <span className="text-sm font-semibold text-gray-800">{fw.name}</span>
+                <Badge color={fw.color}>{fw.org}</Badge>
+                <span className="text-[10px] text-gray-400 ml-auto">推荐: {fw.bestFor}</span>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-3">{fw.desc}</p>
+
+              {/* 阶段表格 */}
+              <div className="overflow-x-auto mb-3">
+                <table className="w-full text-[10px]">
+                  <thead>
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left py-1.5 px-2 text-gray-500 font-medium">阶段</th>
+                      <th className="text-left py-1.5 px-2 text-gray-500 font-medium">策略</th>
+                      <th className="text-center py-1.5 px-2 text-gray-500 font-medium">显存节省</th>
+                      <th className="text-center py-1.5 px-2 text-gray-500 font-medium">通信开销</th>
+                      <th className="text-left py-1.5 px-2 text-gray-500 font-medium">适用场景</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fw.stages.map(s => (
+                      <tr key={s.name} className="border-b border-gray-50">
+                        <td className="py-1.5 px-2 font-semibold text-gray-700 font-mono">{s.name}</td>
+                        <td className="py-1.5 px-2 text-gray-600">{s.desc}</td>
+                        <td className="py-1.5 px-2 text-center font-mono" style={{ color: fw.color }}>{s.memSave}</td>
+                        <td className="py-1.5 px-2 text-center"><Badge color={fw.color}>{s.overhead}</Badge></td>
+                        <td className="py-1.5 px-2 text-gray-500">{s.scenario}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* 优缺点 */}
+              <div className="flex gap-4 text-[10px]">
+                <div className="flex-1">
+                  <span className="font-semibold text-[#3fb950]">✅ 优势：</span>
+                  <span className="text-gray-500">{fw.pros.join(' · ')}</span>
+                </div>
+                <div className="flex-1">
+                  <span className="font-semibold text-[#ff6b6b]">⚠️ 局限：</span>
+                  <span className="text-gray-500">{fw.cons.join(' · ')}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 混合精度策略 */}
+      <SectionCard icon="🎯" title="混合精度策略" desc="从 FP32 到 INT4，精度-效率的完整光谱">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">精度</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">位宽</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">每参数内存</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">训练加速</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">精度影响</th>
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">适用场景</th>
+              </tr>
+            </thead>
+            <tbody>
+              {precisionStrategies.map(p => (
+                <tr key={p.name} className="border-b border-gray-50">
+                  <td className="py-2 px-2 font-semibold font-mono" style={{ color: p.color }}>{p.name}</td>
+                  <td className="py-2 px-2 text-center font-mono text-gray-600">{p.bits}</td>
+                  <td className="py-2 px-2 text-center font-mono text-gray-600">{p.memPerParam}</td>
+                  <td className="py-2 px-2 text-center"><Badge color={p.color}>{p.trainSpeed}</Badge></td>
+                  <td className="py-2 px-2 text-center text-gray-600">{p.quality}</td>
+                  <td className="py-2 px-2 text-gray-500">{p.scenario}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* 推理引擎对比 */}
+      <SectionCard icon="🚀" title="推理引擎对比" desc="云端 LLM 推理 vs 车端实时推理，5 大主流引擎">
+        <div className="space-y-3">
+          {inferenceEngines.map(eng => (
+            <div key={eng.name} className="rounded-xl border p-4"
+              style={{ borderColor: eng.color + '33', background: eng.color + '04' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">{eng.icon}</span>
+                <span className="text-sm font-semibold text-gray-800">{eng.name}</span>
+                <Badge color={eng.color}>{eng.org}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-2">{eng.desc}</p>
+              <div className="flex flex-wrap gap-1 mb-2">
+                {eng.features.map(f => (
+                  <span key={f} className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
+                    style={{ background: eng.color + '15', color: eng.color }}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+              <div className="flex items-center gap-4 text-[9px] text-gray-400 font-mono">
+                <span>延迟: <span style={{ color: eng.color }}>{eng.latency}</span></span>
+                <span>吞吐: {eng.throughput}</span>
+                <span>平台: {eng.platform}</span>
+              </div>
+              <div className="mt-1.5 text-[10px] text-gray-500">
+                <span className="font-semibold">最佳场景：</span>{eng.bestFor}
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 编译优化 */}
+      <SectionCard icon="🔧" title="编译 & 算子优化" desc="torch.compile · FlashAttention · Triton · CUDA Graph">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {compileOptimizations.map(opt => (
+            <div key={opt.name} className="rounded-xl border p-4"
+              style={{ borderColor: opt.color + '33', background: opt.color + '04' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">{opt.icon}</span>
+                <span className="text-xs font-semibold text-gray-800">{opt.name}</span>
+                <Badge color={opt.color}>{opt.maturity}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-2">{opt.desc}</p>
+              <div className="flex items-center gap-3 text-[9px] text-gray-400 mb-2">
+                <span>加速: <span className="font-mono" style={{ color: opt.color }}>{opt.speedup}</span></span>
+                <span>接入成本: {opt.effort}</span>
+              </div>
+              <div className="flex flex-wrap gap-1">
+                {opt.details.map(d => (
+                  <span key={d} className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500">{d}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 车端推理优化 */}
+      <SectionCard icon="🚗" title="车端推理优化 (NVIDIA Orin)" desc="从模型量化到多模型调度的全链路车端优化">
+        {/* 平台规格 */}
+        <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-3 mb-4">
+          <div className="text-xs font-semibold text-gray-700 mb-2">📋 {edgeOptimization.platform.name} 规格</div>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            {edgeOptimization.platform.specs.map(s => (
+              <div key={s.name} className="text-center">
+                <div className="text-sm mb-0.5">{s.icon}</div>
+                <div className="text-[10px] font-semibold text-gray-700">{s.name}</div>
+                <div className="text-[9px] text-gray-500 font-mono">{s.value}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 优化策略 */}
+        <div className="space-y-2 mb-4">
+          {edgeOptimization.strategies.map(s => (
+            <div key={s.name} className="rounded-xl border p-3"
+              style={{ borderColor: s.color + '33', background: s.color + '06' }}>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-sm">{s.icon}</span>
+                <span className="text-xs font-semibold text-gray-700">{s.name}</span>
+                <Badge color={s.color}>{s.impact}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-1.5">{s.desc}</p>
+              <div className="flex flex-wrap gap-1">
+                {s.techniques.map(t => (
+                  <span key={t} className="text-[9px] px-1.5 py-0.5 rounded-full"
+                    style={{ background: s.color + '12', color: s.color }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 延迟预算 */}
+        <div className="rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+          <div className="text-xs font-semibold text-gray-700 mb-2">⏱️ 端到端延迟预算分配</div>
+          <div className="space-y-1.5">
+            {edgeOptimization.latencyBudget.map(l => (
+              <div key={l.module} className="flex items-center gap-2 text-[10px]">
+                <span className="w-24 text-gray-600 font-medium">{l.module}</span>
+                <div className="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative">
+                  <div className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${(parseFloat(l.actual) / 50) * 100}%`,
+                      background: l.module === '端到端总计' ? '#6c5ce7' : l.color,
+                      opacity: l.module === '端到端总计' ? 1 : 0.7,
+                    }} />
+                </div>
+                <span className="w-16 text-right font-mono" style={{ color: l.color }}>{l.actual}</span>
+                <span className="w-16 text-right text-gray-400 font-mono">/ {l.target}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 通信优化 */}
+      <SectionCard icon="📡" title="分布式通信优化" desc="NCCL · GDR · NVLink · 梯度压缩 · 计算通信重叠">
+        <div className="space-y-2">
+          {communicationOpt.map(c => (
+            <div key={c.name} className="flex items-center gap-3 rounded-xl border p-3"
+              style={{ borderColor: c.color + '33', background: c.color + '06' }}>
+              <span className="text-lg flex-shrink-0">{c.icon}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-xs font-semibold text-gray-700">{c.name}</span>
+                  <Badge color={c.color}>{c.bandwidth}</Badge>
+                </div>
+                <div className="text-[10px] text-gray-500">{c.desc}</div>
+                <div className="text-[9px] text-gray-400 mt-0.5">场景: {c.scenario}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 框架选型决策矩阵 */}
+      <SectionCard icon="🧭" title="框架选型决策矩阵" desc="不同场景下的最优框架组合推荐">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">场景</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">训练框架</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">推理引擎</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">精度</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">编译优化</th>
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">选型理由</th>
+              </tr>
+            </thead>
+            <tbody>
+              {decisionMatrix.map(d => (
+                <tr key={d.scenario} className="border-b border-gray-50">
+                  <td className="py-2 px-2 font-semibold text-gray-700">{d.scenario}</td>
+                  <td className="py-2 px-2 text-center"><Badge color="#326ce5">{d.framework}</Badge></td>
+                  <td className="py-2 px-2 text-center"><Badge color="#76b900">{d.inference}</Badge></td>
+                  <td className="py-2 px-2 text-center"><Badge color="#ff6b6b">{d.precision}</Badge></td>
+                  <td className="py-2 px-2 text-center"><Badge color="#ffa657">{d.compile}</Badge></td>
+                  <td className="py-2 px-2 text-gray-500">{d.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* 核心论文 */}
+      <SectionCard icon="📄" title="核心论文参考" desc="推理与训练优化领域关键论文">
+        <div className="overflow-x-auto">
+          <table className="w-full text-[10px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">论文</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">会议</th>
+                <th className="text-center py-2 px-2 text-gray-500 font-medium">方向</th>
+                <th className="text-left py-2 px-2 text-gray-500 font-medium">核心贡献</th>
+              </tr>
+            </thead>
+            <tbody>
+              {papers.map(p => (
+                <tr key={p.paper} className="border-b border-gray-50">
+                  <td className="py-2 px-2 font-semibold text-gray-700">{p.paper}</td>
+                  <td className="py-2 px-2 text-center"><Badge color="#ff6b6b">{p.venue}</Badge></td>
+                  <td className="py-2 px-2 text-center"><Badge color="#79c0ff">{p.topic}</Badge></td>
+                  <td className="py-2 px-2 text-gray-500">{p.highlight}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionCard>
+
+      {/* 效果指标 */}
+      <SectionCard icon="📊" title="效果指标总览" desc="训练 · 推理 · 优化三维度关键指标">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { title: '🏋️ 训练指标', data: metrics.training, color: '#ff6b6b' },
+            { title: '🚀 推理指标', data: metrics.inference, color: '#76b900' },
+            { title: '⚡ 优化效果', data: metrics.optimization, color: '#ffa657' },
+          ].map(group => (
+            <div key={group.title} className="rounded-xl border p-3" style={{ borderColor: group.color + '33', background: group.color + '04' }}>
+              <div className="text-xs font-semibold text-gray-700 mb-2">{group.title}</div>
+              {Object.entries(group.data).map(([key, value]) => (
+                <div key={key} className="text-[10px] text-gray-600 mb-1">
+                  <span style={{ color: group.color }}>▸</span> {value}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // 主组件
 // ═══════════════════════════════════════════════════════════════
 export default function DataInfraViz() {
@@ -1125,6 +1456,7 @@ export default function DataInfraViz() {
     vectordb: <VectorTab />,
     dedup: <DedupTab />,
     synth: <SynthTab />,
+    framework: <FrameworkTab />,
   }), []);
 
   const activeInfo = INFRA_TABS.find(t => t.id === activeTab);
