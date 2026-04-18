@@ -136,7 +136,7 @@ const NEWS_DATA = [
   },
   {
     id: 2103,
-    category: 'funding',
+    category: 'startup',
     region: 'global',
     title: 'Cursor 确认 $500 亿估值融资 $20 亿：a16z + Thrive 领投，AI IDE 赛道三巨头格局',
     summary: 'AI 代码编辑器 Cursor 以约 $500 亿估值完成超 $20 亿新一轮融资，由 a16z 和 Thrive Capital 联合领投。2025 ARR 突破 $10 亿，企业年消费超百万的客户超 200 家。JetBrains 调查显示市占率 23%，与 Copilot（38%）和 Claude Code（18%）构成三巨头格局。',
@@ -951,7 +951,7 @@ const NEWS_DATA = [
 // ─── 新闻卡片组件 ─────────────────────────────────────────────────────────────
 
 function NewsCard({ item }) {
-  const cat = CAT_MAP[item.category] || CAT_MAP['ai'];
+  const cat = CAT_MAP[item.category] || CAT_MAP['all'];
   const isSummary = item.title.startsWith('【');
 
   return (
