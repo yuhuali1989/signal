@@ -256,6 +256,7 @@ maxwell-knowledge/
   - 数据闭环：数据合成、标注自动化、数据飞轮、合成数据质量评估
   - Agent/MCP：MCP 协议生态、Agent 编排、工具调用安全
   - 自动驾驶：VLA 进展、世界模型、端到端方案
+  - 全行业：软件/游戏/硬件/创业融资/政策监管动态（同步更新 IndustryNewsFeed.js 中的 NEWS_DATA）
 - 对 30 天前的旧条目（date 字段），将同类话题合并为一条摘要条目，减少冗余
 - 每条新闻格式：{ id, title, summary, source, date, category, tags[], hot, region }
 - 注意：JSON 文件必须使用 UTF-8 编码，所有中文字符直接写入，不要使用 Unicode 转义（\uXXXX）
@@ -293,6 +294,19 @@ maxwell-knowledge/
     7. 对工程实践的启示
   - 同步更新 papers-index.json，添加新论文的索引条目
 
+### 任务 4b：更新创业雷达 src/components/IdeaRadar.js（每月至少刷新一次）
+- 更新 IDEAS 数组中各方向的 signalDate 和 signal 标注（🔥热点/👀关注）
+- 补充新出现的海外创业公司（overseas 数组），尤其关注 YC 最新批次
+- 新增创业方向时覆盖 5 大行业：AI 工具 / 游戏科技 / 消费硬件 / 开发者工具 / 企业 SaaS
+- 每个新方向必须包含：market（市场规模）、barrier（进入壁垒）、china（中国机会）、overseas（≥2 家对标）、opportunity（中国机会窗口）
+
+### 任务 4c：更新全行业动态 src/components/IndustryNewsFeed.js（每次至少新增 5 条）
+- 在 NEWS_DATA 数组头部插入最新新闻条目
+- 覆盖 6 大分类：ai / software / game / hardware / startup / policy
+- 国内外各占约一半（region: 'china' | 'global'）
+- 每条格式：{ id, category, region, title, summary, source, date, tags[], hot, link }
+- 对超过 60 天的旧条目可以删除，保持列表在 30 条以内
+
 ### 任务 5：更新模型数据 content/gallery/models.json（每次至少补充 2 个模型）
 - 重点补充：
   - 自动驾驶专用模型（DriveVLM、OpenDriveVLA、SparseDrive 等）
@@ -320,6 +334,8 @@ maxwell-knowledge/
 - JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
 - 每次迭代保证：声浪 ≥8 条新增、文章 ≥2 篇、书籍 ≥1 章更新、论文 ≥1 篇详细解读、模型 ≥2 个
+- 创业雷达（IdeaRadar.js）每月刷新一次信号标注，每季度新增 ≥3 个创业方向
+- 全行业动态（IndustryNewsFeed.js）每次迭代新增 ≥5 条，保持列表 ≤30 条
 ```
 
 ---
@@ -338,7 +354,7 @@ maxwell-knowledge/
 依次 curl 以下路由，确认均返回 200：
 for path in "/" "/books/" "/articles/" "/papers/" "/models/" "/news/" \
             "/vla/" "/strategy/" "/idea/" "/industry-news/" "/evolution/" \
-            "/data-infra/" "/tools/"; do
+            "/data-infra/" "/tools/" "/lab/"; do
   status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 http://localhost:3000${path})
   echo "${status} ${path}"
 done
