@@ -15,7 +15,7 @@ const NAV_GROUPS = [
       { name: '文章',     href: '/articles/',   icon: '📝' },
       { name: '论文',     href: '/papers/',     icon: '🔬' },
       { name: '模型',     href: '/models/',     icon: '📊' },
-      { name: '数据闭环', href: '/data-infra/', icon: '🔄' },
+      { name: '闭环 Infra', href: '/data-infra/', icon: '🔄' },
       { name: '工具箱',   href: '/tools/',      icon: '🧰' },
     ],
   },

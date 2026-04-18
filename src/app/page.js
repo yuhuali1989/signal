@@ -115,7 +115,7 @@ export default function Home() {
               <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">🔄</span>
               <div>
                 <p className="text-sm font-semibold text-gray-800 group-hover:text-emerald-600 transition-colors">AI Infra 全景</p>
-                <p className="text-xs text-gray-400">K8s · 数据湖仓 · MLOps · 数据闭环链路</p>
+<p className="text-xs text-gray-400">K8s · 数据湖仓 · MLOps · 闭环 Infra</p>
               </div>
             </Link>
             <Link href="/lab/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-violet-50/60 border border-violet-100/60 hover:border-violet-300/60 hover:shadow-sm transition-all group">

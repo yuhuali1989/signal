@@ -38,7 +38,7 @@ const SECTIONS = [
   },
   {
     id: 'loop',
-    label: '数据闭环链路',
+            label: '闭环 Infra 链路',
     icon: '🔄',
     desc: '采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全容器化云原生架构',
     color: '#6c5ce7',
@@ -83,7 +83,7 @@ export default function DataInfraPage() {
         {/* Hero */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-2xl font-bold text-gray-900">🔄 AI Infra & 数据闭环</h1>
+              <h1 className="text-2xl font-bold text-gray-900">🔄 AI Infra & 闭环 Infra</h1>
             <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-100 font-medium">
               全容器化
             </span>

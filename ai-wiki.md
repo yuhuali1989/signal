@@ -115,16 +115,16 @@
 
 ---
 
-### 10. 数据闭环 `/data-infra/`
+### 10. 闭环 Infra `/data-infra/`
 - ✅ **AI Infra 技术栈** Section（DataInfraViz 组件，10 个 Tab）：
   - 全景总览 · K8s & 容器 · 数据湖仓 · 数据流水线 · MLOps 实验 · 可观测性 · 向量 & 特征 · 图像去重 · 数据合成
   - ⚡ **推理 & 训练优化**（新增）：分布式训练框架对比（DeepSpeed/FSDP/Megatron-LM）· 混合精度策略（FP32→INT4 全光谱）· 推理引擎对比（TensorRT/vLLM/SGLang/ONNX Runtime/TGI）· 编译优化（torch.compile/FlashAttention-3/Triton/CUDA Graph）· 车端推理优化（Orin 平台量化/蒸馏/剪枝/多模型调度/延迟预算）· 分布式通信优化 · 框架选型决策矩阵 · 核心论文 · 效果指标
-- ✅ **数据闭环链路** Section（DataLoopArch 组件，7 层闭环）：
+- ✅ **闭环 Infra 链路** Section（DataLoopArch 组件，7 层闭环）：
   - 数据采集 → 数据上传 → 数据处理 → 数据存储 → 模型训练 → 模型部署 → 效果监控
 
 ### 11. 侧边栏导航 `Sidebar.js`
 - ✅ **左侧竖向固定侧边栏**，按四大分组清晰展示所有 13 个导航条目
-  - 🟣 知识（紫）：书架 · 文章 · 论文 · 模型 · 数据闭环 · 工具箱
+  - 🟣 知识（紫）：书架 · 文章 · 论文 · 模型 · 闭环 Infra · 工具箱
   - 🩵 业务（青）：自动驾驶 · 实验室
   - 🟠 战略（橙）：业务原生 · **创业雷达**（新增）
   - 🟢 动态（绿）：AI 声浪 · **全行业动态**（新增）· 进化日志
@@ -233,7 +233,7 @@ maxwell-knowledge/
 
 ---
 
-*最后更新：2026-04-18（数据闭环模块新增「推理 & 训练优化」Tab，覆盖训练框架/推理引擎/量化编译/车端优化/框架选型决策矩阵）*
+*最后更新：2026-04-18（导航名「数据闭环」改为「闭环 Infra」）*
 
 ---
 
@@ -260,7 +260,7 @@ maxwell-knowledge/
 - 新增 8-10 条最新 AI 动态，重点覆盖：
   - LLM 前沿：模型发布/能力突破/推理优化（GPT/Claude/Gemini/Qwen/Llama 系列）
   - AI Infra：推理框架(vLLM/SGLang/TensorRT-LLM)、训练框架、GPU/NPU 硬件、KV Cache 优化
-  - 数据闭环：数据合成、标注自动化、数据飞轮、合成数据质量评估
+  - 闭环 Infra：数据合成、标注自动化、数据飞轮、合成数据质量评估
   - Agent/MCP：MCP 协议生态、Agent 编排、工具调用安全
   - 自动驾驶：VLA 进展、世界模型、端到端方案
   - 全行业：软件/游戏/硬件/创业融资/政策监管动态（同步更新 IndustryNewsFeed.js 中的 NEWS_DATA）
@@ -271,7 +271,7 @@ maxwell-knowledge/
 ### 任务 2：新增文章 content/articles/（每次至少 2 篇）
 - 选题方向（优先选当前最热的）：
   - LLM 推理优化新进展（Speculative Decoding / MLA / 量化）
-  - 数据闭环与合成数据最新实践
+  - 闭环 Infra 与合成数据最新实践
   - 自动驾驶 VLA/世界模型最新进展
   - MCP/Agent 生态最新动向
 - 文章格式（Markdown）：
@@ -361,7 +361,7 @@ maxwell-knowledge/
 依次 curl 以下路由，确认均返回 200：
 for path in "/" "/books/" "/articles/" "/papers/" "/models/" "/news/" \
             "/vla/" "/strategy/" "/idea/" "/industry-news/" "/evolution/" \
-            "/data-infra/" "/tools/" "/lab/"; do
+            "/data-infra/" "/tools/" "/lab/" "/idea/" "/industry-news/"; do
   status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 http://localhost:3000${path})
   echo "${status} ${path}"
 done
