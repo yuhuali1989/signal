@@ -51,8 +51,8 @@ const USD_CNY_HISTORY = [
   { period: '2023 年底', rate: 7.10, note: '中美利差扩大，资本外流压力' },
   { period: '2024 年底', rate: 7.29, note: '美元强势，人民币承压' },
   { period: '2025 年底', rate: 7.18, note: '美联储降息预期升温，人民币小幅回升' },
-  { period: '2026 年 Q1', rate: 7.24, note: '关税摩擦升温，人民币再度承压' },
-  { period: '当前（2026-04）', rate: 7.27, note: '当前即期汇率' },
+  { period: '2026 年 Q1', rate: 7.24, note: '关税摩擦升温，人民币短暂承压' },
+  { period: '当前（2026-04）', rate: 6.81, note: '关税冲击美元信用，人民币大幅升值' },
 ];
 
 const FORECAST_SCENARIOS = [
@@ -63,19 +63,19 @@ const FORECAST_SCENARIOS = [
     color: '#6c5ce7',
     bg: 'bg-purple-50',
     border: 'border-purple-200',
-    rate_q2_2026: 7.20,
-    rate_q3_2026: 7.15,
-    rate_q4_2026: 7.10,
-    rate_q1_2027: 7.05,
+    rate_q2_2026: 6.85,
+    rate_q3_2026: 6.90,
+    rate_q4_2026: 6.95,
+    rate_q1_2027: 7.00,
     assumptions: [
-      '美联储 2026 年降息 2 次（各 25bp），年底联邦基金利率 3.75%',
-      '中美贸易摩擦维持现状，无重大升级',
-      '中国经济增速维持 5% 左右，无重大刺激',
-      '美元指数（DXY）温和走弱至 100-103 区间',
-      '中国经常账户顺差维持，资本账户小幅净流出',
+      '美联储 2026 年降息 2-3 次，年底联邦基金利率 3.50-3.75%',
+      '中美贸易摩擦阶段性缓和，关税部分回撤或豁免',
+      '中国经济增速维持 5% 左右，财政政策适度发力',
+      '美元指数（DXY）在 98-102 区间震荡，美元信用修复',
+      '人民币升值后出口商结汇压力释放，汇率小幅回调',
     ],
-    drivers: '美联储降息缩小中美利差 → 美元温和走弱 → 人民币小幅升值',
-    risks: '若美国通胀反弹，降息预期推迟，人民币升值空间收窄',
+    drivers: '美元信用受损后修复 + 中美贸易缓和 → 人民币从极端升值水平温和回调',
+    risks: '若美元持续走弱，人民币可能进一步升值至 6.5 以内',
   },
   {
     id: 'bull',
@@ -84,19 +84,19 @@ const FORECAST_SCENARIOS = [
     color: '#00b894',
     bg: 'bg-green-50',
     border: 'border-green-200',
-    rate_q2_2026: 7.10,
-    rate_q3_2026: 7.00,
-    rate_q4_2026: 6.90,
-    rate_q1_2027: 6.80,
+    rate_q2_2026: 6.60,
+    rate_q3_2026: 6.45,
+    rate_q4_2026: 6.30,
+    rate_q1_2027: 6.20,
     assumptions: [
-      '美联储超预期降息 3-4 次，美元大幅走弱',
-      '中美贸易谈判取得实质进展，关税部分回撤',
-      '中国经济超预期复苏，外资回流 A 股和债市',
-      '中国出口持续强劲，贸易顺差扩大',
-      '美国经济软着陆但增速明显放缓',
+      '美联储超预期降息 4-5 次，美元持续大幅走弱',
+      '美国经济衰退风险上升，美元避险地位进一步受损',
+      '中美贸易谈判取得实质进展，外资大规模回流',
+      '中国经济超预期复苏，A 股和债市吸引力显著提升',
+      '美元指数（DXY）跌破 95，创多年新低',
     ],
-    drivers: '美元大幅走弱 + 中国资产吸引力回升 → 人民币显著升值',
-    risks: '若中国内需持续疲软，升值幅度受限',
+    drivers: '美元信用危机深化 + 去美元化加速 → 人民币持续大幅升值',
+    risks: '央行可能通过降息、降准等方式对冲过快升值对出口的冲击',
   },
   {
     id: 'bear',
@@ -105,19 +105,19 @@ const FORECAST_SCENARIOS = [
     color: '#e17055',
     bg: 'bg-red-50',
     border: 'border-red-200',
-    rate_q2_2026: 7.35,
-    rate_q3_2026: 7.45,
-    rate_q4_2026: 7.50,
-    rate_q1_2027: 7.55,
+    rate_q2_2026: 7.10,
+    rate_q3_2026: 7.20,
+    rate_q4_2026: 7.25,
+    rate_q1_2027: 7.30,
     assumptions: [
-      '美国通胀反弹，美联储暂停降息甚至重新加息',
-      '中美贸易战升级，关税进一步提高至 60%+',
-      '中国经济增速放缓至 4% 以下，刺激政策效果有限',
-      '美元指数（DXY）重回 108-112 区间',
-      '资本外流压力加剧，外汇储备下降',
+      '中美贸易战全面升级，关税提高至 145%+ 并长期维持',
+      '美国通胀反弹，美联储被迫暂停降息，美元阶段性反弹',
+      '中国出口大幅萎缩，贸易顺差收窄，经济增速跌破 4%',
+      '美元指数（DXY）从低位反弹至 104-108 区间',
+      '资本外流压力加剧，外汇储备下降至 3.0T 以下',
     ],
-    drivers: '美元强势 + 中国经济压力 + 贸易摩擦 → 人民币贬值压力',
-    risks: '央行可能通过逆周期因子和外汇干预限制贬值幅度',
+    drivers: '贸易战冲击出口 + 美元阶段性反弹 → 人民币从极端升值水平大幅回调',
+    risks: '央行可能通过降息、降准等方式对冲，但效果有限',
   },
 ];
 
@@ -150,12 +150,12 @@ const KEY_INDICATORS = [
     category: '汇率相关',
     color: '#00b894',
     items: [
-      { label: '美元指数（DXY）', value: '104.2', trend: '↓ 温和走弱', status: 'neutral' },
-      { label: '中美 10Y 国债利差', value: '-155bp', trend: '→ 倒挂收窄中', status: 'warn' },
-      { label: 'USDCNY 即期', value: '7.27', trend: '→ 区间震荡', status: 'neutral' },
-      { label: '离岸人民币（CNH）', value: '7.29', trend: '→ 小幅贴水', status: 'neutral' },
-      { label: '央行中间价', value: '7.21', trend: '→ 逆周期调节', status: 'good' },
-      { label: '人民币 CFETS 指数', value: '98.5', trend: '→ 基本稳定', status: 'good' },
+      { label: '美元指数（DXY）', value: '99.0', trend: '↓ 大幅走弱', status: 'bad' },
+      { label: '中美 10Y 国债利差', value: '-120bp', trend: '↑ 倒挂快速收窄', status: 'warn' },
+      { label: 'USDCNY 即期', value: '6.81', trend: '↑ 人民币大幅升值', status: 'good' },
+      { label: '离岸人民币（CNH）', value: '6.79', trend: '↑ CNH 领先升值', status: 'good' },
+      { label: '央行中间价', value: '6.83', trend: '→ 跟随市场', status: 'neutral' },
+      { label: '人民币 CFETS 指数', value: '102.3', trend: '↑ 显著升值', status: 'good' },
     ],
   },
 ];
@@ -313,8 +313,12 @@ function ForecastTab() {
         <h3 className="font-bold text-gray-800 mb-1">美元/人民币汇率预测（2026 Q2 — 2027 Q1）</h3>
         <p className="text-sm text-gray-500">
           基于美联储货币政策路径、中美经济基本面、贸易格局、资本流动等多维度数据综合研判。
-          当前即期汇率：<span className="font-bold text-purple-700">7.27</span>，
-          央行中间价：<span className="font-bold text-purple-700">7.21</span>。
+        当前即期汇率：<span className="font-bold text-purple-700">6.81</span>，
+          央行中间价：<span className="font-bold text-purple-700">6.83</span>。
+        </p>
+        <div className="mt-2 text-xs text-orange-600 font-medium bg-orange-50 rounded-lg px-3 py-2">
+          ⚡ 重要背景：2026 年 4 月美国大规模关税政策冲击美元信用，DXY 跌破 100，人民币从年初 7.24 大幅升值至 6.81，升幅约 6%，为近年罕见走势。
+        </div>
         </p>
         <div className="mt-3 text-xs text-gray-400">
           ⚠️ 本预测仅供研究参考，不构成投资建议。汇率受多重不确定因素影响，实际走势可能与预测存在较大偏差。
@@ -405,22 +409,22 @@ function ForecastTab() {
         <div className="space-y-2 text-sm text-gray-300">
           <p>
             <span className="text-white font-medium">基准预测：</span>
-            未来 12 个月（至 2027 Q1），美元/人民币汇率大概率在
-            <span className="text-purple-300 font-bold"> 6.90 — 7.35 </span>
-            区间内运行，中枢约 <span className="text-purple-300 font-bold">7.10</span>，较当前（7.27）小幅升值。
+          未来 12 个月（至 2027 Q1），美元/人民币汇率大概率在
+            <span className="text-purple-300 font-bold"> 6.60 — 7.10 </span>
+            区间内运行，中枢约 <span className="text-purple-300 font-bold">6.85</span>，较当前（6.81）小幅双向波动。
           </p>
           <p>
             <span className="text-white font-medium">核心逻辑：</span>
-            美联储降息周期开启（预计 2026 年降息 2 次）将缩小中美利差，美元温和走弱；
-            中国贸易顺差维持高位提供基本面支撑；央行通过中间价逆周期调节限制大幅波动。
+            美元信用受关税政策冲击，DXY 跌破 100；美联储降息周期开启将进一步压制美元；
+            中国贸易顺差维持高位提供基本面支撑；但人民币升值过快将压制出口，央行可能适度干预。
           </p>
           <p>
             <span className="text-white font-medium">最大不确定性：</span>
-            中美贸易摩擦走向（关税是否进一步升级）和美国通胀路径（是否反弹）是决定汇率方向的两大关键变量。
+            中美贸易谈判走向（关税是否实质性回撤）和美元信用修复速度是决定汇率方向的两大关键变量。
           </p>
           <p>
             <span className="text-white font-medium">央行底线：</span>
-            历史经验显示，央行对 7.35 以上的贬值容忍度较低，可能通过逆周期因子、外汇存款准备金率等工具干预。
+            历史经验显示，央行对人民币过快升值同样存在容忍度限制，可能通过降低外汇存款准备金率、调整中间价等工具干预，防止出口受损。
           </p>
         </div>
       </div>
