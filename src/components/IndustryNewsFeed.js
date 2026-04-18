@@ -4,11 +4,14 @@ import { useState, useMemo, useRef, useEffect } from 'react';
 
 // ─── 时间分组工具 ─────────────────────────────────────────────────────────────
 
-function getWeekNumber(dateStr) {
+// 获取某日期所在周的周一日期字符串
+function getMondayStr(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
-  const start = new Date(d.getFullYear(), 0, 1);
-  const diff = d - start + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000);
-  return Math.ceil((diff / 86400000 + start.getDay() + 1) / 7);
+  const day = d.getDay(); // 0=周日
+  const diff = day === 0 ? -6 : 1 - day; // 以周一为起点
+  d.setDate(d.getDate() + diff);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
 function groupByTime(items) {
@@ -16,9 +19,12 @@ function groupByTime(items) {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
   const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+  // 最近一周起点：今天往前推 6 天（共 7 天含今天）
   const sevenAgo = new Date(now);
-  sevenAgo.setDate(sevenAgo.getDate() - 7);
+  sevenAgo.setDate(sevenAgo.getDate() - 6);
   const sevenAgoStr = `${sevenAgo.getFullYear()}-${pad(sevenAgo.getMonth() + 1)}-${pad(sevenAgo.getDate())}`;
+
   const monthNames = ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
   items.forEach(item => {
@@ -30,30 +36,43 @@ function groupByTime(items) {
     let key, label, shortLabel, sortKey;
 
     if (dateStr >= sevenAgoStr && dateStr <= todayStr) {
-      // 最近 7 天：按天
+      // ① 最近 7 天（含今天）：按天
       key = dateStr;
       label = `${month} 月 ${day} 日`;
       shortLabel = `${month}/${day}`;
-      sortKey = year * 10000 + month * 100 + day;
-    } else if (year >= 2026) {
-      // 2026 年（非最近7天）：按周
-      const week = getWeekNumber(dateStr);
-      key = `${year}-W${week}`;
-      label = `${year} 年 第 ${week} 周`;
-      shortLabel = `W${week}`;
-      sortKey = year * 10000 + month * 100 + day;
-    } else if (year === 2025) {
-      // 2025 年：按月
+      sortKey = year * 100000000 + month * 1000000 + day * 10000 + 9999;
+    } else if (year === 2026 && month === 4) {
+      // ② 2026 年 4 月（非最近7天）：按周（周一~周日）
+      const mondayStr = getMondayStr(dateStr);
+      const md = new Date(mondayStr + 'T00:00:00');
+      const wm = md.getMonth() + 1;
+      const wd = md.getDate();
+      const sundayD = new Date(md);
+      sundayD.setDate(sundayD.getDate() + 6);
+      const sm = sundayD.getMonth() + 1;
+      const sd = sundayD.getDate();
+      key = `2026-W-${mondayStr}`;
+      label = `4 月 ${wd} 日 ~ ${sm !== wm ? sm + '月' : ''}${sd} 日`;
+      shortLabel = `4/${wd}-${sd}`;
+      sortKey = year * 100000000 + month * 1000000 + wd * 10000;
+    } else if (year === 2026 && month <= 3) {
+      // ③ 2026 年 1-3 月：按月
       key = `${year}-${pad(month)}`;
       label = `${year} 年 ${monthNames[month]}`;
-      shortLabel = `${monthNames[month]}`;
-      sortKey = year * 10000 + month * 100;
+      shortLabel = `26年${monthNames[month]}`;
+      sortKey = year * 100000000 + month * 1000000;
+    } else if (year === 2025) {
+      // ④ 2025 年：按月
+      key = `${year}-${pad(month)}`;
+      label = `${year} 年 ${monthNames[month]}`;
+      shortLabel = `25年${monthNames[month]}`;
+      sortKey = year * 100000000 + month * 1000000;
     } else {
-      // 2024 及更早：按年
+      // ⑤ 2024 及更早：按年
       key = `${year}`;
       label = `${year} 年`;
       shortLabel = `${year}`;
-      sortKey = year * 10000;
+      sortKey = year * 100000000;
     }
 
     if (!groups[key]) {
@@ -594,6 +613,264 @@ const NEWS_DATA = [
     source: '年度汇总',
     date: '2024-12-31',
     tags: ['AI Coding', 'Copilot', 'Cursor', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 504,
+    category: 'game',
+    region: 'global',
+    title: '【年度汇总·2024】游戏行业 AI 化元年：AI NPC、AI 美术资产生成规模落地',
+    summary: '2024 年游戏行业 AI 化全面提速：Inworld AI 完成 $50M 融资，EA/育碧/腾讯相继发布 AI NPC 系统；Midjourney/Stable Diffusion 在游戏美术资产生成中大规模应用，独立游戏开发成本下降 60%。',
+    source: '年度汇总',
+    date: '2024-12-30',
+    tags: ['游戏AI', 'AI NPC', 'AIGC', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 505,
+    category: 'startup',
+    region: 'global',
+    title: '【年度汇总·2024】AI 融资创纪录：OpenAI $157 亿领跑，垂直 AI 应用爆发',
+    summary: '2024 年全球 AI 融资总额超 $600 亿，OpenAI 单轮 $157 亿创纪录，Anthropic $40 亿、xAI $60 亿紧随其后。垂直 AI 应用（法律/医疗/销售）融资合计超 $100 亿，AI 应用层开始超越基础模型层。',
+    source: '年度汇总',
+    date: '2024-12-29',
+    tags: ['融资', 'OpenAI', '垂直AI', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 506,
+    category: 'policy',
+    region: 'global',
+    title: '【年度汇总·2024】全球 AI 监管元年：EU AI Act 通过，中美监管框架分化',
+    summary: '2024 年是全球 AI 监管元年：欧盟 AI Act 正式通过（全球首部综合性 AI 法规），中国发布《生成式 AI 服务管理暂行办法》，美国拜登政府签署 AI 行政令。中美欧三大监管框架分化格局形成。',
+    source: '年度汇总',
+    date: '2024-12-28',
+    tags: ['EU AI Act', '监管', '政策', '年度总结'],
+    hot: false,
+  },
+
+  // ══════════════════════════════════════════════════════
+  // 2023 年（年度汇总）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 601,
+    category: 'ai',
+    region: 'global',
+    title: '【年度汇总·2023】ChatGPT 引爆 AI 革命，GPT-4 发布，大模型竞赛全面开启',
+    summary: '2023 年是大模型元年：ChatGPT 用户突破 1 亿（史上最快），GPT-4 发布引发全球震动，Google 发布 Bard/Gemini，Meta 开源 Llama 2，百度文心一言/阿里通义千问/华为盘古相继发布。全球大模型军备竞赛正式开启。',
+    source: '年度汇总',
+    date: '2023-12-31',
+    tags: ['ChatGPT', 'GPT-4', 'LLM', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 602,
+    category: 'software',
+    region: 'global',
+    title: '【年度汇总·2023】AI 编程助手爆发：GitHub Copilot 商业化，Cursor 诞生',
+    summary: '2023 年 GitHub Copilot 正式商业化，月活突破 100 万付费用户；Cursor 发布 0.1 版本，AI-first IDE 概念兴起；Amazon CodeWhisperer 免费开放，AI 编程助手赛道进入红海竞争。',
+    source: '年度汇总',
+    date: '2023-12-30',
+    tags: ['Copilot', 'Cursor', 'AI编程', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 603,
+    category: 'hardware',
+    region: 'global',
+    title: '【年度汇总·2023】NVIDIA H100 成最抢手芯片，AI 算力需求超预期爆发',
+    summary: '2023 年 NVIDIA H100 成为全球最抢手芯片，等待期长达 9 个月，NVIDIA 市值突破 $1 万亿。AMD 发布 MI300 系列，Google TPU v4 扩产，AI 算力供给严重不足推动云厂商自研芯片加速。',
+    source: '年度汇总',
+    date: '2023-12-29',
+    tags: ['NVIDIA', 'H100', 'AI芯片', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 604,
+    category: 'game',
+    region: 'global',
+    title: '【年度汇总·2023】游戏行业 AI 化起步：AIGC 美术工具普及，AI NPC 概念兴起',
+    summary: '2023 年 AIGC 工具（Midjourney/Stable Diffusion/DALL-E 3）在游戏美术领域大规模应用，独立开发者成本大幅下降；Inworld AI 完成 $50M A 轮，AI NPC 概念开始受到主流游戏厂商关注。',
+    source: '年度汇总',
+    date: '2023-12-28',
+    tags: ['AIGC', '游戏美术', 'AI NPC', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 605,
+    category: 'startup',
+    region: 'global',
+    title: '【年度汇总·2023】AI 创业浪潮：Anthropic $40 亿、Inflection $13 亿，独角兽批量涌现',
+    summary: '2023 年 AI 创业融资创历史纪录：Anthropic 完成 $40 亿融资（Google/Amazon），Inflection AI $13 亿，Mistral AI $1.13 亿（欧洲最大 AI 种子轮）。YC 2023 批次 30% 为 AI 公司，AI 创业浪潮全面开启。',
+    source: '年度汇总',
+    date: '2023-12-27',
+    tags: ['Anthropic', 'Mistral', '融资', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 606,
+    category: 'policy',
+    region: 'china',
+    title: '【年度汇总·2023】中国 AI 监管先行：生成式 AI 管理办法出台，算法备案制度建立',
+    summary: '2023 年中国率先出台《生成式人工智能服务管理暂行办法》，要求大模型服务须经安全评估备案；同年《互联网信息服务算法推荐管理规定》正式实施，中国成为全球最早建立 AI 监管框架的主要经济体之一。',
+    source: '年度汇总',
+    date: '2023-12-26',
+    tags: ['政策', '生成式AI', '算法备案', '年度总结'],
+    hot: false,
+  },
+
+  // ══════════════════════════════════════════════════════
+  // 2022 年（年度汇总）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 701,
+    category: 'ai',
+    region: 'global',
+    title: '【年度汇总·2022】ChatGPT 横空出世，AIGC 元年：Stable Diffusion/Midjourney 爆发',
+    summary: '2022 年是 AIGC 元年：Stable Diffusion 开源引爆图像生成，Midjourney 月活突破百万，DALL-E 2 发布；12 月 ChatGPT 上线，5 天用户破百万，开启 AI 大众化时代。GPT-3.5 证明 RLHF 对齐的有效性。',
+    source: '年度汇总',
+    date: '2022-12-31',
+    tags: ['ChatGPT', 'AIGC', 'Stable Diffusion', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 702,
+    category: 'hardware',
+    region: 'global',
+    title: '【年度汇总·2022】NVIDIA A100 成 AI 训练标配，元宇宙硬件泡沫破裂',
+    summary: '2022 年 NVIDIA A100 成为大模型训练标配，数据中心 GPU 需求激增；与此同时，Meta 元宇宙战略受挫，VR/AR 硬件出货量大幅下滑，元宇宙硬件泡沫破裂，AI 算力成为新的硬件投资主线。',
+    source: '年度汇总',
+    date: '2022-12-30',
+    tags: ['NVIDIA', 'A100', '元宇宙', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 703,
+    category: 'game',
+    region: 'global',
+    title: '【年度汇总·2022】游戏行业寒冬：裁员潮 + 版号收紧，AI 工具开始渗透',
+    summary: '2022 年全球游戏行业进入寒冬：EA/Activision/Riot 相继裁员，中国版号审批收紧；但 AI 工具开始渗透游戏开发流程，Midjourney 在游戏概念美术中广泛应用，降本增效成为行业主旋律。',
+    source: '年度汇总',
+    date: '2022-12-29',
+    tags: ['游戏寒冬', '裁员', 'AIGC', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 704,
+    category: 'software',
+    region: 'global',
+    title: '【年度汇总·2022】GitHub Copilot 正式发布，AI 辅助编程从概念走向产品',
+    summary: '2022 年 GitHub Copilot 正式商业化发布（$10/月），成为首个大规模商业化的 AI 编程助手。同年 Amazon CodeWhisperer 发布，AI 辅助编程赛道正式形成，开发者生产力工具迎来 AI 化浪潮。',
+    source: '年度汇总',
+    date: '2022-12-28',
+    tags: ['Copilot', 'AI编程', '开发者工具', '年度总结'],
+    hot: false,
+  },
+
+  // ══════════════════════════════════════════════════════
+  // 2021 年（年度汇总）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 801,
+    category: 'ai',
+    region: 'global',
+    title: '【年度汇总·2021】GPT-3 生态爆发，DALL-E/Codex 开启多模态与编程 AI 时代',
+    summary: '2021 年 OpenAI 发布 DALL-E（文生图）和 Codex（代码生成），GPT-3 API 生态快速扩张，涌现数千个 AI 应用。DeepMind AlphaFold 2 解决蛋白质折叠问题，被《Science》评为年度最大科学突破。',
+    source: '年度汇总',
+    date: '2021-12-31',
+    tags: ['GPT-3', 'DALL-E', 'Codex', 'AlphaFold', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 802,
+    category: 'hardware',
+    region: 'global',
+    title: '【年度汇总·2021】芯片短缺危机全球蔓延，NVIDIA 收购 ARM 失败，元宇宙硬件起步',
+    summary: '2021 年全球芯片短缺危机蔓延至汽车/消费电子/服务器，NVIDIA 收购 ARM 因监管受阻最终失败；Meta 发布 Quest 2 销量突破千万，元宇宙硬件赛道兴起，NVIDIA 市值首次突破 $7000 亿。',
+    source: '年度汇总',
+    date: '2021-12-30',
+    tags: ['芯片短缺', 'NVIDIA', 'ARM', '元宇宙', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 803,
+    category: 'game',
+    region: 'global',
+    title: '【年度汇总·2021】游戏行业黄金年：疫情红利延续，Roblox/Epic 元宇宙布局',
+    summary: '2021 年游戏行业延续疫情红利，全球游戏市场规模突破 $1800 亿。Roblox 上市市值 $380 亿，Epic Games 完成 $10 亿融资布局元宇宙，微软 $687 亿收购动视暴雪震撼业界。',
+    source: '年度汇总',
+    date: '2021-12-29',
+    tags: ['Roblox', 'Epic', '元宇宙', '微软', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 804,
+    category: 'startup',
+    region: 'global',
+    title: '【年度汇总·2021】AI 创业融资创纪录：全球 AI 投资突破 $660 亿，独角兽数量翻倍',
+    summary: '2021 年全球 AI 投资突破 $660 亿（同比增长 108%），AI 独角兽数量从 2020 年的 65 家增至 150 家。Databricks $16 亿、Scale AI $10 亿、Cohere $1.25 亿等标志性融资密集发生。',
+    source: '年度汇总',
+    date: '2021-12-28',
+    tags: ['融资', 'Databricks', 'Scale AI', '年度总结'],
+    hot: false,
+  },
+
+  // ══════════════════════════════════════════════════════
+  // 2020 年（年度汇总）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 901,
+    category: 'ai',
+    region: 'global',
+    title: '【年度汇总·2020】GPT-3 震撼发布，Transformer 架构统治 NLP，疫情加速 AI 落地',
+    summary: '2020 年 OpenAI 发布 GPT-3（1750 亿参数），展示出惊人的少样本学习能力，引发全球 AI 研究热潮。疫情加速 AI 在医疗（新冠药物筛选）、远程办公、在线教育等场景落地。AlphaGo 团队转向蛋白质折叠研究。',
+    source: '年度汇总',
+    date: '2020-12-31',
+    tags: ['GPT-3', 'Transformer', 'NLP', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 902,
+    category: 'hardware',
+    region: 'global',
+    title: '【年度汇总·2020】NVIDIA 收购 Mellanox + 宣布收购 ARM，AI 算力版图重塑',
+    summary: '2020 年 NVIDIA 完成对 Mellanox（高速网络）的 $69 亿收购，强化数据中心 AI 算力生态；同年宣布以 $400 亿收购 ARM，引发全球监管关注。AMD 发布 RDNA 2 架构，AI 芯片竞争格局开始变化。',
+    source: '年度汇总',
+    date: '2020-12-30',
+    tags: ['NVIDIA', 'ARM', 'Mellanox', 'AI芯片', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 903,
+    category: 'software',
+    region: 'global',
+    title: '【年度汇总·2020】低代码/无代码爆发，远程协作工具重塑软件行业',
+    summary: '2020 年疫情推动远程协作工具爆发：Zoom 市值从 $160 亿涨至 $1000 亿，Notion/Figma/Airtable 用户激增。低代码平台（OutSystems/Mendix/Appian）融资密集，软件开发民主化趋势加速。',
+    source: '年度汇总',
+    date: '2020-12-29',
+    tags: ['低代码', 'Zoom', 'Notion', '远程协作', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 904,
+    category: 'game',
+    region: 'global',
+    title: '【年度汇总·2020】疫情催生游戏超级周期：《动森》《Among Us》现象级爆发',
+    summary: '2020 年疫情推动全球游戏市场规模突破 $1550 亿（同比增长 12%）。《动物森友会》首周销量 1300 万，《Among Us》月活突破 5 亿，游戏成为疫情期间最重要的社交娱乐方式。',
+    source: '年度汇总',
+    date: '2020-12-28',
+    tags: ['游戏超级周期', '疫情', '年度总结'],
+    hot: false,
+  },
+  {
+    id: 905,
+    category: 'policy',
+    region: 'global',
+    title: '【年度汇总·2020】全球数据监管收紧：GDPR 执法加强，中国数据安全立法提速',
+    summary: '2020 年全球数据监管全面收紧：欧盟 GDPR 执法罚款总额突破 €1.7 亿，中国《数据安全法》草案发布，美国 CCPA 正式生效。科技巨头数据垄断问题引发全球监管关注，平台经济监管时代开启。',
+    source: '年度汇总',
+    date: '2020-12-27',
+    tags: ['GDPR', '数据安全', '监管', '年度总结'],
     hot: false,
   },
 ];
