@@ -44,16 +44,234 @@ const CHINA_DATA = {
   special_bond_quota_bn: 4600,
 };
 
+// 月度历史汇率（USD/CNY，月末收盘价）
 const USD_CNY_HISTORY = [
-  { period: '2020 年底', rate: 6.52, note: '疫情后人民币升值' },
-  { period: '2021 年底', rate: 6.37, note: '出口强劲，人民币持续升值' },
-  { period: '2022 年底', rate: 6.90, note: '美联储激进加息，人民币贬值' },
-  { period: '2023 年底', rate: 7.10, note: '中美利差扩大，资本外流压力' },
-  { period: '2024 年底', rate: 7.29, note: '美元强势，人民币承压' },
-  { period: '2025 年底', rate: 7.18, note: '美联储降息预期升温，人民币小幅回升' },
-  { period: '2026 年 Q1', rate: 7.24, note: '关税摩擦升温，人民币短暂承压' },
-  { period: '当前（2026-04）', rate: 6.81, note: '关税冲击美元信用，人民币大幅升值' },
+  // 2020
+  { period: '20-01', rate: 6.91, note: '疫情初期，人民币承压' },
+  { period: '20-02', rate: 7.02, note: '疫情扩散，避险美元走强' },
+  { period: '20-03', rate: 7.09, note: '全球流动性危机，美元急涨' },
+  { period: '20-04', rate: 7.07, note: '美联储无限 QE，美元回落' },
+  { period: '20-05', rate: 7.13, note: '中美关系紧张，人民币承压' },
+  { period: '20-06', rate: 7.07, note: '中国经济率先复苏' },
+  { period: '20-07', rate: 6.98, note: '出口强劲，人民币升值' },
+  { period: '20-08', rate: 6.86, note: '美元指数持续走弱' },
+  { period: '20-09', rate: 6.81, note: '人民币升值加速' },
+  { period: '20-10', rate: 6.77, note: '美国大选前美元走弱' },
+  { period: '20-11', rate: 6.58, note: '拜登当选，美元大跌' },
+  { period: '20-12', rate: 6.52, note: '年底人民币升至两年高位' },
+  // 2021
+  { period: '21-01', rate: 6.47, note: '人民币升值惯性延续' },
+  { period: '21-02', rate: 6.47, note: '美债收益率上行，美元反弹' },
+  { period: '21-03', rate: 6.57, note: '美联储缩表预期升温' },
+  { period: '21-04', rate: 6.47, note: '美元回落，人民币反弹' },
+  { period: '21-05', rate: 6.37, note: '出口超预期，人民币强势' },
+  { period: '21-06', rate: 6.46, note: '美联储鹰派信号，美元反弹' },
+  { period: '21-07', rate: 6.46, note: '德尔塔疫情扰动' },
+  { period: '21-08', rate: 6.46, note: '美联储 Jackson Hole 会议' },
+  { period: '21-09', rate: 6.45, note: '恒大危机，人民币小幅承压' },
+  { period: '21-10', rate: 6.40, note: '出口旺季，人民币走强' },
+  { period: '21-11', rate: 6.39, note: '奥密克戎出现，避险情绪' },
+  { period: '21-12', rate: 6.37, note: '年底出口结汇，人民币偏强' },
+  // 2022
+  { period: '22-01', rate: 6.36, note: '人民币延续强势' },
+  { period: '22-02', rate: 6.31, note: '俄乌冲突前，人民币升值' },
+  { period: '22-03', rate: 6.34, note: '俄乌冲突+美联储首次加息' },
+  { period: '22-04', rate: 6.61, note: '上海封控，人民币急贬' },
+  { period: '22-05', rate: 6.66, note: '美联储激进加息预期升温' },
+  { period: '22-06', rate: 6.70, note: '美联储加息 75bp，美元强势' },
+  { period: '22-07', rate: 6.74, note: '美元指数突破 107' },
+  { period: '22-08', rate: 6.87, note: '美元指数突破 110，人民币承压' },
+  { period: '22-09', rate: 7.11, note: '美元指数 114，人民币破 7' },
+  { period: '22-10', rate: 7.32, note: '美元指数高位，人民币历史低位' },
+  { period: '22-11', rate: 7.12, note: '美联储加息放缓预期，美元回落' },
+  { period: '22-12', rate: 6.90, note: '防疫政策转向，人民币反弹' },
+  // 2023
+  { period: '23-01', rate: 6.75, note: '重新开放预期，人民币大涨' },
+  { period: '23-02', rate: 6.87, note: '经济复苏不及预期' },
+  { period: '23-03', rate: 6.87, note: '硅谷银行危机，避险情绪' },
+  { period: '23-04', rate: 6.92, note: '中美利差扩大，资本外流' },
+  { period: '23-05', rate: 7.09, note: '美债上限危机，美元走强' },
+  { period: '23-06', rate: 7.25, note: '人民币跌破 7.2，央行出手' },
+  { period: '23-07', rate: 7.14, note: '央行逆周期因子调节' },
+  { period: '23-08', rate: 7.29, note: '美元指数反弹，人民币再承压' },
+  { period: '23-09', rate: 7.30, note: '美联储高利率维持更久预期' },
+  { period: '23-10', rate: 7.32, note: '以巴冲突，避险美元走强' },
+  { period: '23-11', rate: 7.10, note: '美联储加息结束预期，美元回落' },
+  { period: '23-12', rate: 7.10, note: '年底汇率企稳' },
+  // 2024
+  { period: '24-01', rate: 7.18, note: '降息预期推迟，美元反弹' },
+  { period: '24-02', rate: 7.19, note: '美国通胀超预期，美元走强' },
+  { period: '24-03', rate: 7.22, note: '美联储维持高利率' },
+  { period: '24-04', rate: 7.24, note: '中东局势紧张，避险美元' },
+  { period: '24-05', rate: 7.24, note: '美联储降息预期再推迟' },
+  { period: '24-06', rate: 7.27, note: '欧央行率先降息，美元走强' },
+  { period: '24-07', rate: 7.25, note: '日元套利交易平仓，美元波动' },
+  { period: '24-08', rate: 7.09, note: '美联储降息预期升温，美元走弱' },
+  { period: '24-09', rate: 7.02, note: '美联储降息 50bp，人民币升值' },
+  { period: '24-10', rate: 7.12, note: '特朗普选情领先，美元反弹' },
+  { period: '24-11', rate: 7.24, note: '特朗普当选，关税预期，人民币承压' },
+  { period: '24-12', rate: 7.29, note: '美联储鹰派降息，美元走强' },
+  // 2025
+  { period: '25-01', rate: 7.33, note: '特朗普就职，关税政策落地预期' },
+  { period: '25-02', rate: 7.28, note: '关税谈判进展，人民币小幅回升' },
+  { period: '25-03', rate: 7.25, note: '美联储暂停降息，美元偏强' },
+  { period: '25-04', rate: 7.27, note: '对等关税宣布，人民币承压' },
+  { period: '25-05', rate: 7.19, note: '中美贸易谈判，人民币反弹' },
+  { period: '25-06', rate: 7.15, note: '美联储降息预期升温' },
+  { period: '25-07', rate: 7.18, note: '美元指数震荡' },
+  { period: '25-08', rate: 7.20, note: '全球经济放缓担忧' },
+  { period: '25-09', rate: 7.16, note: '美联储降息 25bp' },
+  { period: '25-10', rate: 7.14, note: '人民币温和升值' },
+  { period: '25-11', rate: 7.12, note: '美元指数走弱' },
+  { period: '25-12', rate: 7.18, note: '年底汇率小幅回调' },
+  // 2026
+  { period: '26-01', rate: 7.22, note: '新年关税预期升温' },
+  { period: '26-02', rate: 7.25, note: '关税摩擦加剧，人民币承压' },
+  { period: '26-03', rate: 7.24, note: '对等关税升级，市场观望' },
+  { period: '26-04', rate: 6.81, note: '关税冲击美元信用，人民币大幅升值（当前）' },
 ];
+
+// ─── 月度汇率折线图组件 ────────────────────────────────────────────────────────
+function RateLineChart({ data }) {
+  const [hovered, setHovered] = useState(null);
+
+  const W = 700, H = 160, PL = 36, PR = 12, PT = 16, PB = 28;
+  const chartW = W - PL - PR;
+  const chartH = H - PT - PB;
+  const MIN_RATE = 6.2, MAX_RATE = 7.5;
+
+  const toX = (i) => PL + (i / (data.length - 1)) * chartW;
+  const toY = (r) => PT + chartH - ((r - MIN_RATE) / (MAX_RATE - MIN_RATE)) * chartH;
+
+  // 折线路径
+  const linePath = data.map((d, i) => `${i === 0 ? 'M' : 'L'}${toX(i).toFixed(1)},${toY(d.rate).toFixed(1)}`).join(' ');
+  // 填充区域
+  const areaPath = linePath + ` L${toX(data.length - 1).toFixed(1)},${(PT + chartH).toFixed(1)} L${PL},${(PT + chartH).toFixed(1)} Z`;
+
+  // Y 轴刻度
+  const yTicks = [6.2, 6.4, 6.6, 6.8, 7.0, 7.2, 7.4];
+
+  // X 轴：每年 1 月显示年份标签
+  const xLabels = data.reduce((acc, d, i) => {
+    if (d.period.endsWith('-01') || i === 0) acc.push({ i, label: '20' + d.period.slice(0, 2) });
+    return acc;
+  }, []);
+
+  // 当前点（最后一条）
+  const lastIdx = data.length - 1;
+
+  return (
+    <div className="relative w-full overflow-x-auto">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full"
+        style={{ minWidth: 320, height: 'auto' }}
+        onMouseLeave={() => setHovered(null)}
+      >
+        {/* Y 轴网格线 & 刻度 */}
+        {yTicks.map(v => {
+          const y = toY(v).toFixed(1);
+          return (
+            <g key={v}>
+              <line x1={PL} y1={y} x2={W - PR} y2={y} stroke="#f0f0f0" strokeWidth="1" />
+              <text x={PL - 4} y={parseFloat(y) + 3} textAnchor="end" fontSize="8" fill="#bbb">{v.toFixed(1)}</text>
+            </g>
+          );
+        })}
+
+        {/* 填充区域 */}
+        <path d={areaPath} fill="url(#rateGrad)" opacity="0.35" />
+
+        {/* 折线 */}
+        <path d={linePath} fill="none" stroke="#7c3aed" strokeWidth="1.5" strokeLinejoin="round" />
+
+        {/* 渐变定义 */}
+        <defs>
+          <linearGradient id="rateGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7c3aed" />
+            <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* 当前点高亮 */}
+        <circle
+          cx={toX(lastIdx).toFixed(1)}
+          cy={toY(data[lastIdx].rate).toFixed(1)}
+          r="4"
+          fill="#7c3aed"
+          stroke="white"
+          strokeWidth="1.5"
+        />
+        <text
+          x={toX(lastIdx).toFixed(1)}
+          y={toY(data[lastIdx].rate) - 7}
+          textAnchor="middle"
+          fontSize="8"
+          fill="#7c3aed"
+          fontWeight="bold"
+        >
+          {data[lastIdx].rate}
+        </text>
+
+        {/* X 轴年份标签 */}
+        {xLabels.map(({ i, label }) => (
+          <text key={i} x={toX(i).toFixed(1)} y={H - 4} textAnchor="middle" fontSize="8" fill="#bbb">{label}</text>
+        ))}
+
+        {/* 悬停交互：透明热区 */}
+        {data.map((d, i) => {
+          const x = toX(i);
+          const slotW = chartW / data.length;
+          return (
+            <rect
+              key={i}
+              x={x - slotW / 2}
+              y={PT}
+              width={slotW}
+              height={chartH}
+              fill="transparent"
+              onMouseEnter={() => setHovered(i)}
+            />
+          );
+        })}
+
+        {/* Hover 指示线 & 点 */}
+        {hovered !== null && (() => {
+          const d = data[hovered];
+          const x = toX(hovered);
+          const y = toY(d.rate);
+          return (
+            <g>
+              <line x1={x.toFixed(1)} y1={PT} x2={x.toFixed(1)} y2={PT + chartH} stroke="#7c3aed" strokeWidth="1" strokeDasharray="3,2" opacity="0.5" />
+              <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="3.5" fill="#7c3aed" stroke="white" strokeWidth="1.5" />
+            </g>
+          );
+        })()}
+      </svg>
+
+      {/* Tooltip（DOM 层，避免 SVG 文字截断） */}
+      {hovered !== null && (() => {
+        const d = data[hovered];
+        const pct = hovered / (data.length - 1);
+        return (
+          <div
+            className="absolute top-0 pointer-events-none bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap z-10 -translate-y-1"
+            style={{ left: `calc(${(pct * 100).toFixed(1)}% + ${PL}px - 40px)` }}
+          >
+            <span className="font-bold">{d.period}</span>　{d.rate}　<span className="text-gray-300">{d.note}</span>
+          </div>
+        );
+      })()}
+
+      {/* 图例 */}
+      <div className="flex justify-between text-[10px] text-gray-300 mt-1 px-1">
+        <span>6.20（低）</span>
+        <span className="text-purple-500 font-medium">当前 {data[data.length - 1].rate}</span>
+        <span>7.50（高）</span>
+      </div>
+    </div>
+  );
+}
 
 const FORECAST_SCENARIOS = [
   {
@@ -326,43 +544,11 @@ function ForecastTab() {
         </div>
       </div>
 
-      {/* 历史走势 */}
+      {/* 历史走势 — SVG 折线图 */}
       <div>
-        <h4 className="text-sm font-semibold text-gray-700 mb-3">历史汇率走势</h4>
+        <h4 className="text-sm font-semibold text-gray-700 mb-3">历史汇率走势（月度）</h4>
         <div className="bg-white rounded-xl border border-gray-100 p-4">
-          {/* 固定总高度 128px，柱子用 px 高度 */}
-          <div className="flex items-end gap-2" style={{ height: 128 }}>
-            {USD_CNY_HISTORY.map((d, i) => {
-              const min = 6.3, max = 7.5, totalPx = 96; // 留 32px 给标签
-              const barH = Math.round(((d.rate - min) / (max - min)) * totalPx);
-              const isLast = i === USD_CNY_HISTORY.length - 1;
-              return (
-                <div key={i} className="flex-1 flex flex-col items-center group relative" style={{ height: totalPx + 32 }}>
-                  {/* 汇率数值 */}
-                  <div className="text-[9px] font-bold text-gray-500 mb-0.5">{d.rate}</div>
-                  {/* 弹性占位，把柱子推到底部 */}
-                  <div className="flex-1" />
-                  {/* 柱子 */}
-                  <div
-                    className={`w-full rounded-t-sm transition-all ${isLast ? 'bg-purple-500' : 'bg-purple-200 group-hover:bg-purple-400'}`}
-                    style={{ height: barH }}
-                  />
-                  {/* 标签 */}
-                  <div className="text-[8px] text-gray-400 text-center leading-tight mt-1 w-full truncate px-0.5">
-                    {d.period.split(' ')[0]}
-                  </div>
-                  {/* tooltip */}
-                  <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
-                    {d.rate} — {d.note}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex justify-between text-[10px] text-gray-300 mt-1">
-            <span>6.30（低）</span>
-            <span>7.50（高）</span>
-          </div>
+          <RateLineChart data={USD_CNY_HISTORY} />
         </div>
       </div>
 
