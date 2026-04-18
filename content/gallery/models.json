@@ -1680,5 +1680,55 @@
     ],
     "status": "released",
     "category": "foundation"
+  },
+  {
+    "name": "Claude Opus 4.5",
+    "provider": "Anthropic",
+    "params": "未公开（估计 ~200B）",
+    "context": 200000,
+    "benchmark_scores": {
+      "MMLU-Pro": 88.9,
+      "HumanEval": 91.2,
+      "SWE-bench": 72.5,
+      "GPQA": 86.1
+    },
+    "architecture": "Dense Transformer (Constitutional AI + Extended Thinking)",
+    "release_date": "2026-04-18",
+    "open_source": false,
+    "ad_specific": false,
+    "description": "专为 Agent 长任务设计，支持 8 小时连续任务执行，工具调用准确率 94%，SWE-bench Verified 72.5% 超越 GPT-4.1。",
+    "tags": [
+      "LLM",
+      "Agent",
+      "长任务",
+      "工具调用"
+    ],
+    "status": "released",
+    "category": "foundation"
+  },
+  {
+    "name": "NVIDIA Blackwell Ultra B300",
+    "provider": "NVIDIA",
+    "params": "N/A（GPU 硬件）",
+    "context": null,
+    "benchmark_scores": {
+      "FP4_TFLOPS": 20000,
+      "HBM4_GB": 288,
+      "NVLink5_TBs": 1.8,
+      "vs_H100_training": 5.8
+    },
+    "architecture": "Blackwell Ultra GPU (HBM4 + NVLink 5.0 + FP4 Native)",
+    "release_date": "2026-04-17",
+    "open_source": false,
+    "ad_specific": false,
+    "description": "单卡 288GB HBM4，FP4 算力 20 PFLOPS，8 卡系统总显存 2.3TB 可运行 2T 参数 MoE 模型。预计 Q3 2026 量产。",
+    "tags": [
+      "GPU",
+      "AI芯片",
+      "训练",
+      "推理"
+    ],
+    "status": "announced",
+    "category": "hardware"
   }
 ]
