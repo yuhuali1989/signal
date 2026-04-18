@@ -156,6 +156,7 @@ const KEY_INDICATORS = [
       { label: '离岸人民币（CNH）', value: '6.79', trend: '↑ CNH 领先升值', status: 'good' },
       { label: '央行中间价', value: '6.83', trend: '→ 跟随市场', status: 'neutral' },
       { label: '人民币 CFETS 指数', value: '102.3', trend: '↑ 显著升值', status: 'good' },
+      { label: 'CNY/HKD（港币联系汇率）', value: '1.1464', trend: '→ 随美元联动', status: 'neutral' },
     ],
   },
 ];
@@ -313,8 +314,9 @@ function ForecastTab() {
         <h3 className="font-bold text-gray-800 mb-1">美元/人民币汇率预测（2026 Q2 — 2027 Q1）</h3>
         <p className="text-sm text-gray-500">
           基于美联储货币政策路径、中美经济基本面、贸易格局、资本流动等多维度数据综合研判。
-        当前即期汇率：<span className="font-bold text-purple-700">6.81</span>，
-          央行中间价：<span className="font-bold text-purple-700">6.83</span>。
+          当前即期汇率：<span className="font-bold text-purple-700">6.81</span>，
+          央行中间价：<span className="font-bold text-purple-700">6.83</span>，
+          CNY/HKD：<span className="font-bold text-purple-700">1.1464</span>（港币联系汇率 7.83，随美元联动）。
         </p>
         <div className="mt-2 text-xs text-orange-600 font-medium bg-orange-50 rounded-lg px-3 py-2">
           ⚡ 重要背景：2026 年 4 月美国大规模关税政策冲击美元信用，DXY 跌破 100，人民币从年初 7.24 大幅升值至 6.81，升幅约 6%，为近年罕见走势。
