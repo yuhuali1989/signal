@@ -602,4 +602,38 @@ Google TPU v6 (Trillium):
 
 ---
 
+## 3.10 最新进展（2026 年 4 月更新）
+
+### 推理引擎格局演变：四强争霸与分工明确
+
+2026 年 4 月的"模型发布大爆炸"（两周内 Meta/阿里/Google/OpenAI/Anthropic 同时发布重大更新）对推理引擎格局产生了深远影响。关键变化：
+
+**vLLM 0.8 的 MoE 突破**：vLLM 0.8 通过 Expert Parallel Scheduling 技术将 MoE 模型推理吞吐提升 40%，原生支持 Llama 4 Scout（10M 上下文、16 专家）和 Qwen 3 全系列。Spheron H100 基准显示，在 64+ 并发请求下 vLLM 吞吐量较 SGLang 高约 15%。
+
+**SGLang 的差异化优势更加清晰**：
+- **RadixAttention 在 Agent 场景的核心价值**：随着 MCP 协议生态成熟和 Anthropic 推出 Managed Agents 云服务，多轮 Agent 对话场景爆发式增长。SGLang 的前缀共享和结构化生成在这一场景中无可替代——多轮对话 TTFT 降至首轮的 30%。
+- **单请求延迟仍有优势**：SGLang 在 TTFT 上比 vLLM 0.8 快 10-20%，对延迟敏感的交互式 Agent 场景更合适。
+
+**2026 年 4 月推理引擎选型矩阵**：
+
+| 场景 | 首选引擎 | 理由 |
+|------|---------|------|
+| 高并发 API（batch≥64） | vLLM 0.8 | MoE 吞吐最优 |
+| Agent 多轮对话 | SGLang | RadixAttention 前缀共享 |
+| 极致 P99 延迟 | TensorRT-LLM | CUDA Graph 优化 |
+| 本地开发/实验 | Ollama | 一键部署 |
+| 结构化输出（JSON/SQL） | SGLang | FSM 约束原生支持 |
+
+### Speculative Decoding 2.0 与动态 Token 树
+
+vLLM 0.8 引入的 Speculative Decoding 2.0 值得关注：草稿模型不再线性生成 token 序列，而是生成一棵 token 树（每步分叉 2-4 个候选），目标模型一次性验证整棵树。这将草稿验证延迟降低 25%，接受率从 72% 提升到 81%（Qwen 3 72B → 0.6B 配对）。
+
+SGLang 社区也在跟进类似的树形推测方案，预计在下一版本中支持。
+
+### 推理成本暴跌与开源 MoE 民主化
+
+斯坦福 HAI 2026 AI Index 报告确认：AI 推理成本过去 18 个月下降超 90%。这一数据的背后，推理引擎的 MoE 优化贡献巨大——Llama 4 Scout（109B 总参数/13B 活跃参数）在 vLLM 0.8 + 单卡 H100 上可达 2590 tokens/s 的吞吐，使得开源 MoE 大模型在生产环境中的部署成本首次低于同级别闭源 API。
+
+---
+
 *Signal 知识平台 · LLM 推理框架 · 第 3 章*

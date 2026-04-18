@@ -148,7 +148,7 @@ describe('JSON 数据文件格式验证', () => {
       expect(log).toHaveProperty('type');
       expect(log).toHaveProperty('agent');
       expect(log).toHaveProperty('message');
-      expect(['book', 'article', 'paper', 'news']).toContain(log.type);
+      expect(['book', 'article', 'paper', 'news', 'model']).toContain(log.type);
     });
   });
 });
@@ -387,7 +387,7 @@ describe('内容交叉一致性', () => {
 
   test('进化日志 type 字段只包含有效类型', () => {
     const logs = readJSON(EVOLUTION_LOG);
-    const validTypes = ['book', 'article', 'paper', 'news'];
+    const validTypes = ['book', 'article', 'paper', 'news', 'model'];
     
     logs.forEach(log => {
       expect(validTypes).toContain(log.type);

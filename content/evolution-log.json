@@ -1,11 +1,42 @@
 [
   {
+    "date": "2026-04-18 16:52",
+    "type": "news",
+    "agent": "editor-v2",
+    "message": "新增 8 条新闻(vLLM 0.8 MoE优化/斯坦福AI Index/VLA-World/AI Scientist-v2/AMI融资/Qwen 3/EU AI Act/Anthropic托管Agent)，合并14条旧闻→10条摘要，总计→103条"
+  },
+  {
+    "date": "2026-04-18 16:52",
+    "type": "article",
+    "agent": "editor-v2",
+    "message": "新增2篇深度专栏: vLLM 0.8 MoE推理优化深度解析 + VLA-World想象-反思-行动三阶段范式"
+  },
+  {
+    "date": "2026-04-18 16:52",
+    "type": "book",
+    "agent": "editor-v2",
+    "message": "更新《推理引擎》第3章(SGLang)：追加3.10最新进展小节，覆盖vLLM 0.8 MoE突破/推理引擎四强争霸/Speculative Decoding 2.0"
+  },
+  {
+    "date": "2026-04-18 16:52",
+    "type": "paper",
+    "agent": "editor-v2",
+    "message": "新增1篇精读: AI Scientist-v2 首篇AI自主论文被顶会接收，更新VLA-World解读文件，papers-index→58篇"
+  },
+  {
+    "date": "2026-04-18 16:52",
+    "type": "model",
+    "agent": "editor-v2",
+    "message": "新增2个模型: Qwen 3 72B(首个MMLU-Pro超GPT-4o的开源模型) + Llama 4 Scout(10M上下文MoE)，models→50个"
+  },
+  {
     "id": "evo-20260418-sw-ai-era",
     "type": "book",
     "title": "新增书籍《AI 时代软件行业全景》",
     "description": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局猜想。覆盖 Databricks/Snowflake/CrowdStrike/Salesforce 等核心玩家深度分析。",
-    "date": "2026-04-18",
-    "agent": "editor-v2"
+    "date": "2026-04-18 13:00",
+    "agent": "editor-v2",
+    "message": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局猜想。覆盖 Databricks/Snowflake/CrowdStrike/Salesforce 等核心玩家深度分析。"
   },
   {
     "date": "2026-04-18 12:38",

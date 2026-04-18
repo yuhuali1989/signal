@@ -6,7 +6,10 @@
     "venue": "NeurIPS 2017",
     "category": "arch",
     "importance": 5,
-    "tags": ["llm", "基础架构"],
+    "tags": [
+      "llm",
+      "基础架构"
+    ],
     "summary": "提出 Transformer 架构，用 Self-Attention 完全替代 RNN，奠定现代 AI 基石",
     "arxivUrl": "https://arxiv.org/abs/1706.03762",
     "hasReview": true
@@ -18,7 +21,9 @@
     "venue": "arXiv 2024",
     "category": "arch",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "Meta 开源 Llama 3 系列，405B 参数，首次在开源模型中全面对标 GPT-4",
     "arxivUrl": "https://arxiv.org/abs/2407.21783",
     "hasReview": true
@@ -30,7 +35,9 @@
     "venue": "arXiv 2024",
     "category": "arch",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "671B MoE 模型，256 细粒度专家 + MLA 注意力，$5.57M 训练成本对标 GPT-4",
     "arxivUrl": "https://arxiv.org/abs/2412.19437",
     "hasReview": true
@@ -42,7 +49,10 @@
     "venue": "ICLR 2024 (Oral)",
     "category": "arch",
     "importance": 4,
-    "tags": ["llm", "基础架构"],
+    "tags": [
+      "llm",
+      "基础架构"
+    ],
     "summary": "提出选择性状态空间模型，线性复杂度替代 Transformer 的 O(n²) 注意力",
     "arxivUrl": "https://arxiv.org/abs/2312.00752",
     "hasReview": true
@@ -54,7 +64,11 @@
     "venue": "arXiv 2026",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "vla", "世界模型"],
+    "tags": [
+      "自动驾驶",
+      "vla",
+      "世界模型"
+    ],
     "summary": "在潜在空间统一世界模型与 VLA，Latent CoT 替代文本 CoT 推理速度提升 5x，世界模型作为训练环境将数据价值放大 10-50x",
     "arxivUrl": "https://arxiv.org/abs/2602.06521",
     "hasReview": true
@@ -66,7 +80,10 @@
     "venue": "NeurIPS 2023",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm", "强化学习"],
+    "tags": [
+      "llm",
+      "强化学习"
+    ],
     "summary": "去掉奖励模型，直接在偏好数据上优化策略，简化 RLHF 流程",
     "arxivUrl": "https://arxiv.org/abs/2305.18290",
     "hasReview": true
@@ -78,7 +95,10 @@
     "venue": "arXiv 2025",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm", "强化学习"],
+    "tags": [
+      "llm",
+      "强化学习"
+    ],
     "summary": "用 GRPO 算法训练推理模型，无需蒸馏直接涌现 CoT 推理能力，开源对标 o1",
     "arxivUrl": "https://arxiv.org/abs/2501.12948",
     "hasReview": true
@@ -90,7 +110,9 @@
     "venue": "NeurIPS 2022",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "修正 Scaling Law，提出参数量和数据量应等比增长的最优训练策略",
     "arxivUrl": "https://arxiv.org/abs/2203.15556",
     "hasReview": true
@@ -102,7 +124,10 @@
     "venue": "NeurIPS 2022",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "分块计算 + IO 感知的注意力算法，显存 O(n²)→O(n)，速度提升 2-4x",
     "arxivUrl": "https://arxiv.org/abs/2205.14135",
     "hasReview": true
@@ -114,7 +139,10 @@
     "venue": "SOSP 2023",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "将 OS 虚拟内存分页思想引入 KV Cache 管理，显存利用率从 50% 提升到 95%+",
     "arxivUrl": "https://arxiv.org/abs/2309.06180",
     "hasReview": true
@@ -126,7 +154,10 @@
     "venue": "ICML 2023",
     "category": "inference",
     "importance": 4,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "用小模型草稿 + 大模型验证的投机采样策略，不损失质量加速 2-3x",
     "arxivUrl": "https://arxiv.org/abs/2211.17192",
     "hasReview": true
@@ -138,7 +169,9 @@
     "venue": "arXiv 2023",
     "category": "data",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "证明高质量合成教科书数据让 1.3B 小模型在代码任务上超越 100x 大模型",
     "arxivUrl": "https://arxiv.org/abs/2306.11644",
     "hasReview": true
@@ -150,7 +183,9 @@
     "venue": "ACL 2023",
     "category": "data",
     "importance": 4,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "让 LLM 自己生成指令数据进行自我训练，开启合成数据用于对齐的范式",
     "arxivUrl": "https://arxiv.org/abs/2212.10560",
     "hasReview": true
@@ -162,7 +197,9 @@
     "venue": "NeurIPS 2024 (Datasets Track)",
     "category": "data",
     "importance": 4,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "15T token 高质量网页数据集，系统化清洗 pipeline 成为预训练数据工程标杆",
     "arxivUrl": "https://arxiv.org/abs/2406.17557",
     "hasReview": true
@@ -174,7 +211,10 @@
     "venue": "IEEE TITS 2026",
     "category": "arch",
     "importance": 4,
-    "tags": ["自动驾驶", "llm"],
+    "tags": [
+      "自动驾驶",
+      "llm"
+    ],
     "summary": "首篇系统性综述 LLM 在自动驾驶中的应用，覆盖感知理解、决策规划、场景生成和仿真测试四大维度",
     "arxivUrl": "https://arxiv.org/abs/2501.xxxxx",
     "hasReview": true
@@ -186,7 +226,10 @@
     "venue": "arXiv 2025/2026",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "vla"],
+    "tags": [
+      "自动驾驶",
+      "vla"
+    ],
     "summary": "首个基于开源 LLM 构建的端到端自动驾驶 VLA 模型，统一感知-规划-控制，nuScenes 上实现 SOTA",
     "arxivUrl": "https://arxiv.org/abs/2503.23463",
     "hasReview": true
@@ -198,7 +241,10 @@
     "venue": "Google AI 2026",
     "category": "arch",
     "importance": 5,
-    "tags": ["llm", "多模态"],
+    "tags": [
+      "llm",
+      "多模态"
+    ],
     "summary": "Google 发布四款开源多模态模型（27B/26B-MoE/4B/2B），原生文本+图像+音频，Apache 2.0，E2B 可在手机运行",
     "arxivUrl": "#",
     "hasReview": true
@@ -210,7 +256,10 @@
     "venue": "OSDI 2024",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "Prefill-Decode 分离架构的开创性工作，提出 Goodput 优化目标，2.5x 吞吐提升 + 3x P99 延迟降低",
     "arxivUrl": "https://arxiv.org/abs/2401.09670",
     "hasReview": true
@@ -222,7 +271,10 @@
     "venue": "ICML 2025 (Oral)",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "推理时计算缩放的开创性研究，证明最优分配 Test-Time Compute 可以让小模型超越 14x 大的模型",
     "arxivUrl": "https://arxiv.org/abs/2408.03314",
     "hasReview": true
@@ -234,7 +286,11 @@
     "venue": "arXiv 2025 (NeurIPS)",
     "category": "inference",
     "importance": 5,
-    "tags": ["自动驾驶", "vla", "推理优化"],
+    "tags": [
+      "自动驾驶",
+      "vla",
+      "推理优化"
+    ],
     "summary": "NVIDIA CoC 推理链 + 扩散轨迹解码，碰撞率降低 35%，车载 99ms",
     "arxivUrl": "https://arxiv.org/abs/2511.00088",
     "hasReview": true
@@ -246,7 +302,10 @@
     "venue": "COLM 2024",
     "category": "alignment",
     "importance": 4,
-    "tags": ["llm", "强化学习"],
+    "tags": [
+      "llm",
+      "强化学习"
+    ],
     "summary": "让语言模型学会在每个 token 前进行内部推理（安静的思维链），通过 REINFORCE 自我训练，GSM8K 提升 10.9%，直接影响了 o1/R1 的设计",
     "arxivUrl": "https://arxiv.org/abs/2403.09629",
     "hasReview": true
@@ -258,7 +317,9 @@
     "venue": "ICLR 2024 (Spotlight)",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "系统性研究 MoE 与指令微调的协同效应，发现 MoE 的 SFT 增益远超 Dense 且随规模扩大，指导了 DeepSeek-V3/V4 和 Llama 4 的训练策略",
     "arxivUrl": "https://arxiv.org/abs/2305.14705",
     "hasReview": true
@@ -270,7 +331,10 @@
     "venue": "arXiv 2024 (ICML 2025)",
     "category": "arch",
     "importance": 5,
-    "tags": ["llm", "基础架构"],
+    "tags": [
+      "llm",
+      "基础架构"
+    ],
     "summary": "Meta 提出无 Tokenizer 的字节级 Transformer，动态分组字节为 patch，消除 tokenizer 偏差，在同等计算量下超越 Llama 3 tokenizer 方案",
     "arxivUrl": "https://arxiv.org/abs/2412.09871",
     "hasReview": true
@@ -282,7 +346,10 @@
     "venue": "arXiv 2025",
     "category": "alignment",
     "importance": 4,
-    "tags": ["llm", "强化学习"],
+    "tags": [
+      "llm",
+      "强化学习"
+    ],
     "summary": "ByteDance 开源的 RL 对齐系统，提出 Clip-Higher/Dynamic Sampling/Token-Level KL/Overlong Filtering 四项改进，AIME 2024 从 50% 提升到 50%（vs DeepSeek-R1-Zero），可复现的 GRPO 训练方案",
     "arxivUrl": "https://arxiv.org/abs/2503.14476",
     "hasReview": true
@@ -294,7 +361,10 @@
     "venue": "arXiv 2025",
     "category": "alignment",
     "importance": 4,
-    "tags": ["llm", "强化学习"],
+    "tags": [
+      "llm",
+      "强化学习"
+    ],
     "summary": "用 GRPO 训练 LLM 在推理过程中主动调用搜索引擎，无需标注搜索步骤数据，多跳 QA 准确率超越 RAG 和 CoT 基线",
     "arxivUrl": "https://arxiv.org/abs/2503.19470",
     "hasReview": true
@@ -306,7 +376,10 @@
     "venue": "arXiv 2025",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm", "强化学习"],
+    "tags": [
+      "llm",
+      "强化学习"
+    ],
     "summary": "首次将 GRPO 应用于软件工程推理，用 GitHub issue→PR 测试套件作为验证信号，SWE-Bench Lite 42.6%（+40% over SFT），涌现结构化 SWE 推理行为",
     "arxivUrl": "https://arxiv.org/abs/2502.18449",
     "hasReview": true
@@ -318,7 +391,9 @@
     "venue": "arXiv 2025 / NeurIPS 2025",
     "category": "alignment",
     "importance": 4,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "通过对抗预填充训练推理模型的鲁棒安全对齐，CoT 注入攻击拒绝率从 74.2% 提升到 91.7%，推理能力损失 < 0.5%",
     "arxivUrl": "https://arxiv.org/abs/2510.00938",
     "hasReview": true
@@ -330,7 +405,10 @@
     "venue": "ICML 2025",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "利用观测窗口识别重要 KV Cache，实现 128K→4K（33x）压缩，精度损失 < 0.3%，吞吐提升 3.6x",
     "arxivUrl": "https://arxiv.org/abs/2404.14469",
     "hasReview": true
@@ -342,7 +420,9 @@
     "venue": "Anthropic Research 2024",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "首次在生产级 LLM 上用 SAE 提取 3400 万个可解释特征，发现安全相关特征可用于检测和干预模型行为，AI 可解释性里程碑",
     "arxivUrl": "https://transformer-circuits.pub/2024/scaling-monosemanticity/",
     "hasReview": true
@@ -354,7 +434,10 @@
     "venue": "Google DeepMind 2024",
     "category": "arch",
     "importance": 5,
-    "tags": ["世界模型", "多模态"],
+    "tags": [
+      "世界模型",
+      "多模态"
+    ],
     "summary": "首个从单张图片生成可交互 3D 世界的通用世界模型，支持键鼠操控，在自动驾驶仿真、游戏生成和具身 AI 训练中展现广泛潜力",
     "arxivUrl": "https://deepmind.google/discover/blog/genie-2-a-large-scale-foundation-world-model/",
     "hasReview": true
@@ -366,7 +449,9 @@
     "venue": "arXiv 2026",
     "category": "arch",
     "importance": 4,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "通过检测 Transformer 内部的稳定区域自动发现推理电路，比 Activation Patching 快 50x，在 GPT-2/Llama 2 上成功定位算术推理、事实回忆和安全对齐电路",
     "arxivUrl": "https://arxiv.org/abs/2604.00716",
     "hasReview": true
@@ -378,7 +463,10 @@
     "venue": "arXiv 2026",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化"],
+    "tags": [
+      "llm",
+      "推理优化"
+    ],
     "summary": "自适应并行 MCTS 通过动态宽度控制和批量 simulation 实现 2.7x 推理效率提升，7B 模型在 MATH 上超越 70B greedy decode，进度感知早停节省 52% compute",
     "arxivUrl": "https://arxiv.org/abs/2604.00510",
     "hasReview": true
@@ -390,7 +478,10 @@
     "venue": "arXiv 2026",
     "category": "arch",
     "importance": 4,
-    "tags": ["llm", "基础架构"],
+    "tags": [
+      "llm",
+      "基础架构"
+    ],
     "summary": "数学证明高噪声时间序列中 Transformer 扩展的根本局限：MSE 训练下测试误差下限是不可约误差的 2 倍，176M 参数 PatchTST 在金融预测中不及 1 参数线性模型",
     "arxivUrl": "https://arxiv.org/abs/2604.00064",
     "hasReview": true
@@ -402,7 +493,9 @@
     "venue": "arXiv 2026",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm"],
+    "tags": [
+      "llm"
+    ],
     "summary": "发现 LLM 内部 12 种结构化情绪向量，几何分布与人类 Russell 环形模型一致(r=0.91)，激活导向实现 +212/-303 Elo 精确行为控制，为 AI 安全提供新工具",
     "arxivUrl": "https://arxiv.org/abs/2604.00005",
     "hasReview": true
@@ -414,7 +507,10 @@
     "venue": "AAAI 2024",
     "category": "inference",
     "importance": 4,
-    "tags": ["自动驾驶", "推理优化"],
+    "tags": [
+      "自动驾驶",
+      "推理优化"
+    ],
     "summary": "Channel-to-Height 插件将 3D 占用预测转化为 2D BEV 操作，无需 3D 卷积，Orin 上实现 30ms 延迟实时部署，计算量降低 13x",
     "arxivUrl": "https://arxiv.org/abs/2311.12058",
     "hasReview": true
@@ -426,7 +522,10 @@
     "venue": "CVPR 2026 Survey Track",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "世界模型"],
+    "tags": [
+      "自动驾驶",
+      "世界模型"
+    ],
     "summary": "首篇系统性综述世界模型在自动驾驶中的四大范式（场景生成/闭环仿真/策略学习/预训练），覆盖 80+ 论文，提出从数据驱动到世界模型驱动的范式转移路线图",
     "arxivUrl": "https://arxiv.org/abs/2501.xxxxx",
     "hasReview": true
@@ -438,7 +537,9 @@
     "venue": "CVPR 2023 Best Paper 🏆",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶"],
+    "tags": [
+      "自动驾驶"
+    ],
     "summary": "CVPR 2023 最佳论文，以规划为导向将感知/预测/规划统一为端到端 Transformer，任务协同让 L2(3s) 从 3.10 降到 1.65，碰撞率降低 78%",
     "arxivUrl": "https://arxiv.org/abs/2212.10156",
     "hasReview": true
@@ -450,7 +551,10 @@
     "venue": "ECCV 2022",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "多模态"],
+    "tags": [
+      "自动驾驶",
+      "多模态"
+    ],
     "summary": "用空间交叉注意力将多相机特征聚合到 BEV，时序自注意力融合历史帧，纯视觉方案首次接近激光雷达性能（NDS 51.7），成为几乎所有后续自动驾驶感知工作的基础架构",
     "arxivUrl": "https://arxiv.org/abs/2203.17270",
     "hasReview": true
@@ -462,7 +566,9 @@
     "venue": "ICCV 2023",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶"],
+    "tags": [
+      "自动驾驶"
+    ],
     "summary": "用向量化场景表示替代密集 BEV 栅格，向量化约束直接指导规划，L2(3s) 1.05m 超越 UniAD 的 1.65m，推理速度提升 2.5x（4.5 FPS）",
     "arxivUrl": "https://arxiv.org/abs/2303.12077",
     "hasReview": true
@@ -474,7 +580,9 @@
     "venue": "ECCV 2024",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶"],
+    "tags": [
+      "自动驾驶"
+    ],
     "summary": "稀疏 3D 实例表示 + 感知/预测/规划并行解码，L2(3s) 0.67m 全面超越 UniAD/VAD，首次实现 45 FPS 实时端到端自动驾驶（比 UniAD 快 25x）",
     "arxivUrl": "https://arxiv.org/abs/2405.19620",
     "hasReview": true
@@ -486,7 +594,11 @@
     "venue": "ECCV 2024",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "世界模型", "占用网络"],
+    "tags": [
+      "自动驾驶",
+      "世界模型",
+      "占用网络"
+    ],
     "summary": "首个基于 3D 占用表示的世界模型，GPT-like 自回归预测未来占用场景 + 联合规划，VQ-VAE 实现 50x 场景压缩，nuScenes 场景预测和规划双 SOTA",
     "arxivUrl": "https://arxiv.org/abs/2311.16038",
     "hasReview": true
@@ -498,7 +610,11 @@
     "venue": "CVPR 2025",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "世界模型", "生成式预测"],
+    "tags": [
+      "自动驾驶",
+      "世界模型",
+      "生成式预测"
+    ],
     "summary": "Instance-centric 场景表示 + Temporal Latent Diffusion 实现多模态轨迹预测与联合规划，L2(3s) 0.72m，扩散模型天然建模交通不确定性",
     "arxivUrl": "https://arxiv.org/abs/2402.11502",
     "hasReview": true
@@ -510,7 +626,11 @@
     "venue": "CVPR 2026",
     "category": "arch",
     "importance": 5,
-    "tags": ["自动驾驶", "vla", "推理优化"],
+    "tags": [
+      "自动驾驶",
+      "vla",
+      "推理优化"
+    ],
     "summary": "首次将 Visual Chain-of-Thought 和 Tree-of-Thought 推理范式引入 VLA 自动驾驶，安全/舒适/效率三维多序列轨迹规划 + ToT 逐层筛选，从单轨迹预测升级为可解释的多候选审慎推理",
     "arxivUrl": "https://cvpr.thecvf.com/Conferences/2026",
     "hasReview": true
@@ -522,7 +642,11 @@
     "venue": "ICLR 2026",
     "category": "alignment",
     "importance": 5,
-    "tags": ["llm", "强化学习", "多Agent"],
+    "tags": [
+      "llm",
+      "强化学习",
+      "多Agent"
+    ],
     "summary": "清华开源的多 Agent LLM 训练框架，统一 RL 训练与推理，支持 Agent 间消息传递的梯度回传、Tree Search 扩展和多 Agent GRPO 策略优化",
     "arxivUrl": "https://arxiv.org/abs/2602.07848",
     "hasReview": true
@@ -534,7 +658,11 @@
     "venue": "ICLR 2023",
     "category": "data",
     "importance": 5,
-    "tags": ["数据工程", "去重", "基础架构"],
+    "tags": [
+      "数据工程",
+      "去重",
+      "基础架构"
+    ],
     "summary": "利用预训练模型语义嵌入对大规模数据集进行语义级去重，去除 50% 语义重复数据后模型性能不降反升，训练效率提升 2x，开创语义去重范式",
     "arxivUrl": "https://arxiv.org/abs/2303.09540",
     "hasReview": true
@@ -546,7 +674,11 @@
     "venue": "CVPR 2025",
     "category": "data",
     "importance": 5,
-    "tags": ["自动驾驶", "数据工程", "去重"],
+    "tags": [
+      "自动驾驶",
+      "数据工程",
+      "去重"
+    ],
     "summary": "首个面向自动驾驶的多模态去重框架，融合视觉+LiDAR+轨迹+地图四种模态，层次化去重（帧级/片段级/场景级）实现 70% 数据压缩且性能仅降 0.3%",
     "arxivUrl": "https://arxiv.org/abs/2502.xxxxx",
     "hasReview": true
@@ -558,7 +690,11 @@
     "venue": "NeurIPS 2024",
     "category": "data",
     "importance": 4,
-    "tags": ["数据工程", "去重", "自监督学习"],
+    "tags": [
+      "数据工程",
+      "去重",
+      "自监督学习"
+    ],
     "summary": "利用 DINOv2 自监督嵌入进行大规模图像去重，相比 CLIP 对视角/光照/遮挡变化更鲁棒，10B 级数据集上 95%+ 召回率，确立 SSL 嵌入为图像去重最佳选择",
     "arxivUrl": "https://arxiv.org/abs/2407.xxxxx",
     "hasReview": true
@@ -570,7 +706,11 @@
     "venue": "NVIDIA Developer 2025-2026",
     "category": "data",
     "importance": 4,
-    "tags": ["数据工程", "蒸馏", "数据飞轮"],
+    "tags": [
+      "数据工程",
+      "蒸馏",
+      "数据飞轮"
+    ],
     "summary": "NVIDIA 开源数据飞轮参考架构，通过自动化数据收集→质量评估→模型蒸馏→部署验证的闭环流程，持续将大模型蒸馏到小模型，企业 AI Agent 成本降 50x",
     "arxivUrl": "https://build.nvidia.com/nvidia/build-an-enterprise-data-flywheel",
     "hasReview": true
@@ -582,7 +722,11 @@
     "venue": "Tesla AI Day 2025 / FSD v13 Report",
     "category": "data",
     "importance": 5,
-    "tags": ["自动驾驶", "数据工程", "自动标注"],
+    "tags": [
+      "自动驾驶",
+      "数据工程",
+      "自动标注"
+    ],
     "summary": "Tesla FSD v13 的 4D 自动标注流水线，利用未来帧回溯重建当前场景高精度 3D 标注，标注成本从 $50/帧降至 $0.01/帧，支撑 700 万车队 1.6PB/天数据飞轮",
     "arxivUrl": "https://www.tesla.com/AI",
     "hasReview": true
@@ -594,7 +738,12 @@
     "venue": "CVPR 2026 Findings",
     "category": "autonomous-driving",
     "importance": 5,
-    "tags": ["自动驾驶", "VLA", "世界模型", "强化学习"],
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "世界模型",
+      "强化学习"
+    ],
     "summary": "首个统一世界模型想象 + VLA 反思推理的自动驾驶框架：先想象执行轨迹的未来场景，再反思优化决策",
     "arxivUrl": "https://arxiv.org/abs/2604.09059",
     "hasReview": true
@@ -606,7 +755,12 @@
     "venue": "ICML 2026",
     "category": "autonomous-driving",
     "importance": 4,
-    "tags": ["自动驾驶", "VLA", "Scaling Law", "合成数据"],
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "Scaling Law",
+      "合成数据"
+    ],
     "summary": "世界模型合成数据将 VLA 的数据 Scaling Law 从亚线性提升到接近线性，等效放大数据 70x",
     "arxivUrl": "https://openreview.net/forum?id=plrGn3RdzN",
     "hasReview": true
@@ -618,7 +772,11 @@
     "venue": "arXiv 2026",
     "category": "autonomous-driving",
     "importance": 5,
-    "tags": ["自动驾驶", "VLA", "推理优化"],
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "推理优化"
+    ],
     "summary": "首个面向量产的 VLA 实时推理框架，Speculative Reasoning + Action Token Compression + Latent Prefill 实现 44x 加速（2.1s→45ms），首次满足 Reasoning VLA 车规延迟要求",
     "arxivUrl": "https://z-lab.ai/projects/flashdrive/",
     "hasReview": true
@@ -630,7 +788,12 @@
     "venue": "XPENG AI Day 2025 / Beijing Auto Show 2026",
     "category": "autonomous-driving",
     "importance": 5,
-    "tags": ["自动驾驶", "VLA", "开源", "数据飞轮"],
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "开源",
+      "数据飞轮"
+    ],
     "summary": "首个开源量产级 VLA 模型，72B MoE 基座 + 阿里云 3 万卡训练 + 5 天全链路迭代，大众首发商用，接管率 0.25 次/百公里",
     "arxivUrl": "https://www.xpeng.com/pressroom/news/019cae5e67b99c0960ee8a028129016a",
     "hasReview": true
@@ -642,7 +805,12 @@
     "venue": "arXiv 2026",
     "category": "inference",
     "importance": 5,
-    "tags": ["llm", "推理优化", "量化", "KV Cache"],
+    "tags": [
+      "llm",
+      "推理优化",
+      "量化",
+      "KV Cache"
+    ],
     "summary": "首个实现零精度损失的 3-bit KV Cache 在线量化方法，通过 Rotation + Outlier-Aware Clipping 实现 6x 内存减少和 8x 注意力加速，Llama-3.1-405B 在单 8xH100 节点上实现量化前不可能的部署",
     "arxivUrl": "https://arxiv.org/abs/2604.xxxxx",
     "hasReview": true
@@ -654,7 +822,12 @@
     "venue": "arXiv 2026",
     "category": "arch",
     "importance": 5,
-    "tags": ["世界模型", "具身AI", "VLA", "机器人"],
+    "tags": [
+      "世界模型",
+      "具身AI",
+      "VLA",
+      "机器人"
+    ],
     "summary": "NVIDIA 提出世界动作模型（World-Action Model）范式，14B 参数视频扩散骨干统一视觉预测和动作生成，零样本实际机器人任务进度 62.2%，标志着从 VLA 到 WA 模型的范式跃迁",
     "arxivUrl": "https://arxiv.org/abs/2604.xxxxx",
     "hasReview": true
@@ -666,7 +839,12 @@
     "venue": "arXiv 2026",
     "category": "autonomous-driving",
     "importance": 5,
-    "tags": ["自动驾驶", "VLA", "世界模型", "交替推理"],
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "世界模型",
+      "交替推理"
+    ],
     "summary": "提出世界模型与 VLA 交替执行（Interleaved）新范式：每步规划前先想象一步未来，比串行方案延迟降 47%，精度提升 23%，L2(3s) 0.63m / 碰撞率 0.18% 双 SOTA",
     "arxivUrl": "https://arxiv.org/abs/2603.27287",
     "hasReview": true
@@ -678,9 +856,30 @@
     "venue": "GitHub 2026",
     "category": "arch",
     "importance": 4,
-    "tags": ["Agent", "自进化", "效率优化", "技能学习"],
+    "tags": [
+      "Agent",
+      "自进化",
+      "效率优化",
+      "技能学习"
+    ],
     "summary": "从 3.3K 行种子代码自行生长技能树的自进化 Agent 框架，通过经验复用将 Token 消耗降低 6 倍，100 任务后积累 84 个可复用技能",
     "arxivUrl": "https://github.com/lsdefine/GenericAgent",
+    "hasReview": true
+  },
+  {
+    "id": "ai-scientist-v2",
+    "title": "AI Scientist-v2: Automated Scientific Discovery with Foundation Models",
+    "authors": "Lu et al. (Sakana AI / Oxford)",
+    "venue": "arXiv 2026",
+    "category": "agent",
+    "importance": 5,
+    "tags": [
+      "AI 科研",
+      "Agent",
+      "自动化发现"
+    ],
+    "summary": "首个完全自主生成并被顶级 ML 会议接收的 AI 科研系统，实现从假设提出到论文撰写全流程自动化",
+    "arxivUrl": "https://arxiv.org/abs/2604.06840",
     "hasReview": true
   }
 ]

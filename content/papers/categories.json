@@ -33,5 +33,12 @@
     "icon": "🚗",
     "color": "teal",
     "description": "VLA 模型、世界模型、BEV 感知、端到端驾驶、数据飞轮"
+  },
+  {
+    "id": "agent",
+    "name": "AI Agent",
+    "icon": "🤖",
+    "color": "indigo",
+    "description": "Agent 架构、MCP 协议、自动化科研、工具调用"
   }
 ]

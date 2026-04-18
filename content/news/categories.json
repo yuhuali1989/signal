@@ -4,35 +4,35 @@
     "name": "模型发布",
     "icon": "🚀",
     "color": "purple",
-    "count": 19
+    "count": 18
   },
   {
     "id": "opensource",
     "name": "开源生态",
     "icon": "📦",
     "color": "orange",
-    "count": 7
+    "count": 6
   },
   {
     "id": "research",
     "name": "技术突破",
     "icon": "🔬",
     "color": "green",
-    "count": 25
+    "count": 30
   },
   {
     "id": "infra",
     "name": "基础设施",
     "icon": "🔧",
     "color": "yellow",
-    "count": 33
+    "count": 35
   },
   {
     "id": "industry",
     "name": "行业动态",
     "icon": "🏢",
     "color": "blue",
-    "count": 11
+    "count": 10
   },
   {
     "id": "safety",
