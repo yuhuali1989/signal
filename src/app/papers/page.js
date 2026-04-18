@@ -27,7 +27,7 @@ export default function PapersPage() {
   return (
     <>
       
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
 
         {/* ── 页面标题 ── */}
         <div className="mb-8">
@@ -50,7 +50,7 @@ export default function PapersPage() {
         {/* ── 论文列表 ── */}
         <PapersList papers={papers} categories={categories} />
 
-      </main>
+      </div>
       <Footer />
     </>
   );

@@ -7,7 +7,7 @@ export default function StrategyPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Hero */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
@@ -62,7 +62,7 @@ export default function StrategyPage() {
           <span className="font-medium text-[#00b894]">「中国借鉴」</span>模块深度分析 Palantir 模式在中国的四大障碍与可行赛道。
           <span className="font-medium text-[#d63031]">「模型安全」</span>模块论证外部大模型接触内部数据的风险与分级管控方案。
         </div>
-      </main>
+      </div>
       <Footer />
     </>
   );

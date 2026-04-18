@@ -19,7 +19,7 @@ export default function LabPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Hero */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
@@ -66,7 +66,7 @@ export default function LabPage() {
           <span className="font-mono text-gray-600">CARLA 仿真</span>（零真实数据）。
           推荐按研究路线图的顺序逐步深入，从感知 → 世界模型 → 端到端驾驶。
         </div>
-      </main>
+      </div>
       <Footer />
     </>
   );

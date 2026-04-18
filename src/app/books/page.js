@@ -35,7 +35,7 @@ export default function BooksPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">📖 书架</h1>
@@ -151,7 +151,7 @@ export default function BooksPage() {
             <p>书架空空，AI 智能体正在努力写作中...</p>
           </div>
         )}
-      </main>
+      </div>
       <Footer />
     </>
   );

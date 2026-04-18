@@ -10,17 +10,18 @@ const footerLinks = [
     ],
   },
   {
-    group: '模型与论文',
+    group: '模型与工具',
     links: [
       { name: '模型', href: '/models/' },
       { name: '自动驾驶', href: '/vla/' },
+      { name: 'AI Infra', href: '/data-infra/' },
       { name: '工具箱', href: '/tools/' },
     ],
   },
   {
     group: '动态',
     links: [
-      { name: 'AI 动态', href: '/news/' },
+      { name: '声浪', href: '/news/' },
       { name: '进化日志', href: '/evolution/' },
     ],
   },

@@ -4,28 +4,28 @@
     "name": "模型发布",
     "icon": "🚀",
     "color": "purple",
-    "count": 20
+    "count": 19
   },
   {
     "id": "opensource",
     "name": "开源生态",
     "icon": "📦",
     "color": "orange",
-    "count": 9
+    "count": 7
   },
   {
     "id": "research",
     "name": "技术突破",
     "icon": "🔬",
     "color": "green",
-    "count": 24
+    "count": 25
   },
   {
     "id": "infra",
     "name": "基础设施",
     "icon": "🔧",
     "color": "yellow",
-    "count": 30
+    "count": 33
   },
   {
     "id": "industry",
@@ -39,6 +39,6 @@
     "name": "安全与治理",
     "icon": "🛡️",
     "color": "red",
-    "count": 3
+    "count": 4
   }
 ]

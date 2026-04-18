@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { name: '文章',     href: '/articles/',   group: 'knowledge' },
   { name: '论文',     href: '/papers/',     group: 'knowledge' },
   { name: '模型',     href: '/models/',     group: 'knowledge' },
-  { name: '数据闭环', href: '/data-infra/', group: 'knowledge' },
+  { name: 'AI Infra', href: '/data-infra/', group: 'knowledge' },
   { name: '工具箱',   href: '/tools/',      group: 'knowledge' },
   // 业务类
   { name: '自动驾驶', href: '/vla/',        group: 'business' },
@@ -19,8 +19,7 @@ const NAV_ITEMS = [
   // 战略类
   { name: '业务原生', href: '/strategy/',   group: 'strategy' },
   // 动态类
-  { name: 'AI 声浪',  href: '/news/',       group: 'news' },
-  { name: '进化日志', href: '/evolution/',  group: 'news' },
+  { name: '声浪',     href: '/news/',       group: 'news' },
 ];
 
 const GROUP_COLOR = {

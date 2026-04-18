@@ -30,7 +30,7 @@ export default function EvolutionPage() {
   return (
     <>
       
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">🔄 进化日志</h1>
           <p className="text-sm text-gray-500">记录每一次 AI 智能体的自动更新，全部过程透明可追溯</p>
@@ -68,7 +68,7 @@ export default function EvolutionPage() {
             <p>暂无进化日志，AI 智能体即将开始工作...</p>
           </div>
         )}
-      </main>
+      </div>
       <Footer />
     </>
   );

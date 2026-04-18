@@ -660,12 +660,12 @@ export default function ToolsPage() {
   return (
     <>
       
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-2xl font-bold text-gray-900">🧰 工具箱</h1>
-            <span className="px-2.5 py-0.5 text-xs font-medium bg-purple-50 text-purple-600 border border-purple-100 rounded-full">2 个工具</span>
+            <span className="px-2.5 py-0.5 text-xs font-medium bg-purple-50 text-purple-600 border border-purple-100 rounded-full">实用工具</span>
           </div>
           <p className="text-sm text-gray-500">Tokenizer 可视化 · Prompt 模板</p>
         </div>
@@ -691,7 +691,7 @@ export default function ToolsPage() {
         {/* Content */}
         {activeTab === 'tokenizer' && <TokenizerTool />}
         {activeTab === 'prompts' && <PromptTemplates templates={PROMPT_TEMPLATES} />}
-      </main>
+      </div>
       <Footer />
     </>
   );

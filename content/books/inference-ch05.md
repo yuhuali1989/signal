@@ -2,7 +2,7 @@
 title: "第 5 章：推理优化核心技术——量化、投机采样与 KV Cache 压缩"
 description: "跨框架的推理优化技术：GPTQ/AWQ/SmoothQuant 量化对比、Speculative Decoding 原理与实现、MLA/GQA/MQA 的 KV Cache 压缩"
 date: "2026-04-12"
-updatedAt: "2026-04-12 03:46"
+updatedAt: "2026-04-18 11:00"
 book: "LLM 推理框架：从原理到优化"
 chapter: 5
 chapterTitle: "推理优化核心技术——量化、投机采样与 KV Cache 压缩"
@@ -448,7 +448,62 @@ class KVCacheQuantizer:
     # 精度影响: perplexity 增加 < 0.1 (几乎无损)
 ```
 
-### 5.3.4 KV Cache 驱逐策略
+### 5.3.4 TurboQuant：零精度损失的 3-bit KV Cache 量化 🆕
+
+> **2026 年 4 月最新突破**：Google DeepMind 的 TurboQuant 首次实现零精度损失的 3-bit KV Cache 在线量化。
+
+传统 KV Cache 量化的核心矛盾：Key/Value 张量中的异常值（outlier）分布不均匀，直接低比特量化会丢失信息。
+
+**TurboQuant 三项关键技术**：
+
+1. **Hadamard Rotation**：量化前对 KV 张量应用哈达玛变换，将异常值均匀分散到所有维度。因为是正交变换，不影响 $QK^T$ 的结果。
+
+2. **Outlier-Aware Dynamic Clipping**：在线逐 token 计算最优裁剪范围，无需离线校准。
+
+3. **Mixed-Precision Residual**：Sink tokens (前 4 个) 保持 FP16，最近 128 token 保持 INT8，其余 INT3。
+
+```python
+class TurboQuantKVCache:
+    """TurboQuant: 零损失 3-bit KV Cache 量化"""
+    
+    def __init__(self, d_head, sink_tokens=4, recent_window=128):
+        self.H = hadamard_matrix(d_head)  # 哈达玛矩阵
+        self.sink_tokens = sink_tokens
+        self.recent_window = recent_window
+    
+    def quantize(self, key, value):
+        # Step 1: Hadamard Rotation (消除异常值)
+        key_rot = key @ self.H / math.sqrt(key.shape[-1])
+        val_rot = value @ self.H / math.sqrt(value.shape[-1])
+        
+        # Step 2: 混合精度策略
+        # Sink tokens → FP16, 最近窗口 → INT8, 其余 → INT3
+        seq_len = key_rot.shape[1]
+        sink = key_rot[:, :self.sink_tokens]  # FP16
+        recent = quantize_int8(key_rot[:, -self.recent_window:])
+        middle = quantize_int3(key_rot[:, self.sink_tokens:-self.recent_window])
+        
+        return sink, middle, recent  # ~3.2 bits/element 平均
+```
+
+| 方法 | KV 比特 | 内存节省 | 注意力加速 | 精度损失 |
+|------|:---:|:---:|:---:|:---:|
+| FP16 基线 | 16 bit | 1x | 1x | 0 |
+| KIVI (INT4) | 4 bit | 4x | 3.2x | ~0.3 ppl |
+| **TurboQuant** | **3 bit** | **6x** | **8x** | **0** |
+
+**部署突破**：Llama-3.1-405B + TurboQuant 3-bit → **单台 8×H100 部署 128K 上下文成为可能**（FP16 KV Cache 下 OOM）。
+
+### 5.3.5 Unweight：无损模型压缩（非量化）🆕
+
+> **Cloudflare 2026 年 4 月发布**：与量化不同，Unweight 通过信息论方法实现 **15-22% 模型体积压缩，输出位级完全一致**。
+
+- 不改变模型权重数值（非量化），而是对权重文件进行无损信息压缩
+- Llama-3.1-8B 测试：MLP 权重压缩 ~30%，每模型节省 ~3GB 显存
+- 适合不能牺牲输出质量的生产推理场景
+- GPU 内核已开源
+
+### 5.3.6 KV Cache 驱逐策略
 
 当上下文超长时，可以有选择地丢弃不重要的 KV 对：
 
@@ -511,6 +566,8 @@ class H2OKVCache:
 | GQA (Llama 3) | KV 压缩 | 4-8× | 训练+推理 | 架构设计 |
 | MLA (DeepSeek) | KV 压缩 | 32× | 训练+推理 | 架构设计 |
 | KV Cache INT8 | KV 压缩 | 2× | 推理 | 近似无损 |
+| **TurboQuant 3-bit** 🆕 | **KV 压缩** | **6×/8×** | **推理** | **严格无损** |
+| **Unweight** 🆕 | **模型体积** | **15-22%** | **推理** | **严格无损** |
 | H2O/SnapKV | KV 驱逐 | 5-10× | 长上下文 | 有损但可控 |
 
 ---

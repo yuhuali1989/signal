@@ -39,6 +39,7 @@ const TAG_ORDER = ['llm', '多模态', '自动驾驶', 'vla', '世界模型', '�
 export default function PapersList({ papers, categories }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTag, setActiveTag] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // 从所有论文中收集出现过的 tag，按固定顺序排列
   const availableTags = useMemo(() => {
@@ -48,18 +49,42 @@ export default function PapersList({ papers, categories }) {
   }, [papers]);
 
   const filtered = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
     return papers.filter(p => {
       const catMatch = activeCategory === 'all' || p.category === activeCategory;
       const tagMatch = activeTag === 'all' || (p.tags || []).includes(activeTag);
-      return catMatch && tagMatch;
+      const searchMatch = !q ||
+        (p.title || '').toLowerCase().includes(q) ||
+        (p.authors || '').toLowerCase().includes(q) ||
+        (p.venue || '').toLowerCase().includes(q) ||
+        (p.tags || []).some(t => t.toLowerCase().includes(q));
+      return catMatch && tagMatch && searchMatch;
     });
-  }, [papers, activeCategory, activeTag]);
+  }, [papers, activeCategory, activeTag, searchQuery]);
 
   const catMap = {};
   categories.forEach(c => { catMap[c.id] = c; });
 
   return (
     <div>
+      {/* ── 搜索框 ── */}
+      <div className="relative mb-5">
+        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-300 text-sm">🔍</span>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder="搜索论文标题、作者、venue、标签…"
+          className="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-[#6c5ce7]/50 focus:ring-2 focus:ring-[#6c5ce7]/10 bg-white placeholder-gray-300"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 text-xs"
+          >✕</button>
+        )}
+      </div>
+
       {/* ── Category Filter ── */}
       <div className="flex flex-wrap gap-2 mb-3">
         <button
@@ -123,6 +148,12 @@ export default function PapersList({ papers, categories }) {
       </div>
 
       {/* ── Papers Grid ── */}
+      {searchQuery && (
+        <div className="mb-3 text-xs text-gray-400">
+          找到 <span className="font-semibold text-gray-600">{filtered.length}</span> 篇结果
+          {filtered.length === 0 && <span className="ml-2 text-gray-300">· 试试其他关键词</span>}
+        </div>
+      )}
       <div className="space-y-4">
         {filtered.map(paper => {
           const cat = catMap[paper.category] || {};
