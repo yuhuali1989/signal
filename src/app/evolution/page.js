@@ -11,6 +11,8 @@ export default function EvolutionPage() {
     article: '📝',
     paper: '📄',
     news: '🌊',
+    model: '🤖',
+    system: '⚙️',
   };
 
   const typeColors = {
@@ -18,6 +20,8 @@ export default function EvolutionPage() {
     article: 'bg-purple-50 text-purple-600 border-purple-200',
     paper: 'bg-blue-50 text-blue-600 border-blue-200',
     news: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    model: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+    system: 'bg-gray-50 text-gray-600 border-gray-200',
   };
 
   const typeLabels = {
@@ -25,6 +29,8 @@ export default function EvolutionPage() {
     article: '专栏',
     paper: '论文',
     news: '声浪',
+    model: '模型',
+    system: '系统',
   };
 
   return (
@@ -42,24 +48,34 @@ export default function EvolutionPage() {
             <div className="absolute left-5 top-0 bottom-0 w-px bg-gray-200" />
 
             <div className="space-y-4">
-              {logs.map((log, i) => (
-                <div key={i} className="relative flex items-start gap-4 pl-12">
-                  {/* Timeline dot */}
-                  <div className="absolute left-3.5 top-2 w-3 h-3 rounded-full bg-maxwell-500 ring-4 ring-white" />
+              {logs.map((log, i) => {
+                // 兼容两种格式：
+                //  1. 新格式：{ id, type, title, description, date, agent }
+                //  2. 旧格式：{ date, type, agent, message, slug }
+                const title = log.title || log.message || '(无标题)';
+                const description = log.description || (log.title ? null : null);
+                return (
+                  <div key={log.id || log.slug || i} className="relative flex items-start gap-4 pl-12">
+                    {/* Timeline dot */}
+                    <div className="absolute left-3.5 top-2 w-3 h-3 rounded-full bg-maxwell-500 ring-4 ring-white" />
 
-                  <div className="flex-1 bg-white rounded-xl border border-gray-100 p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-lg">{typeIcons[log.type] || '🔄'}</span>
-                      <span className={`px-2 py-0.5 text-xs font-medium rounded-full border ${typeColors[log.type] || 'bg-gray-50 text-gray-600 border-gray-200'}`}>
-                        {typeLabels[log.type] || log.type}
-                      </span>
-                      <span className="text-xs text-maxwell-500">{log.agent}</span>
+                    <div className="flex-1 bg-white rounded-xl border border-gray-100 p-4 hover:shadow-sm transition-shadow">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <span className="text-lg">{typeIcons[log.type] || '🔄'}</span>
+                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full border ${typeColors[log.type] || 'bg-gray-50 text-gray-600 border-gray-200'}`}>
+                          {typeLabels[log.type] || log.type}
+                        </span>
+                        <span className="text-xs text-maxwell-500">{log.agent}</span>
+                        <span className="text-xs text-gray-400 ml-auto">{log.date}</span>
+                      </div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-1 leading-snug">{title}</h3>
+                      {description && (
+                        <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{description}</p>
+                      )}
                     </div>
-                    <p className="text-sm text-gray-700">{log.message}</p>
-                    <p className="text-xs text-gray-400 mt-2">{log.date}</p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ) : (
