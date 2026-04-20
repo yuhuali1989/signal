@@ -69,8 +69,11 @@
 - ✅ 自动驾驶专区：模型架构 + 数据集已丰富
 
 ### 6. VLA 实验室 `/vla/`
-- ✅ Hero：研究项目卡片（3 张，可切换）—— DriveWorld-VLA / **Seed-AD（新增）** / Alpamayo-R1
+- ✅ Hero：研究项目卡片（3 张，可切换）—— DriveWorld-VLA / **Seed-AD（新增）** / **Alpamayo-R1（精简展开）**
 - ✅ 两大活跃研究项目各自拥有独立的 3 Tab（架构&数据 / 全链路实验 / 数据闭环），互不干扰
+- ✅ **Alpamayo-R1（青色主题 #00cec9）** —— NVIDIA Research R1-style Reasoning-VLA
+  - 技术方案分解（3 步）：数据 & 长尾场景（DRIVE 内部数据 + CoT 标注） · R1-style VLM 架构（VLM 主干 + 显式 Chain-of-Thought） · 训练范式（SFT on CoT + 仿真 RL/GRPO）
+  - 研究概要卡：核心创新（R1 推理 + RL 后训练迁移到驾驶）· 关键卖点（可解释 / 长尾 / RL 友好 / 车端工程化）· 与 DriveWorld/Seed-AD 的差异（不压注世界模型或超大参数量，而是压注「推理链×RL」）· 当前状态（跟踪中，等待论文/开源/Benchmark）
 - ✅ **DriveWorld-VLA**（紫色主题 #6c5ce7）
   - 架构 & 数据 Tab（子 Tab：模型架构图 / 数据集选型 / 训练配置 / VLA 实验室）
   - 全链路实验 Tab（6 Cell Notebook，含 360° 全景拼接 + GT/Pred 对比）
@@ -296,16 +299,11 @@ maxwell-knowledge/
 
 ---
 
-*最后更新：2026-04-20*
+*最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 🌱 **VLA 新增 Seed-AD 子模块**：在 `/vla/` 下新增字节 70B VLA 三阶段推理模型的完整研究子模块，与 DriveWorld-VLA 平行独立，翡翠绿 `#10b981` 主题区分；新增 4 个组件 [SeedAdArchViz.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdArchViz.js)、[SeedAdNotebook.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdNotebook.js)、[SeedAdDataLoop.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdDataLoop.js)、[SeedAdPredictionViz.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdPredictionViz.js)
-- 🎨 **三视图同步预测可视化**：Cell 6 独立实现「想象 BEV 占用栅格 + 反思 5 维风险雷达 + 行动轨迹带置信带」三视图，共享 30 帧（3s×10Hz）时间轴，3 种演示场景（城市巡航/紧急切入/行人横穿），保守模式触发时 UI 实时变红
-- 📥 **数据下载一次性做对**：Cell 1 复用 DriveWorld-VLA 已验证的 HuggingFace 数据源 `saeedrmd/trajectory-prediction-nuscenes`，叠加 UniSim 2.0 风格 32 种天气/光照合成增强，含三阶段 Token（想象/反思/行动）结构预览
-- 📊 **10 维对照 DriveWorld-VLA**：Seed-AD 在参数量、碰撞率、车端推理、合成数据、开源程度、FVD 等 8/10 维度占优；新增双层雷达图直观对比
-- 🔄 **8 层数据闭环（新增 UniSim 2.0 层）**：相比 DriveWorld 的 7 层多一个合成数据层，车端 13B 实时反思触发风险 case 回传，带宽节省 80%
-- 🔄 **进化日志重大修复**：[evolution/page.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/app/evolution/page.js) 改为兼容 title+description 与 message 两种格式并优先展示新格式，修复旧条目在页面上丢失详情的问题
-- 🚀 **部署升级**：GitHub Pages 自动部署切换到官方 `nextjs.yml` 模板，`next.config.js` 中 basePath/assetPrefix 显式硬编码为 `/signal`；线上地址：https://yuhuali1989.github.io/signal/
+- ✨ **VLA 新增 Alpamayo-R1 精简展开**：根据用户反馈，在 [/vla/](src/app/vla/page.js) 里为 Alpamayo-R1 项目在保留「跟踪中」状态的同时补上线图信息：技术方案分解（3 步 Pipeline）+ 研究概要卡（核心创新 / 关键卖点 / 与 DriveWorld · Seed-AD 的差异 / 当前状态），与已有两个项目视觉语言对齐（STEP 角标 + 连接箭头），不再是空白占位卡
+- 🔧 **Bug 修复**：VLA 全链路实验摄像头在 GitHub Pages 子路径下不展示的问题，根因是 `fetch('/nuscenes/...')` 和 JSON 内图片 URL 都是绝对路径，线上实际应是 `/signal/nuscenes/...`；[next.config.js](next.config.js) 新增 `env.NEXT_PUBLIC_BASE_PATH` 将 basePath 暴露到客户端，[VlaTrainRunner.js](src/components/VlaTrainRunner.js) 统一给 fetch URL 和 6 路摄像头图片路径补上 basePath 前缀
 
 ---
 
