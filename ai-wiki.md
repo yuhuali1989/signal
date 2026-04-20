@@ -345,18 +345,52 @@ maxwell-knowledge/
     7. 对工程实践的启示
   - 同步更新 papers-index.json，添加新论文的索引条目
 
-### 任务 4b：更新创业雷达 src/components/IdeaRadar.js（每月至少刷新一次）
-- 更新 IDEAS 数组中各方向的 signalDate 和 signal 标注（🔥热点/👀关注）
-- 补充新出现的海外创业公司（overseas 数组），尤其关注 YC 最新批次
+### 任务 4b：更新创业雷达 src/components/IdeaRadar.js（每日更新）
+- **每日必做**：扫描 TechCrunch / Crunchbase / 36Kr / IT桔子 / ProductHunt / YC HN，更新 IDEAS 数组中各方向的 signalDate 和 signal 标注（🔥热点/👀关注）
+- 补充新出现的海外创业公司（overseas 数组），尤其关注 YC 最新批次、a16z/Sequoia/Benchmark 新投项目
+- 补充国内创业动态：关注高瓴/红杉中国/源码资本等新投项目，36Kr/IT桔子 融资快讯
 - 新增创业方向时覆盖 5 大行业：AI 工具 / 游戏科技 / 消费硬件 / 开发者工具 / 企业 SaaS
 - 每个新方向必须包含：market（市场规模）、barrier（进入壁垒）、china（中国机会）、overseas（≥2 家对标）、opportunity（中国机会窗口）
+- **每日至少更新 2-3 个方向的信号标注**，每周新增 ≥1 个创业方向
+- 关注维度：融资事件 / 产品发布 / 政策变化 / 市场格局变动 / 关键人物动态
 
-### 任务 4c：更新全行业动态 src/components/IndustryNewsFeed.js（每次至少新增 5 条）
+### 任务 4c：更新全行业动态 src/components/IndustryNewsFeed.js（每日更新，≥10 条）
 - 在 NEWS_DATA 数组头部插入最新新闻条目
-- 覆盖 6 大分类：ai / software / game / hardware / startup / policy
+- **覆盖 6 大分类**（与页面 CATEGORIES 定义一致，注意 category 字段必须使用以下 key）：
+  - `data` 🗄️ **数据平台**：Databricks / Snowflake / dbt Labs / Fivetran / Confluent / Cloudera / Teradata / MongoDB / ClickHouse / StarRocks / Apache Iceberg 生态
+  - `cloud` ☁️ **云服务**：AWS / Azure / GCP / 阿里云 / 腾讯云 / 华为云 / Oracle Cloud / IBM Cloud / Vercel / Cloudflare
+  - `software` 💼 **企业软件**：Salesforce / ServiceNow / SAP / Oracle / Workday / Atlassian / Notion / Figma / Canva / 用友 / 金蝶 / 飞书 / 钉钉
+  - `security` 🔐 **安全**：CrowdStrike / Palo Alto Networks / Okta / Zscaler / Wiz / SentinelOne / Fortinet / 奇安信 / 深信服 / 360
+  - `startup` 🚀 **融资动态**：创业公司融资 / IPO / 并购 / YC 批次 / 独角兽动态
+  - `market` 📊 **市场财报**：季报 / 年报 / 市值变动 / 大型并购 / 行业分析报告
+- **信息源覆盖**（每日必须扫描）：
+  - 🌍 海外：TechCrunch / The Information / Bloomberg Tech / Reuters Tech / Hacker News / Product Hunt / Company IR/Blog
+  - 🇨🇳 国内：36Kr / 虎嗅 / 极客公园 / InfoQ / CSDN / 各公司官方公众号
+  - 📊 财经：Seeking Alpha / Yahoo Finance / 东方财富 / 雪球
 - 国内外各占约一半（region: 'china' | 'global'）
 - 每条格式：{ id, category, region, title, summary, source, date, tags[], hot, link }
-- 对超过 60 天的旧条目可以删除，保持列表在 30 条以内
+- **每日至少新增 10 条**，热点事件（hot: true）不少于 3 条
+- 对超过 90 天的旧条目进行合并归档（同类话题合并为一条汇总），保持活跃列表在 60 条以内
+- ⚠️ **注意**：category 字段只能使用 `data / cloud / software / security / startup / market` 这 6 个值，不要使用其他值（如 ai / game / hardware / funding / policy 等），否则会导致页面报错
+
+### 任务 4d：更新经济研究 src/app/economy/page.js（每日更新）
+- **每日必做**：跟踪宏观经济核心数据变动，更新页面中的数据和研判
+- **数据源覆盖**（每日必须扫描）：
+  - 🏦 央行/官方：美联储官网（FOMC 声明/纪要/点阵图）、中国人民银行（MLF/LPR/逆回购）、国家统计局、海关总署
+  - 📊 财经数据：Bloomberg / Reuters / FRED / Wind / 东方财富 / 同花顺
+  - 📰 分析研报：高盛 / 摩根士丹利 / 中金 / 中信 / 华泰 等卖方研报
+  - 🌐 国际组织：IMF / World Bank / BIS / WTO 报告
+- **更新内容**：
+  - 📈 **汇率预测 Tab**：更新最新汇率数据点、调整三大情景概率和区间（如有重大事件）
+  - 🏦 **美联储动态 Tab**：FOMC 会议结果 / 官员讲话 / 市场利率预期变化（CME FedWatch）
+  - 🇺🇸 **美国经济 Tab**：GDP/CPI/PCE/非农/失业率/PMI 等指标发布时即时更新
+  - 🇨🇳 **中国经济 Tab**：GDP/CPI/PPI/PMI/进出口/社融/M2 等指标发布时即时更新
+  - ⚠️ **风险因子 Tab**：重大地缘政治事件 / 贸易政策变化 / 关税调整 即时更新风险评估
+- **更新频率细则**：
+  - 重大数据发布日（非农/CPI/FOMC 等）：当日必须更新对应 Tab
+  - 普通交易日：至少更新汇率数据 + 1 条市场动态
+  - 每周末：回顾本周数据，更新综合研判结论
+  - 每月初：全面刷新所有 Tab 数据，更新预测区间
 
 ### 任务 5：更新模型数据 content/gallery/models.json（每次至少补充 2 个模型）
 - 重点补充：
@@ -385,8 +419,9 @@ maxwell-knowledge/
 - JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
 - 每次迭代保证：声浪 ≥8 条新增、文章 ≥2 篇、书籍 ≥1 章更新、论文 ≥1 篇详细解读、模型 ≥2 个
-- 创业雷达（IdeaRadar.js）每月刷新一次信号标注，每季度新增 ≥3 个创业方向
-- 全行业动态（IndustryNewsFeed.js）每次迭代新增 ≥5 条，保持列表 ≤30 条
+- 创业雷达（IdeaRadar.js）每日更新 2-3 个方向信号标注，每周新增 ≥1 个创业方向
+- 全行业动态（IndustryNewsFeed.js）每日新增 ≥10 条（热点 ≥3 条），category 只能用 data/cloud/software/security/startup/market，保持活跃列表 ≤60 条
+- 经济研究（economy/page.js）重大数据发布日当日更新，普通日至少更新汇率+1条动态，每月初全面刷新
 ```
 
 ---
