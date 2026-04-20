@@ -16,12 +16,23 @@ const footerLinks = [
       { name: '工具箱', href: '/tools/' },
       { name: 'AI Infra', href: '/data-infra/' },
       { name: '自动驾驶', href: '/vla/' },
+      { name: '前沿实验室', href: '/lab/' },
+    ],
+  },
+  {
+    group: '洞察',
+    links: [
+      { name: '业务原生', href: '/strategy/' },
+      { name: '创业雷达', href: '/idea/' },
+      { name: '量化 × AI', href: '/quant/' },
+      { name: '全球经济', href: '/economy/' },
     ],
   },
   {
     group: '动态',
     links: [
       { name: '声浪', href: '/news/' },
+      { name: '全行业动态', href: '/industry-news/' },
       { name: '进化日志', href: '/evolution/' },
     ],
   },

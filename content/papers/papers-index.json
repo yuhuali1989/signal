@@ -932,5 +932,23 @@
     "summary": "首次统一世界模型预测想象与 VLA 反思推理，想象→反思→行动三阶段范式，nuScenes L2(3s) 0.58m / 碰撞率 0.15% 双 SOTA",
     "arxivUrl": "https://arxiv.org/abs/2604.09059",
     "hasReview": true
+  },
+  {
+    "id": "seed-ad-bytedance-70b-vla",
+    "title": "Seed-AD: 70B Open-Source VLA Model for Autonomous Driving with Imagination-Reflection-Action",
+    "authors": "ByteDance Seed Team",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 5,
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "开源模型",
+      "世界模型",
+      "端到端"
+    ],
+    "summary": "首个完整开源的 70B 工业级 VLA 模型，nuScenes L2(3s) 0.54m / 碰撞率 0.11% 双 SOTA，车端 Orin X 推理 45ms，含完整训练管线与合成数据工具链",
+    "arxivUrl": "https://arxiv.org/abs/2604.13000",
+    "hasReview": true
   }
 ]
