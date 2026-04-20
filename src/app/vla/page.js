@@ -107,39 +107,77 @@ function PageHero({ activeProject, setActiveProject }) {
         </div>
       </div>
 
-      {/* 研究项目切换卡片 */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-        {RESEARCH_PROJECTS.map(proj => (
-          <button
-            key={proj.id}
-            onClick={() => setActiveProject(proj.id)}
-            className="text-left p-4 rounded-2xl border transition-all bg-white hover:shadow-sm"
-            style={activeProject === proj.id
-              ? { borderColor: proj.badgeColor + '66', background: proj.badgeColor + '0d', boxShadow: `0 1px 4px ${proj.badgeColor}22` }
-              : { borderColor: '#f1f5f9' }}
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xl">{proj.icon}</span>
-              <span className="text-sm font-semibold text-gray-800">{proj.title}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium ml-auto"
-                style={{ background: proj.badgeColor + '18', color: proj.badgeColor, border: `1px solid ${proj.badgeColor}30` }}>
-                {proj.badge}
-              </span>
-            </div>
-            <p className="text-xs text-gray-500 leading-relaxed mb-2">{proj.desc}</p>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {proj.tags.map(t => (
-                <span key={t} className="text-[10px] px-1.5 py-0.5 bg-gray-50 text-gray-400 rounded-md border border-gray-100">{t}</span>
-              ))}
-              <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ml-auto ${proj.statusColor}`}>{proj.status}</span>
-            </div>
-          </button>
-        ))}
+      {/* ───── 区块一：研究项目选择（论文/研究身份） ───── */}
+      <div className="mb-3 flex items-center gap-2">
+        <span className="inline-flex items-center gap-1 text-[11px] font-semibold tracking-wider text-slate-600 uppercase">
+          <span className="inline-block w-1 h-3 bg-slate-400 rounded-sm"></span>
+          📄 研究项目 · Research Projects
+        </span>
+        <span className="text-[11px] text-gray-400">选择一个项目查看其技术方案与实验</span>
       </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+        {RESEARCH_PROJECTS.map(proj => {
+          const isActive = activeProject === proj.id;
+          return (
+            <button
+              key={proj.id}
+              onClick={() => setActiveProject(proj.id)}
+              className="relative text-left p-4 pl-5 rounded-2xl border-2 transition-all overflow-hidden group"
+              style={isActive
+                ? { borderColor: proj.badgeColor, background: `linear-gradient(135deg, ${proj.badgeColor}14 0%, ${proj.badgeColor}05 100%)`, boxShadow: `0 4px 16px ${proj.badgeColor}26` }
+                : { borderColor: '#e2e8f0', background: '#fafbfc' }}
+            >
+              {/* 左侧色条 */}
+              <span className="absolute left-0 top-0 bottom-0 w-1"
+                style={{ background: isActive ? proj.badgeColor : '#cbd5e1' }}></span>
+              {/* 顶部 PAPER 标识 */}
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[9px] font-bold tracking-widest uppercase"
+                  style={{ color: isActive ? proj.badgeColor : '#94a3b8' }}>
+                  📄 PAPER
+                </span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                  style={{ background: proj.badgeColor + '18', color: proj.badgeColor, border: `1px solid ${proj.badgeColor}30` }}>
+                  {proj.badge}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">{proj.icon}</span>
+                <span className="text-base font-bold text-gray-900">{proj.title}</span>
+              </div>
+              <p className="text-xs text-gray-500 leading-relaxed mb-3">{proj.desc}</p>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {proj.tags.map(t => (
+                  <span key={t} className="text-[10px] px-1.5 py-0.5 bg-white text-gray-500 rounded-md border border-gray-200">{t}</span>
+                ))}
+                <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ml-auto ${proj.statusColor}`}>{proj.status}</span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ───── 区块二：技术方案分解（步骤） ───── */}
+      {(activeProject === 'driveworld' || activeProject === 'seedad' || activeProject === 'alpamayo') && (
+        <div className="mb-3 flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 text-[11px] font-semibold tracking-wider text-slate-600 uppercase">
+            <span className="inline-block w-1 h-3 bg-slate-400 rounded-sm"></span>
+            🧩 技术方案分解 · Pipeline
+          </span>
+          <span className="text-[11px] text-gray-400">
+            {activeProject === 'driveworld'
+              ? 'DriveWorld-VLA 三步技术栈'
+              : activeProject === 'seedad'
+                ? 'Seed-AD 三步技术栈（70B 云端 + 13B 车端）'
+                : 'Alpamayo-R1 三步技术栈（CoT × RL 推理驾驶，概要）'}
+          </span>
+          <span className="flex-1 h-px bg-gradient-to-r from-slate-200 to-transparent ml-2"></span>
+        </div>
+      )}
 
       {/* DriveWorld-VLA 三步骤详情（仅 active 时显示） */}
       {activeProject === 'driveworld' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative">
           {[
             {
               step: '01',
@@ -165,14 +203,24 @@ function PageHero({ activeProject, setActiveProject }) {
               color: '#fd79a8',
               tags: ['L2: 0.42m', 'FVD: 52', '碰撞率: 1.2%'],
             },
-          ].map((item) => (
-            <div key={item.step} className="rounded-2xl border p-4 hover:shadow-sm transition-shadow"
-              style={{ borderColor: item.color + '33', background: item.color + '08' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">{item.icon}</span>
-                <span className="text-xs font-bold" style={{ color: item.color }}>STEP {item.step}</span>
+          ].map((item, idx, arr) => (
+            <div key={item.step} className="relative rounded-xl border-2 border-dashed p-4 bg-white hover:bg-gray-50/50 transition-colors"
+              style={{ borderColor: item.color + '55' }}>
+              {/* 大号 STEP 角标 */}
+              <div className="absolute -top-3 left-4 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white border-2"
+                style={{ borderColor: item.color }}>
+                <span className="text-[10px] font-mono font-bold tracking-wider" style={{ color: item.color }}>STEP {item.step}</span>
               </div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-1">{item.title}</h3>
+              {/* 连接箭头（桌面端，非最后一个） */}
+              {idx < arr.length - 1 && (
+                <div className="hidden sm:flex absolute top-1/2 -right-[14px] -translate-y-1/2 z-10 w-6 h-6 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6m0 0L5 2m3 3L5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              )}
+              <div className="flex items-center gap-2 mb-2 mt-1">
+                <span className="text-xl">{item.icon}</span>
+                <h3 className="text-sm font-semibold text-gray-800">{item.title}</h3>
+              </div>
               <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
               <div className="flex flex-wrap gap-1">
                 {item.tags.map((t) => (
@@ -187,7 +235,7 @@ function PageHero({ activeProject, setActiveProject }) {
 
       {/* Seed-AD 三步骤详情 */}
       {activeProject === 'seedad' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative">
           {[
             {
               step: '01',
@@ -213,14 +261,24 @@ function PageHero({ activeProject, setActiveProject }) {
               color: '#fd79a8',
               tags: ['L2: 0.54m', '碰撞率: 0.11%', 'FVD: 47', 'Orin X 45ms'],
             },
-          ].map((item) => (
-            <div key={item.step} className="rounded-2xl border p-4 hover:shadow-sm transition-shadow"
-              style={{ borderColor: item.color + '33', background: item.color + '08' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xl">{item.icon}</span>
-                <span className="text-xs font-bold" style={{ color: item.color }}>STEP {item.step}</span>
+          ].map((item, idx, arr) => (
+            <div key={item.step} className="relative rounded-xl border-2 border-dashed p-4 bg-white hover:bg-gray-50/50 transition-colors"
+              style={{ borderColor: item.color + '55' }}>
+              {/* 大号 STEP 角标 */}
+              <div className="absolute -top-3 left-4 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white border-2"
+                style={{ borderColor: item.color }}>
+                <span className="text-[10px] font-mono font-bold tracking-wider" style={{ color: item.color }}>STEP {item.step}</span>
               </div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-1">{item.title}</h3>
+              {/* 连接箭头（桌面端，非最后一个） */}
+              {idx < arr.length - 1 && (
+                <div className="hidden sm:flex absolute top-1/2 -right-[14px] -translate-y-1/2 z-10 w-6 h-6 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6m0 0L5 2m3 3L5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              )}
+              <div className="flex items-center gap-2 mb-2 mt-1">
+                <span className="text-xl">{item.icon}</span>
+                <h3 className="text-sm font-semibold text-gray-800">{item.title}</h3>
+              </div>
               <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
               <div className="flex flex-wrap gap-1">
                 {item.tags.map((t) => (
@@ -233,16 +291,97 @@ function PageHero({ activeProject, setActiveProject }) {
         </div>
       )}
 
-      {/* Alpamayo-R1 占位卡（跟踪中） */}
+      {/* Alpamayo-R1 三步骤详情（精简版，跟踪中） */}
       {activeProject === 'alpamayo' && (
-        <div className="rounded-2xl border border-cyan-100 bg-cyan-50/30 p-6 text-center">
-          <div className="text-3xl mb-3">🧠</div>
-          <h3 className="text-base font-semibold text-gray-700 mb-1">Alpamayo-R1 研究跟踪中</h3>
-          <p className="text-sm text-gray-500 max-w-md mx-auto">
-            将 Chain-of-Thought 推理引入自动驾驶，通过慢思考提升复杂场景决策能力。
-            深度解读与实验正在整理，敬请期待。
-          </p>
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative">
+            {[
+              {
+                step: '01',
+                title: '数据 & 长尾场景',
+                desc: 'NVIDIA DRIVE 内部数据（数千小时真实驾驶）+ CoT 推理链人类标注（为什么减速 / 为什么变道 / 让行逻辑）。重点覆盖长尾与复杂场景：施工路段、紧急车辆、非受控路口、恶劣天气，配合仿真环境做闭环 RL 采样。',
+                icon: '🗄️',
+                color: '#00cec9',
+                tags: ['真实驾驶数据', 'CoT 标注', 'Corner Case', '仿真 RL'],
+              },
+              {
+                step: '02',
+                title: '模型架构（R1-style VLM）',
+                desc: '多模态 VLM 主干（视觉 Encoder + LLM 解码器）→ 显式 Chain-of-Thought 推理 → 输出驾驶指令（横向/纵向控制 + 轨迹）。R1 范式：先"思考"（列出观察·风险·选项），再"决策"；推理链作为可解释中间产物同时用于训练监督信号。',
+                icon: '🧠',
+                color: '#0abab5',
+                tags: ['VLM 主干', 'Chain-of-Thought', '可解释决策', '控制 + 轨迹'],
+              },
+              {
+                step: '03',
+                title: '训练范式（SFT + RL）',
+                desc: '第一阶段 SFT：用人工 CoT 链做监督微调，学会"像人类司机一样思考"。第二阶段 RL：用仿真环境 + 规则化奖励（安全/舒适/进度/合规）做 GRPO 风格策略优化，对齐长尾决策。侧重复杂场景处理能力而非刷 nuScenes 点数。',
+                icon: '📊',
+                color: '#6c5ce7',
+                tags: ['SFT on CoT', 'RL in Sim', 'GRPO', '长尾能力'],
+              },
+            ].map((item, idx, arr) => (
+              <div key={item.step} className="relative rounded-xl border-2 border-dashed p-4 bg-white hover:bg-gray-50/50 transition-colors"
+                style={{ borderColor: item.color + '55' }}>
+                {/* 大号 STEP 角标 */}
+                <div className="absolute -top-3 left-4 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white border-2"
+                  style={{ borderColor: item.color }}>
+                  <span className="text-[10px] font-mono font-bold tracking-wider" style={{ color: item.color }}>STEP {item.step}</span>
+                </div>
+                {/* 连接箭头（桌面端，非最后一个） */}
+                {idx < arr.length - 1 && (
+                  <div className="hidden sm:flex absolute top-1/2 -right-[14px] -translate-y-1/2 z-10 w-6 h-6 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6m0 0L5 2m3 3L5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 mb-2 mt-1">
+                  <span className="text-xl">{item.icon}</span>
+                  <h3 className="text-sm font-semibold text-gray-800">{item.title}</h3>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
+                <div className="flex flex-wrap gap-1">
+                  {item.tags.map((t) => (
+                    <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                      style={{ background: item.color + '18', color: item.color }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 研究概要卡（论文 / 核心创新 / 指标 / 现状） */}
+          <div className="mt-4 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50/40 to-white p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🧠</span>
+              <h3 className="text-sm font-semibold text-gray-800">Alpamayo-R1 · 研究概要</h3>
+              <span className="text-[10px] px-2 py-0.5 rounded-full border border-cyan-200 bg-white text-cyan-600 font-medium ml-1">跟踪中</span>
+              <span className="text-[10px] text-gray-400 ml-auto">NVIDIA Research · 2025</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-gray-600 leading-relaxed">
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">💡 核心创新</div>
+                把 DeepSeek-R1 风格的「显式推理 + RL 后训练」范式迁移到自动驾驶：让端到端模型在输出控制指令之前，先产出一段可解释的思考链，再用仿真环境的稠密奖励做策略优化。相比一步式 VLA，更擅长处理长尾与多步因果场景。
+              </div>
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">📈 关键卖点</div>
+                <ul className="space-y-1 list-disc list-inside marker:text-cyan-500">
+                  <li>可解释：输出推理链，便于事故复盘与安全审计</li>
+                  <li>长尾能力：复杂场景通过率显著优于无 CoT 的基线 VLA</li>
+                  <li>RL 友好：推理链天然适合 GRPO 等过程奖励训练</li>
+                  <li>工程化：目标对齐 NVIDIA DRIVE AGX 车端算力</li>
+                </ul>
+              </div>
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">🔍 与 DriveWorld / Seed-AD 的差异</div>
+                DriveWorld-VLA 强调统一隐空间 + 世界模型预测；Seed-AD 强调 70B 想象-反思-行动三阶段；Alpamayo-R1 不押注世界模型或超大参数量，而是押注「推理链 × RL」这一 LLM 侧被验证过的 Scaling 路径。
+              </div>
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">📌 当前状态</div>
+                论文与技术细节尚未完整公开，仅有 NVIDIA DRIVE Labs 的公开演示与博客。本模块将持续跟踪：①论文正式发布 ②开源进展 ③公开 benchmark（nuScenes / NAVSIM / Bench2Drive）数据，届时升级到「深度解读」。
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
