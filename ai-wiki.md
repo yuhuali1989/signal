@@ -516,6 +516,8 @@ for f in files:
 "
 
 ### 检查 7：清除缓存并重启服务
+# ⚠️ 重要：必须等待编译完成后再验证，否则 CSS/JS 未就绪会导致页面样式崩溃
+
 # 停止现有服务
 pkill -f "next dev" 2>/dev/null; sleep 2
 
@@ -525,10 +527,21 @@ rm -rf /Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/.next
 # 重启开发服务器
 cd /Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge
 nohup npx next dev > /tmp/signal-dev.log 2>&1 &
-sleep 8 && tail -5 /tmp/signal-dev.log
 
-# 验证服务已启动
-curl -s -o /dev/null -w "服务状态: %{http_code}\n" http://localhost:3000/
+# 轮询等待首页编译完成（最多等 90 秒），避免编译期间访问导致 CSS 失效
+echo "等待 Next.js 编译完成..."
+for i in $(seq 1 30); do
+  status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 3 http://localhost:3000/ 2>/dev/null)
+  if [ "$status" = "200" ]; then
+    echo "✅ 服务已就绪 (第 ${i} 次检测，HTTP $status)"
+    break
+  fi
+  echo "  编译中... ($i/30，当前状态: $status)"
+  sleep 3
+done
+
+# 输出最新日志确认状态
+tail -5 /tmp/signal-dev.log
 
 ### 检查 8：输出质检报告
 汇总以下信息：
