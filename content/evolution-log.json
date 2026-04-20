@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260420-evolution-render-fix",
+    "type": "system",
+    "title": "修复进化日志渲染：兼容 title+description 格式",
+    "description": "此前 src/app/evolution/page.js 只渲染 log.message 字段，导致使用新格式（含 title+description）的日志条目在页面上丢失详情。现已改为优先渲染 title 作为标题、description 作为详细描述，同时兼容旧的 message 格式。补齐 model/system 类型的 emoji、配色和标签，卡片右上角显示时间，交互增加 hover 阴影。同步重写 ai-wiki.md 中任务 6 的提示词，强制要求统一使用新格式并给出 title/description 撰写规范。",
+    "date": "2026-04-20 16:40",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260420-daily-update-05",
     "type": "model",
     "title": "模型数据更新：新增 Qwen3-Max 和 Seed-AD",

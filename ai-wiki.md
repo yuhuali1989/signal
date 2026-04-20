@@ -289,12 +289,10 @@ maxwell-knowledge/
 *最后更新：2026-04-20*
 
 **本次主要更新内容**：
+- 🔄 **进化日志重大修复**：[evolution/page.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/app/evolution/page.js) 此前只渲染 `log.message` 字段，导致所有使用新格式（title + description）的日志条目在页面上丢失详情；现已改为兼容两种格式并优先展示 `title + description`，同步补齐 `model / system` 类型的图标/配色/标签，卡片右上角显示时间
+- 📝 **提示词任务 6 重写**：明确要求统一使用 `{ id, type, title, description, date, agent }` 新格式（禁用旧 message 格式），并给出 title（≤40字动宾结构）、description（≥60字含具体数字/名称）的撰写规范
 - 🚀 **部署升级**：GitHub Pages 自动部署切换到官方 `nextjs.yml` 模板，修复 basePath `/signal` 在生产构建时未注入导致的 404 问题（`next.config.js` 中 basePath/assetPrefix 显式硬编码为 `/signal`）；线上地址：https://yuhuali1989.github.io/signal/
 - 🎥 **VLA 数据可视化**：新增 360° 全景拼接视图，6 路真实 nuScenes 摄像头按方位顺序拼接，并叠加 2D 目标投影标注
-- 📝 **自动化提示词优化**：
-  - 任务 2 新增「文章去重校验机制」（写文章前必须 ls/grep 校验标题/主题/角度是否重复，重大更新优先改写已有文章）
-  - 质检员「检查 7」加入编译完成轮询等待，避免 CSS/JS 未就绪导致样式崩溃
-  - 全行业动态 / 创业雷达 / 经济研究 三大模块升级为**每日更新**要求
 - 📚 **每日内容更新**：声浪 +8 条、文章 +2 篇、书籍 +1 章、论文 +1 篇详细解读、模型 +2 个、全行业动态 +10 条
 
 ---
@@ -427,10 +425,28 @@ maxwell-knowledge/
     architecture, release_date, open_source, ad_specific(bool)
 - 注意：models.json 是大文件(122KB)，使用 replace_in_file 追加，不要整体重写
 
-### 任务 6：更新进化日志 content/evolution-log.json
-- 追加本次更新的操作记录，格式：
-  { id, type, title, description, date, agent: "editor-v2" }
-- type 可选：news | article | book | paper | model
+### 任务 6：更新进化日志 content/evolution-log.json（重要）
+- 每次更新结束后，将本次的每项操作作为独立条目追加到 JSON 数组头部
+- **统一使用新格式**（禁止使用旧的 `{ date, type, agent, message, slug }` 格式，那种格式在进化日志页面上显示会丢失细节）：
+  ```json
+  {
+    "id": "evo-YYYYMMDD-xxx",
+    "type": "news | article | book | paper | model | system",
+    "title": "一句话简明标题（≤40字，体现核心变更）",
+    "description": "3-5 句详细描述：本次做了什么、为什么做、影响范围/数据指标（如有）。避免只写一个模块名",
+    "date": "YYYY-MM-DD HH:MM",
+    "agent": "editor-v2"
+  }
+  ```
+- **title 撰写要求**：动宾结构，含主体对象（如"新增《XX》第 N 章"、"声浪新增 8 条覆盖 XXX"）
+- **description 撰写要求**：
+  - 必须包含**具体内容点**（模型名/论文名/技术名/数字指标）
+  - 对新增类：说明核心亮点（如"MMLU-Pro 91.2% 超 Opus 4.6"）
+  - 对更新类：说明追加了哪些小节、覆盖了什么新进展
+  - 对修复类：说明问题根因和修复方式
+  - ≥60 字，≤200 字
+- type 可选：`news | article | book | paper | model | system`（system 用于部署/配置/Bug 修复类）
+- 每次至少追加 5-8 条独立日志（对应 5-8 次独立的内容/代码变更）
 
 ### 任务 7：更新文档 ai-wiki.md（重要）
 - 更新「当前模块进展」中受影响的章节（如新增模块、Tab、重要功能点）
