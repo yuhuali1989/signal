@@ -94,7 +94,7 @@ function ModelGallery({ models }) {
       <div className="space-y-4">
         {filtered.map(m => {
           const isExpanded = expandedId === m.id;
-          const fs = m.factSheet;
+          const fs = m.factSheet || {};
           return (
             <div key={m.id} className="card rounded-xl overflow-hidden">
               <button

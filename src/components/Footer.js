@@ -7,15 +7,15 @@ const footerLinks = [
       { name: '书架', href: '/books/' },
       { name: '文章', href: '/articles/' },
       { name: '论文解读', href: '/papers/' },
+      { name: '模型', href: '/models/' },
     ],
   },
   {
-    group: '模型与工具',
+    group: '工具 & 研究',
     links: [
-      { name: '模型', href: '/models/' },
-      { name: '自动驾驶', href: '/vla/' },
-      { name: 'AI Infra', href: '/data-infra/' },
       { name: '工具箱', href: '/tools/' },
+      { name: 'AI Infra', href: '/data-infra/' },
+      { name: '自动驾驶', href: '/vla/' },
     ],
   },
   {

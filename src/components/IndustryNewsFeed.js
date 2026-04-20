@@ -110,6 +110,75 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-04-20（第23轮更新）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2301,
+    category: 'security',
+    region: 'global',
+    title: 'Vercel 安全事件：第三方 AI 编码工具被入侵，内部系统遭非授权访问',
+    summary: 'Vercel 确认其内部系统通过被入侵的第三方 AI 编码工具被非授权访问。黑客组织 ShinyHunters 声称获取部分源代码。首起通过 AI 开发工具供应链入侵头部云平台事件，凸显 Agent 工具链安全紧迫性。',
+    source: 'Techmeme',
+    date: '2026-04-20',
+    tags: ['Vercel', '供应链攻击', 'AI安全', '开发者工具'],
+    hot: true,
+  },
+  {
+    id: 2302,
+    category: 'startup',
+    region: 'global',
+    title: 'Q1 2026 全球 VC 投资 $2970 亿破纪录：AI 占 81%，四笔史上最大融资同季完成',
+    summary: 'Crunchbase 数据：2026 Q1 全球 VC 投资 $2970 亿，AI 占 81%。OpenAI $1220 亿、Anthropic $300 亿、xAI $200 亿同季完成。Series B 均轮 $1.05 亿。资本极度集中于 AI 基础设施和前沿模型。',
+    source: 'Crunchbase News',
+    date: '2026-04-20',
+    tags: ['融资', 'VC', 'AI', '记录'],
+    hot: true,
+  },
+  {
+    id: 2303,
+    category: 'data',
+    region: 'china',
+    title: 'Moonshot AI × 清华提出 PrfaaS：跨数据中心 KVCache 架构，推理成本降 60%',
+    summary: 'Moonshot AI 与清华联合提出 PrfaaS（Prefill as a Service），将 KVCache 生成和复用扩展到跨数据中心。通过 RDMA 传输 Prefill 与 Decode 完全解耦，1000 并发下推理成本降 60%，首 Token 延迟减少 45%。',
+    source: 'arXiv',
+    date: '2026-04-20',
+    tags: ['Moonshot', '清华', 'KVCache', '推理优化'],
+    hot: true,
+  },
+  {
+    id: 2304,
+    category: 'software',
+    region: 'global',
+    title: 'Anthropic Claude Opus 4.7 发布：xhigh 推理等级、100 万上下文、14 项基准 12 项超 4.6',
+    summary: 'Anthropic 发布 Claude Opus 4.7，SWE-bench 87.6%、GPQA 94.2%。新增 xhigh 推理强度等级允许动态调节推理深度。视觉分辨率 3.3 倍提升。定价不变（$5/$25/M token）。',
+    source: 'Anthropic Blog',
+    date: '2026-04-20',
+    tags: ['Claude', 'Anthropic', '推理', 'LLM'],
+    hot: true,
+  },
+  {
+    id: 2305,
+    category: 'data',
+    region: 'global',
+    title: 'FlexKV 开源 v0.4：跨节点 KVCache 复用，RDMA <1ms，支持 vLLM/SGLang/TRT-LLM',
+    summary: 'TACO Project 开源 FlexKV v0.4，集成 Mooncake Transfer Engine。RDMA 传输延迟 <1ms，兼容三大推理框架。在 Llama 4 Maverick 400B 推理下吞吐量提升 2.8 倍。Apache 2.0 许可。',
+    source: 'GitHub',
+    date: '2026-04-19',
+    tags: ['FlexKV', 'KVCache', '开源', '推理框架'],
+    hot: false,
+  },
+  {
+    id: 2306,
+    category: 'startup',
+    region: 'china',
+    title: '智谱 GLM-5.1 开源：744B MoE MIT 许可，SWE-Bench Pro 超越 GPT-5.4',
+    summary: '智谱 AI 发布 GLM-5.1，744B 参数 MoE（40B 活跃），MIT 许可。SWE-Bench Pro 超越 GPT-5.4 和 Claude Opus 4.6。API 价格约 $1/$3.2/M token。开源 vs 闭源竞争格局根本性转变。',
+    source: '智谱 AI / GitHub',
+    date: '2026-04-19',
+    tags: ['智谱', 'GLM', '开源', 'MoE'],
+    hot: true,
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-04-18（第22轮更新）
   // ══════════════════════════════════════════════════════
   {

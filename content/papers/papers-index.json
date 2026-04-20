@@ -915,5 +915,22 @@
     "summary": "物理一致性约束世界模型，10% 真实 + 90% 合成数据达到 96% 真实数据性能，FID 降至 12.3，生成速度 15 帧/秒",
     "arxivUrl": "https://arxiv.org/abs/2604.11234",
     "hasReview": false
+  },
+  {
+    "id": "vla-world-imagination-reasoning-driving",
+    "title": "VLA-World: Learning Vision-Language-Action World Models for Autonomous Driving",
+    "authors": "Wang, Tang et al.",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 5,
+    "tags": [
+      "VLA",
+      "世界模型",
+      "自动驾驶",
+      "端到端"
+    ],
+    "summary": "首次统一世界模型预测想象与 VLA 反思推理，想象→反思→行动三阶段范式，nuScenes L2(3s) 0.58m / 碰撞率 0.15% 双 SOTA",
+    "arxivUrl": "https://arxiv.org/abs/2604.09059",
+    "hasReview": true
   }
 ]
