@@ -186,7 +186,8 @@
 Next.js 14 (App Router)  +  React  +  Tailwind CSS
 内容层：Markdown / JSON 文件驱动（content/ 目录）
 可视化：纯 SVG + React 状态驱动（无第三方图表库）
-部署：本地 localhost:3000
+构建产物：纯静态文件（output: 'export'），无服务端依赖
+部署：GitHub Pages（GitHub Actions 自动构建部署）/ 本地 localhost:3000
 ```
 
 ---

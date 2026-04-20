@@ -3,15 +3,24 @@ name: 🚀 Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # 支持手动触发部署
+  workflow_dispatch:
 
+# GitHub Pages 部署所需权限
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 同一时间只允许一个部署，避免冲突
 concurrency:
   group: "pages"
   cancel-in-progress: false
+
+# ⚠️ 如果部署到子路径（如 https://username.github.io/signal/），
+#    取消下面的注释并修改为你的仓库名：
+# env:
+#   NEXT_PUBLIC_BASE_PATH: /signal
 
 jobs:
   build-and-deploy:
@@ -20,7 +29,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
@@ -33,6 +43,13 @@ jobs:
 
       - name: 🔨 Build static site
         run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ env.NEXT_PUBLIC_BASE_PATH || '' }}
+
+      - name: 🚫 Add .nojekyll
+        # GitHub Pages 默认使用 Jekyll，会忽略 _next 目录
+        # 添加 .nojekyll 文件禁用 Jekyll 处理
+        run: touch ./out/.nojekyll
 
       - name: 📤 Upload artifact
         uses: actions/upload-pages-artifact@v3
