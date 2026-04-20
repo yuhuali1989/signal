@@ -69,19 +69,29 @@
 - ✅ 自动驾驶专区：模型架构 + 数据集已丰富
 
 ### 6. VLA 实验室 `/vla/`
-- ✅ Hero：DriveWorld-VLA 三步流程概览（数据准备 / 模型架构 / 三阶段训练）
-- ✅ **架构 & 数据** Tab（子 Tab：模型架构图 / 数据集选型 / 训练配置 / VLA 实验室）
-  - 模型架构图：Unified Latent-Space SVG 可视化，节点可点击查看详情
-  - 数据集选型：多数据集对比
-  - 训练配置：超参数表格
-  - VLA 实验室：4 种 VLA 世界模型架构方案展示
-- ✅ **全链路实验** Tab（Notebook 风格，逐步可运行）
-  - Cell 1：数据准备（nuScenes mini，可调数据条数）
-  - Cell 2：数据处理（多传感器对齐 + Tokenize）
-  - Cell 3：模型搭建（DriveWorld-VLA 完整架构）
-  - Cell 4：模型训练（三阶段训练，含 Loss 曲线可视化）
-  - Cell 5：数据可视化（摄像头 / 雷达 / BEV 随机样本展示）
-  - Cell 6：预测结果可视化（轨迹预测 + 碰撞概率）
+- ✅ Hero：研究项目卡片（3 张，可切换）—— DriveWorld-VLA / **Seed-AD（新增）** / Alpamayo-R1
+- ✅ 两大活跃研究项目各自拥有独立的 3 Tab（架构&数据 / 全链路实验 / 数据闭环），互不干扰
+- ✅ **DriveWorld-VLA**（紫色主题 #6c5ce7）
+  - 架构 & 数据 Tab（子 Tab：模型架构图 / 数据集选型 / 训练配置 / VLA 实验室）
+  - 全链路实验 Tab（6 Cell Notebook，含 360° 全景拼接 + GT/Pred 对比）
+  - 数据闭环 Tab（7 层）
+- ✅ **Seed-AD（新增）**（翡翠绿主题 #10b981）—— 字节 70B VLA 三阶段推理工业级落地
+  - **架构 & 数据** Tab（[SeedAdArchViz.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdArchViz.js)，4 子 Tab）
+    - 三阶段架构图：共享骨干 40B + 想象头 10B + 反思头 10B + 行动头 10B，节点可点击
+    - 对比 DriveWorld-VLA：10 维对照表 + 双层雷达图（Seed-AD 8/10 维占优）
+    - 数据集选型：nuScenes + OpenDV-2K + DriveLM + **UniSim 2.0 合成** + nuPlan + Waymo，训练配比可视化
+    - 训练配置：三阶段（预训练 21 天 + 联合 7 天 + 蒸馏 3 天 = 31 天）+ 超参表
+  - **全链路实验** Tab（[SeedAdNotebook.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdNotebook.js)，6 Cell）
+    - Cell 1 数据下载 & 预览：HuggingFace `saeedrmd/trajectory-prediction-nuscenes` 真实加载 + UniSim 2.0 风格 32 种天气/光照增强 + 三阶段 Token 预览
+    - Cell 2 多模态 Tokenize：6 cam + 5 LiDAR + 5 Radar + 状态 + 导航 → Latent 2048D
+    - Cell 3 三阶段模型搭建：70B 完整结构（骨干 + 想象/反思/行动 三头）
+    - Cell 4 三阶段训练：Stage1 MIM+NFP+Con · Stage2 联合微调 · Stage3 蒸馏
+    - Cell 5 车端蒸馏：INT4 + KV 共享 + SpecDec v3 → Orin X 45ms
+    - Cell 6 **预测可视化**：独立组件 [SeedAdPredictionViz.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdPredictionViz.js)，三视图同步（想象 BEV 40×40 占用栅格 + 反思 5 维风险雷达 + 行动轨迹 + 置信带），共享 30 帧时间轴，支持播放/拖动，3 种演示场景（城市巡航 / 紧急切入 / 行人横穿），保守模式触发实时可视
+  - **数据闭环** Tab（[SeedAdDataLoop.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdDataLoop.js)，8 层）
+    - 相比 DriveWorld 的 7 层，新增 ★ **UniSim 2.0 合成数据层**（Seed-AD 专属创新）
+    - 车端 13B 实时反思，只回传 collision > 0.3 的风险 case，减 80% 带宽
+  - **核心指标**：nuScenes L2(3s) **0.54m** · 碰撞率 **0.11%** · FVD **47** · Orin X **45ms**（全面超越 VLA-World 0.58m / 0.15%，新 SOTA）
 
 ### 7. 声浪 `/news/`
 - ✅ AI 前沿动态聚合（YouTube / 播客 / X）
@@ -289,11 +299,13 @@ maxwell-knowledge/
 *最后更新：2026-04-20*
 
 **本次主要更新内容**：
-- 🔄 **进化日志重大修复**：[evolution/page.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/app/evolution/page.js) 此前只渲染 `log.message` 字段，导致所有使用新格式（title + description）的日志条目在页面上丢失详情；现已改为兼容两种格式并优先展示 `title + description`，同步补齐 `model / system` 类型的图标/配色/标签，卡片右上角显示时间
-- 📝 **提示词任务 6 重写**：明确要求统一使用 `{ id, type, title, description, date, agent }` 新格式（禁用旧 message 格式），并给出 title（≤40字动宾结构）、description（≥60字含具体数字/名称）的撰写规范
-- 🚀 **部署升级**：GitHub Pages 自动部署切换到官方 `nextjs.yml` 模板，修复 basePath `/signal` 在生产构建时未注入导致的 404 问题（`next.config.js` 中 basePath/assetPrefix 显式硬编码为 `/signal`）；线上地址：https://yuhuali1989.github.io/signal/
-- 🎥 **VLA 数据可视化**：新增 360° 全景拼接视图，6 路真实 nuScenes 摄像头按方位顺序拼接，并叠加 2D 目标投影标注
-- 📚 **每日内容更新**：声浪 +8 条、文章 +2 篇、书籍 +1 章、论文 +1 篇详细解读、模型 +2 个、全行业动态 +10 条
+- 🌱 **VLA 新增 Seed-AD 子模块**：在 `/vla/` 下新增字节 70B VLA 三阶段推理模型的完整研究子模块，与 DriveWorld-VLA 平行独立，翡翠绿 `#10b981` 主题区分；新增 4 个组件 [SeedAdArchViz.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdArchViz.js)、[SeedAdNotebook.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdNotebook.js)、[SeedAdDataLoop.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdDataLoop.js)、[SeedAdPredictionViz.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/components/SeedAdPredictionViz.js)
+- 🎨 **三视图同步预测可视化**：Cell 6 独立实现「想象 BEV 占用栅格 + 反思 5 维风险雷达 + 行动轨迹带置信带」三视图，共享 30 帧（3s×10Hz）时间轴，3 种演示场景（城市巡航/紧急切入/行人横穿），保守模式触发时 UI 实时变红
+- 📥 **数据下载一次性做对**：Cell 1 复用 DriveWorld-VLA 已验证的 HuggingFace 数据源 `saeedrmd/trajectory-prediction-nuscenes`，叠加 UniSim 2.0 风格 32 种天气/光照合成增强，含三阶段 Token（想象/反思/行动）结构预览
+- 📊 **10 维对照 DriveWorld-VLA**：Seed-AD 在参数量、碰撞率、车端推理、合成数据、开源程度、FVD 等 8/10 维度占优；新增双层雷达图直观对比
+- 🔄 **8 层数据闭环（新增 UniSim 2.0 层）**：相比 DriveWorld 的 7 层多一个合成数据层，车端 13B 实时反思触发风险 case 回传，带宽节省 80%
+- 🔄 **进化日志重大修复**：[evolution/page.js](/Users/harrisyu/WorkBuddy/20260409114249/maxwell-knowledge/src/app/evolution/page.js) 改为兼容 title+description 与 message 两种格式并优先展示新格式，修复旧条目在页面上丢失详情的问题
+- 🚀 **部署升级**：GitHub Pages 自动部署切换到官方 `nextjs.yml` 模板，`next.config.js` 中 basePath/assetPrefix 显式硬编码为 `/signal`；线上地址：https://yuhuali1989.github.io/signal/
 
 ---
 
