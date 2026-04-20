@@ -17,10 +17,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-# ⚠️ 如果部署到子路径（如 https://username.github.io/signal/），
-#    取消下面的注释并修改为你的仓库名：
-# env:
-#   NEXT_PUBLIC_BASE_PATH: /signal
+# 📌 部署到子路径 https://yuhuali1989.github.io/signal/
+#    所有资源（CSS/JS/图片）必须以 /signal 为前缀，否则页面样式会崩溃
+env:
+  NEXT_PUBLIC_BASE_PATH: /signal
 
 jobs:
   build-and-deploy:
@@ -44,7 +44,7 @@ jobs:
       - name: 🔨 Build static site
         run: npm run build
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ env.NEXT_PUBLIC_BASE_PATH || '' }}
+          NEXT_PUBLIC_BASE_PATH: ${{ env.NEXT_PUBLIC_BASE_PATH }}
 
       - name: 🚫 Add .nojekyll
         # GitHub Pages 默认使用 Jekyll，会忽略 _next 目录
