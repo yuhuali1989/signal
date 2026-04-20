@@ -709,6 +709,154 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
+// ── 360° 全景拼接视图 ───────────────────────────────────────────
+// 按真实方位顺序横向拼接 6 路 nuScenes 摄像头：
+// 左后 → 左前 → 前 → 右前 → 右后 → 后（形成一条 360° 长条带）
+// 每一路保留 1600x900 原始宽高比，缩放到统一高度；同时叠加 2D 投影标注
+const PANO_ORDER = [
+  { label: '左后', channel: 'CAM_BACK_LEFT',   angle: 225 },
+  { label: '左前', channel: 'CAM_FRONT_LEFT',  angle: 315 },
+  { label: '前视', channel: 'CAM_FRONT',       angle: 0   },
+  { label: '右前', channel: 'CAM_FRONT_RIGHT', angle: 45  },
+  { label: '右后', channel: 'CAM_BACK_RIGHT',  angle: 135 },
+  { label: '后视', channel: 'CAM_BACK',        angle: 180 },
+];
+
+function PanoramaView({ frameData, showMode }) {
+  const canvasRef = useRef(null);
+  const imgsRef = useRef({});
+  const [imgsLoaded, setImgsLoaded] = useState(0);
+
+  // 单格尺寸：160x90（1600x900 的 1/10）；总宽 960x90
+  const CELL_W = 160, CELL_H = 90;
+  const W = CELL_W * 6, H = CELL_H;
+
+  const PRED_COLORS = {
+    'vehicle.car': '#6699ff', 'vehicle.truck': '#5588ee', 'vehicle.bus.rigid': '#4477dd',
+    'vehicle.bus.bendy': '#4477dd', 'vehicle.construction': '#cc88ff',
+    'vehicle.motorcycle': '#88ccff', 'vehicle.bicycle': '#77bbff',
+    'human.pedestrian.adult': '#ff88cc', 'human.pedestrian.child': '#ff99dd',
+    'human.pedestrian.construction_worker': '#ffaa88',
+    'movable_object.barrier': '#9999bb', 'movable_object.trafficcone': '#dddd66',
+  };
+
+  // 预加载 6 张图
+  useEffect(() => {
+    if (!frameData?.cameras) return;
+    imgsRef.current = {};
+    setImgsLoaded(0);
+    let loaded = 0;
+    PANO_ORDER.forEach(({ channel }) => {
+      const url = frameData.cameras[channel];
+      if (!url) { loaded++; setImgsLoaded(loaded); return; }
+      const img = new window.Image();
+      img.onload = () => {
+        imgsRef.current[channel] = img;
+        loaded++; setImgsLoaded(loaded);
+      };
+      img.onerror = () => { loaded++; setImgsLoaded(loaded); };
+      img.src = url;
+    });
+  }, [frameData]);
+
+  useEffect(() => {
+    const cvs = canvasRef.current;
+    if (!cvs || !frameData) return;
+    cvs.width = W; cvs.height = H;
+    const ctx = cvs.getContext('2d');
+
+    // 底色
+    ctx.fillStyle = '#0d1117';
+    ctx.fillRect(0, 0, W, H);
+
+    const isPred = showMode === 'pred';
+
+    // 逐格绘制
+    PANO_ORDER.forEach(({ label, channel }, i) => {
+      const ox = i * CELL_W;
+      const img = imgsRef.current[channel];
+
+      // 底图
+      if (img) {
+        ctx.drawImage(img, ox, 0, CELL_W, CELL_H);
+      } else {
+        ctx.fillStyle = '#161b22';
+        ctx.fillRect(ox, 0, CELL_W, CELL_H);
+        ctx.fillStyle = '#3d444d';
+        ctx.font = '8px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('加载中...', ox + CELL_W / 2, CELL_H / 2);
+        ctx.textAlign = 'start';
+      }
+
+      // 标注（投影到当前格）
+      const anns = isPred
+        ? (frameData.cam_predictions?.[channel] || [])
+        : (frameData.cam_annotations?.[channel] || []).filter(a => a.lidar_pts >= 1);
+      const sx = CELL_W / 1600, sy = CELL_H / 900;
+      const maxBoxes = 6;
+      const sorted = [...anns].sort((a, b) => b.depth - a.depth).slice(0, maxBoxes);
+
+      sorted.forEach(a => {
+        const cx = ox + a.u * sx, cy = a.v * sy;
+        const bw = a.box_w * sx, bh = a.box_h * sy;
+        const bx = cx - bw / 2, by = cy - bh;
+        const color = isPred
+          ? (PRED_COLORS[a.category] || '#8888ff')
+          : (CAT_COLORS[a.category] || '#ffffff');
+        const isFP = a.is_fp;
+        ctx.strokeStyle = isFP ? '#ff4444' : color;
+        ctx.lineWidth = 1;
+        if (isPred) ctx.setLineDash(isFP ? [2, 2] : [3, 2]);
+        else ctx.setLineDash([]);
+        ctx.strokeRect(bx, by, bw, bh);
+        ctx.setLineDash([]);
+      });
+
+      // 分隔线
+      if (i > 0) {
+        ctx.strokeStyle = '#00cec9';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(ox, 0); ctx.lineTo(ox, CELL_H);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // 方位标签（左上角）
+      ctx.fillStyle = 'rgba(0,0,0,0.65)';
+      ctx.fillRect(ox + 2, 2, 34, 11);
+      ctx.fillStyle = isPred ? '#6699ff' : '#55efc4';
+      ctx.font = 'bold 8px monospace';
+      ctx.fillText(label, ox + 5, 10);
+    });
+
+    // 顶部方位刻度（360°）
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(0, H - 10, W, 10);
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '7px monospace';
+    ['225°','315°','0° (前)','45°','135°','180°'].forEach((t, i) => {
+      ctx.fillText(t, i * CELL_W + 4, H - 2);
+    });
+  }, [frameData, imgsLoaded, showMode, W, H]);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <canvas ref={canvasRef}
+        style={{ width: '100%', height: 'auto', borderRadius: 6, border: '1px solid #00cec955', display: 'block' }} />
+      <div style={{
+        position: 'absolute', top: 4, right: 6,
+        fontSize: 9, fontFamily: 'monospace', color: '#00cec9',
+        background: 'rgba(0,0,0,0.6)', padding: '2px 6px', borderRadius: 3,
+      }}>
+        🌐 360° 全景 · 6 cam stitched
+      </div>
+    </div>
+  );
+}
+
 // ── LiDAR BEV 点云 SVG ─────────────────────────────────────────
 function LidarBEV({ lidarPts, obstacles, gt, pred, sceneType }) {
   const W = 200, H = 200;
@@ -1127,6 +1275,17 @@ function TrajectoryViz({ model }) {
                   </div>
                 );
               })()}
+              {/* 🌐 360° 全景拼接带（左后→左前→前→右前→右后→后） */}
+              <div className="mb-1.5">
+                <div className="text-[8px] text-[#3d444d] font-mono mb-0.5">
+                  🌐 360° 全景视图 ·
+                  <span className="text-[#00cec9]"> 6 路 nuScenes 摄像头按方位顺序拼接</span>
+                  <span className="text-[#3d444d]"> （真实图像，非合成）</span>
+                </div>
+                <PanoramaView
+                  frameData={alignedSamples?.[selectedIdx]}
+                  showMode={showMode} />
+              </div>
               {/* 前视（大） */}
               <div className="mb-1.5">
                 <CameraView label="前视"
