@@ -187,8 +187,14 @@ Next.js 14 (App Router)  +  React  +  Tailwind CSS
 内容层：Markdown / JSON 文件驱动（content/ 目录）
 可视化：纯 SVG + React 状态驱动（无第三方图表库）
 构建产物：纯静态文件（output: 'export'），无服务端依赖
-部署：GitHub Pages（.github/workflows/nextjs.yml 官方模板，configure-pages@v5 自动注入 basePath=/signal）
+部署：GitHub Pages（.github/workflows/nextjs.yml 官方模板）
+      ⚠️ GitHub Pages 部署在 /signal/ 子路径下，next.config.js 中 `basePath`
+         **必须在 production 构建时显式写为 `/signal`**（不能只依赖 configure-pages@v5
+         自动注入 —— 它无法覆盖 `process.env.XXX` 动态读取的 basePath）。
+         当前实现：basePath = isProd ? (NEXT_PUBLIC_BASE_PATH ?? '/signal') : ''
+         并同步设置 assetPrefix，避免 _next/* 静态资源 404。
       线上地址：https://yuhuali1989.github.io/signal/
+      远程仓库：git@github.com:yuhuali1989/signal.git（main 分支触发部署）
 本地：localhost:3000
 ```
 
