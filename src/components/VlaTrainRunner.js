@@ -1042,10 +1042,23 @@ function TrajectoryViz({ model }) {
   const N_VIZ = 6;
 
   // 加载 nuScenes 对齐数据
+  // ⚠️ 注意：线上部署在 /signal/ 子路径下，必须给静态资源 URL 加 basePath 前缀
+  // 否则 /nuscenes/xxx.json 和 /nuscenes/*.jpg 都会 404，摄像头完全不展示
   useEffect(() => {
-    fetch('/nuscenes/aligned_samples.json')
+    const BP = process.env.NEXT_PUBLIC_BASE_PATH || '';
+    const prefix = (p) => (p && p.startsWith('/') ? `${BP}${p}` : p);
+    fetch(`${BP}/nuscenes/aligned_samples.json`)
       .then(r => r.json())
-      .then(data => setAlignedSamples(data))
+      .then(data => {
+        // 给每一帧的 6 路摄像头图片路径统一补上 basePath 前缀
+        const fixed = (data || []).map(frame => ({
+          ...frame,
+          cameras: Object.fromEntries(
+            Object.entries(frame.cameras || {}).map(([k, v]) => [k, prefix(v)])
+          ),
+        }));
+        setAlignedSamples(fixed);
+      })
       .catch(() => setAlignedSamples([]));
   }, []);
 

@@ -21,6 +21,10 @@ const nextConfig = {
   basePath,
   assetPrefix: basePath || undefined,
   trailingSlash: true,
+  // 将 basePath 暴露给客户端代码（fetch 静态资源时需要手动拼接）
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   // 支持 @dqbd/tiktoken 的 wasm 文件
   webpack(config, { isServer }) {
     config.experiments = { ...config.experiments, asyncWebAssembly: true };
