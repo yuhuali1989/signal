@@ -10,6 +10,11 @@ const Notebook = dynamic(() => import('@/components/VlaNotebook'), { ssr: false,
 
 const DataLoop = dynamic(() => import('@/components/DataLoopArch'), { ssr: false, loading: () => <LoadingBlock /> });
 
+// Seed-AD 子模块（70B · 三阶段 想象→反思→行动）
+const SeedAdArchViz  = dynamic(() => import('@/components/SeedAdArchViz'),  { ssr: false, loading: () => <LoadingBlock /> });
+const SeedAdNotebook = dynamic(() => import('@/components/SeedAdNotebook'), { ssr: false, loading: () => <LoadingBlock /> });
+const SeedAdDataLoop = dynamic(() => import('@/components/SeedAdDataLoop'), { ssr: false, loading: () => <LoadingBlock /> });
+
 function LoadingBlock() {
   return (
     <div className="flex items-center justify-center h-64 rounded-2xl bg-[#0a0d14] border border-[#1e2130]">
@@ -60,6 +65,18 @@ const RESEARCH_PROJECTS = [
     active: true,
   },
   {
+    id: 'seedad',
+    title: 'Seed-AD',
+    badge: '70B · 三阶段开源',
+    badgeColor: '#10b981',
+    status: '深度解读',
+    statusColor: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+    desc: '字节 70B VLA 三阶段推理（想象→反思→行动），nuScenes L2(3s) 0.54m / 碰撞率 0.11% 新 SOTA，车端 Orin X 45ms。',
+    tags: ['70B-VLA', 'Imagination', 'Reflection', 'nuScenes-SOTA'],
+    icon: '🌱',
+    active: true,
+  },
+  {
     id: 'alpamayo',
     title: 'Alpamayo-R1',
     badge: 'Reasoning-VLA',
@@ -91,16 +108,15 @@ function PageHero({ activeProject, setActiveProject }) {
       </div>
 
       {/* 研究项目切换卡片 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         {RESEARCH_PROJECTS.map(proj => (
           <button
             key={proj.id}
             onClick={() => setActiveProject(proj.id)}
-            className={`text-left p-4 rounded-2xl border transition-all ${
-              activeProject === proj.id
-                ? 'border-[#6c5ce7]/40 bg-purple-50/40 shadow-sm'
-                : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
-            }`}
+            className="text-left p-4 rounded-2xl border transition-all bg-white hover:shadow-sm"
+            style={activeProject === proj.id
+              ? { borderColor: proj.badgeColor + '66', background: proj.badgeColor + '0d', boxShadow: `0 1px 4px ${proj.badgeColor}22` }
+              : { borderColor: '#f1f5f9' }}
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xl">{proj.icon}</span>
@@ -169,6 +185,54 @@ function PageHero({ activeProject, setActiveProject }) {
         </div>
       )}
 
+      {/* Seed-AD 三步骤详情 */}
+      {activeProject === 'seedad' && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            {
+              step: '01',
+              title: '数据 & UniSim 2.0 合成',
+              desc: 'nuScenes（主，HuggingFace 真实加载）+ OpenDV-2K（2000 小时视觉预训练）+ DriveLM（460K 语言标注）+ nuPlan（闭环评估）+ ★ UniSim 2.0 合成数据工具链（32 种天气/光照组合，每条样本扩增 ×5，补齐长尾场景）。',
+              icon: '🗄️',
+              color: '#10b981',
+              tags: ['nuScenes', 'OpenDV-2K', 'DriveLM', 'UniSim 2.0'],
+            },
+            {
+              step: '02',
+              title: '三阶段模型（70B / 13B）',
+              desc: '共享骨干 40B（SwinT-Ultra 12B + Cross-Attn×8 + Temporal 28B）→ 想象头 10B（BEV 占用栅格预测）+ 反思头 10B（5 维风险评分）+ 行动头 10B（条件式轨迹生成）。车端蒸馏到 13B + INT4 + KV 共享 + SpecDec v3 → Orin X 45ms。',
+              icon: '🧠',
+              color: '#00cec9',
+              tags: ['70B 云端', '13B 车端', 'Imagination', 'Reflection', 'Action'],
+            },
+            {
+              step: '03',
+              title: '三阶段训练（31 天）',
+              desc: 'Stage1 共享骨干预训练（2048×H100，21 天，MIM+NFP+Con）→ Stage2 三阶段头联合微调（256×H100，7 天）→ Stage3 蒸馏到 13B 车端（32×H100，3 天）。nuScenes L2(3s)=0.54m，碰撞率 0.11%，FVD=47，全面超越 DriveWorld-VLA。',
+              icon: '📊',
+              color: '#fd79a8',
+              tags: ['L2: 0.54m', '碰撞率: 0.11%', 'FVD: 47', 'Orin X 45ms'],
+            },
+          ].map((item) => (
+            <div key={item.step} className="rounded-2xl border p-4 hover:shadow-sm transition-shadow"
+              style={{ borderColor: item.color + '33', background: item.color + '08' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">{item.icon}</span>
+                <span className="text-xs font-bold" style={{ color: item.color }}>STEP {item.step}</span>
+              </div>
+              <h3 className="text-sm font-semibold text-gray-800 mb-1">{item.title}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
+              <div className="flex flex-wrap gap-1">
+                {item.tags.map((t) => (
+                  <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                    style={{ background: item.color + '18', color: item.color }}>{t}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Alpamayo-R1 占位卡（跟踪中） */}
       {activeProject === 'alpamayo' && (
         <div className="rounded-2xl border border-cyan-100 bg-cyan-50/30 p-6 text-center">
@@ -184,6 +248,61 @@ function PageHero({ activeProject, setActiveProject }) {
   );
 }
 
+// ── Seed-AD 子 Tab 区域（与 DriveWorld 平行，独立状态） ────────
+const SEEDAD_TABS = [
+  { id: 'arch',     label: '架构 & 数据', icon: '🏗️', color: '#10b981',
+    desc: '三阶段架构图（想象→反思→行动）· 对比 DriveWorld-VLA · 数据集选型 · 训练配置' },
+  { id: 'notebook', label: '全链路实验',  icon: '📓', color: '#f39c12',
+    desc: '数据下载 → Tokenize → 三阶段模型搭建 → 三阶段训练 → 蒸馏到 13B → 预测可视化' },
+  { id: 'dataloop', label: '数据闭环',    icon: '🔄', color: '#00cec9',
+    desc: '8 层闭环架构（含 UniSim 2.0 合成数据层，Seed-AD 专属创新）' },
+];
+
+function SeedAdSection() {
+  const [tab, setTab] = useState('arch');
+  const current = SEEDAD_TABS.find(t => t.id === tab);
+  return (
+    <>
+      <div className="flex flex-wrap gap-2 mb-6 p-1.5 bg-gray-50 rounded-2xl border border-gray-100">
+        {SEEDAD_TABS.map((t) => (
+          <button key={t.id} onClick={() => setTab(t.id)}
+            className="flex items-center gap-2 py-2 px-4 rounded-xl text-sm font-medium transition-all whitespace-nowrap"
+            style={tab === t.id
+              ? { background: '#fff', color: t.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${t.color}33` }
+              : { color: '#94a3b8' }}>
+            <span>{t.icon}</span>
+            <span>{t.label}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="mb-5 flex items-center gap-2">
+        <span className="text-lg">{current?.icon}</span>
+        <div>
+          <h2 className="text-base font-semibold text-gray-800">{current?.label}</h2>
+          <p className="text-xs text-gray-400">{current?.desc}</p>
+        </div>
+      </div>
+
+      <div>
+        {tab === 'arch'     && <SeedAdArchViz />}
+        {tab === 'notebook' && <SeedAdNotebook />}
+        {tab === 'dataloop' && <SeedAdDataLoop />}
+      </div>
+
+      <div className="mt-10 p-4 bg-emerald-50/30 rounded-2xl border border-emerald-100 text-xs text-gray-500 leading-relaxed">
+        <span className="font-medium text-emerald-700">🌱 Seed-AD 亮点：</span>
+        字节跳动 Seed 团队开源的 <span className="font-mono text-emerald-700">70B VLA 自动驾驶大模型</span>，首次把
+        <span className="font-mono text-emerald-700"> 想象-反思-行动</span> 三阶段推理工业级落地。
+        nuScenes L2(3s) <span className="font-mono font-bold">0.54m</span> · 碰撞率
+        <span className="font-mono font-bold"> 0.11%</span> 成为新 SOTA（超越 VLA-World 0.58m / 0.15%）。
+        配套开源完整训练管线、基于 <span className="font-mono">UniSim 2.0</span> 扩展的合成数据工具链，
+        以及 Orin X 车端推理 <span className="font-mono font-bold">45ms</span> 延迟的优化实现（INT4 + KV 共享 + SpecDec v3）。
+      </div>
+    </>
+  );
+}
+
 export default function VlaPage() {
   const [activeTab, setActiveTab] = useState('arch');
   const [activeProject, setActiveProject] = useState('driveworld');
@@ -194,7 +313,7 @@ export default function VlaPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         <PageHero activeProject={activeProject} setActiveProject={setActiveProject} />
 
-        {/* 仅 DriveWorld 展示可视化 Tab */}
+        {/* DriveWorld-VLA 可视化 Tab */}
         {activeProject === 'driveworld' && (
           <>
             <div className="flex flex-wrap gap-2 mb-6 p-1.5 bg-gray-50 rounded-2xl border border-gray-100">
@@ -232,6 +351,11 @@ export default function VlaPage() {
               相比独立 BEV 融合减少 40% 参数量，FVD 提升 88%（420→52）。
             </div>
           </>
+        )}
+
+        {/* Seed-AD 可视化 Tab（与 DriveWorld 平行，各自维护 activeTab） */}
+        {activeProject === 'seedad' && (
+          <SeedAdSection />
         )}
       </div>
       <Footer />
