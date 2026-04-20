@@ -16,10 +16,12 @@ const NAV_ITEMS = [
   // 业务类
   { name: '自动驾驶', href: '/vla/',        group: 'business' },
   { name: '实验室',   href: '/lab/',        group: 'business' },
-  // 战略类
+  // 洞察类
   { name: '业务原生', href: '/strategy/',   group: 'strategy' },
+  { name: '创业雷达', href: '/idea/',       group: 'strategy' },
   // 动态类
   { name: '声浪',     href: '/news/',       group: 'news' },
+  { name: '日志',     href: '/evolution/',  group: 'news' },
 ];
 
 const GROUP_COLOR = {
@@ -105,7 +107,7 @@ export default function Navbar() {
             {[
               { key: 'knowledge', label: '知识' },
               { key: 'business',  label: '业务' },
-              { key: 'strategy',  label: '战略' },
+              { key: 'strategy',  label: '洞察' },
               { key: 'news',      label: '动态' },
             ].map(({ key, label }) => {
               const items = NAV_ITEMS.filter(n => n.group === key);

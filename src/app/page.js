@@ -132,6 +132,13 @@ export default function Home() {
                 <p className="text-xs text-gray-400">Prompt 模板 · Token 计算 · 评测解析</p>
               </div>
             </Link>
+            <Link href="/idea/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-50/60 border border-amber-100/60 hover:border-amber-300/60 hover:shadow-sm transition-all group">
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">💡</span>
+              <div>
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-amber-600 transition-colors">创业雷达</p>
+                <p className="text-xs text-gray-400">AI 赛道 · 海外对标 · 中国机会窗口</p>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

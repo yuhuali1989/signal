@@ -1781,5 +1781,60 @@
     ],
     "status": "research",
     "category": "autonomous-driving"
+  },
+  {
+    "name": "Qwen3-Max",
+    "provider": "阿里通义千问",
+    "params": "320B 总 / 32B 激活（MoE）",
+    "context": 1048576,
+    "benchmark_scores": {
+      "MMLU-Pro": 91.2,
+      "HumanEval": 96.4,
+      "SWE-bench": 78.5,
+      "GPQA": 90.8,
+      "AIME": 92.1
+    },
+    "architecture": "MoE Transformer（256 细粒度专家，top-8 激活）+ MLA + AttentionSink（1M 长尾召回 96%）",
+    "release_date": "2026-04-20",
+    "open_source": true,
+    "ad_specific": false,
+    "description": "首个在综合基准全面超越前沿闭源旗舰（Claude Opus 4.6）的开源商业模型。AttentionSink 机制将 1M 长尾召回率从 82% 提升至 96%。API 定价为 Opus 4.7 的 60%。",
+    "tags": [
+      "LLM",
+      "开源",
+      "MoE",
+      "长上下文",
+      "中文最优"
+    ],
+    "status": "released",
+    "category": "foundation"
+  },
+  {
+    "name": "Seed-AD",
+    "provider": "字节跳动 Seed",
+    "params": "70B（云端）/ 13B（车端蒸馏版）",
+    "context": null,
+    "benchmark_scores": {
+      "nuScenes_L2_1s": 0.20,
+      "nuScenes_L2_2s": 0.35,
+      "nuScenes_L2_3s": 0.54,
+      "nuScenes_collision_rate": 0.11,
+      "extreme_scenario_success": 88,
+      "orin_x_latency_ms": 45
+    },
+    "architecture": "三阶段 VLA：共享骨干（40B Swin-T Ultra + 时空注意力）→ 想象模块（10B，物理一致性约束）→ 反思模块（10B，5 维度风险评分）→ 行动模块（10B，条件轨迹生成）",
+    "release_date": "2026-04-19",
+    "open_source": true,
+    "ad_specific": true,
+    "description": "首个完整开源的 70B 工业级 VLA 自动驾驶大模型。nuScenes 规划 L2(3s) 0.54m / 碰撞率 0.11% 双 SOTA。完整开源训练管线、合成数据工具链（基于 UniSim 2.0 扩展）、Orin X 车端 45ms 推理实现。",
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "开源",
+      "三阶段推理",
+      "世界模型"
+    ],
+    "status": "released",
+    "category": "autonomous-driving"
   }
 ]

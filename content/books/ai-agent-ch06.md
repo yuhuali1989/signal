@@ -420,3 +420,93 @@ class ToolSandbox:
 ---
 
 *本章由 Signal 知识平台 AI 智能体自动生成。*
+
+---
+
+## 最新进展（2026-04 更新）
+
+### MCP 2.1 规范发布：Agent Identity 与 Tool Marketplace
+
+2026 年 4 月 20 日，MCP 工作组（Anthropic / OpenAI / Google 主导）发布 MCP 2.1 规范，针对企业级 Agent 部署的两大痛点做了关键升级：
+
+**升级 1：Agent Identity 联邦认证**
+
+```yaml
+# MCP 2.1 Agent Identity 示例
+agent:
+  id: "agent://acme.com/data-analyst-v3"
+  public_key: "-----BEGIN PUBLIC KEY-----..."
+  issuer: "https://identity.acme.com"
+  capabilities:
+    - "read:sales_data"
+    - "write:reports/*"
+  signature_algorithm: "Ed25519"
+  
+# 跨组织调用时的握手
+remote_agent_call:
+  caller: "agent://acme.com/data-analyst-v3"
+  callee: "agent://partner.com/market-research"
+  signed_request_token: "eyJhbGc..."  # JWT 签名请求
+  audit_log_endpoint: "https://audit.acme.com/agent-calls"
+```
+
+**升级 2：Tool Marketplace 统一元数据规范**
+
+首个官方工具市场 `mcp.dev` 上线，首批 420 个工具。每个工具需提供标准化元数据：
+
+| 字段 | 说明 | 示例 |
+|------|------|------|
+| `security.sandbox_required` | 是否必须在沙箱运行 | true |
+| `security.permissions_required` | 最小权限列表 | ["filesystem:read"] |
+| `sla.uptime_target` | 可用性承诺 | 99.9% |
+| `sla.p99_latency_ms` | 延迟承诺 | 500 |
+| `trust.signed_by` | 签名发布者 | "Anthropic Verified" |
+| `trust.audit_reports` | 第三方审计报告 URL | [...] |
+
+### 新型风险：AI 编码工具供应链攻击
+
+2026 年 4 月 Vercel 事件（第三方 AI 编码工具被入侵导致内部系统暴露）揭示了 Agent 时代的新型攻击面：
+
+```
+传统攻击面 vs AI Agent 攻击面：
+
+传统：
+开发者 → IDE（有限权限）→ Git/CI
+        ↑
+        单点权限可控
+
+Agent 时代：
+开发者 → AI 编码工具（聚合权限）
+        ├── 访问私有代码
+        ├── 读取环境变量/密钥
+        ├── 调用 LLM（数据外泄）
+        ├── 执行 Shell 命令
+        └── 调用 MCP 工具（权限继承）
+        ↑
+        单点被污染 = 全局失陷
+```
+
+**企业级防御建议**（在第 6 章「Agent 安全」基础上的扩展）：
+
+1. **供应链透明度**：所有 AI 工具必须提供 SBOM（CycloneDX 格式）
+2. **运行时沙箱**：用 gVisor / Firecracker 限制 AI 工具权限
+3. **集中式 AI 网关**：所有 LLM 调用必须过审计
+4. **行为基线**：为每个 AI 工具建立正常行为基线，偏离即告警
+
+### GPT-5.5 原生多 Agent：编排框架的价值重估
+
+OpenAI 发布 GPT-5.5 API GA 版本，关键特性是「**原生多 Agent 编排**」—— 单次 API 调用可以自主派发子任务给不同专家模型。这对 LangChain / CrewAI / AutoGen 等编排框架带来结构性挑战：
+
+| 维度 | 传统框架 | GPT-5.5 原生 |
+|------|---------|-------------|
+| 编排逻辑位置 | 应用层（Python） | 模型层（API） |
+| 延迟 | 每步都要 HTTP 往返 | 单次调用内完成 |
+| 可观测性 | 框架提供 | 需 OpenAI API 支持 |
+| 厂商锁定 | 低 | 高 |
+| 自定义能力 | 强 | 受限 |
+
+**判断**：未来 Agent 编排会分化为两层：
+- **薄编排层**：简单 Agent 直接用模型原生能力（成本低、延迟低）
+- **厚编排层**：复杂、需强可观测性和自定义的场景用 LangGraph 等框架（灵活性强）
+
+编排框架不会消亡，但价值定位会从「让 Agent 能工作」变成「让 Agent 在生产级别可控」。

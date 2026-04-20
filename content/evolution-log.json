@@ -1,5 +1,45 @@
 [
   {
+    "id": "evo-20260420-daily-update-05",
+    "type": "model",
+    "title": "模型数据更新：新增 Qwen3-Max 和 Seed-AD",
+    "description": "在 models.json 中追加 Qwen3-Max（320B MoE，MMLU-Pro 91.2% 超 Opus 4.6）和 Seed-AD（70B 开源 VLA，nuScenes L2 0.54m 新 SOTA）两个新模型。全行业动态新增 10 条软件行业最新动态。",
+    "date": "2026-04-20",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260420-daily-update-04",
+    "type": "paper",
+    "title": "论文解读：字节 Seed-AD 70B 开源 VLA 详细解析（2500 字）",
+    "description": "新增 Seed-AD 论文详细解读（seed-ad-bytedance-70b-vla.md），深度解析三阶段推理架构、物理一致性约束、多维度反思评分、车端 45ms 推理优化。刷新 nuScenes 规划 SOTA：L2(3s) 0.54m、碰撞率 0.11%。",
+    "date": "2026-04-20",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260420-daily-update-03",
+    "type": "book",
+    "title": "书架更新：《AI Agent 实战指南》第 6 章追加最新进展",
+    "description": "在 ai-agent-ch06.md 末尾追加「最新进展（2026-04）」小节，补充 MCP 2.1 Agent Identity 规范、Vercel 供应链攻击案例、GPT-5.5 原生多 Agent 对编排框架的影响等最新内容。",
+    "date": "2026-04-20",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260420-daily-update-02",
+    "type": "article",
+    "title": "新增文章 2 篇：AI 编码工具供应链安全 + YC W26 创业地图",
+    "description": "新增《AI 编码工具供应链安全：从 Vercel 事件看 Agent 时代的新型攻击面》和《YC W26 批次 AI 创业地图：196 家公司中的三大主线与中国启示》两篇深度文章，各约 2000 字。",
+    "date": "2026-04-20",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260420-daily-update-01",
+    "type": "news",
+    "title": "声浪更新：新增 8 条最新 AI 动态（2026-04-20）",
+    "description": "新增 YC W26 批次 60% AI 占比、Qwen3-Max 发布、GPT-5.5 API GA、MCP 2.1 规范、Cruise 退出 Robotaxi、SGLang 0.6、字节 Seed-AD 开源、HBM4 出口管制等共 8 条声浪。",
+    "date": "2026-04-20",
+    "agent": "editor-v2"
+  },
+  {
     "date": "2026-04-20 11:21",
     "type": "news",
     "agent": "editor-v2",
