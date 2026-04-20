@@ -4,41 +4,41 @@
     "name": "模型发布",
     "icon": "🚀",
     "color": "purple",
-    "count": 18
+    "count": 24
   },
   {
     "id": "opensource",
     "name": "开源生态",
     "icon": "📦",
     "color": "orange",
-    "count": 6
+    "count": 9
   },
   {
     "id": "research",
     "name": "技术突破",
     "icon": "🔬",
     "color": "green",
-    "count": 30
+    "count": 35
   },
   {
     "id": "infra",
     "name": "基础设施",
     "icon": "🔧",
     "color": "yellow",
-    "count": 35
+    "count": 41
   },
   {
     "id": "industry",
     "name": "行业动态",
     "icon": "🏢",
     "color": "blue",
-    "count": 10
+    "count": 12
   },
   {
     "id": "safety",
     "name": "安全与治理",
     "icon": "🛡️",
     "color": "red",
-    "count": 4
+    "count": 5
   }
 ]

@@ -291,6 +291,26 @@ const IDEAS = [
     china: '高',
     tags: ['供应链', '制造业', 'AI优化'],
   },
+
+  // ── 新增方向：AI Agent 安全与审计 ──────────────────────────────────────
+  {
+    id: 16,
+    industry: 'dev-tools',
+    title: 'AI Agent / MCP 工具安全网关与审计',
+    signal: '🔥 热点',
+    signalDate: '2026-04',
+    summary: 'Vercel 被第三方 AI 工具入侵事件（2026-04-20）验证了 Agent 工具链安全的紧迫性。YC W26 批次已有 12 家 MCP 安全相关创业公司。企业需要对 AI Agent 的每次外部工具调用进行审计、沙箱隔离和意图验证。',
+    opportunity: '国内大厂 AI Agent 部署加速，但 Agent 安全审计工具空白。金融/政务场景合规要求天然产生付费意愿。',
+    overseas: [
+      { name: 'AgentOps', url: 'https://agentops.ai', desc: 'Agent 可观测性平台，YC W24' },
+      { name: 'Invariant Labs', url: 'https://invariantlabs.ai', desc: 'Agent 安全测试，a16z 投资' },
+      { name: 'ToolGuard', url: 'https://toolguard.dev', desc: 'MCP 安全网关，YC W26' },
+    ],
+    market: '$8B（AI 安全市场 2026，Gartner 预测）',
+    barrier: '中',
+    china: '高',
+    tags: ['Agent安全', 'MCP', 'DevSecOps', '审计'],
+  },
 ];
 
 // ─── 子组件 ──────────────────────────────────────────────────────────────────

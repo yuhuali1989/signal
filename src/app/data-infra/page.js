@@ -83,7 +83,7 @@ export default function DataInfraPage() {
         {/* Hero */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
-              <h1 className="text-2xl font-bold text-gray-900">🔄 AI Infra & 闭环 Infra</h1>
+              <h1 className="text-2xl font-bold text-gray-900">🔄 AI Infra 全景</h1>
             <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-600 border border-cyan-100 font-medium">
               全容器化
             </span>

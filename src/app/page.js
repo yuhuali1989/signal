@@ -119,7 +119,7 @@ export default function Home() {
               </div>
             </Link>
             <Link href="/lab/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-violet-50/60 border border-violet-100/60 hover:border-violet-300/60 hover:shadow-sm transition-all group">
-              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">🔬</span>
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">⚗️</span>
               <div>
                 <p className="text-sm font-semibold text-gray-800 group-hover:text-violet-600 transition-colors">前沿实验室</p>
                 <p className="text-xs text-gray-400">NeRF · 占用网络 · 扩散模型 · 单卡可跑</p>
@@ -273,7 +273,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-base">🔥</span>
-                <h2 className="text-sm font-semibold text-gray-700">热度榜</h2>
+                <h2 className="text-lg font-semibold text-gray-800">热度榜</h2>
                 <span className="text-xs text-gray-400">— 近期声浪 & 论文中出现最多的主题</span>
               </div>
             </div>

@@ -1730,5 +1730,56 @@
     ],
     "status": "announced",
     "category": "hardware"
+  },
+  {
+    "name": "Claude Opus 4.7",
+    "provider": "Anthropic",
+    "params": "未公开（推测 >500B MoE）",
+    "context": 1000000,
+    "benchmark_scores": {
+      "SWE_bench_Verified": 87.6,
+      "GPQA_Diamond": 94.2,
+      "MMLU_Pro": 91.3,
+      "HumanEval": 93.8,
+      "AIME_2025": 78.4
+    },
+    "architecture": "Constitutional AI + Extended Thinking + xhigh Effort Level + 1M Context",
+    "release_date": "2026-04-16",
+    "open_source": false,
+    "ad_specific": false,
+    "description": "14项基准12项超越Opus 4.6。新增xhigh推理强度等级，允许按任务复杂度动态调节推理深度。视觉分辨率3.3倍提升。定价 $5/$25 每百万 token。",
+    "tags": [
+      "LLM",
+      "推理",
+      "Agent",
+      "编程"
+    ],
+    "status": "released",
+    "category": "foundation"
+  },
+  {
+    "name": "VLA-World",
+    "provider": "Wang, Tang et al. (多校合作)",
+    "params": "~7B（VLA 骨干）+ 潜在空间世界模型",
+    "context": null,
+    "benchmark_scores": {
+      "nuScenes_L2_3s": 0.58,
+      "nuScenes_collision_rate": 0.15,
+      "nuScenes_L2_1s": 0.25,
+      "FPS": 3.5
+    },
+    "architecture": "三阶段串行：潜在空间世界模型（Imagine）→ VLA反思推理（Reflect）→ 轨迹生成（Act）",
+    "release_date": "2026-04-10",
+    "open_source": false,
+    "ad_specific": true,
+    "description": "首次统一世界模型预测想象与VLA反思推理。想象→反思→行动三阶段范式，nuScenes L2(3s) 0.58m / 碰撞率 0.15% 双SOTA。潜在空间预测仅为像素生成计算量的1/20。",
+    "tags": [
+      "自动驾驶",
+      "VLA",
+      "世界模型",
+      "端到端"
+    ],
+    "status": "research",
+    "category": "autonomous-driving"
   }
 ]

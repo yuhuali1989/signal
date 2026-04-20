@@ -1,43 +1,45 @@
 [
   {
-    "id": "evo-20260418-daily-update-05",
-    "type": "model",
-    "title": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300",
-    "description": "在 models.json 中追加 Claude Opus 4.5（SWE-bench 72.5%，Agent 长任务专用）和 NVIDIA Blackwell Ultra B300（288GB HBM4，FP4 20 PFLOPS）两个新模型。全行业动态新增5条软件行业最新动态。",
-    "date": "2026-04-18",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260418-daily-update-04",
-    "type": "paper",
-    "title": "论文解读：SGLang RadixAttention 深度解析（2500字）",
-    "description": "新增 SGLang 论文详细解读（sglang-radix-attention.md），深度解析 RadixAttention 基数树 KV Cache 共享机制、实验数据（RAG 场景吞吐 4.4x）、与 vLLM 对比、工程实践建议。同步更新 papers-index.json 新增 SGLang 和 UniSim 2.0 两条索引。",
-    "date": "2026-04-18",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260418-daily-update-03",
-    "type": "book",
-    "title": "书架更新：《自动驾驶大模型》第7章追加最新进展",
-    "description": "在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数据、UniSim 2.0 合成数据飞轮里程碑、VLA-World 三阶段推理架构等最新内容。",
-    "date": "2026-04-18",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260418-daily-update-02",
-    "type": "article",
-    "title": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026",
-    "description": "新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《合成数据飞轮 2026：从 UniSim 2.0 看自动驾驶数据闭环新范式》两篇深度文章，各约1800字，含代码示例和数据对比表格。",
-    "date": "2026-04-18",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260418-daily-update-01",
+    "date": "2026-04-20 11:21",
     "type": "news",
-    "title": "声浪更新：新增10条最新AI动态（2026-04-18）",
-    "description": "新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.0、NVIDIA B300 发布、UniSim 2.0 合成数据飞轮、MCP 2.0 A2A 协议、小鹏 VLA 2.0 量产、Databricks DBRX 2.0、SynthEval-2026 基准、华为昇腾 910C 量产、OpenAI o3-mini-high 开放 API 共10条声浪。",
-    "date": "2026-04-18",
-    "agent": "editor-v2"
+    "agent": "editor-v2",
+    "message": "新增 8 条声浪：Claude Opus 4.7/PrfaaS/VLA-World/Q1 VC $2970B/Vercel安全事件/FlexKV/OpenMythos/Gemini 2M 上下文",
+    "slug": "news-r22-8items"
+  },
+  {
+    "date": "2026-04-20 11:21",
+    "type": "article",
+    "agent": "editor-v2",
+    "message": "新增文章：KVCache 分布式复用架构演进（PrfaaS/FlexKV/LMCache）",
+    "slug": "kvcache-distributed-reuse-architecture-2026-04-20"
+  },
+  {
+    "date": "2026-04-20 11:21",
+    "type": "article",
+    "agent": "editor-v2",
+    "message": "新增文章：VLA-World 深度解析——想象-反思-行动新范式",
+    "slug": "vla-world-unified-imagination-reasoning-driving-2026-04-20"
+  },
+  {
+    "date": "2026-04-20 11:21",
+    "type": "book",
+    "agent": "editor-v2",
+    "message": "更新书籍：AI Agent 实战指南第4章追加最新进展（Vercel事件/MCP安全/YC W26批次）",
+    "slug": "ai-agent-ch04-update"
+  },
+  {
+    "date": "2026-04-20 11:21",
+    "type": "paper",
+    "agent": "editor-v2",
+    "message": "新增论文解读：VLA-World（想象→反思→行动，nuScenes L2 0.58m SOTA）",
+    "slug": "vla-world-imagination-reasoning-driving"
+  },
+  {
+    "date": "2026-04-20 11:21",
+    "type": "model",
+    "agent": "editor-v2",
+    "message": "新增模型：Claude Opus 4.7 + VLA-World",
+    "slug": "models-update-r22"
   },
   {
     "date": "2026-04-18 16:52",
@@ -97,6 +99,51 @@
     "agent": "论文智能体",
     "message": "新增 2 篇精读: Uni-World VLA 交替世界模型+规划(L2 0.63m SOTA) + GenericAgent 自进化Agent 6x Token效率",
     "slug": "uni-world-vla"
+  },
+  {
+    "id": "evo-20260418-daily-update-05",
+    "type": "model",
+    "title": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300",
+    "description": "在 models.json 中追加 Claude Opus 4.5（SWE-bench 72.5%，Agent 长任务专用）和 NVIDIA Blackwell Ultra B300（288GB HBM4，FP4 20 PFLOPS）两个新模型。全行业动态新增5条软件行业最新动态。",
+    "date": "2026-04-18 12:00",
+    "agent": "editor-v2",
+    "message": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300: 在 models.json 中追加 Claude Opus 4.5（SWE-bench 72.5%，Agent 长任务专用）和 NVIDIA Blackwell Ultra B300（288GB HBM4，FP4 20 PFLOPS）两个新模型。全行业动态新增5条软件行业最新动态。"
+  },
+  {
+    "id": "evo-20260418-daily-update-04",
+    "type": "paper",
+    "title": "论文解读：SGLang RadixAttention 深度解析（2500字）",
+    "description": "新增 SGLang 论文详细解读（sglang-radix-attention.md），深度解析 RadixAttention 基数树 KV Cache 共享机制、实验数据（RAG 场景吞吐 4.4x）、与 vLLM 对比、工程实践建议。同步更新 papers-index.json 新增 SGLang 和 UniSim 2.0 两条索引。",
+    "date": "2026-04-18 12:00",
+    "agent": "editor-v2",
+    "message": "论文解读：SGLang RadixAttention 深度解析（2500字）: 新增 SGLang 论文详细解读（sglang-radix-attention.md），深度解析 RadixAttention 基数树 KV Cache 共享机制、实验数据（RAG 场景吞吐 4.4x）、与 vLLM 对比、工程实践建议。同步更新 papers-index.json 新增 SGLang 和 UniSim 2.0 两条索引。"
+  },
+  {
+    "id": "evo-20260418-daily-update-03",
+    "type": "book",
+    "title": "书架更新：《自动驾驶大模型》第7章追加最新进展",
+    "description": "在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数据、UniSim 2.0 合成数据飞轮里程碑、VLA-World 三阶段推理架构等最新内容。",
+    "date": "2026-04-18 12:00",
+    "agent": "editor-v2",
+    "message": "书架更新：《自动驾驶大模型》第7章追加最新进展: 在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数据、UniSim 2.0 合成数据飞轮里程碑、VLA-World 三阶段推理架构等最新内容。"
+  },
+  {
+    "id": "evo-20260418-daily-update-02",
+    "type": "article",
+    "title": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026",
+    "description": "新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《合成数据飞轮 2026：从 UniSim 2.0 看自动驾驶数据闭环新范式》两篇深度文章，各约1800字，含代码示例和数据对比表格。",
+    "date": "2026-04-18 12:00",
+    "agent": "editor-v2",
+    "message": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026: 新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《合成数据飞轮 2026：从 UniSim 2.0 看自动驾驶数据闭环新范式》两篇深度文章，各约1800字，含代码示例和数据对比表格。"
+  },
+  {
+    "id": "evo-20260418-daily-update-01",
+    "type": "news",
+    "title": "声浪更新：新增10条最新AI动态（2026-04-18）",
+    "description": "新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.0、NVIDIA B300 发布、UniSim 2.0 合成数据飞轮、MCP 2.0 A2A 协议、小鹏 VLA 2.0 量产、Databricks DBRX 2.0、SynthEval-2026 基准、华为昇腾 910C 量产、OpenAI o3-mini-high 开放 API 共10条声浪。",
+    "date": "2026-04-18 12:00",
+    "agent": "editor-v2",
+    "message": "声浪更新：新增10条最新AI动态（2026-04-18）: 新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.0、NVIDIA B300 发布、UniSim 2.0 合成数据飞轮、MCP 2.0 A2A 协议、小鹏 VLA 2.0 量产、Databricks DBRX 2.0、SynthEval-2026 基准、华为昇腾 910C 量产、OpenAI o3-mini-high 开放 API 共10条声浪。"
   },
   {
     "date": "2026-04-18 11:00",
