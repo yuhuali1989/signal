@@ -302,14 +302,14 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 📝 **提示词真实性铁律加固（第七节重大更新）**：针对历史上"声浪被凭印象编造 / 链接不真实"的问题，在编辑员提示词中新增多层硬性约束——
-  - 任务 1（声浪）新增「⛔ 真实性铁律」小节：禁止虚构公司名/版本号/链接；必须来自真实公开出处；每条 url 写入前需经 curl 校验
-  - 任务 1 给出「✅ 推荐信息源白名单」：官方 Blog / arXiv / GitHub Releases / HuggingFace / 权威媒体，排除未核实自媒体
-  - 任务 1 强化采编流程：采集 → 验链（curl 200/301/302 才保留）→ 去重 → 写入；url 字段升级为必填
-  - 任务 4c（全行业动态）同步加入真实性铁律，`link` 必填且必须经 curl 校验
-  - 质检员检查 3 全面升级：从"抽检 10 条"升级为"最近 20 条全量检测 + 输出失效清单 + 强制修复闭环"，并新增检查 3b 对新增条目进行原文比对
-  - 「重要注意事项」置顶新增真实性总则
-- ✨ **工作目录修正**：提示词中的 `/Users/harrisyu/WorkBuddy/20260409114249/signal/` 保持与 GitHub 远端仓库名一致（历史 `maxwell-knowledge` 目录已改名）
+- 📝 **质检员检查 3b 三维度升级**：原本只做简单抽查的"检查 3b"升级为**声浪内容三维度真实性抽查**——
+  - 🔗 **链接可用性（深度校验）**：不仅要 curl 200，还要求页面内容不是 404 兜底页 / 登录墙 / 下架页；url 必须精确指向本条新闻的原文，不是首页/搜索页/社媒转发页
+  - 🎯 **对应关系准确性**：title 不得夸大或扭曲原文语义；summary 中的公司名/模型名/版本号/数字/人名/引述必须与原文**一字不差**；source 必须是一手出处（不是二手转载站）
+  - 📅 **日期准确性**：`date` 必须是原文真实发布日期，不是抓取日期、不是猜测日期、不得为未来日期、不得 <2023-01-01
+  - 🤖 给出自动化校验 Python 脚本：对本次新增条目批量检查日期合法性 / 字段完整性 / url 指向性 / summary 数字与原文比对（高度疑似编造的直接标记）
+  - ✋ 明确人工必做环节：用 Cmd+F 逐条比对原文，对 source 做溯源
+  - 🚨 给出 7 类问题的明确处置规则（删除 / 替换 / 改为一手出处等），任何一项不过关本轮质检视为失败
+- 📊 **检查 8 质检报告表格扩展**：将原来的"声浪链接 X/Y"一行拆成"链接可用性 / 对应关系准确性 / 日期准确性"三行，让质检报告对声浪真实性的三个维度都有独立指标
 
 ---
 
@@ -668,13 +668,136 @@ PY
 - 缺 url 字段的条目 > 0 → 质检不通过（真实性铁律要求每条都必须有 url）
 - 403 状态：有些网站对 curl 做反爬（如 Bloomberg / The Information），需浏览器人工打开确认
 
-### 检查 3b：声浪内容真实性抽查（新增）
+### 检查 3b：声浪内容三维度真实性抽查（链接 × 对应关系 × 日期）
 
-- 随机抽取本次新增的 3 条声浪，**打开 url 逐条比对**：
-  - 标题是否与原文一致（允许中文翻译，不允许语义改变）
-  - summary 中提到的数字 / 日期 / 公司名 / 模型名是否与原文一致
-  - source 字段是否是原始出处（而不是二手转载源）
-- 发现任何不一致 → 立即修正或删除该条
+> 检查 3 解决"链接能不能打开"，检查 3b 解决"链接打开后和我们的文案是否匹配"。
+> **必须覆盖本次新增的全部条目**（若数量 > 10，则至少抽查 **5 条**，其中包含 hot=true 的热点全部必查）。
+
+#### 📋 逐条校验清单（每条都要跑完这 3 维）
+
+对每条被抽查的声浪，打开 `url` 后逐项核对：
+
+1. **🔗 链接可用性（深度校验，比检查 3 更严格）**
+   - url 返回 200/301/302 ✓（继承检查 3 的 curl 结果）
+   - 页面实际内容**不是**"Page Not Found" / "文章已下架" / "404" / 登录墙兜底页
+   - url **精确指向本条新闻的原文页**，不是：
+     - ❌ 官网首页（如只写到 `https://openai.com/` 而不是具体 blog 链接）
+     - ❌ 分类/标签聚合页（如 `https://techcrunch.com/category/ai/`）
+     - ❌ 搜索结果页（如 `google.com/search?q=...`）
+     - ❌ X（Twitter）/ 社交媒体对新闻的二次转发（必须找到一手出处）
+
+2. **🎯 对应关系准确性（title / summary / source / tags 必须与原文一致）**
+   - **title**：允许中文化，但**不得改变语义、不得夸大**
+     - 反例：原文 "OpenAI releases GPT-4o mini evaluation update" → 不得写成 "OpenAI 震撼发布 GPT-4o mini 性能暴涨"
+   - **summary**：关键要素必须可在原文中**逐一找到**（用 Cmd+F 验证）：
+     - 公司名 / 产品名 / 模型名 / 版本号 —— 一字不差
+     - 数字指标（参数量 / Benchmark 分数 / 融资金额 / 市值 / 价格）—— 必须与原文完全一致
+     - 人名 / 职位 —— 必须与原文一致
+     - 引述的"原话"—— 必须是原文的直接引用，不得转写
+   - **source**：必须是原始出处名（OpenAI Blog / arXiv 等），**不是**二手转载站的名字
+     - 反例：原文首发在 The Information，不得把 source 写成"36Kr"只因为 36Kr 翻译转载了一下
+   - **category / tags**：与内容领域匹配（如 vLLM 1.0 发布不应打 `ad` 标签）
+
+3. **📅 日期准确性（最容易出错的一维，必须死磕）**
+   - `date` 字段必须是**原文发布日期**，不是：
+     - ❌ 你抓取这条新闻的日期（今天）
+     - ❌ "看起来像是最近"猜的日期
+     - ❌ 转载媒体的转载日期（要找回一手出处的原始发布日）
+   - 必须 **≤ 今天**（不允许出现未来日期，曾多次发生 LLM 幻觉写成明年日期）
+   - 必须 **≥ 2023-01-01**（过旧的条目应合并归档而不是作为新增）
+   - 校验方法：打开 url，在文章顶部/底部找 "Published" / "发布时间" / arXiv 的 `[Submitted on ...]` 字段对照
+
+#### 🤖 自动化校验脚本（前置过滤，人工只查自动化漏掉的）
+
+```bash
+python3 <<'PY'
+import json, subprocess, re
+from datetime import date, datetime
+
+TODAY = date.today()
+MIN_DATE = date(2023, 1, 1)
+
+def fetch_text(url):
+    """获取页面纯文本，供后续比对"""
+    r = subprocess.run(['curl','-s','-L','--max-time','10',
+                        '-A','Mozilla/5.0 (SignalBot)', url],
+                       capture_output=True, text=True)
+    # 极简去标签（仅用于关键字比对，不追求完美 HTML 解析）
+    return re.sub(r'<[^>]+>', ' ', r.stdout or '')
+
+data = json.load(open('content/news/news-feed.json'))
+items = data.get('items', data if isinstance(data, list) else [])
+
+# 仅检查最近 30 天新增条目（本次迭代的产物）
+recent = [i for i in items
+          if i.get('date') and i['date'] >= (TODAY.isoformat()[:7] + '-01')]
+print(f'本次需抽查条目数: {len(recent)}')
+
+issues = []
+for it in recent:
+    iid = it.get('id', '?')
+
+    # ① 日期准确性
+    try:
+        d = datetime.strptime(it.get('date',''), '%Y-%m-%d').date()
+        if d > TODAY:
+            issues.append((iid, '日期', f'date={d} 为未来日期'))
+        if d < MIN_DATE:
+            issues.append((iid, '日期', f'date={d} 过旧（<2023），应归档合并'))
+    except Exception:
+        issues.append((iid, '日期', f'date 字段非法: {it.get("date")}'))
+
+    # ② 必填字段
+    for f in ('url', 'title', 'summary', 'source'):
+        if not it.get(f):
+            issues.append((iid, '字段', f'{f} 为空'))
+
+    # ③ url 指向性（粗筛：禁止首页/搜索页/社媒首页）
+    url = it.get('url', '')
+    bad_patterns = [
+        r'^https?://[^/]+/?$',                      # 纯首页
+        r'(google\.com/search|bing\.com/search)',   # 搜索结果页
+        r'twitter\.com/?$', r'x\.com/?$',           # 社媒首页
+    ]
+    if any(re.search(p, url) for p in bad_patterns):
+        issues.append((iid, '链接', f'url 不是文章原文: {url}'))
+
+    # ④ 对应关系（抽样：检查 summary 中的关键数字是否在原文中出现）
+    nums = re.findall(r'\d{2,}(?:[.,]\d+)?[%xB]?', it.get('summary',''))
+    if len(nums) >= 2 and url.startswith('http'):
+        text = fetch_text(url).lower()
+        missing = [n for n in nums[:5] if n.lower() not in text]
+        if len(missing) > len(nums[:5]) // 2:
+            issues.append((iid, '对应', f'summary 中数字 {missing} 在原文未找到（高度疑似编造）'))
+
+print(f'\n自动化校验发现 {len(issues)} 个问题:')
+for iid, kind, msg in issues:
+    print(f'  [{kind}] {iid}: {msg}')
+
+if issues:
+    print('\n⛔ 必须修正所有问题后才能发布')
+PY
+```
+
+#### ✋ 人工必做环节（脚本覆盖不到的）
+
+- 对每条抽查项，**真的打开 url，用 Cmd+F 搜 summary 里的关键数字/公司名**，确认原文中存在
+- 对 title 的中文化做语义 check —— 是否扭曲了原意
+- 对 source 做溯源 —— 原文首发在哪里？现在写的 source 是不是真正的一手出处？
+
+#### 🚨 判定标准
+
+| 问题类型 | 处置 |
+|---|---|
+| 链接打开是 404 / 下架页 | **整条删除** |
+| url 是首页/搜索页/社媒首页 | 找到一手原文 url 替换，找不到则删除 |
+| summary 的数字/公司名在原文中找不到 | **整条删除**（编造嫌疑极高） |
+| title 语义被改变（夸大/扭曲） | 改为忠于原文的译法 |
+| source 不是一手出处 | 改为一手出处名 |
+| date 为未来日期 | 必须改为原文真实发布日 |
+| date 不是原文发布日 | 必须改为原文真实发布日 |
+
+**任何一项不过关，本轮质检视为失败，必须回到编辑员任务 1 重做声浪再发布。**
 
 ### 检查 4：数学公式渲染检查
 
@@ -760,7 +883,9 @@ tail -5 /tmp/signal-dev.log
 | 路由可用性 | X/Y 通过 |
 | JSON 格式 | 合法 / 非法 |
 | Unicode 乱码 | 无 / 已修复 |
-| 声浪链接 | X/Y 可访问 |
+| 声浪链接可用性（检查 3） | X/Y 可访问 |
+| 声浪对应关系准确性（检查 3b · title/summary/source） | X/Y 通过 |
+| 声浪日期准确性（检查 3b · date 与原文一致） | X/Y 通过 |
 | 测试用例 | 通过 / 失败 / 跳过 |
 | 服务状态 | 正常 / 异常 |
 
