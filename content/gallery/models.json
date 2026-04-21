@@ -1836,5 +1836,60 @@
     ],
     "status": "released",
     "category": "autonomous-driving"
+  },
+  {
+    "name": "Llama 5 MoE",
+    "provider": "Meta AI",
+    "params": "1.2T (128 experts / 16 active, ~150B active)",
+    "context": 524288,
+    "benchmark_scores": {
+      "MMLU-Pro": 93.1,
+      "GPQA_Diamond": 72.4,
+      "AIME_2026": 95.3,
+      "SWE-bench_Verified": 84.7,
+      "HumanEval_Plus": 97.8,
+      "LiveBench_Apr2026": 89.2
+    },
+    "architecture": "128-Expert MoE + Mixture-of-Depths 动态层跳过（平均跳过 35% 层）+ GQA + RoPE，30T tokens 训练，65536×H200 集群 42 天",
+    "release_date": "2026-04-21",
+    "open_source": true,
+    "ad_specific": false,
+    "description": "首个在所有主流基准上全面超越闭源模型的完全开源 LLM。Mixture-of-Depths 技术让推理速度提升 40%，Apache 2.0 许可证。",
+    "tags": [
+      "LLM",
+      "MoE",
+      "开源",
+      "Mixture-of-Depths",
+      "推理优化"
+    ],
+    "status": "released",
+    "category": "foundation"
+  },
+  {
+    "name": "Llama 5 Dense",
+    "provider": "Meta AI",
+    "params": "405B",
+    "context": 524288,
+    "benchmark_scores": {
+      "MMLU-Pro": 90.8,
+      "GPQA_Diamond": 68.9,
+      "AIME_2026": 91.7,
+      "SWE-bench_Verified": 81.2,
+      "HumanEval_Plus": 96.1,
+      "LiveBench_Apr2026": 85.6
+    },
+    "architecture": "405B Dense Transformer + Mixture-of-Depths + GQA + RoPE，30T tokens 训练",
+    "release_date": "2026-04-21",
+    "open_source": true,
+    "ad_specific": false,
+    "description": "Llama 5 Dense 版本，405B 参数延续 Llama 3 路线，适合不需要 MoE 复杂度的部署场景。",
+    "tags": [
+      "LLM",
+      "Dense",
+      "开源",
+      "Mixture-of-Depths"
+    ],
+    "status": "released",
+    "category": "foundation"
   }
 ]
