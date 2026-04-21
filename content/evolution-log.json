@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260421-news-refresh",
+    "type": "news",
+    "title": "声浪全量刷新：清理历史数据，重建自动驾驶专题 10 条",
+    "description": "清理 news-feed.json 全部历史条目（原 2093 行），重新写入 10 条以自动驾驶/VLA/世界模型为核心的高质量声浪。覆盖：Gemini Robotics（Google DeepMind VLA）、UniAD（端到端框架 4.5K Star）、UniFuture（清华 4D 世界模型）、DriveLM（图结构 VQA 可解释驾驶）、Vista（通用驾驶世界模型）、GAIA-1（Wayve 9B 世界模型）、CarLLaVA（纯视觉 VLM 驾驶）、Copilot4D（Waabi 无监督世界模型）、Qwen3（MoE 全尺寸开源）、NVIDIA GR00T N1（人形机器人基础模型）。所有 URL 经 curl 验证 + 论文标题交叉核实。",
+    "date": "2026-04-21 17:10",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260421-daily-08",
     "type": "system",
     "title": "全行业动态新增 10 条：覆盖安全/融资/云/软件/市场 6 大分类",
