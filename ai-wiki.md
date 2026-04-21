@@ -450,7 +450,60 @@ maxwell-knowledge/
 
 ### 任务 4c：更新全行业动态 src/components/IndustryNewsFeed.js（每日更新，≥10 条）
 
-- 在 NEWS_DATA 数组头部插入最新新闻条目
+在 NEWS_DATA 数组头部插入最新新闻条目。
+
+#### ⛔ 真实性铁律（与任务 1 声浪同等重要，违反则本次更新作废）
+
+1. **每条动态必须基于真实发生的新闻事件**，严禁凭行业印象 / 大模型幻觉编造。常见编造陷阱（**一律禁止**）：
+   - 虚构公司融资金额 / 估值 / 轮次 / 领投方
+   - 虚构产品名 / 版本号 / 发布日期 / 交付时间
+   - 虚构季报营收 / 利润 / 市值 / 股价变动数字
+   - 虚构并购金额 / 并购完成时间 / 并购双方
+   - 虚构官员表态 / 政策文件 / 监管动向
+2. **`link` 字段必填且必须与本条动态一一对应**：
+   - ✅ 必须是**本条动态的原始新闻页完整 URL**（官方新闻稿 / 一手媒体报道 / 官方公告）
+   - ❌ 禁止：聚合首页（如 `https://techcrunch.com/`）、分类/标签页（如 `techcrunch.com/category/...`）、搜索结果页
+   - ❌ 禁止：指向无关页面（如条目讲 Databricks 新产品，link 却指向 Databricks 官网首页）
+   - ❌ 禁止：指向社交媒体二次转发（必须找到一手出处）
+3. **`date` 字段必须是该新闻事件的真实发布日期**：
+   - 不是你抓取/撰写这条条目的日期（今天）
+   - 不是"看起来像是最近"猜的日期
+   - 不是转载媒体的转载日期（要找回一手出处的原始发布日）
+   - 必须 ≤ 今天（不得为未来日期）
+4. **`title` / `summary` 必须忠于原文事实**：
+   - title 允许中文化，不得夸大或扭曲语义
+   - summary 中的公司名 / 产品名 / 数字（金额 / 百分比 / 日期）必须与原文一字不差
+   - 不得将外媒原标题自行翻译后再编造并不存在的配图 / 引述 / 数据点
+5. **`source` 必须是原始出处**（如 The Information / Bloomberg / Databricks Blog），不是转载站
+6. **不确定时**：宁可当日少发一条，也不允许编造凑数。宁缺毋滥。
+
+#### 📋 采编流程（按顺序执行，不可跳步）
+
+1. **采集**：从下方信息源扫描当日真实新闻，每条记录 { 标题、摘要、原始出处、原始 URL、原文发布日期 }
+2. **验链**：对每条 link 执行 `curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0" <url>`
+   - 返回 200/301/302 才保留；返回 403 需浏览器人工确认（常见于 Bloomberg / The Information）
+   - 返回 404/410/5xx/timeout 的一律丢弃，不允许提交
+3. **校验对应关系**：每条写入前，打开 link 用 Cmd+F 对照 summary 里的关键数字 / 公司名 / 产品名，**至少命中一个**才允许保留；一个都对不上的直接丢弃
+4. **去重**：与 NEWS_DATA 近 60 天条目对比 title 与 link，避免重复
+5. **写入**：在 NEWS_DATA 数组头部插入
+
+#### 🌐 推荐信息源白名单（必须从中选取，禁用未核实自媒体）
+
+- 🌍 **海外一手**：
+  - 公司官网 IR/Blog（`cloud.google.com/blog`、`aws.amazon.com/blogs`、`databricks.com/blog`、`salesforce.com/news`、`openai.com/blog`、`anthropic.com/news` 等）
+  - 权威媒体：The Information、Bloomberg、Reuters、TechCrunch、The Verge、WSJ、FT
+  - 技术社区：Hacker News（只选热度高且能追溯一手的）、Product Hunt
+- 🇨🇳 **国内一手**：
+  - 官方公众号头条（用公司名+公众号 site 搜索）
+  - 36Kr、虎嗅、极客公园、InfoQ、澎湃新闻、第一财经
+  - 交易所公告（港交所披露易、上交所/深交所）
+- 📊 **财经数据**：
+  - SEC EDGAR（10-K / 10-Q / 8-K 原始文件）
+  - Seeking Alpha 原文报道、Yahoo Finance 官方 IR 链接
+- ❌ 禁用：任何未核实的微信公众号二手转发、Reddit/X 未经核实的爆料、"AI 生成的行业观察"类自媒体号
+
+#### 📝 内容要求
+
 - **覆盖 6 大分类**（与页面 CATEGORIES 定义一致，注意 category 字段必须使用以下 key）：
 
   | key | emoji | 名称 | 覆盖范围 |
@@ -462,20 +515,34 @@ maxwell-knowledge/
   | `startup` | 🚀 | 融资动态 | 创业公司融资 / IPO / 并购 / YC 批次 / 独角兽动态 |
   | `market` | 📊 | 市场财报 | 季报 / 年报 / 市值变动 / 大型并购 / 行业分析报告 |
 
-- **信息源覆盖**（每日必须扫描）：
-  - 🌍 海外：TechCrunch / The Information / Bloomberg Tech / Reuters Tech / Hacker News / Product Hunt / Company IR/Blog
-  - 🇨🇳 国内：36Kr / 虎嗅 / 极客公园 / InfoQ / CSDN / 各公司官方公众号
-  - 📊 财经：Seeking Alpha / Yahoo Finance / 东方财富 / 雪球
 - 国内外各占约一半（region: 'china' | 'global'）
-- 每条格式：`{ id, category, region, title, summary, source, date, tags[], hot, link }`
 - **每日至少新增 10 条**，热点事件（hot: true）不少于 3 条
-- 对超过 90 天的旧条目进行合并归档（同类话题合并为一条汇总），保持活跃列表在 60 条以内
-- ⚠️ **注意**：category 字段只能使用上表 6 个值，不要使用其他值（如 ai / game / hardware / funding / policy 等），否则会导致页面报错
-- ⛔ **真实性铁律（与任务 1 同等重要）**：
-  - 所有条目必须基于真实发生的新闻事件，禁止虚构公司名 / 融资金额 / 产品发布 / 财报数据
-  - `link` 字段必填且必须是原始新闻页的完整 URL（非聚合首页 / 非搜索结果页）
-  - 写入前对每条 `link` 执行 `curl -I --max-time 8 -L <url>`，返回 200/301/302 才保留，4xx/5xx 一律丢弃
-  - 不得将国外媒体原标题自己翻译后再编造一段并不存在的配图/引述；summary 必须严格基于原文事实
+- 对超过 90 天的旧条目进行合并归档（同类话题合并为一条汇总，保留代表性 link）
+- ⚠️ category 字段只能使用上表 6 个值，不要使用其他值（如 ai / game / hardware / funding / policy 等），否则会导致页面报错
+
+#### 🗂️ 每条动态字段（`link` 为必填，且必须经 curl 校验、与 summary 一一对应）
+
+```js
+{
+  id: 2511,                       // 数字自增，2501+ 是 2026 年新增
+  category: 'data',               // 只能用 data/cloud/software/security/startup/market
+  region: 'global',               // 或 'china'
+  title: '来自原文的准确标题（允许中文化，不得夸大语义）',
+  summary: '80-150 字，基于原文事实，关键数字与原文一致',
+  source: 'Databricks Blog',      // 一手出处名，不是转载站
+  date: '2026-04-21',             // 原文真实发布日，不是抓取日期
+  tags: ['Databricks', 'Agent'],
+  hot: true,
+  link: 'https://www.databricks.com/blog/mosaic-ai-agent-framework-2', // 必填，原文完整 URL，经 curl 校验
+},
+```
+
+#### 🧹 历史遗留处理
+
+- NEWS_DATA 中 id 2300 之前的历史条目（2023 及更早）部分**缺 link 字段**
+- **本次及以后的更新中，遇到这些老条目时**：
+  - 如果能找回一手出处 URL，补齐 `link` 字段
+  - 如果找不到，且该条动态已超过 180 天，**直接合并进该年的"汇总条目"或删除**，不要留着没有 link 的孤立条目
 
 ### 任务 4d：更新经济研究 src/app/economy/page.js（每日更新）
 

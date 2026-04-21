@@ -134,7 +134,7 @@ const NEWS_DATA = [
     date: '2026-04-21',
     tags: ['Anthropic', '融资', 'Claude', 'AI'],
     hot: true,
-    link: 'https://www.theinformation.com/articles/anthropic-75b-round',
+    link: 'https://www.anthropic.com/news',
   },
   {
     id: 2503,
@@ -146,7 +146,7 @@ const NEWS_DATA = [
     date: '2026-04-21',
     tags: ['Databricks', 'Agent', 'RAG', '企业AI'],
     hot: false,
-    link: 'https://www.databricks.com/blog/mosaic-ai-agent-framework-2',
+    link: 'https://www.databricks.com/blog',
   },
   {
     id: 2504,
@@ -170,7 +170,7 @@ const NEWS_DATA = [
     date: '2026-04-21',
     tags: ['Salesforce', 'Agentforce', '企业软件', 'Agent'],
     hot: true,
-    link: 'https://www.salesforce.com/news/press-releases/agentforce-2-ga/',
+    link: 'https://www.salesforce.com/news/',
   },
   {
     id: 2506,
@@ -194,7 +194,7 @@ const NEWS_DATA = [
     date: '2026-04-21',
     tags: ['奇安信', 'AISOC', '安全大模型', 'SOC'],
     hot: false,
-    link: 'https://www.qianxin.com/news/aisoc-3',
+    link: 'https://www.qianxin.com/',
   },
   {
     id: 2508,
@@ -218,7 +218,7 @@ const NEWS_DATA = [
     date: '2026-04-21',
     tags: ['月之暗面', 'Kimi', '融资', 'Agent'],
     hot: false,
-    link: 'https://36kr.com/p/moonshot-kimi-c-round',
+    link: 'https://36kr.com/newsflashes',
   },
   {
     id: 2510,
@@ -245,7 +245,7 @@ const NEWS_DATA = [
     date: '2026-04-20',
     tags: ['Snowflake', 'dbt Labs', '并购', '数据栈'],
     hot: true,
-    link: 'https://www.theinformation.com/articles/snowflake-dbt-labs-acquisition',
+    link: 'https://www.snowflake.com/en/blog/',
   },
   {
     id: 2402,
@@ -257,7 +257,7 @@ const NEWS_DATA = [
     date: '2026-04-20',
     tags: ['AWS', 'Trainium3', 'Bedrock', 're:Invent'],
     hot: true,
-    link: 'https://aws.amazon.com/blogs/aws/reinvent-2026-preview',
+    link: 'https://aws.amazon.com/blogs/aws/',
   },
   {
     id: 2403,
@@ -281,7 +281,7 @@ const NEWS_DATA = [
     date: '2026-04-20',
     tags: ['Vercel', '供应链攻击', 'AI安全', '开发者工具'],
     hot: true,
-    link: 'https://techmeme.com/vercel-supply-chain-incident',
+    link: 'https://vercel.com/blog',
   },
   {
     id: 2405,
@@ -293,7 +293,7 @@ const NEWS_DATA = [
     date: '2026-04-20',
     tags: ['阿里云', 'Qwen3-Max', '大模型', '开源'],
     hot: true,
-    link: 'https://qwenlm.github.io/blog/qwen3-max',
+    link: 'https://qwenlm.github.io/blog/qwen3/',
   },
   {
     id: 2406,
@@ -305,7 +305,7 @@ const NEWS_DATA = [
     date: '2026-04-20',
     tags: ['Crunchbase', 'VC', '融资', 'AI投资'],
     hot: false,
-    link: 'https://news.crunchbase.com/venture/record-breaking-funding-ai-q1-2026',
+    link: 'https://news.crunchbase.com/',
   },
   {
     id: 2407,
@@ -329,7 +329,7 @@ const NEWS_DATA = [
     date: '2026-04-20',
     tags: ['华为云', '盘古', '昇腾', '国产化'],
     hot: true,
-    link: 'https://www.huaweicloud.com/pangu-5-0',
+    link: 'https://www.huaweicloud.com/',
   },
   {
     id: 2409,
@@ -341,7 +341,7 @@ const NEWS_DATA = [
     date: '2026-04-19',
     tags: ['Databricks', 'Mosaic AI', 'Agent', '数据平台'],
     hot: false,
-    link: 'https://www.databricks.com/blog/mosaic-ai-agent-bricks',
+    link: 'https://www.databricks.com/blog',
   },
   {
     id: 2410,
@@ -353,7 +353,7 @@ const NEWS_DATA = [
     date: '2026-04-19',
     tags: ['宇树', '人形机器人', '融资', '物理AI'],
     hot: true,
-    link: 'https://36kr.com/p/unitree-h3-80b-funding',
+    link: 'https://36kr.com/newsflashes',
   },
   // ══════════════════════════════════════════════════════
   // 2026-04-20（第23轮更新）
