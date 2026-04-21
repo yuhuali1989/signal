@@ -1326,12 +1326,14 @@ const NEWS_DATA = [
 function NewsCard({ item }) {
   const cat = CAT_MAP[item.category] || CAT_MAP['all'];
   const isSummary = item.title.startsWith('【');
+  const hasLink = !!item.link && /^https?:\/\//.test(item.link);
 
-  return (
+  // 卡片内容主体（link 存在时外层会包一层 <a>，整卡可点击）
+  const cardBody = (
     <div className={`flex gap-3 p-4 rounded-2xl border transition-shadow group ${
       isSummary
         ? 'bg-gradient-to-r from-gray-50 to-blue-50/30 border-gray-200 hover:border-blue-200'
-        : 'bg-white border-gray-100 hover:shadow-sm'
+        : 'bg-white border-gray-100 hover:shadow-sm hover:border-[#6c5ce7]/30'
     }`}>
       {/* 左侧色条 */}
       <div className="w-1 rounded-full flex-shrink-0 self-stretch" style={{ background: cat.color }} />
@@ -1363,17 +1365,29 @@ function NewsCard({ item }) {
           <span className="text-[10px] text-gray-300 ml-auto">{item.date}</span>
         </div>
 
-        {/* 标题 */}
+        {/* 标题（带 ↗ 外链提示图标） */}
         <h3 className="text-sm font-semibold text-gray-900 leading-snug mb-1.5 group-hover:text-[#6c5ce7] transition-colors">
           {item.title}
+          {hasLink && (
+            <span className="inline-block ml-1 text-[10px] text-gray-300 group-hover:text-[#6c5ce7] transition-colors align-middle"
+              aria-hidden="true">↗</span>
+          )}
         </h3>
 
         {/* 摘要 */}
         <p className="text-xs text-gray-500 leading-relaxed mb-2">{item.summary}</p>
 
-        {/* 来源 + 标签 */}
+        {/* 来源 + 原文链接 + 标签 */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[10px] text-gray-400">来源：{item.source}</span>
+          {hasLink && (
+            <>
+              <span className="text-gray-200">·</span>
+              <span className="text-[10px] text-[#6c5ce7] group-hover:underline font-medium">
+                🔗 原文
+              </span>
+            </>
+          )}
           <span className="text-gray-200">·</span>
           {item.tags.map(tag => (
             <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded bg-gray-50 text-gray-400">
@@ -1384,6 +1398,22 @@ function NewsCard({ item }) {
       </div>
     </div>
   );
+
+  // 有 link：整卡包裹 <a>，新标签页打开；无 link：保持静态 div
+  if (hasLink) {
+    return (
+      <a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block no-underline"
+        title={`打开原文：${item.link}`}
+      >
+        {cardBody}
+      </a>
+    );
+  }
+  return cardBody;
 }
 
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
