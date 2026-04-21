@@ -34,7 +34,7 @@ export default function Home() {
             从噪声中提取前沿信号
           </p>
           <p className="text-sm text-gray-400 max-w-md mx-auto mb-10 leading-relaxed">
-            书籍每天自动研究与修订，文章由 AI 智能体每日产出，全部开源可追溯
+            AI 多智能体每日产出文章、论文解读与行业声浪，持续迭代书籍与模型库，所有变更均被进化日志完整记录
           </p>
 
           {/* CTA Buttons */}
