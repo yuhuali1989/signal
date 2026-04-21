@@ -302,11 +302,15 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 🚗 **声浪全量刷新：自动驾驶专题**：清理 news-feed.json 全部历史条目（原 2093 行 / ~100KB），重新写入 10 条以自动驾驶/VLA/世界模型为核心的高质量声浪——
-  - 🤖 **VLA 方向 4 条**：Gemini Robotics（Google DeepMind 具身智能）、UniAD（端到端框架 CVPR Best Paper）、DriveLM（图结构 VQA 可解释驾驶）、CarLLaVA（纯视觉 VLM 端到端驾驶）
-  - 🌍 **世界模型方向 4 条**：UniFuture（清华 4D 世界模型）、Vista（通用驾驶世界模型）、GAIA-1（Wayve 9B 自回归世界模型）、Copilot4D（Waabi 无监督离散扩散世界模型）
-  - 🚀 **模型/硬件 2 条**：Qwen3（MoE 全尺寸开源）、NVIDIA GR00T N1（人形机器人基础模型）
-  - ✅ **所有 10 条 URL 经 curl 验证 200 + arXiv 论文标题交叉核实**，杜绝虚构链接
+- 🚗 **声浪大扩充：37 条时间线式 AI 声浪**（从 10 条扩充至 37 条），覆盖 2020-2026 年完整时间线——
+  - 📅 **年度总结 6 条**（2020-2025）：GPT-3 → DETR3D → ChatGPT/BEVFormer → GPT-4/UniAD/LLaMA → Sora/DeepSeek-V2/VLA → DeepSeek-R1/Qwen3/Gemini Robotics
+  - 📆 **月度总结 3 条**（2026.1-3）：DeepSeek-R1 全球爆火 → Claude 3.7/数据闭环 → Gemini Robotics/GR00T N1/QwQ-32B
+  - 📰 **周报 3 条**（2026.4 W1-W3）：MCP 生态扩展 → DriveLM/SGLang → Qwen3 发布/UniAD-mini
+  - 🚗 **自动驾驶专题 14 条**：UniAD/DriveLM/Vista/GAIA-1/CarLLaVA/Copilot4D/BEVFormer/端到端综述/DriveAGI 等
+  - 🚀 **模型发布 6 条**：Qwen3/DeepSeek-R1/DeepSeek-V3/Claude 3.7/Qwen2.5-VL/Gemini 2.5 Pro
+  - ⚙️ **AI Infra 4 条**：vLLM/SGLang/TensorRT-LLM/NVIDIA Blackwell
+  - 🤖 **Agent 1 条**：Anthropic MCP 协议
+  - ✅ **所有 37 条 URL 经 curl 验证 200 + arXiv 论文标题交叉核实**，杜绝虚构链接
 
 ---
 
