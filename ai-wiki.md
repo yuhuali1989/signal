@@ -302,15 +302,11 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 🔧 **Bug 修复：`/industry-news/` 页面动态条目终于可以点击链接了**：根因不在数据层，而是 [IndustryNewsFeed.js](src/components/IndustryNewsFeed.js) 的 `NewsCard` 渲染组件**历史上从未使用 `item.link` 字段**——只渲染了标题/摘要/来源/标签，即使数据有 link 也无法点击。本次改造：
-  - 🖱️ **整卡可点击**：`item.link` 存在时，外层用 `<a target="_blank" rel="noopener noreferrer">` 包裹，鼠标悬停紫色边框 + 阴影反馈
-  - 🔗 **来源行新增"🔗 原文"按钮** + ↗️ **标题右侧外链小图标**，有无链接的条目视觉明显区分
-  - 🛡️ **向后兼容**：30+ 条旧条目即使 `link` 缺失也能正常展示（静态卡片，不报错）
-- 📝 **信息源白名单升级为带 URL 模式的硬性规定**：声浪（任务 1）和全行业动态（任务 4c）的信息源白名单从「只列公司名」升级为**带具体 URL 基础路径 + curl 行为标注的表格**——
-  - 🔗 **声浪白名单**：6 大分类（AI 公司官方 / 代码模型论文 / 权威媒体 / 国内来源 / 行业学术 / 禁用来源），每个来源标注 URL 基础路径和 curl 返回状态（200/403/常 404），明确标注 OpenAI 返回 403（反爬需人工确认）、TechCrunch/The Verge 常 404（URL 含日期易拼错）、Bloomberg/Reuters 付费墙等
-  - 🔗 **全行业动态白名单**：4 大分类（软件行业公司官方 / 权威媒体 / 国内来源 / 财经监管），覆盖 Databricks/Snowflake/AWS/Salesforce/CrowdStrike 等 16 家公司的官方博客 URL
-  - ⛔ **新增硬性禁令**：「绝对禁止自行拼接 URL 路径，如果不确定某个 URL 是否存在，必须先 curl 验证」——直接针对之前 AI 编辑员虚构 URL 的根因
-  - 🧹 **禁用不稳定来源**：明确列出 `llm-stats.com`、`chat.lmsys.org` 等已知不稳定/经常 404 的聚合站
+- 🚗 **声浪全量刷新：自动驾驶专题**：清理 news-feed.json 全部历史条目（原 2093 行 / ~100KB），重新写入 10 条以自动驾驶/VLA/世界模型为核心的高质量声浪——
+  - 🤖 **VLA 方向 4 条**：Gemini Robotics（Google DeepMind 具身智能）、UniAD（端到端框架 CVPR Best Paper）、DriveLM（图结构 VQA 可解释驾驶）、CarLLaVA（纯视觉 VLM 端到端驾驶）
+  - 🌍 **世界模型方向 4 条**：UniFuture（清华 4D 世界模型）、Vista（通用驾驶世界模型）、GAIA-1（Wayve 9B 自回归世界模型）、Copilot4D（Waabi 无监督离散扩散世界模型）
+  - 🚀 **模型/硬件 2 条**：Qwen3（MoE 全尺寸开源）、NVIDIA GR00T N1（人形机器人基础模型）
+  - ✅ **所有 10 条 URL 经 curl 验证 200 + arXiv 论文标题交叉核实**，杜绝虚构链接
 
 ---
 
