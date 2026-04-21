@@ -302,9 +302,14 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 📚 **每日内容更新**：声浪 +10 条（Llama 5 / Wiz 收购 / vLLM 1.0 / Codex Agent / Dynamo 2.0 等）、文章 +2 篇（Llama 5 开源生态冲击 + Google Wiz 云安全格局重塑）、书籍 +1 章更新（《推理引擎》第 7 章追加 vLLM 1.0/MoD/Dynamo 2.0）、论文 +1 篇详细解读（Llama 5 Mixture-of-Depths 技术，2500+ 字含公式和消融实验）、模型 +2 个（Llama 5 MoE 1.2T + Llama 5 Dense 405B）、全行业动态 +10 条（覆盖 security/startup/data/cloud/software/market 6 大分类）
-- 📝 **提示词格式重写（第七节）**：彻底重写「自动化任务提示词」整节，修复 5 类格式/内容问题——五反引号包裹解决嵌套冲突、路径 maxwell-knowledge→signal 修正、路由去重+补全、shell 命令格式化、分类表格化
-- ✏️ **Hero 副标题修正**：用三个精准动词（追踪/产出/迭代）区分聚合/原创/迭代三类内容动作
+- 📝 **提示词真实性铁律加固（第七节重大更新）**：针对历史上"声浪被凭印象编造 / 链接不真实"的问题，在编辑员提示词中新增多层硬性约束——
+  - 任务 1（声浪）新增「⛔ 真实性铁律」小节：禁止虚构公司名/版本号/链接；必须来自真实公开出处；每条 url 写入前需经 curl 校验
+  - 任务 1 给出「✅ 推荐信息源白名单」：官方 Blog / arXiv / GitHub Releases / HuggingFace / 权威媒体，排除未核实自媒体
+  - 任务 1 强化采编流程：采集 → 验链（curl 200/301/302 才保留）→ 去重 → 写入；url 字段升级为必填
+  - 任务 4c（全行业动态）同步加入真实性铁律，`link` 必填且必须经 curl 校验
+  - 质检员检查 3 全面升级：从"抽检 10 条"升级为"最近 20 条全量检测 + 输出失效清单 + 强制修复闭环"，并新增检查 3b 对新增条目进行原文比对
+  - 「重要注意事项」置顶新增真实性总则
+- ✨ **工作目录修正**：提示词中的 `/Users/harrisyu/WorkBuddy/20260409114249/signal/` 保持与 GitHub 远端仓库名一致（历史 `maxwell-knowledge` 目录已改名）
 
 ---
 
@@ -334,16 +339,59 @@ maxwell-knowledge/
 
 ### 任务 1：更新声浪 content/news/news-feed.json（最高优先级）
 
+#### ⛔ 真实性铁律（违反则本次更新作废）
+
+1. **每一条声浪必须来自真实、可追溯的公开信息源**，严禁凭印象 / 大模型幻觉 / 行业惯性编造任何内容。
+2. **禁止虚构的元素**（一旦发现全部回滚并重来）：
+   - 公司名 / 产品名 / 模型名 / 项目代号（如 "Llama 5"、"GPT-6" 等如果官方未发布，不得出现）
+   - 版本号 / 参数量 / 发布日期 / 融资金额 / 估值 / Benchmark 分数
+   - 人名 / 职位 / 引述原话
+   - URL 地址（不允许猜测性地拼接路径或域名）
+3. **每条新闻的 `url` 字段必须是真实可访问的 http(s) 链接**，且是原始出处（官方博客 / arXiv / GitHub Release / 权威媒体原文），**不是**搜索结果页、聚合首页或已失效页面。
+4. **不确定时的处理**：如果无法确认某条信息的真实性或链接可用性，**宁可少写一条，也不允许编造填充凑数**。宁缺毋滥。
+
+#### ✅ 推荐信息源白名单（必须从中选取）
+
+- **官方发布**：OpenAI Blog / Anthropic News / Google DeepMind Blog / Meta AI Blog / Mistral News / 01.AI / Qwen 官方 / DeepSeek 官方
+- **代码/模型**：GitHub Releases、HuggingFace Models/Papers、arXiv（arxiv.org/abs/xxxx.xxxxx）
+- **权威媒体**：The Information、TechCrunch、Bloomberg、Reuters、The Verge、VentureBeat、MIT Tech Review、机器之心、量子位、InfoQ、36Kr
+- **行业社区**：Hugging Face Blog、Papers with Code、LMSYS Blog、a16z Blog
+- ❌ 禁用：任何未核实的自媒体号、公众号二手转载（除非是官方公众号）、Reddit / X（Twitter）未经核实的爆料帖
+
+#### 📋 采编流程（按顺序执行，不可跳步）
+
+1. **采集**：每条新闻先写入本地草稿，**必须附带原始出处 URL**。
+2. **验链**：写入 `news-feed.json` 前，对每条 `url` 执行 `curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L <url>`，只有返回 **200 / 301 / 302** 才允许保留；返回 403（某些站点对 curl 限流但浏览器可访问）需人工确认。返回 404 / 410 / 5xx / timeout 的 **一律丢弃**该条，不得提交。
+3. **去重**：与 news-feed.json 最近 60 天条目对比标题和 url，避免重复。
+4. **写入**：JSON 文件使用 UTF-8 直接写中文，严禁 `\uXXXX` 转义。
+
+#### 📝 内容要求
+
 - 新增 8-10 条最新 AI 动态，重点覆盖：
-  - LLM 前沿：模型发布/能力突破/推理优化（GPT/Claude/Gemini/Qwen/Llama 系列）
-  - AI Infra：推理框架(vLLM/SGLang/TensorRT-LLM)、训练框架、GPU/NPU 硬件、KV Cache 优化
+  - LLM 前沿：模型发布 / 能力突破 / 推理优化（GPT / Claude / Gemini / Qwen / Llama 系列）
+  - AI Infra：推理框架（vLLM / SGLang / TensorRT-LLM）、训练框架、GPU/NPU 硬件、KV Cache 优化
   - 闭环 Infra：数据合成、标注自动化、数据飞轮、合成数据质量评估
   - Agent/MCP：MCP 协议生态、Agent 编排、工具调用安全
   - 自动驾驶：VLA 进展、世界模型、端到端方案
-  - 全行业：软件/游戏/硬件/创业融资/政策监管动态（同步更新 IndustryNewsFeed.js 中的 NEWS_DATA）
-- 对 30 天前的旧条目（date 字段），将同类话题合并为一条摘要条目，减少冗余
-- 每条新闻格式：`{ id, title, summary, source, date, category, tags[], hot, region }`
-- 注意：JSON 文件必须使用 UTF-8 编码，所有中文字符直接写入，不要使用 Unicode 转义（\uXXXX）
+  - 全行业：软件 / 游戏 / 硬件 / 创业融资 / 政策监管动态（同步更新 IndustryNewsFeed.js 中的 NEWS_DATA）
+- 对 30 天前的旧条目（date 字段），将同类话题合并为一条摘要条目，减少冗余（合并时保留代表性原始 url）
+
+#### 🗂️ 每条新闻字段（`url` 为必填，不允许缺失或为空字符串）
+
+```json
+{
+  "id": "news-YYYYMMDD-xxx",
+  "title": "来自原文的准确标题（允许适度中文化，但不得夸大/改变语义）",
+  "summary": "80-150 字，基于原文事实撰写，关键数字必须和原文一致",
+  "source": "原始出处名称，如 OpenAI Blog / arXiv / The Information",
+  "url": "https://原始出处的完整链接（必填且经过 curl 校验）",
+  "date": "YYYY-MM-DD（原文发布日期，不是抓取日期）",
+  "category": "llm | infra | agent | ad | data | industry",
+  "tags": ["..."],
+  "hot": true,
+  "region": "global | china"
+}
+```
 
 ### 任务 2：新增文章 content/articles/（每次至少 2 篇）
 
@@ -423,6 +471,11 @@ maxwell-knowledge/
 - **每日至少新增 10 条**，热点事件（hot: true）不少于 3 条
 - 对超过 90 天的旧条目进行合并归档（同类话题合并为一条汇总），保持活跃列表在 60 条以内
 - ⚠️ **注意**：category 字段只能使用上表 6 个值，不要使用其他值（如 ai / game / hardware / funding / policy 等），否则会导致页面报错
+- ⛔ **真实性铁律（与任务 1 同等重要）**：
+  - 所有条目必须基于真实发生的新闻事件，禁止虚构公司名 / 融资金额 / 产品发布 / 财报数据
+  - `link` 字段必填且必须是原始新闻页的完整 URL（非聚合首页 / 非搜索结果页）
+  - 写入前对每条 `link` 执行 `curl -I --max-time 8 -L <url>`，返回 200/301/302 才保留，4xx/5xx 一律丢弃
+  - 不得将国外媒体原标题自己翻译后再编造一段并不存在的配图/引述；summary 必须严格基于原文事实
 
 ### 任务 4d：更新经济研究 src/app/economy/page.js（每日更新）
 
@@ -506,6 +559,7 @@ maxwell-knowledge/
 
 ## 重要注意事项
 
+- ⛔ **真实性总则（最高优先级）**：声浪 / 全行业动态 / 创业雷达的**所有条目必须基于真实公开信息**，严禁编造公司名、产品、数字、链接；**每条必须带真实 url 并通过 curl 可达性校验**；宁可少发，绝不造假（详见任务 1 和任务 4c 的真实性铁律）
 - 所有文件必须使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX 会导致乱码）
 - JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
@@ -560,21 +614,67 @@ grep -r '\\u[0-9a-fA-F]\{4\}' content/news/news-feed.json | head -5
 grep -r '\\u[0-9a-fA-F]\{4\}' content/papers/papers-index.json | head -5
 ```
 
-### 检查 3：声浪链接可用性
+### 检查 3：声浪链接真实性与可用性（关键！）
+
+> 声浪的价值就在于"真实 + 可追溯"，链接无效 = 内容失信。本检查必须逐条执行并输出明细。
 
 ```bash
-# 从 news-feed.json 提取前 10 条有 url 字段的链接并检测
-python3 -c "
-import json, subprocess
-data = json.load(open('content/news/news-feed.json'))
-items = [i for i in data.get('items', data if isinstance(data, list) else [])
-         if i.get('url') and i['url'].startswith('http')][:10]
-for item in items:
+# 全量抽检 news-feed.json 与 IndustryNewsFeed.js 中条目的 url/link 可访问性
+python3 <<'PY'
+import json, subprocess, re, sys
+
+def check(url):
     r = subprocess.run(['curl','-s','-o','/dev/null','-w','%{http_code}',
-                       '--max-time','5', item['url']], capture_output=True, text=True)
-    print(f\"{r.stdout} {item['url'][:60]}\")
-"
+                        '-L','--max-time','8',
+                        '-A','Mozilla/5.0 (SignalBot)',
+                        url], capture_output=True, text=True)
+    return r.stdout.strip()
+
+# 1) news-feed.json 全量检查
+data = json.load(open('content/news/news-feed.json'))
+items = data.get('items', data if isinstance(data, list) else [])
+missing = [i.get('id','?') for i in items if not i.get('url')]
+print(f'[news] 总数={len(items)}, 缺 url={len(missing)}')
+if missing:
+    print('  缺 url 的条目:', missing[:10])
+
+# 采样最近 20 条做链接有效性检测（按 date 倒序）
+items_sorted = sorted([i for i in items if i.get('url','').startswith('http')],
+                      key=lambda x: x.get('date',''), reverse=True)[:20]
+bad = []
+for it in items_sorted:
+    code = check(it['url'])
+    ok = code in ('200','301','302','303')
+    mark = '✅' if ok else '❌'
+    print(f"  {mark} {code} {it.get('date','')} {it['url'][:80]}")
+    if not ok and code not in ('403',):  # 403 可能是反爬，需人工确认
+        bad.append((it.get('id'), code, it.get('url')))
+
+print(f'\n[news] 失效链接 {len(bad)} 条:')
+for b in bad:
+    print('  -', b)
+
+# 2) 对失效条目的处理建议
+if bad:
+    print('\n⚠️ 请对上述失效条目执行以下操作之一：')
+    print('  a) 替换为真实可访问的原始出处 url')
+    print('  b) 整条删除（不要留着带 404 的链接）')
+    sys.exit(1)
+PY
 ```
+
+**判定标准**：
+- 失效链接数 > 0 → 质检不通过，必须先修复再发布
+- 缺 url 字段的条目 > 0 → 质检不通过（真实性铁律要求每条都必须有 url）
+- 403 状态：有些网站对 curl 做反爬（如 Bloomberg / The Information），需浏览器人工打开确认
+
+### 检查 3b：声浪内容真实性抽查（新增）
+
+- 随机抽取本次新增的 3 条声浪，**打开 url 逐条比对**：
+  - 标题是否与原文一致（允许中文翻译，不允许语义改变）
+  - summary 中提到的数字 / 日期 / 公司名 / 模型名是否与原文一致
+  - source 字段是否是原始出处（而不是二手转载源）
+- 发现任何不一致 → 立即修正或删除该条
 
 ### 检查 4：数学公式渲染检查
 
