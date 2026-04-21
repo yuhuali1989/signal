@@ -302,14 +302,17 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 📝 **质检员检查 3b 三维度升级**：原本只做简单抽查的"检查 3b"升级为**声浪内容三维度真实性抽查**——
-  - 🔗 **链接可用性（深度校验）**：不仅要 curl 200，还要求页面内容不是 404 兜底页 / 登录墙 / 下架页；url 必须精确指向本条新闻的原文，不是首页/搜索页/社媒转发页
-  - 🎯 **对应关系准确性**：title 不得夸大或扭曲原文语义；summary 中的公司名/模型名/版本号/数字/人名/引述必须与原文**一字不差**；source 必须是一手出处（不是二手转载站）
-  - 📅 **日期准确性**：`date` 必须是原文真实发布日期，不是抓取日期、不是猜测日期、不得为未来日期、不得 <2023-01-01
-  - 🤖 给出自动化校验 Python 脚本：对本次新增条目批量检查日期合法性 / 字段完整性 / url 指向性 / summary 数字与原文比对（高度疑似编造的直接标记）
-  - ✋ 明确人工必做环节：用 Cmd+F 逐条比对原文，对 source 做溯源
-  - 🚨 给出 7 类问题的明确处置规则（删除 / 替换 / 改为一手出处等），任何一项不过关本轮质检视为失败
-- 📊 **检查 8 质检报告表格扩展**：将原来的"声浪链接 X/Y"一行拆成"链接可用性 / 对应关系准确性 / 日期准确性"三行，让质检报告对声浪真实性的三个维度都有独立指标
+- 📝 **全行业动态真实性铁律满血版**：将声浪的真实性标准同等平移到任务 4c（全行业动态）——
+  - ✨ **任务 4c 重写**：原本简短的「真实性铁律」扩为 6 条硬性约束 + 「采编流程 5 步」 + 「信息源白名单」 + 「異字段规范」 + 「历史遗留处理」
+  - 🔗 **link 与动态一一对应**：link 必须是本条动态的原始新闻页，禁止指向官网首页/聚合页/搜索页/社媒二次转发
+  - 📅 **date 必须为原文发布日**：不是抓取日期、不是猜测日期、不得为未来日期、不得 <2023-01-01
+  - 🔍 **对应关系校验前置**：写入前必须 Cmd+F 比对 summary 关键要素，命中原文才保留
+  - 📤 **信息源白名单**：明确列出官方 IR/Blog / The Information / Bloomberg / SEC EDGAR / 交易所公告等一手出处
+  - 🧹 **历史遗留处理**：NEWS_DATA 中 2301+ 的 ~50 条旧条目缺 link，规定逐步补齐或合并
+- 🔍 **质检员检查 3 与 3b 全面扩展到全行业动态**：
+  - 检查 3：脚本现在真正**正则解析 IndustryNewsFeed.js 的 NEWS_DATA**，全量统计缺 link 条目数 + 抽检最近 20 条 link 可用性
+  - 检查 3b：三维度（链接/对应/日期）同时贯穿声浪 + 全行业动态，统一 `check_item()` 函数处理；本月新增的全部条目均进入校验
+- 📊 **检查 8 质检报告扩展**：原来的 3 行声浪指标并排**扩为 6 行**（声浪 + 全行业动态 × 链接可用/对应关系/日期准确），缺 link 数作为独立指标输出
 
 ---
 
@@ -681,14 +684,14 @@ grep -r '\\u[0-9a-fA-F]\{4\}' content/news/news-feed.json | head -5
 grep -r '\\u[0-9a-fA-F]\{4\}' content/papers/papers-index.json | head -5
 ```
 
-### 检查 3：声浪链接真实性与可用性（关键！）
+### 检查 3：声浪 + 全行业动态 链接真实性与可用性（关键！）
 
-> 声浪的价值就在于"真实 + 可追溯"，链接无效 = 内容失信。本检查必须逐条执行并输出明细。
+> 声浪和全行业动态的价值就在于"真实 + 可追溯"，链接无效 = 内容失信。本检查必须逐条执行并输出明细。
 
 ```bash
-# 全量抽检 news-feed.json 与 IndustryNewsFeed.js 中条目的 url/link 可访问性
+# 全量检测 news-feed.json 与 IndustryNewsFeed.js 中条目的 url/link 可访问性
 python3 <<'PY'
-import json, subprocess, re, sys
+import json, subprocess, re, sys, pathlib
 
 def check(url):
     r = subprocess.run(['curl','-s','-o','/dev/null','-w','%{http_code}',
@@ -697,7 +700,9 @@ def check(url):
                         url], capture_output=True, text=True)
     return r.stdout.strip()
 
-# 1) news-feed.json 全量检查
+total_bad = 0
+
+# ============ 1) 声浪 news-feed.json ============
 data = json.load(open('content/news/news-feed.json'))
 items = data.get('items', data if isinstance(data, list) else [])
 missing = [i.get('id','?') for i in items if not i.get('url')]
@@ -705,7 +710,6 @@ print(f'[news] 总数={len(items)}, 缺 url={len(missing)}')
 if missing:
     print('  缺 url 的条目:', missing[:10])
 
-# 采样最近 20 条做链接有效性检测（按 date 倒序）
 items_sorted = sorted([i for i in items if i.get('url','').startswith('http')],
                       key=lambda x: x.get('date',''), reverse=True)[:20]
 bad = []
@@ -714,41 +718,85 @@ for it in items_sorted:
     ok = code in ('200','301','302','303')
     mark = '✅' if ok else '❌'
     print(f"  {mark} {code} {it.get('date','')} {it['url'][:80]}")
-    if not ok and code not in ('403',):  # 403 可能是反爬，需人工确认
+    if not ok and code not in ('403',):
         bad.append((it.get('id'), code, it.get('url')))
-
-print(f'\n[news] 失效链接 {len(bad)} 条:')
+print(f'[news] 失效链接 {len(bad)} 条')
 for b in bad:
     print('  -', b)
+total_bad += len(bad)
 
-# 2) 对失效条目的处理建议
-if bad:
-    print('\n⚠️ 请对上述失效条目执行以下操作之一：')
+# ============ 2) 全行业动态 IndustryNewsFeed.js 中 NEWS_DATA ============
+# 直接用正则从 JS 文件中提取 { id, date, link } 条目信息
+text = pathlib.Path('src/components/IndustryNewsFeed.js').read_text(encoding='utf-8')
+# 按单个对象块切分
+blocks = re.findall(r'\{\s*id:\s*(\d+),.*?\}', text, re.DOTALL)
+ind_total = len(blocks)
+ind_missing = 0
+ind_links = []   # (id, date, link)
+for blk in blocks:
+    m_id   = re.search(r'id:\s*(\d+)', blk)
+    m_date = re.search(r"date:\s*['\"]([^'\"]+)['\"]", blk)
+    m_link = re.search(r"link:\s*['\"](https?://[^'\"]+)['\"]", blk)
+    if not m_link:
+        ind_missing += 1
+        continue
+    ind_links.append((m_id.group(1) if m_id else '?',
+                      m_date.group(1) if m_date else '',
+                      m_link.group(1)))
+
+print(f'\n[industry] 总数={ind_total}, 缺 link={ind_missing}')
+if ind_missing > 0:
+    print(f'  ⚠️ 有 {ind_missing} 条历史条目缺少 link 字段，请按任务 4c「历史遗留处理」补齐或合并')
+
+# 按日期倒序抽检最近 20 条 link
+ind_links.sort(key=lambda x: x[1], reverse=True)
+ind_bad = []
+for iid, d, url in ind_links[:20]:
+    code = check(url)
+    ok = code in ('200','301','302','303')
+    mark = '✅' if ok else '❌'
+    print(f"  {mark} {code} {d} id={iid} {url[:80]}")
+    if not ok and code not in ('403',):
+        ind_bad.append((iid, code, url))
+print(f'[industry] 失效链接 {len(ind_bad)} 条')
+for b in ind_bad:
+    print('  -', b)
+total_bad += len(ind_bad)
+
+# ============ 总结 ============
+if total_bad > 0 or missing or ind_missing:
+    print(f'\n⚠️ 合计问题：news 缺 url={len(missing)}, news 失效={len(bad)}, '
+          f'industry 缺 link={ind_missing}, industry 失效={len(ind_bad)}')
+    print('请对上述问题执行以下操作之一：')
     print('  a) 替换为真实可访问的原始出处 url')
     print('  b) 整条删除（不要留着带 404 的链接）')
     sys.exit(1)
+else:
+    print('\n✅ 所有抽检链接均可访问，无缺失字段')
 PY
 ```
 
 **判定标准**：
-- 失效链接数 > 0 → 质检不通过，必须先修复再发布
-- 缺 url 字段的条目 > 0 → 质检不通过（真实性铁律要求每条都必须有 url）
+- 任一侧（news / industry）失效链接数 > 0 → 质检不通过，必须先修复再发布
+- 任一侧缺 url/link 字段的条目 > 0 → 质检不通过（真实性铁律要求每条都必须有 url/link）
 - 403 状态：有些网站对 curl 做反爬（如 Bloomberg / The Information），需浏览器人工打开确认
 
-### 检查 3b：声浪内容三维度真实性抽查（链接 × 对应关系 × 日期）
+### 检查 3b：声浪 + 全行业动态 内容三维度真实性抽查（链接 × 对应关系 × 日期）
 
 > 检查 3 解决"链接能不能打开"，检查 3b 解决"链接打开后和我们的文案是否匹配"。
-> **必须覆盖本次新增的全部条目**（若数量 > 10，则至少抽查 **5 条**，其中包含 hot=true 的热点全部必查）。
+> 本检查同时覆盖：
+> - **声浪** news-feed.json 本轮新增的全部条目（>10 条则抽查 5 条 + 全部 hot）
+> - **全行业动态** IndustryNewsFeed.js NEWS_DATA 本轮新增的全部条目（>10 条则抽查 5 条 + 全部 hot）
 
 #### 📋 逐条校验清单（每条都要跑完这 3 维）
 
-对每条被抽查的声浪，打开 `url` 后逐项核对：
+对每条被抽查的声浪 / 动态，打开 `url` 或 `link` 后逐项核对：
 
 1. **🔗 链接可用性（深度校验，比检查 3 更严格）**
-   - url 返回 200/301/302 ✓（继承检查 3 的 curl 结果）
+   - url/link 返回 200/301/302 ✓（继承检查 3 的 curl 结果）
    - 页面实际内容**不是**"Page Not Found" / "文章已下架" / "404" / 登录墙兜底页
-   - url **精确指向本条新闻的原文页**，不是：
-     - ❌ 官网首页（如只写到 `https://openai.com/` 而不是具体 blog 链接）
+   - url/link **精确指向本条新闻的原文页**，不是：
+     - ❌ 官网首页（如只写到 `https://openai.com/` 或 `https://databricks.com/` 而不是具体 blog 链接）
      - ❌ 分类/标签聚合页（如 `https://techcrunch.com/category/ai/`）
      - ❌ 搜索结果页（如 `google.com/search?q=...`）
      - ❌ X（Twitter）/ 社交媒体对新闻的二次转发（必须找到一手出处）
@@ -761,24 +809,24 @@ PY
      - 数字指标（参数量 / Benchmark 分数 / 融资金额 / 市值 / 价格）—— 必须与原文完全一致
      - 人名 / 职位 —— 必须与原文一致
      - 引述的"原话"—— 必须是原文的直接引用，不得转写
-   - **source**：必须是原始出处名（OpenAI Blog / arXiv 等），**不是**二手转载站的名字
+   - **source**：必须是原始出处名（OpenAI Blog / arXiv / Bloomberg / Databricks Blog 等），**不是**二手转载站的名字
      - 反例：原文首发在 The Information，不得把 source 写成"36Kr"只因为 36Kr 翻译转载了一下
-   - **category / tags**：与内容领域匹配（如 vLLM 1.0 发布不应打 `ad` 标签）
+   - **category / tags**：与内容领域匹配（如 vLLM 1.0 发布不应打 `ad` 标签；全行业动态的 category 必须是 data/cloud/software/security/startup/market 之一）
 
 3. **📅 日期准确性（最容易出错的一维，必须死磕）**
    - `date` 字段必须是**原文发布日期**，不是：
-     - ❌ 你抓取这条新闻的日期（今天）
+     - ❌ 你抓取/撰写这条新闻的日期（今天）
      - ❌ "看起来像是最近"猜的日期
      - ❌ 转载媒体的转载日期（要找回一手出处的原始发布日）
    - 必须 **≤ 今天**（不允许出现未来日期，曾多次发生 LLM 幻觉写成明年日期）
    - 必须 **≥ 2023-01-01**（过旧的条目应合并归档而不是作为新增）
-   - 校验方法：打开 url，在文章顶部/底部找 "Published" / "发布时间" / arXiv 的 `[Submitted on ...]` 字段对照
+   - 校验方法：打开 url/link，在文章顶部/底部找 "Published" / "发布时间" / arXiv 的 `[Submitted on ...]` 字段对照
 
-#### 🤖 自动化校验脚本（前置过滤，人工只查自动化漏掉的）
+#### 🤖 自动化校验脚本（同时覆盖 news-feed.json 和 IndustryNewsFeed.js）
 
 ```bash
 python3 <<'PY'
-import json, subprocess, re
+import json, subprocess, re, pathlib
 from datetime import date, datetime
 
 TODAY = date.today()
@@ -789,82 +837,120 @@ def fetch_text(url):
     r = subprocess.run(['curl','-s','-L','--max-time','10',
                         '-A','Mozilla/5.0 (SignalBot)', url],
                        capture_output=True, text=True)
-    # 极简去标签（仅用于关键字比对，不追求完美 HTML 解析）
     return re.sub(r'<[^>]+>', ' ', r.stdout or '')
 
-data = json.load(open('content/news/news-feed.json'))
-items = data.get('items', data if isinstance(data, list) else [])
+BAD_URL_PATTERNS = [
+    r'^https?://[^/]+/?$',                      # 纯首页
+    r'(google\.com/search|bing\.com/search)',   # 搜索结果页
+    r'twitter\.com/?$', r'x\.com/?$',           # 社媒首页
+]
 
-# 仅检查最近 30 天新增条目（本次迭代的产物）
-recent = [i for i in items
-          if i.get('date') and i['date'] >= (TODAY.isoformat()[:7] + '-01')]
-print(f'本次需抽查条目数: {len(recent)}')
-
-issues = []
-for it in recent:
-    iid = it.get('id', '?')
-
+def check_item(iid, title, summary, source, date_s, url, kind='news'):
+    """对一条条目执行三维度校验，返回 issue 列表"""
+    out = []
     # ① 日期准确性
     try:
-        d = datetime.strptime(it.get('date',''), '%Y-%m-%d').date()
+        d = datetime.strptime((date_s or '')[:10], '%Y-%m-%d').date()
         if d > TODAY:
-            issues.append((iid, '日期', f'date={d} 为未来日期'))
+            out.append((kind, iid, '日期', f'date={d} 为未来日期'))
         if d < MIN_DATE:
-            issues.append((iid, '日期', f'date={d} 过旧（<2023），应归档合并'))
+            out.append((kind, iid, '日期', f'date={d} 过旧（<2023），应归档合并'))
     except Exception:
-        issues.append((iid, '日期', f'date 字段非法: {it.get("date")}'))
-
+        out.append((kind, iid, '日期', f'date 字段非法: {date_s}'))
     # ② 必填字段
-    for f in ('url', 'title', 'summary', 'source'):
-        if not it.get(f):
-            issues.append((iid, '字段', f'{f} 为空'))
+    for name, val in [('url/link', url), ('title', title),
+                      ('summary', summary), ('source', source)]:
+        if not val:
+            out.append((kind, iid, '字段', f'{name} 为空'))
+    # ③ url 指向性
+    if url and any(re.search(p, url) for p in BAD_URL_PATTERNS):
+        out.append((kind, iid, '链接', f'url 不是文章原文: {url}'))
+    # ④ 对应关系（summary 关键数字必须在原文出现）
+    if summary and url and url.startswith('http'):
+        nums = re.findall(r'\d{2,}(?:[.,]\d+)?[%xB亿千万]?', summary)
+        if len(nums) >= 2:
+            text = fetch_text(url)
+            missing = [n for n in nums[:5] if n not in text]
+            if len(missing) > len(nums[:5]) // 2:
+                out.append((kind, iid, '对应',
+                            f'summary 数字 {missing} 在原文未找到（高度疑似编造）'))
+    return out
 
-    # ③ url 指向性（粗筛：禁止首页/搜索页/社媒首页）
-    url = it.get('url', '')
-    bad_patterns = [
-        r'^https?://[^/]+/?$',                      # 纯首页
-        r'(google\.com/search|bing\.com/search)',   # 搜索结果页
-        r'twitter\.com/?$', r'x\.com/?$',           # 社媒首页
-    ]
-    if any(re.search(p, url) for p in bad_patterns):
-        issues.append((iid, '链接', f'url 不是文章原文: {url}'))
+all_issues = []
 
-    # ④ 对应关系（抽样：检查 summary 中的关键数字是否在原文中出现）
-    nums = re.findall(r'\d{2,}(?:[.,]\d+)?[%xB]?', it.get('summary',''))
-    if len(nums) >= 2 and url.startswith('http'):
-        text = fetch_text(url).lower()
-        missing = [n for n in nums[:5] if n.lower() not in text]
-        if len(missing) > len(nums[:5]) // 2:
-            issues.append((iid, '对应', f'summary 中数字 {missing} 在原文未找到（高度疑似编造）'))
+# ============ 1) 声浪 news-feed.json ============
+data = json.load(open('content/news/news-feed.json'))
+news_items = data.get('items', data if isinstance(data, list) else [])
+# 仅检查本月新增条目
+month_prefix = TODAY.isoformat()[:7]
+recent_news = [i for i in news_items
+               if i.get('date','').startswith(month_prefix)]
+print(f'[news] 本月新增条目数: {len(recent_news)}')
+for it in recent_news:
+    all_issues.extend(check_item(
+        it.get('id','?'), it.get('title',''), it.get('summary',''),
+        it.get('source',''), it.get('date',''), it.get('url',''),
+        kind='news'))
 
-print(f'\n自动化校验发现 {len(issues)} 个问题:')
-for iid, kind, msg in issues:
-    print(f'  [{kind}] {iid}: {msg}')
+# ============ 2) 全行业 IndustryNewsFeed.js ============
+text = pathlib.Path('src/components/IndustryNewsFeed.js').read_text(encoding='utf-8')
+blocks = re.findall(r'\{\s*id:\s*\d+,.*?\n\s*\},', text, re.DOTALL)
+def grab(pat, blk, default=''):
+    m = re.search(pat, blk)
+    return m.group(1) if m else default
 
-if issues:
+recent_ind = []
+for blk in blocks:
+    d = grab(r"date:\s*['\"]([^'\"]+)['\"]", blk)
+    if d.startswith(month_prefix):
+        recent_ind.append({
+            'id':       grab(r'id:\s*(\d+)', blk, '?'),
+            'title':    grab(r"title:\s*['\"]([^'\"]+)['\"]", blk),
+            'summary':  grab(r"summary:\s*['\"]([^'\"]+)['\"]", blk),
+            'source':   grab(r"source:\s*['\"]([^'\"]+)['\"]", blk),
+            'date':     d,
+            'link':     grab(r"link:\s*['\"](https?://[^'\"]+)['\"]", blk),
+        })
+
+print(f'[industry] 本月新增条目数: {len(recent_ind)}')
+for it in recent_ind:
+    all_issues.extend(check_item(
+        it['id'], it['title'], it['summary'], it['source'],
+        it['date'], it['link'], kind='industry'))
+
+# ============ 输出 ============
+print(f'\n自动化校验发现 {len(all_issues)} 个问题:')
+for kind, iid, cat, msg in all_issues:
+    print(f'  [{kind}][{cat}] id={iid}: {msg}')
+
+if all_issues:
     print('\n⛔ 必须修正所有问题后才能发布')
+else:
+    print('\n✅ 三维度校验全部通过')
 PY
 ```
 
 #### ✋ 人工必做环节（脚本覆盖不到的）
 
-- 对每条抽查项，**真的打开 url，用 Cmd+F 搜 summary 里的关键数字/公司名**，确认原文中存在
+- 对每条抽查项（**声浪 + 全行业动态**），**真的打开 url/link，用 Cmd+F 搜 summary 里的关键数字/公司名**，确认原文中存在
 - 对 title 的中文化做语义 check —— 是否扭曲了原意
 - 对 source 做溯源 —— 原文首发在哪里？现在写的 source 是不是真正的一手出处？
+- 特别对全行业动态中涉及**融资金额 / 并购价格 / 季报数字**的条目重点核对，这些数字最容易被编造
 
 #### 🚨 判定标准
 
 | 问题类型 | 处置 |
 |---|---|
 | 链接打开是 404 / 下架页 | **整条删除** |
-| url 是首页/搜索页/社媒首页 | 找到一手原文 url 替换，找不到则删除 |
-| summary 的数字/公司名在原文中找不到 | **整条删除**（编造嫌疑极高） |
+| url/link 是首页/搜索页/社媒首页 | 找到一手原文 url 替换，找不到则删除 |
+| summary 的数字/公司名在原文中找不到 | **整条删除**（编造嫆疑极高） |
 | title 语义被改变（夸大/扭曲） | 改为忠于原文的译法 |
 | source 不是一手出处 | 改为一手出处名 |
 | date 为未来日期 | 必须改为原文真实发布日 |
 | date 不是原文发布日 | 必须改为原文真实发布日 |
+| 全行业动态条目缺 `link` | 补齐一手出处 link，找不到则合并到周/月/年汇总条目 |
 
-**任何一项不过关，本轮质检视为失败，必须回到编辑员任务 1 重做声浪再发布。**
+**任何一项不过关，本轮质检视为失败，必须回到编辑员任务 1 或任务 4c 重做再发布。**
 
 ### 检查 4：数学公式渲染检查
 
@@ -951,8 +1037,11 @@ tail -5 /tmp/signal-dev.log
 | JSON 格式 | 合法 / 非法 |
 | Unicode 乱码 | 无 / 已修复 |
 | 声浪链接可用性（检查 3） | X/Y 可访问 |
+| 全行业动态链接可用性（检查 3） | X/Y 可访问，缺 link N 条 |
 | 声浪对应关系准确性（检查 3b · title/summary/source） | X/Y 通过 |
+| 全行业动态对应关系准确性（检查 3b） | X/Y 通过 |
 | 声浪日期准确性（检查 3b · date 与原文一致） | X/Y 通过 |
+| 全行业动态日期准确性（检查 3b） | X/Y 通过 |
 | 测试用例 | 通过 / 失败 / 跳过 |
 | 服务状态 | 正常 / 异常 |
 
