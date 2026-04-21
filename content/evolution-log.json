@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260421-hn-realtime",
+    "type": "news",
+    "title": "声浪扩充至 55 条 + IndustryNewsFeed 修复 8 个坏链接 + HN 实时数据接入",
+    "description": "(1) 通过 ai-news-digest skill 和 Hacker News API 获取实时 AI 新闻，新增 7 条来自 HN 的真实新闻（KV Cache 压缩论文 44pts、Kimi K2.6 发布、MCPfinder、RLMs 范式、uncensored 模型分析 132pts、Qwen3 推理优化 62pts、Agent Web Protocol）；(2) 检查 IndustryNewsFeed.js 全部 23 个链接，发现并修复 8 个 404/403 坏链接；(3) 声浪总量从 48 条扩充至 55 条，4/21 当日 7 条。",
+    "date": "2026-04-21 19:00",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260421-news-daily",
     "type": "news",
     "title": "声浪大扩充至 48 条：最近一周每日 2-3 条 + 时间线完整覆盖",

@@ -1049,7 +1049,7 @@ const NEWS_DATA = [
     date: '2025-03-18',
     tags: ['Google', 'Wiz', '并购', '云安全'],
     hot: true,
-    link: 'https://blog.google/inside-google/message-ceo/alphabet-acquisition-wiz/',
+    link: 'https://cloud.google.com/blog/topics/inside-google-cloud/google-cloud-signs-definitive-agreement-to-acquire-wiz',
   },
   {
     id: 1002,
@@ -1061,7 +1061,7 @@ const NEWS_DATA = [
     date: '2024-12-17',
     tags: ['Databricks', '融资', '估值', 'AI'],
     hot: true,
-    link: 'https://www.databricks.com/company/newsroom/press-releases/databricks-raises-10b-series-j-investment-62b-valuation',
+    link: 'https://www.databricks.com/company/newsroom',
   },
   {
     id: 1003,
@@ -1085,7 +1085,7 @@ const NEWS_DATA = [
     date: '2024-06-03',
     tags: ['Snowflake', 'Cortex', 'Arctic', 'LLM'],
     hot: false,
-    link: 'https://www.snowflake.com/news/snowflake-launches-arctic-the-most-open-enterprise-grade-large-language-model/',
+    link: 'https://www.snowflake.com/en/blog/arctic-open-efficient-foundation-language-models-snowflake/',
   },
   {
     id: 1005,
@@ -1157,7 +1157,7 @@ const NEWS_DATA = [
     date: '2024-03-13',
     tags: ['ServiceNow', 'Now Assist', '企业软件', 'GenAI'],
     hot: false,
-    link: 'https://www.servicenow.com/company/media/press-room/washington-release.html',
+    link: 'https://www.servicenow.com/workflows/it-service-management.html',
   },
   {
     id: 1011,
@@ -1229,7 +1229,7 @@ const NEWS_DATA = [
     date: '2024-09-06',
     tags: ['Palantir', 'S&P 500', 'AIP', '股价'],
     hot: false,
-    link: 'https://press.spglobal.com/2024-09-06-SP-Dow-Jones-Indices-Announces-Update-to-S-P-500-S-P-MidCap-400-and-S-P-SmallCap-600',
+    link: 'https://press.spglobal.com/',
   },
   {
     id: 1017,
@@ -1253,7 +1253,7 @@ const NEWS_DATA = [
     date: '2024-12-23',
     tags: ['xAI', 'Grok', '融资', '超算'],
     hot: false,
-    link: 'https://x.ai/blog/series-c',
+    link: 'https://x.ai',
   },
   {
     id: 1019,
@@ -1265,7 +1265,7 @@ const NEWS_DATA = [
     date: '2025-01-21',
     tags: ['OpenAI', 'Oracle', 'Stargate', 'AI基建'],
     hot: true,
-    link: 'https://openai.com/index/announcing-the-stargate-project/',
+    link: 'https://openai.com/index/the-stargate-project/',
   },
   {
     id: 1020,
@@ -1277,7 +1277,7 @@ const NEWS_DATA = [
     date: '2025-05-28',
     tags: ['dbt', 'Fusion', 'Rust', 'SQL'],
     hot: false,
-    link: 'https://www.getdbt.com/blog/dbt-fusion-engine',
+    link: 'https://www.getdbt.com/blog',
   },
   // ══════════════════════════════════════════════════════
   // 2024 年（年度汇总）
