@@ -302,8 +302,9 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 📝 **提示词格式重写（第七节）**：彻底重写「自动化任务提示词」整节，修复 5 类格式/内容问题——① 外层改用五反引号包裹，解决内部 JSON 代码块嵌套导致 Markdown 渲染错乱；② 项目路径 `maxwell-knowledge` → `signal` 全部修正（编辑员前置步骤 + 质检员检查 5/7）；③ 质检员路由列表去重（`/idea/` `/industry-news/` 各出现两次）并补全 `/quant/` `/economy/` `/gallery/` `/benchmarks/` 4 条缺失路由；④ 质检员 shell 命令统一放入 `bash` 代码块，不再与 Markdown 标题混排；⑤ 全行业动态 6 大分类改用表格展示，质检报告改用表格模板
-- ✏️ **Hero 副标题修正**：「每日产出文章、论文解读与行业声浪」→「每日追踪行业声浪、产出文章与论文解读、迭代书籍与模型库」，用三个精准动词区分聚合/原创/迭代三类内容动作
+- 📚 **每日内容更新**：声浪 +10 条（Llama 5 / Wiz 收购 / vLLM 1.0 / Codex Agent / Dynamo 2.0 等）、文章 +2 篇（Llama 5 开源生态冲击 + Google Wiz 云安全格局重塑）、书籍 +1 章更新（《推理引擎》第 7 章追加 vLLM 1.0/MoD/Dynamo 2.0）、论文 +1 篇详细解读（Llama 5 Mixture-of-Depths 技术，2500+ 字含公式和消融实验）、模型 +2 个（Llama 5 MoE 1.2T + Llama 5 Dense 405B）、全行业动态 +10 条（覆盖 security/startup/data/cloud/software/market 6 大分类）
+- 📝 **提示词格式重写（第七节）**：彻底重写「自动化任务提示词」整节，修复 5 类格式/内容问题——五反引号包裹解决嵌套冲突、路径 maxwell-knowledge→signal 修正、路由去重+补全、shell 命令格式化、分类表格化
+- ✏️ **Hero 副标题修正**：用三个精准动词（追踪/产出/迭代）区分聚合/原创/迭代三类内容动作
 
 ---
 

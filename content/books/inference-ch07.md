@@ -391,4 +391,50 @@ $$\text{Latency} = \underbrace{\text{TTFT}}_{\text{Prefill}} + \underbrace{\text
 
 ---
 
+## 最新进展（2026 年 4 月）
+
+> 本节追加于 2026-04-21，记录推理优化领域的最新突破。
+
+### vLLM 1.0 正式发布
+
+vLLM 团队发布 1.0 里程碑版本，标志着开源推理引擎从「够用」到「生产级」的跨越：
+
+- **统一 MoE 推理引擎**：原生支持 DeepSeek-V4（1.8T）、Llama 5 MoE（1.2T）等超大稀疏模型，Expert Parallelism + Tensor Parallelism 混合并行
+- **多模态推理 GA**：图文音视频统一 KV Cache 管理，多模态 token 与文本 token 共享 PagedAttention
+- **LoRA 热切换**：延迟从 2s 降至 50ms，支持单 GPU 同时加载 100+ LoRA 适配器
+- **Blackwell B300 原生 FP4**：利用 B300 的 FP4 Tensor Core，推理吞吐翻倍
+
+与 SGLang 0.6 对比：批量吞吐 vLLM 领先 15%，流式延迟 SGLang 领先 12%，两者在不同场景各有优势。
+
+### Mixture-of-Depths（MoD）动态层跳过
+
+Llama 5 首次引入 Mixture-of-Depths 技术，在 MoE 的基础上增加层级动态路由：
+
+- 每个 token 通过轻量级 Router 预测每层的「信息增益」
+- 信息增益低于阈值的层直接跳过（残差连接直通）
+- 实测平均跳过 35% 的层，推理速度提升 40%，精度损失 < 0.2%
+- 与 Speculative Decoding 正交，两者可叠加使用
+
+### NVIDIA Dynamo 2.0 推理编排
+
+NVIDIA 开源 Dynamo 2.0，填补推理引擎和 K8s 之间的编排空白：
+
+- 原生 Prefill-Decode 分离调度，自动路由请求到最优 GPU 组
+- 自动弹性扩缩，基于队列深度和 SLO 目标动态调整实例数
+- 多模型混部，单集群同时服务 10+ 模型，GPU 利用率从 45% 提升至 82%
+- 与 vLLM/SGLang/TensorRT-LLM 三大引擎无缝集成
+
+### 技术演进时间线（更新）
+
+```
+2022: FlashAttention → 注意力计算 2-4x 加速
+2023: vLLM/PagedAttention → KV Cache 管理革命
+2024: PD 分离 / MLA / FlashAttention 3
+2025: Test-Time Compute / FP4 量化 / Dynamo 1.0
+2026-Q1: SGLang 0.6 PD 分离 GA / SpecDec v3
+2026-04: vLLM 1.0 GA / Llama 5 MoD / Dynamo 2.0
+```
+
+---
+
 *Signal 知识平台 · LLM 推理框架 · 第 7 章*

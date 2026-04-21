@@ -1,5 +1,69 @@
 [
   {
+    "id": "evo-20260421-daily-08",
+    "type": "system",
+    "title": "全行业动态新增 10 条：覆盖安全/融资/云/软件/市场 6 大分类",
+    "description": "IndustryNewsFeed.js 头部新增 10 条全行业动态（id 2501-2510），覆盖 Google Wiz $320 亿收购（security）、Anthropic $75 亿 D 轮（startup）、Databricks Agent Framework 2.0（data）、阿里云 PAI-Lingjun 3.0（cloud）、Salesforce Agentforce 2.0 GA（software）、Meta Q1 财报（market）等。国内外各半，热点 3 条。",
+    "date": "2026-04-21 16:20",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-07",
+    "type": "model",
+    "title": "模型数据新增 Llama 5 MoE 1.2T 和 Llama 5 Dense 405B",
+    "description": "在 models.json 追加 Llama 5 双版本：MoE 1.2T（128 专家/16 激活，MMLU-Pro 93.1% 登顶）和 Dense 405B（MMLU-Pro 90.8%）。两者均引入 Mixture-of-Depths 动态层跳过技术，Apache 2.0 完全开源。",
+    "date": "2026-04-21 16:15",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-06",
+    "type": "paper",
+    "title": "论文解读：Llama 5 Mixture-of-Depths 技术详细解析（2500+ 字）",
+    "description": "新增 Llama 5 论文详细解读（llama5-mod-moe-open-source.md），深度分析 Mixture-of-Depths 动态层跳过的数学形式化、Gumbel-Sigmoid 训练策略、层利用率正则化。消融实验显示 τ=0.3 时跳过 35% 层仅损失 0.2% 精度，速度提升 40%。同步更新 papers-index.json。",
+    "date": "2026-04-21 16:10",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-05",
+    "type": "book",
+    "title": "书架更新：《推理引擎》第 7 章追加 vLLM 1.0 / MoD / Dynamo 2.0 最新进展",
+    "description": "在 inference-ch07.md 末尾追加「最新进展（2026 年 4 月）」小节，补充 vLLM 1.0 GA（统一 MoE 推理 + 多模态 GA + LoRA 热切换 50ms）、Llama 5 Mixture-of-Depths 动态层跳过、NVIDIA Dynamo 2.0 推理编排（PD 分离调度 + 弹性扩缩 + 多模型混部）三大突破。",
+    "date": "2026-04-21 16:05",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-04",
+    "type": "article",
+    "title": "新增文章：Google $320 亿收购 Wiz 云安全格局重塑分析",
+    "description": "新增深度文章 google-wiz-acquisition-cloud-security-landscape-2026-04-21.md（约 1800 字），分析 Wiz 无代理扫描技术护城河、Security Graph 安全知识图谱、CNAPP 一体化平台，以及对 CrowdStrike/Palo Alto 的冲击和中国市场启示。含代码示例和三大云厂商安全能力对比表。",
+    "date": "2026-04-21 16:00",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-03",
+    "type": "article",
+    "title": "新增文章：Llama 5 双版本发布与开源生态冲击波分析",
+    "description": "新增深度文章 llama5-open-source-moe-dense-ecosystem-2026-04-21.md（约 1800 字），分析 Llama 5 MoE 1.2T 的 Mixture-of-Depths 技术创新、128 专家架构、训练基础设施（65536×H200），以及对闭源模型定价、API 市场和中国 AI 产业的连锁冲击。含 vLLM 1.0 部署代码示例。",
+    "date": "2026-04-21 15:55",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-02",
+    "type": "news",
+    "title": "声浪新增 10 条：覆盖 Llama 5 / Wiz 收购 / vLLM 1.0 / Codex Agent 等",
+    "description": "news-feed.json 头部新增 10 条最新 AI 动态（id n2604w35-01 至 n2604w35-10），覆盖 Llama 5 发布（MMLU-Pro 93.1% 登顶）、Google Wiz $320 亿收购、vLLM 1.0 GA、Claude 4.7 Haiku、NVIDIA Dynamo 2.0、Waymo 洛杉矶全域运营、OpenAI Codex Agent、DeepSeek-V4-0421、欧盟 AI Act 执行细则、Databricks Agent Framework 2.0。",
+    "date": "2026-04-21 15:50",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260421-daily-01",
+    "type": "system",
+    "title": "提示词格式重写：第七节自动化任务提示词彻底修复 5 类问题",
+    "description": "重写 ai-wiki.md 第七节，修复：① 五反引号包裹解决内部 JSON 代码块嵌套渲染错乱；② 项目路径 maxwell-knowledge→signal 全部修正；③ 质检员路由列表去重并补全 /quant/ /economy/ /gallery/ /benchmarks/；④ shell 命令统一放入 bash 代码块；⑤ 全行业动态分类和质检报告改用表格展示。",
+    "date": "2026-04-21 15:45",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260420-evolution-render-fix",
     "type": "system",
     "title": "修复进化日志渲染：兼容 title+description 格式",
