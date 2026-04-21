@@ -302,17 +302,11 @@ maxwell-knowledge/
 *最后更新：2026-04-21*
 
 **本次主要更新内容**：
-- 📝 **全行业动态真实性铁律满血版**：将声浪的真实性标准同等平移到任务 4c（全行业动态）——
-  - ✨ **任务 4c 重写**：原本简短的「真实性铁律」扩为 6 条硬性约束 + 「采编流程 5 步」 + 「信息源白名单」 + 「異字段规范」 + 「历史遗留处理」
-  - 🔗 **link 与动态一一对应**：link 必须是本条动态的原始新闻页，禁止指向官网首页/聚合页/搜索页/社媒二次转发
-  - 📅 **date 必须为原文发布日**：不是抓取日期、不是猜测日期、不得为未来日期、不得 <2023-01-01
-  - 🔍 **对应关系校验前置**：写入前必须 Cmd+F 比对 summary 关键要素，命中原文才保留
-  - 📤 **信息源白名单**：明确列出官方 IR/Blog / The Information / Bloomberg / SEC EDGAR / 交易所公告等一手出处
-  - 🧹 **历史遗留处理**：NEWS_DATA 中 2301+ 的 ~50 条旧条目缺 link，规定逐步补齐或合并
-- 🔍 **质检员检查 3 与 3b 全面扩展到全行业动态**：
-  - 检查 3：脚本现在真正**正则解析 IndustryNewsFeed.js 的 NEWS_DATA**，全量统计缺 link 条目数 + 抽检最近 20 条 link 可用性
-  - 检查 3b：三维度（链接/对应/日期）同时贯穿声浪 + 全行业动态，统一 `check_item()` 函数处理；本月新增的全部条目均进入校验
-- 📊 **检查 8 质检报告扩展**：原来的 3 行声浪指标并排**扩为 6 行**（声浪 + 全行业动态 × 链接可用/对应关系/日期准确），缺 link 数作为独立指标输出
+- 📝 **信息源白名单升级为带 URL 模式的硬性规定**：声浪（任务 1）和全行业动态（任务 4c）的信息源白名单从「只列公司名」升级为**带具体 URL 基础路径 + curl 行为标注的表格**——
+  - 🔗 **声浪白名单**：6 大分类（AI 公司官方 / 代码模型论文 / 权威媒体 / 国内来源 / 行业学术 / 禁用来源），每个来源标注 URL 基础路径和 curl 返回状态（200/403/常 404），明确标注 OpenAI 返回 403（反爬需人工确认）、TechCrunch/The Verge 常 404（URL 含日期易拼错）、Bloomberg/Reuters 付费墙等
+  - 🔗 **全行业动态白名单**：4 大分类（软件行业公司官方 / 权威媒体 / 国内来源 / 财经监管），覆盖 Databricks/Snowflake/AWS/Salesforce/CrowdStrike 等 16 家公司的官方博客 URL
+  - ⛔ **新增硬性禁令**：「绝对禁止自行拼接 URL 路径，如果不确定某个 URL 是否存在，必须先 curl 验证」——直接针对之前 AI 编辑员虚构 URL 的根因
+  - 🧹 **禁用不稳定来源**：明确列出 `llm-stats.com`、`chat.lmsys.org` 等已知不稳定/经常 404 的聚合站
 
 ---
 
@@ -353,13 +347,83 @@ maxwell-knowledge/
 3. **每条新闻的 `url` 字段必须是真实可访问的 http(s) 链接**，且是原始出处（官方博客 / arXiv / GitHub Release / 权威媒体原文），**不是**搜索结果页、聚合首页或已失效页面。
 4. **不确定时的处理**：如果无法确认某条信息的真实性或链接可用性，**宁可少写一条，也不允许编造填充凑数**。宁缺毋滥。
 
-#### ✅ 推荐信息源白名单（必须从中选取）
+#### ✅ 信息源白名单（硬性规定，只能从以下来源采集，附 URL 基础路径和 curl 行为）
 
-- **官方发布**：OpenAI Blog / Anthropic News / Google DeepMind Blog / Meta AI Blog / Mistral News / 01.AI / Qwen 官方 / DeepSeek 官方
-- **代码/模型**：GitHub Releases、HuggingFace Models/Papers、arXiv（arxiv.org/abs/xxxx.xxxxx）
-- **权威媒体**：The Information、TechCrunch、Bloomberg、Reuters、The Verge、VentureBeat、MIT Tech Review、机器之心、量子位、InfoQ、36Kr
-- **行业社区**：Hugging Face Blog、Papers with Code、LMSYS Blog、a16z Blog
-- ❌ 禁用：任何未核实的自媒体号、公众号二手转载（除非是官方公众号）、Reddit / X（Twitter）未经核实的爆料帖
+> ⚠️ **关键规则**：`url` 字段必须是下表中某个基础路径的**子页面**，不允许自行拼接不存在的路径。
+> 例如 `https://www.anthropic.com/news/claude-opus-4-7` 是合法的（`/news/` 下的真实子页面），
+> 但 `https://www.anthropic.com/news/claude-4-7-haiku` 如果 curl 返回 404 则**必须丢弃**。
+
+##### 🤖 AI 公司官方博客/新闻（优先级最高）
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| Anthropic | `https://www.anthropic.com/news/` | ✅ 200 | 每篇文章有独立 slug |
+| Anthropic 研究 | `https://www.anthropic.com/research/` | ✅ 200 | 研究论文/技术博客 |
+| OpenAI | `https://openai.com/index/` | ⚠️ 403 | curl 返回 403（反爬），但浏览器可访问，需人工确认 |
+| Google DeepMind | `https://deepmind.google/discover/blog/` | ✅ 200 | |
+| Google Blog | `https://blog.google/technology/google-deepmind/` | ✅ 200 | Gemini 等产品发布 |
+| Google AI Dev | `https://ai.google.dev/` | ✅ 200 | API/SDK 文档和公告 |
+| Meta AI | `https://ai.meta.com/blog/` | ✅ 200 | Llama 系列发布 |
+| Qwen 通义千问 | `https://qwenlm.github.io/blog/` | ✅ 200 | Qwen 系列发布 |
+| DeepSeek | `https://www.deepseek.com/blog/` | ✅ 200 | |
+| Mistral | `https://mistral.ai/news/` | ✅ 200 | |
+| NVIDIA 新闻 | `https://nvidianews.nvidia.com/news/` | ✅ 200 | 硬件/平台发布 |
+| NVIDIA 开发者 | `https://developer.nvidia.com/blog/` | ✅ 200 | 技术博客 |
+
+##### 📦 代码/模型/论文（可直接验证真实性）
+
+| 来源 | URL 模式 | curl 行为 | 说明 |
+|------|---------|-----------|------|
+| GitHub Releases | `https://github.com/{org}/{repo}/releases/tag/{version}` | ✅ 200 | 必须是真实存在的 release tag |
+| GitHub 仓库 | `https://github.com/{org}/{repo}` | ✅ 200 | 仓库必须真实存在 |
+| HuggingFace 模型 | `https://huggingface.co/{org}/{model}` | ✅ 200 或 401（私有） | 模型页面 |
+| HuggingFace 博客 | `https://huggingface.co/blog/` | ✅ 200 | |
+| arXiv | `https://arxiv.org/abs/{id}` | ✅ 200 | 论文 ID 格式 YYMM.NNNNN |
+| Papers with Code | `https://paperswithcode.com/` | ✅ 200 | |
+
+##### 📰 权威媒体（部分有反爬，标注 curl 行为）
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| TechCrunch | `https://techcrunch.com/` | ⚠️ 常 404 | URL 路径含日期，容易拼错，**必须 curl 验证** |
+| The Verge | `https://www.theverge.com/` | ⚠️ 常 404 | 同上 |
+| Bloomberg | `https://www.bloomberg.com/` | ⚠️ 403 | 付费墙 + 反爬，需人工确认 |
+| Reuters | `https://www.reuters.com/` | ⚠️ 401 | 部分文章需登录 |
+| The Information | `https://www.theinformation.com/` | ⚠️ 403/404 | 付费墙，**慎用**，优先找免费一手出处 |
+| VentureBeat | `https://venturebeat.com/` | ✅ 200 | |
+| MIT Tech Review | `https://www.technologyreview.com/` | ✅ 200 | |
+| Ars Technica | `https://arstechnica.com/` | ✅ 200 | |
+
+##### 🇨🇳 国内来源
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| 36Kr | `https://36kr.com/` | ✅ 200 | 快讯页 `/newsflashes`，文章页 `/p/{id}` |
+| 机器之心 | `https://www.jiqizhixin.com/` | ✅ 200 | |
+| 量子位 | `https://www.qbitai.com/` | ✅ 200 | |
+| InfoQ | `https://www.infoq.cn/` | ✅ 200 | |
+| 虎嗅 | `https://www.huxiu.com/` | ✅ 200 | |
+| 极客公园 | `https://www.geekpark.net/` | ✅ 200 | |
+
+##### 🏛️ 行业/学术/政策
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| Stanford HAI | `https://aiindex.stanford.edu/` | ✅ 200 | AI Index 年度报告 |
+| LMSYS | `https://lmsys.org/blog/` | ✅ 200 | Arena 排行榜 |
+| MCP 官方 | `https://modelcontextprotocol.io/` | ✅ 200 | MCP 协议规范 |
+| MCP Servers | `https://github.com/modelcontextprotocol/servers` | ✅ 200 | MCP 工具生态 |
+| EU AI Act | `https://digital-strategy.ec.europa.eu/` | ✅ 200 | 欧盟 AI 政策 |
+| CVPR/NeurIPS/ICML | 各会议官网 | ✅ 200 | 学术会议 |
+| a16z Blog | `https://a16z.com/blog/` | ✅ 200 | |
+
+##### ❌ 禁用来源（一律不得使用）
+
+- 任何未核实的自媒体号、公众号二手转载（除非是官方公众号）
+- Reddit / X（Twitter）未经核实的爆料帖
+- AI 生成的「行业观察」「趋势预测」类自媒体
+- 已知不稳定/经常 404 的聚合站（如 `llm-stats.com`、`chat.lmsys.org` 等）
+- **绝对禁止**：自行拼接 URL 路径。如果你不确定某个 URL 是否存在，**必须先 curl 验证**
 
 #### 📋 采编流程（按顺序执行，不可跳步）
 
@@ -490,20 +554,75 @@ maxwell-knowledge/
 4. **去重**：与 NEWS_DATA 近 60 天条目对比 title 与 link，避免重复
 5. **写入**：在 NEWS_DATA 数组头部插入
 
-#### 🌐 推荐信息源白名单（必须从中选取，禁用未核实自媒体）
+#### 🌐 信息源白名单（硬性规定，附具体 URL 和 curl 行为）
 
-- 🌍 **海外一手**：
-  - 公司官网 IR/Blog（`cloud.google.com/blog`、`aws.amazon.com/blogs`、`databricks.com/blog`、`salesforce.com/news`、`openai.com/blog`、`anthropic.com/news` 等）
-  - 权威媒体：The Information、Bloomberg、Reuters、TechCrunch、The Verge、WSJ、FT
-  - 技术社区：Hacker News（只选热度高且能追溯一手的）、Product Hunt
-- 🇨🇳 **国内一手**：
-  - 官方公众号头条（用公司名+公众号 site 搜索）
-  - 36Kr、虎嗅、极客公园、InfoQ、澎湃新闻、第一财经
-  - 交易所公告（港交所披露易、上交所/深交所）
-- 📊 **财经数据**：
-  - SEC EDGAR（10-K / 10-Q / 8-K 原始文件）
-  - Seeking Alpha 原文报道、Yahoo Finance 官方 IR 链接
-- ❌ 禁用：任何未核实的微信公众号二手转发、Reddit/X 未经核实的爆料、"AI 生成的行业观察"类自媒体号
+> ⚠️ **关键规则**：`link` 字段必须是下表中某个基础路径的**具体文章子页面**。
+> 禁止指向首页/分类页/搜索页。禁止自行拼接不存在的 URL 路径。
+
+##### 🏢 软件行业公司官方（优先级最高，一手出处）
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| Databricks | `https://www.databricks.com/blog/` | ✅ 200 | 产品发布/技术博客 |
+| Snowflake | `https://www.snowflake.com/en/blog/` | ✅ 200 | |
+| AWS | `https://aws.amazon.com/blogs/` | ✅ 200 | 各子博客如 `/blogs/aws/`、`/blogs/machine-learning/` |
+| Google Cloud | `https://cloud.google.com/blog/` | ✅ 200 | |
+| Azure | `https://azure.microsoft.com/en-us/blog/` | ✅ 200 | |
+| Salesforce | `https://www.salesforce.com/news/` | ✅ 200 | |
+| ServiceNow | `https://www.servicenow.com/blogs/` | ✅ 200 | |
+| CrowdStrike | `https://www.crowdstrike.com/blog/` | ✅ 200 | |
+| Palo Alto Networks | `https://www.paloaltonetworks.com/blog/` | ✅ 200 | |
+| Vercel | `https://vercel.com/blog/` | ✅ 200 | |
+| Cloudflare | `https://blog.cloudflare.com/` | ✅ 200 | |
+| Confluent | `https://www.confluent.io/blog/` | ✅ 200 | |
+| MongoDB | `https://www.mongodb.com/blog/` | ✅ 200 | |
+| 阿里云 | `https://www.alibabacloud.com/blog/` | ✅ 200 | |
+| 华为云 | `https://www.huaweicloud.com/` | ✅ 200 | |
+| 腾讯云 | `https://cloud.tencent.com/developer/` | ✅ 200 | |
+
+##### 📰 权威媒体（注意 curl 行为差异）
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| Bloomberg | `https://www.bloomberg.com/` | ⚠️ 403 | 付费墙+反爬，需人工确认 |
+| Reuters | `https://www.reuters.com/` | ⚠️ 401 | 部分文章需登录 |
+| The Information | `https://www.theinformation.com/` | ⚠️ 403/404 | 付费墙，**慎用** |
+| TechCrunch | `https://techcrunch.com/` | ⚠️ 常 404 | URL 含日期，容易拼错 |
+| The Verge | `https://www.theverge.com/` | ⚠️ 常 404 | 同上 |
+| WSJ | `https://www.wsj.com/` | ⚠️ 403 | 付费墙 |
+| FT | `https://www.ft.com/` | ⚠️ 403 | 付费墙 |
+| VentureBeat | `https://venturebeat.com/` | ✅ 200 | |
+| Seeking Alpha | `https://seekingalpha.com/` | ✅ 200 | 财报分析 |
+
+##### 🇨🇳 国内来源
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| 36Kr | `https://36kr.com/` | ✅ 200 | 快讯 `/newsflashes`，文章 `/p/{id}` |
+| 虎嗅 | `https://www.huxiu.com/` | ✅ 200 | |
+| 极客公园 | `https://www.geekpark.net/` | ✅ 200 | |
+| InfoQ | `https://www.infoq.cn/` | ✅ 200 | |
+| 澎湃新闻 | `https://www.thepaper.cn/` | ✅ 200 | |
+| 第一财经 | `https://www.yicai.com/` | ✅ 200 | |
+| 奇安信 | `https://www.qianxin.com/` | ✅ 200 | 安全行业 |
+
+##### 📊 财经/监管数据
+
+| 来源 | URL 基础路径 | curl 行为 | 说明 |
+|------|-------------|-----------|------|
+| SEC EDGAR | `https://www.sec.gov/cgi-bin/browse-edgar` | ✅ 200 | 10-K/10-Q/8-K 原始文件 |
+| Yahoo Finance | `https://finance.yahoo.com/` | ✅ 200 | IR 链接 |
+| Crunchbase | `https://news.crunchbase.com/` | ✅ 200 | 融资数据 |
+| Y Combinator | `https://www.ycombinator.com/companies` | ✅ 200 | YC 批次 |
+| Gartner | `https://www.gartner.com/en/newsroom/` | ⚠️ 403 | 反爬，需人工确认 |
+| 港交所披露易 | `https://www.hkexnews.hk/` | ✅ 200 | |
+
+##### ❌ 禁用来源
+
+- 任何未核实的微信公众号二手转发
+- Reddit / X 未经核实的爆料
+- "AI 生成的行业观察" 类自媒体号
+- **绝对禁止**：自行拼接 URL 路径，如果不确定某个 URL 是否存在，**必须先 curl 验证**
 
 #### 📝 内容要求
 
