@@ -1,5 +1,6 @@
 ---
 title: "MCP 协议从开发者走向消费级：Google Deep Research 集成 MCP 的里程碑意义"
+type: article
 date: "2026-04-22"
 tags: ["MCP", "Google", "Deep Research", "Gemini", "Agent", "协议标准化"]
 summary: "Google Deep Research 智能体正式集成 MCP 协议，这是 MCP 首次进入消费级产品。从 Anthropic 提出到 OpenAI/Google 拥抱，MCP 正在成为 AI Agent 生态的 USB-C 标准。"

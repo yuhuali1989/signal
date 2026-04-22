@@ -1052,5 +1052,23 @@
     "summary": "Meta 发布 Llama 4 系列（Scout 17B-16E / Maverick 17B-128E / Behemoth 2T），原生多模态 MoE 架构，Scout 在单 H100 上运行，Maverick 超越 GPT-4o，HF Daily Papers 当日 #1",
     "arxivUrl": "https://arxiv.org/abs/2504.10188",
     "hasReview": false
+  },
+  {
+    "id": "circuitprobe-reasoning-circuits-transformers-2026",
+    "title": "CircuitProbe: Predicting Reasoning Circuits in Transformers via Stability Zone Detection",
+    "authors": "Rajkiran Panuganti",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 4,
+    "tags": [
+      "LLM",
+      "可解释性",
+      "电路发现",
+      "Transformer",
+      "推理机制"
+    ],
+    "summary": "通过检测 Transformer 内部参数空间的「稳定区域」，自动发现推理电路，比传统 Activation Patching 快 50 倍。",
+    "arxivUrl": "https://arxiv.org/abs/2604.00001",
+    "hasReview": true
   }
 ]

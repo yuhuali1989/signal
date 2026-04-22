@@ -1,5 +1,6 @@
 ---
 title: "YC W26 批次 AI 创业地图：196 家公司中的三大主线与中国启示"
+type: article
 date: "2026-04-20"
 tags: ["YC", "创业", "AI SaaS", "Agent", "物理AI", "投资"]
 summary: "Y Combinator W26 批次公布 196 家创业公司，AI 占比 60% 创历史新高。本文拆解三大主线（Agent 工具链/垂直 SaaS/物理 AI），分析为什么 YC 把 2026 视为「垂直 Agent 之年」，以及对中国创业者的启示。"

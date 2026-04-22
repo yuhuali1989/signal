@@ -14,7 +14,14 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Anthropic", "Mythos", "AI安全", "NSA", "网络安全", "Altman"],
+    "tags": [
+      "Anthropic",
+      "Mythos",
+      "AI安全",
+      "NSA",
+      "网络安全",
+      "Altman"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -33,7 +40,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Anthropic", "Amazon", "AWS", "融资", "云计算"],
+    "tags": [
+      "Anthropic",
+      "Amazon",
+      "AWS",
+      "融资",
+      "云计算"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -52,7 +65,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["OpenAI", "DeployCo", "企业AI", "融资", "私募股权"],
+    "tags": [
+      "OpenAI",
+      "DeployCo",
+      "企业AI",
+      "融资",
+      "私募股权"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -71,7 +90,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["OpenAI", "GPT-5.5", "AI编程", "Agent", "代码生成"],
+    "tags": [
+      "OpenAI",
+      "GPT-5.5",
+      "AI编程",
+      "Agent",
+      "代码生成"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -90,7 +115,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["OpenAI", "ChatGPT", "Images 2.0", "多模态", "图像生成"],
+    "tags": [
+      "OpenAI",
+      "ChatGPT",
+      "Images 2.0",
+      "多模态",
+      "图像生成"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -109,7 +140,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Meta", "数据隐私", "AI训练", "员工监控", "数据伦理"],
+    "tags": [
+      "Meta",
+      "数据隐私",
+      "AI训练",
+      "员工监控",
+      "数据伦理"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -128,7 +165,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["特斯拉", "车载AI", "语音大模型", "备案", "端侧AI"],
+    "tags": [
+      "特斯拉",
+      "车载AI",
+      "语音大模型",
+      "备案",
+      "端侧AI"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -147,7 +190,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["NeoCognition", "Agent", "持续学习", "融资", "创业"],
+    "tags": [
+      "NeoCognition",
+      "Agent",
+      "持续学习",
+      "融资",
+      "创业"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -166,7 +215,12 @@
     "categoryColor": "gray",
     "platform": "github",
     "platformIcon": "🐙",
-    "tags": ["browser-use", "Web Agent", "Playwright", "AI自动化"],
+    "tags": [
+      "browser-use",
+      "Web Agent",
+      "Playwright",
+      "AI自动化"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -185,7 +239,12 @@
     "categoryColor": "gray",
     "platform": "github",
     "platformIcon": "🐙",
-    "tags": ["AutoGPT", "Agent框架", "MCP", "自主AI"],
+    "tags": [
+      "AutoGPT",
+      "Agent框架",
+      "MCP",
+      "自主AI"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -204,7 +263,13 @@
     "categoryColor": "gray",
     "platform": "github",
     "platformIcon": "🐙",
-    "tags": ["unsloth", "微调", "LoRA", "显存优化", "CUDA"],
+    "tags": [
+      "unsloth",
+      "微调",
+      "LoRA",
+      "显存优化",
+      "CUDA"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -223,7 +288,13 @@
     "categoryColor": "gray",
     "platform": "github",
     "platformIcon": "🐙",
-    "tags": ["markitdown", "微软", "文档处理", "RAG", "Markdown"],
+    "tags": [
+      "markitdown",
+      "微软",
+      "文档处理",
+      "RAG",
+      "Markdown"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -242,7 +313,12 @@
     "categoryColor": "gray",
     "platform": "github",
     "platformIcon": "🐙",
-    "tags": ["MCP", "Agent工具", "modelcontextprotocol", "开源生态"],
+    "tags": [
+      "MCP",
+      "Agent工具",
+      "modelcontextprotocol",
+      "开源生态"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -261,12 +337,18 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["SpaceX", "Cursor", "AI编程", "收购", "xAI"],
+    "tags": [
+      "SpaceX",
+      "Cursor",
+      "AI编程",
+      "收购",
+      "xAI"
+    ],
     "hot": true,
     "region": "global"
   },
   {
-    "id": "news-20260422-02",
+    "id": "news-20260422-11",
     "title": "Anthropic 获 Amazon $50 亿投资，承诺 $1000 亿 AWS 云支出",
     "summary": "Amazon 再次向 Anthropic 投资 $50 亿，Anthropic 则承诺在 AWS 上投入 $1000 亿云计算支出。这是 Amazon 对 Anthropic 的又一轮循环投资——投资换取云消费承诺，巩固 AWS 在 AI 基础设施市场的地位。Anthropic 累计融资已超 $150 亿。",
     "whyMatters": "Amazon-Anthropic 的 $1000 亿云支出承诺是 AI 基础设施军备竞赛的最新标志，直接影响 GPU 供需和推理成本走势。",
@@ -280,12 +362,18 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Anthropic", "Amazon", "AWS", "融资", "云计算"],
+    "tags": [
+      "Anthropic",
+      "Amazon",
+      "AWS",
+      "融资",
+      "云计算"
+    ],
     "hot": true,
     "region": "global"
   },
   {
-    "id": "news-20260422-03",
+    "id": "news-20260422-12",
     "title": "蚂蚁集团百灵大模型 Ling-2.6-flash 发布，匿名上线一周日均 tokens 调用达 100B 级",
     "summary": "蚂蚁集团发布百灵大模型 Ling-2.6-flash，匿名上线一周后日均 tokens 调用量已达 100B 级别。Ling-2.6-flash 定位为高性价比推理模型，在保持高质量输出的同时大幅降低推理成本，面向金融、保险、医疗等蚂蚁核心业务场景。",
     "whyMatters": "日均 100B tokens 的调用量证明了国产大模型在实际业务场景中的规模化落地能力。",
@@ -299,12 +387,18 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["蚂蚁集团", "百灵", "Ling-2.6", "大模型", "中国"],
+    "tags": [
+      "蚂蚁集团",
+      "百灵",
+      "Ling-2.6",
+      "大模型",
+      "中国"
+    ],
     "hot": true,
     "region": "china"
   },
   {
-    "id": "news-20260422-04",
+    "id": "news-20260422-13",
     "title": "谷歌深夜更新 Deep Research 智能体：支持 MCP 协议、原生图表，基于 Gemini 3.1 Pro",
     "summary": "谷歌紧急更新 Deep Research 智能体，新增 MCP 协议支持和原生图表生成能力，底层升级为 Gemini 3.1 Pro。MCP 支持意味着 Deep Research 可以直接调用外部工具和数据源，原生图表则让研究报告更加直观。这是谷歌首次在消费级产品中集成 MCP。",
     "whyMatters": "谷歌在消费级产品中集成 MCP 标志着该协议正从开发者工具走向大众市场，Agent 生态标准化加速。",
@@ -318,12 +412,18 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Google", "Deep Research", "MCP", "Gemini 3.1 Pro", "Agent"],
+    "tags": [
+      "Google",
+      "Deep Research",
+      "MCP",
+      "Gemini 3.1 Pro",
+      "Agent"
+    ],
     "hot": true,
     "region": "global"
   },
   {
-    "id": "news-20260422-05",
+    "id": "news-20260422-14",
     "title": "NeoCognition 获 $4000 万种子轮融资，构建像人类一样学习的 AI Agent",
     "summary": "AI 研究实验室 NeoCognition 完成 $4000 万种子轮融资，由 OSU 研究员创立，致力于开发能在任何领域成为专家的 AI Agent。核心技术：(1) 基于认知科学的持续学习架构；(2) 从少量示例中快速泛化；(3) 跨领域知识迁移。目标是构建通用领域专家 Agent。",
     "whyMatters": "$4000 万种子轮是 AI Agent 赛道资本热度的最新信号，认知科学路线可能是 Agent 突破的关键方向。",
@@ -337,12 +437,18 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["NeoCognition", "Agent", "种子轮", "认知科学", "创业"],
+    "tags": [
+      "NeoCognition",
+      "Agent",
+      "种子轮",
+      "认知科学",
+      "创业"
+    ],
     "hot": false,
     "region": "global"
   },
   {
-    "id": "news-20260422-06",
+    "id": "news-20260422-15",
     "title": "Meta 将采集员工鼠标和键盘操作数据用于训练 AI 模型",
     "summary": "TechCrunch 报道，Meta 推出新的内部工具，将员工的鼠标移动和按键点击转化为训练数据，用于训练其 AI 模型。这一做法引发了关于员工隐私和数据使用边界的广泛讨论。Meta 表示该工具旨在改善 AI 对人机交互模式的理解。",
     "whyMatters": "Meta 的做法揭示了 AI 训练数据的新前沿——人机交互行为数据，对 Agent 和 GUI 自动化模型训练有直接参考价值。",
@@ -356,12 +462,18 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Meta", "训练数据", "人机交互", "隐私", "AI训练"],
+    "tags": [
+      "Meta",
+      "训练数据",
+      "人机交互",
+      "隐私",
+      "AI训练"
+    ],
     "hot": false,
     "region": "global"
   },
   {
-    "id": "news-20260422-07",
+    "id": "news-20260422-16",
     "title": "ChatGPT Images 2.0 发布：文字生成能力大幅提升",
     "summary": "OpenAI 发布 ChatGPT Images 2.0，最新图像生成模型在文字渲染方面取得显著突破。此前 AI 图像生成模型普遍在文字生成上表现不佳，Images 2.0 展示了 AI 图像生成能力在过去几年的巨大进步。支持更精确的排版、多语言文字和复杂布局。",
     "whyMatters": "文字渲染一直是 AI 图像生成的短板，Images 2.0 的突破意味着 AI 设计工具将进入新阶段。",
@@ -375,12 +487,18 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["OpenAI", "ChatGPT", "图像生成", "Images 2.0", "文字渲染"],
+    "tags": [
+      "OpenAI",
+      "ChatGPT",
+      "图像生成",
+      "Images 2.0",
+      "文字渲染"
+    ],
     "hot": false,
     "region": "global"
   },
   {
-    "id": "news-20260422-08",
+    "id": "news-20260422-17",
     "title": "黄仁勋：英伟达生产昂贵 AI 硬件，但也生产全球成本最低的 Token",
     "summary": "英伟达 CEO 黄仁勋在最新演讲中表示，虽然英伟达的 AI 硬件价格昂贵，但从每 token 推理成本来看，英伟达平台生产的是全球成本最低的 token。这一表态回应了市场对 GPU 价格过高的质疑，强调了 TCO（总拥有成本）而非单卡价格才是正确的评估维度。",
     "whyMatters": "黄仁勋的「最低成本 token」论述重新定义了 AI 硬件的价值评估框架，对自动驾驶等大规模推理场景的硬件选型有直接影响。",
@@ -394,12 +512,18 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["NVIDIA", "黄仁勋", "GPU", "推理成本", "TCO"],
+    "tags": [
+      "NVIDIA",
+      "黄仁勋",
+      "GPU",
+      "推理成本",
+      "TCO"
+    ],
     "hot": true,
     "region": "global"
   },
   {
-    "id": "news-20260422-09",
+    "id": "news-20260422-18",
     "title": "Anthropic Mythos 网络安全工具遭未授权访问，公司正在调查",
     "summary": "TechCrunch 报道，Anthropic 的独家网络安全工具 Mythos 遭到未授权组织访问。Anthropic 表示正在调查此事，但目前没有证据表明其系统受到影响。同日 OpenAI CEO Sam Altman 批评 Mythos 是「恐惧营销」。Mythos 是 Anthropic 面向政府和企业的高级网络安全 AI 产品。",
     "whyMatters": "AI 安全工具本身的安全性成为焦点，这对自动驾驶等安全关键领域的 AI 部署信任度有直接影响。",
@@ -413,7 +537,13 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Anthropic", "Mythos", "网络安全", "AI安全", "泄露"],
+    "tags": [
+      "Anthropic",
+      "Mythos",
+      "网络安全",
+      "AI安全",
+      "泄露"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -432,7 +562,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["智能驾驶", "行业洗牌", "端到端", "自动驾驶", "竞争格局"],
+    "tags": [
+      "智能驾驶",
+      "行业洗牌",
+      "端到端",
+      "自动驾驶",
+      "竞争格局"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -451,7 +587,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["KV Cache", "压缩", "推理优化", "Shannon极限", "arXiv"],
+    "tags": [
+      "KV Cache",
+      "压缩",
+      "推理优化",
+      "Shannon极限",
+      "arXiv"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -470,7 +612,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Kimi", "K2.6", "月之暗面", "API", "中国大模型"],
+    "tags": [
+      "Kimi",
+      "K2.6",
+      "月之暗面",
+      "API",
+      "中国大模型"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -489,7 +637,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["MCP", "MCPfinder", "Agent", "工具发现", "开源"],
+    "tags": [
+      "MCP",
+      "MCPfinder",
+      "Agent",
+      "工具发现",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -508,7 +662,13 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["RLM", "推理模型", "DeepSeek-R1", "范式转变", "Agent"],
+    "tags": [
+      "RLM",
+      "推理模型",
+      "DeepSeek-R1",
+      "范式转变",
+      "Agent"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -527,7 +687,13 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["模型审查", "开源模型", "AI安全", "RLHF", "对齐"],
+    "tags": [
+      "模型审查",
+      "开源模型",
+      "AI安全",
+      "RLHF",
+      "对齐"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -546,7 +712,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Qwen3", "推理优化", "vLLM", "自动生成", "MoE"],
+    "tags": [
+      "Qwen3",
+      "推理优化",
+      "vLLM",
+      "自动生成",
+      "MoE"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -565,7 +737,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["MCP", "A2A", "Agent协议", "Web Protocol", "生态"],
+    "tags": [
+      "MCP",
+      "A2A",
+      "Agent协议",
+      "Web Protocol",
+      "生态"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -584,7 +762,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Qwen3", "MoE", "通义千问", "阿里云", "开源"],
+    "tags": [
+      "Qwen3",
+      "MoE",
+      "通义千问",
+      "阿里云",
+      "开源"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -603,7 +787,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Claude 4", "Anthropic", "Opus", "编程", "推理"],
+    "tags": [
+      "Claude 4",
+      "Anthropic",
+      "Opus",
+      "编程",
+      "推理"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -622,7 +812,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["UniAD", "Orin", "端到端", "量产", "OpenDriveLab"],
+    "tags": [
+      "UniAD",
+      "Orin",
+      "端到端",
+      "量产",
+      "OpenDriveLab"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -641,7 +837,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Kimi-VL", "月之暗面", "多模态", "MoE", "开源"],
+    "tags": [
+      "Kimi-VL",
+      "月之暗面",
+      "多模态",
+      "MoE",
+      "开源"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -660,7 +862,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Skywork", "R1V", "多模态推理", "视觉CoT", "开源"],
+    "tags": [
+      "Skywork",
+      "R1V",
+      "多模态推理",
+      "视觉CoT",
+      "开源"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -679,7 +887,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["并行推理", "LLM", "KV Cache", "推理加速", "注意力机制"],
+    "tags": [
+      "并行推理",
+      "LLM",
+      "KV Cache",
+      "推理加速",
+      "注意力机制"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -698,7 +912,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["BitNet", "1-bit", "量化", "微软", "边缘部署"],
+    "tags": [
+      "BitNet",
+      "1-bit",
+      "量化",
+      "微软",
+      "边缘部署"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -717,7 +937,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["ActionStudio", "动作模型", "Agent", "HuggingFace", "训练框架"],
+    "tags": [
+      "ActionStudio",
+      "动作模型",
+      "Agent",
+      "HuggingFace",
+      "训练框架"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -736,7 +962,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["vLLM", "推理引擎", "MoE", "Speculative Decoding", "开源"],
+    "tags": [
+      "vLLM",
+      "推理引擎",
+      "MoE",
+      "Speculative Decoding",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -755,7 +987,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Agent", "Anthropic", "MCP", "架构设计", "最佳实践"],
+    "tags": [
+      "Agent",
+      "Anthropic",
+      "MCP",
+      "架构设计",
+      "最佳实践"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -774,7 +1012,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DriveLM", "数据集", "Waymo", "VQA", "OpenDriveLab"],
+    "tags": [
+      "DriveLM",
+      "数据集",
+      "Waymo",
+      "VQA",
+      "OpenDriveLab"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -793,7 +1037,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["SGLang", "RadixAttention", "推理引擎", "KV Cache", "LMSYS"],
+    "tags": [
+      "SGLang",
+      "RadixAttention",
+      "推理引擎",
+      "KV Cache",
+      "LMSYS"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -812,7 +1062,13 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["推理模型", "GRPO", "强化学习", "开源", "DeepSeek-R1"],
+    "tags": [
+      "推理模型",
+      "GRPO",
+      "强化学习",
+      "开源",
+      "DeepSeek-R1"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -831,7 +1087,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["OpenAI", "Agent SDK", "MCP", "Python", "开源"],
+    "tags": [
+      "OpenAI",
+      "Agent SDK",
+      "MCP",
+      "Python",
+      "开源"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -850,7 +1112,13 @@
     "categoryColor": "red",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["TensorRT-LLM", "NVIDIA", "Qwen3", "FP4", "MoE"],
+    "tags": [
+      "TensorRT-LLM",
+      "NVIDIA",
+      "Qwen3",
+      "FP4",
+      "MoE"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -869,7 +1137,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["UniAD", "端到端", "CVPR Best Paper", "Transformer", "OpenDriveLab"],
+    "tags": [
+      "UniAD",
+      "端到端",
+      "CVPR Best Paper",
+      "Transformer",
+      "OpenDriveLab"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -888,7 +1162,13 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Open-R1", "HuggingFace", "DeepSeek-R1", "GRPO", "开源"],
+    "tags": [
+      "Open-R1",
+      "HuggingFace",
+      "DeepSeek-R1",
+      "GRPO",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -907,7 +1187,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DriveAGI", "OpenDriveLab", "论文列表", "社区", "资源"],
+    "tags": [
+      "DriveAGI",
+      "OpenDriveLab",
+      "论文列表",
+      "社区",
+      "资源"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -926,7 +1212,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Gemini Robotics", "VLA", "具身智能", "Google DeepMind", "论文"],
+    "tags": [
+      "Gemini Robotics",
+      "VLA",
+      "具身智能",
+      "Google DeepMind",
+      "论文"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -945,7 +1237,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["NVIDIA", "GR00T N1", "人形机器人", "双系统", "VLA"],
+    "tags": [
+      "NVIDIA",
+      "GR00T N1",
+      "人形机器人",
+      "双系统",
+      "VLA"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -964,7 +1262,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["SpaceR", "空间推理", "多模态", "强化学习", "自动驾驶"],
+    "tags": [
+      "SpaceR",
+      "空间推理",
+      "多模态",
+      "强化学习",
+      "自动驾驶"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -983,7 +1287,14 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["GPT-3", "AlphaFold", "ViT", "Waymo", "Tesla FSD", "年度总结"],
+    "tags": [
+      "GPT-3",
+      "AlphaFold",
+      "ViT",
+      "Waymo",
+      "Tesla FSD",
+      "年度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1002,7 +1313,14 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DALL-E", "Codex", "DETR3D", "BEV", "Tesla Dojo", "年度总结"],
+    "tags": [
+      "DALL-E",
+      "Codex",
+      "DETR3D",
+      "BEV",
+      "Tesla Dojo",
+      "年度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1021,7 +1339,14 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["ChatGPT", "BEVFormer", "UniAD", "Stable Diffusion", "Chinchilla", "年度总结"],
+    "tags": [
+      "ChatGPT",
+      "BEVFormer",
+      "UniAD",
+      "Stable Diffusion",
+      "Chinchilla",
+      "年度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1040,7 +1365,15 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["GPT-4", "LLaMA", "UniAD", "VAD", "DriveLM", "GAIA-1", "年度总结"],
+    "tags": [
+      "GPT-4",
+      "LLaMA",
+      "UniAD",
+      "VAD",
+      "DriveLM",
+      "GAIA-1",
+      "年度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1059,7 +1392,15 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Sora", "DeepSeek-V2", "Blackwell", "VLA", "MCP", "Llama 3", "年度总结"],
+    "tags": [
+      "Sora",
+      "DeepSeek-V2",
+      "Blackwell",
+      "VLA",
+      "MCP",
+      "Llama 3",
+      "年度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1078,7 +1419,15 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DeepSeek-R1", "DeepSeek-V3", "Qwen3", "Claude 3.7", "Gemini Robotics", "GR00T", "年度总结"],
+    "tags": [
+      "DeepSeek-R1",
+      "DeepSeek-V3",
+      "Qwen3",
+      "Claude 3.7",
+      "Gemini Robotics",
+      "GR00T",
+      "年度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1097,7 +1446,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DeepSeek-R1", "Qwen2.5-VL", "NVIDIA Cosmos", "推理模型", "月度总结"],
+    "tags": [
+      "DeepSeek-R1",
+      "Qwen2.5-VL",
+      "NVIDIA Cosmos",
+      "推理模型",
+      "月度总结"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1116,7 +1471,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Claude 3.7", "Gemini 2.0", "Tesla FSD", "BitNet", "月度总结"],
+    "tags": [
+      "Claude 3.7",
+      "Gemini 2.0",
+      "Tesla FSD",
+      "BitNet",
+      "月度总结"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1135,7 +1496,14 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Gemini Robotics", "GR00T N1", "QwQ-32B", "UniFuture", "vLLM", "月度总结"],
+    "tags": [
+      "Gemini Robotics",
+      "GR00T N1",
+      "QwQ-32B",
+      "UniFuture",
+      "vLLM",
+      "月度总结"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1154,7 +1522,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DeepSeek-R1", "推理", "强化学习", "开源", "GRPO"],
+    "tags": [
+      "DeepSeek-R1",
+      "推理",
+      "强化学习",
+      "开源",
+      "GRPO"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -1173,7 +1547,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["DeepSeek-V3", "MoE", "MLA", "FP8", "开源"],
+    "tags": [
+      "DeepSeek-V3",
+      "MoE",
+      "MLA",
+      "FP8",
+      "开源"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -1192,7 +1572,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Qwen2.5-VL", "视觉语言", "视频理解", "Agent", "阿里"],
+    "tags": [
+      "Qwen2.5-VL",
+      "视觉语言",
+      "视频理解",
+      "Agent",
+      "阿里"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -1211,7 +1597,12 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Claude 3.7", "Anthropic", "Extended Thinking", "推理"],
+    "tags": [
+      "Claude 3.7",
+      "Anthropic",
+      "Extended Thinking",
+      "推理"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1230,7 +1621,13 @@
     "categoryColor": "purple",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Gemini 2.5 Pro", "Google", "推理", "100万上下文", "多模态"],
+    "tags": [
+      "Gemini 2.5 Pro",
+      "Google",
+      "推理",
+      "100万上下文",
+      "多模态"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1249,7 +1646,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Gemini", "VLA", "具身智能", "机器人", "Google DeepMind"],
+    "tags": [
+      "Gemini",
+      "VLA",
+      "具身智能",
+      "机器人",
+      "Google DeepMind"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1268,7 +1671,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["NVIDIA", "GR00T", "人形机器人", "具身智能", "VLA"],
+    "tags": [
+      "NVIDIA",
+      "GR00T",
+      "人形机器人",
+      "具身智能",
+      "VLA"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -1287,7 +1696,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["世界模型", "4D", "扩散模型", "自动驾驶", "清华"],
+    "tags": [
+      "世界模型",
+      "4D",
+      "扩散模型",
+      "自动驾驶",
+      "清华"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -1306,7 +1721,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["BEVFormer", "BEV", "Transformer", "3D检测", "感知"],
+    "tags": [
+      "BEVFormer",
+      "BEV",
+      "Transformer",
+      "3D检测",
+      "感知"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -1325,7 +1746,13 @@
     "categoryColor": "orange",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["端到端", "综述", "自动驾驶", "BEV", "规划"],
+    "tags": [
+      "端到端",
+      "综述",
+      "自动驾驶",
+      "BEV",
+      "规划"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -1344,7 +1771,13 @@
     "categoryColor": "green",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["MCP", "Anthropic", "Agent", "协议", "开源"],
+    "tags": [
+      "MCP",
+      "Anthropic",
+      "Agent",
+      "协议",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1363,7 +1796,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Vista", "世界模型", "视频生成", "自动驾驶", "仿真"],
+    "tags": [
+      "Vista",
+      "世界模型",
+      "视频生成",
+      "自动驾驶",
+      "仿真"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -1382,7 +1821,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["GAIA-1", "Wayve", "世界模型", "自回归", "自动驾驶"],
+    "tags": [
+      "GAIA-1",
+      "Wayve",
+      "世界模型",
+      "自回归",
+      "自动驾驶"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1401,7 +1846,13 @@
     "categoryColor": "yellow",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["NVIDIA", "Blackwell", "B200", "GB200", "GPU"],
+    "tags": [
+      "NVIDIA",
+      "Blackwell",
+      "B200",
+      "GB200",
+      "GPU"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1420,7 +1871,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["Copilot4D", "Waabi", "离散扩散", "世界模型", "无监督"],
+    "tags": [
+      "Copilot4D",
+      "Waabi",
+      "离散扩散",
+      "世界模型",
+      "无监督"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1439,7 +1896,12 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["扩散模型", "交通仿真", "合成数据", "自动驾驶"],
+    "tags": [
+      "扩散模型",
+      "交通仿真",
+      "合成数据",
+      "自动驾驶"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1458,7 +1920,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["具身理解", "驾驶场景", "多模态", "VLA", "基准"],
+    "tags": [
+      "具身理解",
+      "驾驶场景",
+      "多模态",
+      "VLA",
+      "基准"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -1477,7 +1945,13 @@
     "categoryColor": "blue",
     "platform": "web",
     "platformIcon": "🌐",
-    "tags": ["CarLLaVA", "VLM", "纯视觉", "端到端", "自动驾驶"],
+    "tags": [
+      "CarLLaVA",
+      "VLM",
+      "纯视觉",
+      "端到端",
+      "自动驾驶"
+    ],
     "hot": false,
     "region": "global"
   }

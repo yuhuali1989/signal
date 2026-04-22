@@ -1,5 +1,43 @@
 [
   {
+    "id": "gpt-55-agent",
+    "name": "GPT-5.5 Agent",
+    "org": "OpenAI",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-04",
+    "context": "256K tokens",
+    "attention": "MHA",
+    "factSheet": {
+      "highlight": "OpenAI 最前沿 AI 智能体编程模型，专为 Agent 编程场景优化",
+      "training": "基于 GPT-5 架构，针对 Agent 工具调用和代码生成专门训练",
+      "inference": "支持多轮工具调用和代码执行反馈循环",
+      "benchmarks": "AI 编程任务专项优化，SWE-bench 和 HumanEval 显著提升"
+    }
+  },
+  {
+    "id": "gemma-4-27b",
+    "name": "Gemma 4 27B",
+    "org": "Google DeepMind",
+    "type": "multimodal",
+    "typeLabel": "多模态",
+    "typeIcon": "🌐",
+    "open": true,
+    "params": "27B",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "MQA",
+    "factSheet": {
+      "highlight": "Google 开源多模态模型，原生文本+图像+音频，Apache 2.0",
+      "training": "四款变体（27B/26B-MoE/4B/2B），E2B 可在手机运行",
+      "inference": "原生多模态推理，无需外部视觉编码器",
+      "benchmarks": "开源多模态 SOTA，超越同等规模所有开源模型"
+    }
+  },
+  {
     "id": "gpt-oss-120b",
     "name": "GPT-OSS 120B",
     "org": "OpenAI",

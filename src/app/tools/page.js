@@ -1290,13 +1290,6 @@ export default function ToolsPage() {
           ))}
         </div>
 
-        {/* Active tab description */}
-        <div className="flex items-center gap-2 mb-5">
-          <span className="text-base">{active?.icon}</span>
-          <h2 className="text-sm font-semibold text-gray-700">{active?.label}</h2>
-          <span className="text-xs text-gray-400">· {active?.desc}</span>
-        </div>
-
         {/* Content */}
         {activeTab === 'tokenizer' && <TokenizerTool />}
         {activeTab === 'mcp' && <MCPDirectory />}

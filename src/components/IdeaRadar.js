@@ -19,8 +19,8 @@ const IDEAS = [
     industry: 'ai-tools',
     title: 'AI 驱动的代码审查 & 安全扫描',
     signal: '🔥 热点',
-    signalDate: '2026-04',
-    summary: 'GitHub Copilot 已覆盖代码补全，但深度安全审查（SAST/DAST + AI 解释）仍是空白。企业愿意为合规审计付费。',
+    signalDate: '2026-04-22',
+    summary: '4月MCP协议RCE漏洞事件（11个CVE、20万+服务器受影响）进一步验证了AI安全审查的巨大需求。GitHub Copilot覆盖代码补全，但Agent供应链安全审查（MCP Server审计/SAST+AI解释）是空白。企业愿为合规审计付费。',
     opportunity: '中国金融/政务软件外包市场对合规审查需求强烈，且国内缺乏对标产品。',
     overseas: [
       { name: 'Snyk', url: 'https://snyk.io', desc: '代码安全扫描，估值 $8.5B' },
@@ -36,9 +36,9 @@ const IDEAS = [
     id: 2,
     industry: 'ai-tools',
     title: 'AI 产品经理 / 需求分析 Agent',
-    signal: '👀 关注',
-    signalDate: '2026-04',
-    summary: '将用户反馈、竞品分析、数据埋点自动转化为 PRD 草稿和优先级建议。PM 工具链目前 AI 化程度极低。',
+    signal: '🔥 热点',
+    signalDate: '2026-04-22',
+    summary: 'MIT TR 2026趋势报告将Agent Orchestration列为十大趋势，多Agent协作催生PM工具需求。将用户反馈、竞品分析、数据埋点自动转化为PRD草稿和优先级建议。Forbes AI 50有多家PM工具公司入选。',
     opportunity: '国内互联网公司 PM 数量庞大，工具付费意愿正在提升。',
     overseas: [
       { name: 'Productboard', url: 'https://productboard.com', desc: '产品管理平台，已集成 AI' },
