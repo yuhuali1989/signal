@@ -10,13 +10,15 @@ export const LOOP_OVERVIEW = {
   title: '自动驾驶数据闭环',
   subtitle: '从车端采集到云端训练，再到车端部署的全链路闭环',
   stages: [
-    { id: 'collect',  label: '数据采集',   icon: '🚗', color: '#6c5ce7', desc: '车端多传感器实时采集' },
-    { id: 'upload',   label: '数据上传',   icon: '📡', color: '#00cec9', desc: '边缘预处理 + 增量上传' },
-    { id: 'process',  label: '数据处理',   icon: '⚙️', color: '#fd79a8', desc: '清洗 · 标注 · 质检 · 挖掘' },
-    { id: 'store',    label: '数据存储',   icon: '🗄️', color: '#ffa657', desc: '数据湖 + 特征仓库 + 版本管理' },
-    { id: 'train',    label: '模型训练',   icon: '🧠', color: '#3fb950', desc: 'VLA + 世界模型分布式训练' },
-    { id: 'deploy',   label: '模型部署',   icon: '🚀', color: '#79c0ff', desc: '车端推理 + OTA 灰度发布' },
-    { id: 'monitor',  label: '效果监控',   icon: '📊', color: '#d2a8ff', desc: '在线指标 + 触发回采策略' },
+    { id: 'collect',     label: '数据采集',   icon: '🚗', color: '#6c5ce7', desc: '车端多传感器实时采集' },
+    { id: 'upload',      label: '数据上传',   icon: '📡', color: '#00cec9', desc: '边缘预处理 + 增量上传' },
+    { id: 'process',     label: '数据处理',   icon: '⚙️', color: '#fd79a8', desc: '清洗 · 标注 · 质检 · 挖掘' },
+    { id: 'multimodal',  label: '多模态融合', icon: '🔀', color: '#a29bfe', desc: 'BEV融合 · 时序对齐 · 跨模态标注' },
+    { id: 'sceneMine',   label: '场景挖掘',   icon: '⛏️', color: '#e17055', desc: '长尾挖掘 · 困难样本 · 主动学习' },
+    { id: 'store',       label: '数据存储',   icon: '🗄️', color: '#ffa657', desc: '数据湖 + 特征仓库 + 版本管理' },
+    { id: 'train',       label: '模型训练',   icon: '🧠', color: '#3fb950', desc: 'VLA + 世界模型分布式训练' },
+    { id: 'deploy',      label: '模型部署',   icon: '🚀', color: '#79c0ff', desc: '车端推理 + OTA 灰度发布' },
+    { id: 'monitor',     label: '效果监控',   icon: '📊', color: '#d2a8ff', desc: '在线指标 + 触发回采策略' },
   ],
 };
 
@@ -369,4 +371,313 @@ export const DATA_FLOW_STATS = {
     totalScenes: '~50M',
     totalMileage: '~18M km',
   },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 11. 多模态融合层（新增）
+// ═══════════════════════════════════════════════════════════════
+export const MULTIMODAL_LAYER = {
+  title: '🔀 多模态融合层',
+  desc: '相机 / LiDAR / 雷达 / 语言 四模态时序对齐与联合表征',
+
+  // 时序对齐策略
+  syncStrategies: [
+    {
+      name: '硬件时间同步',
+      desc: 'PTP (IEEE 1588) 精度 < 1μs，所有传感器统一时钟域',
+      tech: 'PTP + GPS 1PPS',
+      accuracy: '< 1 μs',
+      color: '#6c5ce7',
+      icon: '⏱️',
+    },
+    {
+      name: '触发同步',
+      desc: '相机 trigger 信号与 LiDAR 旋转角度对齐，消除运动模糊',
+      tech: 'FPGA Trigger Board',
+      accuracy: '< 0.5 ms',
+      color: '#00cec9',
+      icon: '🔫',
+    },
+    {
+      name: '软件插值对齐',
+      desc: '云端后处理：IMU 积分补偿运动畸变，线性插值对齐时间戳',
+      tech: 'ROS2 tf2 + scipy',
+      accuracy: '< 5 ms',
+      color: '#fd79a8',
+      icon: '🧮',
+    },
+    {
+      name: '跨帧时序建模',
+      desc: '滑动窗口 8 帧历史 + 未来 6 帧预测，构建时序上下文',
+      tech: 'Temporal Transformer',
+      accuracy: '8+6 帧',
+      color: '#ffa657',
+      icon: '🎞️',
+    },
+  ],
+
+  // BEV 融合流水线
+  bevFusion: {
+    title: 'BEV 多模态融合流水线',
+    steps: [
+      { name: '相机 → BEV', desc: 'LSS / BEVDet：Lift-Splat-Shoot 将图像特征投影到 BEV 空间', tech: 'LSS + Depth Estimation', color: '#6c5ce7' },
+      { name: 'LiDAR → BEV', desc: 'VoxelNet / PointPillars：点云体素化后提取 BEV 特征', tech: 'VoxelNet + Sparse Conv', color: '#3fb950' },
+      { name: '雷达 → BEV', desc: '4D 毫米波雷达点云 → 速度感知 BEV 特征（RadarNet）', tech: 'RadarNet + CFAR', color: '#ffa657' },
+      { name: '特征融合', desc: 'BEVFusion：通道注意力 + 空间对齐，融合三模态 BEV 特征', tech: 'BEVFusion / UniSim', color: '#fd79a8' },
+      { name: '语言注入', desc: '驾驶指令 / 场景描述 → 语言嵌入注入 BEV 特征（VLA 核心）', tech: 'InternVL2 + Cross-Attn', color: '#a29bfe' },
+      { name: '时序聚合', desc: '多帧 BEV 特征时序聚合，支持遮挡推理和速度估计', tech: 'BEVFormer / StreamPETR', color: '#00cec9' },
+    ],
+    outputDim: '256 × 200 × 200 (C × H × W)',
+    fps: '10 Hz（车端）/ 离线不限',
+  },
+
+  // 跨模态标注协议
+  annotationProtocol: [
+    {
+      modality: '相机',
+      tasks: ['2D 检测', '实例分割', '车道线', '深度估计', '光流'],
+      autoTool: 'SAM2 + InternVL2',
+      manualRate: '< 5%',
+      color: '#6c5ce7',
+      icon: '📷',
+    },
+    {
+      modality: 'LiDAR',
+      tasks: ['3D 检测', '语义分割', '地面分割', '动态物体追踪'],
+      autoTool: 'BEVFusion + OpenPCDet',
+      manualRate: '< 10%',
+      color: '#3fb950',
+      icon: '🟢',
+    },
+    {
+      modality: '毫米波雷达',
+      tasks: ['速度估计', '目标关联', '遮挡补偿'],
+      autoTool: 'RadarNet + Kalman Filter',
+      manualRate: '< 3%',
+      color: '#ffa657',
+      icon: '📡',
+    },
+    {
+      modality: '语言',
+      tasks: ['场景描述', '驾驶意图', '危险预警', 'QA 对话'],
+      autoTool: 'InternLM2 + GPT-4V',
+      manualRate: '~30%',
+      color: '#a29bfe',
+      icon: '💬',
+    },
+    {
+      modality: '轨迹',
+      tasks: ['历史轨迹', '未来规划', '交互预测', '意图分类'],
+      autoTool: 'MTR + HiVT',
+      manualRate: '< 8%',
+      color: '#00cec9',
+      icon: '🛣️',
+    },
+  ],
+
+  // 多模态数据集规格
+  datasetSpec: {
+    format: 'nuScenes-like JSON + WebDataset tar',
+    sampleRate: '2 Hz（关键帧）/ 10 Hz（完整序列）',
+    windowSize: '8 帧历史 + 当前帧 + 6 帧未来',
+    modalityCoverage: '相机 100% · LiDAR 100% · 雷达 85% · 语言 60%',
+    avgAnnotationTime: '~45 min/场景（自动标注 + 人工审核）',
+    qualityThreshold: 'IoU > 0.7 (3D) · mIoU > 0.75 (分割)',
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 12. 场景挖掘层（新增）
+// ═══════════════════════════════════════════════════════════════
+export const SCENE_MINE_LAYER = {
+  title: '⛏️ 场景挖掘层',
+  desc: '从海量数据中自动发现高价值场景，驱动主动学习闭环',
+
+  // 场景分类体系
+  sceneTaxonomy: [
+    {
+      category: '长尾场景',
+      icon: '🦄',
+      color: '#e17055',
+      examples: ['逆行车辆', '施工区域', '动物穿越', '极端天气', '非标路口'],
+      frequency: '< 0.1%',
+      value: '极高',
+      mineMethod: 'CLIP 嵌入距离 + 孤立森林异常检测',
+    },
+    {
+      category: '困难场景',
+      icon: '💪',
+      color: '#fd79a8',
+      examples: ['强逆光', '大雨/大雪', '隧道出入口', '密集行人', '复杂交叉路口'],
+      frequency: '~2%',
+      value: '高',
+      mineMethod: '模型不确定性 + 预测误差 > 阈值',
+    },
+    {
+      category: '安全关键场景',
+      icon: '⚠️',
+      color: '#ff7b72',
+      examples: ['AEB 触发', '接管事件', '碰撞预警', '鬼探头', '加塞'],
+      frequency: '~0.5%',
+      value: '极高',
+      mineMethod: '事件触发 + 规则过滤',
+    },
+    {
+      category: '覆盖缺口场景',
+      icon: '🕳️',
+      color: '#ffa657',
+      examples: ['夜间施工', '港口/矿区', '高速匝道', '地下停车场', '乡村道路'],
+      frequency: '~5%',
+      value: '高',
+      mineMethod: '数据分布分析 + 覆盖率热力图',
+    },
+    {
+      category: '多样性场景',
+      icon: '🌈',
+      color: '#00cec9',
+      examples: ['不同城市', '不同季节', '不同时段', '不同车型', '不同驾驶风格'],
+      frequency: '~10%',
+      value: '中',
+      mineMethod: '聚类采样 + 最大化多样性',
+    },
+  ],
+
+  // 挖掘技术栈
+  miningPipeline: [
+    {
+      step: '① 嵌入提取',
+      desc: '用 CLIP / DINOv2 提取场景级视觉嵌入，LiDAR 用 PointMAE',
+      tech: 'CLIP ViT-L/14 + DINOv2 + PointMAE',
+      output: '1024-dim 向量 / 场景',
+      color: '#6c5ce7',
+      icon: '🧬',
+    },
+    {
+      step: '② 向量索引',
+      desc: '全量场景嵌入入库 FAISS，支持亿级近邻检索',
+      tech: 'FAISS IVF-PQ + Milvus',
+      output: '< 10ms 检索延迟',
+      color: '#00cec9',
+      icon: '🗂️',
+    },
+    {
+      step: '③ 异常检测',
+      desc: '孤立森林 + LOF 检测分布外场景，自动标记长尾候选',
+      tech: 'Isolation Forest + LOF',
+      output: '异常分数 0-1',
+      color: '#fd79a8',
+      icon: '🔍',
+    },
+    {
+      step: '④ 聚类分析',
+      desc: 'HDBSCAN 自适应聚类，发现数据分布空洞（覆盖缺口）',
+      tech: 'HDBSCAN + UMAP 降维',
+      output: '场景分布热力图',
+      color: '#ffa657',
+      icon: '🗺️',
+    },
+    {
+      step: '⑤ 主动学习',
+      desc: '不确定性采样 + 多样性采样，最大化标注 ROI',
+      tech: 'BADGE + CoreSet + BALD',
+      output: '标注优先级队列',
+      color: '#3fb950',
+      icon: '🎯',
+    },
+    {
+      step: '⑥ 数据平衡',
+      desc: '按场景类别 / 天气 / 时段 / 城市 重采样，消除分布偏差',
+      tech: 'Stratified Sampling + SMOTE',
+      output: '平衡训练集',
+      color: '#79c0ff',
+      icon: '⚖️',
+    },
+  ],
+
+  // 主动学习闭环
+  activeLearningLoop: {
+    title: '主动学习闭环',
+    desc: '用最少的标注预算获得最大的模型提升',
+    steps: [
+      { phase: '初始化', action: '随机采样 1% 数据，训练基础模型', icon: '🌱' },
+      { phase: '不确定性评估', action: '对未标注数据推理，计算预测熵 / MC Dropout', icon: '❓' },
+      { phase: '候选选择', action: '选取不确定性最高 + 多样性最大的 K 个样本', icon: '🎯' },
+      { phase: '人工标注', action: '优先标注高价值候选，平均 45min/场景', icon: '✏️' },
+      { phase: '模型更新', action: '增量训练，验证集指标提升后合并', icon: '🔄' },
+      { phase: '效果评估', action: '对比随机采样基线，计算标注效率提升比', icon: '📊' },
+    ],
+    efficiency: '相比随机采样，标注效率提升 3-5×',
+  },
+
+  // 数据飞轮量化指标
+  flywheelMetrics: [
+    { name: '长尾场景覆盖率', current: '72%', target: '90%', unit: '%', trend: 'up', color: '#e17055' },
+    { name: '困难样本比例', current: '8%', target: '15%', unit: '%', trend: 'up', color: '#fd79a8' },
+    { name: '标注自动化率', current: '92%', target: '95%', unit: '%', trend: 'up', color: '#3fb950' },
+    { name: '场景多样性指数', current: '0.76', target: '0.90', unit: 'Shannon H', trend: 'up', color: '#00cec9' },
+    { name: '主动学习效率', current: '3.8×', target: '5×', unit: '倍', trend: 'up', color: '#6c5ce7' },
+    { name: '数据复用率', current: '65%', target: '80%', unit: '%', trend: 'up', color: '#ffa657' },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 13. 标注质量管控（新增）
+// ═══════════════════════════════════════════════════════════════
+export const ANNOTATION_QA_LAYER = {
+  title: '✅ 标注质量管控',
+  desc: '多级质检体系，保障训练数据质量',
+
+  qaLevels: [
+    {
+      level: 'L1 自动校验',
+      desc: '格式合规 · 坐标范围 · 时间戳连续性 · 标注完整性',
+      tool: 'Great Expectations + Pandera',
+      passRate: '~98%',
+      color: '#3fb950',
+      icon: '🤖',
+    },
+    {
+      level: 'L2 模型一致性',
+      desc: '与参考模型输出对比，IoU < 0.5 的标注标记为疑似错误',
+      tool: 'BEVFusion 参考模型',
+      passRate: '~95%',
+      color: '#00cec9',
+      icon: '🔬',
+    },
+    {
+      level: 'L3 跨模态一致性',
+      desc: '相机 2D 框与 LiDAR 3D 框投影一致性，偏差 > 10px 报警',
+      tool: '投影矩阵校验',
+      passRate: '~93%',
+      color: '#ffa657',
+      icon: '🔗',
+    },
+    {
+      level: 'L4 人工抽检',
+      desc: '随机抽取 5% 数据人工复核，不合格批次全量返工',
+      tool: 'Label Studio + 专家审核',
+      passRate: '~99.5%',
+      color: '#6c5ce7',
+      icon: '👁️',
+    },
+  ],
+
+  // 标注平台
+  platform: {
+    tool: 'Label Studio Enterprise + 自研 3D 标注工具',
+    annotators: '内部 50 人 + 外包 200 人',
+    throughput: '~500 场景/天',
+    avgCost: '~¥80/场景（自动标注后）',
+    sla: '48h 交付，质量 > 95%',
+  },
+
+  // 常见错误类型
+  errorTypes: [
+    { type: '3D 框朝向错误', rate: '2.1%', severity: 'high', autoFix: false },
+    { type: '遮挡目标漏标', rate: '3.5%', severity: 'high', autoFix: false },
+    { type: '类别混淆', rate: '1.2%', severity: 'medium', autoFix: true },
+    { type: '时间戳偏移', rate: '0.8%', severity: 'medium', autoFix: true },
+    { type: '语言描述不准确', rate: '5.0%', severity: 'low', autoFix: false },
+    { type: '轨迹插值误差', rate: '1.5%', severity: 'medium', autoFix: true },
+  ],
 };
