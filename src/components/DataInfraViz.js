@@ -202,12 +202,14 @@ function K8sTab() {
 // 3. 数据湖仓 — 自动驾驶多模态存储方案
 // ─────────────────────────────────────────────────────────────
 function DatalakeTab() {
-  const { dataChain, modalSpecs, trainDatasetBuild, ioOptimization,
+  const { dataChain, modalSpecs, icebergSchemas, trainDatasetBuild, ioOptimization,
           icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
   const [activeSubTab, setActiveSubTab] = useState('chain');
+  const [selectedTable, setSelectedTable] = useState(null);
 
   const SUB_TABS = [
     { id: 'chain',    label: '数据链路',     icon: '🔗' },
+    { id: 'schema',   label: 'Schema 设计',  icon: '📐' },
     { id: 'modal',    label: '模态存储规格', icon: '📦' },
     { id: 'train',    label: '训练集构建',   icon: '🧠' },
     { id: 'io',       label: 'IO 优化',      icon: '⚡' },
@@ -354,6 +356,169 @@ function DatalakeTab() {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {/* ── Schema 设计 ── */}
+      {activeSubTab === 'schema' && (
+        <div className="space-y-4">
+          {/* 定位说明 */}
+          <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
+            <div className="text-[10px] font-semibold text-gray-700 mb-1">{icebergSchemas.title}</div>
+            <div className="text-[9px] text-gray-500 mb-2">{icebergSchemas.desc}</div>
+            {/* 核心关联键 */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {icebergSchemas.joinKeys.map(k => (
+                <div key={k.key} className="rounded-lg border border-[#00cec9]/15 bg-white/80 p-2">
+                  <div className="text-[9px] font-bold font-mono text-[#00cec9]">{k.key}</div>
+                  <div className="text-[8px] text-gray-400 font-mono mb-0.5">{k.type}</div>
+                  <div className="text-[8px] text-gray-500 leading-relaxed">{k.desc}</div>
+                  <div className="text-[8px] font-mono text-gray-300 mt-0.5">e.g. {k.example}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 表选择器 */}
+          <div className="flex flex-wrap gap-1.5">
+            {icebergSchemas.tables.map(t => (
+              <button key={t.name} onClick={() => setSelectedTable(selectedTable === t.name ? null : t.name)}
+                className="text-[9px] px-2.5 py-1 rounded-lg border transition-all font-mono"
+                style={{
+                  background: selectedTable === t.name ? t.color + '15' : 'transparent',
+                  color: selectedTable === t.name ? t.color : '#64748b',
+                  borderColor: selectedTable === t.name ? t.color + '50' : '#e2e8f0',
+                  fontWeight: selectedTable === t.name ? 600 : 400,
+                }}>
+                {t.icon} {t.name.split('.').pop()}
+              </button>
+            ))}
+          </div>
+
+          {/* 选中表的 Schema 详情 */}
+          {icebergSchemas.tables.map(table => (
+            (selectedTable === null || selectedTable === table.name) && (
+              <div key={table.name} className="rounded-2xl border p-4"
+                style={{ borderColor: table.color + '25', background: table.color + '04' }}>
+                {/* 表头 */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{table.icon}</span>
+                    <div>
+                      <div className="text-xs font-bold font-mono" style={{ color: table.color }}>{table.name}</div>
+                      <div className="text-[9px] text-gray-500 mt-0.5">{table.desc}</div>
+                    </div>
+                  </div>
+                  <div className="text-right text-[8px] text-gray-400 space-y-0.5">
+                    <div>分区: <span className="font-mono text-gray-600">{table.partitionBy}</span></div>
+                    <div>排序: <span className="font-mono text-gray-600">{table.sortBy}</span></div>
+                  </div>
+                </div>
+
+                {/* 字段列表 */}
+                <div className="overflow-x-auto mb-3">
+                  <table className="w-full text-[9px]">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        <th className="text-left py-1.5 px-2 text-gray-400 font-medium w-36">字段名</th>
+                        <th className="text-left py-1.5 px-2 text-gray-400 font-medium w-32">类型</th>
+                        <th className="text-center py-1.5 px-2 text-gray-400 font-medium w-12">PK</th>
+                        <th className="text-center py-1.5 px-2 text-gray-400 font-medium w-12">可空</th>
+                        <th className="text-left py-1.5 px-2 text-gray-400 font-medium">说明</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {table.fields.map((f, fi) => (
+                        <tr key={fi} className={`border-b border-gray-50 ${fi % 2 === 0 ? 'bg-gray-50/20' : ''}`}>
+                          <td className="py-1.5 px-2 font-mono font-semibold" style={{ color: table.color }}>{f.name}</td>
+                          <td className="py-1.5 px-2 font-mono text-gray-500 text-[8px]">{f.type}</td>
+                          <td className="py-1.5 px-2 text-center">{f.pk ? '🔑' : ''}</td>
+                          <td className="py-1.5 px-2 text-center text-gray-300">{f.nullable ? '✓' : '✗'}</td>
+                          <td className="py-1.5 px-2 text-gray-500">{f.desc}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Volume 关联 + JOIN 示例 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                    <div className="text-[8px] font-semibold text-gray-500 mb-1">📦 Volume 关联</div>
+                    <div className="text-[8px] font-mono text-gray-600">{table.volumeRef}</div>
+                    {table.note && <div className="text-[8px] text-amber-600 mt-1">{table.note}</div>}
+                  </div>
+                  <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                    <div className="text-[8px] font-semibold text-gray-500 mb-1">🔗 JOIN 示例</div>
+                    <div className="text-[8px] font-mono text-gray-500 whitespace-pre-wrap leading-relaxed">{table.joinExample}</div>
+                  </div>
+                </div>
+              </div>
+            )
+          ))}
+
+          {/* 视频存储方案 */}
+          <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/04 p-4">
+            <div className="text-xs font-bold text-gray-800 mb-1">{icebergSchemas.videoStorage.title}</div>
+            <div className="text-[9px] text-gray-500 mb-3">{icebergSchemas.videoStorage.desc}</div>
+            <div className="space-y-2 mb-3">
+              {icebergSchemas.videoStorage.strategy.map(s => (
+                <div key={s.type} className="rounded-xl border p-3"
+                  style={{ borderColor: s.color + '25', background: s.color + '04' }}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-[10px] font-semibold text-gray-800">{s.type}</span>
+                    <Badge color={s.color}>{s.format}</Badge>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 text-[8px]">
+                    <div><span className="text-gray-400">存储位置: </span><span className="font-mono text-gray-600">{s.where}</span></div>
+                    <div><span className="text-gray-400">路径格式: </span><span className="font-mono text-gray-500">{s.path}</span></div>
+                    <div><span className="text-gray-400">Iceberg 关联: </span><span className="font-mono" style={{ color: s.color }}>{s.icebergRef}</span></div>
+                  </div>
+                  <div className="text-[8px] text-amber-600 mt-1">💡 {s.note}</div>
+                </div>
+              ))}
+            </div>
+            {/* video_sessions schema */}
+            <div className="rounded-xl border border-[#6c5ce7]/15 bg-white/80 p-3">
+              <div className="text-[9px] font-semibold text-gray-700 mb-2">📋 {icebergSchemas.videoStorage.videoSessionSchema.name}</div>
+              <div className="text-[8px] text-gray-400 mb-2">{icebergSchemas.videoStorage.videoSessionSchema.desc}</div>
+              <div className="flex flex-wrap gap-1">
+                {icebergSchemas.videoStorage.videoSessionSchema.fields.map(f => (
+                  <div key={f.name} className="rounded px-1.5 py-0.5 border border-[#6c5ce7]/15 bg-[#6c5ce7]/05">
+                    <span className="text-[8px] font-mono font-semibold text-[#6c5ce7]">{f.name}</span>
+                    <span className="text-[7px] text-gray-400 ml-1">{f.type}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ER 关联关系 */}
+          <div className="rounded-2xl border border-gray-100 bg-white p-4">
+            <div className="text-xs font-bold text-gray-800 mb-1">{icebergSchemas.erDiagram.title}</div>
+            <div className="text-[9px] text-gray-400 mb-3">
+              核心枢纽表: <span className="font-mono text-[#a29bfe] font-semibold">{icebergSchemas.erDiagram.centerTable}</span>
+            </div>
+            {/* 关联列表 */}
+            <div className="space-y-1.5 mb-4">
+              {icebergSchemas.erDiagram.relations.map((r, i) => (
+                <div key={i} className="flex items-center gap-2 text-[9px]">
+                  <span className="font-mono text-gray-500 w-36 flex-shrink-0 truncate">{r.from.split('.').pop()}</span>
+                  <span className="text-gray-300 flex-shrink-0">──</span>
+                  <Badge color="#a29bfe">{r.type}</Badge>
+                  <span className="font-mono text-[#a29bfe] flex-shrink-0">{r.key}</span>
+                  <span className="text-gray-300 flex-shrink-0">──▶</span>
+                  <span className="font-mono text-gray-500 w-36 flex-shrink-0 truncate">{r.to.split('.').pop()}</span>
+                  <span className="text-gray-400 flex-1 truncate">{r.desc}</span>
+                </div>
+              ))}
+            </div>
+            {/* 联合查询示例 */}
+            <div className="rounded-xl border border-[#a29bfe]/20 bg-[#a29bfe]/04 p-3">
+              <div className="text-[9px] font-semibold text-gray-700 mb-2">🔍 多模态联合查询示例（训练数据采样）</div>
+              <pre className="text-[8px] font-mono text-gray-600 whitespace-pre-wrap leading-relaxed overflow-x-auto">{icebergSchemas.erDiagram.queryExample}</pre>
+            </div>
+          </div>
         </div>
       )}
 

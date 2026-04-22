@@ -212,6 +212,280 @@ export const DATALAKE_DATA = {
     ],
   },
 
+  // ── Iceberg 表 Schema 设计 ────────────────────────────────────
+  icebergSchemas: {
+    title: 'Iceberg 表 Schema 设计 & 多模态关联',
+    desc: '所有模态通过 scene_id + frame_id 双键关联，文件路径存 Iceberg 表，实体存 S3 Volume',
+
+    // 核心关联键说明
+    joinKeys: [
+      { key: 'scene_id',    type: 'STRING',  desc: '场景唯一标识，格式 {vehicle_id}_{date}_{session}_{seq}，所有模态表的主关联键', example: 'v001_20240315_s003_0042' },
+      { key: 'frame_id',    type: 'STRING',  desc: '帧唯一标识，格式 {scene_id}_{timestamp_us}，精确到微秒', example: 'v001_20240315_s003_0042_1710460800123456' },
+      { key: 'timestamp_us', type: 'LONG',   desc: 'Unix 时间戳（微秒），所有模态时序对齐的基准', example: '1710460800123456' },
+      { key: 'vehicle_id',  type: 'STRING',  desc: '车辆唯一标识，用于多租户隔离和行级权限过滤', example: 'v001' },
+    ],
+
+    // 各模态 Iceberg 表 Schema
+    tables: [
+      {
+        name: 'raw_data.camera.frames_v2',
+        icon: '📷',
+        color: '#6c5ce7',
+        desc: '相机帧元数据表（实体文件存 Volume，此表存路径和元数据）',
+        partitionBy: 'days(event_time), camera_id',
+        sortBy: 'scene_id, timestamp_us',
+        fields: [
+          { name: 'frame_id',       type: 'STRING',    nullable: false, pk: true,  desc: '帧唯一标识' },
+          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联场景，JOIN 主键' },
+          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID，行级权限过滤' },
+          { name: 'camera_id',      type: 'STRING',    nullable: false, pk: false, desc: '相机编号 front/rear/left_front 等' },
+          { name: 'timestamp_us',   type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒）' },
+          { name: 'event_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段（Iceberg 隐式分区）' },
+          { name: 'file_path',      type: 'STRING',    nullable: false, pk: false, desc: 'S3 Volume 路径，如 s3://raw/camera/v001/2024-03-15/frame_xxx.jpg' },
+          { name: 'width',          type: 'INT',       nullable: false, pk: false, desc: '图像宽度（px）' },
+          { name: 'height',         type: 'INT',       nullable: false, pk: false, desc: '图像高度（px）' },
+          { name: 'exposure_us',    type: 'INT',       nullable: true,  pk: false, desc: '曝光时间（微秒）' },
+          { name: 'intrinsic_json', type: 'STRING',    nullable: true,  pk: false, desc: '相机内参 JSON（fx/fy/cx/cy/畸变系数）' },
+          { name: 'extrinsic_json', type: 'STRING',    nullable: true,  pk: false, desc: '相机外参 JSON（车体坐标系变换矩阵）' },
+          { name: 'is_blurry',      type: 'BOOLEAN',   nullable: false, pk: false, desc: '模糊帧标记（质量过滤用）' },
+          { name: 'quality_score',  type: 'FLOAT',     nullable: true,  pk: false, desc: '图像质量分（0-1）' },
+        ],
+        volumeRef: 'raw_data.camera.frames_volume（实体 JPEG/WebP 文件）',
+        joinExample: 'JOIN raw_data.lidar.pointcloud_v2 USING (scene_id, timestamp_us)',
+      },
+      {
+        name: 'raw_data.lidar.pointcloud_v2',
+        icon: '🟢',
+        color: '#3fb950',
+        desc: 'LiDAR 点云元数据表（实体 PCD 文件存 Volume）',
+        partitionBy: 'days(event_time)',
+        sortBy: 'scene_id, timestamp_us',
+        fields: [
+          { name: 'frame_id',       type: 'STRING',    nullable: false, pk: true,  desc: '帧唯一标识' },
+          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联场景，JOIN 主键' },
+          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
+          { name: 'timestamp_us',   type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒）' },
+          { name: 'event_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段' },
+          { name: 'file_path',      type: 'STRING',    nullable: false, pk: false, desc: 'S3 Volume 路径，Draco 压缩 PCD 文件' },
+          { name: 'num_points',     type: 'INT',       nullable: false, pk: false, desc: '点云点数' },
+          { name: 'range_m',        type: 'FLOAT',     nullable: false, pk: false, desc: '最大探测距离（米）' },
+          { name: 'has_intensity',  type: 'BOOLEAN',   nullable: false, pk: false, desc: '是否含反射强度通道' },
+          { name: 'has_ring',       type: 'BOOLEAN',   nullable: false, pk: false, desc: '是否含 ring 通道（线号）' },
+          { name: 'ego_pose_json',  type: 'STRING',    nullable: true,  pk: false, desc: '采集时刻车体位姿 JSON（用于坐标系转换）' },
+          { name: 'bbox_3d_count',  type: 'INT',       nullable: true,  pk: false, desc: '自动标注 3D 框数量（Gold 层填充）' },
+        ],
+        volumeRef: 'raw_data.lidar.pointcloud_volume（实体 .pcd.draco 文件）',
+        joinExample: 'JOIN raw_data.camera.frames_v2 USING (scene_id, timestamp_us)',
+      },
+      {
+        name: 'raw_data.radar.radar_4d_v1',
+        icon: '📡',
+        color: '#ffa657',
+        desc: '4D 毫米波雷达点云表（结构化存储，无需 Volume，直接存 Parquet）',
+        partitionBy: 'days(event_time), radar_id',
+        sortBy: 'scene_id, timestamp_us',
+        fields: [
+          { name: 'frame_id',       type: 'STRING',    nullable: false, pk: true,  desc: '帧唯一标识' },
+          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联场景，JOIN 主键' },
+          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
+          { name: 'radar_id',       type: 'STRING',    nullable: false, pk: false, desc: '雷达编号 front/rear/left 等' },
+          { name: 'timestamp_us',   type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒）' },
+          { name: 'event_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段' },
+          { name: 'points',         type: 'LIST<STRUCT<x FLOAT, y FLOAT, z FLOAT, v_r FLOAT, rcs FLOAT, snr FLOAT>>', nullable: false, pk: false, desc: '雷达点云数组（x/y/z 坐标 + 径向速度 + 雷达截面积 + 信噪比）' },
+          { name: 'num_points',     type: 'INT',       nullable: false, pk: false, desc: '点数' },
+          { name: 'max_range_m',    type: 'FLOAT',     nullable: false, pk: false, desc: '最大探测距离（米）' },
+          { name: 'doppler_fft_path', type: 'STRING',  nullable: true,  pk: false, desc: '多普勒 FFT 热力图文件路径（存 Volume，可选）' },
+        ],
+        volumeRef: 'raw_data.radar.doppler_volume（可选：多普勒 FFT 热力图 PNG）',
+        note: '⚠️ 雷达点云数据量小（~50GB/天），直接用 LIST<STRUCT> 存 Parquet，无需单独 Volume；仅多普勒 FFT 图像存 Volume',
+        joinExample: 'JOIN raw_data.camera.frames_v2 USING (scene_id) WHERE ABS(radar.timestamp_us - camera.timestamp_us) < 5000',
+      },
+      {
+        name: 'raw_data.vehicle.can_bus',
+        icon: '🔌',
+        color: '#00cec9',
+        desc: '车辆 CAN 总线信号表（高频时序，按信号名展开）',
+        partitionBy: 'days(event_time), vehicle_id',
+        sortBy: 'vehicle_id, timestamp_us',
+        fields: [
+          { name: 'record_id',      type: 'STRING',    nullable: false, pk: true,  desc: '记录唯一标识' },
+          { name: 'scene_id',       type: 'STRING',    nullable: true,  pk: false, desc: '关联场景（场景切分后回填）' },
+          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
+          { name: 'timestamp_us',   type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒）' },
+          { name: 'event_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段' },
+          { name: 'speed_mps',      type: 'FLOAT',     nullable: true,  pk: false, desc: '车速（m/s）' },
+          { name: 'accel_x',        type: 'FLOAT',     nullable: true,  pk: false, desc: '纵向加速度（m/s²）' },
+          { name: 'accel_y',        type: 'FLOAT',     nullable: true,  pk: false, desc: '横向加速度（m/s²）' },
+          { name: 'yaw_rate',       type: 'FLOAT',     nullable: true,  pk: false, desc: '横摆角速度（rad/s）' },
+          { name: 'steering_angle', type: 'FLOAT',     nullable: true,  pk: false, desc: '方向盘转角（度）' },
+          { name: 'throttle_pct',   type: 'FLOAT',     nullable: true,  pk: false, desc: '油门开度（%）' },
+          { name: 'brake_pct',      type: 'FLOAT',     nullable: true,  pk: false, desc: '制动开度（%）' },
+          { name: 'gear',           type: 'STRING',    nullable: true,  pk: false, desc: '档位 P/R/N/D' },
+          { name: 'takeover_flag',  type: 'BOOLEAN',   nullable: false, pk: false, desc: '接管标记（触发回采的关键字段）' },
+        ],
+        volumeRef: '无 Volume，全量存 Parquet',
+        joinExample: 'JOIN raw_data.camera.frames_v2 c USING (scene_id) WHERE c.timestamp_us BETWEEN can.timestamp_us - 50000 AND can.timestamp_us + 50000',
+      },
+      {
+        name: 'processed_data.annotations.bbox_3d',
+        icon: '🏷️',
+        color: '#fd79a8',
+        desc: '3D 检测框标注表（与相机/LiDAR 帧通过 frame_id 关联）',
+        partitionBy: 'days(created_at), dataset_version',
+        sortBy: 'scene_id, frame_id',
+        fields: [
+          { name: 'anno_id',        type: 'STRING',    nullable: false, pk: true,  desc: '标注唯一标识' },
+          { name: 'frame_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联帧（JOIN raw_data.lidar.pointcloud_v2）' },
+          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联场景' },
+          { name: 'track_id',       type: 'STRING',    nullable: true,  pk: false, desc: '跨帧追踪 ID（同一目标在多帧中相同）' },
+          { name: 'category',       type: 'STRING',    nullable: false, pk: false, desc: '类别 car/truck/pedestrian/cyclist/cone 等' },
+          { name: 'cx',            type: 'FLOAT',     nullable: false, pk: false, desc: '3D 中心 X 坐标（车体坐标系，米）' },
+          { name: 'cy',            type: 'FLOAT',     nullable: false, pk: false, desc: '3D 中心 Y 坐标（车体坐标系，米）' },
+          { name: 'cz',            type: 'FLOAT',     nullable: false, pk: false, desc: '3D 中心 Z 坐标（车体坐标系，米）' },
+          { name: 'length',        type: 'FLOAT',     nullable: false, pk: false, desc: '目标长度（米）' },
+          { name: 'width',         type: 'FLOAT',     nullable: false, pk: false, desc: '目标宽度（米）' },
+          { name: 'height',        type: 'FLOAT',     nullable: false, pk: false, desc: '目标高度（米）' },
+          { name: 'yaw',            type: 'FLOAT',     nullable: false, pk: false, desc: '偏航角（弧度）' },
+          { name: 'velocity_json',  type: 'STRING',    nullable: true,  pk: false, desc: '速度向量 JSON {vx, vy, vz}' },
+          { name: 'confidence',     type: 'FLOAT',     nullable: false, pk: false, desc: '置信度（0-1）' },
+          { name: 'source',         type: 'STRING',    nullable: false, pk: false, desc: '标注来源 auto_bevfusion/human/auto+human' },
+          { name: 'dataset_version', type: 'STRING',   nullable: false, pk: false, desc: '数据集版本，如 v2.3.0' },
+          { name: 'created_at',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '创建时间（分区字段）' },
+        ],
+        volumeRef: '无 Volume，全量存 Parquet',
+        joinExample: 'JOIN raw_data.lidar.pointcloud_v2 USING (frame_id) JOIN raw_data.camera.frames_v2 USING (frame_id)',
+      },
+      {
+        name: 'processed_data.scenes.scene_index',
+        icon: '🎬',
+        color: '#a29bfe',
+        desc: '场景索引表（所有模态的汇聚入口，训练采样的核心表）',
+        partitionBy: 'days(start_time), city',
+        sortBy: 'scene_id',
+        fields: [
+          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: true,  desc: '场景唯一标识（所有模态表的 JOIN 主键）' },
+          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
+          { name: 'start_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '场景开始时间（分区字段）' },
+          { name: 'duration_s',     type: 'FLOAT',     nullable: false, pk: false, desc: '场景时长（秒）' },
+          { name: 'num_frames',     type: 'INT',       nullable: false, pk: false, desc: '帧数' },
+          { name: 'city',           type: 'STRING',    nullable: false, pk: false, desc: '城市（分区字段，行级权限过滤）' },
+          { name: 'weather',        type: 'STRING',    nullable: true,  pk: false, desc: '天气 sunny/rainy/foggy/night' },
+          { name: 'scenario_tags',  type: 'LIST<STRING>', nullable: true, pk: false, desc: '场景标签 [long_tail, highway, intersection, ...]' },
+          { name: 'has_takeover',   type: 'BOOLEAN',   nullable: false, pk: false, desc: '是否含接管事件' },
+          { name: 'has_camera',     type: 'BOOLEAN',   nullable: false, pk: false, desc: '相机数据完整性' },
+          { name: 'has_lidar',      type: 'BOOLEAN',   nullable: false, pk: false, desc: 'LiDAR 数据完整性' },
+          { name: 'has_radar',      type: 'BOOLEAN',   nullable: false, pk: false, desc: '雷达数据完整性' },
+          { name: 'has_annotation', type: 'BOOLEAN',   nullable: false, pk: false, desc: '是否已完成标注' },
+          { name: 'dataset_split',  type: 'STRING',    nullable: true,  pk: false, desc: '训练集划分 train/val/test' },
+          { name: 'dataset_version', type: 'STRING',   nullable: true,  pk: false, desc: '所属数据集版本' },
+          { name: 'webdataset_shard', type: 'STRING',  nullable: true,  pk: false, desc: 'WebDataset shard 路径（训练直接读取）' },
+        ],
+        volumeRef: '无 Volume，此表是所有模态的汇聚索引',
+        joinExample: '-- 训练采样 SQL\nSELECT s.scene_id, c.file_path AS cam_path, l.file_path AS lidar_path\nFROM processed_data.scenes.scene_index s\nJOIN raw_data.camera.frames_v2 c USING (scene_id)\nJOIN raw_data.lidar.pointcloud_v2 l USING (scene_id)\nWHERE s.dataset_version = \'v2.3.0\' AND s.dataset_split = \'train\'',
+      },
+    ],
+
+    // 视频数据存储方案（专项说明）
+    videoStorage: {
+      title: '视频数据存储方案',
+      desc: '视频不直接存 Iceberg 表，而是文件存 Volume + 元数据存 Iceberg，通过 session_id 关联',
+      strategy: [
+        {
+          type: '原始录制视频',
+          format: 'H.265 MP4 / MCAP 容器',
+          where: 'S3 Volume: raw_data.camera.video_volume',
+          path: 's3://raw/camera/{vehicle_id}/{date}/{session_id}/front_camera.mp4',
+          icebergRef: 'raw_data.camera.video_sessions 表（元数据）',
+          note: '按 session 存储完整视频，不按帧拆分；训练时按帧解码',
+          color: '#6c5ce7',
+        },
+        {
+          type: '关键帧（训练用）',
+          format: 'JPEG / WebP',
+          where: 'S3 Volume: raw_data.camera.frames_volume',
+          path: 's3://raw/camera/{vehicle_id}/{date}/{scene_id}/{frame_id}.jpg',
+          icebergRef: 'raw_data.camera.frames_v2 表（file_path 字段指向此路径）',
+          note: '从视频按 20Hz 抽帧，存独立文件；Iceberg 表记录路径和元数据',
+          color: '#3fb950',
+        },
+        {
+          type: '事件回放视频',
+          format: 'MP4（H.264）',
+          where: 'S3 Volume: governance.audit.replay_volume',
+          path: 's3://governance/replay/{vehicle_id}/{event_id}/replay.mp4',
+          icebergRef: 'governance.audit.event_log 表（replay_path 字段）',
+          note: '接管/碰撞事件的完整回放，合规留存 3 年',
+          color: '#ffa657',
+        },
+      ],
+      videoSessionSchema: {
+        name: 'raw_data.camera.video_sessions',
+        desc: '视频 Session 元数据表（与帧表通过 session_id 关联）',
+        fields: [
+          { name: 'session_id',   type: 'STRING',    desc: 'Session 唯一标识' },
+          { name: 'vehicle_id',   type: 'STRING',    desc: '车辆 ID' },
+          { name: 'camera_id',    type: 'STRING',    desc: '相机编号' },
+          { name: 'start_time',   type: 'TIMESTAMP', desc: '录制开始时间' },
+          { name: 'end_time',     type: 'TIMESTAMP', desc: '录制结束时间' },
+          { name: 'duration_s',   type: 'FLOAT',     desc: '时长（秒）' },
+          { name: 'fps',          type: 'INT',       desc: '帧率' },
+          { name: 'resolution',   type: 'STRING',    desc: '分辨率 1920x1080' },
+          { name: 'codec',        type: 'STRING',    desc: '编码格式 H.265/H.264' },
+          { name: 'file_path',    type: 'STRING',    desc: 'S3 Volume 视频文件路径' },
+          { name: 'file_size_mb', type: 'LONG',      desc: '文件大小（MB）' },
+          { name: 'frame_count',  type: 'INT',       desc: '总帧数' },
+        ],
+      },
+    },
+
+    // 多模态关联关系（ER 图）
+    erDiagram: {
+      title: '多模态表关联关系（以 scene_id / frame_id 为核心）',
+      centerTable: 'processed_data.scenes.scene_index',
+      relations: [
+        { from: 'scene_index', to: 'camera.frames_v2',    key: 'scene_id',  type: '1:N', desc: '一个场景含多个相机帧' },
+        { from: 'scene_index', to: 'lidar.pointcloud_v2', key: 'scene_id',  type: '1:N', desc: '一个场景含多个点云帧' },
+        { from: 'scene_index', to: 'radar.radar_4d_v1',   key: 'scene_id',  type: '1:N', desc: '一个场景含多个雷达帧' },
+        { from: 'scene_index', to: 'vehicle.can_bus',     key: 'scene_id',  type: '1:N', desc: '一个场景含多条 CAN 记录' },
+        { from: 'scene_index', to: 'annotations.bbox_3d', key: 'scene_id',  type: '1:N', desc: '一个场景含多个标注框' },
+        { from: 'camera.frames_v2', to: 'annotations.bbox_3d', key: 'frame_id', type: '1:N', desc: '一帧含多个标注框' },
+        { from: 'lidar.pointcloud_v2', to: 'annotations.bbox_3d', key: 'frame_id', type: '1:N', desc: '点云帧与标注框关联' },
+        { from: 'camera.frames_v2', to: 'lidar.pointcloud_v2', key: 'scene_id + timestamp_us', type: '1:1', desc: '相机帧与点云帧时序对齐' },
+        { from: 'camera.frames_v2', to: 'radar.radar_4d_v1', key: 'scene_id + timestamp_us', type: '1:N', desc: '相机帧与雷达帧时序对齐（±5ms）' },
+        { from: 'camera.video_sessions', to: 'camera.frames_v2', key: 'session_id', type: '1:N', desc: '视频 Session 与抽帧关联' },
+      ],
+      queryExample: `-- 获取训练样本：场景 + 相机帧路径 + 点云路径 + 雷达点云 + 3D 标注
+SELECT
+  s.scene_id,
+  s.weather,
+  s.scenario_tags,
+  c.file_path        AS cam_path,
+  c.intrinsic_json,
+  c.extrinsic_json,
+  l.file_path        AS lidar_path,
+  l.ego_pose_json,
+  r.points           AS radar_points,
+  COLLECT_LIST(b.*)  AS annotations
+FROM processed_data.scenes.scene_index s
+JOIN raw_data.camera.frames_v2 c
+  ON s.scene_id = c.scene_id AND c.camera_id = 'front'
+JOIN raw_data.lidar.pointcloud_v2 l
+  ON s.scene_id = l.scene_id
+  AND ABS(l.timestamp_us - c.timestamp_us) < 1000
+LEFT JOIN raw_data.radar.radar_4d_v1 r
+  ON s.scene_id = r.scene_id AND r.radar_id = 'front'
+  AND ABS(r.timestamp_us - c.timestamp_us) < 5000
+LEFT JOIN processed_data.annotations.bbox_3d b
+  ON b.frame_id = l.frame_id
+WHERE s.dataset_version = 'v2.3.0'
+  AND s.dataset_split  = 'train'
+  AND s.has_annotation = true
+GROUP BY s.scene_id, s.weather, s.scenario_tags,
+         c.file_path, c.intrinsic_json, c.extrinsic_json,
+         l.file_path, l.ego_pose_json, r.points`,
+    },
+  },
+
   // ── 各模态存储规格 ────────────────────────────────────────────
   modalSpecs: [
     {
