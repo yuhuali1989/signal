@@ -124,6 +124,361 @@ export const K8S_DATA = {
 // ═══════════════════════════════════════════════════════════════
 export const DATALAKE_DATA = {
 
+  // ── 车端采集客户端（工程实现细节）────────────────────────────
+  edgeClient: {
+    title: '车端采集客户端工程实现',
+    subtitle: '从传感器驱动到 MCAP 落盘、增量上传、切分触发的完整工程细节',
+
+    // 车端软件栈
+    softwareStack: {
+      os: 'Linux 5.15 (RT 实时补丁)',
+      middleware: 'ROS2 Humble (DDS: CycloneDDS)',
+      runtime: 'NVIDIA Orin + CUDA 11.8',
+      container: 'k3s + containerd（各采集进程容器化）',
+      recorder: 'mcap-ros2-recorder v2.3（自研扩展）',
+      uploader: '自研增量上传 Agent（Go 实现）',
+      trigger: '自研触发引擎（C++ 实现，<5ms 响应）',
+    },
+
+    // MCAP 文件内部结构
+    mcapStructure: {
+      title: 'MCAP 文件内部结构（车端落盘格式）',
+      desc: 'MCAP 是 Foxglove 开源的多模态容器格式，一个文件包含所有传感器的 Channel，统一时间戳索引',
+      fileLayout: [
+        { section: 'Header',    desc: 'Magic bytes + 版本 + 库信息', size: '固定 8 bytes' },
+        { section: 'Schema',    desc: '每个 Channel 的消息格式定义（Protobuf/ROS2 msg schema）', size: '~几 KB' },
+        { section: 'Channel',   desc: '每个传感器对应一个 Channel，含 topic 名、schema_id、元数据', size: '~几百 bytes/Channel' },
+        { section: 'Message',   desc: '实际数据帧，含 channel_id + log_time（纳秒）+ publish_time + data', size: '变长，主体数据' },
+        { section: 'Chunk',     desc: '消息按时间分块压缩（默认 1s 一个 Chunk，zstd 压缩）', size: '~1~5 MB/Chunk' },
+        { section: 'ChunkIndex', desc: 'Chunk 的时间范围索引，支持随机访问', size: '~几十 bytes/Chunk' },
+        { section: 'Statistics', desc: '全文件统计（消息数/时间范围/Channel 列表）', size: '~几 KB' },
+        { section: 'Footer',    desc: 'SummaryOffset + Magic bytes，文件完整性标志', size: '固定 20 bytes' },
+      ],
+      channels: [
+        { topic: '/camera/front/image_raw',      schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '前视相机，H.265 编码后直接写入' },
+        { topic: '/camera/rear/image_raw',       schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '后视相机' },
+        { topic: '/camera/left_front/image_raw', schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '左前相机' },
+        { topic: '/camera/right_front/image_raw',schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '右前相机' },
+        { topic: '/camera/left_rear/image_raw',  schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '左后相机' },
+        { topic: '/camera/right_rear/image_raw', schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '右后相机' },
+        { topic: '/lidar/points',                schema: 'sensor_msgs/PointCloud2',     rate: '10Hz', encoding: 'draco',   note: 'LiDAR 点云，Draco 压缩' },
+        { topic: '/radar/front/targets',         schema: 'custom_msgs/RadarTargets',    rate: '13Hz', encoding: 'protobuf', note: '前向雷达目标列表' },
+        { topic: '/radar/rear/targets',          schema: 'custom_msgs/RadarTargets',    rate: '13Hz', encoding: 'protobuf', note: '后向雷达' },
+        { topic: '/gnss/fix',                    schema: 'sensor_msgs/NavSatFix',       rate: '10Hz', encoding: 'protobuf', note: 'GNSS 定位' },
+        { topic: '/imu/data',                    schema: 'sensor_msgs/Imu',             rate: '100Hz', encoding: 'protobuf', note: 'IMU 加速度/角速度' },
+        { topic: '/vehicle/can_signals',         schema: 'custom_msgs/CanSignals',      rate: '100Hz', encoding: 'protobuf', note: 'CAN 总线解码信号' },
+        { topic: '/perception/objects',          schema: 'custom_msgs/PerceptionResult', rate: '10Hz', encoding: 'protobuf', note: '感知结果（用于触发判断）' },
+        { topic: '/planning/trajectory',         schema: 'custom_msgs/Trajectory',      rate: '10Hz', encoding: 'protobuf', note: '规划轨迹（用于触发判断）' },
+        { topic: '/system/trigger_events',       schema: 'custom_msgs/TriggerEvent',    rate: '事件', encoding: 'protobuf', note: '触发事件记录（接管/AEB/异常）' },
+      ],
+    },
+
+    // 时间戳同步机制（多模态拼接的基础）
+    timestampSync: {
+      title: '时间戳同步机制（多模态拼接的基础）',
+      desc: '所有传感器必须在同一时钟域内，才能用 timestamp_us 做精确对齐',
+      methods: [
+        {
+          name: 'PTP 硬件同步（主要方案）',
+          precision: '< 1 μs',
+          desc: 'IEEE 1588 PTP 协议，Orin 作为 PTP Slave，同步到车载 GPS 时钟（PTP Master）。所有传感器通过硬件 trigger 信号对齐到同一时钟域。',
+          impl: 'linuxptp (ptp4l + phc2sys) + NVIDIA Orin PTP 硬件支持',
+          color: '#6c5ce7',
+        },
+        {
+          name: 'FPGA 触发同步（相机-LiDAR）',
+          precision: '< 0.5 ms',
+          desc: 'FPGA 产生 trigger 脉冲，同时触发所有相机曝光 + LiDAR 旋转角度标记，消除相机间的相对时延。',
+          impl: '自研 FPGA Trigger Board，GPIO 连接各相机 trigger 引脚',
+          color: '#00cec9',
+        },
+        {
+          name: 'ROS2 Header 时间戳',
+          precision: '< 1 ms（软件层）',
+          desc: '每条 ROS2 消息的 header.stamp 使用 CLOCK_REALTIME（已 PTP 同步），写入 MCAP 时同时记录 log_time（接收时间）和 publish_time（发布时间）。',
+          impl: 'ROS2 Time API + MCAP log_time/publish_time 双时间戳',
+          color: '#fd79a8',
+        },
+      ],
+      alignRule: '云端对齐规则：以 LiDAR 帧时间戳为基准，在 ±5ms 窗口内查找最近的相机帧、雷达帧，超出窗口则标记为对齐失败（丢弃或插值）。',
+    },
+
+    // 车端存储策略（落盘逻辑）
+    storageStrategy: {
+      title: '车端存储策略（落盘逻辑）',
+      desc: '车端 NVMe 作为缓冲区，MCAP 文件按 Session 切割，上传后保留 24h 再删除',
+      localStorage: {
+        device: 'NVMe SSD 2TB（车载）',
+        filesystem: 'ext4 + noatime（减少写放大）',
+        path: '/data/mcap/{date}/{session_id}/',
+        retention: '上传完成后保留 24h，然后删除（保留 24h 用于重传）',
+        freeSpaceGuard: '剩余空间 < 200GB 时停止录制，触发告警',
+      },
+      writeMode: [
+        {
+          name: '直写模式（Write-Through）',
+          desc: '传感器数据直接写入 MCAP 文件，不经过内存缓冲。适合低延迟场景。',
+          pros: '延迟低，数据不丢失', cons: 'IOPS 压力大',
+          used: '相机（高带宽，需要持续写入）',
+        },
+        {
+          name: '缓冲写模式（Buffered Write）',
+          desc: '数据先写入内存环形缓冲区（Ring Buffer），定期 flush 到 MCAP。',
+          pros: '减少 IOPS，批量写入效率高', cons: '断电可能丢失缓冲数据',
+          used: 'LiDAR / 雷达 / CAN（数据量小，可接受缓冲）',
+          bufferSize: '环形缓冲区 512MB，每 1s flush 一次',
+        },
+        {
+          name: '事件触发回写（Retroactive Write）',
+          desc: '内存中保留最近 30s 的环形缓冲，触发事件时将缓冲数据回写到独立 MCAP 文件。',
+          pros: '捕获事件前的数据', cons: '内存占用大',
+          used: '接管/AEB/碰撞事件（需要事件前 15s 数据）',
+          bufferSize: '内存环形缓冲 30s × 全模态 ≈ 6GB',
+        },
+      ],
+    },
+
+    // Session 切割时机（核心问题）
+    sessionCut: {
+      title: 'Session 切割时机（何时产生新 MCAP 文件）',
+      desc: '切割 = 关闭当前 MCAP 文件 + 打开新文件，切割点两侧各保留 2s 重叠（防止切割点数据丢失）',
+      triggers: [
+        {
+          trigger: '定时切割（主要）',
+          condition: '每 15 分钟自动切割',
+          priority: 1,
+          detail: '最常见的切割方式。15min = 18,000 相机帧 × 6 路 = 108,000 帧，MCAP 文件大小约 5~15 GB（压缩前）/ 1~3 GB（H.265 压缩后）。',
+          color: '#6c5ce7',
+          icon: '⏰',
+        },
+        {
+          trigger: '文件大小切割',
+          condition: '单文件超过 4 GB',
+          priority: 2,
+          detail: '防止单文件过大导致上传失败或内存溢出。4GB 约对应 10~12 分钟的录制。',
+          color: '#00cec9',
+          icon: '📦',
+        },
+        {
+          trigger: '点火/熄火切割',
+          condition: 'CAN 信号检测到 IGN_ON / IGN_OFF',
+          priority: 3,
+          detail: '车辆启动时开始新 Session，熄火时关闭当前 Session。一次 Trip 的边界。',
+          color: '#3fb950',
+          icon: '🔑',
+        },
+        {
+          trigger: '网络恢复切割',
+          condition: '网络从断开恢复，且当前文件 > 5min',
+          priority: 4,
+          detail: '网络恢复时切割，便于立即上传最新数据，而不是等待当前 Session 结束。',
+          color: '#ffa657',
+          icon: '📶',
+        },
+        {
+          trigger: '存储空间切割',
+          condition: '可用空间 < 500GB',
+          priority: 5,
+          detail: '存储紧张时缩短 Session 时长（改为 5min 切割），加快上传释放空间。',
+          color: '#fd79a8',
+          icon: '💾',
+        },
+      ],
+      overlapSeconds: 2,
+      namingConvention: '{vehicle_id}_{date}_{start_timestamp_us}_{camera_id}.mcap',
+      example: 'v001_20240315_1710460800000000_front.mcap',
+    },
+
+    // 增量读取机制（上传 Agent 如何知道哪些是新数据）
+    incrementalRead: {
+      title: '增量读取机制（上传 Agent 如何感知新数据）',
+      desc: '上传 Agent 需要知道：哪些文件是新的、哪些已上传、断点续传从哪里继续',
+      methods: [
+        {
+          name: '文件状态数据库（SQLite）',
+          desc: '本地 SQLite 记录每个 MCAP 文件的状态：pending / uploading / uploaded / failed',
+          schema: 'files(session_id, file_path, size_bytes, sha256, status, upload_offset, created_at, uploaded_at)',
+          how: '录制进程写完文件后，向 SQLite 插入 pending 记录；上传 Agent 轮询 pending 记录，按优先级排序上传。',
+          color: '#6c5ce7',
+          icon: '🗄️',
+        },
+        {
+          name: 'inotify 文件系统监听',
+          desc: 'Linux inotify 监听 /data/mcap/ 目录，文件 CLOSE_WRITE 事件触发上传 Agent 处理。',
+          how: '录制进程关闭文件（Session 切割）时，inotify 立即通知上传 Agent，无需轮询，延迟 < 100ms。',
+          color: '#00cec9',
+          icon: '👁️',
+        },
+        {
+          name: 'S3 Multipart Upload + 断点续传',
+          desc: '大文件分块上传（每块 64MB），上传进度记录在 SQLite 的 upload_offset 字段。网络中断后从 offset 继续。',
+          how: 'S3 CreateMultipartUpload → UploadPart（记录 offset）→ CompleteMultipartUpload。失败时用 upload_id 继续。',
+          color: '#fd79a8',
+          icon: '⏸️',
+        },
+        {
+          name: '优先级队列',
+          desc: '上传队列按优先级排序：事件触发文件 > 最新 Session > 历史 Session',
+          priority: [
+            { level: 'P0 紧急', condition: '含接管/AEB/碰撞事件的 Session', delay: '< 5min 上传' },
+            { level: 'P1 高',   condition: '最近 1h 内的 Session', delay: '< 30min 上传' },
+            { level: 'P2 中',   condition: '当天的 Session', delay: '< 4h 上传' },
+            { level: 'P3 低',   condition: '历史 Session（补传）', delay: '空闲时上传' },
+          ],
+          color: '#ffa657',
+          icon: '📋',
+        },
+      ],
+    },
+
+    // Raw 层 Iceberg 一条数据的窗口（核心问题）
+    rawIcebergRow: {
+      title: 'Raw 层 Iceberg 表：一行数据对应什么粒度？',
+      desc: '这是最容易混淆的问题。不同模态的 Iceberg 表，行粒度不同，但都以"单次采样"为基本单元。',
+      tables: [
+        {
+          table: 'raw_data.camera.frames_v2',
+          rowUnit: '1 行 = 1 帧（单相机单次曝光）',
+          timeWindow: '50ms（20Hz）',
+          rowsPerSession: '18,000 行 / Session / 相机 = 108,000 行 / Session（6路）',
+          rowsPerDay: '~2.16 亿行 / 天（1000辆车 × 6相机 × 18000帧）',
+          keyFields: 'frame_id（主键）, scene_id（外键）, timestamp_us, file_path',
+          fileRef: '每行的 file_path 指向 S3 Volume 中的一个 JPEG 文件（~150KB）',
+          whenInserted: 'Bronze 层处理时：MCAP 解码 → 每帧抽取 JPEG → 写 S3 → 插入 Iceberg 行',
+          color: '#6c5ce7',
+          icon: '📷',
+        },
+        {
+          table: 'raw_data.lidar.pointcloud_v2',
+          rowUnit: '1 行 = 1 帧（LiDAR 一次旋转扫描）',
+          timeWindow: '100ms（10Hz）',
+          rowsPerSession: '9,000 行 / Session',
+          rowsPerDay: '~900 万行 / 天（1000辆车）',
+          keyFields: 'frame_id（主键）, scene_id（外键）, timestamp_us, file_path',
+          fileRef: '每行的 file_path 指向 S3 Volume 中的一个 .pcd.draco 文件（~500KB）',
+          whenInserted: 'Bronze 层处理时：MCAP 解码 → 每帧提取点云 → Draco 压缩 → 写 S3 → 插入 Iceberg 行',
+          color: '#3fb950',
+          icon: '🟢',
+        },
+        {
+          table: 'raw_data.radar.radar_4d_v1',
+          rowUnit: '1 行 = 1 帧（雷达一次扫描，含所有目标点）',
+          timeWindow: '77ms（13Hz）',
+          rowsPerSession: '11,700 行 / Session / 雷达 = 58,500 行 / Session（5路）',
+          rowsPerDay: '~5.85 亿行 / 天（1000辆车 × 5雷达）',
+          keyFields: 'frame_id（主键）, scene_id（外键）, timestamp_us, radar_id, points（LIST<STRUCT>）',
+          fileRef: '无 file_path，points 字段直接存 LIST<STRUCT>（x/y/z/v_r/rcs/snr），数据量小可内联',
+          whenInserted: 'Bronze 层处理时：MCAP 解码 → 解析雷达目标 → 直接插入 Iceberg 行（无需 Volume）',
+          color: '#ffa657',
+          icon: '📡',
+        },
+        {
+          table: 'raw_data.vehicle.can_bus',
+          rowUnit: '1 行 = 1 个 CAN 采样时刻（所有信号的快照）',
+          timeWindow: '10ms（100Hz）',
+          rowsPerSession: '90,000 行 / Session',
+          rowsPerDay: '~9000 万行 / 天（1000辆车）',
+          keyFields: 'record_id（主键）, scene_id（外键，场景切分后回填）, timestamp_us, speed_mps, ...',
+          fileRef: '无 file_path，所有信号字段直接存 Parquet 列（宽表设计）',
+          whenInserted: 'Bronze 层处理时：MCAP 解码 CAN 消息 → DBC 解析信号 → 直接插入 Iceberg 行',
+          color: '#00cec9',
+          icon: '🔌',
+        },
+        {
+          table: 'raw_data.camera.video_sessions',
+          rowUnit: '1 行 = 1 个 Session（一个 MCAP 文件对应的视频段）',
+          timeWindow: '15 分钟（900s）',
+          rowsPerSession: '1 行 / Session / 相机 = 6 行 / Session（6路）',
+          rowsPerDay: '~6000 行 / 天（1000辆车 × 6相机 × 1 Session均值）',
+          keyFields: 'session_id（主键）, vehicle_id, camera_id, start_time, end_time, file_path',
+          fileRef: '每行的 file_path 指向 S3 Volume 中的一个 MP4 文件（~1~3GB）',
+          whenInserted: 'Landing Zone 处理时：MCAP 上传完成 → 提取视频流 → 写 S3 → 插入 Iceberg 行',
+          color: '#e84393',
+          icon: '🎬',
+        },
+      ],
+      // 关键结论
+      keyInsights: [
+        { insight: '相机/LiDAR/雷达 Iceberg 表：行粒度 = 单帧（最细粒度）', detail: '每行对应一次传感器采样，file_path 指向 Volume 中的实体文件（相机/LiDAR），或直接内联数据（雷达/CAN）' },
+        { insight: 'video_sessions 表：行粒度 = Session（15min）', detail: '视频文件太大，不按帧存，而是整个 Session 一行，通过 session_id 与帧表关联' },
+        { insight: 'scene_index 表：行粒度 = Scene（20s）', detail: 'Silver 层切分后产生，是训练采样的核心表，通过 scene_id 关联所有模态的帧' },
+        { insight: 'CAN/雷达数据内联存储，不需要 Volume', detail: '数据量小（CAN ~5GB/天，雷达 ~50GB/天），直接存 Parquet 列，避免小文件问题' },
+      ],
+    },
+
+    // 多模态拼接规则（云端处理时）
+    joinRules: {
+      title: '多模态拼接规则（Bronze → Silver 处理时）',
+      desc: '云端处理时，如何将不同采样率的传感器数据对齐拼接',
+      baseModality: 'LiDAR（10Hz）作为时间基准，其他模态向 LiDAR 帧对齐',
+      rules: [
+        {
+          modality: '相机 → LiDAR 对齐',
+          method: '最近邻匹配',
+          tolerance: '±5ms',
+          detail: '对每个 LiDAR 帧（100ms 间隔），在 ±5ms 窗口内查找最近的相机帧。20Hz 相机帧间隔 50ms，理论上每个 LiDAR 帧都能找到对应相机帧。',
+          fallback: '超出 ±5ms 则标记 camera_aligned=false，该帧不参与 BEV 融合',
+          color: '#6c5ce7',
+        },
+        {
+          modality: '雷达 → LiDAR 对齐',
+          method: '最近邻匹配 + 线性插值',
+          tolerance: '±10ms',
+          detail: '雷达 13Hz（77ms 间隔），LiDAR 10Hz（100ms 间隔）。用线性插值将雷达点云插值到 LiDAR 时间戳，补偿 ~40ms 的时间差。',
+          fallback: '超出 ±10ms 则标记 radar_aligned=false',
+          color: '#ffa657',
+        },
+        {
+          modality: 'CAN → 任意帧对齐',
+          method: '时间范围查询',
+          tolerance: '±10ms',
+          detail: 'CAN 100Hz（10ms 间隔），对任意传感器帧，在 ±10ms 内查找最近的 CAN 记录。CAN 密度足够，几乎总能找到。',
+          fallback: '极少情况下 CAN 丢包，用前后两条记录线性插值',
+          color: '#00cec9',
+        },
+        {
+          modality: 'GNSS/IMU → 任意帧对齐',
+          method: 'IMU 积分推算',
+          tolerance: '无限制（IMU 100Hz，总能覆盖）',
+          detail: 'IMU 100Hz，用 IMU 积分（预积分）推算任意时刻的车体位姿，精度 < 1cm（短时间内）。GNSS 10Hz 用于修正 IMU 漂移。',
+          fallback: 'GNSS 信号丢失时纯 IMU 推算，误差随时间累积',
+          color: '#3fb950',
+        },
+      ],
+      sceneJoinSQL: `-- Silver 层场景切分后，将各模态帧关联到 scene_id
+-- 步骤1：根据时间范围将帧归属到 Scene
+UPDATE raw_data.camera.frames_v2 f
+SET scene_id = s.scene_id
+FROM processed_data.scenes.scene_index s
+WHERE f.timestamp_us BETWEEN s.start_us AND s.end_us
+  AND f.vehicle_id = s.vehicle_id;
+
+-- 步骤2：多模态联合查询（训练采样）
+SELECT
+  l.frame_id,
+  l.timestamp_us,
+  l.file_path        AS lidar_path,
+  c.file_path        AS cam_front_path,
+  r.points           AS radar_front_points,
+  can.speed_mps,
+  can.takeover_flag
+FROM raw_data.lidar.pointcloud_v2 l
+JOIN raw_data.camera.frames_v2 c
+  ON l.scene_id = c.scene_id
+  AND c.camera_id = 'front'
+  AND ABS(c.timestamp_us - l.timestamp_us) < 5000   -- ±5ms
+LEFT JOIN raw_data.radar.radar_4d_v1 r
+  ON l.scene_id = r.scene_id
+  AND r.radar_id = 'front'
+  AND ABS(r.timestamp_us - l.timestamp_us) < 10000  -- ±10ms
+LEFT JOIN raw_data.vehicle.can_bus can
+  ON l.scene_id = can.scene_id
+  AND ABS(can.timestamp_us - l.timestamp_us) < 10000
+WHERE l.scene_id = 'v001_20240315_s003_0042'
+ORDER BY l.timestamp_us`,
+    },
+  },
+
   // ── 多模态数据链路（车端→训练全链路）──────────────────────────
   dataChain: {
     title: '多模态数据链路（车端 → 训练全链路）',
