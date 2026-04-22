@@ -881,9 +881,384 @@ function TokenizerTool() {
 // ═══════════════════════════════════════════════════════════════
 // 主页面
 // ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// Tab 3: AI 编程工具对比矩阵
+// ═══════════════════════════════════════════════════════════════
+
+const AI_CODING_TOOLS = [
+  {
+    id: 'cursor',
+    name: 'Cursor',
+    logo: '🖱️',
+    tagline: 'AI-first 代码编辑器',
+    url: 'https://cursor.com',
+    pricing: '$20/月（Pro）',
+    freeTier: '有限免费',
+    baseModel: 'Claude 3.7 / GPT-4o / o3',
+    contextWindow: '200k tokens',
+    codeCompletion: 5,
+    chatQuality: 5,
+    agentMode: 5,
+    codebaseUnderstanding: 5,
+    multiFile: 5,
+    terminalIntegration: 4,
+    mcpSupport: true,
+    highlights: ['Tab 补全极快', 'Composer 多文件编辑', 'Agent 模式自主执行', '@codebase 全库检索'],
+    weaknesses: ['订阅费较高', '依赖第三方模型'],
+    bestFor: '全职开发者 / AI 原生开发',
+    color: '#6c5ce7',
+    badge: '🔥 最热门',
+  },
+  {
+    id: 'github-copilot',
+    name: 'GitHub Copilot',
+    logo: '🐙',
+    tagline: 'GitHub 官方 AI 编程助手',
+    url: 'https://github.com/features/copilot',
+    pricing: '$10/月（个人）/ $19/月（商业）',
+    freeTier: '学生/开源免费',
+    baseModel: 'GPT-4o / Claude 3.5',
+    contextWindow: '64k tokens',
+    codeCompletion: 5,
+    chatQuality: 4,
+    agentMode: 3,
+    codebaseUnderstanding: 4,
+    multiFile: 4,
+    terminalIntegration: 4,
+    mcpSupport: false,
+    highlights: ['GitHub 深度集成', 'PR 自动 Review', '企业级安全合规', 'VS Code 原生支持'],
+    weaknesses: ['Agent 能力弱于 Cursor', '上下文窗口较小'],
+    bestFor: '企业团队 / GitHub 重度用户',
+    color: '#24292f',
+    badge: '🏢 企业首选',
+  },
+  {
+    id: 'windsurf',
+    name: 'Windsurf',
+    logo: '🏄',
+    tagline: 'Codeium 出品的 AI IDE',
+    url: 'https://codeium.com/windsurf',
+    pricing: '$15/月（Pro）',
+    freeTier: '免费版功能较完整',
+    baseModel: 'Claude 3.7 / GPT-4o',
+    contextWindow: '128k tokens',
+    codeCompletion: 4,
+    chatQuality: 4,
+    agentMode: 4,
+    codebaseUnderstanding: 4,
+    multiFile: 4,
+    terminalIntegration: 4,
+    mcpSupport: true,
+    highlights: ['Cascade Agent 自主执行', '免费版功能丰富', '价格低于 Cursor', 'Flows 工作流'],
+    weaknesses: ['生态不如 Cursor 成熟', '社区规模较小'],
+    bestFor: '预算有限的开发者 / Cursor 替代',
+    color: '#0984e3',
+    badge: '💰 性价比高',
+  },
+  {
+    id: 'claude-code',
+    name: 'Claude Code',
+    logo: '🤖',
+    tagline: 'Anthropic 官方 CLI Agent',
+    url: 'https://claude.ai/code',
+    pricing: 'API 按量计费',
+    freeTier: '无',
+    baseModel: 'Claude 3.7 Sonnet',
+    contextWindow: '200k tokens',
+    codeCompletion: 3,
+    chatQuality: 5,
+    agentMode: 5,
+    codebaseUnderstanding: 5,
+    multiFile: 5,
+    terminalIntegration: 5,
+    mcpSupport: true,
+    highlights: ['终端原生 Agent', '自主执行复杂任务', 'MCP 深度集成', '200k 超长上下文'],
+    weaknesses: ['无 GUI 编辑器', '按量计费成本不可控', '学习曲线陡'],
+    bestFor: '高级开发者 / 自动化脚本 / 复杂重构',
+    color: '#d4863a',
+    badge: '⚡ Agent 最强',
+  },
+  {
+    id: 'devin',
+    name: 'Devin',
+    logo: '🦾',
+    tagline: '首个「AI 软件工程师」',
+    url: 'https://devin.ai',
+    pricing: '$500/月（团队版）',
+    freeTier: '无',
+    baseModel: '自研模型',
+    contextWindow: '未公开',
+    codeCompletion: 3,
+    chatQuality: 4,
+    agentMode: 5,
+    codebaseUnderstanding: 4,
+    multiFile: 5,
+    terminalIntegration: 5,
+    mcpSupport: false,
+    highlights: ['完全自主执行任务', '可处理完整 Issue→PR 流程', '内置浏览器/终端/编辑器'],
+    weaknesses: ['价格极高', '不适合日常辅助编程', '自主性有时过强'],
+    bestFor: '企业自动化 / 批量任务处理',
+    color: '#e17055',
+    badge: '🤖 最自主',
+  },
+  {
+    id: 'aider',
+    name: 'Aider',
+    logo: '🔧',
+    tagline: '开源 CLI AI 编程助手',
+    url: 'https://aider.chat',
+    pricing: '免费（自带 API Key）',
+    freeTier: '完全免费开源',
+    baseModel: '支持所有主流模型',
+    contextWindow: '取决于所选模型',
+    codeCompletion: 3,
+    chatQuality: 4,
+    agentMode: 4,
+    codebaseUnderstanding: 4,
+    multiFile: 5,
+    terminalIntegration: 5,
+    mcpSupport: false,
+    highlights: ['完全开源免费', '支持任意 LLM', 'Git 深度集成', '多文件编辑能力强'],
+    weaknesses: ['无 GUI', '需要自备 API Key', '上手门槛较高'],
+    bestFor: '开源爱好者 / 自托管需求 / 成本敏感',
+    color: '#00b894',
+    badge: '🆓 开源免费',
+  },
+];
+
+const SCORE_LABELS = {
+  codeCompletion: '代码补全',
+  chatQuality: '对话质量',
+  agentMode: 'Agent 能力',
+  codebaseUnderstanding: '代码库理解',
+  multiFile: '多文件编辑',
+  terminalIntegration: '终端集成',
+};
+
+function ScoreBar({ score, color }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <div className="flex gap-0.5">
+        {[1, 2, 3, 4, 5].map(i => (
+          <div key={i} className="w-3 h-3 rounded-sm transition-all"
+            style={{ background: i <= score ? color : '#e5e7eb' }} />
+        ))}
+      </div>
+      <span className="text-[10px] text-gray-400 font-mono">{score}/5</span>
+    </div>
+  );
+}
+
+function CodingToolsMatrix() {
+  const [selectedTool, setSelectedTool] = useState(null);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareList, setCompareList] = useState([]);
+
+  const toggleCompare = (id) => {
+    setCompareList(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : prev.length < 3 ? [...prev, id] : prev
+    );
+  };
+
+  const compareTools = AI_CODING_TOOLS.filter(t => compareList.includes(t.id));
+
+  return (
+    <div>
+      {/* 说明 */}
+      <div className="mb-5 p-4 rounded-2xl border border-[#ffa657]/20 bg-[#ffa657]/[0.03] flex items-start gap-3">
+        <span className="text-xl flex-shrink-0">⚔️</span>
+        <div>
+          <p className="text-sm font-semibold text-gray-800 mb-0.5">AI 编程工具横向对比</p>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            覆盖 Cursor / GitHub Copilot / Windsurf / Claude Code / Devin / Aider 六大主流工具，从补全质量、Agent 能力、价格等维度横向对比，帮助你选择最适合的工具。
+            数据更新于 2026-04-22。
+          </p>
+        </div>
+      </div>
+
+      {/* 对比模式切换 */}
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs text-gray-500">
+          {compareMode ? `已选 ${compareList.length}/3 个工具进行对比` : '点击卡片查看详情'}
+        </p>
+        <button onClick={() => { setCompareMode(!compareMode); setCompareList([]); setSelectedTool(null); }}
+          className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${compareMode ? 'bg-[#ffa657]/10 text-[#ffa657] border-[#ffa657]/30' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'}`}>
+          {compareMode ? '退出对比模式' : '⚖️ 对比模式'}
+        </button>
+      </div>
+
+      {/* 工具卡片网格 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
+        {AI_CODING_TOOLS.map(tool => {
+          const isSelected = compareMode ? compareList.includes(tool.id) : selectedTool?.id === tool.id;
+          return (
+            <div key={tool.id}
+              onClick={() => compareMode ? toggleCompare(tool.id) : setSelectedTool(selectedTool?.id === tool.id ? null : tool)}
+              className={`rounded-2xl border p-4 cursor-pointer transition-all ${isSelected ? 'shadow-md' : 'bg-white border-gray-100 hover:shadow-sm hover:border-gray-200'}`}
+              style={isSelected ? { borderColor: tool.color + '50', background: tool.color + '08' } : {}}>
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{tool.logo}</span>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="text-sm font-bold text-gray-800">{tool.name}</h3>
+                      {compareMode && isSelected && <span className="text-[9px] px-1.5 py-0.5 rounded-full text-white font-bold" style={{ background: tool.color }}>✓</span>}
+                    </div>
+                    <p className="text-[10px] text-gray-400">{tool.tagline}</p>
+                  </div>
+                </div>
+                <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white flex-shrink-0"
+                  style={{ background: tool.color }}>{tool.badge}</span>
+              </div>
+
+              {/* 核心评分 */}
+              <div className="space-y-1.5 mb-3">
+                {['codeCompletion', 'agentMode', 'codebaseUnderstanding'].map(key => (
+                  <div key={key} className="flex items-center justify-between">
+                    <span className="text-[10px] text-gray-400 w-20 flex-shrink-0">{SCORE_LABELS[key]}</span>
+                    <ScoreBar score={tool[key]} color={tool.color} />
+                  </div>
+                ))}
+              </div>
+
+              {/* 价格 */}
+              <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+                <span className="text-[10px] text-gray-400">💰 {tool.pricing}</span>
+                <span className="text-[10px] text-gray-400">{tool.freeTier}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 详情面板 */}
+      {!compareMode && selectedTool && (
+        <div className="rounded-2xl border p-5 bg-white" style={{ borderColor: selectedTool.color + '30' }}>
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{selectedTool.logo}</span>
+              <div>
+                <h3 className="text-base font-bold text-gray-800">{selectedTool.name}</h3>
+                <p className="text-xs text-gray-400">{selectedTool.tagline} · <a href={selectedTool.url} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: selectedTool.color }}>{selectedTool.url.replace('https://', '')}</a></p>
+              </div>
+            </div>
+            <button onClick={() => setSelectedTool(null)} className="text-gray-300 hover:text-gray-500 text-lg">×</button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* 全部评分 */}
+            <div>
+              <p className="text-xs font-semibold text-gray-600 mb-2">能力评分</p>
+              <div className="space-y-2">
+                {Object.keys(SCORE_LABELS).map(key => (
+                  <div key={key} className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500 w-24 flex-shrink-0">{SCORE_LABELS[key]}</span>
+                    <ScoreBar score={selectedTool[key]} color={selectedTool.color} />
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                <span className="text-xs text-gray-500">MCP 支持</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${selectedTool.mcpSupport ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                  {selectedTool.mcpSupport ? '✓ 支持' : '✗ 不支持'}
+                </span>
+              </div>
+            </div>
+
+            {/* 优缺点 */}
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs font-semibold text-gray-600 mb-1.5">✅ 亮点</p>
+                <ul className="space-y-1">
+                  {selectedTool.highlights.map((h, i) => (
+                    <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
+                      <span style={{ color: selectedTool.color }} className="flex-shrink-0 mt-0.5">•</span>{h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-600 mb-1.5">⚠️ 不足</p>
+                <ul className="space-y-1">
+                  {selectedTool.weaknesses.map((w, i) => (
+                    <li key={i} className="text-xs text-gray-400 flex items-start gap-1.5">
+                      <span className="flex-shrink-0 mt-0.5">•</span>{w}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="pt-2 border-t border-gray-50">
+                <p className="text-xs text-gray-500">🎯 <span className="font-medium">最适合</span>：{selectedTool.bestFor}</p>
+                <p className="text-xs text-gray-500 mt-1">🧠 <span className="font-medium">底层模型</span>：{selectedTool.baseModel}</p>
+                <p className="text-xs text-gray-500 mt-1">📏 <span className="font-medium">上下文</span>：{selectedTool.contextWindow}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 对比面板 */}
+      {compareMode && compareList.length >= 2 && (
+        <div className="rounded-2xl border border-gray-100 bg-white overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left p-3 text-gray-400 font-medium w-28">维度</th>
+                {compareTools.map(t => (
+                  <th key={t.id} className="p-3 text-center">
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="text-base">{t.logo}</span>
+                      <span className="font-bold text-gray-800">{t.name}</span>
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(SCORE_LABELS).map(key => (
+                <tr key={key} className="border-b border-gray-50">
+                  <td className="p-3 text-gray-500">{SCORE_LABELS[key]}</td>
+                  {compareTools.map(t => (
+                    <td key={t.id} className="p-3 text-center">
+                      <ScoreBar score={t[key]} color={t.color} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              <tr className="border-b border-gray-50">
+                <td className="p-3 text-gray-500">MCP 支持</td>
+                {compareTools.map(t => (
+                  <td key={t.id} className="p-3 text-center">
+                    <span className={`px-1.5 py-0.5 rounded-full font-medium ${t.mcpSupport ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                      {t.mcpSupport ? '✓' : '✗'}
+                    </span>
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="p-3 text-gray-500">价格</td>
+                {compareTools.map(t => (
+                  <td key={t.id} className="p-3 text-center text-gray-600">{t.pricing}</td>
+                ))}
+              </tr>
+              <tr>
+                <td className="p-3 text-gray-500">最适合</td>
+                {compareTools.map(t => (
+                  <td key={t.id} className="p-3 text-center text-gray-500">{t.bestFor}</td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const TABS = [
   { id: 'tokenizer', label: 'Tokenizer', icon: '🔬', desc: 'BPE 分词可视化 · 查看真实 token 切分' },
   { id: 'mcp', label: 'MCP 目录', icon: '🔌', desc: 'MCP Server 生态目录 · 官方 + 社区精选' },
+  { id: 'coding-tools', label: 'AI 编程工具', icon: '⚔️', desc: 'Cursor vs Copilot vs Windsurf 横向对比' },
   { id: 'prompts', label: 'Prompt 模板库', icon: '📌', desc: '8 个常用高质量模板' },
 ];
 
@@ -901,11 +1276,11 @@ export default function ToolsPage() {
             <h1 className="text-2xl font-bold text-gray-900">🧰 工具箱</h1>
             <span className="px-2.5 py-0.5 text-xs font-medium bg-purple-50 text-purple-600 border border-purple-100 rounded-full">实用工具</span>
           </div>
-          <p className="text-sm text-gray-500">LLM 开发者日常必备 — Tokenizer 可视化 · Prompt 模板 · 更多工具持续更新</p>
+          <p className="text-sm text-gray-500">LLM 开发者日常必备 — Tokenizer 可视化 · MCP 目录 · AI 编程工具对比 · Prompt 模板</p>
         </div>
 
         {/* Tab bar */}
-        <div className="grid grid-cols-3 gap-2 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
           {TABS.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex flex-col items-center gap-1 py-3 px-2 rounded-2xl border text-center transition-all ${activeTab === tab.id ? 'bg-white border-[#6c5ce7]/20 shadow-sm' : 'bg-gray-50 border-transparent hover:bg-white hover:border-gray-100'}`}>
@@ -925,6 +1300,7 @@ export default function ToolsPage() {
         {/* Content */}
         {activeTab === 'tokenizer' && <TokenizerTool />}
         {activeTab === 'mcp' && <MCPDirectory />}
+        {activeTab === 'coding-tools' && <CodingToolsMatrix />}
         {activeTab === 'prompts' && <PromptTemplates templates={PROMPT_TEMPLATES} />}
       </div>
       <Footer />
