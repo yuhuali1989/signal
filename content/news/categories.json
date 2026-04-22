@@ -40,5 +40,12 @@
     "icon": "🛡️",
     "color": "red",
     "count": 5
+  },
+  {
+    "id": "github",
+    "name": "GitHub 热榜",
+    "icon": "⭐",
+    "color": "gray",
+    "count": 5
   }
 ]

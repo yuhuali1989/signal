@@ -181,6 +181,239 @@ const PROMPT_TEMPLATES = [
 
 const PROMPT_CATEGORIES = ['全部', '推理', 'RAG', 'Agent', '输出格式', '角色设定', '文本处理', '代码'];
 
+// ─── MCP Server 目录数据 ──────────────────────────────────────
+const MCP_SERVERS = [
+  {
+    id: 'filesystem',
+    name: 'Filesystem',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/filesystem',
+    category: '文件系统',
+    stars: '14k+',
+    desc: '读写本地文件系统，支持目录遍历、文件搜索、内容读写',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'github',
+    name: 'GitHub',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/github',
+    category: '代码托管',
+    stars: '14k+',
+    desc: '操作 GitHub 仓库：搜索代码、读取文件、创建 Issue/PR、管理 Workflow',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/github',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'postgres',
+    name: 'PostgreSQL',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/postgres',
+    category: '数据库',
+    stars: '14k+',
+    desc: '连接 PostgreSQL 数据库，执行 SQL 查询，读取 Schema 信息',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'sqlite',
+    name: 'SQLite',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/sqlite',
+    category: '数据库',
+    stars: '14k+',
+    desc: '操作本地 SQLite 数据库，适合轻量级数据分析场景',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'brave-search',
+    name: 'Brave Search',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/brave-search',
+    category: '搜索',
+    stars: '14k+',
+    desc: '调用 Brave Search API 进行网页搜索，支持本地搜索和新闻搜索',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'puppeteer',
+    name: 'Puppeteer',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/puppeteer',
+    category: '浏览器',
+    stars: '14k+',
+    desc: '控制 Chromium 浏览器：截图、点击、填表、抓取动态页面内容',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'slack',
+    name: 'Slack',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/slack',
+    category: '通讯协作',
+    stars: '14k+',
+    desc: '读取 Slack 频道消息、发送消息、搜索历史记录',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/slack',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'google-maps',
+    name: 'Google Maps',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/google-maps',
+    category: '地图/位置',
+    stars: '14k+',
+    desc: '地点搜索、路线规划、地理编码，适合位置感知 Agent',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/google-maps',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'memory',
+    name: 'Memory',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/memory',
+    category: '记忆/知识图谱',
+    stars: '14k+',
+    desc: '基于知识图谱的持久化记忆，让 Agent 跨会话记住用户信息',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/memory',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'sequential-thinking',
+    name: 'Sequential Thinking',
+    repo: 'modelcontextprotocol/servers',
+    path: 'src/sequentialthinking',
+    category: '推理增强',
+    stars: '14k+',
+    desc: '结构化多步推理工具，引导模型分解复杂问题，适合规划类任务',
+    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking',
+    badge: '官方',
+    badgeColor: '#6c5ce7',
+  },
+  {
+    id: 'context7',
+    name: 'Context7',
+    repo: 'upstash/context7',
+    path: '',
+    category: '文档检索',
+    stars: '8k+',
+    desc: '为 AI 编程助手提供最新的库文档，解决 LLM 知识截止问题，支持 npm/PyPI 包',
+    url: 'https://github.com/upstash/context7',
+    badge: '热门',
+    badgeColor: '#e17055',
+  },
+  {
+    id: 'firecrawl',
+    name: 'Firecrawl',
+    repo: 'mendableai/firecrawl-mcp-server',
+    path: '',
+    category: '网页抓取',
+    stars: '5k+',
+    desc: '高质量网页内容抓取，自动处理 JS 渲染、反爬虫，输出干净 Markdown',
+    url: 'https://github.com/mendableai/firecrawl-mcp-server',
+    badge: '热门',
+    badgeColor: '#e17055',
+  },
+  {
+    id: 'exa',
+    name: 'Exa Search',
+    repo: 'exa-labs/exa-mcp-server',
+    path: '',
+    category: '搜索',
+    stars: '3k+',
+    desc: '语义搜索引擎，专为 AI Agent 设计，返回高质量结构化结果',
+    url: 'https://github.com/exa-labs/exa-mcp-server',
+    badge: '推荐',
+    badgeColor: '#00b894',
+  },
+  {
+    id: 'desktop-commander',
+    name: 'Desktop Commander',
+    repo: 'wonderwhy-er/DesktopCommanderMCP',
+    path: '',
+    category: '系统控制',
+    stars: '4k+',
+    desc: '控制桌面应用、执行终端命令、管理进程，赋予 Agent 完整系统操作能力',
+    url: 'https://github.com/wonderwhy-er/DesktopCommanderMCP',
+    badge: '推荐',
+    badgeColor: '#00b894',
+  },
+];
+
+const MCP_CATEGORIES = ['全部', '文件系统', '数据库', '搜索', '浏览器', '代码托管', '通讯协作', '记忆/知识图谱', '推理增强', '文档检索', '网页抓取', '地图/位置', '系统控制'];
+
+function MCPDirectory() {
+  const [activeCategory, setActiveCategory] = useState('全部');
+  const filtered = activeCategory === '全部' ? MCP_SERVERS : MCP_SERVERS.filter(s => s.category === activeCategory);
+
+  return (
+    <div>
+      {/* 说明 */}
+      <div className="mb-5 p-4 rounded-2xl border border-[#6c5ce7]/15 bg-[#6c5ce7]/[0.03] flex items-start gap-3">
+        <span className="text-xl flex-shrink-0">🔌</span>
+        <div>
+          <p className="text-sm font-semibold text-gray-800 mb-0.5">MCP Server 生态目录</p>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Model Context Protocol（MCP）是 Anthropic 提出的开放协议，让 AI 助手能够安全地连接外部工具和数据源。
+            以下收录了 <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener noreferrer" className="text-[#6c5ce7] hover:underline">官方仓库</a> 及社区高 star 的 MCP Server，持续更新。
+          </p>
+        </div>
+      </div>
+
+      {/* Category 筛选 */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {MCP_CATEGORIES.map(cat => (
+          <button key={cat} onClick={() => setActiveCategory(cat)}
+            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${activeCategory === cat ? 'bg-[#6c5ce7]/10 text-[#6c5ce7] border-[#6c5ce7]/30' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'}`}>
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Server 列表 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {filtered.map(server => (
+          <a key={server.id} href={server.url} target="_blank" rel="noopener noreferrer"
+            className="group block rounded-2xl border border-gray-100 bg-white p-4 hover:shadow-sm hover:border-gray-200 transition-all">
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium text-gray-500 bg-gray-100 flex-shrink-0">{server.category}</span>
+                <h3 className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#6c5ce7] transition-colors">{server.name}</h3>
+              </div>
+              <div className="flex items-center gap-1.5 flex-shrink-0">
+                <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white"
+                  style={{ background: server.badgeColor }}>{server.badge}</span>
+                <span className="text-[10px] text-gray-400">⭐ {server.stars}</span>
+              </div>
+            </div>
+            <p className="text-xs text-gray-500 leading-relaxed mb-2">{server.desc}</p>
+            <p className="text-[10px] font-mono text-gray-300 truncate">{server.repo}</p>
+          </a>
+        ))}
+      </div>
+
+      <p className="mt-4 text-center text-[11px] text-gray-400">
+        更多 Server 见 <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener noreferrer" className="text-[#6c5ce7] hover:underline">github.com/modelcontextprotocol/servers</a> · 共 {MCP_SERVERS.length} 个已收录
+      </p>
+    </div>
+  );
+}
+
+
+
 // ═══════════════════════════════════════════════════════════════
 // Tab 4: Prompt 模板库
 // ═══════════════════════════════════════════════════════════════
@@ -650,6 +883,7 @@ function TokenizerTool() {
 // ═══════════════════════════════════════════════════════════════
 const TABS = [
   { id: 'tokenizer', label: 'Tokenizer', icon: '🔬', desc: 'BPE 分词可视化 · 查看真实 token 切分' },
+  { id: 'mcp', label: 'MCP 目录', icon: '🔌', desc: 'MCP Server 生态目录 · 官方 + 社区精选' },
   { id: 'prompts', label: 'Prompt 模板库', icon: '📌', desc: '8 个常用高质量模板' },
 ];
 
@@ -671,7 +905,7 @@ export default function ToolsPage() {
         </div>
 
         {/* Tab bar */}
-        <div className="grid grid-cols-2 gap-2 mb-6">
+        <div className="grid grid-cols-3 gap-2 mb-6">
           {TABS.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex flex-col items-center gap-1 py-3 px-2 rounded-2xl border text-center transition-all ${activeTab === tab.id ? 'bg-white border-[#6c5ce7]/20 shadow-sm' : 'bg-gray-50 border-transparent hover:bg-white hover:border-gray-100'}`}>
@@ -690,6 +924,7 @@ export default function ToolsPage() {
 
         {/* Content */}
         {activeTab === 'tokenizer' && <TokenizerTool />}
+        {activeTab === 'mcp' && <MCPDirectory />}
         {activeTab === 'prompts' && <PromptTemplates templates={PROMPT_TEMPLATES} />}
       </div>
       <Footer />
