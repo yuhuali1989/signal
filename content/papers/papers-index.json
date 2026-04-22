@@ -914,7 +914,7 @@
     ],
     "summary": "物理一致性约束世界模型，10% 真实 + 90% 合成数据达到 96% 真实数据性能，FID 降至 12.3，生成速度 15 帧/秒",
     "arxivUrl": "https://arxiv.org/abs/2604.11234",
-    "hasReview": false
+    "hasReview": true
   },
   {
     "id": "vla-world-imagination-reasoning-driving",
