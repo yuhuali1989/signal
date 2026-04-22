@@ -60,6 +60,10 @@ const TECH_DOMAINS = [
     tags: ['ETL', 'Airflow', 'Spark'], color: '#fd79a8',
   },
   {
+    icon: '⚡', name: '计算引擎', desc: 'Spark · Ray · Flink · Trino · RAPIDS · 场景选型矩阵',
+    tags: ['Spark', 'Ray', 'Flink', 'Trino'], color: '#f39c12',
+  },
+  {
     icon: '🗂️', name: 'Unity Catalog', desc: '统一元数据 · 模型注册 · 数据集管理 · 列级血缘',
     tags: ['模型注册', '数据集管理', '数据血缘'], color: '#e84393',
   },
@@ -93,10 +97,10 @@ export default function DataInfraPage() {
             </span>
           </div>
           <p className="text-sm text-gray-500">
-            从数据采集到模型部署的全链路基础设施 — K8s · 数据湖仓 · Unity Catalog · MLOps · 可观测性 · 向量数据库
+            从数据采集到模型部署的全链路基础设施 — K8s · 数据湖仓 · 计算引擎 · Unity Catalog · MLOps · 可观测性 · 向量数据库
           </p>
           <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-            <span>7 大技术领域</span>
+            <span>8 大技术领域</span>
             <span>·</span>
             <span>10 层闭环架构</span>
             <span>·</span>
