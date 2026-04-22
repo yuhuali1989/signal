@@ -1,5 +1,6 @@
 ---
 title: "AI 基础设施军备竞赛：Anthropic-Amazon $1000 亿云支出协议的经济学解读"
+type: article
 date: "2026-04-22"
 tags: ["AI Infra", "Anthropic", "Amazon", "AWS", "云计算", "军备竞赛", "GPU"]
 summary: "Amazon 再投 $50 亿给 Anthropic，换取 $1000 亿 AWS 云支出承诺。这笔交易揭示了 AI 基础设施军备竞赛的底层经济逻辑：云厂商用投资换锁定，AI 公司用承诺换资金，GPU 供应商坐收渔利。"

@@ -199,121 +199,404 @@ function K8sTab() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 3. 数据湖仓
+// 3. 数据湖仓 — 自动驾驶多模态存储方案
 // ─────────────────────────────────────────────────────────────
 function DatalakeTab() {
-  const { architecture, icebergFeatures, lakeFSWorkflow, queryEngines, comparison } = DATALAKE_DATA;
+  const { dataChain, modalSpecs, trainDatasetBuild, ioOptimization,
+          icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
+  const [activeSubTab, setActiveSubTab] = useState('chain');
+
+  const SUB_TABS = [
+    { id: 'chain',    label: '数据链路',     icon: '🔗' },
+    { id: 'modal',    label: '模态存储规格', icon: '📦' },
+    { id: 'train',    label: '训练集构建',   icon: '🧠' },
+    { id: 'io',       label: 'IO 优化',      icon: '⚡' },
+    { id: 'iceberg',  label: 'Iceberg',      icon: '🧊' },
+    { id: 'lakefs',   label: 'LakeFS 版本',  icon: '🌿' },
+  ];
 
   return (
     <div className="space-y-4">
-      {/* 分层架构 */}
-      <SectionCard icon="🏗️" title="湖仓分层架构" desc="Landing → Bronze → Silver → Gold 四层数据精炼">
+      {/* 定位说明 */}
+      <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/04 p-4">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">🏞️</span>
+          <div>
+            <div className="text-sm font-bold text-gray-800 mb-1">自动驾驶多模态存储方案</div>
+            <div className="text-[10px] text-gray-500 leading-relaxed">
+              覆盖 <span className="font-semibold text-[#00cec9]">车端采集 → Landing → Bronze → Silver → Gold</span> 全链路，
+              五模态（相机/LiDAR/雷达/标注/语言）统一存储规范，
+              支持 <span className="font-semibold text-[#00cec9]">~15 GB/s 训练 IO</span> 带宽需求。
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {['Apache Iceberg', 'WebDataset', 'LakeFS', 'JuiceFS', 'Lustre', 'Unity Catalog'].map(t => (
+                <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                  style={{ background: '#00cec9' + '15', color: '#00cec9', border: '1px solid #00cec930' }}>
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sub Tab 切换 */}
+      <div className="flex gap-1.5 flex-wrap">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveSubTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeSubTab === t.id ? '#00cec9' : 'transparent',
+              color: activeSubTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeSubTab === t.id ? '#00cec9' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ── 数据链路 ── */}
+      {activeSubTab === 'chain' && (
         <div className="space-y-2">
-          {architecture.layers.map((layer, i) => (
-            <div key={layer.name}>
-              <div className="flex items-center gap-3 rounded-xl border p-3"
-                style={{ borderColor: layer.color + '33', background: layer.color + '06' }}>
-                <div className="w-24 flex-shrink-0">
-                  <div className="text-xs font-bold" style={{ color: layer.color }}>{layer.name}</div>
-                  <div className="text-[9px] text-gray-400">{layer.lifecycle}</div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[10px] text-gray-600 mb-1">{layer.desc}</div>
-                  <div className="flex items-center gap-2">
-                    <Badge color={layer.color}>{layer.format}</Badge>
-                    <span className="text-[9px] text-gray-400">{layer.storage}</span>
+          <div className="text-xs font-semibold text-gray-600 mb-3">
+            {dataChain.title}
+          </div>
+          {dataChain.stages.map((stage, i) => (
+            <div key={stage.name}>
+              <div className="rounded-2xl border p-4"
+                style={{ borderColor: stage.color + '30', background: stage.color + '05' }}>
+                {/* 阶段头 */}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">{stage.icon}</span>
+                  <div>
+                    <div className="text-xs font-bold text-gray-800">{stage.name}</div>
+                    <div className="text-[9px] font-mono" style={{ color: stage.color }}>{stage.location}</div>
                   </div>
+                  {stage.dailyVolume && (
+                    <Badge color={stage.color} >{stage.dailyVolume}</Badge>
+                  )}
                 </div>
+
+                {/* 车端采集：模态列表 */}
+                {stage.modalities && (
+                  <div className="space-y-1">
+                    {stage.modalities.map(m => (
+                      <div key={m.name} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2 text-[9px]">
+                        <span className="font-semibold text-gray-700 w-24 flex-shrink-0">{m.name}</span>
+                        <span className="font-mono text-gray-400 w-28 flex-shrink-0">{m.format}</span>
+                        <span className="text-gray-400 w-12 flex-shrink-0">{m.rate}</span>
+                        <span className="font-mono" style={{ color: stage.color }}>{m.size}</span>
+                        <span className="text-gray-300 ml-auto">压缩: {m.compress}</span>
+                      </div>
+                    ))}
+                    <div className="text-[9px] font-semibold text-gray-600 mt-2">
+                      输出: <span className="font-mono" style={{ color: stage.color }}>{stage.output}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* 湖仓层：描述 + 格式 + 操作 */}
+                {stage.desc && (
+                  <div className="space-y-2">
+                    <p className="text-[10px] text-gray-500">{stage.desc}</p>
+                    <div className="flex flex-wrap gap-2 text-[9px]">
+                      <span className="font-mono px-2 py-0.5 rounded" style={{ background: stage.color + '12', color: stage.color }}>
+                        格式: {stage.format}
+                      </span>
+                      <span className="font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-500">
+                        分区: {stage.partition}
+                      </span>
+                      <span className="font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-500">
+                        生命周期: {stage.lifecycle}
+                      </span>
+                    </div>
+                    {/* Bronze 模态存储 */}
+                    {stage.modalStorage && (
+                      <div className="space-y-1 mt-2">
+                        {stage.modalStorage.map(ms => (
+                          <div key={ms.modality} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2 text-[9px]">
+                            <span className="font-semibold text-gray-700 w-20 flex-shrink-0">{ms.modality}</span>
+                            <span className="font-mono text-gray-400 flex-1">{ms.format}</span>
+                            <span className="font-mono" style={{ color: stage.color }}>{ms.size}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {/* Silver 操作列表 */}
+                    {stage.ops && !stage.modalStorage && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {stage.ops.map(op => (
+                          <span key={op} className="text-[8px] px-1.5 py-0.5 rounded"
+                            style={{ background: stage.color + '12', color: stage.color }}>{op}</span>
+                        ))}
+                      </div>
+                    )}
+                    {/* Gold 标注类型 */}
+                    {stage.annotations && (
+                      <div className="space-y-1 mt-2">
+                        {stage.annotations.map(a => (
+                          <div key={a.type} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-2 text-[9px]">
+                            <span className="font-semibold text-gray-700 w-20 flex-shrink-0">{a.type}</span>
+                            <span className="text-gray-400 flex-1">{a.tool}</span>
+                            <Badge color={stage.color}>自动化 {a.autoRate}</Badge>
+                            <span className="font-mono text-gray-300">{a.format}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
-              {i < architecture.layers.length - 1 && (
-                <div className="text-center text-[9px] text-gray-300 py-0.5">↓ ETL</div>
+              {i < dataChain.stages.length - 1 && (
+                <div className="text-center text-[9px] text-gray-300 py-1 font-mono">
+                  ↓ {i === 0 ? '5G/WiFi 上传 · 增量同步' : i === 1 ? 'Spark + RAPIDS 解码对齐' : i === 2 ? 'Spark 清洗 · 场景切分' : 'BEVFusion + SAM2 自动标注'}
+                </div>
               )}
             </div>
           ))}
         </div>
-      </SectionCard>
+      )}
 
-      {/* Iceberg 特性 */}
-      <SectionCard icon="🧊" title="Apache Iceberg 核心特性" desc="为什么选择 Iceberg 作为数据湖表格式">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          {icebergFeatures.map(f => (
-            <div key={f.name} className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-sm">{f.icon}</span>
-                <span className="text-xs font-semibold text-gray-700">{f.name}</span>
+      {/* ── 模态存储规格 ── */}
+      {activeSubTab === 'modal' && (
+        <div className="space-y-3">
+          {modalSpecs.map(spec => (
+            <div key={spec.modality} className="rounded-2xl border p-4"
+              style={{ borderColor: spec.color + '25', background: spec.color + '04' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">{spec.icon}</span>
+                <span className="text-sm font-bold text-gray-800">{spec.modality}</span>
+                <Badge color={spec.color}>{spec.scale}</Badge>
               </div>
-              <p className="text-[10px] text-gray-500">{f.desc}</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {[
+                  { label: '原始格式', value: spec.rawFormat },
+                  { label: '存储格式', value: spec.storedFormat },
+                  { label: '压缩策略', value: spec.compression },
+                  { label: '分区键', value: spec.partitionKey },
+                  { label: '访问模式', value: spec.accessPattern },
+                  { label: '训练格式', value: spec.trainFormat },
+                ].map(item => (
+                  <div key={item.label} className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                    <div className="text-[8px] text-gray-400 mb-0.5">{item.label}</div>
+                    <div className="text-[9px] font-mono text-gray-700 leading-relaxed">{item.value}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 text-[9px] text-gray-400">
+                <span className="font-semibold">索引策略：</span>{spec.indexing}
+              </div>
+              <div className="mt-1 text-[9px]" style={{ color: spec.color }}>
+                <span className="font-semibold">训练读取带宽：</span>{spec.readBW}
+              </div>
             </div>
           ))}
         </div>
-      </SectionCard>
+      )}
 
-      {/* 格式对比 */}
-      <SectionCard icon="⚖️" title="湖格式对比" desc="Iceberg vs Delta Lake vs Hudi">
-        <div className="overflow-x-auto">
-          <table className="w-full text-[10px]">
-            <thead>
-              <tr className="border-b border-gray-100">
-                <th className="text-left py-2 px-2 text-gray-500 font-medium">特性</th>
-                <th className="text-center py-2 px-2 text-[#00cec9] font-semibold">Iceberg ✅</th>
-                <th className="text-center py-2 px-2 text-gray-500 font-medium">Delta Lake</th>
-                <th className="text-center py-2 px-2 text-gray-500 font-medium">Hudi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparison.map(row => (
-                <tr key={row.feature} className="border-b border-gray-50">
-                  <td className="py-2 px-2 text-gray-600 font-medium">{row.feature}</td>
-                  <td className="py-2 px-2 text-center">{row.iceberg}</td>
-                  <td className="py-2 px-2 text-center text-gray-400">{row.delta}</td>
-                  <td className="py-2 px-2 text-center text-gray-400">{row.hudi}</td>
-                </tr>
+      {/* ── 训练集构建 ── */}
+      {activeSubTab === 'train' && (
+        <div className="space-y-3">
+          <SectionCard icon="🧠" title={trainDatasetBuild.title}
+            desc="从 Gold 层到训练就绪数据集的 6 步构建流程">
+            <div className="space-y-2 mb-4">
+              {trainDatasetBuild.steps.map((s, i) => (
+                <div key={s.step} className="flex items-start gap-3">
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0"
+                      style={{ background: s.color + '15', border: `1.5px solid ${s.color}40` }}>
+                      {s.icon}
+                    </div>
+                    {i < trainDatasetBuild.steps.length - 1 && (
+                      <div className="w-px h-4 mt-1" style={{ background: s.color + '30' }} />
+                    )}
+                  </div>
+                  <div className="flex-1 rounded-xl border p-3 -mt-0.5"
+                    style={{ borderColor: s.color + '20', background: s.color + '04' }}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-800">{s.step}</span>
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                        style={{ background: s.color + '12', color: s.color }}>{s.tech}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500 mb-1">{s.desc}</p>
+                    <div className="text-[9px] font-mono text-gray-400">输出: {s.output}</div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </SectionCard>
-
-      {/* LakeFS 工作流 */}
-      <SectionCard icon="🌿" title="LakeFS 数据版本管理" desc="Git-like 工作流管理数据变更">
-        <div className="flex flex-col gap-2">
-          {lakeFSWorkflow.map((step, i) => (
-            <div key={step.step} className="flex items-center gap-3">
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-[#00cec9]/10 border border-[#00cec9]/30 flex items-center justify-center text-sm flex-shrink-0">
-                  {step.icon}
-                </div>
-                {i < lakeFSWorkflow.length - 1 && <div className="w-px h-4 bg-[#00cec9]/20 mt-1" />}
-              </div>
-              <div className="flex-1 rounded-xl border border-gray-100 bg-gray-50/30 p-2.5">
-                <div className="flex items-center gap-2">
-                  <Badge color="#00cec9">{step.action}</Badge>
-                  <span className="text-[10px] text-gray-600">{step.desc}</span>
-                </div>
+            </div>
+            {/* 输出规格 */}
+            <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-2">📊 训练集输出规格</div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {Object.entries(trainDatasetBuild.outputSpec).map(([k, v]) => {
+                  const labels = {
+                    totalScenes: '总场景数', totalShards: 'Shard 数量',
+                    totalSize: '总大小', modalCoverage: '模态覆盖率',
+                    trainValTest: '训练/验证/测试', avgShardSize: '平均 Shard 大小',
+                    readThroughput: '训练读取带宽',
+                  };
+                  return (
+                    <div key={k} className="rounded-lg border border-[#00cec9]/15 bg-white/80 p-2">
+                      <div className="text-[8px] text-gray-400 mb-0.5">{labels[k] || k}</div>
+                      <div className="text-[9px] font-mono font-semibold text-gray-700">{v}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          ))}
+          </SectionCard>
         </div>
-      </SectionCard>
+      )}
 
-      {/* 查询引擎 */}
-      <SectionCard icon="🔍" title="查询引擎" desc="多引擎覆盖不同查询场景">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {queryEngines.map(e => (
-            <div key={e.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-              <span className="text-lg flex-shrink-0">{e.icon}</span>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-xs font-semibold text-gray-700">{e.name}</span>
-                  <Badge color="#00cec9">{e.role}</Badge>
-                  <span className="text-[9px] text-gray-400 ml-auto">{e.latency}</span>
-                </div>
-                <p className="text-[10px] text-gray-500">{e.desc}</p>
+      {/* ── IO 优化 ── */}
+      {activeSubTab === 'io' && (
+        <div className="space-y-3">
+          <SectionCard icon="⚡" title={ioOptimization.title} desc={ioOptimization.bottleneck}>
+            {/* IO 栈 */}
+            <div className="mb-4">
+              <div className="text-[10px] font-semibold text-gray-600 mb-2">存储层次结构</div>
+              <div className="space-y-1">
+                {ioOptimization.ioStack.map((layer, i) => (
+                  <div key={layer.layer}>
+                    <div className="flex items-center gap-3 rounded-xl border p-2.5"
+                      style={{ borderColor: layer.color + '30', background: layer.color + '06' }}>
+                      <div className="w-28 flex-shrink-0">
+                        <div className="text-[10px] font-semibold" style={{ color: layer.color }}>{layer.layer}</div>
+                        <div className="text-[8px] text-gray-400">{layer.size}</div>
+                      </div>
+                      <div className="flex gap-4 text-[9px]">
+                        <span className="text-gray-500">延迟: <span className="font-mono" style={{ color: layer.color }}>{layer.latency}</span></span>
+                        <span className="text-gray-500">带宽: <span className="font-mono" style={{ color: layer.color }}>{layer.bw}</span></span>
+                      </div>
+                    </div>
+                    {i < ioOptimization.ioStack.length - 1 && (
+                      <div className="text-center text-[8px] text-gray-300 py-0.5">↕ 缓存命中率 >90%</div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+            {/* 优化策略 */}
+            <div className="space-y-2">
+              {ioOptimization.strategies.map(s => (
+                <div key={s.name} className="rounded-xl border p-3"
+                  style={{ borderColor: s.color + '25', background: s.color + '04' }}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-base">{s.icon}</span>
+                    <span className="text-xs font-semibold text-gray-800">{s.name}</span>
+                    <Badge color={s.color}>{s.gain}</Badge>
+                  </div>
+                  <p className="text-[10px] text-gray-500 mb-1">{s.desc}</p>
+                  <div className="text-[9px] font-mono px-2 py-0.5 rounded inline-block"
+                    style={{ background: s.color + '10', color: s.color }}>{s.config}</div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
         </div>
-      </SectionCard>
+      )}
+
+      {/* ── Iceberg ── */}
+      {activeSubTab === 'iceberg' && (
+        <div className="space-y-4">
+          <SectionCard icon="🧊" title="Apache Iceberg 核心特性" desc="为什么选择 Iceberg 作为自动驾驶数据湖表格式">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">
+              {icebergFeatures.map(f => (
+                <div key={f.name} className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-sm">{f.icon}</span>
+                    <span className="text-xs font-semibold text-gray-700">{f.name}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+          <SectionCard icon="⚖️" title="湖格式对比" desc="Iceberg vs Delta Lake vs Hudi">
+            <div className="overflow-x-auto">
+              <table className="w-full text-[10px]">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left py-2 px-2 text-gray-500 font-medium">特性</th>
+                    <th className="text-center py-2 px-2 text-[#00cec9] font-semibold">Iceberg ✅</th>
+                    <th className="text-center py-2 px-2 text-gray-500 font-medium">Delta Lake</th>
+                    <th className="text-center py-2 px-2 text-gray-500 font-medium">Hudi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparison.map(row => (
+                    <tr key={row.feature} className="border-b border-gray-50">
+                      <td className="py-2 px-2 text-gray-600 font-medium">{row.feature}</td>
+                      <td className="py-2 px-2 text-center">{row.iceberg}</td>
+                      <td className="py-2 px-2 text-center text-gray-400">{row.delta}</td>
+                      <td className="py-2 px-2 text-center text-gray-400">{row.hudi}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </SectionCard>
+          <SectionCard icon="🔍" title="查询引擎" desc="多引擎覆盖不同查询场景">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {queryEngines.map(e => (
+                <div key={e.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                  <span className="text-lg flex-shrink-0">{e.icon}</span>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-xs font-semibold text-gray-700">{e.name}</span>
+                      <Badge color="#00cec9">{e.role}</Badge>
+                      <span className="text-[9px] text-gray-400 ml-auto">{e.latency}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500">{e.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* ── LakeFS 版本 ── */}
+      {activeSubTab === 'lakefs' && (
+        <SectionCard icon="🌿" title="LakeFS 数据版本管理" desc="Git-like 工作流管理数据变更，与 DVC + MLflow 三位一体">
+          <div className="flex flex-col gap-2 mb-4">
+            {lakeFSWorkflow.map((step, i) => (
+              <div key={step.step} className="flex items-center gap-3">
+                <div className="flex flex-col items-center">
+                  <div className="w-8 h-8 rounded-full bg-[#00cec9]/10 border border-[#00cec9]/30 flex items-center justify-center text-sm flex-shrink-0">
+                    {step.icon}
+                  </div>
+                  {i < lakeFSWorkflow.length - 1 && <div className="w-px h-4 bg-[#00cec9]/20 mt-1" />}
+                </div>
+                <div className="flex-1 rounded-xl border border-gray-100 bg-gray-50/30 p-2.5">
+                  <div className="flex items-center gap-2">
+                    <Badge color="#00cec9">{step.action}</Badge>
+                    <span className="text-[10px] text-gray-600">{step.desc}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* 三位一体版本体系 */}
+          <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
+            <div className="text-[10px] font-semibold text-gray-700 mb-2">🔗 三位一体版本体系</div>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { tool: 'LakeFS', role: '数据版本', desc: 'Git-like 分支/合并/快照，管理 Iceberg 表和 Volume 文件', color: '#00cec9' },
+                { tool: 'DVC', role: '数据+模型版本', desc: '与 Git commit 绑定，追踪数据集和模型权重变更', color: '#3fb950' },
+                { tool: 'MLflow', role: '实验版本', desc: '记录超参/指标/数据集版本，与 LakeFS tag 对应', color: '#ffa657' },
+              ].map(item => (
+                <div key={item.tool} className="rounded-lg border p-2.5"
+                  style={{ borderColor: item.color + '25', background: item.color + '05' }}>
+                  <div className="text-[10px] font-bold mb-0.5" style={{ color: item.color }}>{item.tool}</div>
+                  <div className="text-[9px] font-semibold text-gray-600 mb-1">{item.role}</div>
+                  <div className="text-[8px] text-gray-400 leading-relaxed">{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </SectionCard>
+      )}
     </div>
   );
 }

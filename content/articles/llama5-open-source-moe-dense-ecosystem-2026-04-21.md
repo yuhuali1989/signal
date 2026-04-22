@@ -1,5 +1,6 @@
 ---
 title: "Llama 5 双版本发布：开源 LLM 首次全面超越闭源，生态冲击波分析"
+type: article
 date: "2026-04-21"
 tags: ["Llama 5", "Meta", "开源LLM", "MoE", "Dense", "MMLU-Pro", "推理优化"]
 summary: "Meta 发布 Llama 5 系列（405B Dense + 1.2T MoE），MMLU-Pro 93.1% 登顶所有模型。本文深度分析其架构创新、Mixture-of-Depths 技术、对闭源模型的冲击以及开源生态的连锁反应。"

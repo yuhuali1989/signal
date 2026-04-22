@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import ContentCard from '@/components/ContentCard';
 import Link from 'next/link';
 import { getAllContent, getStats, getEvolutionLogs, getNewsFeed, getWeeklyDigest, getHotTopics } from '@/lib/content';
+import HotTopicsCloud from '@/components/HotTopicsCloud';
 
 export default function Home() {
   const stats = getStats();
@@ -137,6 +138,13 @@ export default function Home() {
               <div>
                 <p className="text-sm font-semibold text-gray-800 group-hover:text-amber-600 transition-colors">创业雷达</p>
                 <p className="text-xs text-gray-400">AI 赛道 · 海外对标 · 中国机会窗口</p>
+              </div>
+            </Link>
+            <Link href="/industry-news/" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-sky-50/60 border border-sky-100/60 hover:border-sky-300/60 hover:shadow-sm transition-all group">
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">📡</span>
+              <div>
+                <p className="text-sm font-semibold text-gray-800 group-hover:text-sky-600 transition-colors">全行业动态</p>
+                <p className="text-xs text-gray-400">软件 · 游戏 · 硬件 · AI，每日自动聚合</p>
               </div>
             </Link>
           </div>
@@ -281,28 +289,10 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <span className="text-base">🔥</span>
                 <h2 className="text-lg font-semibold text-gray-800">热度榜</h2>
-                <span className="text-xs text-gray-400">— 近期声浪 & 论文中出现最多的主题</span>
+                <span className="text-xs text-gray-400">— 近期声浪 & 论文中出现最多的主题，点击查看相关内容</span>
               </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {hotTopics.map((item, i) => {
-                const maxCount = hotTopics[0].count;
-                const intensity = Math.round((item.count / maxCount) * 5);
-                const sizeMap = ['text-[11px]', 'text-xs', 'text-xs', 'text-sm', 'text-sm', 'text-base'];
-                const opacityMap = ['opacity-50', 'opacity-60', 'opacity-70', 'opacity-80', 'opacity-90', 'opacity-100'];
-                return (
-                  <span
-                    key={item.term}
-                    className={`px-3 py-1 rounded-full border border-purple-100/80 bg-purple-50/60 text-[#6c5ce7] font-medium cursor-default hover:bg-purple-100/60 transition-all ${sizeMap[intensity]} ${opacityMap[intensity]}`}
-                    title={`出现 ${item.count} 次`}
-                  >
-                    {i < 3 && <span className="mr-1">{['🥇','🥈','🥉'][i]}</span>}
-                    {item.term}
-                    <span className="ml-1.5 text-[10px] text-purple-300 font-mono">{item.count}</span>
-                  </span>
-                );
-              })}
-            </div>
+            <HotTopicsCloud topics={hotTopics} />
           </div>
         </section>
       )}

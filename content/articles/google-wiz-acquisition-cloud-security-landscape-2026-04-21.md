@@ -1,5 +1,6 @@
 ---
 title: "Google $320 亿收购 Wiz：云安全格局重塑与三大巨头攻防战"
+type: article
 date: "2026-04-21"
 tags: ["Google Cloud", "Wiz", "云安全", "CNAPP", "CrowdStrike", "并购", "GCP"]
 summary: "Google 以 $320 亿完成对 Wiz 的收购，创云安全史上最大并购。本文分析 Wiz 的技术护城河、对 AWS/Azure 安全生态的冲击、以及 CrowdStrike/Palo Alto 的应对策略。"
