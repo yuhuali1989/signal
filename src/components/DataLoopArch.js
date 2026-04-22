@@ -1038,6 +1038,295 @@ function SceneMineSection() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Unity Catalog 独立 Section（与 MLflow 同级）
+// ─────────────────────────────────────────────────────────────────────────────
+function UnityCatalogSection() {
+  const uc = UNITY_CATALOG_LAYER;
+  const [activeTab, setActiveTab] = useState('overview');
+
+  const TABS = [
+    { id: 'overview',  label: '三层命名空间', icon: '🗂️' },
+    { id: 'volume',    label: '非结构化数据', icon: '📦' },
+    { id: 'model',     label: '模型管理',     icon: '🧠' },
+    { id: 'lineage',   label: '数据血缘',     icon: '🔗' },
+    { id: 'access',    label: '访问控制',     icon: '🔐' },
+    { id: 'integrate', label: '工具集成',     icon: '🔌' },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 顶部定位说明 */}
+      <div className="rounded-2xl border border-[#e84393]/20 bg-[#e84393]/05 p-4">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">🗂️</span>
+          <div>
+            <div className="text-sm font-bold text-gray-800 mb-1">Unity Catalog — 统一元数据治理层</div>
+            <div className="text-[10px] text-gray-500 leading-relaxed">
+              覆盖 <span className="font-semibold text-[#e84393]">结构化湖表数据</span>（Iceberg Tables）·
+              <span className="font-semibold text-[#e84393]"> 多模态非结构化数据</span>（Volume：图像/点云/视频/模型权重）·
+              <span className="font-semibold text-[#e84393]"> 模型全生命周期</span>（与 MLflow 深度集成）
+              三大场景，作为整个闭环的统一数据治理底座。
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {[
+                { label: '开源自托管', color: '#3fb950' },
+                { label: 'K8s 部署', color: '#6c5ce7' },
+                { label: 'Iceberg REST Catalog', color: '#00cec9' },
+                { label: 'v0.3+', color: '#ffa657' },
+              ].map(t => (
+                <span key={t.label} className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                  style={{ background: t.color + '15', color: t.color, border: `1px solid ${t.color}30` }}>
+                  {t.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tab 切换 */}
+      <div className="flex gap-1.5 flex-wrap">
+        {TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeTab === t.id ? '#e84393' : 'transparent',
+              color: activeTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeTab === t.id ? '#e84393' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 三层命名空间 */}
+      {activeTab === 'overview' && (
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🗂️" title={uc.namespace.title}
+              desc="5 个 Catalog 覆盖数据全生命周期，统一命名空间消除数据孤岛"
+              color="#e84393" />
+            <div className="space-y-3">
+              {uc.namespace.catalogs.map(cat => (
+                <div key={cat.name} className="rounded-xl border p-3"
+                  style={{ borderColor: cat.color + '30', background: cat.color + '05' }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">{cat.icon}</span>
+                    <span className="text-xs font-bold font-mono" style={{ color: cat.color }}>{cat.name}</span>
+                    <span className="text-[10px] text-gray-400">{cat.desc}</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                    {cat.schemas.map(schema => (
+                      <div key={schema.name} className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                        <div className="text-[9px] font-mono font-semibold text-gray-600 mb-1">
+                          <span style={{ color: cat.color }}>.</span>{schema.name}
+                        </div>
+                        <div className="flex flex-wrap gap-0.5 mb-1">
+                          {schema.tables.map(t => (
+                            <span key={t} className="text-[8px] px-1 py-0.5 rounded font-mono"
+                              style={{ background: cat.color + '12', color: cat.color }}>{t}</span>
+                          ))}
+                        </div>
+                        <div className="text-[8px] text-gray-400">{schema.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* 部署方式 */}
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🚀" title="部署方式" desc={uc.deployment.recommended} color="#e84393" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {uc.deployment.options.map(opt => (
+                <div key={opt.mode} className="rounded-xl border p-3"
+                  style={{ borderColor: opt.color + '30', background: opt.color + '05' }}>
+                  <div className="text-[10px] font-semibold text-gray-800 mb-1">{opt.mode}</div>
+                  <div className="text-[9px] text-gray-500 mb-2">{opt.desc}</div>
+                  <div className="flex gap-2 text-[8px]">
+                    <span className="text-green-600">✓ {opt.pros}</span>
+                    <span className="text-red-400">✗ {opt.cons}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 非结构化数据 Volume */}
+      {activeTab === 'volume' && (
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="📦" title={uc.volumes.title} desc={uc.volumes.desc} color="#e84393" />
+            <div className="space-y-2 mb-4">
+              {uc.volumes.types.map(v => (
+                <div key={v.name} className="rounded-xl border p-3"
+                  style={{ borderColor: v.color + '25', background: v.color + '04' }}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-base">{v.icon}</span>
+                    <span className="text-xs font-semibold text-gray-800">{v.name}</span>
+                    <Badge color={v.color}>{v.size}</Badge>
+                    <span className="text-[9px] font-mono text-gray-400 ml-auto">{v.format}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-[9px] font-mono px-2 py-0.5 rounded flex-shrink-0"
+                      style={{ background: v.color + '12', color: v.color }}>{v.path}</div>
+                    <div className="text-[9px] text-gray-400">{v.desc}</div>
+                  </div>
+                  <div className="mt-1 text-[8px] text-gray-300">访问: {v.access}</div>
+                </div>
+              ))}
+            </div>
+            {/* Volume 优势 */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {uc.volumes.advantages.map(a => (
+                <div key={a.point} className="rounded-xl border border-[#e84393]/15 bg-[#e84393]/04 p-3 text-center">
+                  <div className="text-lg mb-1">{a.icon}</div>
+                  <div className="text-[10px] font-semibold text-gray-700 mb-0.5">{a.point}</div>
+                  <div className="text-[8px] text-gray-400 leading-relaxed">{a.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 模型管理 */}
+      {activeTab === 'model' && (
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🧠" title={uc.modelManagement.title}
+              desc={uc.modelManagement.desc} color="#e84393" />
+            {/* 生命周期 */}
+            <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
+              {uc.modelManagement.lifecycle.map((s, i) => (
+                <div key={s.stage} className="flex items-center gap-2 flex-shrink-0">
+                  <div className="rounded-xl border p-3 text-center min-w-[100px]"
+                    style={{ borderColor: s.color + '30', background: s.color + '08' }}>
+                    <div className="text-lg mb-1">{s.icon}</div>
+                    <div className="text-[10px] font-bold" style={{ color: s.color }}>{s.stage}</div>
+                    <div className="text-[8px] text-gray-400 mt-0.5 leading-relaxed">{s.desc}</div>
+                  </div>
+                  {i < uc.modelManagement.lifecycle.length - 1 && (
+                    <div className="text-gray-300 text-sm flex-shrink-0">→</div>
+                  )}
+                </div>
+              ))}
+            </div>
+            {/* UC vs MLflow 对比 */}
+            <div className="rounded-xl border border-[#e84393]/15 bg-[#e84393]/04 p-4">
+              <div className="text-[10px] font-semibold text-gray-700 mb-3">⚖️ Unity Catalog vs 纯 MLflow 对比</div>
+              <div className="space-y-1.5">
+                <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-gray-400 px-1">
+                  <span>维度</span><span>纯 MLflow</span><span>UC + MLflow</span>
+                </div>
+                {uc.modelManagement.vsMLflow.map(row => (
+                  <div key={row.aspect} className="grid grid-cols-3 gap-2 rounded-lg border border-gray-100 bg-white/80 p-2 text-[9px]">
+                    <span className="font-semibold text-gray-700">{row.aspect}</span>
+                    <span className="text-gray-400 font-mono">{row.mlflow}</span>
+                    <span className="font-mono" style={{ color: '#e84393' }}>{row.uc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 数据血缘 */}
+      {activeTab === 'lineage' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🔗" title={uc.lineage.title} desc={uc.lineage.desc} color="#e84393" />
+          <div className="space-y-2 mb-4">
+            {uc.lineage.chain.map((link, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="flex-1 rounded-lg border border-[#e84393]/15 bg-[#e84393]/04 p-2">
+                  <div className="text-[9px] font-mono text-gray-600">{link.from}</div>
+                </div>
+                <div className="flex flex-col items-center flex-shrink-0">
+                  <div className="text-[8px] text-gray-400 whitespace-nowrap">{link.op}</div>
+                  <div className="text-[#e84393] text-xs">→</div>
+                  <div className="text-[8px] text-gray-300 whitespace-nowrap">{link.latency}</div>
+                </div>
+                <div className="flex-1 rounded-lg border border-[#3fb950]/15 bg-[#3fb950]/04 p-2">
+                  <div className="text-[9px] font-mono text-gray-600">{link.to}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {uc.lineage.capabilities.map(cap => (
+              <div key={cap.name} className="rounded-xl border border-[#e84393]/15 bg-[#e84393]/04 p-3 text-center">
+                <div className="text-lg mb-1">{cap.icon}</div>
+                <div className="text-[10px] font-semibold text-gray-700 mb-0.5">{cap.name}</div>
+                <div className="text-[9px] text-gray-400">{cap.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 访问控制 */}
+      {activeTab === 'access' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🔐" title={uc.accessControl.title}
+            desc="基于角色的细粒度权限，支持行级过滤和列级脱敏" color="#e84393" />
+          <div className="space-y-2 mb-4">
+            {uc.accessControl.principals.map(p => (
+              <div key={p.role} className="flex items-start gap-3 rounded-xl border p-3"
+                style={{ borderColor: p.color + '25', background: p.color + '04' }}>
+                <span className="text-base flex-shrink-0">{p.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-semibold text-gray-700 mb-1">{p.role}</div>
+                  <div className="flex flex-wrap gap-1">
+                    {p.permissions.map(perm => (
+                      <span key={perm} className="text-[8px] px-1.5 py-0.5 rounded font-mono"
+                        style={{ background: p.color + '15', color: p.color }}>{perm}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="rounded-xl border border-[#e84393]/15 bg-[#e84393]/04 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-1">🔍 行级过滤</div>
+              <div className="text-[9px] text-gray-500">{uc.accessControl.rowFilter}</div>
+            </div>
+            <div className="rounded-xl border border-[#e84393]/15 bg-[#e84393]/04 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-1">🙈 列级脱敏</div>
+              <div className="text-[9px] text-gray-500">{uc.accessControl.columnMask}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 工具集成 */}
+      {activeTab === 'integrate' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🔌" title="与现有工具集成"
+            desc="Unity Catalog 作为统一元数据层，无缝接入现有数据栈" color="#e84393" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {uc.integrations.map(item => (
+              <div key={item.tool} className="rounded-xl border p-3"
+                style={{ borderColor: item.color + '25', background: item.color + '05' }}>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="text-sm">{item.icon}</span>
+                  <span className="text-[10px] font-semibold text-gray-700">{item.tool}</span>
+                </div>
+                <p className="text-[9px] text-gray-400 leading-relaxed">{item.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 8. 效果监控层
 // ─────────────────────────────────────────────────────────────────────────────
 function MonitorSection() {
@@ -1199,6 +1488,12 @@ function ArchDiagram() {
             arrow: '↓ WebDataset · 并行文件系统 (Lustre)',
           },
           {
+            label: 'Unity Catalog',
+            items: ['5 Catalogs 命名空间', 'Iceberg 湖表管理', 'Volume 非结构化数据', '模型权重 Volume', '列级血缘追踪', 'RBAC+ABAC 权限', 'MLflow 深度集成', 'dbt/Spark/Trino'],
+            color: '#e84393',
+            arrow: '↓ 统一元数据 · 血缘追踪至训练集',
+          },
+          {
             label: '训练层',
             items: ['A100×128 (16节点×8卡)', 'InfiniBand 200Gbps', 'DeepSpeed ZeRO-3', 'FlashAttention-3', 'VLA+WM 联合训练', 'MLflow 实验管理', 'NAVSIM 闭环评测'],
             color: '#3fb950',
@@ -1232,7 +1527,7 @@ function ArchDiagram() {
                 ))}
               </div>
             </div>
-            {i < 8 && (
+            {i < 9 && (
               <div className="text-center text-[9px] text-gray-400 py-0.5 font-mono">{layer.arrow}</div>
             )}
           </div>
@@ -1246,7 +1541,7 @@ function ArchDiagram() {
           {[
             { label: '传感器模态', value: '相机 + LiDAR + 雷达 + 语言', icon: '📡' },
             { label: '时序同步精度', value: 'PTP < 1μs 硬件级', icon: '⏱️' },
-            { label: '标注自动化率', value: '> 92%（人工 < 8%）', icon: '🤖' },
+            { label: 'Unity Catalog', value: '5 Catalogs · 湖表+Volume+模型', icon: '🗂️' },
             { label: '主动学习增益', value: '标注效率提升 3-5×', icon: '🎯' },
           ].map(item => (
             <div key={item.label} className="rounded-lg border border-[#a29bfe]/20 bg-white/80 p-2 text-center">
@@ -1268,15 +1563,16 @@ export default function DataLoopArch() {
   const [activeStage, setActiveStage] = useState('collect');
 
   const stageComponents = useMemo(() => ({
-    collect:    <CollectSection />,
-    upload:     <UploadSection />,
-    process:    <ProcessSection />,
-    multimodal: <MultimodalSection />,
-    sceneMine:  <SceneMineSection />,
-    store:      <StoreSection />,
-    train:      <TrainSection />,
-    deploy:     <DeploySection />,
-    monitor:    <MonitorSection />,
+    collect:      <CollectSection />,
+    upload:       <UploadSection />,
+    process:      <ProcessSection />,
+    multimodal:   <MultimodalSection />,
+    sceneMine:    <SceneMineSection />,
+    store:        <StoreSection />,
+    unityCatalog: <UnityCatalogSection />,
+    train:        <TrainSection />,
+    deploy:       <DeploySection />,
+    monitor:      <MonitorSection />,
   }), []);
 
   const activeInfo = LOOP_OVERVIEW.stages.find(s => s.id === activeStage);
