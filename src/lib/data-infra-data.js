@@ -7,16 +7,17 @@
 // 模块 Tab 定义
 // ═══════════════════════════════════════════════════════════════
 export const INFRA_TABS = [
-  { id: 'overview',   label: '全景总览',     icon: '🗺️', color: '#6c5ce7', desc: '数据闭环全景架构 · 技术栈全图 · 核心指标' },
-  { id: 'k8s',        label: 'K8s & 容器',   icon: '☸️', color: '#326ce5', desc: 'Kubernetes 集群 · 调度策略 · 服务网格 · GitOps' },
-  { id: 'datalake',   label: '数据湖仓',     icon: '🏞️', color: '#00cec9', desc: 'Iceberg · Hudi · 湖仓一体 · 数据版本 · 血缘追踪' },
-  { id: 'pipeline',   label: '数据流水线',   icon: '⚙️', color: '#fd79a8', desc: '采集 → 清洗 → 标注 → 挖掘 · Airflow DAG 编排' },
-  { id: 'mlops',      label: 'MLOps 实验',   icon: '🧪', color: '#3fb950', desc: '实验管理 · 模型注册 · CI/CD · 自动评测 · A/B 测试' },
-  { id: 'observability', label: '可观测性',  icon: '📊', color: '#ffa657', desc: 'Prometheus · Grafana · ELK · 分布式追踪 · 告警' },
-  { id: 'vectordb',   label: '向量 & 特征',  icon: '🧬', color: '#d2a8ff', desc: '向量数据库 · 特征仓库 · 嵌入检索 · 场景挖掘' },
-  { id: 'dedup',      label: '图像去重',     icon: '🔍', color: '#e17055', desc: 'SemDeDup · D³ · SSL-Dedup · 多级去重 Pipeline · 长尾保护' },
-  { id: 'synth',      label: '数据合成',     icon: '🧫', color: '#a29bfe', desc: '场景合成 · 长尾生成 · Sim2Real · 轨迹合成 · 自动标注 · 质量评估' },
-  { id: 'framework',  label: '推理 & 训练优化', icon: '⚡', color: '#ff6b6b', desc: '训练框架 · 推理引擎 · 量化编译 · 车端优化 · 框架选型对比' },
+  { id: 'overview',      label: '全景总览',        icon: '🗺️', color: '#6c5ce7', desc: '数据闭环全景架构 · 技术栈全图 · 核心指标' },
+  { id: 'k8s',           label: 'K8s & 容器',      icon: '☸️', color: '#326ce5', desc: 'Kubernetes 集群 · 调度策略 · 服务网格 · GitOps' },
+  { id: 'datalake',      label: '数据湖仓',         icon: '🏞️', color: '#00cec9', desc: 'Iceberg · Hudi · 湖仓一体 · 数据版本 · 血缘追踪' },
+  { id: 'pipeline',      label: '数据流水线',       icon: '⚙️', color: '#fd79a8', desc: '采集 → 清洗 → 标注 → 挖掘 · Airflow DAG 编排' },
+  { id: 'unitycatalog',  label: 'Unity Catalog',   icon: '🗂️', color: '#e84393', desc: '统一元数据 · 模型注册 · 数据集管理 · 列级血缘' },
+  { id: 'mlops',         label: 'MLOps 实验',       icon: '🧪', color: '#3fb950', desc: '实验管理 · 模型注册 · CI/CD · 自动评测 · A/B 测试' },
+  { id: 'observability', label: '可观测性',         icon: '📊', color: '#ffa657', desc: 'Prometheus · Grafana · ELK · 分布式追踪 · 告警' },
+  { id: 'vectordb',      label: '向量 & 特征',      icon: '🧬', color: '#d2a8ff', desc: '向量数据库 · 特征仓库 · 嵌入检索 · 场景挖掘' },
+  { id: 'dedup',         label: '图像去重',         icon: '🔍', color: '#e17055', desc: 'SemDeDup · D³ · SSL-Dedup · 多级去重 Pipeline · 长尾保护' },
+  { id: 'synth',         label: '数据合成',         icon: '🧫', color: '#a29bfe', desc: '场景合成 · 长尾生成 · Sim2Real · 轨迹合成 · 自动标注 · 质量评估' },
+  { id: 'framework',     label: '推理 & 训练优化',  icon: '⚡', color: '#ff6b6b', desc: '训练框架 · 推理引擎 · 量化编译 · 车端优化 · 框架选型对比' },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -1182,4 +1183,104 @@ export const FRAMEWORK_DATA = {
       distillationResult: '蒸馏: 参数 ↓70%, NDS 仅降 0.8%',
     },
   },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// Unity Catalog — 统一元数据治理（AI Infra 技术栈 Tab）
+// ═══════════════════════════════════════════════════════════════
+export const UNITY_CATALOG_INFRA_DATA = {
+  title: 'Unity Catalog — 统一元数据治理层',
+  subtitle: '覆盖模型注册 · 数据集管理 · 数据模型血缘，作为整个 AI Infra 的元数据底座',
+  color: '#e84393',
+  repo: 'https://github.com/unitycatalog/unitycatalog',
+  version: 'v0.3+ · 开源 · K8s 自托管',
+
+  // 三大核心能力
+  coreCaps: [
+    {
+      title: '模型注册',
+      icon: '🧠',
+      color: '#3fb950',
+      desc: '统一管理模型全生命周期，与 MLflow 深度集成',
+      points: [
+        'Staging → Candidate → Production → Archived 四阶段流转',
+        '模型权重以 Volume 形式存储，统一命名空间引用',
+        '每个版本绑定训练数据集、超参、评测指标',
+        'RBAC 细粒度权限：研究员只读，CI/CD Bot 可写',
+        '与 MLflow Model Registry 双向同步，无缝迁移',
+      ],
+      catalog: 'model_registry.models.*',
+      tags: ['MLflow 集成', '版本管理', '权重 Volume', 'RBAC'],
+    },
+    {
+      title: '数据集管理',
+      icon: '📦',
+      color: '#00cec9',
+      desc: '结构化表（Iceberg）与非结构化文件（Volume）统一纳管',
+      points: [
+        '原始传感器数据：camera / lidar / radar Volume 统一目录',
+        '标注数据集：bbox_3d / seg_masks / language_qa Iceberg 表',
+        'BEV 特征集：bev_tensors / scene_embeddings 预计算存储',
+        '数据集版本快照，支持 Git-like 分支与回滚（LakeFS 集成）',
+        '数据集统计：覆盖率 / 分布 / 质量分数自动计算',
+      ],
+      catalog: 'raw_data.* / processed_data.*',
+      tags: ['Volume 管理', 'Iceberg 表', '版本快照', '质量统计'],
+    },
+    {
+      title: '数据模型血缘',
+      icon: '🔗',
+      color: '#e84393',
+      desc: '列级血缘追踪，从原始传感器帧到最终模型权重全链路可溯',
+      points: [
+        '列级（Column-level）血缘：追踪到具体字段的来源与转换',
+        '影响分析：修改上游表时，自动识别所有下游依赖',
+        '根因定位：模型指标下降时，快速定位到具体数据批次',
+        '合规审计：GDPR 删除请求自动追踪所有衍生数据',
+        'Spark / Airflow / dbt 操作自动上报血缘，零侵入',
+      ],
+      catalog: 'governance.audit.*',
+      tags: ['列级血缘', '影响分析', '根因定位', 'GDPR 合规'],
+    },
+  ],
+
+  // 三层命名空间（精简版）
+  namespaceOverview: [
+    { catalog: 'raw_data',        icon: '🚗', color: '#6c5ce7', desc: '原始传感器数据', schemas: ['camera', 'lidar', 'radar', 'vehicle'] },
+    { catalog: 'processed_data',  icon: '⚙️', color: '#00cec9', desc: '清洗标注结构化数据', schemas: ['annotations', 'bev_features', 'scenes'] },
+    { catalog: 'feature_store',   icon: '🍽️', color: '#fd79a8', desc: '预计算特征', schemas: ['online', 'offline', 'stats'] },
+    { catalog: 'model_registry',  icon: '🧠', color: '#3fb950', desc: '模型版本与实验', schemas: ['experiments', 'models', 'evaluations'] },
+    { catalog: 'governance',      icon: '🔐', color: '#ffa657', desc: '数据治理与合规', schemas: ['audit', 'privacy', 'quality'] },
+  ],
+
+  // 血缘链路
+  lineageChain: [
+    { from: 'raw_data.camera.frames_volume', to: 'processed_data.bev_features.bev_tensors', op: 'BEVFusion 推理', color: '#6c5ce7' },
+    { from: 'processed_data.bev_features.bev_tensors', to: 'feature_store.offline.scene_feat_v2', op: 'Spark 特征工程', color: '#00cec9' },
+    { from: 'feature_store.offline.scene_feat_v2', to: 'model_registry.experiments.runs', op: 'PyTorch 训练', color: '#3fb950' },
+    { from: 'model_registry.experiments.runs', to: 'model_registry.models.vla_v2', op: 'MLflow 注册', color: '#3fb950' },
+    { from: 'model_registry.models.vla_v2', to: 'model_registry.evaluations.eval_results', op: 'NAVSIM 评测', color: '#ffa657' },
+  ],
+
+  // 与 MLflow 对比
+  vsMLflow: [
+    { aspect: '模型存储',     mlflow: 'Artifact Store（独立）',       uc: 'model_registry.models.weights_volume（统一命名）', winner: 'uc' },
+    { aspect: '数据集管理',   mlflow: '不支持',                        uc: 'raw_data / processed_data Catalog 全覆盖', winner: 'uc' },
+    { aspect: '血缘追踪',     mlflow: '仅实验内部',                    uc: '跨系统列级血缘（数据→特征→模型→部署）', winner: 'uc' },
+    { aspect: '权限控制',     mlflow: '无细粒度权限',                  uc: 'RBAC 到 Schema/Table/Volume 级别', winner: 'uc' },
+    { aspect: '非结构化数据', mlflow: '仅 Artifact',                   uc: 'Volume 统一管理权重/点云/视频', winner: 'uc' },
+    { aspect: '实验管理',     mlflow: '完整（Run/Metric/Param）',      uc: '通过 MLflow 集成，不替代', winner: 'mlflow' },
+  ],
+
+  // 集成工具
+  integrations: [
+    { tool: 'MLflow',     role: '实验/模型注册同步到 model_registry', icon: '🧪', color: '#3fb950' },
+    { tool: 'Spark',      role: '读写 Iceberg 表，自动注册血缘',       icon: '⚡', color: '#ffa657' },
+    { tool: 'Airflow',    role: 'DAG 任务自动上报血缘',                icon: '🌊', color: '#00cec9' },
+    { tool: 'dbt',        role: 'SQL 转换血缘自动解析',                icon: '🔨', color: '#6c5ce7' },
+    { tool: 'Feast',      role: '特征定义同步到 feature_store',        icon: '🍽️', color: '#fd79a8' },
+    { tool: 'LakeFS',     role: '数据版本与 UC 版本对齐',              icon: '🏷️', color: '#79c0ff' },
+    { tool: 'Trino',      role: '跨 Catalog 联邦查询',                 icon: '🔍', color: '#e17055' },
+    { tool: 'Great Expectations', role: 'DQ 结果写入 governance.quality', icon: '✅', color: '#a29bfe' },
+  ],
 };

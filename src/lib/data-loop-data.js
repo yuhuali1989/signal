@@ -587,6 +587,9 @@ export const UNITY_CATALOG_LAYER = {
       { aspect: '跨团队共享', mlflow: '需手动配置', uc: '统一 Catalog 命名空间，SQL 直接查询' },
     ],
   },
+
+  // 生态集成工具
+  ecosystemTools: [
     { tool: 'Apache Spark',   role: '读写 Iceberg 表，自动注册血缘', icon: '⚡', color: '#ffa657' },
     { tool: 'Apache Airflow', role: 'DAG 任务自动上报血缘到 Unity Catalog', icon: '🌊', color: '#00cec9' },
     { tool: 'MLflow',         role: '实验 / 模型注册同步到 model_registry schema', icon: '🧪', color: '#3fb950' },

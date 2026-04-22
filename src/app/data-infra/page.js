@@ -60,6 +60,10 @@ const TECH_DOMAINS = [
     tags: ['ETL', 'Airflow', 'Spark'], color: '#fd79a8',
   },
   {
+    icon: '🗂️', name: 'Unity Catalog', desc: '统一元数据 · 模型注册 · 数据集管理 · 列级血缘',
+    tags: ['模型注册', '数据集管理', '数据血缘'], color: '#e84393',
+  },
+  {
     icon: '🧪', name: 'MLOps', desc: 'MLflow · DVC · CI/CD · A/B 测试 · 模型注册',
     tags: ['实验管理', '模型服务', 'Seldon'], color: '#3fb950',
   },
@@ -89,19 +93,19 @@ export default function DataInfraPage() {
             </span>
           </div>
           <p className="text-sm text-gray-500">
-            从数据采集到模型部署的全链路基础设施 — K8s · 数据湖仓 · MLOps · 可观测性 · 向量数据库
+            从数据采集到模型部署的全链路基础设施 — K8s · 数据湖仓 · Unity Catalog · MLOps · 可观测性 · 向量数据库
           </p>
           <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-            <span>6 大技术领域</span>
+            <span>7 大技术领域</span>
             <span>·</span>
-            <span>7 层闭环架构</span>
+            <span>10 层闭环架构</span>
             <span>·</span>
             <span>基于 Kubernetes 全容器化</span>
           </div>
         </div>
 
         {/* 技术领域概览 */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
           {TECH_DOMAINS.map(td => (
             <div key={td.name} className="rounded-xl border p-3 hover:shadow-sm transition-shadow"
               style={{ borderColor: td.color + '33', background: td.color + '04' }}>
