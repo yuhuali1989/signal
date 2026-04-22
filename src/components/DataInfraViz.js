@@ -470,7 +470,7 @@ function DatalakeTab() {
                       </div>
                     </div>
                     {i < ioOptimization.ioStack.length - 1 && (
-                      <div className="text-center text-[8px] text-gray-300 py-0.5">↕ 缓存命中率 >90%</div>
+                      <div className="text-center text-[8px] text-gray-300 py-0.5">↕ 缓存命中率 &gt;90%</div>
                     )}
                   </div>
                 ))}
