@@ -12,6 +12,9 @@ import {
   MONITOR_LAYER,
   INFRA_OVERVIEW,
   DATA_FLOW_STATS,
+  MULTIMODAL_LAYER,
+  SCENE_MINE_LAYER,
+  ANNOTATION_QA_LAYER,
 } from '@/lib/data-loop-data';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -542,6 +545,328 @@ function DeploySection() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 新增：多模态融合层
+// ─────────────────────────────────────────────────────────────────────────────
+function MultimodalSection() {
+  const { syncStrategies, bevFusion, annotationProtocol, datasetSpec } = MULTIMODAL_LAYER;
+  const [activeTab, setActiveTab] = useState('bev');
+
+  return (
+    <div className="space-y-4">
+      {/* Tab 切换 */}
+      <div className="flex gap-2 flex-wrap">
+        {[
+          { id: 'bev', label: 'BEV 融合流水线', icon: '🗺️' },
+          { id: 'sync', label: '时序对齐策略', icon: '⏱️' },
+          { id: 'anno', label: '跨模态标注', icon: '🏷️' },
+          { id: 'spec', label: '数据集规格', icon: '📋' },
+        ].map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeTab === t.id ? '#a29bfe' : 'transparent',
+              color: activeTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeTab === t.id ? '#a29bfe' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* BEV 融合流水线 */}
+      {activeTab === 'bev' && (
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🗺️" title={bevFusion.title}
+              desc={`输出维度: ${bevFusion.outputDim} · 频率: ${bevFusion.fps}`}
+              color="#a29bfe" />
+            <div className="space-y-2">
+              {bevFusion.steps.map((s, i) => (
+                <div key={s.name} className="flex items-start gap-3">
+                  <div className="flex flex-col items-center">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
+                      style={{ background: s.color + '20', color: s.color, border: `1.5px solid ${s.color}40` }}>
+                      {i + 1}
+                    </div>
+                    {i < bevFusion.steps.length - 1 && <div className="w-px h-4 mt-1" style={{ background: s.color + '30' }} />}
+                  </div>
+                  <div className="flex-1 rounded-xl border p-3 -mt-0.5"
+                    style={{ borderColor: s.color + '25', background: s.color + '05' }}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-semibold text-gray-800">{s.name}</span>
+                      <Badge color={s.color}>{s.tech}</Badge>
+                    </div>
+                    <p className="text-[10px] text-gray-500">{s.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 时序对齐策略 */}
+      {activeTab === 'sync' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="⏱️" title="多传感器时序对齐策略"
+            desc="从硬件同步到软件插值，保证多模态数据时间一致性"
+            color="#a29bfe" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {syncStrategies.map(s => (
+              <div key={s.name} className="rounded-xl border p-4"
+                style={{ borderColor: s.color + '30', background: s.color + '06' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">{s.icon}</span>
+                  <span className="text-xs font-semibold text-gray-800">{s.name}</span>
+                  <Badge color={s.color}>{s.accuracy}</Badge>
+                </div>
+                <p className="text-[10px] text-gray-500 mb-2">{s.desc}</p>
+                <div className="text-[9px] font-mono px-2 py-1 rounded" style={{ background: s.color + '12', color: s.color }}>
+                  {s.tech}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 跨模态标注协议 */}
+      {activeTab === 'anno' && (
+        <div className="space-y-3">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🏷️" title="跨模态联合标注协议"
+              desc="五模态统一标注规范，自动化率 > 90%"
+              color="#a29bfe" />
+            <div className="space-y-2">
+              {annotationProtocol.map(a => (
+                <div key={a.modality} className="rounded-xl border p-3"
+                  style={{ borderColor: a.color + '30', background: a.color + '05' }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">{a.icon}</span>
+                    <span className="text-xs font-semibold text-gray-800">{a.modality}</span>
+                    <Badge color={a.color}>人工率 {a.manualRate}</Badge>
+                    <span className="text-[9px] text-gray-400 ml-auto font-mono">{a.autoTool}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {a.tasks.map(t => (
+                      <span key={t} className="text-[9px] px-1.5 py-0.5 rounded-md"
+                        style={{ background: a.color + '15', color: a.color }}>{t}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 质量管控 */}
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="✅" title={ANNOTATION_QA_LAYER.title}
+              desc={ANNOTATION_QA_LAYER.desc} color="#3fb950" />
+            <div className="space-y-2 mb-4">
+              {ANNOTATION_QA_LAYER.qaLevels.map(q => (
+                <div key={q.level} className="flex items-center gap-3 rounded-xl border p-3"
+                  style={{ borderColor: q.color + '30', background: q.color + '05' }}>
+                  <span className="text-base">{q.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-xs font-semibold text-gray-800">{q.level}</span>
+                      <Badge color={q.color}>通过率 {q.passRate}</Badge>
+                    </div>
+                    <p className="text-[10px] text-gray-500">{q.desc}</p>
+                  </div>
+                  <span className="text-[9px] font-mono text-gray-400 flex-shrink-0">{q.tool}</span>
+                </div>
+              ))}
+            </div>
+            <div className="rounded-xl border border-[#3fb950]/20 bg-[#3fb950]/5 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-2">🏭 标注平台规格</div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {Object.entries(ANNOTATION_QA_LAYER.platform).map(([k, v]) => (
+                  <div key={k} className="rounded-lg border border-[#3fb950]/20 bg-white/80 p-2">
+                    <div className="text-[9px] text-gray-400 mb-0.5">{k}</div>
+                    <div className="text-[9px] font-mono text-gray-700">{v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 数据集规格 */}
+      {activeTab === 'spec' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="📋" title="多模态数据集规格"
+            desc="训练数据格式、采样率、模态覆盖率等核心参数"
+            color="#a29bfe" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {Object.entries(datasetSpec).map(([k, v]) => {
+              const labels = {
+                format: '存储格式',
+                sampleRate: '采样频率',
+                windowSize: '时序窗口',
+                modalityCoverage: '模态覆盖率',
+                avgAnnotationTime: '平均标注时长',
+                qualityThreshold: '质量阈值',
+              };
+              return (
+                <div key={k} className="rounded-xl border border-[#a29bfe]/20 bg-[#a29bfe]/5 p-3">
+                  <div className="text-[9px] text-gray-400 mb-1">{labels[k] || k}</div>
+                  <div className="text-[10px] font-mono text-gray-800">{v}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 新增：场景挖掘层
+// ─────────────────────────────────────────────────────────────────────────────
+function SceneMineSection() {
+  const { sceneTaxonomy, miningPipeline, activeLearningLoop, flywheelMetrics } = SCENE_MINE_LAYER;
+  const [activeTab, setActiveTab] = useState('taxonomy');
+
+  return (
+    <div className="space-y-4">
+      {/* Tab 切换 */}
+      <div className="flex gap-2 flex-wrap">
+        {[
+          { id: 'taxonomy', label: '场景分类体系', icon: '🗂️' },
+          { id: 'pipeline', label: '挖掘技术栈', icon: '⛏️' },
+          { id: 'al', label: '主动学习闭环', icon: '🎯' },
+          { id: 'metrics', label: '飞轮指标', icon: '📊' },
+        ].map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeTab === t.id ? '#e17055' : 'transparent',
+              color: activeTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeTab === t.id ? '#e17055' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 场景分类体系 */}
+      {activeTab === 'taxonomy' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🗂️" title="场景分类体系"
+            desc="五大类场景，覆盖长尾 / 困难 / 安全关键 / 覆盖缺口 / 多样性"
+            color="#e17055" />
+          <div className="space-y-3">
+            {sceneTaxonomy.map(s => (
+              <div key={s.category} className="rounded-xl border p-4"
+                style={{ borderColor: s.color + '30', background: s.color + '05' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">{s.icon}</span>
+                  <span className="text-xs font-semibold text-gray-800">{s.category}</span>
+                  <Badge color={s.color}>频率 {s.frequency}</Badge>
+                  <Badge color={s.color}>价值 {s.value}</Badge>
+                </div>
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {s.examples.map(e => (
+                    <span key={e} className="text-[9px] px-1.5 py-0.5 rounded-md"
+                      style={{ background: s.color + '15', color: s.color }}>{e}</span>
+                  ))}
+                </div>
+                <div className="text-[9px] text-gray-400 font-mono">挖掘方法: {s.mineMethod}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 挖掘技术栈 */}
+      {activeTab === 'pipeline' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="⛏️" title="场景挖掘技术栈"
+            desc="从嵌入提取到数据平衡的 6 步挖掘流水线"
+            color="#e17055" />
+          <div className="space-y-2">
+            {miningPipeline.map((p, i) => (
+              <div key={p.step} className="flex items-start gap-3">
+                <div className="flex flex-col items-center">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0"
+                    style={{ background: p.color + '15', border: `1.5px solid ${p.color}40` }}>
+                    {p.icon}
+                  </div>
+                  {i < miningPipeline.length - 1 && <div className="w-px h-4 mt-1" style={{ background: p.color + '30' }} />}
+                </div>
+                <div className="flex-1 rounded-xl border p-3 -mt-0.5"
+                  style={{ borderColor: p.color + '25', background: p.color + '04' }}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-semibold text-gray-800">{p.step}</span>
+                    <Badge color={p.color}>{p.output}</Badge>
+                  </div>
+                  <p className="text-[10px] text-gray-500 mb-1">{p.desc}</p>
+                  <div className="text-[9px] font-mono px-2 py-0.5 rounded inline-block"
+                    style={{ background: p.color + '12', color: p.color }}>{p.tech}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 主动学习闭环 */}
+      {activeTab === 'al' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🎯" title={activeLearningLoop.title}
+            desc={activeLearningLoop.desc}
+            color="#e17055" />
+          <div className="space-y-2 mb-4">
+            {activeLearningLoop.steps.map((s, i) => (
+              <div key={s.phase} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                <div className="w-7 h-7 rounded-full bg-[#e17055]/10 border border-[#e17055]/30 flex items-center justify-center text-sm flex-shrink-0">
+                  {s.icon}
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-gray-700">{s.phase}</span>
+                  <span className="text-[10px] text-gray-400 ml-2">{s.action}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-xl border border-[#e17055]/20 bg-[#e17055]/5 p-3 text-center">
+            <div className="text-sm font-bold text-[#e17055]">{activeLearningLoop.efficiency}</div>
+          </div>
+        </div>
+      )}
+
+      {/* 飞轮指标 */}
+      {activeTab === 'metrics' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="📊" title="数据飞轮量化指标"
+            desc="追踪数据质量与多样性的核心 KPI"
+            color="#e17055" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {flywheelMetrics.map(m => (
+              <div key={m.name} className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
+                <div className="text-[10px] text-gray-500 mb-1">{m.name}</div>
+                <div className="text-lg font-bold font-mono mb-0.5" style={{ color: m.color }}>{m.current}</div>
+                <div className="text-[9px] text-gray-400">目标: <span className="font-mono" style={{ color: m.color }}>{m.target}</span> {m.unit}</div>
+                <div className="mt-1.5 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                  <div className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${Math.min(parseFloat(m.current) / parseFloat(m.target) * 100, 100)}%`,
+                      background: m.color,
+                    }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 8. 效果监控层
 // ─────────────────────────────────────────────────────────────────────────────
 function MonitorSection() {
@@ -655,31 +980,79 @@ function InfraSection() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 10. 架构全景图（Mermaid 文本展示）
+// 10. 架构全景图（多模态闭环全景）
 // ─────────────────────────────────────────────────────────────────────────────
 function ArchDiagram() {
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-5 mb-6">
-      <SectionTitle icon="🏗️" title="数据闭环架构全景" desc="基于 Kubernetes 的全容器化架构，7 层闭环设计" />
+      <SectionTitle icon="🏗️" title="多模态数据闭环架构全景"
+        desc="基于 Kubernetes 的全容器化架构，9 层多模态闭环设计" />
 
-      {/* 简化的架构层次图 */}
-      <div className="space-y-2">
+      {/* 架构层次图 */}
+      <div className="space-y-1.5">
         {[
-          { label: '车端层', items: ['传感器 ×13', '边缘计算 (Orin)', 'k3s 容器', '隐私脱敏', '触发策略'], color: '#6c5ce7', arrow: '↓ 5G/WiFi/有线' },
-          { label: '接入层', items: ['Kong Gateway', 'Kafka 消息队列', 'S3 Landing Zone', 'Istio Mesh'], color: '#00cec9', arrow: '↓ 流式消费' },
-          { label: '处理层', items: ['解码对齐', '数据清洗', '自动标注', '质量检测', '场景挖掘'], color: '#fd79a8', arrow: '↓ Airflow DAG' },
-          { label: '存储层', items: ['热 (NVMe)', '温 (S3)', '冷 (Glacier)', 'Iceberg 数据湖', 'LakeFS 版本'], color: '#ffa657', arrow: '↓ WebDataset' },
-          { label: '训练层', items: ['A100 ×128', 'DeepSpeed ZeRO-3', 'VLA+WM 联合训练', 'MLflow', 'NAVSIM 评测'], color: '#3fb950', arrow: '↓ TensorRT 量化' },
-          { label: '部署层', items: ['仿真验证', '影子模式', '灰度发布', 'OTA 推送', '车端推理'], color: '#79c0ff', arrow: '↓ 在线监控' },
-          { label: '监控层', items: ['接管率', '碰撞率', '推理延迟', '分布偏移', '回采触发'], color: '#d2a8ff', arrow: '↩ 回采 → 车端层' },
+          {
+            label: '车端层',
+            items: ['相机×6 (1080p@20Hz)', 'LiDAR×1 (128线)', '毫米波雷达×5 (4D)', 'GNSS/IMU (RTK)', 'CAN Bus', 'Orin 边缘计算', 'k3s 容器', '隐私脱敏'],
+            color: '#6c5ce7',
+            arrow: '↓ 5G/WiFi/有线 · 多通道智能切换',
+          },
+          {
+            label: '接入层',
+            items: ['Kong Gateway', 'Kafka (按车辆ID分区)', 'S3 Landing Zone', 'Istio Service Mesh', 'SHA-256 完整性校验'],
+            color: '#00cec9',
+            arrow: '↓ 流式消费 · Airflow DAG 编排',
+          },
+          {
+            label: '处理层',
+            items: ['MCAP 解码', '时间戳对齐', '数据清洗', 'BEVFusion 自动标注', 'SAM2 分割', 'InternVL2 语言标注', 'Great Expectations 质检'],
+            color: '#fd79a8',
+            arrow: '↓ 多模态对齐 · 跨模态一致性校验',
+          },
+          {
+            label: '多模态融合层',
+            items: ['PTP 时序同步 (<1μs)', 'LSS 相机→BEV', 'VoxelNet LiDAR→BEV', 'RadarNet 雷达→BEV', 'BEVFusion 三模态融合', '语言嵌入注入', 'BEVFormer 时序聚合'],
+            color: '#a29bfe',
+            arrow: '↓ 256×200×200 BEV 特征 · 8帧时序窗口',
+          },
+          {
+            label: '场景挖掘层',
+            items: ['CLIP/DINOv2 嵌入', 'FAISS 亿级检索', '孤立森林异常检测', 'HDBSCAN 聚类', '主动学习 (BADGE)', '长尾场景标记', '数据平衡采样'],
+            color: '#e17055',
+            arrow: '↓ 高价值场景优先标注 · 标注效率 3-5×',
+          },
+          {
+            label: '存储层',
+            items: ['热存储 NVMe (<1ms)', '温存储 S3 (~10ms)', '冷存储 Glacier', 'Apache Iceberg 数据湖', 'LakeFS 版本管理', 'Feast 特征仓库', 'Trino 联邦查询'],
+            color: '#ffa657',
+            arrow: '↓ WebDataset · 并行文件系统 (Lustre)',
+          },
+          {
+            label: '训练层',
+            items: ['A100×128 (16节点×8卡)', 'InfiniBand 200Gbps', 'DeepSpeed ZeRO-3', 'FlashAttention-3', 'VLA+WM 联合训练', 'MLflow 实验管理', 'NAVSIM 闭环评测'],
+            color: '#3fb950',
+            arrow: '↓ TensorRT INT8 量化 · 知识蒸馏',
+          },
+          {
+            label: '部署层',
+            items: ['CARLA 仿真 (10万场景)', '影子模式验证', '灰度 1%→100%', 'OTA 推送', 'Orin 车端推理 (<50ms)', 'k3s + NVIDIA CTK'],
+            color: '#79c0ff',
+            arrow: '↓ 在线监控 · 实时指标采集',
+          },
+          {
+            label: '监控层',
+            items: ['接管率 (0.32/千km)', '碰撞率 (0.15/百万km)', '推理延迟 P99 38ms', '长尾覆盖率 72%', '分布偏移检测', '智能回采触发'],
+            color: '#d2a8ff',
+            arrow: '↩ 回采 → 车端层 · 数据飞轮持续转动',
+          },
         ].map((layer, i) => (
           <div key={layer.label}>
             <div className="flex items-center gap-2 rounded-xl border p-3"
               style={{ borderColor: layer.color + '33', background: layer.color + '08' }}>
-              <div className="w-16 text-center flex-shrink-0">
-                <div className="text-[10px] font-bold" style={{ color: layer.color }}>{layer.label}</div>
+              <div className="w-[4.5rem] text-center flex-shrink-0">
+                <div className="text-[10px] font-bold leading-tight" style={{ color: layer.color }}>{layer.label}</div>
               </div>
-              <div className="flex-1 flex items-center gap-1.5 flex-wrap">
+              <div className="flex-1 flex items-center gap-1 flex-wrap">
                 {layer.items.map(item => (
                   <span key={item} className="text-[9px] px-1.5 py-0.5 rounded-md font-mono"
                     style={{ background: layer.color + '15', color: layer.color }}>
@@ -688,11 +1061,30 @@ function ArchDiagram() {
                 ))}
               </div>
             </div>
-            {i < 6 && (
+            {i < 8 && (
               <div className="text-center text-[9px] text-gray-400 py-0.5 font-mono">{layer.arrow}</div>
             )}
           </div>
         ))}
+      </div>
+
+      {/* 多模态数据流说明 */}
+      <div className="mt-4 rounded-xl border border-[#a29bfe]/20 bg-[#a29bfe]/5 p-3">
+        <div className="text-[10px] font-semibold text-gray-700 mb-2">🔀 多模态数据闭环核心特征</div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {[
+            { label: '传感器模态', value: '相机 + LiDAR + 雷达 + 语言', icon: '📡' },
+            { label: '时序同步精度', value: 'PTP < 1μs 硬件级', icon: '⏱️' },
+            { label: '标注自动化率', value: '> 92%（人工 < 8%）', icon: '🤖' },
+            { label: '主动学习增益', value: '标注效率提升 3-5×', icon: '🎯' },
+          ].map(item => (
+            <div key={item.label} className="rounded-lg border border-[#a29bfe]/20 bg-white/80 p-2 text-center">
+              <div className="text-sm mb-0.5">{item.icon}</div>
+              <div className="text-[9px] font-mono text-gray-700 font-semibold">{item.value}</div>
+              <div className="text-[8px] text-gray-400 mt-0.5">{item.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -705,13 +1097,15 @@ export default function DataLoopArch() {
   const [activeStage, setActiveStage] = useState('collect');
 
   const stageComponents = useMemo(() => ({
-    collect: <CollectSection />,
-    upload:  <UploadSection />,
-    process: <ProcessSection />,
-    store:   <StoreSection />,
-    train:   <TrainSection />,
-    deploy:  <DeploySection />,
-    monitor: <MonitorSection />,
+    collect:    <CollectSection />,
+    upload:     <UploadSection />,
+    process:    <ProcessSection />,
+    multimodal: <MultimodalSection />,
+    sceneMine:  <SceneMineSection />,
+    store:      <StoreSection />,
+    train:      <TrainSection />,
+    deploy:     <DeploySection />,
+    monitor:    <MonitorSection />,
   }), []);
 
   const activeInfo = LOOP_OVERVIEW.stages.find(s => s.id === activeStage);
