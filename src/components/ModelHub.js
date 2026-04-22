@@ -105,21 +105,27 @@ function ModelGallery({ models }) {
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <h3 className="text-base font-bold text-gray-900">{m.name}</h3>
                     <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-gray-100 text-gray-500">{m.org}</span>
-                    <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${
+                    {m.status && <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${
                       m.status === 'open' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
                     }`}>
                       {m.status === 'open' ? '📖 开源' : '🔒 闭源'}
-                    </span>
-                    <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-purple-50 text-purple-600">
-                      {categoryLabels[m.category]?.icon} {categoryLabels[m.category]?.label}
-                    </span>
+                    </span>}
+                    {!m.status && m.open_source !== undefined && <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${
+                      m.open_source ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
+                    }`}>
+                      {m.open_source ? '📖 开源' : '🔒 闭源'}
+                    </span>}
+                    {(m.category || m.type) && <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-purple-50 text-purple-600">
+                      {categoryLabels[m.category || m.type]?.icon} {categoryLabels[m.category || m.type]?.label}
+                    </span>}
                   </div>
-                  <p className="text-sm text-gray-500 mb-2">{m.keyInnovation}</p>
+                  {m.keyInnovation && <p className="text-sm text-gray-500 mb-2">{m.keyInnovation}</p>}
+                  {!m.keyInnovation && m.description && <p className="text-sm text-gray-500 mb-2">{m.description}</p>}
                   <div className="flex flex-wrap gap-3 text-xs text-gray-400">
-                    <span>📅 {m.date}</span>
-                    <span>📐 {fs.params}</span>
-                    <span>📏 {fs.context}</span>
-                    <span>🧩 {fs.attention}</span>
+                    <span>📅 {m.date || m.release_date || '—'}</span>
+                    <span>📐 {fs.params || m.params || '—'}</span>
+                    {fs.context && <span>📏 {fs.context}</span>}
+                    {fs.attention && <span>🧩 {fs.attention}</span>}
                   </div>
                 </div>
                 <span className={`text-gray-300 transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▼</span>
@@ -139,7 +145,7 @@ function ModelGallery({ models }) {
                       </div>
                       <h4 className="text-xs font-bold text-gray-500 uppercase mt-4 mb-2">✨ 亮点</h4>
                       <ul className="space-y-1">
-                        {m.highlights.map((h, i) => (
+                        {(m.highlights || []).map((h, i) => (
                           <li key={i} className="text-xs text-gray-600 flex items-start gap-1.5">
                             <span className="text-purple-400 mt-0.5">•</span>{h}
                           </li>
