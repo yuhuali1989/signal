@@ -1094,6 +1094,150 @@ PY
 
 **任何一项不过关，本轮质检视为失败，必须回到编辑员任务 1 或任务 4c 重做再发布。**
 
+### 检查 3c：新闻可信性深度校验（防止 AI 幻觉编造新闻）
+
+> **核心问题**：AI 编辑员可能基于"行业印象"编造看似合理但实际不存在的新闻事件。
+> 本检查专门针对这类"高仿真幻觉"，必须逐条执行。
+
+#### 🔍 幻觉高危信号（出现以下任一特征，必须重点核查）
+
+1. **模型/产品名+版本号组合**：如 "GPT-5"、"Claude 5"、"Llama 6" 等——如果官方未发布，则为幻觉
+2. **精确到小数点的 Benchmark 分数**：如 "MMLU-Pro 91.2%"——必须在原文中找到完全一致的数字
+3. **融资金额+估值+领投方组合**：如 "XX 公司获 $5 亿 B 轮融资，YY 领投，估值 $30 亿"——三个数字都必须在原文中找到
+4. **"首次"/"突破"/"超越"等绝对性表述**：必须确认原文确实使用了这些表述
+5. **日期精确到天的事件**：如 "4 月 21 日发布"——必须确认原文中的发布日期
+
+#### 🤖 自动化校验脚本
+
+```bash
+python3 <<'PY'
+import json, subprocess, re
+
+def curl_title(url):
+    """获取页面 title 标签内容"""
+    r = subprocess.run(['curl','-s','-L','--max-time','10',
+                        '-A','Mozilla/5.0 (SignalBot)', url],
+                       capture_output=True, text=True)
+    m = re.search(r'<title[^>]*>([^<]+)</title>', r.stdout or '', re.I)
+    return m.group(1).strip() if m else ''
+
+# ============ 声浪 news-feed.json ============
+data = json.load(open('content/news/news-feed.json'))
+items = data if isinstance(data, list) else data.get('items', [])
+
+# 只检查最近 7 天的新增条目
+from datetime import date, timedelta
+cutoff = (date.today() - timedelta(days=7)).isoformat()
+recent = [i for i in items if i.get('date','') >= cutoff]
+
+print(f'[可信性] 检查最近 7 天的 {len(recent)} 条声浪')
+issues = []
+for it in recent:
+    url = it.get('url', '')
+    if not url.startswith('http'):
+        continue
+    
+    # 1. 获取页面 title，与我们的 title 做相似度比对
+    page_title = curl_title(url)
+    if page_title:
+        # 检查页面 title 是否包含我们 title 中的关键词（至少 1 个）
+        our_words = set(re.findall(r'[A-Za-z]{3,}|[\u4e00-\u9fff]{2,}', it.get('title','')))
+        page_words = set(re.findall(r'[A-Za-z]{3,}|[\u4e00-\u9fff]{2,}', page_title))
+        overlap = our_words & page_words
+        if len(overlap) == 0 and len(our_words) > 2:
+            issues.append((it.get('id','?'), 'title_mismatch',
+                f'页面标题「{page_title[:50]}」与声浪标题无关键词重叠'))
+    
+    # 2. 检查 summary 中的数字是否在页面中出现
+    numbers = re.findall(r'\$[\d,.]+[BMK]?|\d+(?:\.\d+)?%|\d+(?:\.\d+)?[BMK]\b', it.get('summary',''))
+    if numbers:
+        page_text = subprocess.run(['curl','-s','-L','--max-time','10',
+                                    '-A','Mozilla/5.0', url],
+                                   capture_output=True, text=True).stdout or ''
+        page_text_clean = re.sub(r'<[^>]+>', ' ', page_text)
+        for num in numbers[:3]:  # 只检查前 3 个数字
+            if num not in page_text_clean:
+                issues.append((it.get('id','?'), 'number_not_found',
+                    f'summary 中的数字「{num}」在原文页面中未找到'))
+
+if issues:
+    print(f'\n⚠️ 发现 {len(issues)} 个可信性问题：')
+    for iid, cat, msg in issues:
+        print(f'  [{cat}] id={iid}: {msg}')
+    print('\n请人工核实以上条目，确认是否为 AI 幻觉编造')
+else:
+    print('✅ 可信性校验通过')
+PY
+```
+
+#### 🚨 判定标准
+
+| 问题类型 | 处置 |
+|---|---|
+| 页面 title 与声浪 title 完全无关 | **整条删除**（大概率指向了错误的 URL） |
+| summary 中的关键数字在原文中找不到 | **人工核实**：可能是 AI 编造了数字 |
+| 产品名/版本号在原文中不存在 | **整条删除**（AI 幻觉编造了不存在的产品） |
+| 事件本身真实但细节有误 | 修正细节，保留条目 |
+
+### 检查 3d：模型数据完整性与去重检查
+
+> **历史事故**：models.json 中曾出现 VLA-World 重复（两种格式各一条）、11 个模型缺少 id/type/org 字段导致页面点击报错。
+
+```bash
+python3 <<'PY'
+import json
+from collections import Counter
+
+models = json.load(open('content/gallery/models.json'))
+print(f'[models] 共 {len(models)} 个模型')
+
+issues = []
+
+# 1. 检查 name 重复
+names = [m['name'] for m in models]
+dupes = [(n, c) for n, c in Counter(names).items() if c > 1]
+for name, count in dupes:
+    issues.append(('duplicate', f'模型名「{name}」重复 {count} 次'))
+
+# 2. 检查 id 重复
+ids = [m.get('id','') for m in models]
+id_dupes = [(n, c) for n, c in Counter(ids).items() if c > 1 and n]
+for iid, count in id_dupes:
+    issues.append(('id_duplicate', f'模型 id「{iid}」重复 {count} 次'))
+
+# 3. 检查必要字段缺失（id/name/type/org/params）
+required = ['id', 'name', 'type', 'org', 'params']
+for i, m in enumerate(models):
+    missing = [f for f in required if f not in m]
+    if missing:
+        issues.append(('missing_field', f'[{i}] {m.get("name","?")} 缺少字段: {missing}'))
+
+# 4. 检查 type 值是否合法
+valid_types = {'dense', 'moe', 'multimodal', 'reasoning', 'vla', 'autonomous', 'video', 'ssm', 'small'}
+for m in models:
+    t = m.get('type', '')
+    if t and t not in valid_types:
+        issues.append(('invalid_type', f'{m["name"]} 的 type「{t}」不在合法值集合中'))
+
+if issues:
+    print(f'\n⚠️ 发现 {len(issues)} 个问题：')
+    for cat, msg in issues:
+        print(f'  [{cat}] {msg}')
+    print('\n必须修复所有问题后才能发布')
+else:
+    print('✅ 模型数据完整性与去重检查通过')
+PY
+```
+
+#### 🚨 判定标准
+
+| 问题类型 | 处置 |
+|---|---|
+| name 重复 | 合并为一条（保留字段更完整的那个） |
+| id 重复 | 修改其中一个的 id |
+| 缺少 id/type/org | 补充缺失字段（参考已有模型的格式） |
+| type 值非法 | 改为合法值 |
+
 ### 检查 4：数学公式渲染检查
 
 ```bash

@@ -1,5 +1,21 @@
 [
   {
+    "id": "evo-20260422-model-fix",
+    "type": "system",
+    "title": "修复模型库：删除 VLA-World 重复 + 补充 11 个模型缺失的 id/type/org 字段",
+    "description": "(1) 删除 VLA-World 重复条目（保留 ModelGallery 格式的完整版本）；(2) 为 Qwen3-72B/Llama4-Scout/Claude-Opus-4.5/4.7/NVIDIA-B300/Qwen3-Max/Seed-AD/Llama5-MoE/Dense/Ling-2.6-flash/Kimi-K2.6 共 11 个模型补充 id/type/org 字段，修复点击报错（Application error: client-side exception）。模型总数 60→59。",
+    "date": "2026-04-22 11:40",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260422-qa-prompt",
+    "type": "system",
+    "title": "质检员提示词新增检查 3c（新闻可信性）和检查 3d（模型去重与完整性）",
+    "description": "在质检员提示词中新增两个检查项：(1) 检查 3c「新闻可信性深度校验」——自动比对页面 title 与声浪 title 的关键词重叠、检查 summary 中的数字是否在原文中出现，防止 AI 幻觉编造新闻；(2) 检查 3d「模型数据完整性与去重检查」——自动检测 name/id 重复、必要字段缺失、type 值合法性，防止模型页面报错。",
+    "date": "2026-04-22 11:45",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260422-news",
     "type": "news",
     "title": "声浪新增 10 条覆盖 SpaceX-Cursor/Anthropic-Amazon/百灵/Deep Research",
