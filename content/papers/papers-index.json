@@ -967,5 +967,90 @@
     "summary": "Meta 发布 Llama 5 系列（405B Dense + 1.2T MoE），首次引入 Mixture-of-Depths 动态层跳过，MMLU-Pro 93.1% 全面超越所有闭源模型",
     "arxivUrl": "https://arxiv.org/abs/2604.xxxxx",
     "hasReview": true
+  },
+  {
+    "id": "hf-kimi-vl-thinking",
+    "title": "Kimi-VL Technical Report: Efficient Vision-Language Reasoning with Mixture-of-Experts",
+    "authors": "Moonshot AI Team",
+    "venue": "arXiv 2025 · HF Daily Papers 精选",
+    "category": "hf-picks",
+    "importance": 5,
+    "tags": [
+      "多模态",
+      "MoE",
+      "视觉推理",
+      "HF精选"
+    ],
+    "summary": "月之暗面发布 Kimi-VL，MoE 架构实现高效多模态推理，Kimi-VL-Thinking 变体在 MMMU/MathVista 上超越 GPT-4V，激活参数仅 2.8B，HF Daily Papers 当日 #1",
+    "arxivUrl": "https://arxiv.org/abs/2504.07491",
+    "hasReview": false
+  },
+  {
+    "id": "hf-qwen3-technical-report",
+    "title": "Qwen3 Technical Report",
+    "authors": "Qwen Team (Alibaba)",
+    "venue": "arXiv 2025 · HF Daily Papers 精选",
+    "category": "hf-picks",
+    "importance": 5,
+    "tags": [
+      "LLM",
+      "推理模型",
+      "混合思维",
+      "HF精选"
+    ],
+    "summary": "阿里发布 Qwen3 系列（0.6B-235B），首创混合思维模式（Thinking/Non-Thinking 动态切换），235B-A22B MoE 在 AIME 2025 达 85.7%，超越 DeepSeek-R1，HF Daily Papers 当日 #1",
+    "arxivUrl": "https://arxiv.org/abs/2505.09388",
+    "hasReview": false
+  },
+  {
+    "id": "hf-phi4-reasoning",
+    "title": "Phi-4-reasoning Technical Report",
+    "authors": "Microsoft Research",
+    "venue": "arXiv 2025 · HF Daily Papers 精选",
+    "category": "hf-picks",
+    "importance": 5,
+    "tags": [
+      "小模型",
+      "推理模型",
+      "蒸馏",
+      "HF精选"
+    ],
+    "summary": "微软 14B 推理模型，通过从 o3-mini 蒸馏 + RL 训练，AIME 2025 达 78.6%，超越 DeepSeek-R1-671B，证明小模型通过高质量推理数据可超越大模型，HF Daily Papers 当日 #2",
+    "arxivUrl": "https://arxiv.org/abs/2504.21318",
+    "hasReview": false
+  },
+  {
+    "id": "hf-gemini-2-flash-thinking",
+    "title": "Gemini 2.5: Pushing the Frontier with Advanced Reasoning",
+    "authors": "Google DeepMind",
+    "venue": "Google Technical Report 2025 · HF Daily Papers 精选",
+    "category": "hf-picks",
+    "importance": 5,
+    "tags": [
+      "多模态",
+      "推理模型",
+      "Google",
+      "HF精选"
+    ],
+    "summary": "Google 发布 Gemini 2.5 Pro/Flash，引入 Deep Think 推理模式，AIME 2025 达 92.0%（Pro），1M token 上下文窗口，视频/音频/代码全模态推理，HF Daily Papers 当日 #1",
+    "arxivUrl": "https://storage.googleapis.com/deepmind-media/gemini/gemini_2_5_flash_technical_report.pdf",
+    "hasReview": false
+  },
+  {
+    "id": "hf-llama4-scout-maverick",
+    "title": "The Llama 4 Herd: The Beginning of a New Era of Natively Multimodal AI at Meta",
+    "authors": "Meta AI",
+    "venue": "arXiv 2025 · HF Daily Papers 精选",
+    "category": "hf-picks",
+    "importance": 5,
+    "tags": [
+      "多模态",
+      "MoE",
+      "开源模型",
+      "HF精选"
+    ],
+    "summary": "Meta 发布 Llama 4 系列（Scout 17B-16E / Maverick 17B-128E / Behemoth 2T），原生多模态 MoE 架构，Scout 在单 H100 上运行，Maverick 超越 GPT-4o，HF Daily Papers 当日 #1",
+    "arxivUrl": "https://arxiv.org/abs/2504.10188",
+    "hasReview": false
   }
 ]

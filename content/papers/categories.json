@@ -40,5 +40,12 @@
     "icon": "🤖",
     "color": "indigo",
     "description": "Agent 架构、MCP 协议、自动化科研、工具调用"
+  },
+  {
+    "id": "hf-picks",
+    "name": "HF 精选",
+    "icon": "🤗",
+    "color": "yellow",
+    "description": "Hugging Face Daily Papers 每日精选，高质量 arXiv 论文快速追踪"
   }
 ]
