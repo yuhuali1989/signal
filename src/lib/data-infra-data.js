@@ -272,35 +272,24 @@ schema, channel, message = next(reader.iter_messages())`,
               volumeRef: 'raw_data.lidar.pcd_volume → .pcd.draco 文件',
             },
           ],
-          note: '⚠️ 雷达和 CAN 不建帧级 Iceberg 表。原始帧级数据保留在 MCAP 文件中，Silver 层处理时从 MCAP 按时间范围解码，直接聚合成 scene_index 的统计字段。',
+          note: '⚠️ Bronze 层只有 session_index 一张表。雷达/CAN/LiDAR 原始帧级数据均在 MCAP 文件中，Silver 层处理时从 MCAP 解码聚合进 scene_index。',
         },
         accessPatterns: [
           {
-            pattern: '查询某辆车某天的 Session 列表',
+            pattern: '查询某车车某天的 Session 列表',
             tool: 'Trino SQL',
-            code: `-- 查询某辆车某天的所有 Session（MCAP 文件）
+            code: `-- 查询某车车某天的所有 Session（MCAP 文件）
 SELECT session_id, start_us, end_us, mcap_path,
        camera_frame_count, has_lidar, has_radar, has_can
 FROM raw_data.sessions.session_index
 WHERE vehicle_id = 'v001'
   AND DATE(event_time) = '2024-03-15'
 ORDER BY start_us`,
-            note: 'Bronze 层相机/雷达/CAN 数据都在 MCAP 文件里，通过 mcap_path 访问原始数据',
-          },
-          {
-            pattern: '查询某 Session 的 LiDAR 帧（用于标注/调试）',
-            tool: 'Spark SQL',
-            code: `-- LiDAR 是唯一有帧级 Iceberg 表的模态
-SELECT frame_id, timestamp_us, pcd_path, num_points, ego_pose_json
-FROM raw_data.lidar.lidar_frames
-WHERE session_id = 'v001_1710460800000000'
-ORDER BY timestamp_us
--- 雷达/CAN 原始帧级数据需从 MCAP 文件按时间范围解码`,
-            note: 'LiDAR 有帧级表（用于标注关联），雷达/CAN 无帧级表（聚合进 scene_index）',
+            note: 'Bronze 层只有 session_index 一张表。所有模态原始数据均在 MCAP 文件里，通过 mcap_path 访问',
           },
         ],
-        toNextStage: 'Silver 层从 MCAP 解码雷达/CAN 数据，聚合进 scene_index → 场景切分 → 去重',
-        dailyVolume: '~2 TB（session_index 元数据 + LiDAR 帧级 Parquet + PCD 文件）',
+        toNextStage: 'Silver 层从 MCAP 解码雷达/CAN/LiDAR 数据，聚合进 scene_index → 场景切分 → 去重',
+        dailyVolume: '~1 TB（session_index 元数据 + MCAP 文件）',
       },
 
       // ─────────────────────────────────────────────────────────
@@ -453,75 +442,29 @@ ORDER BY l.timestamp_us
                 { field: 'dataset_version', type: 'STRING', desc: '标注版本，如 v2.3.0' },
               ],
               partitionBy: 'days(created_at), dataset_version',
-              rowsPerDay: '~5000万行（1000辆×50框/帧×200帧/Scene×45Scene）',
-            },
-            {
-              name: 'processed_data.annotations.seg_masks',
-              rowUnit: '1行 = 1帧的语义分割结果',
-              keyFields: [
-                { field: 'anno_id',    type: 'STRING', desc: '主键' },
-                { field: 'frame_id',   type: 'STRING', desc: '外键，关联 camera.frames_v2' },
-                { field: 'camera_id',  type: 'STRING', desc: '相机编号' },
-                { field: 'mask_path',  type: 'STRING', desc: 'S3 Volume 路径，指向 PNG mask 文件（RLE 压缩）' },
-                { field: 'num_classes', type: 'INT',   desc: '分割类别数' },
-                { field: 'class_stats_json', type: 'STRING', desc: '各类别像素占比 JSON，用于数据统计' },
-                { field: 'source',     type: 'STRING', desc: 'auto_sam2/human' },
-              ],
-              partitionBy: 'days(created_at)',
-              rowsPerDay: '~1.08亿行（1000辆×6相机×18000帧）',
-            },
-            {
-              name: 'processed_data.annotations.language_qa',
-              rowUnit: '1行 = 1个 QA 对（VLA 训练用）',
-              keyFields: [
-                { field: 'qa_id',      type: 'STRING', desc: '主键' },
-                { field: 'scene_id',   type: 'STRING', desc: '外键' },
-                { field: 'frame_id',   type: 'STRING', desc: '外键（可选，部分 QA 是场景级）' },
-                { field: 'question',   type: 'STRING', desc: '问题文本' },
-                { field: 'answer',     type: 'STRING', desc: '答案文本' },
-                { field: 'qa_type',    type: 'STRING', desc: 'perception/planning/reasoning/description' },
-                { field: 'source',     type: 'STRING', desc: 'auto_internvl2/human' },
-              ],
-              partitionBy: 'days(created_at), qa_type',
-              rowsPerDay: '~450万行（1000辆×45Scene×100 QA/Scene）',
+              rowsPerDay: '~5000万行（1000辆×50框/帧×200帧/Scene×45Scene），仅用于标注工具链读取，训练时打包进 WebDataset shard',
             },
           ],
         },
         accessPatterns: [
           {
-            pattern: '按类别统计标注分布',
+            pattern: '按场景统计标注分布（直接查 scene_index）',
             tool: 'Trino SQL',
-            code: `-- 统计各城市各类别的标注框数量（数据集质量分析）
-SELECT city, category,
-       COUNT(*) AS total_boxes,
-       AVG(confidence) AS avg_conf,
-       SUM(CASE WHEN source = 'human' THEN 1 ELSE 0 END) AS human_labeled
-FROM processed_data.annotations.bbox_3d b
-JOIN processed_data.scenes.scene_index s USING (scene_id)
-WHERE b.dataset_version = 'v2.3.0'
-GROUP BY city, category
-ORDER BY city, total_boxes DESC`,
-            note: '标注统计查询，Iceberg 列裁剪只读 category/confidence/source 列，不读坐标列',
-          },
-          {
-            pattern: '读取某帧的所有标注',
-            tool: 'Python + PyArrow',
-            code: `import pyarrow.dataset as ds
-
-# 直接读 Iceberg 表（通过 PyIceberg）
-from pyiceberg.catalog import load_catalog
-catalog = load_catalog("unity_catalog", uri="https://uc.company.com")
-table = catalog.load_table("processed_data.annotations.bbox_3d")
-
-# 按 frame_id 过滤（Iceberg 谓词下推）
-df = table.scan(
-    row_filter="frame_id = 'v001_20240315_s003_0042_1710460800123456'",
-    selected_fields=["anno_id", "category", "cx", "cy", "cz", "l", "w", "h", "yaw", "confidence"]
-).to_pandas()`,
-            note: 'PyIceberg 直接读取，谓词下推到 Parquet 文件级别，只读相关 row group',
+            code: `-- 标注统计查询：直接用 scene_index 的聚合字段，无需 JOIN 帧级标注表
+SELECT city, weather,
+       COUNT(*) AS total_scenes,
+       SUM(CASE WHEN has_pedestrian THEN 1 ELSE 0 END) AS pedestrian_scenes,
+       AVG(object_count_avg) AS avg_objects,
+       AVG(label_confidence_avg) AS avg_confidence
+FROM processed_data.scenes.scene_index
+WHERE dataset_version = 'v2.3.0'
+  AND annotation_status = 'human_reviewed'
+GROUP BY city, weather
+ORDER BY city, total_scenes DESC`,
+            note: '标注聚合字段已在 scene_index 中，无需 JOIN bbox_3d 帧级表',
           },
         ],
-        toNextStage: 'Ray 打包为 WebDataset shard → 训练前数据',
+        toNextStage: 'Ray 打包为 WebDataset shard（含相机/LiDAR/雷达/CAN/标注）→ 训练前数据',
         dailyVolume: '~2 TB（标注数据 + 实体文件）',
       },
 
@@ -1240,37 +1183,8 @@ ORDER BY l.timestamp_us`,
           { name: 'bbox_3d_count',      type: 'INT',       nullable: true,  pk: false, desc: '自动标注 3D 框数量（Gold 层标注完成后回填）' },
         ],
         volumeRef: 'raw_data.lidar.pcd_volume（实体 .pcd.draco 文件）',
-        note: '与相机不同：LiDAR 数据量小（~900万帧/天），Bronze 层就解码存帧级表，用于场景切分时的时序对齐和标注。',
-        joinExample: 'JOIN processed_data.scenes.scene_index USING (scene_id)  -- LiDAR 帧通过 scene_id 关联 scene_index，雷达/CAN 已聚合在 scene_index 字段中',
-      },
-      {
-        name: 'processed_data.annotations.bbox_3d',
-        icon: '🏷️',
-        color: '#fd79a8',
-        desc: '3D 检测框标注表（与相机/LiDAR 帧通过 frame_id 关联）',
-        partitionBy: 'days(created_at), dataset_version',
-        sortBy: 'scene_id, frame_id',
-        fields: [
-          { name: 'anno_id',        type: 'STRING',    nullable: false, pk: true,  desc: '标注唯一标识' },
-          { name: 'frame_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联帧（JOIN raw_data.lidar.pointcloud_v2）' },
-          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联场景' },
-          { name: 'track_id',       type: 'STRING',    nullable: true,  pk: false, desc: '跨帧追踪 ID（同一目标在多帧中相同）' },
-          { name: 'category',       type: 'STRING',    nullable: false, pk: false, desc: '类别 car/truck/pedestrian/cyclist/cone 等' },
-          { name: 'cx',            type: 'FLOAT',     nullable: false, pk: false, desc: '3D 中心 X 坐标（车体坐标系，米）' },
-          { name: 'cy',            type: 'FLOAT',     nullable: false, pk: false, desc: '3D 中心 Y 坐标（车体坐标系，米）' },
-          { name: 'cz',            type: 'FLOAT',     nullable: false, pk: false, desc: '3D 中心 Z 坐标（车体坐标系，米）' },
-          { name: 'length',        type: 'FLOAT',     nullable: false, pk: false, desc: '目标长度（米）' },
-          { name: 'width',         type: 'FLOAT',     nullable: false, pk: false, desc: '目标宽度（米）' },
-          { name: 'height',        type: 'FLOAT',     nullable: false, pk: false, desc: '目标高度（米）' },
-          { name: 'yaw',            type: 'FLOAT',     nullable: false, pk: false, desc: '偏航角（弧度）' },
-          { name: 'velocity_json',  type: 'STRING',    nullable: true,  pk: false, desc: '速度向量 JSON {vx, vy, vz}' },
-          { name: 'confidence',     type: 'FLOAT',     nullable: false, pk: false, desc: '置信度（0-1）' },
-          { name: 'source',         type: 'STRING',    nullable: false, pk: false, desc: '标注来源 auto_bevfusion/human/auto+human' },
-          { name: 'dataset_version', type: 'STRING',   nullable: false, pk: false, desc: '数据集版本，如 v2.3.0' },
-          { name: 'created_at',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '创建时间（分区字段）' },
-        ],
-        volumeRef: '无 Volume，全量存 Parquet',
-        joinExample: 'JOIN raw_data.lidar.pointcloud_v2 USING (frame_id) JOIN raw_data.camera.frames_v2 USING (frame_id)',
+        note: 'LiDAR 是唯一保留帧级表的模态，仅用于 Bronze 层场景切分时的时序对齐。Gold 层打包 WebDataset 后此表不再参与训练。',
+        joinExample: 'JOIN processed_data.scenes.scene_index USING (scene_id)',
       },
       {
         name: 'processed_data.scenes.scene_index',
@@ -1307,6 +1221,15 @@ ORDER BY l.timestamp_us`,
           { name: 'radar_nearest_m',       type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内雷达最近目标距离（米），近距驾驶场景识别用' },
           { name: 'radar_has_oncoming',    type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否有迎面车（径向速度 v_r > 5m/s）' },
 
+          { name: 'has_pedestrian',         type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否含行人目标（从标注聚合，Gold 层打包后回填）' },
+          { name: 'has_vehicle',            type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否含车辆目标' },
+          { name: 'has_cyclist',            type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否含骑行者目标' },
+          { name: 'object_count_avg',       type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内每帧平均目标数（从 bbox_3d 聚合）' },
+          { name: 'category_stats_json',    type: 'STRING',       nullable: true,  pk: false, desc: '各类别目标数 JSON，如 {"car":120,"pedestrian":30}，用于数据集统计' },
+          { name: 'label_source',           type: 'STRING',       nullable: true,  pk: false, desc: '标注来源：auto_bevfusion / human / auto+human' },
+          { name: 'label_confidence_avg',   type: 'FLOAT',        nullable: true,  pk: false, desc: '平均标注置信度（< 0.9 说明自动标注质量低，需人工复核）' },
+          { name: 'qa_pairs_json',          type: 'STRING',       nullable: true,  pk: false, desc: 'VLA 训练用 QA 对 JSON 数组（场景级，Gold 层打包后回填）' },
+
           { name: 'dedup_hash',            type: 'STRING',       nullable: true,  pk: false, desc: '场景感知哈希（pHash），Hamming 距离 < 8 则标记重复' },
           { name: 'clip_embedding',        type: 'BINARY',       nullable: true,  pk: false, desc: 'CLIP ViT-L/14 场景嵌入（FP16，512维），余弦相似度 > 0.95 则去重' },
           { name: 'is_duplicate',          type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否被标记为重复（去重后丢弃）' },
@@ -1315,16 +1238,16 @@ ORDER BY l.timestamp_us`,
           { name: 'dataset_version',       type: 'STRING',       nullable: true,  pk: false, desc: '所属数据集版本（Gold 层打包后回填）' },
           { name: 'webdataset_shard',      type: 'STRING',       nullable: true,  pk: false, desc: 'WebDataset shard 路径（Gold 层打包后回填，训练直接读取）' },
         ],
-        volumeRef: '无 Volume，此表是所有模态的汇聚入口。雷达和 CAN 原始帧级数据均在 MCAP 文件中，通过 session_id 关联 session_index 可访问。',
-        note: '⚠️ 雷达和 CAN 不建帧级 Iceberg 表。训练时所需的雷达/CAN 信息均已聚合到此表字段中；原始帧级数据如需可从 MCAP 文件按时间范围解码。',
-        joinExample: '-- 训练采样：完全不需要 JOIN
+        volumeRef: '无 Volume，此表是整个数据链路唯一的 Iceberg 索引表（配合 session_index）。所有模态原始数据均在 MCAP 文件中，标注/雷达/CAN 均聚合为字段，训练时通过 webdataset_shard 直接读取 shard，零 JOIN。',
+        note: '⚠️ 这是 Silver/Gold 层唯一的 Iceberg 表。lidar_frames/bbox_3d/seg_masks/language_qa 等帧级表均已删除——原始数据在 MCAP 中，标注聚合为字段，详细标注打包进 WebDataset shard。',
+        joinExample: '-- 训练采样：一张表，零 JOIN
 SELECT webdataset_shard
 FROM processed_data.scenes.scene_index
 WHERE annotation_status = \'human_reviewed\'
   AND is_duplicate = false
-  AND weather = \'rain\'
-  AND radar_nearest_m < 20   -- 直接用聚合字段过滤，无需 JOIN 雷达表
-  AND has_takeover = false
+  AND has_pedestrian = true   -- 标注聚合字段，无需 JOIN bbox_3d
+  AND radar_nearest_m < 20   -- 雷达聚合字段，无需 JOIN 雷达表
+  AND avg_speed_mps > 5      -- CAN 聚合字段，无需 JOIN CAN 表
   AND dataset_version = \'v2.3.0\'',
       },
     ],
@@ -1387,36 +1310,26 @@ WHERE annotation_status = \'human_reviewed\'
       title: '多模态表关联关系（以 scene_id / frame_id 为核心）',
       centerTable: 'processed_data.scenes.scene_index',
       relations: [
-        { from: 'scene_index',        to: 'sessions.session_index',  key: 'session_id',       type: 'N:1', desc: '多个场景来自同一个 Session（MCAP 文件），通过 session_id 关联' },
-        { from: 'scene_index',        to: 'lidar.lidar_frames',      key: 'scene_id',         type: '1:N', desc: '一个场景含多个 LiDAR 帧（唯一有帧级表的模态）' },
-        { from: 'scene_index',        to: 'annotations.bbox_3d',     key: 'scene_id',         type: '1:N', desc: '一个场景含多个 3D 标注框' },
-        { from: 'lidar.lidar_frames', to: 'annotations.bbox_3d',     key: 'frame_id',         type: '1:N', desc: 'LiDAR 帧与标注框精确关联（帧级对应）' },
-        { from: 'scene_index',        to: 'WebDataset shard',        key: 'webdataset_shard', type: '1:1', desc: '场景对应的训练数据包（相机/LiDAR/雷达/CAN 均已打包，雷达/CAN 聚合字段也在 scene_index 中）' },
+        { from: 'scene_index',        to: 'sessions.session_index',  key: 'session_id',       type: 'N:1', desc: '多个场景来自同一个 Session（MCAP 文件）' },
+        { from: 'scene_index',        to: 'annotations.bbox_3d',     key: 'scene_id',         type: '1:N', desc: '一个场景含多个 3D 标注框（仅标注工具链读取，训练时标注已打包进 shard）' },
+        { from: 'scene_index',        to: 'WebDataset shard',        key: 'webdataset_shard', type: '1:1', desc: '场景对应的训练数据包（相机/LiDAR/雷达/CAN/标注全部打包）' },
       ],
-      queryExample: `-- 获取训练样本：场景 + 相机帧路径 + 点云路径 + 雷达点云 + 3D 标注
+      queryExample: `-- 训练采样：一张表，零 JOIN
 SELECT
   s.scene_id,
   s.weather,
   s.scenario_tags,
-  c.file_path        AS cam_path,
-  c.intrinsic_json,
-  c.extrinsic_json,
-  l.file_path        AS lidar_path,
-  l.ego_pose_json,
-  s.radar_nearest_m  AS radar_nearest_m,   -- 雷达聚合字段，无需 JOIN
-  s.avg_speed_mps    AS speed_mps,          -- CAN 聚合字段，无需 JOIN
-  COLLECT_LIST(b.*)  AS annotations
+  s.has_pedestrian,       -- 标注聚合字段，无需 JOIN bbox_3d
+  s.object_count_avg,     -- 标注聚合字段
+  s.radar_nearest_m,      -- 雷达聚合字段，无需 JOIN 雷达表
+  s.avg_speed_mps,        -- CAN 聚合字段，无需 JOIN CAN 表
+  s.webdataset_shard      -- 训练数据包路径，交给 WebDataset 读取
 FROM processed_data.scenes.scene_index s
-JOIN raw_data.lidar.lidar_frames l
-  ON s.scene_id = l.scene_id
-LEFT JOIN processed_data.annotations.bbox_3d b
-  ON b.frame_id = l.frame_id
-WHERE s.dataset_version = 'v2.3.0'
-  AND s.dataset_split  = 'train'
-  AND s.annotation_status = 'human_reviewed'
-GROUP BY s.scene_id, s.weather, s.scenario_tags,
-         c.file_path, c.intrinsic_json, c.extrinsic_json,
-         l.file_path, l.ego_pose_json, r.points`,
+WHERE s.annotation_status = 'human_reviewed'
+  AND s.is_duplicate = false
+  AND s.has_pedestrian = true
+  AND s.dataset_version = 'v2.3.0'
+  AND s.dataset_split = 'train'`,
     },
   },
 
