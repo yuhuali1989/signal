@@ -211,7 +211,7 @@ schema, channel, message = next(reader.iter_messages())`,
         lifecycle: 'Landing 7天 → Bronze 90天',
 
         verdict: {
-          format: 'Landing: MCAP 原样 | Bronze: session_index + lidar_sessions + radar_frames（轻量元数据，不解码视频）',
+          format: 'Landing: MCAP 原样 | Bronze: session_index（MCAP文件粒度）+ lidar_frames（帧粒度）。雷达/CAN 不建帧级表，Silver 层从 MCAP 聚合进 scene_index。',
           reason: 'Bronze 层不解码视频不存 JPEG，只存 MCAP 文件级元数据',
           score: 5,
         },
@@ -220,11 +220,11 @@ schema, channel, message = next(reader.iter_messages())`,
           'Bronze 层不解码视频：解码 H.265 是计算密集操作，Bronze 层只需元数据（时间范围/传感器状态/帧数统计），不需要图像内容',
           '不存帧级 JPEG 的核心原因：去重后只保留 ~30% 的 Scene，如果 Bronze 层全量解码存 JPEG，70% 的解码和存储都是浪费（1000辆车/天 → 2.16亿个 JPEG 文件）',
           'Bronze 层粒度 = Session（MCAP 文件）：1行 = 1个 Session，记录 MCAP 文件路径、时间范围、传感器完整性、帧数统计',
-          'LiDAR/雷达例外：点云数据量小且结构化，Bronze 层可以解码存帧级 Parquet（LiDAR ~900万行/天，雷达 ~5.85亿行/天），用于场景切分时的时序对齐',
-          'CAN 总线例外：CAN 数据量极小（~5GB/天），直接解码存帧级 Parquet，用于接管事件检测和场景触发',
+          'LiDAR 例外：点云数据量小且结构化，Bronze 层解码存帧级 Parquet（~900万行/天），用于场景切分时的时序对齐和标注关联',
+          '雷达和 CAN 不建帧级表：Silver 层处理时从 MCAP 按时间范围解码，直接聚合成 scene_index 的统计字段，无需单独存帧级表',
         ],
         schema: {
-          desc: 'Bronze 层核心表：session_index（MCAP 文件粒度）+ lidar_frames（帧粒度）+ radar_frames（帧粒度）+ can_bus（帧粒度）。相机不存帧级表。',
+          desc: 'Bronze 层核心表：session_index（MCAP 文件粒度）+ lidar_frames（帧粒度）。雷达和 CAN 不建帧级表，Silver 层从 MCAP 解码后聚合进 scene_index。',
           tables: [
             {
               name: 'raw_data.sessions.session_index',
@@ -271,73 +271,36 @@ schema, channel, message = next(reader.iter_messages())`,
               rowsPerDay: '~900万行（1000辆×9000帧）',
               volumeRef: 'raw_data.lidar.pcd_volume → .pcd.draco 文件',
             },
-            {
-              name: 'raw_data.radar.radar_frames',
-              rowUnit: '1行 = 1帧（雷达一次扫描，77ms）',
-              keyFields: [
-                { field: 'frame_id',     type: 'STRING', desc: '主键' },
-                { field: 'session_id',   type: 'STRING', desc: '外键' },
-                { field: 'scene_id',     type: 'STRING', desc: '外键，Silver 层回填' },
-                { field: 'radar_id',     type: 'STRING', desc: 'front/rear/left 等' },
-                { field: 'timestamp_us', type: 'LONG',   desc: '时间戳（微秒）' },
-                { field: 'event_time',   type: 'TIMESTAMP', desc: '分区字段' },
-                { field: 'points',       type: 'LIST<STRUCT<x FLOAT, y FLOAT, z FLOAT, v_r FLOAT, rcs FLOAT>>', desc: '雷达点云内联（数据量小，无需 Volume）' },
-              ],
-              partitionBy: 'days(event_time), radar_id',
-              rowsPerDay: '~5.85亿行（1000辆×5雷达×11700帧）',
-              volumeRef: '无 Volume，points 字段直接内联',
-            },
-            {
-              name: 'raw_data.vehicle.can_bus',
-              rowUnit: '1行 = 1个采样时刻（100Hz，10ms）',
-              keyFields: [
-                { field: 'record_id',     type: 'STRING',  desc: '主键' },
-                { field: 'scene_id',      type: 'STRING',  desc: '外键（场景切分后回填）' },
-                { field: 'timestamp_us',  type: 'LONG',    desc: '时间戳（微秒）' },
-                { field: 'speed_mps',     type: 'FLOAT',   desc: '车速（m/s）' },
-                { field: 'takeover_flag', type: 'BOOLEAN', desc: '接管标记（触发回采关键字段）' },
-                { field: 'steering_angle', type: 'FLOAT',  desc: '方向盘转角（度）' },
-              ],
-              partitionBy: 'days(event_time), vehicle_id',
-              rowsPerDay: '~9000万行（1000辆×90000条）',
-              volumeRef: '无 Volume，全量存 Parquet 列（宽表设计）',
-            },
           ],
+          note: '⚠️ 雷达和 CAN 不建帧级 Iceberg 表。原始帧级数据保留在 MCAP 文件中，Silver 层处理时从 MCAP 按时间范围解码，直接聚合成 scene_index 的统计字段。',
         },
         accessPatterns: [
           {
-            pattern: '按时间范围查询帧列表',
-            tool: 'Trino / Spark SQL',
-            code: `-- 查询某辆车某小时的前摄像头帧（含质量过滤）
-SELECT frame_id, timestamp_us, file_path, quality_score
-FROM raw_data.camera.frames_v2
+            pattern: '查询某辆车某天的 Session 列表',
+            tool: 'Trino SQL',
+            code: `-- 查询某辆车某天的所有 Session（MCAP 文件）
+SELECT session_id, start_us, end_us, mcap_path,
+       camera_frame_count, has_lidar, has_radar, has_can
+FROM raw_data.sessions.session_index
 WHERE vehicle_id = 'v001'
-  AND event_time BETWEEN TIMESTAMP '2024-03-15 08:00' AND TIMESTAMP '2024-03-15 09:00'
-  AND camera_id = 'front'
-  AND is_blurry = false
-ORDER BY timestamp_us
--- Iceberg 分区裁剪：只扫描 date=2024-03-15 分区，跳过其他日期`,
-            note: 'Iceberg 谓词下推 + 分区裁剪，只读相关 Parquet 文件，不扫描 Volume',
+  AND DATE(event_time) = '2024-03-15'
+ORDER BY start_us`,
+            note: 'Bronze 层相机/雷达/CAN 数据都在 MCAP 文件里，通过 mcap_path 访问原始数据',
           },
           {
-            pattern: '读取实体文件（图像/点云）',
-            tool: 'Python + boto3',
-            code: `import boto3, cv2, numpy as np
-
-s3 = boto3.client('s3')
-
-# 从 Iceberg 查到 file_path 后，直接读 S3
-def read_frame(file_path: str) -> np.ndarray:
-    # file_path = "s3://raw/camera/v001/2024-03-15/frame_xxx.jpg"
-    bucket, key = file_path.replace("s3://", "").split("/", 1)
-    obj = s3.get_object(Bucket=bucket, Key=key)
-    img_bytes = obj['Body'].read()
-    return cv2.imdecode(np.frombuffer(img_bytes, np.uint8), cv2.IMREAD_COLOR)`,
-            note: '元数据查询（Iceberg）和实体文件读取（S3）完全解耦，互不影响',
+            pattern: '查询某 Session 的 LiDAR 帧（用于标注/调试）',
+            tool: 'Spark SQL',
+            code: `-- LiDAR 是唯一有帧级 Iceberg 表的模态
+SELECT frame_id, timestamp_us, pcd_path, num_points, ego_pose_json
+FROM raw_data.lidar.lidar_frames
+WHERE session_id = 'v001_1710460800000000'
+ORDER BY timestamp_us
+-- 雷达/CAN 原始帧级数据需从 MCAP 文件按时间范围解码`,
+            note: 'LiDAR 有帧级表（用于标注关联），雷达/CAN 无帧级表（聚合进 scene_index）',
           },
         ],
-        toNextStage: 'Spark + RAPIDS 清洗、时序对齐、场景切分 → Silver Layer',
-        dailyVolume: '~6 TB（解码后，含 Volume 文件）',
+        toNextStage: 'Silver 层从 MCAP 解码雷达/CAN 数据，聚合进 scene_index → 场景切分 → 去重',
+        dailyVolume: '~2 TB（session_index 元数据 + LiDAR 帧级 Parquet + PCD 文件）',
       },
 
       // ─────────────────────────────────────────────────────────
@@ -353,16 +316,16 @@ def read_frame(file_path: str) -> np.ndarray:
         lifecycle: '1年温存储',
 
         verdict: {
-          format: 'scene_index（1行=1个Scene）+ 各模态帧级表回填 scene_id。相机仍不存帧级 JPEG。',
-          reason: 'Silver 层核心是场景切分和去重，不是解码视频',
+          format: 'scene_index（1行=1个Scene，含雷达/CAN聚合字段）。相机/雷达/CAN 均不存帧级表。',
+          reason: 'Silver 层核心是场景切分和去重，雷达/CAN 聚合进 scene_index，无需帧级表',
           score: 5,
         },
         whyThisFormat: [
           'Silver 层也不解码视频、不存 JPEG：场景切分只需要 CAN/LiDAR 时间戳 + 事件标记，不需要图像内容',
           'CLIP 去重只需抽关键帧：每个 Scene 只抽 1~3 帧关键帧（从 MCAP 解码单帧）计算 CLIP 嵌入，不全量解码',
           'scene_index 是 Silver 层核心表：1行=1个Scene（20s），记录时间范围/传感器完整性/去重状态/标注状态',
-          'LiDAR/雷达帧级表回填 scene_id：Bronze 层已有 lidar_frames/radar_frames，Silver 层通过 UPDATE 回填 scene_id',
-          'CAN 数据回填 scene_id：Bronze 层 can_bus 表通过时间范围 UPDATE 回填 scene_id',
+          'LiDAR 帧级表回填 scene_id：Bronze 层已有 lidar_frames，Silver 层通过 UPDATE 回填 scene_id（Iceberg 行级更新）',
+          '雷达/CAN 无帧级表：Silver 层处理时直接从 MCAP 按 scene 时间范围解码，聚合成 scene_index 的统计字段，不单独建表',
           '相机帧级表在 Gold 层才生成：只对去重后保留的 Scene 解码，直接打包进 WebDataset，不单独存 JPEG',
         ],
         schema: {
@@ -399,13 +362,15 @@ def read_frame(file_path: str) -> np.ndarray:
           ],
           silverTransform: [
             { op: '场景切分', desc: '读取 CAN + LiDAR 时间戳，按 20s 固定窗口 + 事件触发切割，生成 scene_id，写入 scene_index' },
-            { op: 'scene_id 回填', desc: '将 scene_id UPDATE 回填到 lidar_frames / radar_frames / can_bus 表（Iceberg 行级更新）' },
-            { op: '关键帧抽取（轻量）', desc: '每个 Scene 从 MCAP 解码 1~3 帧关键帧（不全量解码），用于计算 pHash 和 CLIP 嵌入' },
+            { op: 'CAN 聚合', desc: '对每个 Scene 时间范围内的 CAN 数据做聚合：平均车速/最大制动/接管标记/AEB 标记/轨迹积分，写入 scene_index 对应字段。CAN 帧级表不保留。' },
+            { op: '雷达聚合', desc: '对每个 Scene 时间范围内的雷达数据做聚合：平均目标数/最近目标距离/迎面车标记，写入 scene_index 对应字段。雷达帧级表不保留。' },
+            { op: 'scene_id 回填', desc: '将 scene_id UPDATE 回填到 lidar_frames 表（Iceberg 行级更新）。雷达和 CAN 已聚合进 scene_index，无需回填。' },
+            { op: '关键帧抽取（轻量）', desc: '每个 Scene 从 MCAP 解码 1~3 帧关键帧，用于计算 pHash 和 CLIP 嵌入，不全量解码' },
             { op: '感知哈希去重', desc: '计算 pHash，Hamming 距离 < 8 则标记 is_duplicate=true' },
             { op: 'CLIP 嵌入去重', desc: 'CLIP ViT-L/14 提取场景嵌入，余弦相似度 > 0.95 则去重' },
             { op: '质量过滤', desc: '传感器故障/数据缺失/时间戳异常 → 标记 annotation_status=rejected' },
           ],
-          note: '⚠️ Silver 层不存相机帧级表，不存 JPEG。相机帧级数据在 Gold 层打包时才从 MCAP 解码，直接写入 WebDataset shard。',
+          note: '⚠️ Silver 层不存相机帧级表，不存 JPEG。雷达和 CAN 帧级数据聚合进 scene_index 后不单独保留帧级表。',
         },
         accessPatterns: [
           {
@@ -428,17 +393,13 @@ LIMIT 50000`,
           {
             pattern: '查询某 Scene 的 LiDAR 帧（用于标注/调试）',
             tool: 'Spark SQL',
-            code: `-- 给定 scene_id，获取对齐的 LiDAR + 雷达帧
--- 注意：相机帧需要从 MCAP 文件按时间范围解码，不在 Iceberg 表中
-SELECT l.frame_id, l.timestamp_us, l.pcd_path, l.ego_pose_json,
-       r.points AS radar_points
+            code: `-- 给定 scene_id，获取 LiDAR 帧列表（雷达/CAN 已聚合到 scene_index，无需 JOIN）
+SELECT l.frame_id, l.timestamp_us, l.pcd_path, l.ego_pose_json
 FROM raw_data.lidar.lidar_frames l
-LEFT JOIN raw_data.radar.radar_frames r
-  ON l.scene_id = r.scene_id AND r.radar_id = 'front'
-  AND ABS(r.timestamp_us - l.timestamp_us) < 10000
 WHERE l.scene_id = 'v001_20240315_s003_0042'
-ORDER BY l.timestamp_us`,
-            note: '相机帧不在 Iceberg 表中，需要从 session_index.mcap_path 读取 MCAP 文件，按时间范围解码',
+ORDER BY l.timestamp_us
+-- 雷达原始帧级数据如需可从 MCAP 按时间范围解码`,
+            note: '雷达和 CAN 已聚合进 scene_index，不需要 JOIN 帧级表。只有 LiDAR 帧级表保留（因为有 pcd_path 和标注关联）。',
           },
         ],
         toNextStage: '对保留的 Scene（去重后 ~70%）解码 MCAP → 打包 WebDataset shard → Gold Layer',
@@ -662,11 +623,11 @@ def load_bev_feature(scene_id: str, frame_id: str) -> torch.Tensor:
             tool: 'Python tarfile',
             code: `import tarfile, json
 
-# Iceberg 查询：找到 frame_id 对应的 shard 和 offset
+# Iceberg 查询：找到 scene_id 对应的 shard 路径
 row = trino.query(f"""
-    SELECT webdataset_shard, shard_frame_offset
-    FROM raw_data.camera.frames_v2
-    WHERE frame_id = 'v001_20240315_s003_0042_1710460800123456'
+    SELECT webdataset_shard
+    FROM processed_data.scenes.scene_index
+    WHERE scene_id = '{scene_id}'
 """).fetchone()
 
 # 用 offset 直接定位 tar 包内的文件
@@ -1018,36 +979,28 @@ with tarfile.open(row.webdataset_shard) as tar:
           color: '#3fb950',
         },
       ],
-      sceneJoinSQL: `-- Silver 层场景切分后，将各模态帧关联到 scene_id
--- 步骤1：根据时间范围将帧归属到 Scene
-UPDATE raw_data.camera.frames_v2 f
+      sceneJoinSQL: `-- Silver 层场景切分后，将 LiDAR 帧归属到 scene_id
+-- 雷达/CAN 已聚合进 scene_index，无需回填帧级表
+
+-- 步骤1：将 scene_id 回填到 lidar_frames
+UPDATE raw_data.lidar.lidar_frames l
 SET scene_id = s.scene_id
 FROM processed_data.scenes.scene_index s
-WHERE f.timestamp_us BETWEEN s.start_us AND s.end_us
-  AND f.vehicle_id = s.vehicle_id;
+WHERE l.timestamp_us BETWEEN s.start_us AND s.end_us
+  AND l.vehicle_id = s.vehicle_id;
 
--- 步骤2：多模态联合查询（训练采样）
+-- 步骤2：训练采样（通过 scene_index 直接读取，无需 JOIN 雷达/CAN 帧级表）
 SELECT
-  l.frame_id,
-  l.timestamp_us,
-  l.file_path        AS lidar_path,
-  c.file_path        AS cam_front_path,
-  r.points           AS radar_front_points,
-  can.speed_mps,
-  can.takeover_flag
-FROM raw_data.lidar.pointcloud_v2 l
-JOIN raw_data.camera.frames_v2 c
-  ON l.scene_id = c.scene_id
-  AND c.camera_id = 'front'
-  AND ABS(c.timestamp_us - l.timestamp_us) < 5000   -- ±5ms
-LEFT JOIN raw_data.radar.radar_4d_v1 r
-  ON l.scene_id = r.scene_id
-  AND r.radar_id = 'front'
-  AND ABS(r.timestamp_us - l.timestamp_us) < 10000  -- ±10ms
-LEFT JOIN raw_data.vehicle.can_bus can
-  ON l.scene_id = can.scene_id
-  AND ABS(can.timestamp_us - l.timestamp_us) < 10000
-WHERE l.scene_id = 'v001_20240315_s003_0042'
+  s.scene_id,
+  s.avg_speed_mps,          -- CAN 聚合字段，直接可用
+  s.radar_nearest_m,        -- 雷达聚合字段，直接可用
+  s.has_takeover,
+  l.pcd_path     AS lidar_path,
+  l.ego_pose_json
+FROM processed_data.scenes.scene_index s
+JOIN raw_data.lidar.lidar_frames l
+  ON s.scene_id = l.scene_id
+WHERE s.scene_id = 'v001_20240315_s003_0042'
 ORDER BY l.timestamp_us`,
     },
   },
@@ -1288,56 +1241,7 @@ ORDER BY l.timestamp_us`,
         ],
         volumeRef: 'raw_data.lidar.pcd_volume（实体 .pcd.draco 文件）',
         note: '与相机不同：LiDAR 数据量小（~900万帧/天），Bronze 层就解码存帧级表，用于场景切分时的时序对齐和标注。',
-        joinExample: 'JOIN raw_data.radar.radar_frames USING (scene_id, timestamp_us)',
-      },
-      {
-        name: 'raw_data.radar.radar_4d_v1',
-        icon: '📡',
-        color: '#ffa657',
-        desc: '4D 毫米波雷达点云表（结构化存储，无需 Volume，直接存 Parquet）',
-        partitionBy: 'days(event_time), radar_id',
-        sortBy: 'scene_id, timestamp_us',
-        fields: [
-          { name: 'frame_id',       type: 'STRING',    nullable: false, pk: true,  desc: '帧唯一标识' },
-          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: false, desc: '关联场景，JOIN 主键' },
-          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
-          { name: 'radar_id',       type: 'STRING',    nullable: false, pk: false, desc: '雷达编号 front/rear/left 等' },
-          { name: 'timestamp_us',   type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒）' },
-          { name: 'event_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段' },
-          { name: 'points',         type: 'LIST<STRUCT<x FLOAT, y FLOAT, z FLOAT, v_r FLOAT, rcs FLOAT, snr FLOAT>>', nullable: false, pk: false, desc: '雷达点云数组（x/y/z 坐标 + 径向速度 + 雷达截面积 + 信噪比）' },
-          { name: 'num_points',     type: 'INT',       nullable: false, pk: false, desc: '点数' },
-          { name: 'max_range_m',    type: 'FLOAT',     nullable: false, pk: false, desc: '最大探测距离（米）' },
-          { name: 'doppler_fft_path', type: 'STRING',  nullable: true,  pk: false, desc: '多普勒 FFT 热力图文件路径（存 Volume，可选）' },
-        ],
-        volumeRef: 'raw_data.radar.doppler_volume（可选：多普勒 FFT 热力图 PNG）',
-        note: '⚠️ 雷达点云数据量小（~50GB/天），直接用 LIST<STRUCT> 存 Parquet，无需单独 Volume；仅多普勒 FFT 图像存 Volume',
-        joinExample: 'JOIN raw_data.camera.frames_v2 USING (scene_id) WHERE ABS(radar.timestamp_us - camera.timestamp_us) < 5000',
-      },
-      {
-        name: 'raw_data.vehicle.can_bus',
-        icon: '🔌',
-        color: '#00cec9',
-        desc: '车辆 CAN 总线信号表（高频时序，按信号名展开）',
-        partitionBy: 'days(event_time), vehicle_id',
-        sortBy: 'vehicle_id, timestamp_us',
-        fields: [
-          { name: 'record_id',      type: 'STRING',    nullable: false, pk: true,  desc: '记录唯一标识' },
-          { name: 'scene_id',       type: 'STRING',    nullable: true,  pk: false, desc: '关联场景（场景切分后回填）' },
-          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
-          { name: 'timestamp_us',   type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒）' },
-          { name: 'event_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段' },
-          { name: 'speed_mps',      type: 'FLOAT',     nullable: true,  pk: false, desc: '车速（m/s）' },
-          { name: 'accel_x',        type: 'FLOAT',     nullable: true,  pk: false, desc: '纵向加速度（m/s²）' },
-          { name: 'accel_y',        type: 'FLOAT',     nullable: true,  pk: false, desc: '横向加速度（m/s²）' },
-          { name: 'yaw_rate',       type: 'FLOAT',     nullable: true,  pk: false, desc: '横摆角速度（rad/s）' },
-          { name: 'steering_angle', type: 'FLOAT',     nullable: true,  pk: false, desc: '方向盘转角（度）' },
-          { name: 'throttle_pct',   type: 'FLOAT',     nullable: true,  pk: false, desc: '油门开度（%）' },
-          { name: 'brake_pct',      type: 'FLOAT',     nullable: true,  pk: false, desc: '制动开度（%）' },
-          { name: 'gear',           type: 'STRING',    nullable: true,  pk: false, desc: '档位 P/R/N/D' },
-          { name: 'takeover_flag',  type: 'BOOLEAN',   nullable: false, pk: false, desc: '接管标记（触发回采的关键字段）' },
-        ],
-        volumeRef: '无 Volume，全量存 Parquet',
-        joinExample: 'JOIN raw_data.camera.frames_v2 c USING (scene_id) WHERE c.timestamp_us BETWEEN can.timestamp_us - 50000 AND can.timestamp_us + 50000',
+        joinExample: 'JOIN processed_data.scenes.scene_index USING (scene_id)  -- LiDAR 帧通过 scene_id 关联 scene_index，雷达/CAN 已聚合在 scene_index 字段中',
       },
       {
         name: 'processed_data.annotations.bbox_3d',
@@ -1372,33 +1276,56 @@ ORDER BY l.timestamp_us`,
         name: 'processed_data.scenes.scene_index',
         icon: '🎬',
         color: '#a29bfe',
-        desc: '场景索引表（所有模态的汇聚入口，训练采样的核心表）',
+        desc: '场景索引表（所有模态的汇聚入口，训练采样的唯一核心表）。雷达和 CAN 数据不单独建帧级表，直接聚合进此表。',
         partitionBy: 'days(start_time), city',
         sortBy: 'scene_id',
         fields: [
-          { name: 'scene_id',       type: 'STRING',    nullable: false, pk: true,  desc: '场景唯一标识（所有模态表的 JOIN 主键）' },
-          { name: 'vehicle_id',     type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
-          { name: 'start_time',     type: 'TIMESTAMP', nullable: false, pk: false, desc: '场景开始时间（分区字段）' },
-          { name: 'duration_s',     type: 'FLOAT',     nullable: false, pk: false, desc: '场景时长（秒）' },
-          { name: 'num_frames',     type: 'INT',       nullable: false, pk: false, desc: '帧数' },
-          { name: 'city',           type: 'STRING',    nullable: false, pk: false, desc: '城市（分区字段，行级权限过滤）' },
-          { name: 'weather',        type: 'STRING',    nullable: true,  pk: false, desc: '天气 sunny/rainy/foggy/night' },
-          { name: 'scenario_tags',  type: 'LIST<STRING>', nullable: true, pk: false, desc: '场景标签 [long_tail, highway, intersection, ...]' },
-          { name: 'has_takeover',   type: 'BOOLEAN',   nullable: false, pk: false, desc: '是否含接管事件' },
-          { name: 'has_camera',     type: 'BOOLEAN',   nullable: false, pk: false, desc: '相机数据完整性' },
-          { name: 'has_lidar',      type: 'BOOLEAN',   nullable: false, pk: false, desc: 'LiDAR 数据完整性' },
-          { name: 'has_radar',      type: 'BOOLEAN',   nullable: false, pk: false, desc: '雷达数据完整性' },
-          { name: 'has_annotation', type: 'BOOLEAN',   nullable: false, pk: false, desc: '是否已完成标注' },
-          { name: 'dataset_split',  type: 'STRING',    nullable: true,  pk: false, desc: '训练集划分 train/val/test' },
-          { name: 'dataset_version',   type: 'STRING',       nullable: true,  pk: false, desc: '所属数据集版本' },
-          { name: 'webdataset_shard',  type: 'STRING',       nullable: true,  pk: false, desc: 'WebDataset shard 路径（Gold 层打包后回填，训练直接读取）' },
-          { name: 'dedup_hash',        type: 'STRING',       nullable: true,  pk: false, desc: '场景感知哈希（pHash），去重用，Hamming 距离 < 8 则标记重复' },
-          { name: 'clip_embedding',    type: 'BINARY',       nullable: true,  pk: false, desc: 'CLIP ViT-L/14 场景嵌入（FP16，512维），余弦相似度 > 0.95 则去重' },
-          { name: 'annotation_status', type: 'STRING',       nullable: false, pk: false, desc: '标注状态：pending / auto_labeled / human_reviewed / rejected' },
+          { name: 'scene_id',              type: 'STRING',       nullable: false, pk: true,  desc: '场景唯一标识，格式 {vehicle_id}_{date}_{session}_{seq}' },
+          { name: 'vehicle_id',            type: 'STRING',       nullable: false, pk: false, desc: '车辆 ID，行级权限过滤' },
+          { name: 'session_id',            type: 'STRING',       nullable: false, pk: false, desc: '外键，关联 session_index（来自哪个 MCAP 文件）' },
+          { name: 'start_time',            type: 'TIMESTAMP',    nullable: false, pk: false, desc: '场景开始时间（分区字段）' },
+          { name: 'start_us',              type: 'LONG',         nullable: false, pk: false, desc: '开始时间戳（微秒），用于从 MCAP 按时间范围解码' },
+          { name: 'end_us',                type: 'LONG',         nullable: false, pk: false, desc: '结束时间戳（微秒）' },
+          { name: 'duration_s',            type: 'FLOAT',        nullable: false, pk: false, desc: '时长（秒），典型值 20s' },
+          { name: 'city',                  type: 'STRING',       nullable: false, pk: false, desc: '城市（分区字段）' },
+          { name: 'weather',               type: 'STRING',       nullable: true,  pk: false, desc: 'sunny/rainy/foggy/night' },
+          { name: 'scenario_tags',         type: 'LIST<STRING>', nullable: true,  pk: false, desc: '场景标签 [long_tail, highway, intersection, ...]' },
+          { name: 'cut_reason',            type: 'STRING',       nullable: false, pk: false, desc: '切割原因：fixed_window / takeover / aeb / bad_weather / construction' },
+
+          { name: 'has_lidar',             type: 'BOOLEAN',      nullable: false, pk: false, desc: 'LiDAR 数据完整性' },
+          { name: 'has_radar',             type: 'BOOLEAN',      nullable: false, pk: false, desc: '雷达数据完整性' },
+          { name: 'has_can',               type: 'BOOLEAN',      nullable: false, pk: false, desc: 'CAN 数据完整性' },
+
+          { name: 'avg_speed_mps',         type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内平均车速（m/s），从 CAN 数据聚合' },
+          { name: 'max_accel_mps2',        type: 'FLOAT',        nullable: true,  pk: false, desc: '最大纵向加速度（m/s²），急加速场景识别用' },
+          { name: 'max_brake_pct',         type: 'FLOAT',        nullable: true,  pk: false, desc: '最大制动开度（%），急刻场景识别用' },
+          { name: 'has_takeover',          type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否含接管事件（从 CAN takeover_flag 检测）' },
+          { name: 'has_aeb',               type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否触发 AEB（从 CAN 检测）' },
+          { name: 'ego_trajectory',        type: 'BINARY',       nullable: true,  pk: false, desc: '车辆轨迹（FP32 [N,3]，x/y/yaw），从 CAN + IMU 积分生成，轨迹预测训练用' },
+
+          { name: 'radar_target_count_avg', type: 'FLOAT',       nullable: true,  pk: false, desc: '场景内雷达平均目标数，从雷达数据聚合' },
+          { name: 'radar_nearest_m',       type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内雷达最近目标距离（米），近距驾驶场景识别用' },
+          { name: 'radar_has_oncoming',    type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否有迎面车（径向速度 v_r > 5m/s）' },
+
+          { name: 'dedup_hash',            type: 'STRING',       nullable: true,  pk: false, desc: '场景感知哈希（pHash），Hamming 距离 < 8 则标记重复' },
+          { name: 'clip_embedding',        type: 'BINARY',       nullable: true,  pk: false, desc: 'CLIP ViT-L/14 场景嵌入（FP16，512维），余弦相似度 > 0.95 则去重' },
+          { name: 'is_duplicate',          type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否被标记为重复（去重后丢弃）' },
+          { name: 'annotation_status',     type: 'STRING',       nullable: false, pk: false, desc: '标注状态：pending / auto_labeled / human_reviewed / rejected' },
+          { name: 'dataset_split',         type: 'STRING',       nullable: true,  pk: false, desc: '训练集划分 train/val/test' },
+          { name: 'dataset_version',       type: 'STRING',       nullable: true,  pk: false, desc: '所属数据集版本（Gold 层打包后回填）' },
+          { name: 'webdataset_shard',      type: 'STRING',       nullable: true,  pk: false, desc: 'WebDataset shard 路径（Gold 层打包后回填，训练直接读取）' },
         ],
-        volumeRef: '无 Volume，此表是所有模态的汇聚索引',
-        note: '⚠️ scene_index 是训练采样的唯一入口。训练时先 SQL 过滤 scene_id 列表，再通过 webdataset_shard 字段读取 WebDataset shard，不直接 JOIN 帧级表',
-        joinExample: '-- 正确的训练采样方式（通过 webdataset_shard 桥接）\nSELECT DISTINCT webdataset_shard\nFROM processed_data.scenes.scene_index\nWHERE annotation_status = \'human_reviewed\'\n  AND weather = \'rain\'\n  AND dataset_version = \'v2.3.0\'\n  AND dataset_split = \'train\'\n-- 返回 shard 路径列表，交给 WebDataset 流式读取',
+        volumeRef: '无 Volume，此表是所有模态的汇聚入口。雷达和 CAN 原始帧级数据均在 MCAP 文件中，通过 session_id 关联 session_index 可访问。',
+        note: '⚠️ 雷达和 CAN 不建帧级 Iceberg 表。训练时所需的雷达/CAN 信息均已聚合到此表字段中；原始帧级数据如需可从 MCAP 文件按时间范围解码。',
+        joinExample: '-- 训练采样：完全不需要 JOIN
+SELECT webdataset_shard
+FROM processed_data.scenes.scene_index
+WHERE annotation_status = \'human_reviewed\'
+  AND is_duplicate = false
+  AND weather = \'rain\'
+  AND radar_nearest_m < 20   -- 直接用聚合字段过滤，无需 JOIN 雷达表
+  AND has_takeover = false
+  AND dataset_version = \'v2.3.0\'',
       },
     ],
 
@@ -1460,16 +1387,11 @@ ORDER BY l.timestamp_us`,
       title: '多模态表关联关系（以 scene_id / frame_id 为核心）',
       centerTable: 'processed_data.scenes.scene_index',
       relations: [
-        { from: 'scene_index', to: 'camera.frames_v2',    key: 'scene_id',  type: '1:N', desc: '一个场景含多个相机帧' },
-        { from: 'scene_index', to: 'lidar.pointcloud_v2', key: 'scene_id',  type: '1:N', desc: '一个场景含多个点云帧' },
-        { from: 'scene_index', to: 'radar.radar_4d_v1',   key: 'scene_id',  type: '1:N', desc: '一个场景含多个雷达帧' },
-        { from: 'scene_index', to: 'vehicle.can_bus',     key: 'scene_id',  type: '1:N', desc: '一个场景含多条 CAN 记录' },
-        { from: 'scene_index', to: 'annotations.bbox_3d', key: 'scene_id',  type: '1:N', desc: '一个场景含多个标注框' },
-        { from: 'camera.frames_v2', to: 'annotations.bbox_3d', key: 'frame_id', type: '1:N', desc: '一帧含多个标注框' },
-        { from: 'lidar.pointcloud_v2', to: 'annotations.bbox_3d', key: 'frame_id', type: '1:N', desc: '点云帧与标注框关联' },
-        { from: 'camera.frames_v2', to: 'lidar.pointcloud_v2', key: 'scene_id + timestamp_us', type: '1:1', desc: '相机帧与点云帧时序对齐' },
-        { from: 'camera.frames_v2', to: 'radar.radar_4d_v1', key: 'scene_id + timestamp_us', type: '1:N', desc: '相机帧与雷达帧时序对齐（±5ms）' },
-        { from: 'camera.video_sessions', to: 'camera.frames_v2', key: 'session_id', type: '1:N', desc: '视频 Session 与抽帧关联' },
+        { from: 'scene_index',        to: 'sessions.session_index',  key: 'session_id',       type: 'N:1', desc: '多个场景来自同一个 Session（MCAP 文件），通过 session_id 关联' },
+        { from: 'scene_index',        to: 'lidar.lidar_frames',      key: 'scene_id',         type: '1:N', desc: '一个场景含多个 LiDAR 帧（唯一有帧级表的模态）' },
+        { from: 'scene_index',        to: 'annotations.bbox_3d',     key: 'scene_id',         type: '1:N', desc: '一个场景含多个 3D 标注框' },
+        { from: 'lidar.lidar_frames', to: 'annotations.bbox_3d',     key: 'frame_id',         type: '1:N', desc: 'LiDAR 帧与标注框精确关联（帧级对应）' },
+        { from: 'scene_index',        to: 'WebDataset shard',        key: 'webdataset_shard', type: '1:1', desc: '场景对应的训练数据包（相机/LiDAR/雷达/CAN 均已打包，雷达/CAN 聚合字段也在 scene_index 中）' },
       ],
       queryExample: `-- 获取训练样本：场景 + 相机帧路径 + 点云路径 + 雷达点云 + 3D 标注
 SELECT
@@ -1481,22 +1403,17 @@ SELECT
   c.extrinsic_json,
   l.file_path        AS lidar_path,
   l.ego_pose_json,
-  r.points           AS radar_points,
+  s.radar_nearest_m  AS radar_nearest_m,   -- 雷达聚合字段，无需 JOIN
+  s.avg_speed_mps    AS speed_mps,          -- CAN 聚合字段，无需 JOIN
   COLLECT_LIST(b.*)  AS annotations
 FROM processed_data.scenes.scene_index s
-JOIN raw_data.camera.frames_v2 c
-  ON s.scene_id = c.scene_id AND c.camera_id = 'front'
-JOIN raw_data.lidar.pointcloud_v2 l
+JOIN raw_data.lidar.lidar_frames l
   ON s.scene_id = l.scene_id
-  AND ABS(l.timestamp_us - c.timestamp_us) < 1000
-LEFT JOIN raw_data.radar.radar_4d_v1 r
-  ON s.scene_id = r.scene_id AND r.radar_id = 'front'
-  AND ABS(r.timestamp_us - c.timestamp_us) < 5000
 LEFT JOIN processed_data.annotations.bbox_3d b
   ON b.frame_id = l.frame_id
 WHERE s.dataset_version = 'v2.3.0'
   AND s.dataset_split  = 'train'
-  AND s.has_annotation = true
+  AND s.annotation_status = 'human_reviewed'
 GROUP BY s.scene_id, s.weather, s.scenario_tags,
          c.file_path, c.intrinsic_json, c.extrinsic_json,
          l.file_path, l.ego_pose_json, r.points`,
@@ -1690,17 +1607,12 @@ def pack_scenes_to_shard(scene_ids: list, shard_path: str):
             # 从 Iceberg 查询该 scene 的所有对齐帧
             frames = query_iceberg(f"""
                 SELECT l.frame_id, l.timestamp_us,
-                       l.file_path AS lidar_path,
-                       c.file_path AS cam_path,
-                       r.points    AS radar_points
-                FROM raw_data.lidar.pointcloud_v2 l
-                JOIN raw_data.camera.frames_v2 c
-                  ON l.scene_id = c.scene_id
-                  AND c.camera_id = 'front'
-                  AND ABS(c.timestamp_us - l.timestamp_us) < 5000
-                LEFT JOIN raw_data.radar.radar_4d_v1 r
-                  ON l.scene_id = r.scene_id
-                  AND ABS(r.timestamp_us - l.timestamp_us) < 10000
+                       l.pcd_path AS lidar_path,
+                       s.radar_nearest_m,   -- 雷达聚合字段，无需 JOIN
+                       s.avg_speed_mps      -- CAN 聚合字段，无需 JOIN
+                FROM raw_data.lidar.lidar_frames l
+                JOIN processed_data.scenes.scene_index s
+                  ON l.scene_id = s.scene_id
                 WHERE l.scene_id = '{scene_id}'
                 ORDER BY l.timestamp_us
             """)
