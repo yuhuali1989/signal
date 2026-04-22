@@ -202,20 +202,22 @@ function K8sTab() {
 // 3. 数据湖仓 — 自动驾驶多模态存储方案
 // ─────────────────────────────────────────────────────────────
 function DatalakeTab() {
-  const { dataChain, modalSpecs, icebergSchemas, edgeClient, trainDatasetBuild, ioOptimization,
+  const { dataChain, modalSpecs, icebergSchemas, edgeClient, webdatasetData,
+          trainDatasetBuild, ioOptimization,
           icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
   const [activeSubTab, setActiveSubTab] = useState('client');
   const [selectedTable, setSelectedTable] = useState(null);
 
   const SUB_TABS = [
-    { id: 'client',   label: '车端采集客户端', icon: '🚗' },
-    { id: 'chain',    label: '数据链路',     icon: '🔗' },
-    { id: 'schema',   label: 'Schema 设计',  icon: '📐' },
-    { id: 'modal',    label: '模态存储规格', icon: '📦' },
-    { id: 'train',    label: '训练集构建',   icon: '🧠' },
-    { id: 'io',       label: 'IO 优化',      icon: '⚡' },
-    { id: 'iceberg',  label: 'Iceberg',      icon: '🧊' },
-    { id: 'lakefs',   label: 'LakeFS 版本',  icon: '🌿' },
+    { id: 'client',     label: '车端采集客户端', icon: '🚗' },
+    { id: 'chain',      label: '数据链路',       icon: '🔗' },
+    { id: 'schema',     label: 'Schema 设计',    icon: '📐' },
+    { id: 'webdataset', label: 'WebDataset',     icon: '📼' },
+    { id: 'modal',      label: '模态存储规格',   icon: '📦' },
+    { id: 'train',      label: '训练集构建',     icon: '🧠' },
+    { id: 'io',         label: 'IO 优化',        icon: '⚡' },
+    { id: 'iceberg',    label: 'Iceberg',        icon: '🧊' },
+    { id: 'lakefs',     label: 'LakeFS 版本',    icon: '🌿' },
   ];
 
   return (
@@ -836,6 +838,206 @@ function DatalakeTab() {
               <pre className="text-[8px] font-mono text-gray-600 whitespace-pre-wrap leading-relaxed overflow-x-auto">{icebergSchemas.erDiagram.queryExample}</pre>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── WebDataset ── */}
+      {activeSubTab === 'webdataset' && (
+        <div className="space-y-4">
+          {/* 定位卡片 */}
+          <div className="rounded-2xl border p-5"
+            style={{ borderColor: '#e17055' + '30', background: '#e17055' + '05' }}>
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">📼</span>
+              <div>
+                <div className="text-sm font-bold text-gray-800 mb-1">{webdatasetData.title}</div>
+                <div className="text-[10px] text-gray-500 mb-2">{webdatasetData.concept.oneLiner}</div>
+                <div className="text-[9px] font-semibold text-[#e17055] mb-3">
+                  💡 {webdatasetData.concept.keyIdea}
+                </div>
+                {/* 性能速览 */}
+                <div className="grid grid-cols-3 gap-2">
+                  {webdatasetData.perfNumbers.slice(0,3).map(p => (
+                    <div key={p.metric} className="rounded-xl border border-[#e17055]/15 bg-white/80 p-2">
+                      <div className="text-[8px] text-gray-400 mb-1">{p.metric}</div>
+                      <div className="text-[8px] text-gray-400 line-through mb-0.5">{p.singleFile}</div>
+                      <div className="text-[9px] font-bold" style={{ color: '#e17055' }}>{p.webdataset}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* tar 包结构 */}
+          <SectionCard icon="📦" title="Shard 内部结构（tar 包）"
+            desc={`1 Shard = ${webdatasetData.concept.shardDesign.unit}，大小 ${webdatasetData.concept.shardDesign.size}`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* 文件列表 */}
+              <div>
+                <div className="text-[9px] font-semibold text-gray-600 mb-2">📄 文件命名约定</div>
+                <div className="space-y-1">
+                  {webdatasetData.concept.tarLayout.map((f, i) => (
+                    <div key={i} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/30 p-1.5">
+                      <span className="text-[8px] font-mono text-[#e17055] w-52 flex-shrink-0">{f.file}</span>
+                      <span className="text-[8px] text-gray-400">{f.desc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Shard 设计 */}
+              <div>
+                <div className="text-[9px] font-semibold text-gray-600 mb-2">📐 Shard 粒度设计</div>
+                <div className="space-y-2">
+                  {[['单元', webdatasetData.concept.shardDesign.unit],
+                    ['大小', webdatasetData.concept.shardDesign.size],
+                    ['总量', webdatasetData.concept.shardDesign.totalShards],
+                    ['命名', webdatasetData.concept.shardDesign.naming],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex items-center gap-2 text-[9px]">
+                      <span className="text-gray-400 w-8 flex-shrink-0">{k}</span>
+                      <span className="font-mono" style={{ color: '#e17055' }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3">
+                  <div className="text-[9px] font-semibold text-gray-600 mb-1">为什么是 ~1GB？</div>
+                  {webdatasetData.concept.shardDesign.whyOneGB.map((r, i) => (
+                    <div key={i} className="text-[8px] text-gray-500 mb-0.5">· {r}</div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </SectionCard>
+
+          {/* 与 Iceberg 分工 */}
+          <SectionCard icon="⚖️" title={webdatasetData.vsIceberg.title}
+            desc={webdatasetData.vsIceberg.analogy}>
+            {/* 能力对比矩阵 */}
+            <div className="overflow-x-auto mb-4">
+              <table className="w-full text-[9px]">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left py-1.5 px-2 text-gray-400 font-medium">能力</th>
+                    <th className="text-center py-1.5 px-2 font-semibold" style={{ color: '#e17055' }}>WebDataset</th>
+                    <th className="text-center py-1.5 px-2 font-semibold text-[#00cec9]">Iceberg</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {webdatasetData.vsIceberg.comparison.map((row, i) => (
+                    <tr key={row.capability} className={`border-b border-gray-50 ${i % 2 === 0 ? 'bg-gray-50/20' : ''}`}>
+                      <td className="py-1.5 px-2 text-gray-600 font-medium">{row.capability}</td>
+                      <td className="py-1.5 px-2 text-center text-[9px]"
+                        style={{ color: row.winner === 'wds' ? '#e17055' : '#94a3b8',
+                                 fontWeight: row.winner === 'wds' ? 600 : 400 }}>
+                        {row.webdataset}
+                      </td>
+                      <td className="py-1.5 px-2 text-center text-[9px]"
+                        style={{ color: row.winner === 'ice' ? '#00cec9' : '#94a3b8',
+                                 fontWeight: row.winner === 'ice' ? 600 : 400 }}>
+                        {row.iceberg}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* 协作工作流 */}
+            <div className="rounded-xl border border-[#a29bfe]/20 bg-[#a29bfe]/04 p-3 mb-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-3">
+                {webdatasetData.vsIceberg.workflow.title}
+              </div>
+              <div className="space-y-3">
+                {webdatasetData.vsIceberg.workflow.steps.map((s, i) => (
+                  <div key={s.step}>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-base">{s.icon}</span>
+                      <span className="text-xs font-semibold text-gray-800">{s.step}</span>
+                      <span className="text-[9px] text-gray-400">{s.desc}</span>
+                    </div>
+                    <pre className="text-[8px] font-mono rounded-lg p-2.5 leading-relaxed overflow-x-auto"
+                      style={{ background: s.color + '10', color: s.color, border: `1px solid ${s.color}20` }}>
+                      {s.code}
+                    </pre>
+                    {i < webdatasetData.vsIceberg.workflow.steps.length - 1 && (
+                      <div className="text-center text-[9px] text-gray-300 py-1">↓ shard 路径列表传递</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* 桥梁字段说明 */}
+            <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
+              <div className="text-[9px] font-semibold text-gray-700 mb-1">🌉 桥梁字段</div>
+              <div className="text-[9px] text-gray-500">
+                <span className="font-mono text-[#00cec9]">{webdatasetData.vsIceberg.workflow.bridgeField.table}</span>
+                {' 表的 '}
+                <span className="font-mono font-bold text-[#e17055]">{webdatasetData.vsIceberg.workflow.bridgeField.field}</span>
+                {' 字段：'}
+                {webdatasetData.vsIceberg.workflow.bridgeField.desc}
+              </div>
+            </div>
+          </SectionCard>
+
+          {/* 打包流程 */}
+          <SectionCard icon="🏭" title={webdatasetData.packingPipeline.title}
+            desc={webdatasetData.packingPipeline.desc}>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {webdatasetData.packingPipeline.steps.map((s, i) => (
+                <div key={s.step} className="flex items-center gap-1.5">
+                  <div className="rounded-lg px-2 py-1 text-[9px] font-semibold"
+                    style={{ background: s.color + '15', color: s.color }}>
+                    {s.step}
+                  </div>
+                  <div className="text-[8px] text-gray-400 max-w-[120px]">{s.desc}</div>
+                  {i < webdatasetData.packingPipeline.steps.length - 1 && (
+                    <span className="text-gray-200 text-xs">→</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+              style={{ background: '#e17055' + '08', color: '#e17055', border: '1px solid #e1705520' }}>
+              {webdatasetData.packingPipeline.code}
+            </pre>
+          </SectionCard>
+
+          {/* 训练侧读取 */}
+          <SectionCard icon="🚀" title={webdatasetData.trainingRead.title} desc="">
+            <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto mb-3"
+              style={{ background: '#e17055' + '08', color: '#e17055', border: '1px solid #e1705520' }}>
+              {webdatasetData.trainingRead.code}
+            </pre>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {webdatasetData.trainingRead.keyPoints.map(kp => (
+                <div key={kp.point} className="rounded-xl border border-[#e17055]/15 bg-[#e17055]/04 p-2">
+                  <div className="text-[9px] font-mono font-bold text-[#e17055] mb-0.5">{kp.point}</div>
+                  <div className="text-[8px] text-gray-500">{kp.desc}</div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* 局限性 */}
+          <SectionCard icon="⚠️" title="局限性与解决方案" desc="WebDataset 不是银弹，了解局限才能正确使用">
+            <div className="space-y-2">
+              {webdatasetData.limitations.map(lim => (
+                <div key={lim.problem} className="rounded-xl border p-3"
+                  style={{ borderColor: lim.color + '25', background: lim.color + '04' }}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-base">{lim.icon}</span>
+                    <span className="text-xs font-semibold text-gray-800">{lim.problem}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500 mb-1.5">{lim.detail}</p>
+                  <div className="text-[9px] rounded-lg px-2 py-1 inline-block"
+                    style={{ background: lim.color + '12', color: lim.color }}>
+                    ✅ 解决方案: {lim.solution}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
         </div>
       )}
 

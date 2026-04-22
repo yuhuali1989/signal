@@ -995,6 +995,245 @@ GROUP BY s.scene_id, s.weather, s.scenario_tags,
     },
   ],
 
+  // ── WebDataset 详解 ───────────────────────────────────────────
+  webdatasetData: {
+    title: 'WebDataset — 训练 IO 层',
+    subtitle: '基于 tar 包的流式数据集格式，解决大规模训练的 IO 瓶颈，与 Iceberg 互补分工',
+    color: '#e17055',
+
+    // 核心概念
+    concept: {
+      oneLiner: '把"一个样本的所有模态文件"打包进 tar，按顺序流式读取，彻底消灭小文件问题',
+      keyIdea: '命名约定驱动对齐：同一前缀（000000）的所有文件自动识别为同一样本',
+      tarLayout: [
+        { file: 'scene_0042_000000.jpg',        desc: '前摄像头帧（~150KB）' },
+        { file: 'scene_0042_000000.lidar.npy',  desc: '对应点云矩阵（~500KB）' },
+        { file: 'scene_0042_000000.radar.json', desc: '对应雷达点云（~5KB）' },
+        { file: 'scene_0042_000000.label.json', desc: '3D 标注框（~10KB）' },
+        { file: 'scene_0042_000000.pose.json',  desc: '车体位姿（~1KB）' },
+        { file: 'scene_0042_000001.jpg',        desc: '下一帧...' },
+        { file: '...',                           desc: '共 400 帧（20s × 20Hz）' },
+        { file: 'scene_0042_meta.json',         desc: 'Scene 级元数据（天气/城市/标签）' },
+      ],
+      shardDesign: {
+        unit: '1 Shard = ~50 个 Scene',
+        size: '~1 GB（经验最优值）',
+        totalShards: '~50K shards（500K 场景 ÷ 50）',
+        naming: 'camera_lidar_{000000..049999}.tar',
+        whyOneGB: [
+          '< 100MB：shard 数量多，S3 LIST 开销大，调度复杂',
+          '> 5GB：单 shard 读取时间长，GPU 等待，流水线气泡大',
+          '~1GB：约 50 Scene，读取时间 ~0.5s，流水线填充充分',
+        ],
+      },
+    },
+
+    // 与 Iceberg 的分工（核心）
+    vsIceberg: {
+      title: 'WebDataset vs Iceberg — 分工与协作',
+      analogy: 'Iceberg 是导航系统（规划路线），WebDataset 是高速公路（高速行驶）。先导航，再上高速。',
+      comparison: [
+        { capability: '训练 IO 吞吐',     webdataset: '✅ ~2 GB/s 顺序读',       iceberg: '❌ 不负责 IO',              winner: 'wds' },
+        { capability: '条件过滤查询',     webdataset: '❌ 无法，需全量扫描',      iceberg: '✅ SQL WHERE 谓词下推',      winner: 'ice' },
+        { capability: '聚合统计',         webdataset: '❌ 无法',                  iceberg: '✅ GROUP BY / COUNT',        winner: 'ice' },
+        { capability: '行级删除/更新',    webdataset: '❌ 需重新打包整个 shard',  iceberg: '✅ ACID 事务，秒级完成',     winner: 'ice' },
+        { capability: 'Schema 演化',      webdataset: '❌ 无 schema 概念',        iceberg: '✅ 无缝加字段',              winner: 'ice' },
+        { capability: '数据版本管理',     webdataset: '❌ 文件级别，无快照',      iceberg: '✅ 快照级，Time Travel',     winner: 'ice' },
+        { capability: '数据血缘追踪',     webdataset: '❌ 无',                    iceberg: '✅ 列级血缘',                winner: 'ice' },
+        { capability: '行/列级权限控制',  webdataset: '❌ 只有 S3 桶级别',        iceberg: '✅ RBAC + ABAC',             winner: 'ice' },
+        { capability: '多模态 JOIN',      webdataset: '⚠️ 依赖打包时对齐',       iceberg: '✅ SQL JOIN 任意组合',       winner: 'ice' },
+        { capability: '增量写入',         webdataset: '❌ 需重新打包',            iceberg: '✅ 流式追加',                winner: 'ice' },
+        { capability: 'GPU 喂数据效率',   webdataset: '✅ 流式，无随机 IO',       iceberg: '❌ 不直接用于训练',          winner: 'wds' },
+        { capability: '小文件问题',       webdataset: '✅ tar 打包，无小文件',    iceberg: '⚠️ 元数据表行数多',         winner: 'wds' },
+      ],
+      workflow: {
+        title: '协作工作流（两步走）',
+        steps: [
+          {
+            step: 'Step 1：Iceberg 筛选',
+            desc: '用 SQL 从 scene_index 表过滤出目标场景，得到 shard 路径列表',
+            code: `SELECT DISTINCT webdataset_shard
+FROM processed_data.scenes.scene_index
+WHERE weather = 'rain'
+  AND has_pedestrian = true
+  AND dataset_version = 'v2.3.0'
+  AND dataset_split = 'train'
+-- 返回 200 个 shard 路径（而非全量 50K）`,
+            color: '#00cec9',
+            icon: '🔍',
+          },
+          {
+            step: 'Step 2：WebDataset 训练',
+            desc: '只读筛选出的 200 个 shard，流式喂给 GPU，IO 吞吐 ~2 GB/s',
+            code: `import webdataset as wds
+
+shards = iceberg_query_result  # 200 个 shard 路径
+dataset = (
+    wds.WebDataset(shards, shardshuffle=True)
+    .decode("rgb8")
+    .to_tuple("jpg", "lidar.npy", "label.json")
+    .shuffle(buffer_size=1000)   # 跨 shard buffer shuffle
+    .map(preprocess_fn)
+    .batched(32)
+)
+loader = DataLoader(dataset, num_workers=8)`,
+            color: '#e17055',
+            icon: '🚀',
+          },
+        ],
+        bridgeField: {
+          table: 'processed_data.scenes.scene_index',
+          field: 'webdataset_shard',
+          desc: '这个字段是 Iceberg 和 WebDataset 的桥梁：Iceberg 负责筛选 scene_id，通过此字段找到对应的 shard 路径，WebDataset 负责高效读取',
+        },
+      },
+    },
+
+    // 打包流程（Ray 实现）
+    packingPipeline: {
+      title: '打包流程（Silver → Gold WebDataset shard）',
+      desc: '用 Ray 并行打包，每个 worker 负责 50 个 Scene，输出 1 个 shard',
+      steps: [
+        { step: '① Iceberg 采样', desc: 'Trino SQL 按分层策略采样 500K scene_id，保证多样性', color: '#6c5ce7' },
+        { step: '② 时序对齐', desc: '对每个 scene，按 LiDAR 时间戳对齐相机/雷达/CAN，生成对齐帧列表', color: '#00cec9' },
+        { step: '③ Ray 并行打包', desc: '每个 Ray worker 处理 50 个 scene，读取 S3 文件，写入 tar shard', color: '#e17055' },
+        { step: '④ Iceberg 回写', desc: '打包完成后，将 shard_path 回写到 scene_index.webdataset_shard 字段', color: '#3fb950' },
+        { step: '⑤ LakeFS 版本化', desc: 'LakeFS commit 打 tag dataset_v2.3.0，绑定 shard 快照', color: '#ffa657' },
+      ],
+      code: `@ray.remote
+def pack_scenes_to_shard(scene_ids: list, shard_path: str):
+    """将 50 个 scene 打包为 1 个 WebDataset shard（~1GB）"""
+    with wds.TarWriter(shard_path) as sink:
+        for scene_id in scene_ids:
+            # 从 Iceberg 查询该 scene 的所有对齐帧
+            frames = query_iceberg(f"""
+                SELECT l.frame_id, l.timestamp_us,
+                       l.file_path AS lidar_path,
+                       c.file_path AS cam_path,
+                       r.points    AS radar_points
+                FROM raw_data.lidar.pointcloud_v2 l
+                JOIN raw_data.camera.frames_v2 c
+                  ON l.scene_id = c.scene_id
+                  AND c.camera_id = 'front'
+                  AND ABS(c.timestamp_us - l.timestamp_us) < 5000
+                LEFT JOIN raw_data.radar.radar_4d_v1 r
+                  ON l.scene_id = r.scene_id
+                  AND ABS(r.timestamp_us - l.timestamp_us) < 10000
+                WHERE l.scene_id = '{scene_id}'
+                ORDER BY l.timestamp_us
+            """)
+            for i, frame in enumerate(frames):
+                key = f"{scene_id}_{i:06d}"
+                sink.write({
+                    "__key__":    key,
+                    "jpg":        read_s3(frame.cam_path),
+                    "lidar.npy":  pointcloud_to_numpy(frame.lidar_path),
+                    "radar.json": json.dumps(frame.radar_points).encode(),
+                    "label.json": get_annotations(frame.frame_id),
+                    "pose.json":  get_ego_pose(frame.frame_id),
+                })
+    # 回写 shard 路径到 Iceberg
+    update_scene_shard_ref(scene_ids, shard_path)
+
+# 并行打包 50K shards
+ray.get([
+    pack_scenes_to_shard.remote(batch, f"s3://gold/shards/shard_{i:06d}.tar")
+    for i, batch in enumerate(chunks(all_scene_ids, 50))
+])`,
+    },
+
+    // 训练侧读取
+    trainingRead: {
+      title: '训练侧读取（PyTorch DataLoader）',
+      code: `import webdataset as wds
+from torch.utils.data import DataLoader
+
+# Step 1: Iceberg 筛选目标 shard（只读 10% 的 shard）
+target_shards = trino.query("""
+    SELECT DISTINCT webdataset_shard
+    FROM processed_data.scenes.scene_index
+    WHERE weather IN ('rain', 'fog') AND has_pedestrian = true
+""").to_list()
+
+# Step 2: WebDataset 流式读取
+dataset = (
+    wds.WebDataset(
+        target_shards,
+        shardshuffle=True,      # shard 级别 shuffle（跨节点分发）
+        resampled=True,         # 无限循环，适合多 epoch 训练
+        handler=wds.warn_and_continue,  # 跳过损坏的 shard
+    )
+    .decode("rgb8")             # JPEG → numpy uint8 自动解码
+    .to_tuple("jpg", "lidar.npy", "label.json", "pose.json")
+    .shuffle(buffer_size=2000)  # 内存 buffer shuffle（跨 shard 混洗）
+    .map(preprocess_multimodal) # 数据增强 + 坐标系转换
+    .batched(32, partial=False) # 固定 batch size
+)
+
+loader = DataLoader(
+    dataset,
+    num_workers=8,          # 每个 worker 负责不同 shard
+    pin_memory=True,        # 锁页内存，加速 CPU→GPU 传输
+    persistent_workers=True # worker 复用，避免重复初始化
+)`,
+      keyPoints: [
+        { point: 'shardshuffle=True', desc: 'shard 级别 shuffle，不同训练节点读取不同 shard，天然无锁并行' },
+        { point: 'buffer_size=2000', desc: '内存中保留 2000 个样本的 buffer，随机采样，补偿 shard 内时序相关性' },
+        { point: 'num_workers=8', desc: '每个 worker 独立读取一个 shard，8 个 worker 同时流式读取 8 个 shard' },
+        { point: 'resampled=True', desc: '无限循环模式，适合多 epoch 训练，自动 reshuffle' },
+      ],
+    },
+
+    // 局限性与解决方案
+    limitations: [
+      {
+        problem: '随机访问困难',
+        detail: '调试时想看某一帧，需要知道它在哪个 shard 的哪个字节偏移',
+        solution: 'Iceberg frames_v2 表新增 shard_path + frame_offset_bytes 字段，用 tarfile.extractfile(offset) 定位',
+        color: '#ff7b72',
+        icon: '🔍',
+      },
+      {
+        problem: 'Shard 内 shuffle 不充分',
+        detail: '同一 shard 内的帧来自相同时间段，时序相关性强，影响训练收敛',
+        solution: 'shardshuffle=True（shard 级）+ shuffle(buffer_size=2000)（样本级）双重 shuffle',
+        color: '#ffa657',
+        icon: '🔀',
+      },
+      {
+        problem: '增量更新麻烦',
+        detail: '新数据来了，不能直接追加到已有 shard，必须新建 shard',
+        solution: '新数据攒成新 shard（shard_v2.3.1_*.tar），Iceberg 表记录版本，训练时合并读取多版本 shard',
+        color: '#79c0ff',
+        icon: '➕',
+      },
+      {
+        problem: '多模态对齐依赖打包时正确性',
+        detail: '000000.jpg 和 000000.lidar.npy 必须严格对应同一时刻，框架不做校验',
+        solution: '打包时写入 000000.meta.json（含 timestamp_us），训练侧读取后校验时间戳差值 < 5ms',
+        color: '#a29bfe',
+        icon: '⚠️',
+      },
+      {
+        problem: '不支持列裁剪',
+        detail: '读取 shard 时必须解压整个样本，即使只需要相机帧，点云也会被读取',
+        solution: '按模态拆分 shard（camera_only_*.tar / lidar_only_*.tar），单模态任务只读对应 shard',
+        color: '#fd79a8',
+        icon: '📦',
+      },
+    ],
+
+    // 性能数据
+    perfNumbers: [
+      { metric: 'S3 文件数（1000辆/天）', singleFile: '~2.16 亿个 JPEG', webdataset: '~2000 个 shard', winner: 'wds' },
+      { metric: '训练 IO 吞吐',           singleFile: '~50 MB/s（随机）', webdataset: '~2 GB/s（顺序）', winner: 'wds' },
+      { metric: 'GPU 利用率',             singleFile: '40~60%（IO 瓶颈）', webdataset: '90%+',           winner: 'wds' },
+      { metric: 'S3 PUT 请求费用/天',     singleFile: '极高（×2.16亿）',  webdataset: '低（×2000）',    winner: 'wds' },
+      { metric: '随机访问单帧',           singleFile: '✅ 直接',          webdataset: '⚠️ 需 offset',   winner: 'single' },
+      { metric: '条件过滤',               singleFile: '❌ 无法',          webdataset: '❌ 无法（需 Iceberg）', winner: 'none' },
+    ],
+  },
+
   // ── 训练数据集构建流程 ─────────────────────────────────────────
   trainDatasetBuild: {
     title: '训练数据集构建（Gold → 训练就绪）',
