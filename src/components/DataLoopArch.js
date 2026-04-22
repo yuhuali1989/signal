@@ -12,6 +12,7 @@ import {
   MONITOR_LAYER,
   INFRA_OVERVIEW,
   DATA_FLOW_STATS,
+  UNITY_CATALOG_LAYER,
   MULTIMODAL_LAYER,
   SCENE_MINE_LAYER,
   ANNOTATION_QA_LAYER,
@@ -359,72 +360,242 @@ function ProcessSection() {
 // ─────────────────────────────────────────────────────────────────────────────
 function StoreSection() {
   const { tiers, dataLake, featureStore, scale } = STORE_LAYER;
+  const uc = UNITY_CATALOG_LAYER;
+  const [activeTab, setActiveTab] = useState('storage');
 
   return (
     <div className="space-y-4">
-      {/* 分层存储 */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-5">
-        <SectionTitle icon="📦" title="分层存储" desc="热/温/冷三级存储，自动生命周期管理" />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {tiers.map(t => (
-            <div key={t.name} className="rounded-xl border p-4 text-center"
-              style={{ borderColor: t.color + '33', background: t.color + '06' }}>
-              <div className="text-2xl mb-2">{t.icon}</div>
-              <div className="text-sm font-semibold text-gray-800 mb-1">{t.name}</div>
-              <div className="text-[10px] font-mono mb-2" style={{ color: t.color }}>{t.tech}</div>
-              <div className="text-[10px] text-gray-500 mb-1">{t.data}</div>
-              <div className="flex items-center justify-center gap-3 text-[9px] text-gray-400">
-                <span>延迟: {t.latency}</span>
-                <span>成本: {t.cost}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Tab 切换 */}
+      <div className="flex gap-2 flex-wrap">
+        {[
+          { id: 'storage',  label: '分层存储',       icon: '📦' },
+          { id: 'catalog',  label: 'Unity Catalog',  icon: '🗂️' },
+          { id: 'lineage',  label: '数据血缘',       icon: '🔗' },
+          { id: 'access',   label: '访问控制',       icon: '🔐' },
+          { id: 'quality',  label: '数据质量',       icon: '✅' },
+          { id: 'features', label: '特征仓库',       icon: '🍽️' },
+        ].map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeTab === t.id ? '#ffa657' : 'transparent',
+              color: activeTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeTab === t.id ? '#ffa657' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
       </div>
 
-      {/* 数据湖 */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-5">
-        <SectionTitle icon="🏞️" title="数据湖架构" desc="Apache Iceberg + LakeFS 实现 Git-like 数据版本管理" />
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-          {Object.entries(dataLake).map(([key, value]) => (
-            <div key={key} className="rounded-lg border border-gray-100 bg-gray-50/50 p-2.5">
-              <div className="text-[9px] text-gray-400 mb-0.5">{key}</div>
-              <div className="text-[10px] font-mono text-gray-700">{value}</div>
+      {/* 分层存储 */}
+      {activeTab === 'storage' && (
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="📦" title="分层存储" desc="热/温/冷三级存储，自动生命周期管理" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {tiers.map(t => (
+                <div key={t.name} className="rounded-xl border p-4 text-center"
+                  style={{ borderColor: t.color + '33', background: t.color + '06' }}>
+                  <div className="text-2xl mb-2">{t.icon}</div>
+                  <div className="text-sm font-semibold text-gray-800 mb-1">{t.name}</div>
+                  <div className="text-[10px] font-mono mb-2" style={{ color: t.color }}>{t.tech}</div>
+                  <div className="text-[10px] text-gray-500 mb-1">{t.data}</div>
+                  <div className="flex items-center justify-center gap-3 text-[9px] text-gray-400">
+                    <span>延迟: {t.latency}</span>
+                    <span>成本: {t.cost}</span>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="rounded-2xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-5">
+            <div className="text-xs font-semibold text-gray-700 mb-3">📊 存储规模</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {Object.entries(scale).map(([key, value]) => {
+                const labels = { totalVolume: '总存储量', dailyIngestion: '日入库量', annotatedData: '标注数据', trainReady: '训练就绪' };
+                return (
+                  <div key={key} className="rounded-lg border border-[#ffa657]/20 bg-white/80 p-3 text-center">
+                    <div className="text-sm font-semibold text-gray-800 font-mono">{value}</div>
+                    <div className="text-[9px] text-gray-400 mt-0.5">{labels[key] || key}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Unity Catalog 三层命名空间 */}
+      {activeTab === 'catalog' && (
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🗂️" title={uc.title} desc={uc.desc} color="#ffa657" />
+            <div className="mb-3 rounded-xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-1">{uc.namespace.title}</div>
+              <div className="text-[9px] text-gray-400">部署方式：{uc.deployment.recommended}</div>
+              <div className="text-[9px] font-mono text-[#ffa657] mt-0.5">{uc.deployment.repo} · {uc.deployment.version}</div>
+            </div>
+            <div className="space-y-3">
+              {uc.namespace.catalogs.map(cat => (
+                <div key={cat.name} className="rounded-xl border p-3"
+                  style={{ borderColor: cat.color + '30', background: cat.color + '05' }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">{cat.icon}</span>
+                    <span className="text-xs font-bold font-mono" style={{ color: cat.color }}>{cat.name}</span>
+                    <span className="text-[10px] text-gray-400">{cat.desc}</span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                    {cat.schemas.map(schema => (
+                      <div key={schema.name} className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                        <div className="text-[9px] font-mono font-semibold text-gray-600 mb-1">
+                          <span style={{ color: cat.color }}>.</span>{schema.name}
+                        </div>
+                        <div className="flex flex-wrap gap-0.5 mb-1">
+                          {schema.tables.map(t => (
+                            <span key={t} className="text-[8px] px-1 py-0.5 rounded font-mono"
+                              style={{ background: cat.color + '12', color: cat.color }}>{t}</span>
+                          ))}
+                        </div>
+                        <div className="text-[8px] text-gray-400">{schema.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 集成工具 */}
+          <div className="rounded-2xl border border-gray-100 bg-white p-5">
+            <SectionTitle icon="🔌" title="与现有工具集成" desc="Unity Catalog 作为统一元数据层，无缝接入现有数据栈" color="#ffa657" />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {uc.integrations.map(item => (
+                <div key={item.tool} className="rounded-xl border p-3"
+                  style={{ borderColor: item.color + '25', background: item.color + '05' }}>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-sm">{item.icon}</span>
+                    <span className="text-[10px] font-semibold text-gray-700">{item.tool}</span>
+                  </div>
+                  <p className="text-[9px] text-gray-400 leading-relaxed">{item.role}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 数据血缘 */}
+      {activeTab === 'lineage' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🔗" title={uc.lineage.title} desc={uc.lineage.desc} color="#ffa657" />
+          {/* 血缘链路 */}
+          <div className="space-y-2 mb-4">
+            {uc.lineage.chain.map((link, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="flex-1 rounded-lg border border-[#ffa657]/20 bg-[#ffa657]/5 p-2">
+                  <div className="text-[9px] font-mono text-gray-600">{link.from}</div>
+                </div>
+                <div className="flex flex-col items-center flex-shrink-0">
+                  <div className="text-[8px] text-gray-400 whitespace-nowrap">{link.op}</div>
+                  <div className="text-[#ffa657] text-xs">→</div>
+                  <div className="text-[8px] text-gray-300 whitespace-nowrap">{link.latency}</div>
+                </div>
+                <div className="flex-1 rounded-lg border border-[#3fb950]/20 bg-[#3fb950]/5 p-2">
+                  <div className="text-[9px] font-mono text-gray-600">{link.to}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* 血缘能力 */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {uc.lineage.capabilities.map(cap => (
+              <div key={cap.name} className="rounded-xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-3 text-center">
+                <div className="text-lg mb-1">{cap.icon}</div>
+                <div className="text-[10px] font-semibold text-gray-700 mb-0.5">{cap.name}</div>
+                <div className="text-[9px] text-gray-400">{cap.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 访问控制 */}
+      {activeTab === 'access' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🔐" title={uc.accessControl.title} desc="基于角色的细粒度权限，支持行级过滤和列级脱敏" color="#ffa657" />
+          <div className="space-y-2 mb-4">
+            {uc.accessControl.principals.map(p => (
+              <div key={p.role} className="flex items-start gap-3 rounded-xl border p-3"
+                style={{ borderColor: p.color + '25', background: p.color + '04' }}>
+                <span className="text-base flex-shrink-0">{p.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs font-semibold text-gray-700 mb-1">{p.role}</div>
+                  <div className="flex flex-wrap gap-1">
+                    {p.permissions.map(perm => (
+                      <span key={perm} className="text-[8px] px-1.5 py-0.5 rounded font-mono"
+                        style={{ background: p.color + '15', color: p.color }}>{perm}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="rounded-xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-1">🔍 行级过滤</div>
+              <div className="text-[9px] text-gray-500">{uc.accessControl.rowFilter}</div>
+            </div>
+            <div className="rounded-xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-1">🙈 列级脱敏</div>
+              <div className="text-[9px] text-gray-500">{uc.accessControl.columnMask}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 数据质量 */}
+      {activeTab === 'quality' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="✅" title={uc.dataQuality.title} desc={`引擎: ${uc.dataQuality.engine} · 告警: ${uc.dataQuality.alerting}`} color="#ffa657" />
+          <div className="space-y-2">
+            {uc.dataQuality.rules.map((r, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                <span className={`text-[9px] px-1.5 py-0.5 rounded font-semibold flex-shrink-0 ${
+                  r.severity === 'error' ? 'bg-red-50 text-red-500' : 'bg-yellow-50 text-yellow-600'
+                }`}>{r.severity}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[9px] font-mono text-gray-500 truncate">{r.table}</div>
+                  <div className="text-[10px] text-gray-700">{r.rule}</div>
+                </div>
+                <span className={`text-[8px] px-1.5 py-0.5 rounded flex-shrink-0 ${
+                  r.autoFix ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'
+                }`}>{r.autoFix ? '自动修复' : '人工处理'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 特征仓库 */}
-      <div className="rounded-2xl border border-gray-100 bg-white p-5">
-        <SectionTitle icon="🍽️" title="特征仓库 (Feature Store)" desc={`${featureStore.engine} — 预计算特征加速训练`} />
-        <div className="space-y-2">
-          {featureStore.features.map(f => (
-            <div key={f.name} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-              <span className="text-xs font-semibold text-gray-700 w-20">{f.name}</span>
-              <span className="text-[10px] font-mono text-[#6c5ce7]">{f.dim}</span>
-              <Badge color="#00cec9">{f.format}</Badge>
-              <span className="text-[10px] text-gray-400 ml-auto">{f.source}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 规模 */}
-      <div className="rounded-2xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-5">
-        <div className="text-xs font-semibold text-gray-700 mb-3">📊 存储规模</div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {Object.entries(scale).map(([key, value]) => {
-            const labels = { totalVolume: '总存储量', dailyIngestion: '日入库量', annotatedData: '标注数据', trainReady: '训练就绪' };
-            return (
-              <div key={key} className="rounded-lg border border-[#ffa657]/20 bg-white/80 p-3 text-center">
-                <div className="text-sm font-semibold text-gray-800 font-mono">{value}</div>
-                <div className="text-[9px] text-gray-400 mt-0.5">{labels[key] || key}</div>
+      {activeTab === 'features' && (
+        <div className="rounded-2xl border border-gray-100 bg-white p-5">
+          <SectionTitle icon="🍽️" title="特征仓库 (Feature Store)" desc={`${featureStore.engine} — 预计算特征加速训练`} />
+          <div className="space-y-2">
+            {featureStore.features.map(f => (
+              <div key={f.name} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                <span className="text-xs font-semibold text-gray-700 w-20">{f.name}</span>
+                <span className="text-[10px] font-mono text-[#6c5ce7]">{f.dim}</span>
+                <Badge color="#00cec9">{f.format}</Badge>
+                <span className="text-[10px] text-gray-400 ml-auto">{f.source}</span>
               </div>
-            );
-          })}
+            ))}
+          </div>
+          <div className="mt-3 rounded-xl border border-[#ffa657]/20 bg-[#ffa657]/5 p-3">
+            <div className="text-[10px] font-semibold text-gray-700 mb-1">📍 Unity Catalog 映射</div>
+            <div className="text-[9px] text-gray-500">特征定义存储于 <span className="font-mono text-[#ffa657]">feature_store.online.*</span> 和 <span className="font-mono text-[#ffa657]">feature_store.offline.*</span>，血缘自动追踪至原始传感器数据</div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -1023,7 +1194,7 @@ function ArchDiagram() {
           },
           {
             label: '存储层',
-            items: ['热存储 NVMe (<1ms)', '温存储 S3 (~10ms)', '冷存储 Glacier', 'Apache Iceberg 数据湖', 'LakeFS 版本管理', 'Feast 特征仓库', 'Trino 联邦查询'],
+            items: ['热存储 NVMe (<1ms)', '温存储 S3 (~10ms)', '冷存储 Glacier', 'Apache Iceberg 数据湖', 'Unity Catalog 元数据', 'LakeFS 版本管理', 'Feast 特征仓库', 'Trino 联邦查询'],
             color: '#ffa657',
             arrow: '↓ WebDataset · 并行文件系统 (Lustre)',
           },

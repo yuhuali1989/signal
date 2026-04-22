@@ -15,7 +15,7 @@ export const LOOP_OVERVIEW = {
     { id: 'process',     label: '数据处理',   icon: '⚙️', color: '#fd79a8', desc: '清洗 · 标注 · 质检 · 挖掘' },
     { id: 'multimodal',  label: '多模态融合', icon: '🔀', color: '#a29bfe', desc: 'BEV融合 · 时序对齐 · 跨模态标注' },
     { id: 'sceneMine',   label: '场景挖掘',   icon: '⛏️', color: '#e17055', desc: '长尾挖掘 · 困难样本 · 主动学习' },
-    { id: 'store',       label: '数据存储',   icon: '🗄️', color: '#ffa657', desc: '数据湖 + 特征仓库 + 版本管理' },
+    { id: 'store',       label: '数据存储',   icon: '🗄️', color: '#ffa657', desc: '数据湖 + Unity Catalog 元数据 + 特征仓库' },
     { id: 'train',       label: '模型训练',   icon: '🧠', color: '#3fb950', desc: 'VLA + 世界模型分布式训练' },
     { id: 'deploy',      label: '模型部署',   icon: '🚀', color: '#79c0ff', desc: '车端推理 + OTA 灰度发布' },
     { id: 'monitor',     label: '效果监控',   icon: '📊', color: '#d2a8ff', desc: '在线指标 + 触发回采策略' },
@@ -189,10 +189,10 @@ export const STORE_LAYER = {
   ],
   dataLake: {
     format: 'Apache Iceberg (表格式) + Parquet (列存)',
-    catalog: 'AWS Glue / Hive Metastore',
+    catalog: 'Unity Catalog (统一元数据管理)',
     query: 'Trino / Spark SQL',
     version: 'LakeFS (Git-like 数据版本管理)',
-    lineage: 'Apache Atlas (数据血缘追踪)',
+    lineage: 'Unity Catalog 内置血缘追踪',
   },
   featureStore: {
     engine: 'Feast / Tecton',
@@ -306,6 +306,7 @@ export const INFRA_OVERVIEW = {
         { name: 'Apache Kafka', role: '消息队列', icon: '📨' },
         { name: 'Apache Airflow', role: '工作流编排', icon: '🌊' },
         { name: 'Apache Iceberg', role: '数据湖表格式', icon: '🧊' },
+        { name: 'Unity Catalog', role: '统一元数据管理', icon: '🗂️' },
         { name: 'LakeFS', role: '数据版本管理', icon: '🏷️' },
       ],
       color: '#00cec9',
@@ -374,7 +375,151 @@ export const DATA_FLOW_STATS = {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// 11. 多模态融合层（新增）
+// 11. Unity Catalog 元数据管理层（新增）
+// ═══════════════════════════════════════════════════════════════
+export const UNITY_CATALOG_LAYER = {
+  title: '🗂️ Unity Catalog 元数据管理',
+  desc: 'Databricks 开源统一元数据层，三层命名空间 + 细粒度权限 + 全链路血缘，覆盖数据 / 特征 / 模型',
+
+  // 三层命名空间设计
+  namespace: {
+    title: '三层命名空间（Catalog → Schema → Table/Volume）',
+    catalogs: [
+      {
+        name: 'raw_data',
+        icon: '🚗',
+        color: '#6c5ce7',
+        desc: '原始传感器数据目录',
+        schemas: [
+          { name: 'camera',  tables: ['frames_v1', 'frames_v2', 'calibration'], desc: '环视相机帧序列' },
+          { name: 'lidar',   tables: ['pointcloud_v1', 'pointcloud_v2', 'hdmap'], desc: '激光雷达点云' },
+          { name: 'radar',   tables: ['radar_4d_v1', 'radar_tracks'], desc: '4D 毫米波雷达' },
+          { name: 'vehicle', tables: ['can_bus', 'gnss_imu', 'trigger_events'], desc: '车辆状态与触发事件' },
+        ],
+      },
+      {
+        name: 'processed_data',
+        icon: '⚙️',
+        color: '#00cec9',
+        desc: '清洗标注后的结构化数据',
+        schemas: [
+          { name: 'annotations', tables: ['bbox_3d', 'seg_masks', 'lane_lines', 'language_qa'], desc: '多模态标注结果' },
+          { name: 'bev_features', tables: ['bev_tensors', 'temporal_seq', 'scene_embeddings'], desc: 'BEV 融合特征' },
+          { name: 'scenes',      tables: ['scene_index', 'scene_tags', 'scene_splits'], desc: '场景索引与划分' },
+        ],
+      },
+      {
+        name: 'feature_store',
+        icon: '🍽️',
+        color: '#fd79a8',
+        desc: '预计算特征，供训练直接消费',
+        schemas: [
+          { name: 'online',  tables: ['bev_feat_fp16', 'lang_embed_fp16', 'traj_feat_fp32'], desc: '在线特征（低延迟）' },
+          { name: 'offline', tables: ['scene_feat_v1', 'scene_feat_v2', 'aug_feat'], desc: '离线特征（大批量）' },
+          { name: 'stats',   tables: ['feat_stats', 'feat_drift', 'feat_coverage'], desc: '特征统计与漂移监控' },
+        ],
+      },
+      {
+        name: 'model_registry',
+        icon: '🧠',
+        color: '#3fb950',
+        desc: '模型版本与实验管理',
+        schemas: [
+          { name: 'experiments', tables: ['runs', 'metrics', 'params', 'artifacts'], desc: 'MLflow 实验记录' },
+          { name: 'models',      tables: ['vla_v1', 'vla_v2', 'world_model_v1', 'onnx_exports'], desc: '模型版本注册' },
+          { name: 'evaluations', tables: ['eval_results', 'benchmark_scores', 'shadow_compare'], desc: '评测结果与对比' },
+        ],
+      },
+      {
+        name: 'governance',
+        icon: '🔐',
+        color: '#ffa657',
+        desc: '数据治理与合规',
+        schemas: [
+          { name: 'audit',   tables: ['access_logs', 'query_history', 'data_changes'], desc: '访问审计日志' },
+          { name: 'privacy', tables: ['pii_inventory', 'masking_rules', 'consent_records'], desc: '隐私合规管理' },
+          { name: 'quality', tables: ['dq_rules', 'dq_results', 'sla_tracking'], desc: '数据质量规则与结果' },
+        ],
+      },
+    ],
+  },
+
+  // 细粒度访问控制
+  accessControl: {
+    title: '细粒度访问控制（RBAC + ABAC）',
+    principals: [
+      { role: '数据工程师', permissions: ['raw_data.*: READ/WRITE', 'processed_data.*: READ/WRITE'], color: '#6c5ce7', icon: '🔧' },
+      { role: '算法研究员', permissions: ['processed_data.*: READ', 'feature_store.*: READ', 'model_registry.*: READ/WRITE'], color: '#00cec9', icon: '🔬' },
+      { role: '标注员',     permissions: ['processed_data.annotations.*: READ/WRITE'], color: '#fd79a8', icon: '✏️' },
+      { role: '模型部署',   permissions: ['model_registry.models.*: READ', 'feature_store.online.*: READ'], color: '#3fb950', icon: '🚀' },
+      { role: '数据治理',   permissions: ['governance.*: READ/WRITE', '*.audit: READ'], color: '#ffa657', icon: '🔐' },
+      { role: 'CI/CD Bot', permissions: ['model_registry.*: READ/WRITE', 'feature_store.*: READ'], color: '#79c0ff', icon: '🤖' },
+    ],
+    rowFilter: '按车辆ID / 城市 / 时间范围 行级过滤，支持多租户隔离',
+    columnMask: '敏感字段（车牌/人脸坐标）自动脱敏，GDPR 合规',
+  },
+
+  // 数据血缘追踪
+  lineage: {
+    title: '全链路数据血缘（Column-level Lineage）',
+    desc: '从原始传感器帧到最终模型权重，每一步转换都有完整血缘记录',
+    chain: [
+      { from: 'raw_data.camera.frames_v2', to: 'processed_data.bev_features.bev_tensors', op: 'BEVFusion 推理', latency: '~2h/批次' },
+      { from: 'processed_data.bev_features.bev_tensors', to: 'feature_store.offline.scene_feat_v2', op: 'Spark 特征工程', latency: '~30min' },
+      { from: 'feature_store.offline.scene_feat_v2', to: 'model_registry.experiments.runs', op: 'PyTorch 训练', latency: '~5天' },
+      { from: 'model_registry.experiments.runs', to: 'model_registry.models.vla_v2', op: 'MLflow 注册', latency: '~5min' },
+      { from: 'model_registry.models.vla_v2', to: 'model_registry.evaluations.eval_results', op: 'NAVSIM 评测', latency: '~2h' },
+    ],
+    capabilities: [
+      { name: '列级血缘', desc: '追踪到具体字段的来源与转换逻辑', icon: '🔬' },
+      { name: '影响分析', desc: '修改上游表时，自动识别所有下游依赖', icon: '🌊' },
+      { name: '根因定位', desc: '模型指标下降时，快速定位到具体数据批次', icon: '🎯' },
+      { name: '合规审计', desc: '数据删除请求（GDPR）自动追踪所有衍生数据', icon: '📋' },
+    ],
+  },
+
+  // 数据质量规则
+  dataQuality: {
+    title: '内置数据质量规则引擎',
+    rules: [
+      { table: 'raw_data.camera.frames_v2', rule: 'timestamp 连续性 ≤ 100ms 间隔', severity: 'error', autoFix: false },
+      { table: 'processed_data.annotations.bbox_3d', rule: 'IoU 与参考模型 ≥ 0.7', severity: 'warning', autoFix: false },
+      { table: 'feature_store.online.bev_feat_fp16', rule: 'NULL 率 < 0.1%', severity: 'error', autoFix: true },
+      { table: 'feature_store.stats.feat_drift', rule: 'PSI < 0.2（特征分布稳定）', severity: 'warning', autoFix: false },
+      { table: 'model_registry.evaluations.eval_results', rule: 'PDMS ≥ 基线 -2%', severity: 'error', autoFix: false },
+      { table: 'governance.privacy.pii_inventory', rule: '所有 PII 字段已脱敏', severity: 'error', autoFix: true },
+    ],
+    engine: 'Unity Catalog 内置 DQ + Great Expectations 集成',
+    alerting: 'Slack / PagerDuty 告警，Grafana 仪表盘',
+  },
+
+  // 与现有工具集成
+  integrations: [
+    { tool: 'Apache Spark',   role: '读写 Iceberg 表，自动注册血缘', icon: '⚡', color: '#ffa657' },
+    { tool: 'Apache Airflow', role: 'DAG 任务自动上报血缘到 Unity Catalog', icon: '🌊', color: '#00cec9' },
+    { tool: 'MLflow',         role: '实验 / 模型注册同步到 model_registry schema', icon: '🧪', color: '#3fb950' },
+    { tool: 'Feast',          role: '特征定义同步到 feature_store catalog', icon: '🍽️', color: '#fd79a8' },
+    { tool: 'dbt',            role: 'SQL 转换血缘自动解析，数据文档生成', icon: '🔨', color: '#6c5ce7' },
+    { tool: 'LakeFS',         role: '数据版本 commit 与 Unity Catalog 版本对齐', icon: '🏷️', color: '#79c0ff' },
+    { tool: 'Great Expectations', role: '数据质量结果写入 governance.quality schema', icon: '✅', color: '#a29bfe' },
+    { tool: 'Trino',          role: '跨 catalog 联邦查询，统一 SQL 接口', icon: '🔍', color: '#e17055' },
+  ],
+
+  // 部署方式
+  deployment: {
+    options: [
+      { mode: 'Databricks 托管', desc: '全托管，零运维，与 Delta Lake 深度集成', pros: '开箱即用', cons: '供应商锁定', color: '#ff7b72' },
+      { mode: '开源自托管', desc: 'unitycatalog/unitycatalog on K8s，REST API + UI', pros: '完全控制', cons: '需运维', color: '#3fb950' },
+      { mode: '混合模式', desc: '元数据层自托管，存储层用云对象存储', pros: '灵活', cons: '复杂度高', color: '#ffa657' },
+    ],
+    recommended: '开源自托管（K8s 部署），与现有 Kubernetes 基础设施统一管理',
+    repo: 'https://github.com/unitycatalog/unitycatalog',
+    version: 'v0.3+（支持 Iceberg REST Catalog）',
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 12. 多模态融合层（新增）
 // ═══════════════════════════════════════════════════════════════
 export const MULTIMODAL_LAYER = {
   title: '🔀 多模态融合层',
