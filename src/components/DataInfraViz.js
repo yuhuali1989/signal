@@ -14,6 +14,7 @@ import {
   SYNTH_DATA,
   FRAMEWORK_DATA,
   UNITY_CATALOG_INFRA_DATA,
+  COMPUTE_ENGINE_DATA,
 } from '@/lib/data-infra-data';
 
 // ─────────────────────────────────────────────────────────────
@@ -1442,6 +1443,231 @@ function FrameworkTab() {
 }
 
 // ═══════════════════════════════════════════════════════════
+// 计算引擎选型 Tab
+// ═══════════════════════════════════════════════════════════
+function ComputeEngineTab() {
+  const ce = COMPUTE_ENGINE_DATA;
+  const [activeSubTab, setActiveSubTab] = useState('engines');
+  const [selectedEngine, setSelectedEngine] = useState('Apache Spark');
+
+  const SUB_TABS = [
+    { id: 'engines',  label: '引擎详情', icon: '⚡' },
+    { id: 'matrix',   label: '选型矩阵', icon: '📊' },
+    { id: 'stages',   label: '闭环分工', icon: '🔄' },
+    { id: 'decision', label: '选型决策', icon: '🧠' },
+  ];
+
+  const currentEngine = ce.engines.find(e => e.name === selectedEngine) || ce.engines[0];
+
+  return (
+    <div className="space-y-4">
+      {/* 定位卡片 */}
+      <SectionCard icon="⚡" title={ce.title} desc={ce.subtitle}>
+        <div className="flex flex-wrap gap-2">
+          {ce.engines.map(e => (
+            <span key={e.name} className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+              style={{ background: e.color + '15', color: e.color, border: `1px solid ${e.color}30` }}>
+              {e.icon} {e.name}
+            </span>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* Sub Tab 切换 */}
+      <div className="flex gap-1.5 flex-wrap">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveSubTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeSubTab === t.id ? '#f39c12' : 'transparent',
+              color: activeSubTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeSubTab === t.id ? '#f39c12' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 引擎详情 */}
+      {activeSubTab === 'engines' && (
+        <div className="space-y-3">
+          {/* 引擎选择器 */}
+          <div className="flex gap-2 flex-wrap">
+            {ce.engines.map(e => (
+              <button key={e.name} onClick={() => setSelectedEngine(e.name)}
+                className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-xl border transition-all"
+                style={{
+                  background: selectedEngine === e.name ? e.color + '15' : 'transparent',
+                  color: selectedEngine === e.name ? e.color : '#64748b',
+                  borderColor: selectedEngine === e.name ? e.color + '50' : '#e2e8f0',
+                  fontWeight: selectedEngine === e.name ? 600 : 400,
+                }}>
+                <span>{e.icon}</span>
+                <span>{e.name}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* 当前引擎详情 */}
+          {currentEngine && (
+            <div className="rounded-2xl border p-5"
+              style={{ borderColor: currentEngine.color + '30', background: currentEngine.color + '04' }}>
+              {/* 头部 */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{currentEngine.icon}</span>
+                  <div>
+                    <div className="text-base font-bold text-gray-800">{currentEngine.name}</div>
+                    <div className="text-xs font-medium" style={{ color: currentEngine.color }}>{currentEngine.tagline}</div>
+                    <div className="text-[9px] text-gray-400 font-mono mt-0.5">v{currentEngine.version}</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[9px] text-gray-400 mb-1">K8s 集成</div>
+                  <div className="text-[9px] font-mono px-2 py-0.5 rounded"
+                    style={{ background: currentEngine.color + '12', color: currentEngine.color }}>
+                    {currentEngine.k8sIntegration}
+                  </div>
+                </div>
+              </div>
+
+              {/* 主要场景 */}
+              <div className="mb-4">
+                <div className="text-[10px] font-semibold text-gray-600 mb-2">🎯 主要应用场景</div>
+                <div className="space-y-1">
+                  {currentEngine.scenarios.map((s, i) => (
+                    <div key={i} className="flex items-start gap-1.5 text-[10px] text-gray-600">
+                      <span style={{ color: currentEngine.color }} className="flex-shrink-0">▸</span>{s}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 优势 & 局限 */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="rounded-xl border border-green-100 bg-green-50/50 p-3">
+                  <div className="text-[10px] font-semibold text-green-700 mb-1.5">✅ 优势</div>
+                  {currentEngine.strengths.map((s, i) => (
+                    <div key={i} className="text-[9px] text-gray-600 mb-0.5">· {s}</div>
+                  ))}
+                </div>
+                <div className="rounded-xl border border-red-100 bg-red-50/50 p-3">
+                  <div className="text-[10px] font-semibold text-red-600 mb-1.5">⚠️ 局限</div>
+                  {currentEngine.weaknesses.map((w, i) => (
+                    <div key={i} className="text-[9px] text-gray-600 mb-0.5">· {w}</div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 性能指标 & 适用场景 */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl border p-3" style={{ borderColor: currentEngine.color + '20', background: currentEngine.color + '06' }}>
+                  <div className="text-[10px] font-semibold text-gray-600 mb-2">📊 性能指标</div>
+                  {Object.entries(currentEngine.perf).map(([k, v]) => {
+                    const labels = { throughput: '吞吐量', latency: '延迟', scale: '规模' };
+                    return (
+                      <div key={k} className="flex justify-between text-[9px] mb-0.5">
+                        <span className="text-gray-400">{labels[k]}</span>
+                        <span className="font-mono" style={{ color: currentEngine.color }}>{v}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="rounded-xl border p-3" style={{ borderColor: currentEngine.color + '20', background: currentEngine.color + '06' }}>
+                  <div className="text-[10px] font-semibold text-gray-600 mb-2">🎯 闭环中用于</div>
+                  <div className="flex flex-wrap gap-1">
+                    {currentEngine.usedFor.map(u => (
+                      <Badge key={u} color={currentEngine.color}>{u}</Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 选型矩阵 */}
+      {activeSubTab === 'matrix' && (
+        <SectionCard icon="📊" title={ce.selectionMatrix.title}
+          desc="✅ 首选 · ⚠️ 可用 · ❌ 不适合">
+          <div className="overflow-x-auto">
+            <table className="w-full text-[9px]">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-2 px-2 text-gray-500 font-semibold w-40">场景</th>
+                  {['Spark', 'Ray', 'Flink', 'Trino', 'RAPIDS'].map(e => (
+                    <th key={e} className="text-center py-2 px-2 font-semibold" style={{ color: ce.engines.find(eng => eng.name.includes(e))?.color || '#64748b' }}>{e}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {ce.selectionMatrix.scenarios.map((row, i) => (
+                  <tr key={i} className={`border-b border-gray-50 ${i % 2 === 0 ? 'bg-gray-50/30' : ''}`}>
+                    <td className="py-2 px-2 text-gray-600 font-medium">{row.scene}</td>
+                    <td className="py-2 px-2 text-center">{row.spark}</td>
+                    <td className="py-2 px-2 text-center">{row.ray}</td>
+                    <td className="py-2 px-2 text-center">{row.flink}</td>
+                    <td className="py-2 px-2 text-center">{row.trino}</td>
+                    <td className="py-2 px-2 text-center">{row.rapids}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </SectionCard>
+      )}
+
+      {/* 闭环分工 */}
+      {activeSubTab === 'stages' && (
+        <SectionCard icon="🔄" title="数据闭环各阶段计算引擎分工"
+          desc="不同阶段选用最适合的引擎，引擎间通过 Iceberg + Unity Catalog 共享数据">
+          <div className="space-y-2">
+            {ce.stageMapping.map((s, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                <div className="w-28 flex-shrink-0">
+                  <div className="text-[10px] font-semibold text-gray-700">{s.stage}</div>
+                </div>
+                <div className="flex flex-wrap gap-1 flex-shrink-0">
+                  {s.engines.map(eng => {
+                    const engineData = ce.engines.find(e => e.name.includes(eng) || eng.includes(e.name.split(' ')[0]));
+                    return (
+                      <span key={eng} className="text-[9px] px-1.5 py-0.5 rounded font-mono font-semibold"
+                        style={{ background: (engineData?.color || '#64748b') + '15', color: engineData?.color || '#64748b' }}>
+                        {eng}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="text-[9px] text-gray-500 flex-1">{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+
+      {/* 选型决策 */}
+      {activeSubTab === 'decision' && (
+        <SectionCard icon="🧠" title="选型决策 FAQ"
+          desc="常见选型问题的深度解答">
+          <div className="space-y-3">
+            {ce.decisions.map((d, i) => (
+              <div key={i} className="rounded-xl border border-[#f39c12]/20 bg-[#f39c12]/04 p-4">
+                <div className="flex items-start gap-2 mb-2">
+                  <span className="text-[#f39c12] font-bold text-sm flex-shrink-0">Q{i + 1}</span>
+                  <div className="text-[10px] font-semibold text-gray-800">{d.question}</div>
+                </div>
+                <div className="text-[10px] text-gray-600 leading-relaxed pl-5">{d.answer}</div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
 // Unity Catalog Tab
 // ═══════════════════════════════════════════════════════════
 function UnityCatalogTab() {
@@ -1626,6 +1852,7 @@ export default function DataInfraViz() {
     k8s:           <K8sTab />,
     datalake:      <DatalakeTab />,
     pipeline:      <PipelineTab />,
+    compute:       <ComputeEngineTab />,
     unitycatalog:  <UnityCatalogTab />,
     mlops:         <MLOpsTab />,
     observability: <ObservabilityTab />,
