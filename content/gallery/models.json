@@ -1654,7 +1654,10 @@
       "中文最优"
     ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "qwen3-72b",
+    "type": "moe",
+    "org": "Alibaba"
   },
   {
     "name": "Llama 4 Scout",
@@ -1679,7 +1682,10 @@
       "超长上下文"
     ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "llama4-scout",
+    "type": "moe",
+    "org": "Meta"
   },
   {
     "name": "Claude Opus 4.5",
@@ -1704,7 +1710,10 @@
       "工具调用"
     ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "claude-opus-45",
+    "type": "dense",
+    "org": "Anthropic"
   },
   {
     "name": "NVIDIA Blackwell Ultra B300",
@@ -1729,7 +1738,10 @@
       "推理"
     ],
     "status": "announced",
-    "category": "hardware"
+    "category": "hardware",
+    "id": "nvidia-b300",
+    "type": "autonomous",
+    "org": "NVIDIA"
   },
   {
     "name": "Claude Opus 4.7",
@@ -1755,32 +1767,10 @@
       "编程"
     ],
     "status": "released",
-    "category": "foundation"
-  },
-  {
-    "name": "VLA-World",
-    "provider": "Wang, Tang et al. (多校合作)",
-    "params": "~7B（VLA 骨干）+ 潜在空间世界模型",
-    "context": null,
-    "benchmark_scores": {
-      "nuScenes_L2_3s": 0.58,
-      "nuScenes_collision_rate": 0.15,
-      "nuScenes_L2_1s": 0.25,
-      "FPS": 3.5
-    },
-    "architecture": "三阶段串行：潜在空间世界模型（Imagine）→ VLA反思推理（Reflect）→ 轨迹生成（Act）",
-    "release_date": "2026-04-10",
-    "open_source": false,
-    "ad_specific": true,
-    "description": "首次统一世界模型预测想象与VLA反思推理。想象→反思→行动三阶段范式，nuScenes L2(3s) 0.58m / 碰撞率 0.15% 双SOTA。潜在空间预测仅为像素生成计算量的1/20。",
-    "tags": [
-      "自动驾驶",
-      "VLA",
-      "世界模型",
-      "端到端"
-    ],
-    "status": "research",
-    "category": "autonomous-driving"
+    "category": "foundation",
+    "id": "claude-opus-47",
+    "type": "reasoning",
+    "org": "Anthropic"
   },
   {
     "name": "Qwen3-Max",
@@ -1807,7 +1797,10 @@
       "中文最优"
     ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "qwen3-max",
+    "type": "moe",
+    "org": "Alibaba"
   },
   {
     "name": "Seed-AD",
@@ -1815,7 +1808,7 @@
     "params": "70B（云端）/ 13B（车端蒸馏版）",
     "context": null,
     "benchmark_scores": {
-      "nuScenes_L2_1s": 0.20,
+      "nuScenes_L2_1s": 0.2,
       "nuScenes_L2_2s": 0.35,
       "nuScenes_L2_3s": 0.54,
       "nuScenes_collision_rate": 0.11,
@@ -1835,7 +1828,10 @@
       "世界模型"
     ],
     "status": "released",
-    "category": "autonomous-driving"
+    "category": "autonomous-driving",
+    "id": "seed-ad",
+    "type": "vla",
+    "org": "字节跳动"
   },
   {
     "name": "Llama 5 MoE",
@@ -1863,7 +1859,10 @@
       "推理优化"
     ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "llama5-moe",
+    "type": "moe",
+    "org": "Meta"
   },
   {
     "name": "Llama 5 Dense",
@@ -1890,7 +1889,10 @@
       "Mixture-of-Depths"
     ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "llama5-dense",
+    "type": "dense",
+    "org": "Meta"
   },
   {
     "name": "Ling-2.6-flash",
@@ -1903,9 +1905,17 @@
     "open_source": false,
     "ad_specific": false,
     "description": "蚂蚁集团百灵大模型最新版本，定位高性价比推理，日均 100B tokens 调用量证明了国产大模型在实际业务场景中的规模化落地能力。",
-    "tags": ["LLM", "推理优化", "中国", "金融"],
+    "tags": [
+      "LLM",
+      "推理优化",
+      "中国",
+      "金融"
+    ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "ling-26-flash",
+    "type": "dense",
+    "org": "蚂蚁集团"
   },
   {
     "name": "Kimi K2.6",
@@ -1918,8 +1928,16 @@
     "open_source": false,
     "ad_specific": false,
     "description": "月之暗面 Kimi 系列最新迭代，在长上下文理解、多模态推理和代码生成方面有显著提升。此前 Kimi K2 曾被评价为「DeepSeek Moments become normal」的标志性事件。",
-    "tags": ["LLM", "长上下文", "多模态", "中国"],
+    "tags": [
+      "LLM",
+      "长上下文",
+      "多模态",
+      "中国"
+    ],
     "status": "released",
-    "category": "foundation"
+    "category": "foundation",
+    "id": "kimi-k26",
+    "type": "multimodal",
+    "org": "月之暗面"
   }
 ]
