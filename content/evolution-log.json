@@ -1,5 +1,53 @@
 [
   {
+    "id": "evo-20260422-news",
+    "type": "news",
+    "title": "声浪新增 10 条覆盖 SpaceX-Cursor/Anthropic-Amazon/百灵/Deep Research",
+    "description": "通过 ai-news skill 从 TechCrunch/IT之家/钛媒体获取实时新闻，新增 10 条经 curl 验证的真实新闻。重点：SpaceX-Cursor $600 亿收购选项、Anthropic 获 Amazon $50 亿投资承诺 $1000 亿 AWS 支出、蚂蚁百灵 Ling-2.6-flash 日均 100B tokens、Google Deep Research 集成 MCP、Anthropic Mythos 泄露事件。声浪总量 55→65 条。",
+    "date": "2026-04-22 11:00",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260422-articles",
+    "type": "article",
+    "title": "新增 2 篇深度文章：AI Infra 军备竞赛 + MCP 消费级里程碑",
+    "description": "(1)《AI 基础设施军备竞赛：Anthropic-Amazon $1000 亿云支出协议的经济学解读》——分析循环投资逻辑、三方博弈、对自动驾驶推理成本的影响；(2)《MCP 协议从开发者走向消费级：Google Deep Research 集成 MCP 的里程碑意义》——MCP 采纳时间线、三巨头共识、对自动驾驶 Agent 系统的启示。",
+    "date": "2026-04-22 11:10",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260422-book",
+    "type": "book",
+    "title": "更新《AI Agent 实战指南》第 7 章：追加 MCP 消费级进展和 Agent 安全新挑战",
+    "description": "在第 7 章末尾追加「最新进展」小节，覆盖：Google Deep Research 集成 MCP（消费级里程碑）、Anthropic Mythos 泄露事件、SpaceX-Cursor 收购、Meta 操作数据训练、蚂蚁百灵 100B tokens 等 Agent 经济学新数据。",
+    "date": "2026-04-22 11:15",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260422-paper",
+    "type": "paper",
+    "title": "新增 UniSim 2.0 论文详细解读：物理一致性世界模型驱动合成数据",
+    "description": "为 Seed-AD 核心组件 UniSim 2.0 撰写 2000+ 字详细解读。核心突破：10% 真实 + 90% 合成数据达 96% 性能，FID 12.3，物理一致性 94%。覆盖方法（物理约束损失+条件生成+多尺度扩散）、实验结果（5 张对比表）、长尾场景覆盖效果、工程启示。",
+    "date": "2026-04-22 11:20",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260422-industry",
+    "type": "news",
+    "title": "全行业动态新增 10 条：SpaceX-Cursor/Anthropic-Amazon/Mythos/百灵/OneDrive",
+    "description": "IndustryNewsFeed.js 新增 10 条真实新闻（id 2511-2520），覆盖 startup/cloud/security/software/market 五大分类。热点：SpaceX-Cursor $600 亿收购、Anthropic-Amazon $1000 亿云支出、Mythos 安全泄露、蚂蚁百灵 100B tokens。所有 link 经 curl 验证 200。",
+    "date": "2026-04-22 11:25",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260422-models",
+    "type": "model",
+    "title": "模型库新增 2 个：蚂蚁百灵 Ling-2.6-flash + 月之暗面 Kimi K2.6",
+    "description": "模型库从 58 个扩充至 60 个。新增：(1) Ling-2.6-flash（蚂蚁集团，高性价比推理，日均 100B tokens）；(2) Kimi K2.6（月之暗面，100 万 token 上下文，多模态推理）。两个模型均为 2026 年 4 月最新发布。",
+    "date": "2026-04-22 11:30",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260421-hn-realtime",
     "type": "news",
     "title": "声浪扩充至 55 条 + IndustryNewsFeed 修复 8 个坏链接 + HN 实时数据接入",

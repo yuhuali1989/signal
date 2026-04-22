@@ -1891,5 +1891,35 @@
     ],
     "status": "released",
     "category": "foundation"
+  },
+  {
+    "name": "Ling-2.6-flash",
+    "provider": "蚂蚁集团",
+    "params": "未公开",
+    "context": 128000,
+    "benchmark_scores": {},
+    "architecture": "高性价比推理模型，匿名上线一周日均 100B tokens 调用，面向金融/保险/医疗等蚂蚁核心业务场景",
+    "release_date": "2026-04-22",
+    "open_source": false,
+    "ad_specific": false,
+    "description": "蚂蚁集团百灵大模型最新版本，定位高性价比推理，日均 100B tokens 调用量证明了国产大模型在实际业务场景中的规模化落地能力。",
+    "tags": ["LLM", "推理优化", "中国", "金融"],
+    "status": "released",
+    "category": "foundation"
+  },
+  {
+    "name": "Kimi K2.6",
+    "provider": "月之暗面 (Moonshot AI)",
+    "params": "未公开",
+    "context": 1000000,
+    "benchmark_scores": {},
+    "architecture": "长上下文多模态推理模型，支持 100 万 token 上下文，API 已在 platform.kimi.ai 开放",
+    "release_date": "2026-04-21",
+    "open_source": false,
+    "ad_specific": false,
+    "description": "月之暗面 Kimi 系列最新迭代，在长上下文理解、多模态推理和代码生成方面有显著提升。此前 Kimi K2 曾被评价为「DeepSeek Moments become normal」的标志性事件。",
+    "tags": ["LLM", "长上下文", "多模态", "中国"],
+    "status": "released",
+    "category": "foundation"
   }
 ]

@@ -299,18 +299,23 @@ maxwell-knowledge/
 
 ---
 
-*最后更新：2026-04-21*
+*最后更新：2026-04-22*
 
 **本次主要更新内容**：
-- 🚗 **声浪大扩充：37 条时间线式 AI 声浪**（从 10 条扩充至 37 条），覆盖 2020-2026 年完整时间线——
-  - 📅 **年度总结 6 条**（2020-2025）：GPT-3 → DETR3D → ChatGPT/BEVFormer → GPT-4/UniAD/LLaMA → Sora/DeepSeek-V2/VLA → DeepSeek-R1/Qwen3/Gemini Robotics
-  - 📆 **月度总结 3 条**（2026.1-3）：DeepSeek-R1 全球爆火 → Claude 3.7/数据闭环 → Gemini Robotics/GR00T N1/QwQ-32B
-  - 📰 **周报 3 条**（2026.4 W1-W3）：MCP 生态扩展 → DriveLM/SGLang → Qwen3 发布/UniAD-mini
-  - 🚗 **自动驾驶专题 14 条**：UniAD/DriveLM/Vista/GAIA-1/CarLLaVA/Copilot4D/BEVFormer/端到端综述/DriveAGI 等
-  - 🚀 **模型发布 6 条**：Qwen3/DeepSeek-R1/DeepSeek-V3/Claude 3.7/Qwen2.5-VL/Gemini 2.5 Pro
-  - ⚙️ **AI Infra 4 条**：vLLM/SGLang/TensorRT-LLM/NVIDIA Blackwell
-  - 🤖 **Agent 1 条**：Anthropic MCP 协议
-  - ✅ **所有 37 条 URL 经 curl 验证 200 + arXiv 论文标题交叉核实**，杜绝虚构链接
+- 📚 **每日内容更新**：声浪 +10 条（→65 条）、文章 +2 篇（→77 篇）、书籍 +1 章更新、论文 +1 篇解读、模型 +2 个（→60 个）、全行业动态 +10 条
+- 🌊 **声浪新增 10 条真实新闻**（通过 ai-news skill 从 TechCrunch/IT之家/钛媒体实时获取）：
+  - 🔥 SpaceX-Cursor $600 亿收购选项（TechCrunch 4/21）
+  - 🔥 Anthropic 获 Amazon $50 亿投资，承诺 $1000 亿 AWS 云支出（TechCrunch 4/20）
+  - 🔥 蚂蚁百灵 Ling-2.6-flash 日均 100B tokens（IT之家 4/22）
+  - 🔥 Google Deep Research 集成 MCP 协议（钛媒体 4/22）
+  - Anthropic Mythos 网络安全工具泄露 / NeoCognition $4000 万种子轮 / Meta 采集员工操作数据 / ChatGPT Images 2.0 / 黄仁勋「最低成本 token」/ 智驾赛道白热化
+- ✨ **新增 2 篇深度文章**：
+  - 《AI 基础设施军备竞赛：Anthropic-Amazon $1000 亿云支出协议的经济学解读》
+  - 《MCP 协议从开发者走向消费级：Google Deep Research 集成 MCP 的里程碑意义》
+- 📖 **书籍更新**：《AI Agent 实战指南》第 7 章追加「最新进展」小节（MCP 消费级进展 + Agent 安全新挑战 + Agent 经济学新数据）
+- 📄 **论文解读**：UniSim 2.0 物理一致性世界模型（Seed-AD 核心合成数据组件，2000+ 字详细解读）
+- 🏢 **全行业动态新增 10 条**（id 2511-2520）：SpaceX-Cursor/Anthropic-Amazon/Mythos/百灵/OneDrive 等，所有 link 经 curl 验证
+- 🤖 **模型库新增 2 个**：蚂蚁百灵 Ling-2.6-flash + 月之暗面 Kimi K2.6
 
 ---
 

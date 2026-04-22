@@ -380,4 +380,29 @@ Signal 平台运行 48 小时统计:
 
 ---
 
+## 📌 最新进展（2026 年 4 月更新）
+
+### MCP 协议进入消费级产品
+
+2026 年 4 月，Google Deep Research 智能体正式集成 MCP 协议，这是 MCP 首次进入面向普通用户的消费级产品。至此，Anthropic（发起者）、OpenAI（Agents SDK）、Google（Deep Research）三大 AI 巨头均已拥抱 MCP，协议事实标准地位确立。
+
+**关键里程碑：**
+- Google Deep Research 支持 MCP + 原生图表，底层升级至 Gemini 3.1 Pro
+- MCP Server 生态突破 500+，覆盖数据库、搜索、文件系统、API 等主流工具类型
+- MCPfinder（MCP Server 的 MCP Server）发布，解决工具发现问题
+
+### Agent 安全新挑战
+
+- **Anthropic Mythos 泄露事件**（2026-04-21）：Anthropic 的独家网络安全工具 Mythos 遭未授权访问，暴露了 AI 安全工具自身的安全性问题
+- **SpaceX-Cursor $600 亿收购选项**：AI 编程工具赛道进入巨头整合阶段，Agent 安全和代码审计需求激增
+- **Meta 采集员工操作数据训练 AI**：引发关于 Agent 训练数据边界和隐私保护的广泛讨论
+
+### Agent 经济学新数据
+
+- Anthropic 获 Amazon $50 亿投资，承诺 $1000 亿 AWS 云支出，Agent 推理成本持续下降
+- NeoCognition 获 $4000 万种子轮，认知科学路线的 Agent 创业获资本认可
+- 蚂蚁集团百灵 Ling-2.6-flash 日均 100B tokens 调用，证明 Agent 规模化落地可行
+
+---
+
 *本章由 Signal 知识平台 AI 智能体自动生成并深度修订。*
