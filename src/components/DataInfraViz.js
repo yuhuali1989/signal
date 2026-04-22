@@ -362,11 +362,107 @@ function DatalakeTab() {
       {/* ── Schema 设计 ── */}
       {activeSubTab === 'schema' && (
         <div className="space-y-4">
-          {/* 定位说明 */}
+          {/* ① 数据粒度层次（最顶部，先看这里）*/}
+          <div className="rounded-2xl border border-[#00cec9]/20 bg-white p-5">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-lg">📐</span>
+              <div className="text-sm font-bold text-gray-800">{icebergSchemas.granularity.title}</div>
+            </div>
+            <div className="text-[10px] text-gray-500 mb-4">{icebergSchemas.granularity.desc}</div>
+
+            {/* 四层粒度卡片 */}
+            <div className="space-y-2 mb-4">
+              {icebergSchemas.granularity.levels.map((lv, i) => (
+                <div key={lv.level}>
+                  <div className="rounded-xl border p-3"
+                    style={{ borderColor: lv.color + '30', background: lv.color + '05' }}>
+                    <div className="flex items-start gap-3">
+                      <span className="text-xl flex-shrink-0">{lv.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        {/* 标题行 */}
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="text-xs font-bold" style={{ color: lv.color }}>{lv.level}</span>
+                          <span className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                            style={{ background: lv.color + '15', color: lv.color }}>
+                            ⏱ {lv.duration}
+                          </span>
+                          <span className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                            style={{ background: lv.color + '15', color: lv.color }}>
+                            💾 {lv.size}
+                          </span>
+                        </div>
+                        {/* 描述 */}
+                        <p className="text-[10px] text-gray-600 mb-1.5">{lv.desc}</p>
+                        {/* 关键信息行 */}
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[9px] mb-1.5">
+                          <span className="text-gray-400">主键: <span className="font-mono font-semibold" style={{ color: lv.color }}>{lv.keyId}</span></span>
+                          <span className="text-gray-400">Iceberg 表: <span className="font-mono text-gray-600">{lv.icebergTable}</span></span>
+                        </div>
+                        {/* 示例 */}
+                        <div className="text-[8px] font-mono text-gray-400 bg-gray-50 rounded px-2 py-1 mb-1.5">
+                          例: {lv.example}
+                        </div>
+                        {/* 特殊说明 */}
+                        <div className="text-[9px] text-amber-600">{lv.note}</div>
+                        {/* Scene 切割策略 */}
+                        {lv.cutStrategy && (
+                          <div className="mt-2 flex flex-wrap gap-1.5">
+                            {lv.cutStrategy.map(cs => (
+                              <div key={cs.type} className="rounded-lg border border-[#ffa657]/20 bg-[#ffa657]/05 px-2 py-1">
+                                <span className="text-[8px] font-semibold text-[#ffa657]">{cs.type}</span>
+                                <span className="text-[8px] text-gray-400 ml-1">{cs.desc}</span>
+                                <span className="text-[8px] font-mono text-[#ffa657] ml-1">({cs.ratio})</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* Frame 行数说明 */}
+                        {lv.rowsPerScene && (
+                          <div className="mt-2 grid grid-cols-2 gap-1">
+                            {Object.entries(lv.rowsPerScene).map(([k, v]) => (
+                              <div key={k} className="text-[8px] font-mono text-gray-500">
+                                <span className="text-[#3fb950]">{k}: </span>{v}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* Session 视频文件说明 */}
+                        {lv.videoFiles && (
+                          <div className="mt-1.5 flex gap-3 text-[8px]">
+                            <span className="font-mono text-[#e84393]">视频文件: {lv.videoFiles}</span>
+                            <span className="font-mono text-[#e84393]">帧数: {lv.frameCount}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {i < icebergSchemas.granularity.levels.length - 1 && (
+                    <div className="text-center text-[9px] text-gray-300 py-0.5 font-mono">
+                      {i === 0 ? '↓ 按 15min 自动切割' : i === 1 ? '↓ 按 20s 窗口 / 事件触发切割' : '↓ 按采样率拆分（20Hz / 10Hz / 13Hz）'}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* 粒度换算速查表 */}
+            <div className="rounded-xl border border-[#00cec9]/15 bg-[#00cec9]/04 p-3">
+              <div className="text-[10px] font-semibold text-gray-700 mb-2">🔢 粒度换算速查</div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                {icebergSchemas.granularity.conversion.map((c, i) => (
+                  <div key={i} className="rounded-lg border border-[#00cec9]/15 bg-white/80 p-2">
+                    <div className="text-[9px] font-mono font-semibold text-[#00cec9]">{c.from}</div>
+                    <div className="text-[10px] font-bold text-gray-700">{c.to}</div>
+                    <div className="text-[8px] text-gray-400">{c.note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ② 核心关联键 */}
           <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
-            <div className="text-[10px] font-semibold text-gray-700 mb-1">{icebergSchemas.title}</div>
-            <div className="text-[9px] text-gray-500 mb-2">{icebergSchemas.desc}</div>
-            {/* 核心关联键 */}
+            <div className="text-[10px] font-semibold text-gray-700 mb-2">🔑 核心关联键</div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {icebergSchemas.joinKeys.map(k => (
                 <div key={k.key} className="rounded-lg border border-[#00cec9]/15 bg-white/80 p-2">
