@@ -1240,15 +1240,15 @@ ORDER BY l.timestamp_us`,
         ],
         volumeRef: '无 Volume，此表是整个数据链路唯一的 Iceberg 索引表（配合 session_index）。所有模态原始数据均在 MCAP 文件中，标注/雷达/CAN 均聚合为字段，训练时通过 webdataset_shard 直接读取 shard，零 JOIN。',
         note: '⚠️ 这是 Silver/Gold 层唯一的 Iceberg 表。lidar_frames/bbox_3d/seg_masks/language_qa 等帧级表均已删除——原始数据在 MCAP 中，标注聚合为字段，详细标注打包进 WebDataset shard。',
-        joinExample: '-- 训练采样：一张表，零 JOIN
+        joinExample: `-- 训练采样：一张表，零 JOIN
 SELECT webdataset_shard
 FROM processed_data.scenes.scene_index
-WHERE annotation_status = \'human_reviewed\'
+WHERE annotation_status = 'human_reviewed'
   AND is_duplicate = false
   AND has_pedestrian = true   -- 标注聚合字段，无需 JOIN bbox_3d
   AND radar_nearest_m < 20   -- 雷达聚合字段，无需 JOIN 雷达表
   AND avg_speed_mps > 5      -- CAN 聚合字段，无需 JOIN CAN 表
-  AND dataset_version = \'v2.3.0\'',
+  AND dataset_version = 'v2.3.0'`,
       },
     ],
 
