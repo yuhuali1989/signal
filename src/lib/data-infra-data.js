@@ -124,6 +124,567 @@ export const K8S_DATA = {
 // ═══════════════════════════════════════════════════════════════
 export const DATALAKE_DATA = {
 
+  // ── 存储格式全景（5阶段格式决策地图）────────────────────────
+  storageFormats: {
+    title: '数据链路存储格式全景',
+    subtitle: '从采集侧到训练前，每个阶段的最优存储格式、Schema 设计、访问方式与转换逻辑',
+
+    stages: [
+      // ─────────────────────────────────────────────────────────
+      // 阶段 1：采集侧（车端落盘）
+      // ─────────────────────────────────────────────────────────
+      {
+        id: 'collect',
+        name: '① 采集侧',
+        subtitle: '车端落盘格式',
+        icon: '🚗',
+        color: '#6c5ce7',
+        location: 'NVMe SSD（车载 2TB）',
+        lifecycle: '上传完成后保留 24h',
+
+        verdict: {
+          format: 'MCAP',
+          reason: '唯一合理选择',
+          score: 5,
+        },
+        whyThisFormat: [
+          '多模态统一容器：6路相机 + LiDAR + 雷达 + CAN 写入同一文件，统一纳秒级时间戳索引',
+          '流式写入：Chunk 机制（1s/块 zstd 压缩），写入延迟 < 1ms，不阻塞采集进程',
+          'ChunkIndex 支持随机访问：不需要解压整个文件即可定位任意时刻的数据',
+          '开放标准：Foxglove 开源，ROS2 原生支持，工具链成熟（mcap-cli/Foxglove Studio）',
+          '为什么不用 ROS2 Bag：ROS2 Bag 底层就是 MCAP，MCAP 是其超集，直接用 MCAP 更灵活',
+          '为什么不直接存 MP4 + CSV：多模态时间戳对齐困难，无法原子性写入，恢复困难',
+        ],
+        schema: {
+          desc: 'MCAP 没有传统意义的 Schema，而是通过 Channel + Message 组织数据',
+          keyFields: [
+            { field: 'log_time (ns)',    type: 'uint64',  desc: '消息接收时间戳（纳秒，PTP 同步后的系统时钟）' },
+            { field: 'publish_time (ns)', type: 'uint64', desc: '消息发布时间戳（传感器驱动层时间）' },
+            { field: 'channel_id',       type: 'uint16',  desc: '传感器通道 ID，对应 /camera/front 等 topic' },
+            { field: 'data',             type: 'bytes',   desc: '序列化的消息体（Protobuf/ROS2 msg）' },
+            { field: 'sequence',         type: 'uint32',  desc: '消息序号，用于检测丢帧' },
+          ],
+          fileNaming: '{vehicle_id}_{start_timestamp_us}_{camera_id}.mcap',
+          fileSize: '~5~15 GB/Session（压缩前）/ ~1~3 GB（H.265 视频压缩后）',
+        },
+        accessPatterns: [
+          {
+            pattern: '顺序读取（上传/回放）',
+            tool: 'mcap-cli / Python mcap 库',
+            code: `import mcap
+from mcap.reader import make_reader
+
+with open("session_v001_20240315.mcap", "rb") as f:
+    reader = make_reader(f)
+    for schema, channel, message in reader.iter_messages(
+        topics=["/camera/front/image_raw", "/lidar/points"],
+        start_time=1710460800_000000000,  # 纳秒
+        end_time=1710460820_000000000,
+    ):
+        # message.data 是 Protobuf 序列化的原始字节
+        print(f"topic={channel.topic} ts={message.log_time}")`,
+            note: '按 topic 过滤，只读需要的 Channel，不解压其他 Channel 的 Chunk',
+          },
+          {
+            pattern: '随机访问（调试/回放特定时刻）',
+            tool: 'Foxglove Studio / mcap seek',
+            code: `# 利用 ChunkIndex 直接 seek 到指定时间戳
+reader.seek(timestamp_ns=1710460810_000000000)
+schema, channel, message = next(reader.iter_messages())`,
+            note: 'ChunkIndex 存储每个 Chunk 的时间范围，seek 只需读 Footer + ChunkIndex，O(log n)',
+          },
+        ],
+        toNextStage: '上传到 S3 Landing Zone，触发 Airflow DAG 解码',
+        dailyVolume: '~8 TB（1000辆车，压缩后）',
+      },
+
+      // ─────────────────────────────────────────────────────────
+      // 阶段 2：原始数据（Landing Zone + Bronze Layer）
+      // ─────────────────────────────────────────────────────────
+      {
+        id: 'raw',
+        name: '② 原始数据',
+        subtitle: 'Landing Zone + Bronze Layer',
+        icon: '📥',
+        color: '#ff7b72',
+        location: 'S3 Standard（Landing）+ S3 + JuiceFS（Bronze）',
+        lifecycle: 'Landing 7天 → Bronze 90天',
+
+        verdict: {
+          format: 'Landing: MCAP 原样保留 | Bronze: Parquet（元数据）+ S3 Volume（实体文件）',
+          reason: '分离元数据与实体文件',
+          score: 5,
+        },
+        whyThisFormat: [
+          'Landing 保留 MCAP 原样：不做任何转换，保证数据可追溯，出问题可重新处理',
+          'Bronze 拆分存储：结构化元数据（时间戳/相机参数/质量标记）存 Parquet/Iceberg，实体文件（JPEG/PCD）存 S3 Volume',
+          '为什么不把图像存 Parquet：JPEG 是二进制大对象，存 Parquet 会导致列文件极大，无法列裁剪，读取效率差',
+          '为什么不用 HDF5：HDF5 不支持分布式写入，无法在 K8s 多 Pod 并发写入同一文件',
+          '为什么用 Iceberg 而不是普通 Parquet：Iceberg 支持 Schema Evolution（标注字段迭代）、Time Travel、ACID 并发写入',
+          'Volume 路径存 Iceberg 表：通过 file_path 字段关联，实现元数据查询 + 实体文件访问的解耦',
+        ],
+        schema: {
+          desc: '按模态拆分为独立 Iceberg 表，每张表 1行 = 1帧（单次传感器采样）',
+          tables: [
+            {
+              name: 'raw_data.camera.frames_v2',
+              rowUnit: '1行 = 1帧（单相机单次曝光，50ms）',
+              keyFields: [
+                { field: 'frame_id',       type: 'STRING',    desc: '主键，格式 {scene_id}_{timestamp_us}' },
+                { field: 'scene_id',       type: 'STRING',    desc: '外键，关联 scene_index（Silver层切分后回填）' },
+                { field: 'session_id',     type: 'STRING',    desc: '所属 Session，关联 video_sessions 表' },
+                { field: 'camera_id',      type: 'STRING',    desc: 'front/rear/left_front 等' },
+                { field: 'timestamp_us',   type: 'LONG',      desc: 'Unix 时间戳（微秒），对齐基准' },
+                { field: 'file_path',      type: 'STRING',    desc: 'S3 Volume 路径，指向 JPEG 文件' },
+                { field: 'intrinsic_json', type: 'STRING',    desc: '相机内参（fx/fy/cx/cy/畸变），每帧记录防止标定变化' },
+                { field: 'extrinsic_json', type: 'STRING',    desc: '外参（车体坐标系变换矩阵）' },
+                { field: 'is_blurry',      type: 'BOOLEAN',   desc: '模糊帧标记，质量过滤用' },
+                { field: 'quality_score',  type: 'FLOAT',     desc: '图像质量分 0-1' },
+              ],
+              partitionBy: 'days(event_time), camera_id',
+              rowsPerDay: '~2.16 亿行（1000辆×6相机×18000帧）',
+              volumeRef: 'raw_data.camera.frames_volume → JPEG 文件（~150KB/帧）',
+            },
+            {
+              name: 'raw_data.lidar.pointcloud_v2',
+              rowUnit: '1行 = 1帧（LiDAR 一次旋转扫描，100ms）',
+              keyFields: [
+                { field: 'frame_id',      type: 'STRING', desc: '主键' },
+                { field: 'scene_id',      type: 'STRING', desc: '外键' },
+                { field: 'timestamp_us',  type: 'LONG',   desc: '时间戳（微秒）' },
+                { field: 'file_path',     type: 'STRING', desc: 'S3 Volume 路径，指向 .pcd.draco 文件' },
+                { field: 'num_points',    type: 'INT',    desc: '点云点数（典型值 ~100K）' },
+                { field: 'ego_pose_json', type: 'STRING', desc: '采集时刻车体位姿，坐标系转换用' },
+              ],
+              partitionBy: 'days(event_time)',
+              rowsPerDay: '~900万行（1000辆×9000帧）',
+              volumeRef: 'raw_data.lidar.pointcloud_volume → .pcd.draco 文件（~500KB/帧）',
+            },
+            {
+              name: 'raw_data.radar.radar_4d_v1',
+              rowUnit: '1行 = 1帧（雷达一次扫描，77ms）',
+              keyFields: [
+                { field: 'frame_id',   type: 'STRING', desc: '主键' },
+                { field: 'radar_id',   type: 'STRING', desc: 'front/rear/left 等' },
+                { field: 'timestamp_us', type: 'LONG', desc: '时间戳（微秒）' },
+                { field: 'points',     type: 'LIST<STRUCT<x FLOAT, y FLOAT, z FLOAT, v_r FLOAT, rcs FLOAT>>', desc: '雷达点云内联存储（数据量小，无需 Volume）' },
+              ],
+              partitionBy: 'days(event_time), radar_id',
+              rowsPerDay: '~5.85亿行（1000辆×5雷达×11700帧）',
+              volumeRef: '无 Volume，points 字段直接内联（~5KB/帧，总量小）',
+            },
+            {
+              name: 'raw_data.vehicle.can_bus',
+              rowUnit: '1行 = 1个采样时刻（100Hz，10ms）',
+              keyFields: [
+                { field: 'record_id',     type: 'STRING',  desc: '主键' },
+                { field: 'scene_id',      type: 'STRING',  desc: '外键（场景切分后回填）' },
+                { field: 'timestamp_us',  type: 'LONG',    desc: '时间戳（微秒）' },
+                { field: 'speed_mps',     type: 'FLOAT',   desc: '车速（m/s）' },
+                { field: 'takeover_flag', type: 'BOOLEAN', desc: '接管标记（触发回采关键字段）' },
+                { field: 'steering_angle', type: 'FLOAT',  desc: '方向盘转角（度）' },
+              ],
+              partitionBy: 'days(event_time), vehicle_id',
+              rowsPerDay: '~9000万行（1000辆×90000条）',
+              volumeRef: '无 Volume，全量存 Parquet 列（宽表设计）',
+            },
+          ],
+        },
+        accessPatterns: [
+          {
+            pattern: '按时间范围查询帧列表',
+            tool: 'Trino / Spark SQL',
+            code: `-- 查询某辆车某小时的前摄像头帧（含质量过滤）
+SELECT frame_id, timestamp_us, file_path, quality_score
+FROM raw_data.camera.frames_v2
+WHERE vehicle_id = 'v001'
+  AND event_time BETWEEN TIMESTAMP '2024-03-15 08:00' AND TIMESTAMP '2024-03-15 09:00'
+  AND camera_id = 'front'
+  AND is_blurry = false
+ORDER BY timestamp_us
+-- Iceberg 分区裁剪：只扫描 date=2024-03-15 分区，跳过其他日期`,
+            note: 'Iceberg 谓词下推 + 分区裁剪，只读相关 Parquet 文件，不扫描 Volume',
+          },
+          {
+            pattern: '读取实体文件（图像/点云）',
+            tool: 'Python + boto3',
+            code: `import boto3, cv2, numpy as np
+
+s3 = boto3.client('s3')
+
+# 从 Iceberg 查到 file_path 后，直接读 S3
+def read_frame(file_path: str) -> np.ndarray:
+    # file_path = "s3://raw/camera/v001/2024-03-15/frame_xxx.jpg"
+    bucket, key = file_path.replace("s3://", "").split("/", 1)
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    img_bytes = obj['Body'].read()
+    return cv2.imdecode(np.frombuffer(img_bytes, np.uint8), cv2.IMREAD_COLOR)`,
+            note: '元数据查询（Iceberg）和实体文件读取（S3）完全解耦，互不影响',
+          },
+        ],
+        toNextStage: 'Spark + RAPIDS 清洗、时序对齐、场景切分 → Silver Layer',
+        dailyVolume: '~6 TB（解码后，含 Volume 文件）',
+      },
+
+      // ─────────────────────────────────────────────────────────
+      // 阶段 3：去重清理后数据（Silver Layer）
+      // ─────────────────────────────────────────────────────────
+      {
+        id: 'silver',
+        name: '③ 去重清理后',
+        subtitle: 'Silver Layer',
+        icon: '⚪',
+        color: '#79c0ff',
+        location: 'S3 Standard-IA（低频访问）',
+        lifecycle: '1年温存储',
+
+        verdict: {
+          format: 'Iceberg (Parquet + zstd) + scene_index 核心索引表',
+          reason: '场景切分后以 scene 为粒度管理，Iceberg 支持增量标注回填',
+          score: 5,
+        },
+        whyThisFormat: [
+          'Iceberg 而非普通 Parquet：Silver 层需要频繁回填字段（scene_id/标注状态/质量分），Iceberg Schema Evolution 无需重写数据',
+          'scene_index 作为核心索引：所有模态帧通过 scene_id 关联，scene_index 是训练采样的唯一入口',
+          'S3 Standard-IA：Silver 层访问频率低于 Bronze（只在训练采样时读），IA 存储成本降低 40%',
+          '为什么不直接用 Delta Lake：Delta Lake 由 Databricks 主导，开放性不如 Iceberg；Iceberg Hidden Partitioning 对场景查询更友好',
+          '坐标系统一存储：所有模态转换到车体坐标系后存储，避免训练时重复转换',
+          'scene_id 回填策略：Bronze 层帧先写入，Silver 层场景切分后通过 UPDATE 回填 scene_id（Iceberg 支持行级更新）',
+        ],
+        schema: {
+          desc: 'Silver 层新增 scene_index 核心表，Bronze 层各模态表回填 scene_id',
+          tables: [
+            {
+              name: 'processed_data.scenes.scene_index',
+              rowUnit: '1行 = 1个 Scene（20s 固定窗口 / 事件触发）',
+              keyFields: [
+                { field: 'scene_id',        type: 'STRING',       desc: '主键，格式 {vehicle_id}_{date}_{session}_{seq}' },
+                { field: 'vehicle_id',       type: 'STRING',       desc: '车辆 ID' },
+                { field: 'start_time',       type: 'TIMESTAMP',    desc: '场景开始时间（分区字段）' },
+                { field: 'duration_s',       type: 'FLOAT',        desc: '时长（秒），典型值 20s' },
+                { field: 'num_frames',       type: 'INT',          desc: '相机帧数（典型值 400）' },
+                { field: 'city',             type: 'STRING',       desc: '城市（行级权限过滤）' },
+                { field: 'weather',          type: 'STRING',       desc: 'sunny/rainy/foggy/night' },
+                { field: 'scenario_tags',    type: 'LIST<STRING>', desc: '[long_tail, highway, intersection, ...]' },
+                { field: 'has_takeover',     type: 'BOOLEAN',      desc: '是否含接管事件' },
+                { field: 'has_camera',       type: 'BOOLEAN',      desc: '相机数据完整性' },
+                { field: 'has_lidar',        type: 'BOOLEAN',      desc: 'LiDAR 数据完整性' },
+                { field: 'has_radar',        type: 'BOOLEAN',      desc: '雷达数据完整性' },
+                { field: 'dedup_hash',       type: 'STRING',       desc: '场景感知哈希，去重用' },
+                { field: 'clip_embedding',   type: 'BINARY',       desc: 'CLIP 场景嵌入（FP16，512维），相似度去重用' },
+                { field: 'annotation_status', type: 'STRING',      desc: 'pending/auto_labeled/human_reviewed/rejected' },
+                { field: 'dataset_version',  type: 'STRING',       desc: '所属数据集版本（Gold 层打包后回填）' },
+                { field: 'webdataset_shard', type: 'STRING',       desc: 'WebDataset shard 路径（Gold 层打包后回填）' },
+              ],
+              partitionBy: 'days(start_time), city',
+              rowsPerDay: '~45000行（1000辆×45 Scene/Session）',
+            },
+          ],
+          silverTransform: [
+            { op: '时序对齐', desc: 'LiDAR 帧为基准，相机 ±5ms / 雷达 ±10ms 最近邻匹配，写入 aligned_frames 关联表' },
+            { op: '坐标系统一', desc: '相机/LiDAR/雷达 → 车体坐标系，ego_pose 矩阵变换，结果存 Silver 层' },
+            { op: '场景切分', desc: '20s 固定窗口 + 事件触发，生成 scene_id，回填到 Bronze 层各模态表' },
+            { op: '感知哈希去重', desc: '计算每帧 pHash，场景级 Hamming 距离 < 8 则标记重复' },
+            { op: 'CLIP 嵌入去重', desc: 'CLIP ViT-L/14 提取场景嵌入，余弦相似度 > 0.95 则去重' },
+            { op: '质量过滤', desc: '模糊帧（Laplacian 方差 < 100）/ 遮挡 / 传感器故障 → is_blurry=true' },
+          ],
+        },
+        accessPatterns: [
+          {
+            pattern: '训练数据采样（最核心的查询）',
+            tool: 'Trino SQL',
+            code: `-- 分层采样：雨天 + 有行人 + 未去重 的场景
+SELECT scene_id, webdataset_shard, weather, scenario_tags
+FROM processed_data.scenes.scene_index
+WHERE annotation_status = 'human_reviewed'
+  AND has_camera = true AND has_lidar = true
+  AND weather = 'rain'
+  AND ARRAY_CONTAINS(scenario_tags, 'pedestrian')
+  AND dataset_version = 'v2.3.0'
+  AND dataset_split = 'train'
+ORDER BY RANDOM()   -- 随机采样
+LIMIT 50000`,
+            note: 'scene_index 是训练采样的唯一入口，所有过滤条件都在这里，不需要扫描帧级表',
+          },
+          {
+            pattern: '多模态联合查询（获取训练样本）',
+            tool: 'Spark SQL',
+            code: `-- 给定 scene_id，获取对齐的多模态帧
+SELECT
+  l.frame_id, l.timestamp_us,
+  l.file_path        AS lidar_path,
+  c.file_path        AS cam_front_path,
+  r.points           AS radar_points,
+  can.speed_mps, can.takeover_flag
+FROM raw_data.lidar.pointcloud_v2 l
+JOIN raw_data.camera.frames_v2 c
+  ON l.scene_id = c.scene_id AND c.camera_id = 'front'
+  AND ABS(c.timestamp_us - l.timestamp_us) < 5000
+LEFT JOIN raw_data.radar.radar_4d_v1 r
+  ON l.scene_id = r.scene_id AND r.radar_id = 'front'
+  AND ABS(r.timestamp_us - l.timestamp_us) < 10000
+LEFT JOIN raw_data.vehicle.can_bus can
+  ON l.scene_id = can.scene_id
+  AND ABS(can.timestamp_us - l.timestamp_us) < 10000
+WHERE l.scene_id = 'v001_20240315_s003_0042'
+ORDER BY l.timestamp_us`,
+            note: '以 LiDAR 帧为基准，±5ms/±10ms 容差对齐其他模态',
+          },
+        ],
+        toNextStage: 'BEVFusion/SAM2 自动标注 → Gold Layer',
+        dailyVolume: '~4 TB（去重后约 Bronze 的 70%）',
+      },
+
+      // ─────────────────────────────────────────────────────────
+      // 阶段 4：带标签数据（Gold 标注层）
+      // ─────────────────────────────────────────────────────────
+      {
+        id: 'gold',
+        name: '④ 带标签数据',
+        subtitle: 'Gold Layer（标注层）',
+        icon: '🏷️',
+        color: '#ffa657',
+        location: 'S3 Standard + NVMe 热缓存',
+        lifecycle: '永久保留',
+
+        verdict: {
+          format: 'Parquet（结构化标注）+ JSON Volume（nuScenes 格式）+ PNG Volume（分割 mask）',
+          reason: '标注数据结构化存 Parquet 便于统计，原始标注 JSON 存 Volume 便于工具链兼容',
+          score: 5,
+        },
+        whyThisFormat: [
+          '3D 检测框存 Parquet：cx/cy/cz/l/w/h/yaw 等数值字段，支持按类别/置信度/城市过滤，Iceberg 列裁剪高效',
+          '语义分割 mask 存 PNG Volume：RLE 压缩的 PNG，不适合存 Parquet 列（二进制大对象），通过 mask_path 关联',
+          'nuScenes JSON 格式兼容：保留 nuScenes 格式的原始标注 JSON，便于与开源工具链（mmdetection3d/OpenPCDet）直接对接',
+          '为什么不用 COCO JSON：COCO 是 2D 格式，不支持 3D 检测框和点云标注，nuScenes 是自动驾驶事实标准',
+          '标注版本化：dataset_version 字段 + Iceberg Time Travel，可回溯任意版本的标注',
+          '自动标注置信度存储：confidence 字段区分自动标注（< 0.9 需人工审核）和人工标注（= 1.0）',
+        ],
+        schema: {
+          desc: '标注数据按类型拆分为独立 Iceberg 表，通过 frame_id 关联传感器数据',
+          tables: [
+            {
+              name: 'processed_data.annotations.bbox_3d',
+              rowUnit: '1行 = 1个 3D 检测框（单帧单目标）',
+              keyFields: [
+                { field: 'anno_id',       type: 'STRING',  desc: '主键' },
+                { field: 'frame_id',      type: 'STRING',  desc: '外键，关联 lidar.pointcloud_v2' },
+                { field: 'scene_id',      type: 'STRING',  desc: '外键，关联 scene_index' },
+                { field: 'track_id',      type: 'STRING',  desc: '跨帧追踪 ID（同一目标在多帧中相同）' },
+                { field: 'category',      type: 'STRING',  desc: 'car/truck/pedestrian/cyclist/cone' },
+                { field: 'cx,cy,cz',      type: 'FLOAT',   desc: '3D 中心坐标（车体坐标系，米）' },
+                { field: 'l,w,h',         type: 'FLOAT',   desc: '长宽高（米）' },
+                { field: 'yaw',           type: 'FLOAT',   desc: '偏航角（弧度）' },
+                { field: 'velocity_json', type: 'STRING',  desc: '速度向量 {vx,vy,vz}（m/s）' },
+                { field: 'confidence',    type: 'FLOAT',   desc: '置信度 0-1（自动标注 < 0.9，人工 = 1.0）' },
+                { field: 'source',        type: 'STRING',  desc: 'auto_bevfusion/human/auto+human' },
+                { field: 'dataset_version', type: 'STRING', desc: '标注版本，如 v2.3.0' },
+              ],
+              partitionBy: 'days(created_at), dataset_version',
+              rowsPerDay: '~5000万行（1000辆×50框/帧×200帧/Scene×45Scene）',
+            },
+            {
+              name: 'processed_data.annotations.seg_masks',
+              rowUnit: '1行 = 1帧的语义分割结果',
+              keyFields: [
+                { field: 'anno_id',    type: 'STRING', desc: '主键' },
+                { field: 'frame_id',   type: 'STRING', desc: '外键，关联 camera.frames_v2' },
+                { field: 'camera_id',  type: 'STRING', desc: '相机编号' },
+                { field: 'mask_path',  type: 'STRING', desc: 'S3 Volume 路径，指向 PNG mask 文件（RLE 压缩）' },
+                { field: 'num_classes', type: 'INT',   desc: '分割类别数' },
+                { field: 'class_stats_json', type: 'STRING', desc: '各类别像素占比 JSON，用于数据统计' },
+                { field: 'source',     type: 'STRING', desc: 'auto_sam2/human' },
+              ],
+              partitionBy: 'days(created_at)',
+              rowsPerDay: '~1.08亿行（1000辆×6相机×18000帧）',
+            },
+            {
+              name: 'processed_data.annotations.language_qa',
+              rowUnit: '1行 = 1个 QA 对（VLA 训练用）',
+              keyFields: [
+                { field: 'qa_id',      type: 'STRING', desc: '主键' },
+                { field: 'scene_id',   type: 'STRING', desc: '外键' },
+                { field: 'frame_id',   type: 'STRING', desc: '外键（可选，部分 QA 是场景级）' },
+                { field: 'question',   type: 'STRING', desc: '问题文本' },
+                { field: 'answer',     type: 'STRING', desc: '答案文本' },
+                { field: 'qa_type',    type: 'STRING', desc: 'perception/planning/reasoning/description' },
+                { field: 'source',     type: 'STRING', desc: 'auto_internvl2/human' },
+              ],
+              partitionBy: 'days(created_at), qa_type',
+              rowsPerDay: '~450万行（1000辆×45Scene×100 QA/Scene）',
+            },
+          ],
+        },
+        accessPatterns: [
+          {
+            pattern: '按类别统计标注分布',
+            tool: 'Trino SQL',
+            code: `-- 统计各城市各类别的标注框数量（数据集质量分析）
+SELECT city, category,
+       COUNT(*) AS total_boxes,
+       AVG(confidence) AS avg_conf,
+       SUM(CASE WHEN source = 'human' THEN 1 ELSE 0 END) AS human_labeled
+FROM processed_data.annotations.bbox_3d b
+JOIN processed_data.scenes.scene_index s USING (scene_id)
+WHERE b.dataset_version = 'v2.3.0'
+GROUP BY city, category
+ORDER BY city, total_boxes DESC`,
+            note: '标注统计查询，Iceberg 列裁剪只读 category/confidence/source 列，不读坐标列',
+          },
+          {
+            pattern: '读取某帧的所有标注',
+            tool: 'Python + PyArrow',
+            code: `import pyarrow.dataset as ds
+
+# 直接读 Iceberg 表（通过 PyIceberg）
+from pyiceberg.catalog import load_catalog
+catalog = load_catalog("unity_catalog", uri="https://uc.company.com")
+table = catalog.load_table("processed_data.annotations.bbox_3d")
+
+# 按 frame_id 过滤（Iceberg 谓词下推）
+df = table.scan(
+    row_filter="frame_id = 'v001_20240315_s003_0042_1710460800123456'",
+    selected_fields=["anno_id", "category", "cx", "cy", "cz", "l", "w", "h", "yaw", "confidence"]
+).to_pandas()`,
+            note: 'PyIceberg 直接读取，谓词下推到 Parquet 文件级别，只读相关 row group',
+          },
+        ],
+        toNextStage: 'Ray 打包为 WebDataset shard → 训练前数据',
+        dailyVolume: '~2 TB（标注数据 + 实体文件）',
+      },
+
+      // ─────────────────────────────────────────────────────────
+      // 阶段 5：训练前数据（WebDataset + 预计算特征）
+      // ─────────────────────────────────────────────────────────
+      {
+        id: 'train',
+        name: '⑤ 训练前数据',
+        subtitle: 'Gold WebDataset + Feature Store',
+        icon: '🚀',
+        color: '#3fb950',
+        location: 'S3 + NVMe 热缓存（JuiceFS）',
+        lifecycle: '永久保留（按版本管理）',
+
+        verdict: {
+          format: 'WebDataset tar（多模态打包）+ FP16 Parquet（预计算特征）',
+          reason: '训练 IO 吞吐 ~2 GB/s，GPU 利用率 90%+',
+          score: 5,
+        },
+        whyThisFormat: [
+          'WebDataset tar：消灭小文件问题（2.16亿 JPEG → 5万 shard），顺序读取吞吐 ~2 GB/s vs 随机读 ~50 MB/s',
+          'FP16 预计算特征：BEV 特征/语言嵌入离线预计算存 Parquet，训练时直接读取，跳过重计算（节省 40% 训练时间）',
+          '为什么不用 TFRecord：TFRecord 是 TensorFlow 专属，PyTorch 生态不友好；WebDataset 框架无关',
+          '为什么不用 LMDB：LMDB 不支持分布式读取，多节点训练时需要复制整个数据库',
+          '为什么不用 Zarr：Zarr 适合科学计算的多维数组，不适合多模态异构数据',
+          'Shard 大小 ~1GB：太小（shard 数量多，调度开销大）/ 太大（单 shard 读取时间长，GPU 等待）',
+        ],
+        schema: {
+          desc: 'WebDataset 通过文件命名约定组织数据，无传统 Schema；预计算特征存 Parquet',
+          tarLayout: [
+            { file: '{scene_id}_{frame_idx:06d}.jpg',        desc: '前摄像头帧（JPEG，~150KB）' },
+            { file: '{scene_id}_{frame_idx:06d}.lidar.npy',  desc: '点云矩阵（float32 [N,4]，~500KB）' },
+            { file: '{scene_id}_{frame_idx:06d}.radar.npy',  desc: '雷达点云（float32 [M,5]，~5KB）' },
+            { file: '{scene_id}_{frame_idx:06d}.label.json', desc: '3D 标注框列表（nuScenes 格式）' },
+            { file: '{scene_id}_{frame_idx:06d}.pose.json',  desc: '车体位姿（4×4 变换矩阵）' },
+            { file: '{scene_id}_{frame_idx:06d}.meta.json',  desc: '帧元数据（timestamp_us/camera_id/对齐状态）' },
+            { file: '{scene_id}_scene_meta.json',            desc: 'Scene 级元数据（天气/城市/标签/帧数）' },
+          ],
+          featureParquet: {
+            name: 'feature_store.offline.bev_features_v2',
+            desc: '预计算 BEV 特征（FP16），训练时直接读取，跳过 BEVFusion 推理',
+            keyFields: [
+              { field: 'scene_id',      type: 'STRING',  desc: '主键' },
+              { field: 'frame_id',      type: 'STRING',  desc: '帧 ID' },
+              { field: 'bev_feat',      type: 'BINARY',  desc: 'BEV 特征张量（FP16，[256,200,200]，~20MB/帧）' },
+              { field: 'lang_embed',    type: 'BINARY',  desc: '语言嵌入（FP16，[1,4096]，~8KB/帧）' },
+              { field: 'model_version', type: 'STRING',  desc: '生成特征的模型版本' },
+            ],
+          },
+        },
+        accessPatterns: [
+          {
+            pattern: 'PyTorch 训练读取（标准方式）',
+            tool: 'WebDataset + PyTorch DataLoader',
+            code: `import webdataset as wds
+from torch.utils.data import DataLoader
+
+# Step 1: Iceberg 筛选目标 shard（只读 10% 的 shard）
+target_shards = trino.query("""
+    SELECT DISTINCT webdataset_shard
+    FROM processed_data.scenes.scene_index
+    WHERE weather = 'rain' AND has_pedestrian = true
+      AND dataset_version = 'v2.3.0'
+""").to_list()  # 返回 ~200 个 shard 路径
+
+# Step 2: WebDataset 流式读取
+dataset = (
+    wds.WebDataset(target_shards, shardshuffle=True)
+    .decode("rgb8")                    # JPEG → numpy uint8
+    .to_tuple("jpg", "lidar.npy", "label.json", "pose.json")
+    .shuffle(buffer_size=2000)         # 跨 shard buffer shuffle
+    .map(preprocess_multimodal)
+    .batched(32, partial=False)
+)
+loader = DataLoader(dataset, num_workers=8, pin_memory=True)`,
+            note: 'Iceberg 筛选（秒级）→ WebDataset 只读目标 shard（200/50000），IO 吞吐 ~2 GB/s',
+          },
+          {
+            pattern: '读取预计算特征（加速训练）',
+            tool: 'PyArrow + PyTorch',
+            code: `import pyarrow.parquet as pq
+import torch, numpy as np
+
+# 读取预计算 BEV 特征（FP16，跳过 BEVFusion 推理）
+def load_bev_feature(scene_id: str, frame_id: str) -> torch.Tensor:
+    table = pq.read_table(
+        f"s3://features/bev/{scene_id[:8]}/bev_features_v2.parquet",
+        filters=[("frame_id", "=", frame_id)],
+        columns=["bev_feat"]
+    )
+    feat_bytes = table["bev_feat"][0].as_py()
+    feat = np.frombuffer(feat_bytes, dtype=np.float16)
+    return torch.from_numpy(feat.reshape(256, 200, 200))`,
+            note: '预计算特征节省 40% 训练时间（跳过 BEVFusion 推理），FP16 存储节省 50% 空间',
+          },
+          {
+            pattern: '调试：随机访问单帧（WebDataset 局限性解决方案）',
+            tool: 'Python tarfile',
+            code: `import tarfile, json
+
+# Iceberg 查询：找到 frame_id 对应的 shard 和 offset
+row = trino.query(f"""
+    SELECT webdataset_shard, shard_frame_offset
+    FROM raw_data.camera.frames_v2
+    WHERE frame_id = 'v001_20240315_s003_0042_1710460800123456'
+""").fetchone()
+
+# 用 offset 直接定位 tar 包内的文件
+with tarfile.open(row.webdataset_shard) as tar:
+    tar.fileobj.seek(row.shard_frame_offset)
+    member = tar.next()
+    img_bytes = tar.extractfile(member).read()`,
+            note: 'frames_v2 表新增 shard_frame_offset 字段，解决 WebDataset 随机访问困难的问题',
+          },
+        ],
+        toNextStage: 'GPU 训练（128×A100，~15 GB/s IO 吞吐）',
+        dailyVolume: '~50 TB（训练集总量，按版本管理）',
+      },
+    ],
+
+    // 格式选型决策矩阵
+    decisionMatrix: {
+      title: '各阶段存储格式选型决策矩阵',
+      dimensions: ['格式', '写入方式', '读取方式', '查询能力', '版本管理', '适合规模', '主要局限'],
+      formats: [
+        { name: 'MCAP',          stage: '采集侧',   write: '流式写入 <1ms', read: '顺序/随机（ChunkIndex）', query: '无 SQL，只能按 topic/时间过滤', version: '文件级', scale: '单车 ~2TB/天', limit: '无结构化查询，不适合云端分析' },
+        { name: 'Iceberg+Parquet', stage: 'Bronze/Silver/Gold', write: 'ACID 批量写入', read: 'SQL 谓词下推，列裁剪', query: '完整 SQL，支持 JOIN/聚合/过滤', version: '快照级 Time Travel', scale: '亿级行，PB 级', limit: '不适合直接训练读取（随机 IO）' },
+        { name: 'S3 Volume',     stage: 'Bronze/Gold', write: 'PUT 对象', read: 'GET 对象（需知道 key）', query: '无，只能通过 Iceberg 表的 file_path 间接查询', version: '无（依赖 Iceberg）', scale: '无限', limit: '小文件问题（亿级文件时 LIST 极慢）' },
+        { name: 'WebDataset tar', stage: '训练前',  write: '批量打包（Ray）', read: '顺序流式读取 ~2GB/s', query: '无，依赖 Iceberg 筛选 shard', version: '文件级（配合 LakeFS）', scale: '万级 shard', limit: '随机访问困难，增量更新需重新打包' },
+        { name: 'FP16 Parquet',  stage: '训练前',   write: '离线预计算写入', read: '列裁剪，按 frame_id 过滤', query: '有限 SQL', version: '字段版本化', scale: '百亿行', limit: '特征维度固定，模型更新需重新计算' },
+      ],
+    },
+  },
+
   // ── 车端采集客户端（工程实现细节）────────────────────────────
   edgeClient: {
     title: '车端采集客户端工程实现',

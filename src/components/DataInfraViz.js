@@ -203,12 +203,15 @@ function K8sTab() {
 // ─────────────────────────────────────────────────────────────
 function DatalakeTab() {
   const { dataChain, modalSpecs, icebergSchemas, edgeClient, webdatasetData,
-          trainDatasetBuild, ioOptimization,
+          storageFormats, trainDatasetBuild, ioOptimization,
           icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
-  const [activeSubTab, setActiveSubTab] = useState('client');
+  const [activeSubTab, setActiveSubTab] = useState('formats');
   const [selectedTable, setSelectedTable] = useState(null);
+  const [selectedStage, setSelectedStage] = useState('collect');
+  const [selectedAccess, setSelectedAccess] = useState(0);
 
   const SUB_TABS = [
+    { id: 'formats',    label: '存储格式全景',   icon: '🗺️' },
     { id: 'client',     label: '车端采集客户端', icon: '🚗' },
     { id: 'chain',      label: '数据链路',       icon: '🔗' },
     { id: 'schema',     label: 'Schema 设计',    icon: '📐' },
@@ -259,6 +262,254 @@ function DatalakeTab() {
           </button>
         ))}
       </div>
+
+      {/* ── 存储格式全景 ── */}
+      {activeSubTab === 'formats' && (() => {
+        const stage = storageFormats.stages.find(s => s.id === selectedStage) || storageFormats.stages[0];
+        return (
+          <div className="space-y-4">
+            {/* 顶部定位 */}
+            <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/04 p-4">
+              <div className="text-sm font-bold text-gray-800 mb-1">{storageFormats.title}</div>
+              <div className="text-[10px] text-gray-500 mb-3">{storageFormats.subtitle}</div>
+              {/* 5阶段选择器 */}
+              <div className="flex flex-wrap gap-2">
+                {storageFormats.stages.map(s => (
+                  <button key={s.id} onClick={() => { setSelectedStage(s.id); setSelectedAccess(0); }}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-medium transition-all"
+                    style={{
+                      background: selectedStage === s.id ? s.color + '15' : 'transparent',
+                      color: selectedStage === s.id ? s.color : '#64748b',
+                      borderColor: selectedStage === s.id ? s.color + '50' : '#e2e8f0',
+                      fontWeight: selectedStage === s.id ? 700 : 400,
+                    }}>
+                    <span>{s.icon}</span>
+                    <span>{s.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 阶段详情 */}
+            <div className="rounded-2xl border p-5"
+              style={{ borderColor: stage.color + '30', background: stage.color + '05' }}>
+              {/* 头部 */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl">{stage.icon}</span>
+                  <div>
+                    <div className="text-base font-bold text-gray-800">{stage.name}</div>
+                    <div className="text-[10px] font-medium" style={{ color: stage.color }}>{stage.subtitle}</div>
+                    <div className="text-[9px] text-gray-400 mt-0.5">{stage.location} · {stage.lifecycle}</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[8px] text-gray-400 mb-1">日数据量</div>
+                  <div className="text-xs font-bold" style={{ color: stage.color }}>{stage.dailyVolume}</div>
+                </div>
+              </div>
+
+              {/* 格式裁决 */}
+              <div className="rounded-xl border p-3 mb-4"
+                style={{ borderColor: stage.color + '30', background: stage.color + '08' }}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[10px] font-bold text-gray-700">✅ 最优格式：</span>
+                  <span className="text-[10px] font-bold" style={{ color: stage.color }}>{stage.verdict.format}</span>
+                  <span className="text-[9px] px-2 py-0.5 rounded-full ml-auto"
+                    style={{ background: stage.color + '15', color: stage.color }}>{stage.verdict.reason}</span>
+                </div>
+                <div className="flex gap-0.5 mt-1">
+                  {[1,2,3,4,5].map(i => (
+                    <div key={i} className="w-4 h-1.5 rounded-full"
+                      style={{ background: i <= stage.verdict.score ? stage.color : stage.color + '25' }} />
+                  ))}
+                </div>
+              </div>
+
+              {/* 为什么选这个格式 */}
+              <div className="mb-4">
+                <div className="text-[10px] font-semibold text-gray-600 mb-2">💡 为什么选这个格式？</div>
+                <div className="space-y-1">
+                  {stage.whyThisFormat.map((r, i) => (
+                    <div key={i} className="flex items-start gap-1.5 text-[9px] text-gray-600">
+                      <span style={{ color: stage.color }} className="flex-shrink-0 mt-0.5">▸</span>
+                      <span>{r}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Schema */}
+              <div className="mb-4">
+                <div className="text-[10px] font-semibold text-gray-600 mb-2">📐 Schema 设计</div>
+                <div className="text-[9px] text-gray-500 mb-2">{stage.schema.desc}</div>
+
+                {/* MCAP 阶段：关键字段 */}
+                {stage.schema.keyFields && (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-[9px]">
+                      <thead><tr className="border-b border-gray-100">
+                        <th className="text-left py-1 px-2 text-gray-400">字段</th>
+                        <th className="text-left py-1 px-2 text-gray-400">类型</th>
+                        <th className="text-left py-1 px-2 text-gray-400">说明</th>
+                      </tr></thead>
+                      <tbody>
+                        {stage.schema.keyFields.map((f, i) => (
+                          <tr key={i} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                            <td className="py-1 px-2 font-mono font-semibold" style={{ color: stage.color }}>{f.field}</td>
+                            <td className="py-1 px-2 font-mono text-gray-400 text-[8px]">{f.type}</td>
+                            <td className="py-1 px-2 text-gray-500">{f.desc}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Bronze/Silver/Gold 阶段：多张表 */}
+                {stage.schema.tables && stage.schema.tables.map(tbl => (
+                  <div key={tbl.name} className="mb-3 rounded-xl border border-gray-100 bg-white/80 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-bold font-mono" style={{ color: stage.color }}>{tbl.name}</span>
+                      <Badge color={stage.color}>{tbl.rowUnit}</Badge>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-[9px]">
+                        <thead><tr className="border-b border-gray-100">
+                          <th className="text-left py-1 px-2 text-gray-400">字段</th>
+                          <th className="text-left py-1 px-2 text-gray-400">类型</th>
+                          <th className="text-left py-1 px-2 text-gray-400">说明</th>
+                        </tr></thead>
+                        <tbody>
+                          {tbl.keyFields.map((f, i) => (
+                            <tr key={i} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                              <td className="py-1 px-2 font-mono font-semibold" style={{ color: stage.color }}>{f.field}</td>
+                              <td className="py-1 px-2 font-mono text-gray-400 text-[8px]">{f.type}</td>
+                              <td className="py-1 px-2 text-gray-500">{f.desc}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2 text-[8px]">
+                      {tbl.partitionBy && <span className="text-gray-400">分区: <span className="font-mono text-gray-600">{tbl.partitionBy}</span></span>}
+                      {tbl.rowsPerDay && <span className="text-gray-400">行数/天: <span className="font-mono" style={{ color: stage.color }}>{tbl.rowsPerDay}</span></span>}
+                      {tbl.volumeRef && <span className="text-gray-400">Volume: <span className="font-mono text-gray-500">{tbl.volumeRef}</span></span>}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Silver 转换操作 */}
+                {stage.schema.silverTransform && (
+                  <div className="mt-2">
+                    <div className="text-[9px] font-semibold text-gray-600 mb-1">🔄 Silver 层转换操作</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {stage.schema.silverTransform.map(op => (
+                        <div key={op.op} className="rounded-lg border border-[#79c0ff]/20 bg-[#79c0ff]/05 px-2 py-1">
+                          <span className="text-[8px] font-semibold text-[#79c0ff]">{op.op}: </span>
+                          <span className="text-[8px] text-gray-500">{op.desc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* WebDataset tar 布局 */}
+                {stage.schema.tarLayout && (
+                  <div className="space-y-1">
+                    {stage.schema.tarLayout.map((f, i) => (
+                      <div key={i} className="flex items-center gap-2 rounded-lg border border-gray-100 bg-white/80 p-1.5">
+                        <span className="text-[8px] font-mono text-[#3fb950] w-56 flex-shrink-0">{f.file}</span>
+                        <span className="text-[8px] text-gray-400">{f.desc}</span>
+                      </div>
+                    ))}
+                    {stage.schema.featureParquet && (
+                      <div className="mt-3 rounded-xl border border-[#3fb950]/20 bg-[#3fb950]/05 p-3">
+                        <div className="text-[9px] font-bold text-[#3fb950] mb-1">{stage.schema.featureParquet.name}</div>
+                        <div className="text-[8px] text-gray-500 mb-2">{stage.schema.featureParquet.desc}</div>
+                        <div className="flex flex-wrap gap-1">
+                          {stage.schema.featureParquet.keyFields.map(f => (
+                            <div key={f.field} className="rounded px-1.5 py-0.5 border border-[#3fb950]/15 bg-white/80">
+                              <span className="text-[8px] font-mono font-semibold text-[#3fb950]">{f.field}</span>
+                              <span className="text-[7px] text-gray-400 ml-1">{f.type}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* 访问方式 */}
+              <div className="mb-3">
+                <div className="text-[10px] font-semibold text-gray-600 mb-2">🔍 访问方式</div>
+                <div className="flex gap-1.5 mb-2 flex-wrap">
+                  {stage.accessPatterns.map((ap, i) => (
+                    <button key={i} onClick={() => setSelectedAccess(i)}
+                      className="text-[9px] px-2.5 py-1 rounded-full border transition-all"
+                      style={{
+                        background: selectedAccess === i ? stage.color : 'transparent',
+                        color: selectedAccess === i ? '#fff' : '#64748b',
+                        borderColor: selectedAccess === i ? stage.color : '#e2e8f0',
+                      }}>
+                      {ap.pattern}
+                    </button>
+                  ))}
+                </div>
+                {stage.accessPatterns[selectedAccess] && (
+                  <div className="rounded-xl border p-3"
+                    style={{ borderColor: stage.color + '20', background: stage.color + '04' }}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge color={stage.color}>{stage.accessPatterns[selectedAccess].tool}</Badge>
+                      <span className="text-[9px] text-gray-400">{stage.accessPatterns[selectedAccess].note}</span>
+                    </div>
+                    <pre className="text-[8px] font-mono leading-relaxed overflow-x-auto whitespace-pre-wrap"
+                      style={{ color: stage.color }}>
+                      {stage.accessPatterns[selectedAccess].code}
+                    </pre>
+                  </div>
+                )}
+              </div>
+
+              {/* 流向 */}
+              <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-2 text-center">
+                <span className="text-[9px] text-gray-400">下一阶段: </span>
+                <span className="text-[9px] font-semibold text-gray-600">{stage.toNextStage}</span>
+              </div>
+            </div>
+
+            {/* 格式选型决策矩阵 */}
+            <SectionCard icon="📊" title={storageFormats.decisionMatrix.title} desc="">
+              <div className="overflow-x-auto">
+                <table className="w-full text-[9px]">
+                  <thead>
+                    <tr className="border-b border-gray-100">
+                      {storageFormats.decisionMatrix.dimensions.map(d => (
+                        <th key={d} className="text-left py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">{d}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {storageFormats.decisionMatrix.formats.map((fmt, i) => (
+                      <tr key={fmt.name} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                        <td className="py-1.5 px-2 font-mono font-bold text-[#00cec9]">{fmt.name}</td>
+                        <td className="py-1.5 px-2 text-gray-500">{fmt.stage}</td>
+                        <td className="py-1.5 px-2 text-gray-500">{fmt.write}</td>
+                        <td className="py-1.5 px-2 text-gray-500">{fmt.read}</td>
+                        <td className="py-1.5 px-2 text-gray-500">{fmt.query}</td>
+                        <td className="py-1.5 px-2 text-gray-500">{fmt.version}</td>
+                        <td className="py-1.5 px-2 text-gray-500">{fmt.scale}</td>
+                        <td className="py-1.5 px-2 text-amber-600 text-[8px]">{fmt.limit}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </SectionCard>
+          </div>
+        );
+      })()}
 
       {/* ── 车端采集客户端 ── */}
       {activeSubTab === 'client' && (
