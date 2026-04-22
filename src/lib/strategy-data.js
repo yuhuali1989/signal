@@ -1988,3 +1988,198 @@ export const BENCHMARKS = {
     },
   ],
 };
+
+// ═══════════════════════════════════════════════════════════════
+// 网站演进路线图 — 由 AI 设计师（角色 E）定期更新
+// 最后更新：2026-04-22
+// ═══════════════════════════════════════════════════════════════
+export const SITE_ROADMAP = {
+  lastUpdated: '2026-04-22',
+  summary: '基于 GitHub 生态扫描、新闻角度盲区分析和模块覆盖评估，持续演进 Signal 知识平台的内容广度与深度。',
+
+  // TOP 5 最高价值机会
+  topOpportunities: [
+    {
+      id: 'mcp-directory',
+      title: 'MCP Server 目录',
+      priority: 'P0',
+      value: '高',
+      effort: '低',
+      desc: 'MCP 生态正在爆发，modelcontextprotocol/servers 已有大量高质量工具，Signal 完全缺失该方向的专题追踪。',
+      action: '新增「工具」页面下的 MCP Server 分类目录，数据来源：github.com/modelcontextprotocol/servers',
+      color: '#6c5ce7',
+    },
+    {
+      id: 'github-trending',
+      title: 'GitHub Trending 追踪',
+      priority: 'P0',
+      value: '高',
+      effort: '低',
+      desc: '每日更新 AI 相关仓库的 trending 情况，是发现新工具最高效的方式，目前声浪模块未覆盖。',
+      action: '在声浪模块新增 github category，或独立新增「GitHub 热榜」板块',
+      color: '#3fb950',
+    },
+    {
+      id: 'hf-daily-papers',
+      title: 'Hugging Face 每日论文',
+      priority: 'P0',
+      value: '高',
+      effort: '低',
+      desc: 'HF 每日精选论文是学术发现效率最高的来源之一，目前论文模块缺乏自动化追踪。',
+      action: '将 huggingface.co/papers 加入采集员信息源白名单，论文模块新增「HF 精选」标签',
+      color: '#fd79a8',
+    },
+    {
+      id: 'ai-safety-coverage',
+      title: 'AI 安全/对齐专题',
+      priority: 'P1',
+      value: '高',
+      effort: '中',
+      desc: 'AI 安全是当前最热门的研究方向之一，Signal 声浪 6 个 category 中完全缺失该角度。',
+      action: '声浪新增 safety category，信息源加入 Anthropic 安全博客 / AI Safety Institute / METR',
+      color: '#e17055',
+    },
+    {
+      id: 'ai-coding-tools',
+      title: 'AI 编程工具对比矩阵',
+      priority: 'P1',
+      value: '高',
+      effort: '中',
+      desc: 'Cursor / Copilot / Windsurf / Devin 等工具用户决策需求强烈，目前无横向对比模块。',
+      action: '在「工具」页面新增 AI 编程工具对比矩阵，定期更新功能/定价/适用场景',
+      color: '#ffa657',
+    },
+  ],
+
+  // GitHub 明星资源发现
+  githubFindings: [
+    {
+      repo: 'modelcontextprotocol/servers',
+      stars: '14k+',
+      type: 'MCP 生态',
+      priority: 'P0',
+      reason: 'MCP 协议官方 Server 集合，Signal 完全缺失该方向',
+      action: '新增信息源白名单 + 专题目录',
+    },
+    {
+      repo: 'awesome-llm（各 fork）',
+      stars: '20k+',
+      type: 'Awesome List',
+      priority: 'P0',
+      reason: '大模型综合资源集合，可作为书架/论文模块的补充来源',
+      action: '加入采集员参考来源',
+    },
+    {
+      repo: 'LLaMA-Factory',
+      stars: '40k+',
+      type: '训练框架',
+      priority: 'P1',
+      reason: '最流行的开源微调框架，声浪 infra category 覆盖不足',
+      action: '声浪 infra 补充相关动态',
+    },
+    {
+      repo: 'vllm-project/vllm',
+      stars: '45k+',
+      type: '推理框架',
+      priority: 'P1',
+      reason: '推理框架领头羊，Signal 已有零星覆盖但不系统',
+      action: '声浪 infra 加强追踪，加入 vLLM Blog 信息源',
+    },
+  ],
+
+  // 新闻角度盲区
+  coverageGaps: [
+    { angle: 'AI 安全/对齐', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'safety', suggestedSources: ['Anthropic 安全博客', 'AI Safety Institute', 'METR'] },
+    { angle: 'AI 编程工具', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'coding', suggestedSources: ['Cursor Blog', 'GitHub Blog', 'Cognition AI'] },
+    { angle: '端侧/小模型', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'infra', suggestedSources: ['Microsoft Research', 'Google', 'Apple ML Research'] },
+    { angle: 'AI 硬件/芯片', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'infra', suggestedSources: ['Groq', 'Cerebras', '寒武纪官网'] },
+    { angle: 'AI + 医疗', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'industry', suggestedSources: ['DeepMind Blog', 'Nature', 'NEJM'] },
+    { angle: '欧洲 AI 生态', severity: '覆盖不足', hotness: '🔥', suggestedCategory: 'industry', suggestedSources: ['Mistral Blog', 'EU AI Office'] },
+  ],
+
+  // 模块扩充建议
+  moduleProposals: [
+    {
+      name: 'MCP Server 目录',
+      type: '工具/实践类',
+      priority: 'P0',
+      effort: '低',
+      value: '高',
+      desc: '追踪 modelcontextprotocol/servers 生态，分类展示可用的 MCP 工具',
+      dataSource: 'github.com/modelcontextprotocol/servers',
+      implementHint: '在现有「工具」页面下新增 MCP 分类，或独立新页面',
+    },
+    {
+      name: 'GitHub Trending 追踪',
+      type: '社区/动态类',
+      priority: 'P0',
+      effort: '低',
+      value: '高',
+      desc: '每日更新 AI 相关仓库的 trending 情况',
+      dataSource: 'github.com/trending',
+      implementHint: '声浪新增 github category，采集员每日抓取',
+    },
+    {
+      name: 'HF 每日论文',
+      type: '学术/研究类',
+      priority: 'P0',
+      effort: '低',
+      value: '高',
+      desc: '追踪 Hugging Face 每日精选论文',
+      dataSource: 'huggingface.co/papers',
+      implementHint: '论文模块新增「HF 精选」标签，采集员加入该来源',
+    },
+    {
+      name: 'AI 工具对比矩阵',
+      type: '工具/实践类',
+      priority: 'P1',
+      effort: '中',
+      value: '高',
+      desc: 'Cursor vs Copilot vs Windsurf vs Devin 等编程工具横向对比',
+      dataSource: '各工具官网 + 社区评测',
+      implementHint: '「工具」页面新增对比矩阵组件',
+    },
+    {
+      name: 'AI 能力进化时间线',
+      type: '数据看板类',
+      priority: 'P1',
+      effort: '中',
+      value: '高',
+      desc: '以时间轴形式展示各模型在各 Benchmark 上的历史进展',
+      dataSource: 'Papers with Code / LMSYS Arena',
+      implementHint: '评测榜页面扩展，增加历史趋势视图',
+    },
+    {
+      name: 'Prompt 工程库',
+      type: '工具/实践类',
+      priority: 'P1',
+      effort: '低',
+      value: '高',
+      desc: '收录高质量 System Prompt / Few-shot 示例',
+      dataSource: 'GitHub awesome-prompts / 社区贡献',
+      implementHint: '新增独立页面，支持分类浏览和搜索',
+    },
+    {
+      name: 'AI 术语词典',
+      type: '知识沉淀类',
+      priority: 'P2',
+      effort: '低',
+      value: '中',
+      desc: 'MoE / GQA / KV Cache / RLHF / DPO 等专业术语解释',
+      dataSource: '论文 + 技术博客',
+      implementHint: '新增词典页面，SEO 友好',
+    },
+  ],
+
+  // 建议新增信息源
+  suggestedSources: [
+    { name: 'Hugging Face Daily Papers', url: 'https://huggingface.co/papers', type: '论文聚合', reason: '每日精选 arXiv 论文，质量高' },
+    { name: 'Lilian Weng Blog', url: 'https://lilianweng.github.io/', type: '个人博客', reason: 'OpenAI 研究员，综述质量极高' },
+    { name: 'vLLM Blog', url: 'https://blog.vllm.ai/', type: '工程博客', reason: '推理框架最新进展' },
+    { name: 'Last Week in AI', url: 'https://lastweekin.ai/', type: 'Newsletter', reason: '每周 AI 动态汇总，覆盖面广' },
+    { name: 'Import AI', url: 'https://jack-clark.net/', type: 'Newsletter', reason: 'Jack Clark（Anthropic 联创）周报' },
+    { name: '智源研究院', url: 'https://www.baai.ac.cn/news.html', type: '学术机构', reason: 'FlagAI / BGE 等开源项目' },
+    { name: '上海 AI 实验室', url: 'https://www.shlab.org.cn/', type: '学术机构', reason: 'InternLM / OpenCompass' },
+    { name: 'LangChain Blog', url: 'https://blog.langchain.dev/', type: '工程博客', reason: 'Agent 框架动态' },
+  ],
+};

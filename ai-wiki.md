@@ -649,8 +649,16 @@ maxwell-knowledge/
 
 1. **输出完整的扩充建议报告**，包含上述四个扫描维度的结果
 2. **每条建议必须有具体的实施路径**（不能只说"建议新增 XXX"，要说明数据来源、实现方式、优先级）
-3. **不写入任何文件**，只输出 Markdown 格式的报告
-4. **报告末尾附上执行摘要**：
+3. **将报告写入 `src/lib/strategy-data.js` 的 `SITE_ROADMAP` 对象**（战略页面 → 网站演进 Tab 会自动展示）：
+   - 更新 `lastUpdated` 为今日日期（格式 `YYYY-MM-DD`）
+   - 更新 `summary` 为本次扫描的一句话总结
+   - 更新 `topOpportunities`（TOP 5 最高价值机会，每项包含 id/title/priority/value/effort/desc/action/color）
+   - 更新 `githubFindings`（GitHub 明星资源，每项包含 repo/stars/type/priority/reason/action）
+   - 更新 `coverageGaps`（新闻角度盲区，每项包含 angle/severity/hotness/suggestedCategory/suggestedSources）
+   - 更新 `moduleProposals`（模块扩充建议，每项包含 name/type/priority/effort/value/desc/dataSource/implementHint）
+   - 更新 `suggestedSources`（建议新增信息源，每项包含 name/url/type/reason）
+   - **使用 `replace_in_file` 局部替换，严禁全量重写整个文件**
+4. **报告末尾附上执行摘要**（输出到对话中，供人工快速决策）：
 
 ```markdown
 ## 执行摘要
@@ -671,7 +679,7 @@ maxwell-knowledge/
 - [ ] ...
 ```
 
-5. 报告输出后，**明确告知人工**："设计师报告已就绪，请人工审阅后决定是否交由角色 B 编辑员实施"
+5. 写入完成后，**明确告知人工**："设计师报告已写入战略页面→网站演进 Tab，请访问 http://localhost:3000/strategy/ 查看，并决定是否交由角色 B 编辑员实施具体任务"
 `````
 
 ---
