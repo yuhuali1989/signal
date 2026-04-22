@@ -232,6 +232,8 @@ const NEWS_DATA = [
     hot: false,
     link: 'https://press.airstreet.com/p/state-of-ai-april-2026-newsletter',
   },
+  {
+    id: 2531,
     category: 'startup',
     region: 'global',
     title: 'SpaceX 与 Cursor 达成合作，持有 $600 亿收购选项',
