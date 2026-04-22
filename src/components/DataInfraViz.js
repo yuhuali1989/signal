@@ -13,6 +13,7 @@ import {
   DEDUP_DATA,
   SYNTH_DATA,
   FRAMEWORK_DATA,
+  UNITY_CATALOG_INFRA_DATA,
 } from '@/lib/data-infra-data';
 
 // ─────────────────────────────────────────────────────────────
@@ -1440,23 +1441,198 @@ function FrameworkTab() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// Unity Catalog Tab
+// ═══════════════════════════════════════════════════════════
+function UnityCatalogTab() {
+  const uc = UNITY_CATALOG_INFRA_DATA;
+  const [activeSubTab, setActiveSubTab] = useState('caps');
+
+  const SUB_TABS = [
+    { id: 'caps',      label: '三大能力', icon: '✨' },
+    { id: 'namespace', label: '命名空间', icon: '🗂️' },
+    { id: 'lineage',   label: '数据血缘', icon: '🔗' },
+    { id: 'vs',        label: 'vs MLflow',  icon: '⚖️' },
+    { id: 'integrate', label: '工具集成', icon: '🔌' },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 定位卡片 */}
+      <SectionCard icon="🗂️" title={uc.title} desc={uc.subtitle}>
+        <div className="flex flex-wrap gap-2">
+          {[uc.version, 'Iceberg REST Catalog', '开源自托管', 'K8s 部署'].map(t => (
+            <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+              style={{ background: '#e84393' + '15', color: '#e84393', border: '1px solid #e8439330' }}>
+              {t}
+            </span>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* Sub Tab 切换 */}
+      <div className="flex gap-1.5 flex-wrap">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveSubTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeSubTab === t.id ? '#e84393' : 'transparent',
+              color: activeSubTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeSubTab === t.id ? '#e84393' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 三大能力 */}
+      {activeSubTab === 'caps' && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {uc.coreCaps.map(cap => (
+            <div key={cap.title} className="rounded-2xl border p-5"
+              style={{ borderColor: cap.color + '30', background: cap.color + '04' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">{cap.icon}</span>
+                <div>
+                  <div className="text-sm font-bold text-gray-800">{cap.title}</div>
+                  <div className="text-[9px] font-mono" style={{ color: cap.color }}>{cap.catalog}</div>
+                </div>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-3 leading-relaxed">{cap.desc}</p>
+              <ul className="space-y-1.5 mb-3">
+                {cap.points.map((p, i) => (
+                  <li key={i} className="flex items-start gap-1.5 text-[10px] text-gray-600">
+                    <span style={{ color: cap.color }} className="flex-shrink-0 mt-0.5">▸</span>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-1">
+                {cap.tags.map(tag => (
+                  <Badge key={tag} color={cap.color}>{tag}</Badge>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 命名空间 */}
+      {activeSubTab === 'namespace' && (
+        <SectionCard icon="🗂️" title="三层命名空间（Catalog → Schema → Table/Volume）"
+          desc="5 个 Catalog 覆盖数据全生命周期，统一命名空间消除数据孤岛">
+          <div className="space-y-2">
+            {uc.namespaceOverview.map(cat => (
+              <div key={cat.catalog} className="flex items-center gap-3 rounded-xl border p-3"
+                style={{ borderColor: cat.color + '25', background: cat.color + '04' }}>
+                <span className="text-lg flex-shrink-0">{cat.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold font-mono" style={{ color: cat.color }}>{cat.catalog}</span>
+                    <span className="text-[10px] text-gray-400">{cat.desc}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    {cat.schemas.map(s => (
+                      <span key={s} className="text-[8px] px-1.5 py-0.5 rounded font-mono"
+                        style={{ background: cat.color + '12', color: cat.color }}>.{s}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+
+      {/* 数据血缘 */}
+      {activeSubTab === 'lineage' && (
+        <SectionCard icon="🔗" title="全链路数据血缘（Column-level Lineage）"
+          desc="从原始传感器帧到最终模型权重，每一步转换都有完整血缘记录">
+          <div className="space-y-2">
+            {uc.lineageChain.map((link, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="flex-1 rounded-lg border border-gray-100 bg-gray-50/50 p-2">
+                  <div className="text-[9px] font-mono text-gray-600 truncate">{link.from}</div>
+                </div>
+                <div className="flex flex-col items-center flex-shrink-0 min-w-[80px]">
+                  <div className="text-[8px] text-gray-400 text-center whitespace-nowrap">{link.op}</div>
+                  <div className="text-sm" style={{ color: link.color }}>→</div>
+                </div>
+                <div className="flex-1 rounded-lg border border-gray-100 bg-gray-50/50 p-2">
+                  <div className="text-[9px] font-mono text-gray-600 truncate">{link.to}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {['列级血缘', '影响分析', '根因定位', 'GDPR 审计'].map((cap, i) => (
+              <div key={cap} className="rounded-xl border border-[#e84393]/15 bg-[#e84393]/04 p-2 text-center">
+                <div className="text-[10px] font-semibold text-gray-700">{cap}</div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+
+      {/* vs MLflow */}
+      {activeSubTab === 'vs' && (
+        <SectionCard icon="⚖️" title="Unity Catalog vs 纯 MLflow"
+          desc="UC 不替代 MLflow，而是作为统一元数据层包裹 MLflow">
+          <div className="space-y-1.5">
+            <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-gray-400 px-2 mb-1">
+              <span>维度</span><span>纯 MLflow</span><span>UC + MLflow</span>
+            </div>
+            {uc.vsMLflow.map(row => (
+              <div key={row.aspect} className="grid grid-cols-3 gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-2.5 text-[9px]">
+                <span className="font-semibold text-gray-700">{row.aspect}</span>
+                <span className={`font-mono ${row.winner === 'mlflow' ? 'text-[#3fb950]' : 'text-gray-400'}`}>{row.mlflow}</span>
+                <span className={`font-mono ${row.winner === 'uc' ? 'text-[#e84393] font-semibold' : 'text-gray-400'}`}>{row.uc}</span>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+
+      {/* 工具集成 */}
+      {activeSubTab === 'integrate' && (
+        <SectionCard icon="🔌" title="工具集成"
+          desc="Unity Catalog 作为统一元数据层，无缝接入现有数据栈">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {uc.integrations.map(item => (
+              <div key={item.tool} className="rounded-xl border p-3"
+                style={{ borderColor: item.color + '25', background: item.color + '05' }}>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="text-sm">{item.icon}</span>
+                  <span className="text-[10px] font-semibold text-gray-700">{item.tool}</span>
+                </div>
+                <p className="text-[9px] text-gray-400 leading-relaxed">{item.role}</p>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
 // 主组件
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 export default function DataInfraViz() {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabComponents = useMemo(() => ({
-    overview: <OverviewTab />,
-    k8s: <K8sTab />,
-    datalake: <DatalakeTab />,
-    pipeline: <PipelineTab />,
-    mlops: <MLOpsTab />,
+    overview:      <OverviewTab />,
+    k8s:           <K8sTab />,
+    datalake:      <DatalakeTab />,
+    pipeline:      <PipelineTab />,
+    unitycatalog:  <UnityCatalogTab />,
+    mlops:         <MLOpsTab />,
     observability: <ObservabilityTab />,
-    vectordb: <VectorTab />,
-    dedup: <DedupTab />,
-    synth: <SynthTab />,
-    framework: <FrameworkTab />,
+    vectordb:      <VectorTab />,
+    dedup:         <DedupTab />,
+    synth:         <SynthTab />,
+    framework:     <FrameworkTab />,
   }), []);
 
   const activeInfo = INFRA_TABS.find(t => t.id === activeTab);
