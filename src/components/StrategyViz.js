@@ -2098,7 +2098,7 @@ function RoadmapTab() {
       <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/04 p-4 flex items-start gap-3">
         <span className="text-2xl flex-shrink-0">🎨</span>
         <div>
-          <p className="text-sm font-semibold text-gray-800 mb-1">AI 设计师（角色 E）建议报告</p>
+      <p className="text-sm font-semibold text-gray-800 mb-1">AI 设计师（角色 E）Roadmap 建议报告</p>
           <p className="text-xs text-gray-500 leading-relaxed">{summary}</p>
           <p className="text-[10px] text-gray-400 mt-1">最后更新：{lastUpdated} · 由 AI 设计师定期扫描 GitHub 生态、新闻盲区、模块覆盖后更新</p>
         </div>
@@ -2225,7 +2225,7 @@ const TABS = [
   { id: 'benchmark', label: '行业对标', icon: '📊', color: '#ffa657', desc: '四家标杆企业模式对比' },
   { id: 'security', label: '模型安全', icon: '🔐', color: '#d63031', desc: '外部模型接触内部数据的风险论证与可控性方案' },
   { id: 'china', label: '中国借鉴', icon: '🇨🇳', color: '#00b894', desc: 'Palantir 模式在中国的可行路径与本土化策略' },
-  { id: 'roadmap', label: '网站演进', icon: '🗺️', color: '#6c5ce7', desc: 'AI 设计师定期扫描 GitHub/生态/社区，输出内容扩充建议' },
+  { id: 'roadmap', label: 'Roadmap 建议', icon: '🗺️', color: '#6c5ce7', desc: 'AI 设计师定期扫描 GitHub/生态/社区，输出内容扩充建议' },
 ];
 
 export default function StrategyViz() {
