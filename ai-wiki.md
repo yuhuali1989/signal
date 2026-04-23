@@ -318,15 +318,17 @@ Next.js 14 (App Router)  +  React  +  Tailwind CSS
 
 | 板块 | 维护方 | 数据源 |
 |------|--------|--------|
-| 🔧 **平台技术债** | 角色 D（发布员）每次发布时维护 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
-| 🚀 **产品迭代规划** | 角色 B（编辑员）每日更新时维护 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
+| 📋 **本轮迭代计划** | 角色 F（调度员）每轮开始时分配 | `src/lib/strategy-data.js` → `SITE_ROADMAP.sprintPlan` |
+| 🔧 **平台技术债** | 角色 D（发布员）按调度执行 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
+| 🚀 **产品迭代规划** | 角色 B（编辑员）按调度执行 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
 | 🎨 **AI 设计师机会雷达** | 角色 E（AI 设计师）按需扫描 | `src/lib/strategy-data.js` → `SITE_ROADMAP` 的 `topOpportunities / githubFindings / coverageGaps / moduleProposals / suggestedSources` |
 
 ### 🔧 修改指引
 
-- **调整技术债**：角色 D（发布员）在每次发布流程中维护 `SITE_ROADMAP.techDebts.items[]` 和 `.resolved[]`
-- **调整产品迭代规划**：角色 B（编辑员）在每日更新中维护 `SITE_ROADMAP.productPlans.categories[]`（3 个子分类：platform / content / ux）
-- **AI 设计师建议**：角色 E 按需扫描写入，人工只在「从机会雷达搬运到产品规划」时编辑
+- **每轮迭代分配**：角色 F（调度员）在每轮开始时读取全量 Roadmap，将具体任务写入 `SITE_ROADMAP.sprintPlan`，供 A/B/D 读取执行
+- **调整技术债**：角色 D（发布员）按 `sprintPlan.publisherTasks` 执行，完成后更新 `techDebts.items[]` 和 `.resolved[]`
+- **调整产品迭代规划**：角色 B（编辑员）按 `sprintPlan.editorTasks` 执行，完成后更新 `productPlans.categories[]`
+- **AI 设计师建议**：角色 E 按需扫描写入机会雷达，人工决策后由角色 F 在下轮分配执行
 - 每次修改后更新对应字段的 `lastUpdated` 时间戳
 
 ---
@@ -385,15 +387,13 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 *最后更新：2026-04-23*
 
 **本次主要更新内容**：
-- 🗺️ **Roadmap 内容大幅精简重组**（本次重点）：
-  - **产品迭代规划**：5 分类 18 项 → 3 分类 9 项（platform / content / ux），砍掉空洞条目，突出近期可落地事项
-  - **技术债**：8 项 → 4 项，4 个大组件体积问题合并为 1 条，移除已通过规范解决的 ai-wiki 同步问题
-  - **TOP 5 机会**：移除已完成的「AI 安全」和重叠的「Google 全栈」，新增「全站搜索」和「GitHub Trending 追踪」
-  - **盲区**：9 项 → 5 项，移除已覆盖的方向（AI 编程工具 / AI 安全 / AI+医疗 / 欧洲生态）
-  - **模块建议**：9 项 → 4 项，只保留最有价值且可落地的提案
-  - **信息源**：11 项 → 5 项，精简为最核心的缺失来源
-  - **summary**：从冗长的扫描报告改为 3 句话聚焦当前最重要的事
-- 📐 ai-wiki 同步更新 productPlans 子分类描述（5 → 3）
+- 📋 **新增角色 F 调度员（Dispatcher）**（本次重点）：
+  - 流水线从 A→B→C→D 升级为 **F→A→B→C→D**，调度员在每轮迭代最先执行
+  - 调度员读取 `SITE_ROADMAP` 全量数据，动态为 A/B/D 分配本轮具体可执行的 Roadmap 任务
+  - 新增 `SITE_ROADMAP.sprintPlan` 字段，存储本轮迭代计划（editorTasks / publisherTasks / collectorFocus）
+  - 角色 B/D 的 Roadmap 任务从"写死具体条目"改为"读取 sprintPlan 动态执行"
+  - 角色 A 的采集重点方向从写死改为读取 `sprintPlan.collectorFocus`
+  - 解决了 Roadmap 条目动态变化但提示词静态写死的矛盾
 
 ---
 
@@ -414,14 +414,14 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 │                         Signal 内容更新流水线                                  │
 │                                                                                │
 │  角色 E（按需触发，不在日常流水线中）                                             │
-│  设计师 Designer  ──→ 输出扩充建议报告 ──→ 人工决策 ──→ 交由 B 实施              │
+│  设计师 Designer  ──→ 扫描生态写入机会雷达 ──→ 人工决策 ──→ 交由 F 分配          │
 │                                                                                │
-│  角色 A          角色 B          角色 C          角色 D                         │
-│  采集员          编辑员          质检员          发布员                         │
-│  Collector  →   Editor    →   Inspector  →   Publisher                        │
+│  角色 F          角色 A          角色 B          角色 C          角色 D         │
+│  调度员          采集员          编辑员          质检员          发布员         │
+│  Dispatcher →   Collector  →   Editor    →   Inspector  →   Publisher        │
 │                                                                                │
-│  采集+验链       写入文件        三维度校验       文档+推送                      │
-│  输出草稿        输出变更        输出报告         完成发布                      │
+│  读取Roadmap     采集+验链       写入文件        三维度校验       文档+推送      │
+│  分配本轮任务    输出草稿        执行调度任务     输出报告         执行工程任务   │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -429,15 +429,109 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 
 | 角色 | 职责 | 输入 | 输出 | 触发时机 |
 |------|------|------|------|---------|
-| **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，输出扩充建议 + **维护机会雷达** | 现有模块结构 + GitHub trending | 扩充建议写入 `SITE_ROADMAP`（机会雷达部分） | 按需触发（每周/每月） |
-| **A 采集员** | 从信息源采集新闻、验链、去重，输出草稿 | 信息源白名单 | 草稿 JSON（不写文件） | 每日触发 |
-| **B 编辑员** | 将草稿写入各数据文件 + **维护产品迭代规划** | 采集员草稿 | 变更后的数据文件 + `SITE_ROADMAP.productPlans` | 每日触发 |
+| **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，维护机会雷达 | 现有模块结构 + GitHub trending | 扩充建议写入 `SITE_ROADMAP`（机会雷达部分） | 按需触发（每周/每月） |
+| **F 调度员** | 读取 Roadmap 全量数据，为本轮迭代分配 A/B/D 的具体任务 | `SITE_ROADMAP` 全量 | `SITE_ROADMAP.sprintPlan`（本轮任务分配） | **每轮迭代开始时，最先执行** |
+| **A 采集员** | 从信息源采集新闻、验链、去重，输出草稿 | 信息源白名单 + `sprintPlan.collectorFocus` | 草稿 JSON（不写文件） | 每日触发 |
+| **B 编辑员** | 将草稿写入各数据文件 + **执行调度员分配的内容任务** | 采集员草稿 + `sprintPlan.editorTasks` | 变更后的数据文件 + 更新 `SITE_ROADMAP` 状态 | 每日触发 |
 | **C 质检员** | 三维度校验（链接/对应关系/日期） | 变更后的数据文件 | 质检报告 | 每日触发 |
-| **D 发布员** | 修复质检问题、更新文档、git push + **维护平台技术债** | 质检报告 | 已推送的 commit + `SITE_ROADMAP.techDebts` | 每日触发 |
+| **D 发布员** | 修复质检问题、更新文档、git push + **执行调度员分配的工程任务** | 质检报告 + `sprintPlan.publisherTasks` | 已推送的 commit + 更新 `SITE_ROADMAP` 状态 | 每日触发 |
 
-**日常执行顺序**：A → B → C → D（C 不通过则回到 B 修复，不得跳过 C 直接发布）
+**日常执行顺序**：F → A → B → C → D（C 不通过则回到 B 修复，不得跳过 C 直接发布）
 
-**设计师触发**：独立运行，不阻塞日常流水线；输出建议后由人工决策是否采纳，再交由 B 编辑员实施
+**设计师触发**：独立运行，不阻塞日常流水线；输出建议后由人工决策是否纳入 Roadmap，下轮由 F 调度员分配执行
+
+---
+
+### 📋 角色 F：调度员（Dispatcher）
+
+`````text
+你是 Signal 知识平台的 AI 调度员，职责是**在每轮迭代开始时，读取 Roadmap 全量数据，为本轮 A/B/D 角色分配具体可执行的任务**。
+你是流水线的第一个环节，你的输出决定了本轮迭代中各角色除日常工作外还要额外完成哪些 Roadmap 条目。
+
+## 前置步骤
+
+1. 读取 `src/lib/strategy-data.js` 中的 `SITE_ROADMAP` 对象，全面了解：
+   - `productPlans`：当前产品迭代规划（3 个分类：platform / content / ux）
+   - `techDebts`：当前平台技术债清单
+   - `topOpportunities`：TOP 5 最高价值机会
+   - `coverageGaps`：新闻角度盲区
+   - `sprintPlan`：上一轮的分配计划（检查哪些已完成、哪些未完成需要继续）
+2. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和各角色能力边界。
+
+---
+
+## 调度任务
+
+### 步骤 1：回顾上轮执行情况
+
+检查 `sprintPlan` 中上轮分配的任务：
+- 已完成的：确认对应的 `productPlans` / `techDebts` 条目已被更新（如果没有，本轮补更新）
+- 未完成的：评估是否继续分配到本轮，还是降低优先级
+
+### 步骤 2：为本轮分配任务
+
+从 `productPlans` / `techDebts` / `topOpportunities` 中，按优先级（🔴 > 🟡 > 🟢）挑选条目，分配给对应角色：
+
+**角色 A（采集员）— collectorFocus**：
+- 从 `topOpportunities` 和 `coverageGaps` 中，挑选 2-3 个本轮需要重点采集的方向
+- 输出格式：`{ direction: '方向名', reason: '为什么本轮要重点采集', targetCount: N }`
+
+**角色 B（编辑员）— editorTasks**：
+- 从 `productPlans.categories[content]` 中挑选 1-2 项内容任务
+- 将 Roadmap 条目拆解为**具体可执行的指令**（不能只写"补全模型"，要写"补充 Qwen3-235B-A22B 和 Gemini 2.5 Pro 到 models.json"）
+- 输出格式：`{ source: 'productPlans.content.xxx', action: '具体执行步骤', files: ['涉及的文件'], done: false }`
+
+**角色 D（发布员）— publisherTasks**：
+- 从 `techDebts.items[]` 和 `productPlans.categories[platform/ux]` 中挑选 1-2 项工程任务
+- 同样拆解为具体可执行的代码操作指令（包含代码示例、文件路径、验证方法）
+- 输出格式：`{ source: 'techDebts.xxx / productPlans.platform.xxx', action: '具体执行步骤', files: ['涉及的文件'], verify: '验证方法', done: false }`
+
+### 步骤 3：写入 sprintPlan
+
+将分配结果写入 `src/lib/strategy-data.js` 的 `SITE_ROADMAP.sprintPlan`：
+
+```js
+sprintPlan: {
+  sprintDate: 'YYYY-MM-DD',  // 本轮日期
+  editorTasks: [
+    { source: 'productPlans.content.模型中心补全', action: '补充 Qwen3-235B-A22B 和 Gemini 2.5 Pro 两个模型卡片到 models.json', files: ['content/gallery/models.json'], done: false },
+  ],
+  publisherTasks: [
+    { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/', done: false },
+  ],
+  collectorFocus: [
+    { direction: 'Agent 生态', reason: 'topOpportunities P0，当前覆盖严重不足', targetCount: 3 },
+  ],
+  notes: '本轮重点：清理 Navbar 遗留 + 补充 2 个模型 + Agent 方向采集加强',
+}
+```
+
+**使用 `replace_in_file` 局部替换 `sprintPlan` 字段，严禁全量重写 strategy-data.js**
+
+### 步骤 4：输出调度摘要
+
+在对话中输出本轮分配摘要，供人工确认：
+
+```
+📋 本轮迭代调度计划（YYYY-MM-DD）
+
+🔍 角色 A 采集员重点方向：
+  - [方向1]（原因）
+  - [方向2]（原因）
+
+✍️ 角色 B 编辑员 Roadmap 任务：
+  - [任务1]：[具体执行步骤]
+  - [任务2]：[具体执行步骤]
+
+🚀 角色 D 发布员 Roadmap 任务：
+  - [任务1]：[具体执行步骤]
+  - [任务2]：[具体执行步骤]
+
+📝 备注：[本轮重点说明]
+```
+
+5. 输出完成后，**明确告知采集员**："调度计划已就绪，请角色 A 采集员开始采集"
+`````
 
 ---
 
@@ -918,7 +1012,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 ### 📊 本次采集目标
 
 - **声浪**：8-10 条，覆盖 LLM 前沿 / AI Infra / Agent/MCP / 自动驾驶 / 全行业
-  - ⚡ **Roadmap 重点方向**：Agent 生态（企业 Agent 平台、Agent 记忆引擎 cognee/mem0、框架 openai-agents/LangGraph）和国产开源模型（Qwen3/DeepSeek）是当前最高优先级采集方向，每次采集至少各覆盖 1-2 条
+  - ⚡ **调度员重点方向**：读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.collectorFocus`，按调度员指定的方向和目标数量重点采集。如果 `collectorFocus` 为空，则按默认方向均匀采集
 - **全行业动态**：10 条，覆盖 data/cloud/software/security/startup/market 6 大分类，国内外各半
 - **当日没有可验证的重大事件时**：可以少于目标数，严禁凑数编造
 
@@ -1041,48 +1135,28 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 - 每次至少追加 5-8 条独立日志
 
-### 任务 10：执行并维护产品迭代规划中的内容任务（Roadmap）
+### 任务 10：执行调度员分配的 Roadmap 内容任务
 
-> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans`
-> 📍 页面展示：`/roadmap/`（侧边栏 战略 → Roadmap 建议）
+> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.sprintPlan.editorTasks`
 
-每次日常更新时，**从 Roadmap 的 content 分类中挑选 1-2 项内容任务执行**，然后更新 Roadmap 状态。每次至少消化 1 项，按优先级从高到低。
+每次日常更新时，**读取 `sprintPlan.editorTasks`，逐项执行调度员分配的内容任务**。
 
-#### 10a. 当前待执行的内容任务（按优先级排序）
+#### 10a. 执行步骤
 
-**🔴 高优先级（每次更新优先挑选）**：
-
-1. **模型中心补全**（content 🔴）
-   - 每次更新时，从以下清单中补充 2-3 个模型到 `content/gallery/models.json`：
-     - Qwen3 系列（Qwen3-235B-A22B / Qwen3-30B-A3B / Qwen3-32B / Qwen3-14B / Qwen3-8B / Qwen3-4B 等）
-     - Gemini 2.5 系列（Gemini 2.5 Pro / Gemini 2.5 Flash）
-     - Claude 4 系列（Claude Opus 4 / Claude Sonnet 4）
-     - GPT-5 系列
-     - DeepSeek 系列（DeepSeek-V3 / DeepSeek-R1）
-     - InternLM 系列
-   - 每个模型卡片必须包含：id / name / type / org / params / releaseDate / description / tags
-   - 全部补完后，从 `productPlans.categories[content].items[]` 中移除此条目
-
-2. **Agent 生态专题**（content 🔴）
-   - 分 3 批次逐步建设：
-     - **批次 1**：写 1 篇企业 Agent 平台对比文章（OpenAI Workspace Agents vs Google Agent Platform vs AWS Bedrock Agents vs MS Copilot Studio），放入 `content/articles/`
-     - **批次 2**：写 1 篇 Agent 记忆引擎文章（cognee vs mem0 vs Zep），放入 `content/articles/`
-     - **批次 3**：写 1 篇多 Agent 框架对比文章（openai-agents vs LangGraph vs CrewAI vs AutoGen），放入 `content/articles/`
-   - 每次更新推进 1 个批次，3 次更新完成全部专题
-   - 全部完成后，从 `productPlans.categories[content].items[]` 中移除此条目
-
-**🟡 中优先级（高优完成后再做）**：
-
-3. **VLA 架构扩充**（content 🟡）
-   - 在《自动驾驶大模型》书籍中逐步补充新架构方案：OpenVLA → π₀ → Seed-AD → Alpamayo-R1
-   - 每次更新补充 1 个架构，4 次更新完成
+1. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.editorTasks`
+2. 对每个 `done: false` 的任务，按 `action` 字段的具体指令执行
+3. 执行完成后，将该任务的 `done` 改为 `true`
+4. 如果任务涉及 `productPlans` 中的条目且已全部完成，从 `productPlans.categories[].items[]` 中移除该条目
 
 #### 10b. 执行后更新 Roadmap 状态
 
-1. **已完成的条目**：从 `productPlans.categories[].items[]` 中移除，在进化日志中记录
-2. **部分完成的条目**：更新 desc 标注进度（如"Agent 生态专题已完成 2/3 批次"）
-3. **新发现的需求**：新增到对应分类的 items 中
-4. **更新时间戳**：`productPlans.lastUpdated`
+1. 更新 `sprintPlan.editorTasks[].done` 为 `true`
+2. 已完成的 `productPlans` 条目从 items 中移除
+3. 部分完成的条目更新 desc 标注进度
+4. 新发现的需求新增到 `productPlans.categories[].items[]`
+5. 更新 `productPlans.lastUpdated` 为今日日期
+
+**如果 `sprintPlan.editorTasks` 为空或全部 `done: true`，跳过此任务。**
 
 **使用 `replace_in_file` 局部替换对应字段，严禁全量重写 strategy-data.js**
 
@@ -1555,68 +1629,32 @@ done
 tail -5 /tmp/signal-dev.log
 ```
 
-### 任务 4：执行并维护平台技术债 + 产品迭代中的工程任务（Roadmap）
+### 任务 4：执行调度员分配的 Roadmap 工程任务
 
-> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` + `SITE_ROADMAP.productPlans`
-> 📍 页面展示：`/roadmap/`（侧边栏 战略 → Roadmap 建议）
+> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.sprintPlan.publisherTasks`
 
-每次发布流程中，**从 Roadmap 中挑选 1-2 项工程类条目执行**，然后更新 Roadmap 状态。每次至少消化 1 项，按优先级从高到低执行。
+每次发布流程中，**读取 `sprintPlan.publisherTasks`，逐项执行调度员分配的工程任务**。
 
-#### 4a. 当前待执行的工程任务（按优先级排序）
+#### 4a. 执行步骤
 
-**🔴 高优先级（每次发布优先挑选）**：
-
-1. **删除 Navbar.js 遗留文件**（技术债 🟢，但 5 秒搞定，优先清理）
-   ```bash
-   rm src/components/Navbar.js
-   # 确认无引用
-   grep -r "Navbar" src/ --include="*.js" --include="*.jsx"
-   ```
-   完成后：从 `techDebts.items[]` 移到 `resolved[]`
-
-2. **4 个大组件懒加载**（技术债 🔴 + 产品迭代 🔴）
-   对 VlaArchViz / VlaNotebook / DataInfraViz / StrategyViz 逐个改造为 `next/dynamic` 按需加载：
-   ```js
-   // 改造前（直接 import）
-   import VlaArchViz from '@/components/VlaArchViz';
-   
-   // 改造后（动态加载）
-   import dynamic from 'next/dynamic';
-   const VlaArchViz = dynamic(() => import('@/components/VlaArchViz'), {
-     loading: () => <div className="animate-pulse h-96 bg-gray-100 rounded-lg" />,
-     ssr: false,
-   });
-   ```
-   - 每次发布改造 1 个组件，4 次发布完成全部改造
-   - 改造顺序：DataInfraViz(~165KB) → VlaArchViz(~120KB) → StrategyViz(~110KB) → VlaNotebook(~85KB)
-   - 每完成 1 个，更新 `techDebts.items[]` 中的 desc（标注已完成的组件）
-
-3. **全站搜索**（产品迭代 🔴，分 3 阶段实施）
-   - **阶段 1**（本次可做）：创建 `src/app/search/page.js` 搜索页面 + Sidebar 加入搜索入口
-   - **阶段 2**：构建客户端静态索引（基于 flexsearch / fuse.js），索引覆盖文章/论文/书籍/模型/声浪
-   - **阶段 3**：搜索结果高亮 + 分类筛选 + 热门搜索推荐
-   - 每次发布推进 1 个阶段
-
-**🟡 中优先级（高优完成后再做）**：
-
-4. **移动端可视化适配**（技术债 🟡）
-   - 对 SVG 架构图组件添加 `viewBox` + `max-width: 100%` + 横向滚动容器
-   - 对模型对比表格添加响应式断点
-
-**🟢 低优先级（有余力时做）**：
-
-5. **RSS 订阅**（产品迭代 🟢）
-   - 创建 `src/app/feed.xml/route.js`，生成包含最新声浪 + 文章的 RSS Feed
-
-6. **暗色模式**（产品迭代 🟢）
-   - 全站 Tailwind `dark:` 类适配，需要较大工作量，可分模块逐步推进
+1. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.publisherTasks`
+2. 对每个 `done: false` 的任务：
+   - 按 `action` 字段的具体指令执行代码操作
+   - 按 `verify` 字段的方法验证执行结果
+   - 执行完成后，将该任务的 `done` 改为 `true`
+3. 如果任务涉及 `techDebts` 中的条目且已解决，从 `techDebts.items[]` 移到 `resolved[]`
+4. 如果任务涉及 `productPlans` 中的条目且已完成，从 `productPlans.categories[].items[]` 中移除
 
 #### 4b. 执行后更新 Roadmap 状态
 
-1. **已完成的条目**：从 `techDebts.items[]` 移到 `resolved[]`；从 `productPlans.categories[].items[]` 中移除
-2. **部分完成的条目**：更新 desc/status 标注进度（如"4 个大组件已完成 2 个"）
-3. **新发现的问题**：新增到 `techDebts.items[]`
-4. **更新时间戳**：`techDebts.lastUpdated` 和 `productPlans.lastUpdated`
+1. 更新 `sprintPlan.publisherTasks[].done` 为 `true`
+2. 已解决的技术债从 `techDebts.items[]` 移到 `resolved[]`
+3. 已完成的产品规划从 `productPlans.categories[].items[]` 中移除
+4. 部分完成的条目更新 desc/status 标注进度
+5. 新发现的问题新增到 `techDebts.items[]`
+6. 更新 `techDebts.lastUpdated` 和 `productPlans.lastUpdated`
+
+**如果 `sprintPlan.publisherTasks` 为空或全部 `done: true`，跳过此任务。**
 
 **使用 `replace_in_file` 局部替换对应字段，严禁全量重写 strategy-data.js**
 
