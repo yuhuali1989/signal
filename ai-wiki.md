@@ -310,103 +310,24 @@ Next.js 14 (App Router)  +  React  +  Tailwind CSS
 
 ---
 
-## 四、Roadmap 与技术债
+## 四、Roadmap（见网页）
 
-本章节整合了 **内部技术债、产品迭代规划、外部机会雷达** 三类事项，并明确了它们的来源与职责分工。
+> 📍 **Roadmap 相关内容全部由 `/roadmap/` 页面承载，本文件不再维护任何 Roadmap 条目。**
 
-### 📌 职责分工
+`/roadmap/` 页面（[线上](https://yuhuali1989.github.io/signal/roadmap/) · 左侧导航「战略 → Roadmap 建议」）汇总了三类事项：
 
-| 类别 | 维护方 | 存放位置 | 更新方式 |
-|------|--------|---------|---------|
-| 🔧 **平台技术债**（A 类） | 开发者人工 | **本文件**（ai-wiki.md） | 每次发现/解决后手动更新表格 |
-| 🚀 **产品迭代规划**（B 类） | 开发者人工 | **本文件**（ai-wiki.md） | 每次规划调整后手动更新 |
-| 🎨 **AI 设计师 Roadmap 建议**（C 类） | 角色 E（AI 设计师）自动 | `src/lib/strategy-data.js` → **`/roadmap/` 页面**渲染 | 每次扫描 GitHub / 新闻盲区 / 模块覆盖后自动更新 |
+| 板块 | 维护方 | 数据源 |
+|------|--------|--------|
+| 🔧 **平台技术债** | 开发者人工 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
+| 🚀 **产品迭代规划** | 开发者人工 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
+| 🎨 **AI 设计师机会雷达** | 角色 E（AI 设计师）自动 | `src/lib/strategy-data.js` → `SITE_ROADMAP` 的 `topOpportunities / githubFindings / coverageGaps / moduleProposals / suggestedSources` |
 
-> ⚠️ **强制性规范**：每次迭代完成后，必须同步更新本文件（ai-wiki.md）的「本次主要更新内容」区块和「最后更新」时间戳。这是角色 D（发布员）的职责之一。
+### 🔧 修改指引
 
----
-
-### A. 🔧 平台技术债（工程优化类，待人处理）
-
-| 问题 | 严重程度 | 说明 | 状态 |
-|------|---------|------|------|
-| `VlaArchViz.js` 体积过大 | 🟡 中 | 大文件（~120KB），包含大量内联 SVG 和数据，影响首次加载 | 待懒加载拆分 |
-| `VlaNotebook.js` 体积过大 | 🟡 中 | ~85KB，可拆分为多个 Cell 独立组件 | 待优化 |
-| `DataInfraViz.js` 体积过大 | 🟡 中 | ~165KB，12 个 Tab 全部内联，考虑按 Tab 懒加载 | 待优化 |
-| `StrategyViz.js` 体积过大 | 🟡 中 | ~110KB，多 Tab 内容全内联 | 待优化 |
-| 全链路实验使用模拟数据 | 🔴 高 | VLA 全链路实验的训练数据为随机生成，非真实 nuScenes 数据 | 待接入 |
-| `Navbar.js` 遗留文件 | 🟢 低 | 已澄清：`layout.js` 只引 `Sidebar.js`，由它统一处理桌面+移动。`Navbar.js` 无任何页面引用，可删除 | 已澄清，待清理 |
-| ai-wiki.md 同步滞后 | 🔴 高 | 网站架构变更后经常忘记同步更新本文件，导致文档与实际不符 | **已加强规范（见角色 D 提示词）** |
-| 复杂可视化组件移动端体验差 | 🟡 中 | VLA 架构图 / 模型对比等 SVG 可视化在窄屏下挤压严重 | 待移动端适配 |
-
-> ✅ **已解决**：
-> - `data-infra/` 页面已完整上线（DataInfraViz 12 Tab）
-> - `gallery/` 和 `benchmarks/` 以 `redirect('/models/')` 处理（统一入口到 `/models/`），非独立页面
-> - 工具箱清理（去 MCP 目录 / AI 编程工具对比 / Prompt 模板库，改为仿真工具 + Tokenizer 两 Tab）
-> - 导航重构（Sidebar + Navbar 双导航 → 单一 Sidebar 统一处理）
-
----
-
-### B. 🚀 产品迭代规划（功能开发类，待人处理）
-
-> 优先级：🔴 高 / 🟡 中 / 🟢 低
-
-#### B1. 内容质量提升（持续）
-- 🔴 **研究模块扩充**：持续补充 VLA / 世界模型 / 多模态方向论文解读
-- 🔴 **书籍内容更新**：确保书架中的书籍章节与最新研究同步
-- 🔴 **模型中心数据补全**：持续补充最新模型（Qwen / Gemini / Claude / GPT 系列）
-- 🔴 **ai-wiki.md 同步更新**：每次网站架构/内容变更后，必须同步更新本文件
-
-#### B2. VLA 实验室深化（中期）
-- 🟡 **更多 VLA 架构方案**：覆盖 RT-2、OpenVLA、π₀、VLA-World、Seed-AD、Alpamayo-R1 等
-- 🟡 **训练结果持久化**：Loss 曲线 / 指标保存，支持多次实验对比
-- 🟢 **模型导出**：训练完成后支持模型权重下载（ONNX / PyTorch 格式）
-
-#### B3. 平台能力增强（中期）
-- 🔴 **全站搜索**：覆盖文章 / 论文 / 书籍 / 模型，目前完全没有搜索入口，内容越来越多亟需补齐
-- 🟡 **标签系统统一**：文章 / 论文 / 书籍的标签体系统一，支持跨模块标签聚合页
-- 🟡 **RSS / 订阅**：提供 RSS Feed，方便用户订阅更新
-- 🟢 **暗色模式**：全站支持 Dark Mode
-
-#### B4. AI 智能体能力（长期）
-- 🔴 **进化日志可视化**：进化日志做成时间线 / 热力图，展示 AI 智能体活跃度
-- 🟡 **智能体状态面板**：展示各 AI 智能体（采集员 / 编辑员 / 质检员 / 发布员 / 设计师）的实时状态和任务队列
-- 🟡 **内容质量评分**：对书籍章节 / 文章自动打分，标记需要人工复核的内容
-- 🟢 **多语言支持**：英文版内容镜像
-
-#### B5. 交互体验优化（持续）
-- 🟡 **首页个性化**：根据用户浏览历史推荐相关内容
-- 🟡 **书籍阅读体验**：字体大小调节 / 阅读进度保存 / 高亮笔记
-- 🟢 **加载性能**：大组件考虑拆分懒加载（详见 A 类技术债）
-
----
-
-### C. 🎨 AI 设计师 Roadmap 建议（机会雷达，AI 自动生成）
-
-> 📍 **数据来源**：`src/lib/strategy-data.js` 的 `SITE_ROADMAP` 导出对象
-> 🖼️ **渲染页面**：[`/roadmap/`](https://yuhuali1989.github.io/signal/roadmap/)（战略分组）
-> 🤖 **生成方式**：角色 E（AI 设计师）定期扫描 GitHub 生态 / 新闻盲区 / 模块覆盖 / 信息源白名单后，自动更新到 `strategy-data.js`
-
-页面按 **6 大板块** 组织：
-
-| 板块 | 字段 | 说明 |
-|------|------|------|
-| 🎨 **页头摘要** | `summary` + `lastUpdated` | 本次扫描核心发现一句话总结 |
-| 🔥 **最高价值机会 TOP 5** | `topOpportunities[]` | 综合评估**价值 / 投入比**后按 P0 / P1 / P2 优先级排序的 5 个最优先机会，每项含 `title / priority / value / effort / desc / action / color` |
-| 📡 **新闻角度盲区** | `coverageGaps[]` | 对比现有声浪 category 分布，找出覆盖不足或严重缺失的角度，每项含 `angle / severity / hotness / suggestedCategory / suggestedSources[]` |
-| 🧩 **模块扩充建议** | `moduleProposals[]` | 按优先级排列的新模块 / 新页面提案，每项含 `name / priority / type / desc / dataSource / implementHint` |
-| ⭐ **GitHub 明星资源发现** | `githubFindings[]` | 高 star 仓库中 Signal 尚未覆盖的方向，每项含 `repo / stars / priority / type / reason / action` |
-| 📰 **建议新增信息源** | `suggestedSources[]` | 采集员白名单中缺失的高质量来源，每项含 `name / type / url / reason` |
-
-#### C1. 与 A/B 类的关系
-- **C 类不直接进入开发队列**，它是「外部视角」下的机会发现，需要开发者人工评估后，再择优**搬运到 B 类「产品迭代规划」**，变成正式开发事项
-- C 类里的"模块扩充建议 P0"如果被采纳，应该同时在 B 类新增对应条目，并在 `strategy-data.js` 里将该项标记为"已进入开发"或直接移除
-- C 类由 AI 自动维护，不手工编辑 ai-wiki.md 中的该章节列表（只维护本章节的**结构说明**，不维护具体条目）
-
-#### C2. 当前扫描状态（仅作索引，详情见 `/roadmap/` 页面）
-- 📅 **最新扫描**：2026-04-23（第 5 次扫描）
-- 📌 **扫描维度**：GitHub 生态 · 新闻盲区 · 模块覆盖 · 信息源白名单
-- 🔗 **查看完整报告**：左侧导航「战略 → Roadmap 建议」或直接访问 `/roadmap/`
+- **调整技术债**：编辑 `SITE_ROADMAP.techDebts.items[]` 和 `.resolved[]`
+- **调整产品迭代规划**：编辑 `SITE_ROADMAP.productPlans.categories[]`（5 个子分类：content / vla / platform / agent / ux）
+- **AI 设计师建议**：角色 E 自动扫描写入，人工只在「从机会雷达搬运到产品规划」时编辑
+- 每次修改后更新对应字段的 `lastUpdated` 时间戳
 
 ---
 
@@ -464,24 +385,19 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 *最后更新：2026-04-23*
 
 **本次主要更新内容**：
-- 🗂️ **「已知问题 & 技术债」与 Roadmap 合并分类**（本次重点）：
-  - 将原「四、后续迭代规划」+「五、已知问题 & 技术债」+ 网站 `/roadmap/` 页面的 AI 设计师建议，整合为新的「四、Roadmap 与技术债」单一章节
-  - 按 **A 平台技术债 / B 产品迭代规划 / C AI 设计师 Roadmap 建议** 三大类重新分类，每类职责/维护方/存放位置明确
-  - **A 类**（工程优化）：表格形式列技术债（VlaArchViz 等大文件懒加载、全链路模拟数据、Navbar 清理等 8 项）
-  - **B 类**（产品迭代）：5 个子分类（内容质量 / VLA 深化 / 平台能力 / AI 智能体 / 交互体验）
-  - **C 类**（外部机会雷达）：说明 `/roadmap/` 页面数据源（`SITE_ROADMAP`）和 6 大板块（TOP 5 机会 / 新闻盲区 / 模块扩充 / GitHub 发现 / 新增信息源），并约定 AI 自动维护、不手工改 ai-wiki
-  - 消除原重复项（如"无全站搜索"原本重复出现在"迭代 3"和"技术债表格"）
-  - 章节编号顺延：原「六、目录结构速查」→「五」，原「七、自动化任务提示词」→「六」
-- 📐 **ai-wiki「二、当前模块进展」章节整体重组**（上一轮重点，保留记录）：
+- 🗺️ **Roadmap 全量迁移到 `/roadmap/` 网页**（本次重点）：
+  - ai-wiki.md 不再承载任何 Roadmap 具体条目（技术债 / 产品迭代规划 / AI 设计师建议）
+  - 所有内容下沉到 `src/lib/strategy-data.js` 的 `SITE_ROADMAP` 对象，由 `/roadmap/` 页面统一渲染
+  - `SITE_ROADMAP` 新增 **`techDebts`**（8 项技术债 + 4 项已解决清单）和 **`productPlans`**（5 大分类 18 项规划：content / vla / platform / agent / ux）两个字段
+  - `/roadmap/page.js` 升级为"Signal Roadmap 中心"，依次渲染：🔧 平台技术债 → 🚀 产品迭代规划 → 🎨 AI 设计师机会雷达（TOP 5 / 盲区 / 模块 / GitHub / 信息源），并用视觉分隔线区分「人工维护」与「AI 自动扫描」两区
+  - ai-wiki.md 原「四、Roadmap 与技术债」（100 行）→ 精简为「四、Roadmap（见网页）」（~20 行，仅保留维护指引和数据字段定位），文件减重约 5KB
+  - 章节编号连续化：删除的内容由指引段替代，后续章节顺序（五 / 六）保持稳定
+- 📐 **ai-wiki「二、当前模块进展」章节整体重组**（上一轮，保留记录）：
   - 按 Sidebar 四大分组（🟣 知识 → 🩵 业务 → 🟠 战略 → 🟢 动态）**重新排序 17 个模块**，与实际网站左侧导航严格对齐
-  - 清理历史遗留的编号混乱（原 9/9b/9c/9d/9e/重复的 9/10 等乱序）
-  - **补全缺失章节**：新增「实验室 `/lab/`」「Roadmap 建议 `/roadmap/`」两个模块描述（Sidebar 有但 ai-wiki 漏记）
+  - **补全缺失章节**：新增「实验室 `/lab/`」「Roadmap 建议 `/roadmap/`」两个模块描述
   - **修正首页描述**：从简略 7 条扩展为 8 个真实区块（Hero / 9 入口卡 / Weekly Digest / Stats Bar / 🔥 热度榜 / 最新文章 / 声浪 / 进化日志）
   - **修正数据快照**：书籍 9 本 · 文章 81 篇 · 论文解读 64 篇（index 69 条） · 模型 65 · 声浪 94 条 · 进化日志 183 条 · 导航 16 项
-- 🔧 **纠正 Sidebar/Navbar 关系错误描述**：
-  - 之前写的"桌面 Sidebar + 移动 Navbar 双导航"是**错误的**
-  - 实际 `layout.js` 只引入 `Sidebar.js`，由它统一处理桌面和移动端
-  - `Navbar.js` 是遗留废弃文件（6KB，无任何页面引用），已在文档中标注"下次清理代码时可删除"
+- 🔧 **纠正 Sidebar/Navbar 关系错误描述**：实际 `layout.js` 只引入 `Sidebar.js`，`Navbar.js` 是遗留废弃文件
 - 🔁 **澄清 benchmarks/gallery 路由**：不是独立页面，而是 `redirect('/models/')` 重定向空壳
 
 ---

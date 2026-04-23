@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { SITE_ROADMAP } from '@/lib/strategy-data';
 
-function SectionCard({ icon, title, desc, children }) {
+function SectionCard({ icon, title, desc, children, accent = '#6c5ce7' }) {
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b" style={{ borderColor: accent + '22' }}>
         <span className="text-lg">{icon}</span>
         <div>
           <p className="text-sm font-semibold text-gray-800">{title}</p>
@@ -18,21 +18,113 @@ function SectionCard({ icon, title, desc, children }) {
 }
 
 export default function RoadmapPage() {
-  const { lastUpdated, summary, topOpportunities, githubFindings, coverageGaps, moduleProposals, suggestedSources } = SITE_ROADMAP;
+  const {
+    lastUpdated, summary,
+    techDebts, productPlans,
+    topOpportunities, githubFindings, coverageGaps, moduleProposals, suggestedSources,
+  } = SITE_ROADMAP;
 
   const priorityColor = { P0: '#e17055', P1: '#ffa657', P2: '#94a3b8' };
+  const severityColor = { '🔴': '#e17055', '🟡': '#ffa657', '🟢': '#22c55e' };
+  const severityLabel = { '🔴': '高', '🟡': '中', '🟢': '低' };
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-4">
 
       {/* 页头 */}
       <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/[0.04] p-4 flex items-start gap-3">
-        <span className="text-2xl flex-shrink-0">🎨</span>
+        <span className="text-2xl flex-shrink-0">🗺️</span>
         <div>
-          <p className="text-sm font-semibold text-gray-800 mb-1">AI 设计师（角色 E）Roadmap 建议报告</p>
-          <p className="text-xs text-gray-500 leading-relaxed">{summary}</p>
-          <p className="text-[10px] text-gray-400 mt-1">最后更新：{lastUpdated} · 由 AI 设计师定期扫描 GitHub 生态、新闻盲区、模块覆盖后更新</p>
+          <p className="text-sm font-semibold text-gray-800 mb-1">Signal Roadmap 中心</p>
+          <p className="text-xs text-gray-500 leading-relaxed mb-2">
+            汇总 <span className="font-medium text-gray-700">🔧 平台技术债</span>、
+            <span className="font-medium text-gray-700">🚀 产品迭代规划</span>（开发者人工维护）和
+            <span className="font-medium text-gray-700">🎨 AI 设计师机会雷达</span>（角色 E 自动扫描生成）三类事项。
+          </p>
+          <p className="text-xs text-gray-500 leading-relaxed italic border-l-2 border-[#6c5ce7]/30 pl-2">
+            🔍 本次扫描：{summary}
+          </p>
+          <p className="text-[10px] text-gray-400 mt-2">最后更新：{lastUpdated}</p>
         </div>
+      </div>
+
+      {/* ========== 人工维护区 ========== */}
+      <div className="flex items-center gap-2 pt-2">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+        <span className="text-[10px] font-bold text-gray-400 tracking-wider">人工维护 · 开发者规划</span>
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+      </div>
+
+      {/* 🔧 平台技术债 */}
+      {techDebts && (
+        <SectionCard icon="🔧" title="平台技术债" desc={techDebts.note} accent="#e17055">
+          <div className="space-y-2">
+            {techDebts.items.map((t, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/50 p-3">
+                <span className="text-xs font-bold px-1.5 py-0.5 rounded-full text-white flex-shrink-0 mt-0.5"
+                  style={{ background: severityColor[t.severity] || '#94a3b8' }}>
+                  {severityLabel[t.severity] || '—'}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                    <span className="text-xs font-semibold text-gray-800">{t.title}</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 ml-auto flex-shrink-0">{t.status}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500 leading-relaxed">{t.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {techDebts.resolved && techDebts.resolved.length > 0 && (
+            <details className="mt-3 rounded-xl border border-green-100 bg-green-50/40 p-3">
+              <summary className="text-[11px] font-semibold text-green-700 cursor-pointer">
+                ✅ 已解决（{techDebts.resolved.length}）
+              </summary>
+              <ul className="mt-2 space-y-1">
+                {techDebts.resolved.map((r, i) => (
+                  <li key={i} className="text-[10px] text-gray-600 leading-relaxed pl-3 relative">
+                    <span className="absolute left-0 top-1 text-green-500">·</span>{r}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </SectionCard>
+      )}
+
+      {/* 🚀 产品迭代规划 */}
+      {productPlans && (
+        <SectionCard icon="🚀" title="产品迭代规划" desc={productPlans.note} accent="#00b894">
+          <div className="space-y-3">
+            {productPlans.categories.map((cat) => (
+              <div key={cat.id} className="rounded-xl border border-gray-100 p-3">
+                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
+                  <span className="text-base">{cat.icon}</span>
+                  <span className="text-xs font-semibold text-gray-800">{cat.name}</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 ml-auto">{cat.cadence}</span>
+                </div>
+                <div className="space-y-1.5">
+                  {cat.items.map((it, j) => (
+                    <div key={j} className="flex items-start gap-2">
+                      <span className="text-xs flex-shrink-0" title={severityLabel[it.priority]}>{it.priority}</span>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] font-medium text-gray-700">{it.title}</span>
+                        <span className="text-[10px] text-gray-500 leading-relaxed">：{it.desc}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </SectionCard>
+      )}
+
+      {/* ========== AI 自动扫描区 ========== */}
+      <div className="flex items-center gap-2 pt-4">
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+        <span className="text-[10px] font-bold text-gray-400 tracking-wider">AI 自动扫描 · 机会雷达</span>
+        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
       </div>
 
       {/* TOP 5 机会 */}
