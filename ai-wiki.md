@@ -325,7 +325,7 @@ Next.js 14 (App Router)  +  React  +  Tailwind CSS
 ### 🔧 修改指引
 
 - **调整技术债**：编辑 `SITE_ROADMAP.techDebts.items[]` 和 `.resolved[]`
-- **调整产品迭代规划**：编辑 `SITE_ROADMAP.productPlans.categories[]`（5 个子分类：content / vla / platform / agent / ux）
+- **调整产品迭代规划**：编辑 `SITE_ROADMAP.productPlans.categories[]`（3 个子分类：platform / content / ux）
 - **AI 设计师建议**：角色 E 自动扫描写入，人工只在「从机会雷达搬运到产品规划」时编辑
 - 每次修改后更新对应字段的 `lastUpdated` 时间戳
 
@@ -385,20 +385,15 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 *最后更新：2026-04-23*
 
 **本次主要更新内容**：
-- 🗺️ **Roadmap 全量迁移到 `/roadmap/` 网页**（本次重点）：
-  - ai-wiki.md 不再承载任何 Roadmap 具体条目（技术债 / 产品迭代规划 / AI 设计师建议）
-  - 所有内容下沉到 `src/lib/strategy-data.js` 的 `SITE_ROADMAP` 对象，由 `/roadmap/` 页面统一渲染
-  - `SITE_ROADMAP` 新增 **`techDebts`**（8 项技术债 + 4 项已解决清单）和 **`productPlans`**（5 大分类 18 项规划：content / vla / platform / agent / ux）两个字段
-  - `/roadmap/page.js` 升级为"Signal Roadmap 中心"，依次渲染：🔧 平台技术债 → 🚀 产品迭代规划 → 🎨 AI 设计师机会雷达（TOP 5 / 盲区 / 模块 / GitHub / 信息源），并用视觉分隔线区分「人工维护」与「AI 自动扫描」两区
-  - ai-wiki.md 原「四、Roadmap 与技术债」（100 行）→ 精简为「四、Roadmap（见网页）」（~20 行，仅保留维护指引和数据字段定位），文件减重约 5KB
-  - 章节编号连续化：删除的内容由指引段替代，后续章节顺序（五 / 六）保持稳定
-- 📐 **ai-wiki「二、当前模块进展」章节整体重组**（上一轮，保留记录）：
-  - 按 Sidebar 四大分组（🟣 知识 → 🩵 业务 → 🟠 战略 → 🟢 动态）**重新排序 17 个模块**，与实际网站左侧导航严格对齐
-  - **补全缺失章节**：新增「实验室 `/lab/`」「Roadmap 建议 `/roadmap/`」两个模块描述
-  - **修正首页描述**：从简略 7 条扩展为 8 个真实区块（Hero / 9 入口卡 / Weekly Digest / Stats Bar / 🔥 热度榜 / 最新文章 / 声浪 / 进化日志）
-  - **修正数据快照**：书籍 9 本 · 文章 81 篇 · 论文解读 64 篇（index 69 条） · 模型 65 · 声浪 94 条 · 进化日志 183 条 · 导航 16 项
-- 🔧 **纠正 Sidebar/Navbar 关系错误描述**：实际 `layout.js` 只引入 `Sidebar.js`，`Navbar.js` 是遗留废弃文件
-- 🔁 **澄清 benchmarks/gallery 路由**：不是独立页面，而是 `redirect('/models/')` 重定向空壳
+- 🗺️ **Roadmap 内容大幅精简重组**（本次重点）：
+  - **产品迭代规划**：5 分类 18 项 → 3 分类 9 项（platform / content / ux），砍掉空洞条目，突出近期可落地事项
+  - **技术债**：8 项 → 4 项，4 个大组件体积问题合并为 1 条，移除已通过规范解决的 ai-wiki 同步问题
+  - **TOP 5 机会**：移除已完成的「AI 安全」和重叠的「Google 全栈」，新增「全站搜索」和「GitHub Trending 追踪」
+  - **盲区**：9 项 → 5 项，移除已覆盖的方向（AI 编程工具 / AI 安全 / AI+医疗 / 欧洲生态）
+  - **模块建议**：9 项 → 4 项，只保留最有价值且可落地的提案
+  - **信息源**：11 项 → 5 项，精简为最核心的缺失来源
+  - **summary**：从冗长的扫描报告改为 3 句话聚焦当前最重要的事
+- 📐 ai-wiki 同步更新 productPlans 子分类描述（5 → 3）
 
 ---
 
