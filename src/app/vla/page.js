@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Footer from '@/components/Footer';
 
@@ -37,9 +38,9 @@ const TABS = [
   },
   {
     id: 'notebook',
-    label: '全链路实验',
+    label: '论文实践',
     icon: '📓',
-    desc: '数据加载 → 数据处理 → 模型搭建 → 三阶段训练 · 可逐步运行的 Notebook',
+    desc: '数据准备 → 模型搭建 → 训练运行 · 可逐步运行的 Notebook',
     color: '#e17055',
   },
 ];
@@ -385,12 +386,13 @@ function PageHero({ activeProject, setActiveProject }) {
 const SEEDAD_TABS = [
   { id: 'arch',     label: '架构 & 数据', icon: '🏗️', color: '#10b981',
     desc: '三阶段架构图（想象→反思→行动）· 对比 DriveWorld-VLA · 数据集选型 · 训练配置' },
-  { id: 'notebook', label: '全链路实验',  icon: '📓', color: '#f39c12',
+  { id: 'notebook', label: '论文实践',  icon: '📓', color: '#f39c12',
     desc: '数据下载 → Tokenize → 三阶段模型搭建 → 三阶段训练 → 蒸馏到 13B → 预测可视化' },
 ];
 
-function SeedAdSection() {
-  const [tab, setTab] = useState('arch');
+function SeedAdSection({ seedTab, setSeedTab }) {
+  const tab = seedTab || 'arch';
+  const setTab = setSeedTab;
   const current = SEEDAD_TABS.find(t => t.id === tab);
   return (
     <>
@@ -435,15 +437,33 @@ function SeedAdSection() {
 
 // 顶层页签
 const TOP_TABS = [
-  { id: 'research', label: '研究论文', icon: '🔬', color: '#6c5ce7', desc: 'VLA · 世界模型 · 推理驾驶 · 深度解读与实验' },
+  { id: 'research', label: '论文实践', icon: '🔬', color: '#6c5ce7', desc: 'VLA · 世界模型 · 推理驾驶 · 深度解读与实验' },
   { id: 'dataloop', label: '数据闭环', icon: '🔄', color: '#00cec9', desc: '采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全链路闭环架构 + 多模态存储方案' },
 ];
 
 export default function VlaPage() {
-  const [topTab, setTopTab] = useState('research');
-  const [activeTab, setActiveTab] = useState('arch');
-  const [activeProject, setActiveProject] = useState('driveworld');
-  const [dataloopTab, setDataloopTab] = useState('arch');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // 从 URL 读取状态，提供默认值
+  const topTab      = searchParams.get('tab')     || 'research';
+  const activeProject = searchParams.get('project') || 'driveworld';
+  const activeTab   = searchParams.get('view')    || 'arch';
+  const dataloopTab = searchParams.get('dl')      || 'arch';
+  const seedTab     = searchParams.get('seed')    || 'arch';
+
+  // 统一更新 URL 的辅助函数
+  const setParam = useCallback((key, value) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(key, value);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [router, searchParams]);
+
+  const setTopTab       = (v) => setParam('tab', v);
+  const setActiveProject = (v) => setParam('project', v);
+  const setActiveTab    = (v) => setParam('view', v);
+  const setDataloopTab  = (v) => setParam('dl', v);
+  const setSeedTab      = (v) => setParam('seed', v);
 
   return (
     <>
@@ -463,7 +483,7 @@ export default function VlaPage() {
           ))}
         </div>
 
-        {/* ── 研究论文 ── */}
+        {/* ── 论文实践 ── */}
         {topTab === 'research' && (
           <>
             <PageHero activeProject={activeProject} setActiveProject={setActiveProject} />
@@ -505,7 +525,7 @@ export default function VlaPage() {
             )}
 
             {/* Seed-AD */}
-            {activeProject === 'seedad' && <SeedAdSection />}
+            {activeProject === 'seedad' && <SeedAdSection seedTab={seedTab} setSeedTab={setSeedTab} />}
           </>
         )}
 
