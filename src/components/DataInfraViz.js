@@ -441,15 +441,21 @@ export function DatalakeTab() {
   const { dataChain, modalSpecs, icebergSchemas, edgeClient, webdatasetData,
           storageFormats, trainDatasetBuild, ioOptimization,
           icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
-  const [activeSubTab, setActiveSubTab] = useState('io');
+  const [activeSubTab, setActiveSubTab] = useState('formats');
   const [selectedTable, setSelectedTable] = useState(null);
   const [selectedStage, setSelectedStage] = useState('collect');
   const [selectedAccess, setSelectedAccess] = useState(0);
 
   const SUB_TABS = [
-    { id: 'io',         label: 'IO 优化',        icon: '⚡' },
-    { id: 'iceberg',    label: 'Iceberg',        icon: '🧊' },
-    { id: 'lakefs',     label: 'LakeFS 版本',    icon: '🌿' },
+    { id: 'formats',    label: '存储格式全景',   icon: '🗺️' },
+    { id: 'chain',      label: '多模态数据链路', icon: '🔗' },
+    { id: 'schema',     label: 'Schema 设计',  icon: '📐' },
+    { id: 'webdataset', label: 'WebDataset',   icon: '📼' },
+    { id: 'modal',      label: '模态存储规格', icon: '📦' },
+    { id: 'train',      label: '训练集构建',   icon: '🧠' },
+    { id: 'io',         label: 'IO 优化',      icon: '⚡' },
+    { id: 'iceberg',    label: 'Iceberg',      icon: '🧊' },
+    { id: 'lakefs',     label: 'LakeFS 版本',  icon: '🌿' },
   ];
 
   return (
@@ -459,11 +465,10 @@ export function DatalakeTab() {
         <div className="flex items-start gap-3">
           <span className="text-2xl">🏞️</span>
           <div>
-            <div className="text-sm font-bold text-gray-800 mb-1">数据湖仓技术栈</div>
+            <div className="text-sm font-bold text-gray-800 mb-1">自动驾驶多模态存储方案</div>
             <div className="text-[10px] text-gray-500 leading-relaxed">
-              通用湖仓核心技术：<span className="font-semibold text-[#00cec9]">IO 优化 · Apache Iceberg · LakeFS 版本管理</span>，
-              适用于大规模 AI 训练数据管理。
-              多模态业务场景（MCAP/WebDataset/多层存储）请查看 <span className="font-semibold text-[#00cec9]">自动驾驶 → 数据闭环</span>。
+              覆盖 <span className="font-semibold text-[#00cec9]">车端采集 → Landing → Bronze → Silver → Gold</span> 全链路存储规范，
+              五模态（相机/LiDAR/雷达/标注/语言）统一存储选型，含 Schema 设计、WebDataset 打包、IO 优化、Iceberg 与 LakeFS 版本管理。
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {['Apache Iceberg', 'WebDataset', 'LakeFS', 'JuiceFS', 'Parquet', 'Unity Catalog'].map(t => (
