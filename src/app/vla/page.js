@@ -443,82 +443,99 @@ function SeedAdSection() {
   );
 }
 
+// 顶层页签
+const TOP_TABS = [
+  { id: 'research', label: '研究论文', icon: '🔬', color: '#6c5ce7', desc: 'VLA · 世界模型 · 推理驾驶 · 深度解读与实验' },
+  { id: 'dataloop', label: '数据闭环', icon: '🔄', color: '#00cec9', desc: '采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全链路闭环架构 + 多模态存储方案' },
+];
+
 export default function VlaPage() {
+  const [topTab, setTopTab] = useState('research');
   const [activeTab, setActiveTab] = useState('arch');
   const [activeProject, setActiveProject] = useState('driveworld');
 
   return (
     <>
-      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-        <PageHero activeProject={activeProject} setActiveProject={setActiveProject} />
 
-        {/* DriveWorld-VLA 可视化 Tab */}
-        {activeProject === 'driveworld' && (
+        {/* ── 顶层页签 ── */}
+        <div className="flex gap-2 mb-8 p-1 bg-gray-50 rounded-2xl border border-gray-100 w-fit">
+          {TOP_TABS.map(t => (
+            <button key={t.id} onClick={() => setTopTab(t.id)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
+              style={topTab === t.id
+                ? { background: '#fff', color: t.color, boxShadow: '0 1px 6px rgba(0,0,0,0.10)', border: `1px solid ${t.color}33` }
+                : { color: '#94a3b8' }}>
+              <span>{t.icon}</span>
+              <span>{t.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* ── 研究论文 ── */}
+        {topTab === 'research' && (
           <>
-            <div className="flex flex-wrap gap-2 mb-6 p-1.5 bg-gray-50 rounded-2xl border border-gray-100">
-              {TABS.map((tab) => (
-                <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                  className="flex items-center gap-2 py-2 px-4 rounded-xl text-sm font-medium transition-all whitespace-nowrap"
-                  style={activeTab === tab.id
-                    ? { background: '#fff', color: tab.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${tab.color}33` }
-                    : { color: '#94a3b8' }}>
-                  <span>{tab.icon}</span>
-                  <span>{tab.label}</span>
-                </button>
-              ))}
-            </div>
+            <PageHero activeProject={activeProject} setActiveProject={setActiveProject} />
 
-            <div className="mb-5 flex items-center gap-2">
-              <span className="text-lg">{TABS.find(t => t.id === activeTab)?.icon}</span>
-              <div>
-                <h2 className="text-base font-semibold text-gray-800">{TABS.find(t => t.id === activeTab)?.label}</h2>
-                <p className="text-xs text-gray-400">{TABS.find(t => t.id === activeTab)?.desc}</p>
-              </div>
-            </div>
+            {/* DriveWorld-VLA 可视化 Tab */}
+            {activeProject === 'driveworld' && (
+              <>
+                <div className="flex flex-wrap gap-2 mb-6 p-1.5 bg-gray-50 rounded-2xl border border-gray-100">
+                  {TABS.map((tab) => (
+                    <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+                      className="flex items-center gap-2 py-2 px-4 rounded-xl text-sm font-medium transition-all whitespace-nowrap"
+                      style={activeTab === tab.id
+                        ? { background: '#fff', color: tab.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${tab.color}33` }
+                        : { color: '#94a3b8' }}>
+                      <span>{tab.icon}</span>
+                      <span>{tab.label}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="mb-5 flex items-center gap-2">
+                  <span className="text-lg">{TABS.find(t => t.id === activeTab)?.icon}</span>
+                  <div>
+                    <h2 className="text-base font-semibold text-gray-800">{TABS.find(t => t.id === activeTab)?.label}</h2>
+                    <p className="text-xs text-gray-400">{TABS.find(t => t.id === activeTab)?.desc}</p>
+                  </div>
+                </div>
+                <div>
+                  {activeTab === 'arch' && <ArchViz />}
+                  {activeTab === 'notebook' && <Notebook />}
+                  {activeTab === 'dataloop' && <DataLoop />}
+                </div>
+                <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">
+                  <span className="font-medium text-gray-500">📌 说明：</span>
+                  本页面基于 <span className="font-mono text-gray-600">DriveWorld-VLA: Unified Latent-Space World Modeling with VLA</span> 论文进行可视化演示。所有数据均为模拟数据，用于展示研究思路。
+                  核心创新：<span className="font-mono">Unified Projector</span> 将多模态特征投影到统一隐状态 <span className="font-mono">Z_t</span>，
+                  同时驱动 <span className="font-mono">VLA Head</span>（规划）和 <span className="font-mono">World Model Head</span>（Diffusion预测），
+                  相比独立 BEV 融合减少 40% 参数量，FVD 提升 88%（420→52）。
+                </div>
+              </>
+            )}
 
-            <div>
-              {activeTab === 'arch' && <ArchViz />}
-              {activeTab === 'notebook' && <Notebook />}
-              {activeTab === 'dataloop' && <DataLoop />}
-            </div>
-
-            <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">
-              <span className="font-medium text-gray-500">📌 说明：</span>
-              本页面基于 <span className="font-mono text-gray-600">DriveWorld-VLA: Unified Latent-Space World Modeling with VLA</span> 论文进行可视化演示。所有数据均为模拟数据，用于展示研究思路。
-              核心创新：<span className="font-mono">Unified Projector</span> 将多模态特征投影到统一隐状态 <span className="font-mono">Z_t</span>，
-              同时驱动 <span className="font-mono">VLA Head</span>（规划）和 <span className="font-mono">World Model Head</span>（Diffusion预测），
-              相比独立 BEV 融合减少 40% 参数量，FVD 提升 88%（420→52）。
-            </div>
+            {/* Seed-AD */}
+            {activeProject === 'seedad' && <SeedAdSection />}
           </>
         )}
 
-        {/* Seed-AD 可视化 Tab（与 DriveWorld 平行，各自维护 activeTab） */}
-        {activeProject === 'seedad' && (
-          <SeedAdSection />
+        {/* ── 数据闭环 ── */}
+        {topTab === 'dataloop' && (
+          <div className="space-y-8">
+            <DataLoop />
+            <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-lg">🏞️</span>
+                <div>
+                  <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
+                  <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
+                </div>
+              </div>
+              <DatalakeTab />
+            </div>
+          </div>
         )}
 
-        {/* ── 自动驾驶数据闭环（独立区块，不隔离任何论文） ── */}
-        <div className="mt-12 border-t border-gray-100 pt-10">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-2xl">🔄</span>
-            <div>
-              <h2 className="text-base font-bold text-gray-800">自动驾驶数据闭环</h2>
-              <p className="text-xs text-gray-400">采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全链路闭环架构 + 多模态存储方案</p>
-            </div>
-          </div>
-          <DataLoop />
-          <div className="mt-8 rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-lg">🏞️</span>
-              <div>
-                <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
-                <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
-              </div>
-            </div>
-            <DatalakeTab />
-          </div>
-        </div>
       </div>
       <Footer />
     </>

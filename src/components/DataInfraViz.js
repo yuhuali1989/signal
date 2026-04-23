@@ -441,18 +441,12 @@ export function DatalakeTab() {
   const { dataChain, modalSpecs, icebergSchemas, edgeClient, webdatasetData,
           storageFormats, trainDatasetBuild, ioOptimization,
           icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
-  const [activeSubTab, setActiveSubTab] = useState('formats');
+  const [activeSubTab, setActiveSubTab] = useState('io');
   const [selectedTable, setSelectedTable] = useState(null);
   const [selectedStage, setSelectedStage] = useState('collect');
   const [selectedAccess, setSelectedAccess] = useState(0);
 
   const SUB_TABS = [
-    { id: 'formats',    label: '存储格式全景',     icon: '🗺️' },
-    { id: 'chain',      label: '多模态数据链路',   icon: '🔗' },
-    { id: 'schema',     label: 'Schema 设计',    icon: '📐' },
-    { id: 'webdataset', label: 'WebDataset',     icon: '📼' },
-    { id: 'modal',      label: '模态存储规格',   icon: '📦' },
-    { id: 'train',      label: '训练集构建',     icon: '🧠' },
     { id: 'io',         label: 'IO 优化',        icon: '⚡' },
     { id: 'iceberg',    label: 'Iceberg',        icon: '🧊' },
     { id: 'lakefs',     label: 'LakeFS 版本',    icon: '🌿' },
@@ -467,9 +461,9 @@ export function DatalakeTab() {
           <div>
             <div className="text-sm font-bold text-gray-800 mb-1">数据湖仓技术栈</div>
             <div className="text-[10px] text-gray-500 leading-relaxed">
-              湖仓一体核心技术：<span className="font-semibold text-[#00cec9]">存储格式选型 · Schema 设计 · 版本管理 · IO 优化</span>，
-              覆盖从原始数据到训练就绪的全链路存储规范与工程实践。
-              多模态业务场景请查看 <span className="font-semibold text-[#00cec9]">自动驾驶 → 数据闭环</span>。
+              通用湖仓核心技术：<span className="font-semibold text-[#00cec9]">IO 优化 · Apache Iceberg · LakeFS 版本管理</span>，
+              适用于大规模 AI 训练数据管理。
+              多模态业务场景（MCAP/WebDataset/多层存储）请查看 <span className="font-semibold text-[#00cec9]">自动驾驶 → 数据闭环</span>。
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {['Apache Iceberg', 'WebDataset', 'LakeFS', 'JuiceFS', 'Parquet', 'Unity Catalog'].map(t => (
