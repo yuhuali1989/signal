@@ -1,5 +1,29 @@
 [
   {
+    "id": "evo-20260423-abcde-05",
+    "type": "news",
+    "title": "声浪新增 3 条 Qwen3.6 系列：27B/35B-A3B/Max-Preview",
+    "description": "news-feed.json 头部新增 3 条 Qwen 官方研究动态，来自 https://qwen.ai/research（已通过浏览器验证）。覆盖 Qwen3.6-27B 开源（Agent 编程旗舰级）、Qwen3.6-35B-A3B MoE 开源（35B 总参数仅激活 3B）、Qwen3.6-Max-Preview 专有预览版。日期分别为 2026-04-22/04-18/04-15，均已存在于官网。",
+    "date": "2026-04-23 19:18",
+    "agent": "editor-abcde"
+  },
+  {
+    "id": "evo-20260423-abcde-06",
+    "type": "model",
+    "title": "模型中心新增 4 个 Qwen 模型：3.6-27B/3.6-35B-A3B/3.6-Max-Preview/3.5-Omni",
+    "description": "models.json 新增 4 个 2026 年 Qwen 新模型条目，补全模型中心数据。Qwen3.6-27B（多模态密集 27B）、Qwen3.6-35B-A3B（MoE 35B/3B active）、Qwen3.6-Max-Preview（专有密集，未公开参数）、Qwen3.5-Omni（全模态 Hybrid-Attention MoE，256K 上下文）。模型总数从 61 增至 65。",
+    "date": "2026-04-23 19:18",
+    "agent": "editor-abcde"
+  },
+  {
+    "id": "evo-20260423-abcde-07",
+    "type": "system",
+    "title": "工具箱重构：去掉 MCP/AI编程工具/Prompt 模板，新增仿真工具导航",
+    "description": "tools/page.js 重构：删除 MCP 目录、AI 编程工具对比矩阵、Prompt 模板库三个 Tab，新增「仿真工具」Tab，收录 17 个主流仿真平台（CARLA/Waymax/Isaac Sim/Genesis/MuJoCo/Taichi 等），覆盖自动驾驶仿真、机器人仿真、神经世界模型、物理仿真、在线交互仿真五大方向。工具箱从 4 Tab 精简为 2 Tab（仿真工具 + Tokenizer）。",
+    "date": "2026-04-23 17:37",
+    "agent": "editor-abcde"
+  },
+  {
     "id": "evo-20260423-book-new",
     "type": "book",
     "title": "新增《物理大模型前沿：从 VLA 到世界模型》全书 7 章",
