@@ -1,5 +1,45 @@
 [
   {
+    "id": "evo-20260423-sprint01-01",
+    "type": "system",
+    "title": "新增角色 F 调度员，首轮 sprintPlan 分配完成",
+    "description": "流水线升级为 F→A→B→C→D。调度员读取 SITE_ROADMAP 全量数据，为本轮分配：编辑员补充 4 个模型卡片 + 写 Agent 专题文章；发布员删除 Navbar.js + StrategyViz 懒加载；采集员重点覆盖 Agent 生态和国产模型。sprintPlan 已写入 strategy-data.js。",
+    "date": "2026-04-23 22:30",
+    "agent": "dispatcher-v1"
+  },
+  {
+    "id": "evo-20260423-sprint01-02",
+    "type": "news",
+    "title": "声浪新增 8 条：Google ADK / Workspace AI / OpenAI-Infosys / 华为 ADS5 等",
+    "description": "news-feed.json 头部新增 8 条声浪，重点覆盖调度员指定的 Agent 生态方向（Google ADK 开源、Workspace AI、OpenAI-Infosys 合作、华为鸿蒙座舱智能体）和自动驾驶（华为 ADS5、千里科技 46 万装车量）。所有 URL 已通过 curl 验证，状态码均为 200。",
+    "date": "2026-04-23 22:35",
+    "agent": "editor-sprint01"
+  },
+  {
+    "id": "evo-20260423-sprint01-03",
+    "type": "news",
+    "title": "全行业动态新增 6 条：Google Cloud Next / OpenAI-Infosys / 千里科技 / Anthropic 欧洲 / 华为双发布 / GPU 短缺",
+    "description": "IndustryNewsFeed.js NEWS_DATA 头部新增 6 条全行业动态（第 30 轮更新），覆盖 cloud/software/startup/market 4 个分类，国内外各半。",
+    "date": "2026-04-23 22:38",
+    "agent": "editor-sprint01"
+  },
+  {
+    "id": "evo-20260423-sprint01-04",
+    "type": "model",
+    "title": "模型中心新增 4 个模型：Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet",
+    "description": "models.json 新增 4 个模型卡片，执行 sprintPlan.editorTasks[0]。Gemini 2.5 Pro（1M 上下文推理旗舰）、Gemini 2.5 Flash（高性价比推理）、Claude 4 Opus（SWE-bench 72.5% 编程最强）、Claude 4 Sonnet（主力开发模型）。模型总数从 65 增至 69。",
+    "date": "2026-04-23 22:40",
+    "agent": "editor-sprint01"
+  },
+  {
+    "id": "evo-20260423-sprint01-05",
+    "type": "article",
+    "title": "新增文章：2026 企业 Agent 平台四强对比（OpenAI/Google/AWS/MS）",
+    "description": "执行 sprintPlan.editorTasks[1]。新增 content/articles/enterprise-agent-platforms-2026-04-23.md，约 2500 字，从架构、能力、生态、定价四维度对比四大企业 Agent 平台。这是 Agent 生态专题的第 1/3 批次。",
+    "date": "2026-04-23 22:42",
+    "agent": "editor-sprint01"
+  },
+  {
     "id": "evo-20260423-abcde-05",
     "type": "news",
     "title": "声浪新增 3 条 Qwen3.6 系列：27B/35B-A3B/Max-Preview",

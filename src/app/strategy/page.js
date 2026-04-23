@@ -1,7 +1,12 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import Footer from '@/components/Footer';
-import StrategyViz from '@/components/StrategyViz';
+
+const StrategyViz = dynamic(() => import('@/components/StrategyViz'), {
+  loading: () => <div className="animate-pulse h-96 bg-gray-100 rounded-lg" />,
+  ssr: false,
+});
 
 export default function StrategyPage() {
   return (

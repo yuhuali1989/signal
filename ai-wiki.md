@@ -387,13 +387,11 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 *最后更新：2026-04-23*
 
 **本次主要更新内容**：
-- 📋 **新增角色 F 调度员（Dispatcher）**（本次重点）：
-  - 流水线从 A→B→C→D 升级为 **F→A→B→C→D**，调度员在每轮迭代最先执行
-  - 调度员读取 `SITE_ROADMAP` 全量数据，动态为 A/B/D 分配本轮具体可执行的 Roadmap 任务
-  - 新增 `SITE_ROADMAP.sprintPlan` 字段，存储本轮迭代计划（editorTasks / publisherTasks / collectorFocus）
-  - 角色 B/D 的 Roadmap 任务从"写死具体条目"改为"读取 sprintPlan 动态执行"
-  - 角色 A 的采集重点方向从写死改为读取 `sprintPlan.collectorFocus`
-  - 解决了 Roadmap 条目动态变化但提示词静态写死的矛盾
+- 📋 **首轮 F→A→B→C→D 流水线完整执行**：
+  - 📰 **内容更新**：声浪 +8 条、全行业动态 +6 条、文章 +1 篇（企业 Agent 平台对比）、模型 +4 个（Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet）
+  - 🔧 **代码/架构变更**：删除 Navbar.js 遗留文件、StrategyViz 改为 dynamic 懒加载
+  - 📋 **调度员首次分配**：sprintPlan 写入 strategy-data.js，各角色按调度执行
+  - ✅ **流水线验证**：F→A→B→C→D 全流程通过，质检 0 问题
 
 ---
 
