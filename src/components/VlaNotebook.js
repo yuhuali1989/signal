@@ -1727,7 +1727,35 @@ function CellOutput({ output, isRunning, hasRun }) {
 // 主组件：VlaNotebook
 // ─────────────────────────────────────────────────────────────────────────────
 
+const NOTEBOOK_GROUPS = [
+  {
+    id: 'data',
+    label: '数据准备',
+    icon: '🗄️',
+    color: '#6c5ce7',
+    desc: '环境配置 · 数据集下载 · 数据加载 · 数据处理',
+    cellIds: ['setup', 'data_prep', 'data_load', 'data_process'],
+  },
+  {
+    id: 'model',
+    label: '模型搭建',
+    icon: '🧠',
+    color: '#00cec9',
+    desc: 'InternViT-6B + PointPillar + InternLM2-7B → Unified Projector → VLA Head + World Model Head',
+    cellIds: ['model_build'],
+  },
+  {
+    id: 'train',
+    label: '训练运行',
+    icon: '🚀',
+    color: '#e17055',
+    desc: '三阶段训练配置 · 真实训练运行 · 指标监控',
+    cellIds: ['training', 'run'],
+  },
+];
+
 export default function VlaNotebook() {
+  const [activeGroup, setActiveGroup] = useState('data');
   const [cellStates, setCellStates] = useState(
     Object.fromEntries(NOTEBOOK_CELLS.map(c => [c.id, { hasRun: false, isRunning: false }]))
   );
@@ -1779,6 +1807,10 @@ export default function VlaNotebook() {
   const allDone = NOTEBOOK_CELLS.every(c => cellStates[c.id]?.hasRun);
   const isRunningAny = NOTEBOOK_CELLS.some(c => cellStates[c.id]?.isRunning);
   
+  const currentGroup = NOTEBOOK_GROUPS.find(g => g.id === activeGroup);
+  const groupCells = NOTEBOOK_CELLS.filter(c => currentGroup.cellIds.includes(c.id));
+  const groupCellIndices = groupCells.map(c => NOTEBOOK_CELLS.indexOf(c));
+
   return (
     <div className="space-y-3">
       {/* Notebook 工具栏 */}
@@ -1816,6 +1848,30 @@ export default function VlaNotebook() {
         </div>
       </div>
       
+      {/* 二级 Tab 分组 */}
+      <div className="flex gap-2 p-1 bg-[#161b22] rounded-2xl border border-[#21262d]">
+        {NOTEBOOK_GROUPS.map(g => (
+          <button key={g.id} onClick={() => setActiveGroup(g.id)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium transition-all flex-1 justify-center"
+            style={activeGroup === g.id
+              ? { background: g.color + '22', color: g.color, border: `1px solid ${g.color}44` }
+              : { color: '#4a5568' }}>
+            <span>{g.icon}</span>
+            <span>{g.label}</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full ml-1"
+              style={{ background: activeGroup === g.id ? g.color + '30' : '#21262d', color: activeGroup === g.id ? g.color : '#4a5568' }}>
+              {g.cellIds.length}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* 当前分组描述 */}
+      <div className="flex items-center gap-2 text-[11px] text-[#4a5568] px-1">
+        <span style={{ color: currentGroup.color }}>{currentGroup.icon}</span>
+        <span>{currentGroup.desc}</span>
+      </div>
+
       {/* 进度条（运行全部时显示） */}
       {runAllProgress >= 0 && (
         <div className="bg-[#161b22] rounded-xl border border-[#21262d] p-2">
@@ -1837,8 +1893,9 @@ export default function VlaNotebook() {
         </div>
       )}
       
-      {/* Notebook Cells */}
-      {NOTEBOOK_CELLS.map((cell, idx) => {
+      {/* Notebook Cells（当前分组） */}
+      {groupCells.map((cell) => {
+        const idx = NOTEBOOK_CELLS.indexOf(cell);
         const state = cellStates[cell.id];
         const isActive = runAllProgress === idx;
         

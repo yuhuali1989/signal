@@ -618,22 +618,79 @@ function DatasetPreview() {
 // ════════════════════════════════════════════════════════════════
 // 主组件
 // ════════════════════════════════════════════════════════════════
+const NOTEBOOK_GROUPS = [
+  {
+    id: 'data',
+    label: '数据准备',
+    icon: '🗄️',
+    color: '#10b981',
+    desc: '数据下载 & 预览 · 多模态 Tokenize',
+    cellIds: ['data_download', 'tokenize'],
+  },
+  {
+    id: 'model',
+    label: '模型搭建',
+    icon: '🧠',
+    color: '#6c5ce7',
+    desc: '70B 三阶段模型（想象头 + 反思头 + 行动头）搭建',
+    cellIds: ['model_build'],
+  },
+  {
+    id: 'train',
+    label: '训练 & 推理',
+    icon: '🚀',
+    color: '#f39c12',
+    desc: '三阶段训练 · 蒸馏到 13B 车端 · 预测可视化',
+    cellIds: ['training', 'distill', 'visualization'],
+  },
+];
+
 export default function SeedAdNotebook() {
+  const [activeGroup, setActiveGroup] = useState('data');
+  const group = NOTEBOOK_GROUPS.find(g => g.id === activeGroup);
+  const groupCells = CELLS.filter(c => group.cellIds.includes(c.id));
+
   return (
     <div>
+      {/* 顶部说明 */}
       <div className="mb-5 p-4 rounded-2xl bg-gradient-to-br from-emerald-50/40 to-white border border-emerald-100">
         <div className="flex items-center gap-2 mb-1">
           <span className="text-xl">🌱</span>
           <span className="text-sm font-semibold text-gray-800">Seed-AD 全链路实验</span>
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-mono">6 Cells</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-mono">6 Cells · 3 阶段</span>
         </div>
         <p className="text-xs text-gray-500 leading-relaxed">
           从 HuggingFace 真实数据下载 → 多模态 Tokenize → 70B 三阶段模型搭建 → 三阶段训练 → 蒸馏到 13B 车端 → 预测可视化。
-          可逐 Cell 展开查看代码与输出。<span className="text-emerald-600 font-medium">Cell 6 为交互式三视图预测可视化</span>。
+          可逐 Cell 展开查看代码与输出。<span className="text-emerald-600 font-medium">训练&推理 Tab 含交互式三视图预测可视化</span>。
         </p>
       </div>
 
-      {CELLS.map((cell, i) => <Cell key={cell.id} cell={cell} index={i} />)}
+      {/* 二级 Tab */}
+      <div className="flex gap-2 mb-5 p-1 bg-gray-50 rounded-2xl border border-gray-100">
+        {NOTEBOOK_GROUPS.map(g => (
+          <button key={g.id} onClick={() => setActiveGroup(g.id)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all flex-1 justify-center"
+            style={activeGroup === g.id
+              ? { background: '#fff', color: g.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${g.color}33` }
+              : { color: '#94a3b8' }}>
+            <span>{g.icon}</span>
+            <span>{g.label}</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full ml-1"
+              style={{ background: activeGroup === g.id ? g.color + '18' : '#f1f5f9', color: activeGroup === g.id ? g.color : '#94a3b8' }}>
+              {g.cellIds.length}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* 当前分组描述 */}
+      <div className="mb-4 flex items-center gap-2 text-xs text-gray-400">
+        <span style={{ color: group.color }}>{group.icon}</span>
+        <span>{group.desc}</span>
+      </div>
+
+      {/* 当前分组 Cells */}
+      {groupCells.map((cell, i) => <Cell key={cell.id} cell={cell} index={CELLS.indexOf(cell)} />)}
     </div>
   );
 }
