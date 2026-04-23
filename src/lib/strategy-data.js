@@ -1994,65 +1994,89 @@ export const BENCHMARKS = {
 // 最后更新：2026-04-22
 // ═══════════════════════════════════════════════════════════════
 export const SITE_ROADMAP = {
-  lastUpdated: '2026-04-22',
-  summary: '✅ P0 五项已实施：MCP Server 目录、GitHub Trending 追踪、HF 每日论文、AI 安全/对齐内容补充（Mythos 事件）、AI 编程工具对比矩阵。今日新发现：OpenAI DeployCo 企业 AI 合资、GPT-5.5 Agent 编程模型、Amazon 再投 Anthropic $50 亿。',
+  lastUpdated: '2026-04-23',
+  summary: '🔍 设计师第5次扫描（2026-04-23）：发现3个新高价值机会——① OpenAI Workspace Agents 开启企业自动化平台新赛道，Signal 需建立「Agent 平台」专题追踪；② Google Cloud Next \'26 全栈 AI 布局，TPU8+Agent平台+Workspace AI 三连发，云 AI 竞争格局进入新阶段；③ Qwen3.6-27B 证明「小参数密集模型」路线可行，国产开源模型专题需强化。GitHub 本周 trending 新发现：openai/openai-agents-python（多 Agent 框架）、cognee（Agent 记忆引擎）值得追踪。',
 
   // TOP 5 最高价值机会
   topOpportunities: [
+    {
+      id: 'enterprise-agent-platform',
+      title: '企业 Agent 平台专题追踪（新发现）',
+      priority: 'P0',
+      value: '高',
+      effort: '低',
+      desc: 'OpenAI Workspace Agents（2026-04-22）标志着 AI 从「聊天工具」向「企业自动化平台」转型。Google Agent Platform、AWS Bedrock Agents、Microsoft Copilot Studio 三大云厂商同步发力，企业 Agent 平台正成为 2026 年最热竞争赛道。Signal 声浪 agent category 需系统化追踪这一方向。',
+      action: '声浪 agent category 加强企业 Agent 平台追踪；信息源加入 OpenAI 企业博客 + Google Cloud Blog；考虑在工具箱新增「企业 Agent 平台对比」Tab',
+      color: '#6c5ce7',
+    },
+    {
+      id: 'google-cloud-ai-fullstack',
+      title: 'Google 全栈 AI 竞争格局专题',
+      priority: 'P0',
+      value: '高',
+      effort: '低',
+      desc: 'Google Cloud Next \'26 展示了从 TPU8（芯片）→ Gemini（模型）→ Agent Platform（平台）→ Workspace AI（应用）的完整全栈布局，与 Microsoft Azure+Copilot 的竞争格局进入新阶段。Signal 对 Google Cloud 方向的覆盖相对薄弱，需要加强。',
+      action: '声浪 infra category 加强 Google Cloud 追踪；信息源加入 Google Cloud Blog；考虑在模型中心新增 Google TPU 系列对比',
+      color: '#00b894',
+    },
+    {
+      id: 'china-opensource-models',
+      title: '国产开源模型专题强化',
+      priority: 'P0',
+      value: '高',
+      effort: '中',
+      desc: 'Qwen3.6-27B（2026-04-22）证明国产开源模型在 Agent 编程场景的竞争力，超越 397B MoE。Qwen 系列、DeepSeek 系列、InternLM 系列持续迭代，国产开源模型已进入全球第一梯队。Signal 声浪 llm category 对国产模型的覆盖需要系统化。',
+      action: '声浪 llm category 加强国产开源模型追踪；信息源加入 Qwen Blog（qwenlm.github.io）+ 智源研究院；模型库优先补充 Qwen3 系列最新版本',
+      color: '#fd79a8',
+    },
     {
       id: 'ai-safety-coverage',
       title: 'AI 安全/对齐专题 ✅',
       priority: 'P0',
       value: '高',
       effort: '中',
-      desc: '✅ 已实施（2026-04-22）：声浪 safety category 新增 Anthropic Mythos 事件（NSA 使用/未授权访问/Altman 评论）+ Meta 员工键盘记录训练 AI 两条高质量内容，count 从 5 升至 7。',
+      desc: '✅ 已实施（2026-04-22）：声浪 safety category 新增 Anthropic Mythos 事件（NSA 使用/未授权访问/Altman 评论）+ Meta 员工键盘记录训练 AI 两条高质量内容。MCP 协议 RCE 漏洞（11个CVE）也已覆盖。',
       action: '持续更新：关注 Anthropic 安全博客 / AI Safety Institute / METR，每周补充 1-2 条',
       color: '#00b894',
     },
     {
-      id: 'ai-coding-tools',
-      title: 'AI 编程工具对比矩阵 ✅',
-      priority: 'P0',
-      value: '高',
-      effort: '中',
-      desc: '✅ 已实施（2026-04-22）：工具箱新增「AI 编程工具」Tab，覆盖 Cursor/GitHub Copilot/Windsurf/Claude Code/Devin/Aider 六大工具，支持详情查看和最多 3 个工具横向对比。',
-      action: '持续更新：关注 GPT-5.5 Agent 编程模型上线后对各工具的影响，每月更新评分',
-      color: '#00b894',
-    },
-    {
-      id: 'openai-deployCo',
-      title: 'OpenAI 企业 AI 部署生态追踪',
-      priority: 'P0',
-      value: '高',
-      effort: '低',
-      desc: 'OpenAI 拟成立 DeployCo 合资企业（估值 $100 亿），专攻企业 AI 嵌入市场，与 Anthropic 直接竞争。企业级 AI 部署正成为继模型研发后的下一个主战场。',
-      action: '声浪 infra category 加强企业 AI 部署方向追踪，信息源加入 OpenAI 企业博客',
-      color: '#6c5ce7',
-    },
-    {
-      id: 'multimodal-images',
-      title: '多模态生成专题（图像/视频/音频）',
-      priority: 'P0',
-      value: '高',
-      effort: '中',
-      desc: 'ChatGPT Images 2.0 发布，文字生成能力大幅提升。多模态方向（图像/视频/音频生成）是 2026 年最热门的 AI 应用方向之一，Signal 声浪对此覆盖不足。',
-      action: '声浪新增 multimodal category，信息源加入 Sora/Kling/HunyuanVideo/Stable Diffusion 官博',
-      color: '#fd79a8',
-    },
-    {
-      id: 'cloud-ai-binding',
-      title: '大厂 AI 投资/云绑定模式专题',
+      id: 'agent-memory-infra',
+      title: 'Agent 记忆与知识引擎新兴生态',
       priority: 'P1',
       value: '高',
-      effort: '低',
-      desc: 'Amazon 再投 Anthropic $50 亿+$1000 亿云消费绑定，这一「投资+云绑定」模式已成为 AWS/Azure/GCP 锁定 AI 公司的标准打法，值得专题追踪。',
-      action: '声浪 infra category 加强大厂 AI 投资方向追踪，建立「云 AI 绑定」专题标签',
+      effort: '中',
+      desc: 'GitHub trending 发现 cognee（Agent 记忆引擎，"6行代码实现 Agent 记忆"）、openai/openai-agents-python（多 Agent 框架）等新兴工具快速崛起。Agent 记忆/知识管理是 2026 年 Agent 基础设施的核心缺口，Signal 完全缺失该方向。',
+      action: '声浪 agent category 新增 Agent 记忆/知识引擎方向；工具箱考虑新增「Agent 基础设施」Tab，覆盖 cognee/mem0/Zep 等工具',
       color: '#ffa657',
     },
   ],
 
   // GitHub 明星资源发现
   githubFindings: [
+    {
+      repo: 'openai/openai-agents-python',
+      stars: '10k+',
+      type: 'Agent 框架',
+      priority: 'P0',
+      reason: 'OpenAI 官方多 Agent 框架，与 Workspace Agents 配套，Signal 完全缺失该方向',
+      action: '声浪 agent category 追踪 + 工具箱 Agent 框架对比',
+    },
+    {
+      repo: 'topoteretes/cognee',
+      stars: '5k+',
+      type: 'Agent 记忆引擎',
+      priority: 'P0',
+      reason: '6行代码实现 Agent 知识图谱记忆，GitHub trending 本周爆火，Signal 完全缺失',
+      action: '声浪 agent category 追踪 + 工具箱新增 Agent 记忆工具分类',
+    },
+    {
+      repo: 'microsoft/markitdown',
+      stars: '40k+',
+      type: '文档处理工具',
+      priority: 'P1',
+      reason: '将各类文档转为 Markdown，是 RAG/Agent 数据预处理的重要工具，Signal 未覆盖',
+      action: '声浪 infra category 追踪 + 工具箱 RAG 工具分类',
+    },
     {
       repo: 'modelcontextprotocol/servers',
       stars: '14k+',
@@ -2062,14 +2086,6 @@ export const SITE_ROADMAP = {
       action: '新增信息源白名单 + 专题目录',
     },
     {
-      repo: 'awesome-llm（各 fork）',
-      stars: '20k+',
-      type: 'Awesome List',
-      priority: 'P0',
-      reason: '大模型综合资源集合，可作为书架/论文模块的补充来源',
-      action: '加入采集员参考来源',
-    },
-    {
       repo: 'LLaMA-Factory',
       stars: '40k+',
       type: '训练框架',
@@ -2077,20 +2093,15 @@ export const SITE_ROADMAP = {
       reason: '最流行的开源微调框架，声浪 infra category 覆盖不足',
       action: '声浪 infra 补充相关动态',
     },
-    {
-      repo: 'vllm-project/vllm',
-      stars: '45k+',
-      type: '推理框架',
-      priority: 'P1',
-      reason: '推理框架领头羊，Signal 已有零星覆盖但不系统',
-      action: '声浪 infra 加强追踪，加入 vLLM Blog 信息源',
-    },
   ],
 
   // 新闻角度盲区
   coverageGaps: [
-    { angle: 'AI 安全/对齐', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'safety', suggestedSources: ['Anthropic 安全博客', 'AI Safety Institute', 'METR'] },
-    { angle: 'AI 编程工具', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'coding', suggestedSources: ['Cursor Blog', 'GitHub Blog', 'Cognition AI'] },
+    { angle: '企业 Agent 平台竞争', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'agent', suggestedSources: ['OpenAI 企业博客', 'Google Cloud Blog', 'AWS Bedrock Blog', 'Microsoft Copilot Studio Blog'] },
+    { angle: 'Agent 记忆/知识引擎', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'agent', suggestedSources: ['cognee GitHub', 'mem0 Blog', 'Zep Blog'] },
+    { angle: '国产开源模型进展', severity: '覆盖不足', hotness: '🔥🔥🔥', suggestedCategory: 'llm', suggestedSources: ['qwenlm.github.io', '智源研究院', '上海AI实验室'] },
+    { angle: 'AI 编程工具', severity: '已覆盖 ✅', hotness: '🔥🔥🔥', suggestedCategory: 'coding', suggestedSources: ['Cursor Blog', 'GitHub Blog', 'Cognition AI'] },
+    { angle: 'AI 安全/对齐', severity: '已覆盖 ✅', hotness: '🔥🔥🔥', suggestedCategory: 'safety', suggestedSources: ['Anthropic 安全博客', 'AI Safety Institute', 'METR'] },
     { angle: '端侧/小模型', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'infra', suggestedSources: ['Microsoft Research', 'Google', 'Apple ML Research'] },
     { angle: 'AI 硬件/芯片', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'infra', suggestedSources: ['Groq', 'Cerebras', '寒武纪官网'] },
     { angle: 'AI + 医疗', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'industry', suggestedSources: ['DeepMind Blog', 'Nature', 'NEJM'] },
@@ -2099,6 +2110,26 @@ export const SITE_ROADMAP = {
 
   // 模块扩充建议
   moduleProposals: [
+    {
+      name: '企业 Agent 平台对比',
+      type: '工具/实践类',
+      priority: 'P0',
+      effort: '中',
+      value: '高',
+      desc: 'OpenAI Workspace Agents vs Google Agent Platform vs AWS Bedrock Agents vs Microsoft Copilot Studio 横向对比，2026 年最热竞争赛道',
+      dataSource: '各平台官方文档 + 社区评测',
+      implementHint: '工具箱新增「企业 Agent 平台」Tab，参考 AI 编程工具对比矩阵的实现方式',
+    },
+    {
+      name: 'Agent 基础设施工具目录',
+      type: '工具/实践类',
+      priority: 'P0',
+      effort: '低',
+      value: '高',
+      desc: '覆盖 Agent 记忆（cognee/mem0/Zep）、Agent 框架（openai-agents/LangGraph/CrewAI）、Agent 评测（AgentBench）等新兴工具生态',
+      dataSource: 'GitHub trending + 各工具官网',
+      implementHint: '工具箱新增「Agent 基础设施」分类，或在现有 MCP 目录下扩展',
+    },
     {
       name: 'MCP Server 目录',
       type: '工具/实践类',
@@ -2173,6 +2204,9 @@ export const SITE_ROADMAP = {
 
   // 建议新增信息源
   suggestedSources: [
+    { name: 'Google Cloud Blog', url: 'https://cloud.google.com/blog/products/ai-machine-learning', type: '企业博客', reason: 'Google Cloud Next \'26 后，Google Cloud AI 动态值得系统追踪' },
+    { name: 'OpenAI 企业博客', url: 'https://openai.com/enterprise', type: '企业博客', reason: 'Workspace Agents 等企业产品的一手信息来源' },
+    { name: 'Qwen Blog', url: 'https://qwenlm.github.io/blog/', type: '模型博客', reason: 'Qwen3 系列持续迭代，国产开源模型一手信息' },
     { name: 'Hugging Face Daily Papers', url: 'https://huggingface.co/papers', type: '论文聚合', reason: '每日精选 arXiv 论文，质量高' },
     { name: 'Lilian Weng Blog', url: 'https://lilianweng.github.io/', type: '个人博客', reason: 'OpenAI 研究员，综述质量极高' },
     { name: 'vLLM Blog', url: 'https://blog.vllm.ai/', type: '工程博客', reason: '推理框架最新进展' },
