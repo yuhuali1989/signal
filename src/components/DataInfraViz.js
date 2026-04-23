@@ -199,6 +199,242 @@ function K8sTab() {
 }
 
 // ─────────────────────────────────────────────────────────────
+// 3. 数据湖仓 — 车端工程规范折叠面板（独立组件，避免 Hook 规则问题）
+// ─────────────────────────────────────────────────────────────
+function EdgeClientPanel({ edgeClient }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/[0.02]">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between px-4 py-3 text-left">
+        <div className="flex items-center gap-2">
+          <span className="text-base">🚗</span>
+          <span className="text-sm font-semibold text-gray-800">{edgeClient.title}</span>
+          <span className="text-[10px] text-gray-400 hidden sm:inline">{edgeClient.subtitle}</span>
+        </div>
+        <span className="text-[10px] text-gray-400 flex-shrink-0">{open ? '▲ 收起' : '▼ 展开车端工程规范'}</span>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 space-y-4">
+          {/* 软件栈 */}
+          <SectionCard icon="🚗" title={edgeClient.title} desc={edgeClient.subtitle}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {Object.entries(edgeClient.softwareStack).map(([k, v]) => {
+                const labels = { os: 'OS', middleware: '中间件', runtime: '运行时', container: '容器', recorder: '录制器', uploader: '上传 Agent', trigger: '触发引擎' };
+                return (
+                  <div key={k} className="rounded-lg border border-gray-100 bg-gray-50/50 p-2">
+                    <div className="text-[8px] text-gray-400 mb-0.5">{labels[k] || k}</div>
+                    <div className="text-[9px] font-mono text-gray-700 leading-relaxed">{v}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </SectionCard>
+          {/* MCAP + Channel / 时间戳同步 / Session 切割 / 增量读取 / Iceberg 行粒度 / 多模态拼接 — 原 client Tab 内容 */}
+          <EdgeClientContent edgeClient={edgeClient} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// 3b. 车端工程规范内容（MCAP / 时间戳 / Session / 增量 / 拼接规则）
+// ─────────────────────────────────────────────────────────────
+function EdgeClientContent({ edgeClient }) {
+  return (
+    <>
+      {/* MCAP 文件结构 */}
+      <SectionCard icon="📄" title={edgeClient.mcapStructure.title} desc={edgeClient.mcapStructure.desc}>
+        <div className="mb-4">
+          <div className="text-[10px] font-semibold text-gray-600 mb-2">📊 MCAP 文件布局</div>
+          <div className="space-y-1">
+            {edgeClient.mcapStructure.fileLayout.map(s => (
+              <div key={s.section} className="flex items-center gap-3 rounded-lg border border-gray-100 bg-gray-50/30 p-2">
+                <div className="w-24 flex-shrink-0">
+                  <span className="text-[9px] font-mono font-semibold text-[#00cec9]">{s.section}</span>
+                </div>
+                <div className="flex-1 text-[9px] text-gray-600">{s.desc}</div>
+                <div className="text-[8px] font-mono text-gray-400 flex-shrink-0">{s.size}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div className="text-[10px] font-semibold text-gray-600 mb-2">📡 Channel 定义（每个传感器对应一个 Channel）</div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-[9px]">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-1.5 px-2 text-gray-400 font-medium">Topic</th>
+                  <th className="text-left py-1.5 px-2 text-gray-400 font-medium">Schema</th>
+                  <th className="text-center py-1.5 px-2 text-gray-400 font-medium">Rate</th>
+                  <th className="text-center py-1.5 px-2 text-gray-400 font-medium">Encoding</th>
+                  <th className="text-left py-1.5 px-2 text-gray-400 font-medium">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                {edgeClient.mcapStructure.channels.map((ch, i) => (
+                  <tr key={ch.topic} className={`border-b border-gray-50 ${i % 2 === 0 ? 'bg-gray-50/20' : ''}`}>
+                    <td className="py-1.5 px-2 font-mono text-[#6c5ce7] text-[8px]">{ch.topic}</td>
+                    <td className="py-1.5 px-2 font-mono text-gray-500 text-[8px]">{ch.schema}</td>
+                    <td className="py-1.5 px-2 text-center"><Badge color="#00cec9">{ch.rate}</Badge></td>
+                    <td className="py-1.5 px-2 text-center font-mono text-gray-400 text-[8px]">{ch.encoding}</td>
+                    <td className="py-1.5 px-2 text-gray-500">{ch.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 时间戳同步 */}
+      <SectionCard icon="⏱️" title={edgeClient.timestampSync.title} desc={edgeClient.timestampSync.desc}>
+        <div className="space-y-2 mb-3">
+          {edgeClient.timestampSync.methods.map(m => (
+            <div key={m.name} className="rounded-xl border p-3"
+              style={{ borderColor: m.color + '25', background: m.color + '04' }}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-semibold text-gray-800">{m.name}</span>
+                <Badge color={m.color}>{m.precision}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-1">{m.desc}</p>
+              <div className="text-[9px] font-mono px-2 py-0.5 rounded inline-block"
+                style={{ background: m.color + '12', color: m.color }}>{m.impl}</div>
+            </div>
+          ))}
+        </div>
+        <div className="text-[9px] text-gray-500 rounded-xl border border-gray-100 bg-gray-50/50 p-2">
+          {edgeClient.timestampSync.alignRule}
+        </div>
+      </SectionCard>
+
+      {/* Session 切割策略 */}
+      <SectionCard icon="✂️" title={edgeClient.sessionCut.title} desc={edgeClient.sessionCut.desc}>
+        <div className="space-y-2 mb-3">
+          {edgeClient.sessionCut.triggers.map(t => (
+            <div key={t.name} className="rounded-xl border p-3"
+              style={{ borderColor: t.color + '25', background: t.color + '04' }}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-base">{t.icon}</span>
+                <span className="text-xs font-semibold text-gray-800">{t.name}</span>
+                <Badge color={t.color}>{t.priority}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500">{t.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-[9px] text-gray-500">切割点两侧各保留 <span className="font-mono font-semibold text-[#6c5ce7]">{edgeClient.sessionCut.overlapSeconds}s</span> 重叠，防止切割点数据丢失</div>
+      </SectionCard>
+
+      {/* 增量读取机制 */}
+      <SectionCard icon="🔄" title={edgeClient.incrementalRead.title} desc={edgeClient.incrementalRead.desc}>
+        <div className="space-y-2 mb-4">
+          {edgeClient.incrementalRead.methods.map(m => (
+            <div key={m.name} className="rounded-xl border p-3"
+              style={{ borderColor: m.color + '25', background: m.color + '04' }}>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-base">{m.icon}</span>
+                <span className="text-xs font-semibold text-gray-800">{m.name}</span>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-1.5">{m.desc}</p>
+              {m.schema && (
+                <div className="text-[8px] font-mono px-2 py-1 rounded bg-gray-100 text-gray-600 mb-1.5">{m.schema}</div>
+              )}
+              <div className="text-[9px] text-gray-400">{m.how}</div>
+              {m.priority && (
+                <div className="mt-2 space-y-1">
+                  {m.priority.map(p => (
+                    <div key={p.level} className="flex items-center gap-2 text-[9px]">
+                      <Badge color={p.level.includes('P0') ? '#ff7b72' : p.level.includes('P1') ? '#ffa657' : p.level.includes('P2') ? '#79c0ff' : '#3fb950'}>{p.level}</Badge>
+                      <span className="text-gray-600">{p.condition}</span>
+                      <span className="font-mono text-gray-400 ml-auto">{p.delay}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* Raw 层 Iceberg 行粒度 */}
+      <SectionCard icon="📊" title={edgeClient.rawIcebergRow.title} desc={edgeClient.rawIcebergRow.desc}>
+        <div className="space-y-2 mb-4">
+          {edgeClient.rawIcebergRow.tables.map(t => (
+            <div key={t.table} className="rounded-xl border p-3"
+              style={{ borderColor: t.color + '25', background: t.color + '04' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-base">{t.icon}</span>
+                <span className="text-[10px] font-bold font-mono" style={{ color: t.color }}>{t.table}</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mb-2">
+                <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                  <div className="text-[8px] text-gray-400 mb-0.5">行粒度</div>
+                  <div className="text-[9px] font-semibold text-gray-700">{t.rowUnit}</div>
+                </div>
+                <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                  <div className="text-[8px] text-gray-400 mb-0.5">时间窗口</div>
+                  <div className="text-[9px] font-mono" style={{ color: t.color }}>{t.timeWindow}</div>
+                </div>
+                <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                  <div className="text-[8px] text-gray-400 mb-0.5">行数/Session</div>
+                  <div className="text-[9px] font-mono text-gray-600">{t.rowsPerSession}</div>
+                </div>
+              </div>
+              <div className="text-[9px] text-gray-500 mb-1">📎 {t.fileRef}</div>
+              <div className="text-[8px] text-gray-400">写入时机: {t.whenInserted}</div>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
+          <div className="text-[10px] font-semibold text-gray-700 mb-2">💡 关键结论</div>
+          <div className="space-y-1.5">
+            {edgeClient.rawIcebergRow.keyInsights.map((ins, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <span className="text-[#00cec9] flex-shrink-0 mt-0.5">▸</span>
+                <div>
+                  <div className="text-[9px] font-semibold text-gray-700">{ins.insight}</div>
+                  <div className="text-[8px] text-gray-400">{ins.detail}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 多模态拼接规则 */}
+      <SectionCard icon="🔗" title={edgeClient.joinRules.title} desc={edgeClient.joinRules.desc}>
+        <div className="mb-3 rounded-xl border border-[#3fb950]/20 bg-[#3fb950]/05 p-2">
+          <span className="text-[9px] font-semibold text-[#3fb950]">基准模态: </span>
+          <span className="text-[9px] text-gray-600">{edgeClient.joinRules.baseModality}</span>
+        </div>
+        <div className="space-y-2 mb-4">
+          {edgeClient.joinRules.rules.map(r => (
+            <div key={r.modality} className="rounded-xl border p-3"
+              style={{ borderColor: r.color + '25', background: r.color + '04' }}>
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                <span className="text-xs font-semibold text-gray-800">{r.modality}</span>
+                <Badge color={r.color}>{r.method}</Badge>
+                <Badge color={r.color}>容差 {r.tolerance}</Badge>
+              </div>
+              <p className="text-[10px] text-gray-500 mb-1">{r.detail}</p>
+              <div className="text-[9px] text-amber-600">⚠️ fallback: {r.fallback}</div>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-xl border border-[#a29bfe]/20 bg-[#a29bfe]/04 p-3">
+          <div className="text-[9px] font-semibold text-gray-700 mb-2">🔍 多模态拼接 SQL 示例</div>
+          <pre className="text-[8px] font-mono text-gray-600 whitespace-pre-wrap leading-relaxed overflow-x-auto">{edgeClient.joinRules.sceneJoinSQL}</pre>
+        </div>
+      </SectionCard>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
 // 3. 数据湖仓 — 自动驾驶多模态存储方案
 // ─────────────────────────────────────────────────────────────
 function DatalakeTab() {
@@ -211,9 +447,8 @@ function DatalakeTab() {
   const [selectedAccess, setSelectedAccess] = useState(0);
 
   const SUB_TABS = [
-    { id: 'formats',    label: '存储格式全景',   icon: '🗺️' },
-    { id: 'client',     label: '车端采集客户端', icon: '🚗' },
-    { id: 'chain',      label: '数据链路',       icon: '🔗' },
+    { id: 'formats',    label: '存储格式全景',     icon: '🗺️' },
+    { id: 'chain',      label: '多模态数据链路',   icon: '🔗' },
     { id: 'schema',     label: 'Schema 设计',    icon: '📐' },
     { id: 'webdataset', label: 'WebDataset',     icon: '📼' },
     { id: 'modal',      label: '模态存储规格',   icon: '📦' },
@@ -511,232 +746,16 @@ function DatalakeTab() {
         );
       })()}
 
-      {/* ── 车端采集客户端 ── */}
-      {activeSubTab === 'client' && (
-        <div className="space-y-4">
-          {/* 软件栈 */}
-          <SectionCard icon="🚗" title={edgeClient.title} desc={edgeClient.subtitle}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {Object.entries(edgeClient.softwareStack).map(([k, v]) => {
-                const labels = { os: 'OS', middleware: '中间件', runtime: '运行时', container: '容器', recorder: '录制器', uploader: '上传 Agent', trigger: '触发引擎' };
-                return (
-                  <div key={k} className="rounded-lg border border-gray-100 bg-gray-50/50 p-2">
-                    <div className="text-[8px] text-gray-400 mb-0.5">{labels[k] || k}</div>
-                    <div className="text-[9px] font-mono text-gray-700 leading-relaxed">{v}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </SectionCard>
-
-          {/* MCAP 文件结构 */}
-          <SectionCard icon="📄" title={edgeClient.mcapStructure.title} desc={edgeClient.mcapStructure.desc}>
-            <div className="mb-4">
-              <div className="text-[10px] font-semibold text-gray-600 mb-2">📊 MCAP 文件布局</div>
-              <div className="space-y-1">
-                {edgeClient.mcapStructure.fileLayout.map(s => (
-                  <div key={s.section} className="flex items-center gap-3 rounded-lg border border-gray-100 bg-gray-50/30 p-2">
-                    <div className="w-24 flex-shrink-0">
-                      <span className="text-[9px] font-mono font-semibold text-[#00cec9]">{s.section}</span>
-                    </div>
-                    <div className="flex-1 text-[9px] text-gray-600">{s.desc}</div>
-                    <div className="text-[8px] font-mono text-gray-400 flex-shrink-0">{s.size}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="text-[10px] font-semibold text-gray-600 mb-2">📡 Channel 定义（每个传感器对应一个 Channel）</div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-[9px]">
-                  <thead>
-                    <tr className="border-b border-gray-100">
-                      <th className="text-left py-1.5 px-2 text-gray-400 font-medium">Topic</th>
-                      <th className="text-left py-1.5 px-2 text-gray-400 font-medium">Schema</th>
-                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium">Rate</th>
-                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium">Encoding</th>
-                      <th className="text-left py-1.5 px-2 text-gray-400 font-medium">说明</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {edgeClient.mcapStructure.channels.map((ch, i) => (
-                      <tr key={ch.topic} className={`border-b border-gray-50 ${i % 2 === 0 ? 'bg-gray-50/20' : ''}`}>
-                        <td className="py-1.5 px-2 font-mono text-[#6c5ce7] text-[8px]">{ch.topic}</td>
-                        <td className="py-1.5 px-2 font-mono text-gray-500 text-[8px]">{ch.schema}</td>
-                        <td className="py-1.5 px-2 text-center"><Badge color="#00cec9">{ch.rate}</Badge></td>
-                        <td className="py-1.5 px-2 text-center font-mono text-gray-400 text-[8px]">{ch.encoding}</td>
-                        <td className="py-1.5 px-2 text-gray-500">{ch.note}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </SectionCard>
-
-          {/* 时间戳同步 */}
-          <SectionCard icon="⏱️" title={edgeClient.timestampSync.title} desc={edgeClient.timestampSync.desc}>
-            <div className="space-y-2 mb-3">
-              {edgeClient.timestampSync.methods.map(m => (
-                <div key={m.name} className="rounded-xl border p-3"
-                  style={{ borderColor: m.color + '25', background: m.color + '04' }}>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-semibold text-gray-800">{m.name}</span>
-                    <Badge color={m.color}>{m.precision}</Badge>
-                  </div>
-                  <p className="text-[10px] text-gray-500 mb-1">{m.desc}</p>
-                  <div className="text-[9px] font-mono px-2 py-0.5 rounded inline-block"
-                    style={{ background: m.color + '10', color: m.color }}>{m.impl}</div>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
-              <div className="text-[9px] font-semibold text-gray-700 mb-1">☁️ 云端对齐规则</div>
-              <div className="text-[9px] text-gray-500">{edgeClient.timestampSync.alignRule}</div>
-            </div>
-          </SectionCard>
-
-          {/* Session 切割时机 */}
-          <SectionCard icon="✂️" title={edgeClient.sessionCut.title} desc={edgeClient.sessionCut.desc}>
-            <div className="space-y-2 mb-3">
-              {edgeClient.sessionCut.triggers.map(t => (
-                <div key={t.trigger} className="flex items-start gap-3 rounded-xl border p-3"
-                  style={{ borderColor: t.color + '25', background: t.color + '04' }}>
-                  <span className="text-xl flex-shrink-0">{t.icon}</span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="text-xs font-semibold text-gray-800">{t.trigger}</span>
-                      <Badge color={t.color}>P{t.priority}</Badge>
-                      <span className="text-[9px] font-mono text-gray-400">{t.condition}</span>
-                    </div>
-                    <p className="text-[10px] text-gray-500">{t.detail}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
-                <div className="text-[9px] font-semibold text-gray-600 mb-1">🔀 重叠保留</div>
-                <div className="text-[9px] text-gray-500">切割点两侧各保留 <span className="font-mono font-semibold text-[#6c5ce7]">{edgeClient.sessionCut.overlapSeconds}s</span> 重叠，防止切割点数据丢失</div>
-              </div>
-              <div className="rounded-xl border border-gray-100 bg-gray-50/50 p-3">
-                <div className="text-[9px] font-semibold text-gray-600 mb-1">📝 命名规范</div>
-                <div className="text-[9px] font-mono text-gray-500">{edgeClient.sessionCut.namingConvention}</div>
-                <div className="text-[8px] text-gray-400 mt-0.5">例: {edgeClient.sessionCut.example}</div>
-              </div>
-            </div>
-          </SectionCard>
-
-          {/* 增量读取机制 */}
-          <SectionCard icon="🔄" title={edgeClient.incrementalRead.title} desc={edgeClient.incrementalRead.desc}>
-            <div className="space-y-2 mb-4">
-              {edgeClient.incrementalRead.methods.map(m => (
-                <div key={m.name} className="rounded-xl border p-3"
-                  style={{ borderColor: m.color + '25', background: m.color + '04' }}>
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-base">{m.icon}</span>
-                    <span className="text-xs font-semibold text-gray-800">{m.name}</span>
-                  </div>
-                  <p className="text-[10px] text-gray-500 mb-1.5">{m.desc}</p>
-                  {m.schema && (
-                    <div className="text-[8px] font-mono px-2 py-1 rounded bg-gray-100 text-gray-600 mb-1.5">{m.schema}</div>
-                  )}
-                  <div className="text-[9px] text-gray-400">{m.how}</div>
-                  {m.priority && (
-                    <div className="mt-2 space-y-1">
-                      {m.priority.map(p => (
-                        <div key={p.level} className="flex items-center gap-2 text-[9px]">
-                          <Badge color={p.level.includes('P0') ? '#ff7b72' : p.level.includes('P1') ? '#ffa657' : p.level.includes('P2') ? '#79c0ff' : '#3fb950'}>{p.level}</Badge>
-                          <span className="text-gray-600">{p.condition}</span>
-                          <span className="font-mono text-gray-400 ml-auto">{p.delay}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </SectionCard>
-
-          {/* Raw 层 Iceberg 一行的粒度 */}
-          <SectionCard icon="📊" title={edgeClient.rawIcebergRow.title} desc={edgeClient.rawIcebergRow.desc}>
-            <div className="space-y-2 mb-4">
-              {edgeClient.rawIcebergRow.tables.map(t => (
-                <div key={t.table} className="rounded-xl border p-3"
-                  style={{ borderColor: t.color + '25', background: t.color + '04' }}>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-base">{t.icon}</span>
-                    <span className="text-[10px] font-bold font-mono" style={{ color: t.color }}>{t.table}</span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mb-2">
-                    <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
-                      <div className="text-[8px] text-gray-400 mb-0.5">行粒度</div>
-                      <div className="text-[9px] font-semibold text-gray-700">{t.rowUnit}</div>
-                    </div>
-                    <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
-                      <div className="text-[8px] text-gray-400 mb-0.5">时间窗口</div>
-                      <div className="text-[9px] font-mono" style={{ color: t.color }}>{t.timeWindow}</div>
-                    </div>
-                    <div className="rounded-lg border border-gray-100 bg-white/80 p-2">
-                      <div className="text-[8px] text-gray-400 mb-0.5">行数/Session</div>
-                      <div className="text-[9px] font-mono text-gray-600">{t.rowsPerSession}</div>
-                    </div>
-                  </div>
-                  <div className="text-[9px] text-gray-500 mb-1">📎 {t.fileRef}</div>
-                  <div className="text-[8px] text-gray-400">写入时机: {t.whenInserted}</div>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-xl border border-[#00cec9]/20 bg-[#00cec9]/05 p-3">
-              <div className="text-[10px] font-semibold text-gray-700 mb-2">💡 关键结论</div>
-              <div className="space-y-1.5">
-                {edgeClient.rawIcebergRow.keyInsights.map((ins, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <span className="text-[#00cec9] flex-shrink-0 mt-0.5">▸</span>
-                    <div>
-                      <div className="text-[9px] font-semibold text-gray-700">{ins.insight}</div>
-                      <div className="text-[8px] text-gray-400">{ins.detail}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </SectionCard>
-
-          {/* 多模态拼接规则 */}
-          <SectionCard icon="🔗" title={edgeClient.joinRules.title} desc={edgeClient.joinRules.desc}>
-            <div className="mb-3 rounded-xl border border-[#3fb950]/20 bg-[#3fb950]/05 p-2">
-              <span className="text-[9px] font-semibold text-[#3fb950]">基准模态: </span>
-              <span className="text-[9px] text-gray-600">{edgeClient.joinRules.baseModality}</span>
-            </div>
-            <div className="space-y-2 mb-4">
-              {edgeClient.joinRules.rules.map(r => (
-                <div key={r.modality} className="rounded-xl border p-3"
-                  style={{ borderColor: r.color + '25', background: r.color + '04' }}>
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="text-xs font-semibold text-gray-800">{r.modality}</span>
-                    <Badge color={r.color}>{r.method}</Badge>
-                    <Badge color={r.color}>容差 {r.tolerance}</Badge>
-                  </div>
-                  <p className="text-[10px] text-gray-500 mb-1">{r.detail}</p>
-                  <div className="text-[9px] text-amber-600">⚠️ fallback: {r.fallback}</div>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-xl border border-[#a29bfe]/20 bg-[#a29bfe]/04 p-3">
-              <div className="text-[9px] font-semibold text-gray-700 mb-2">🔍 多模态拼接 SQL 示例</div>
-              <pre className="text-[8px] font-mono text-gray-600 whitespace-pre-wrap leading-relaxed overflow-x-auto">{edgeClient.joinRules.sceneJoinSQL}</pre>
-            </div>
-          </SectionCard>
-        </div>
-      )}
-
-      {/* ── 数据链路 ── */}
+      {/* ── 多模态数据链路（含车端工程规范） ── */}
       {activeSubTab === 'chain' && (
-        <div className="space-y-2">
-          <div className="text-xs font-semibold text-gray-600 mb-3">
-            {dataChain.title}
-          </div>
+        <div className="space-y-4">
+
+          {/* ── 车端工程规范（折叠） ── */}
+          <EdgeClientPanel edgeClient={edgeClient} />
+
+          {/* ── 全链路流转 ── */}
+          <div className="text-xs font-semibold text-gray-600 mb-1">{dataChain.title}</div>
+          <div className="space-y-2">
           {dataChain.stages.map((stage, i) => (
             <div key={stage.name}>
               <div className="rounded-2xl border p-4"
