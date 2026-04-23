@@ -349,17 +349,18 @@ maxwell-knowledge/
 *最后更新：2026-04-23*
 
 **本次主要更新内容**：
-- 📚 **第28轮每日内容更新**：声浪 +5 条（→83 条）、文章 +2 篇（→79 篇）、全行业动态 +5 条（→60 条）
-- 🌊 **声浪新增 5 条真实新闻**（通过 The Decoder / MarkTechPost 实时获取，全部 curl 验证 200）：
-  - 🔥 OpenAI ChatGPT Workspace Agents 上线：从聊天机器人进化为团队自动化平台（The Decoder 4/22）
-  - 🔥 Google Cloud Next '26：第8代 TPU + Agent 平台 + Workspace AI 层三连发（The Decoder 4/22）
-  - 🔥 阿里 Qwen3.6-27B 发布：270亿参数密集模型超越397B MoE（MarkTechPost 4/22）
-  - HuggingFace ml-intern：自动化 LLM 后训练全流程的开源 AI Agent（MarkTechPost 4/21）
-  - OpenAI 开源 Euphony：Codex 会话日志与 Harmony 聊天数据可视化工具（MarkTechPost 4/21）
-- ✨ **新增 2 篇深度文章**：
-  - 《OpenAI Workspace Agents：ChatGPT 从聊天机器人进化为团队自动化平台》（深度解析技术架构、与 Custom GPTs 差异、企业落地路径）
-  - 《Google Cloud Next '26 全景：第8代 TPU、Agent 平台与 Workspace AI 层的战略布局》（全栈 AI 竞争格局分析）
-- 🏢 **全行业动态新增 5 条**（id 2532-2536）：OpenAI Workspace Agents / Google Cloud Next '26 / Qwen3.6-27B / HF ml-intern / Euphony，所有 link 经 curl 验证 200
+- 📝 **提示词优化**：角色 A 采集员新增「⏰ 日期覆盖硬性要求」，明确声浪/全行业动态的 date 字段必须覆盖到执行当天，禁止出现"提交日期是 4/23 但最新声浪只到 4/22"的情况
+- 📚 **第29轮每日内容更新**：声浪 +8 条（→91 条）、全行业动态 +8 条（→68 条），日期全部覆盖 4/23 当天
+- 🌊 **声浪新增 8 条真实新闻**（通过 TechCrunch / 36Kr / IT之家实时获取，全部 curl 验证 200）：
+  - 🔥 Anthropic 二级市场估值升至万亿美元，超越 OpenAI（36Kr/财联社 4/23）
+  - 🔥 Google Cloud 发布两款新 TPU 芯片，正面对标 NVIDIA（TechCrunch 4/23）
+  - 🔥 Google 将 Chrome 变为企业 AI 协作助手：Gemini 驱动自动浏览（TechCrunch 4/23）
+  - 🔥 Thinking Machines Lab 与 Google Cloud 签署数十亿美元 AI 基础设施协议（TechCrunch 4/23）
+  - 🔥 马斯克确认特斯拉 HW3 芯片无法支持无监督 FSD（36Kr 4/23）
+  - 字节跳动发布 Seed3D 2.0：3D 几何与纹理生成达 SOTA（IT之家 4/23）
+  - 千寻位置发布「具身时空大脑」产品集（36Kr 4/23）
+  - Meta 将记录员工键盘操作用于训练 AI 模型（TechCrunch 4/23）
+- 🏢 **全行业动态新增 8 条**（id 2537-2544）：覆盖 startup/cloud/software/market/security 5 个分类，国内外各半
 
 ---
 
@@ -886,6 +887,13 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 - **声浪**：8-10 条，覆盖 LLM 前沿 / AI Infra / Agent/MCP / 自动驾驶 / 全行业
 - **全行业动态**：10 条，覆盖 data/cloud/software/security/startup/market 6 大分类，国内外各半
 - **当日没有可验证的重大事件时**：可以少于目标数，严禁凑数编造
+
+### ⏰ 日期覆盖硬性要求（每日必检）
+
+- **声浪（news-feed.json）和全行业动态（IndustryNewsFeed.js）的 date 字段必须覆盖到当天（即执行日期）**
+- 如果当天确实没有重大新闻，至少保证有 2-3 条当天日期的条目（可从官方博客、GitHub Release、arXiv 等稳定更新源采集）
+- **禁止出现"提交日期是 4/23，但最新声浪日期只到 4/22"的情况**——这说明采集员没有扫描当天的信息源
+- 采集员在输出草稿前，必须自检：草稿中是否包含 `date` 为当天的条目？如果没有，必须补充扫描当天信息源后再输出
 
 ### 🚨 采集员输出规范
 

@@ -1,5 +1,29 @@
 [
   {
+    "id": "evo-20260423-prompt",
+    "type": "system",
+    "title": "采集员提示词新增「日期覆盖当天」硬性要求",
+    "description": "在角色 A 采集员提示词中新增「⏰ 日期覆盖硬性要求」章节，明确规定声浪和全行业动态的 date 字段必须覆盖到执行当天，禁止出现「提交日期是 4/23 但最新声浪只到 4/22」的情况。采集员输出草稿前必须自检是否包含当天日期条目。",
+    "date": "2026-04-23 15:40",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260423-news2",
+    "type": "news",
+    "title": "声浪新增 8 条覆盖 4/23 当天：Anthropic 万亿估值、Google TPU、Tesla FSD",
+    "description": "新增 8 条 AI 声浪，日期全部为 2026-04-23，覆盖：Anthropic 二级市场估值超万亿超越 OpenAI、Google Cloud 新 TPU 芯片对标 NVIDIA、Chrome Gemini 自动浏览、Thinking Machines Lab 数十亿美元协议、马斯克确认 HW3 不支持无监督 FSD、字节 Seed3D 2.0、千寻位置具身时空大脑、Meta 键盘数据训练 AI。所有链接经 curl 验证返回 200。",
+    "date": "2026-04-23 15:40",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260423-industry2",
+    "type": "news",
+    "title": "全行业动态新增 8 条覆盖 4/23：id 2537-2544",
+    "description": "IndustryNewsFeed.js 新增 8 条全行业动态（id 2537-2544），覆盖 startup/cloud/software/market/security 5 个分类，国内外各半。热点包括 Anthropic 万亿估值、Google TPU 新芯片、Tesla 250 亿资本支出、Thinking Machines Lab 基础设施协议。",
+    "date": "2026-04-23 15:40",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260423-news",
     "type": "news",
     "title": "第28轮更新：声浪+全行业动态各新增5条（OpenAI Workspace Agents / Google Cloud Next '26 / Qwen3.6-27B）",
