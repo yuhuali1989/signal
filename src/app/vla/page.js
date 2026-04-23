@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Footer from '@/components/Footer';
@@ -442,6 +442,14 @@ const TOP_TABS = [
 ];
 
 export default function VlaPage() {
+  return (
+    <Suspense fallback={<LoadingBlock />}>
+      <VlaPageContent />
+    </Suspense>
+  );
+}
+
+function VlaPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
