@@ -1997,6 +1997,95 @@ export const SITE_ROADMAP = {
   lastUpdated: '2026-04-23',
   summary: '🔍 设计师第5次扫描（2026-04-23）：发现3个新高价值机会——① OpenAI Workspace Agents 开启企业自动化平台新赛道，Signal 需建立「Agent 平台」专题追踪；② Google Cloud Next \'26 全栈 AI 布局，TPU8+Agent平台+Workspace AI 三连发，云 AI 竞争格局进入新阶段；③ Qwen3.6-27B 证明「小参数密集模型」路线可行，国产开源模型专题需强化。GitHub 本周 trending 新发现：openai/openai-agents-python（多 Agent 框架）、cognee（Agent 记忆引擎）值得追踪。',
 
+  // 🚀 产品迭代规划（开发者人工维护）
+  productPlans: {
+    lastUpdated: '2026-04-23',
+    note: '开发者人工维护的功能开发清单。优先级：🔴 高 / 🟡 中 / 🟢 低。AI 设计师建议（下方机会雷达）经人工评估后，可搬运到这里转为开发事项。',
+    categories: [
+      {
+        id: 'content',
+        icon: '📚',
+        name: '内容质量提升',
+        cadence: '持续',
+        items: [
+          { priority: '🔴', title: '研究模块扩充', desc: '持续补充 VLA / 世界模型 / 多模态方向论文解读' },
+          { priority: '🔴', title: '书籍内容更新', desc: '确保书架中的书籍章节与最新研究同步' },
+          { priority: '🔴', title: '模型中心数据补全', desc: '持续补充最新模型（Qwen / Gemini / Claude / GPT 系列）' },
+          { priority: '🔴', title: 'ai-wiki.md 同步更新', desc: '每次网站架构/内容变更后，必须同步更新核心文档' },
+        ],
+      },
+      {
+        id: 'vla',
+        icon: '🚗',
+        name: 'VLA 实验室深化',
+        cadence: '中期',
+        items: [
+          { priority: '🟡', title: '更多 VLA 架构方案', desc: '覆盖 RT-2、OpenVLA、π₀、VLA-World、Seed-AD、Alpamayo-R1 等' },
+          { priority: '🟡', title: '训练结果持久化', desc: 'Loss 曲线 / 指标保存，支持多次实验对比' },
+          { priority: '🟢', title: '模型导出', desc: '训练完成后支持模型权重下载（ONNX / PyTorch 格式）' },
+        ],
+      },
+      {
+        id: 'platform',
+        icon: '⚡',
+        name: '平台能力增强',
+        cadence: '中期',
+        items: [
+          { priority: '🔴', title: '全站搜索', desc: '覆盖文章 / 论文 / 书籍 / 模型，目前完全没有搜索入口，内容越来越多亟需补齐' },
+          { priority: '🟡', title: '标签系统统一', desc: '文章 / 论文 / 书籍的标签体系统一，支持跨模块标签聚合页' },
+          { priority: '🟡', title: 'RSS / 订阅', desc: '提供 RSS Feed，方便用户订阅更新' },
+          { priority: '🟢', title: '暗色模式', desc: '全站支持 Dark Mode' },
+        ],
+      },
+      {
+        id: 'agent',
+        icon: '🤖',
+        name: 'AI 智能体能力',
+        cadence: '长期',
+        items: [
+          { priority: '🔴', title: '进化日志可视化', desc: '进化日志做成时间线 / 热力图，展示 AI 智能体活跃度' },
+          { priority: '🟡', title: '智能体状态面板', desc: '展示各 AI 智能体（采集员 / 编辑员 / 质检员 / 发布员 / 设计师）的实时状态和任务队列' },
+          { priority: '🟡', title: '内容质量评分', desc: '对书籍章节 / 文章自动打分，标记需要人工复核的内容' },
+          { priority: '🟢', title: '多语言支持', desc: '英文版内容镜像' },
+        ],
+      },
+      {
+        id: 'ux',
+        icon: '✨',
+        name: '交互体验优化',
+        cadence: '持续',
+        items: [
+          { priority: '🟡', title: '首页个性化', desc: '根据用户浏览历史推荐相关内容' },
+          { priority: '🟡', title: '书籍阅读体验', desc: '字体大小调节 / 阅读进度保存 / 高亮笔记' },
+          { priority: '🟢', title: '移动端复杂可视化适配', desc: 'VLA 架构图 / 模型对比等 SVG 可视化在窄屏下挤压严重，需优化' },
+          { priority: '🟢', title: '大组件懒加载', desc: 'VlaArchViz.js / VlaNotebook.js / DataInfraViz.js / StrategyViz.js 按需加载' },
+        ],
+      },
+    ],
+  },
+
+  // 🔧 平台技术债（开发者人工维护）
+  techDebts: {
+    lastUpdated: '2026-04-23',
+    note: '开发者人工维护的工程优化清单。严重程度：🔴 高 / 🟡 中 / 🟢 低。',
+    items: [
+      { severity: '🟡', title: 'VlaArchViz.js 体积过大', desc: '大文件（~120KB），包含大量内联 SVG 和数据，影响首次加载', status: '待懒加载拆分' },
+      { severity: '🟡', title: 'VlaNotebook.js 体积过大', desc: '~85KB，可拆分为多个 Cell 独立组件', status: '待优化' },
+      { severity: '🟡', title: 'DataInfraViz.js 体积过大', desc: '~165KB，12 个 Tab 全部内联，考虑按 Tab 懒加载', status: '待优化' },
+      { severity: '🟡', title: 'StrategyViz.js 体积过大', desc: '~110KB，多 Tab 内容全内联', status: '待优化' },
+      { severity: '🔴', title: '全链路实验使用模拟数据', desc: 'VLA 全链路实验的训练数据为随机生成，非真实 nuScenes 数据', status: '待接入真实数据' },
+      { severity: '🟢', title: 'Navbar.js 遗留文件', desc: 'layout.js 只引 Sidebar.js 统一处理桌面+移动，Navbar.js 无任何页面引用', status: '已澄清，待清理' },
+      { severity: '🔴', title: 'ai-wiki.md 同步滞后', desc: '网站架构变更后经常忘记同步更新核心文档，导致文档与实际不符', status: '已加强规范（角色 D 提示词）' },
+      { severity: '🟡', title: '复杂可视化组件移动端体验差', desc: 'VLA 架构图 / 模型对比等 SVG 可视化在窄屏下挤压严重', status: '待移动端适配' },
+    ],
+    resolved: [
+      'data-infra/ 页面已完整上线（DataInfraViz 12 Tab）',
+      'gallery/ 和 benchmarks/ 以 redirect("/models/") 处理，统一入口到 /models/',
+      '工具箱清理（去 MCP 目录 / AI 编程工具对比 / Prompt 模板库，改为仿真工具 + Tokenizer 两 Tab）',
+      '导航重构（Sidebar + Navbar 双导航 → 单一 Sidebar 统一处理）',
+    ],
+  },
+
   // TOP 5 最高价值机会
   topOpportunities: [
     {
