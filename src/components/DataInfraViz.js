@@ -435,9 +435,9 @@ function EdgeClientContent({ edgeClient }) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// 3. 数据湖仓 — 自动驾驶多模态存储方案
+// 3. 数据湖仓 — 多模态存储方案（可独立使用）
 // ─────────────────────────────────────────────────────────────
-function DatalakeTab() {
+export function DatalakeTab() {
   const { dataChain, modalSpecs, icebergSchemas, edgeClient, webdatasetData,
           storageFormats, trainDatasetBuild, ioOptimization,
           icebergFeatures, lakeFSWorkflow, comparison, queryEngines } = DATALAKE_DATA;
@@ -465,14 +465,14 @@ function DatalakeTab() {
         <div className="flex items-start gap-3">
           <span className="text-2xl">🏞️</span>
           <div>
-            <div className="text-sm font-bold text-gray-800 mb-1">自动驾驶多模态存储方案</div>
+            <div className="text-sm font-bold text-gray-800 mb-1">数据湖仓技术栈</div>
             <div className="text-[10px] text-gray-500 leading-relaxed">
-              覆盖 <span className="font-semibold text-[#00cec9]">车端采集 → Landing → Bronze → Silver → Gold</span> 全链路，
-              五模态（相机/LiDAR/雷达/标注/语言）统一存储规范，
-              支持 <span className="font-semibold text-[#00cec9]">~15 GB/s 训练 IO</span> 带宽需求。
+              湖仓一体核心技术：<span className="font-semibold text-[#00cec9]">存储格式选型 · Schema 设计 · 版本管理 · IO 优化</span>，
+              覆盖从原始数据到训练就绪的全链路存储规范与工程实践。
+              多模态业务场景请查看 <span className="font-semibold text-[#00cec9]">自动驾驶 → 数据闭环</span>。
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {['Apache Iceberg', 'WebDataset', 'LakeFS', 'JuiceFS', 'Lustre', 'Unity Catalog'].map(t => (
+              {['Apache Iceberg', 'WebDataset', 'LakeFS', 'JuiceFS', 'Parquet', 'Unity Catalog'].map(t => (
                 <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-mono"
                   style={{ background: '#00cec9' + '15', color: '#00cec9', border: '1px solid #00cec930' }}>
                   {t}

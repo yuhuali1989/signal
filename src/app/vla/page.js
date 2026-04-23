@@ -9,6 +9,7 @@ const ArchViz = dynamic(() => import('@/components/VlaArchViz'), { ssr: false, l
 const Notebook = dynamic(() => import('@/components/VlaNotebook'), { ssr: false, loading: () => <LoadingBlock /> });
 
 const DataLoop = dynamic(() => import('@/components/DataLoopArch'), { ssr: false, loading: () => <LoadingBlock /> });
+const DatalakeTab = dynamic(() => import('@/components/DataInfraViz').then(m => ({ default: m.DatalakeTab })), { ssr: false, loading: () => <LoadingBlock /> });
 
 // Seed-AD 子模块（70B · 三阶段 想象→反思→行动）
 const SeedAdArchViz  = dynamic(() => import('@/components/SeedAdArchViz'),  { ssr: false, loading: () => <LoadingBlock /> });
@@ -426,7 +427,21 @@ function SeedAdSection() {
       <div>
         {tab === 'arch'     && <SeedAdArchViz />}
         {tab === 'notebook' && <SeedAdNotebook />}
-        {tab === 'dataloop' && <SeedAdDataLoop />}
+        {tab === 'dataloop' && (
+          <div className="space-y-8">
+            <SeedAdDataLoop />
+            <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-lg">🏞️</span>
+                <div>
+                  <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
+                  <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
+                </div>
+              </div>
+              <DatalakeTab />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-10 p-4 bg-emerald-50/30 rounded-2xl border border-emerald-100 text-xs text-gray-500 leading-relaxed">
@@ -479,7 +494,21 @@ export default function VlaPage() {
             <div>
               {activeTab === 'arch' && <ArchViz />}
               {activeTab === 'notebook' && <Notebook />}
-              {activeTab === 'dataloop' && <DataLoop />}
+              {activeTab === 'dataloop' && (
+                <div className="space-y-8">
+                  <DataLoop />
+                  <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-lg">🏞️</span>
+                      <div>
+                        <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
+                        <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
+                      </div>
+                    </div>
+                    <DatalakeTab />
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">

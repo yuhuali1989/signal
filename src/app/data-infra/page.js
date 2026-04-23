@@ -52,8 +52,8 @@ const TECH_DOMAINS = [
     tags: ['容器编排', 'GPU 调度', 'GitOps'], color: '#326ce5',
   },
   {
-    icon: '🏞️', name: '数据湖仓', desc: 'Apache Iceberg · LakeFS 版本管理 · 500PB',
-    tags: ['Iceberg', 'Parquet', 'Trino'], color: '#00cec9',
+    icon: '🏞️', name: '数据湖仓', desc: 'Apache Iceberg · WebDataset · LakeFS · Schema 设计 · IO 优化',
+    tags: ['Iceberg', 'Parquet', 'WebDataset'], color: '#00cec9',
   },
   {
     icon: '⚙️', name: '数据流水线', desc: 'Airflow + Argo · 7 阶段 DAG · 2000 DAG/天',
