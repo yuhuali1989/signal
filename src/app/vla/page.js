@@ -427,21 +427,7 @@ function SeedAdSection() {
       <div>
         {tab === 'arch'     && <SeedAdArchViz />}
         {tab === 'notebook' && <SeedAdNotebook />}
-        {tab === 'dataloop' && (
-          <div className="space-y-8">
-            <SeedAdDataLoop />
-            <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-lg">🏞️</span>
-                <div>
-                  <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
-                  <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
-                </div>
-              </div>
-              <DatalakeTab />
-            </div>
-          </div>
-        )}
+        {tab === 'dataloop' && <SeedAdDataLoop />}
       </div>
 
       <div className="mt-10 p-4 bg-emerald-50/30 rounded-2xl border border-emerald-100 text-xs text-gray-500 leading-relaxed">
@@ -494,21 +480,7 @@ export default function VlaPage() {
             <div>
               {activeTab === 'arch' && <ArchViz />}
               {activeTab === 'notebook' && <Notebook />}
-              {activeTab === 'dataloop' && (
-                <div className="space-y-8">
-                  <DataLoop />
-                  <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-lg">🏞️</span>
-                      <div>
-                        <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
-                        <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
-                      </div>
-                    </div>
-                    <DatalakeTab />
-                  </div>
-                </div>
-              )}
+              {activeTab === 'dataloop' && <DataLoop />}
             </div>
 
             <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">
@@ -525,6 +497,28 @@ export default function VlaPage() {
         {activeProject === 'seedad' && (
           <SeedAdSection />
         )}
+
+        {/* ── 自动驾驶数据闭环（独立区块，不隔离任何论文） ── */}
+        <div className="mt-12 border-t border-gray-100 pt-10">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-2xl">🔄</span>
+            <div>
+              <h2 className="text-base font-bold text-gray-800">自动驾驶数据闭环</h2>
+              <p className="text-xs text-gray-400">采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全链路闭环架构 + 多模态存储方案</p>
+            </div>
+          </div>
+          <DataLoop />
+          <div className="mt-8 rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-lg">🏞️</span>
+              <div>
+                <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
+                <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
+              </div>
+            </div>
+            <DatalakeTab />
+          </div>
+        </div>
       </div>
       <Footer />
     </>
