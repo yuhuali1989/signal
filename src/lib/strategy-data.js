@@ -2001,18 +2001,19 @@ export const SITE_ROADMAP = {
   sprintPlan: {
     sprintDate: '2026-04-23',
     editorTasks: [
-      // 角色 B 编辑员本轮需执行的 Roadmap 任务
-      // 调度员从 productPlans / topOpportunities 中挑选，写入具体可执行指令
+      { source: 'productPlans.content.模型中心补全', action: '补充 Gemini 2.5 Pro、Gemini 2.5 Flash、Claude 4 Opus、Claude 4 Sonnet 四个模型卡片到 models.json，每个包含 id/name/type/org/params/releaseDate/description/tags', files: ['content/gallery/models.json'], done: false },
+      { source: 'productPlans.content.Agent生态专题', action: '写 1 篇企业 Agent 平台对比文章（OpenAI Workspace Agents vs Google Agent Platform vs AWS Bedrock Agents vs MS Copilot Studio），不少于 1500 字，放入 content/articles/，文件名 enterprise-agent-platforms-2026-04-23.md', files: ['content/articles/'], done: false },
     ],
     publisherTasks: [
-      // 角色 D 发布员本轮需执行的 Roadmap 工程任务
-      // 调度员从 techDebts / productPlans(platform/ux) 中挑选，写入具体可执行指令
+      { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx"', done: false },
+      { source: 'techDebts.大组件未做懒加载+productPlans.ux.大组件懒加载', action: '将 src/app/strategy/page.js 中的 StrategyViz 从直接 import 改为 next/dynamic 懒加载（其余 3 个已完成），改完后更新 techDebts 将此条标记为 resolved', files: ['src/app/strategy/page.js'], verify: 'grep -n "dynamic.*StrategyViz\\|import StrategyViz" src/app/strategy/page.js', done: false },
     ],
     collectorFocus: [
-      // 角色 A 采集员本轮需重点关注的采集方向
-      // 调度员根据 topOpportunities / coverageGaps 动态调整
+      { direction: 'Agent 生态（企业平台 + 记忆引擎 + 框架）', reason: 'topOpportunities 3 个 P0 均与 Agent 相关，coverageGaps 标记为严重缺失', targetCount: 3 },
+      { direction: '国产开源模型（Qwen3/DeepSeek 最新动态）', reason: 'topOpportunities P0，国产模型进入全球第一梯队但覆盖不足', targetCount: 2 },
+      { direction: 'GitHub Trending AI 工具', reason: 'topOpportunities P1，发现新兴框架/工具的最佳渠道', targetCount: 2 },
     ],
-    notes: '等待调度员（角色 F）首次分配',
+    notes: '首轮调度重点：① 清理 Navbar 遗留 + StrategyViz 懒加载（4 个大组件中最后 1 个）；② 补充 4 个缺失模型卡片 + 启动 Agent 专题第 1 篇；③ 采集重点覆盖 Agent 生态和国产模型',
   },
 
   // 🚀 产品迭代规划（开发者人工维护）
