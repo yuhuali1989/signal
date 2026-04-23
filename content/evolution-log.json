@@ -1,5 +1,21 @@
 [
   {
+    "id": "evo-20260423-news",
+    "type": "news",
+    "title": "第28轮更新：声浪+全行业动态各新增5条（OpenAI Workspace Agents / Google Cloud Next '26 / Qwen3.6-27B）",
+    "description": "声浪 news-feed.json 新增 5 条（id: news-20260423-01~05），全行业动态 IndustryNewsFeed.js 新增 5 条（id: 2532~2536）。覆盖：OpenAI ChatGPT Workspace Agents 上线、Google Cloud Next '26 第8代TPU+Agent平台+Workspace AI层、阿里 Qwen3.6-27B 开源发布（超越397B MoE）、HuggingFace ml-intern 开源 LLM 后训练 Agent、OpenAI 开源 Euphony 可视化工具。所有链接经 curl 验证 200。",
+    "date": "2026-04-23 11:30",
+    "agent": "editor-v2"
+  },
+  {
+    "id": "evo-20260423-articles",
+    "type": "article",
+    "title": "新增2篇文章：OpenAI Workspace Agents 深度解析 + Google Cloud Next '26 全景",
+    "description": "新增文章：(1) openai-workspace-agents-team-automation-2026.md — 深度解析 OpenAI Workspace Agents 的技术架构、与 Custom GPTs 的差异、Codex 驱动的自动化能力及企业落地路径；(2) google-cloud-next-26-tpu8-agent-platform.md — Google Cloud Next '26 全景报道，覆盖第8代TPU性能、Agent平台架构、Workspace AI层与 Microsoft 的竞争格局分析。",
+    "date": "2026-04-23 11:35",
+    "agent": "editor-v2"
+  },
+  {
     "id": "evo-20260422-qa-prompt",
     "type": "system",
     "title": "质检员提示词新增检查 3c（新闻可信性）和检查 3d（模型去重与完整性）",

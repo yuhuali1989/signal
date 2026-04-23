@@ -110,6 +110,69 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-04-23（第28轮更新 — OpenAI Workspace Agents / Google Cloud Next '26 / Qwen3.6-27B / HF ml-intern / Euphony）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2532,
+    category: 'software',
+    region: 'global',
+    title: 'OpenAI ChatGPT Workspace Agents 上线：从聊天机器人进化为团队自动化平台',
+    summary: 'OpenAI 推出 ChatGPT Workspace Agents，由 Codex 驱动，可自动化复杂团队工作流，即使无人值守也能持续运行。现有 Custom GPTs 暂时保留，后续提供迁移路径。ChatGPT 正式从对话工具转型为企业自动化平台。',
+    source: 'The Decoder',
+    date: '2026-04-22',
+    tags: ['OpenAI', 'ChatGPT', 'Workspace Agents', 'Codex', '企业AI'],
+    hot: true,
+    link: 'https://the-decoder.com/openai-launches-workspace-agents-that-turn-chatgpt-from-a-chatbot-into-a-team-automation-platform/',
+  },
+  {
+    id: 2533,
+    category: 'cloud',
+    region: 'global',
+    title: 'Google Cloud Next \'26：第8代 TPU + 全新 Agent 平台 + Workspace AI 层三连发',
+    summary: 'Google 在 Cloud Next \'26 发布第8代 TPU、统一 Agent 开发部署平台、以及深度嵌入 Gmail/Docs/Sheets 的 Workspace AI 层，全栈 AI 能力对标 Microsoft Azure + Copilot 体系。',
+    source: 'The Decoder',
+    date: '2026-04-22',
+    tags: ['Google', 'TPU', 'Cloud Next', 'Agent平台', 'Workspace AI'],
+    hot: true,
+    link: 'https://the-decoder.com/google-unveils-8th-gen-tpus-agent-platform-and-workspace-ai-layer-at-cloud-next-26/',
+  },
+  {
+    id: 2534,
+    category: 'software',
+    region: 'china',
+    title: '阿里 Qwen3.6-27B 发布：270亿参数密集模型超越397B MoE，Agent 编程基准领先',
+    summary: '阿里 Qwen 团队发布 Qwen3.6-27B 开源密集模型，在 Agent 编程基准上超越 397B 参数 MoE 模型，延续 Qwen3 系列「小参数高性能」路线，对资源受限的企业部署场景性价比显著。',
+    source: 'MarkTechPost',
+    date: '2026-04-22',
+    tags: ['Qwen', 'Qwen3.6-27B', '阿里', '开源模型', 'Agent编程'],
+    hot: true,
+    link: 'https://www.marktechpost.com/2026/04/22/alibaba-qwen-team-releases-qwen3-6-27b-a-dense-open-weight-model-outperforming-397b-moe-on-agentic-coding-benchmarks/',
+  },
+  {
+    id: 2535,
+    category: 'software',
+    region: 'global',
+    title: 'HuggingFace 发布 ml-intern：自动化 LLM 后训练全流程的开源 AI Agent',
+    summary: 'Hugging Face 发布 ml-intern 开源 AI Agent，自动化 LLM 后训练（SFT/RLHF/评估）完整工作流，大幅降低中小团队微调大模型门槛，有望成为开源社区 LLM 训练标准化基础设施。',
+    source: 'MarkTechPost',
+    date: '2026-04-21',
+    tags: ['HuggingFace', 'ml-intern', '后训练', 'MLOps', '开源Agent'],
+    hot: false,
+    link: 'https://www.marktechpost.com/2026/04/21/hugging-face-releases-ml-intern-an-open-source-ai-agent-that-automates-the-llm-post-training-workflow/',
+  },
+  {
+    id: 2536,
+    category: 'software',
+    region: 'global',
+    title: 'OpenAI 开源 Euphony：Codex 会话日志与 Harmony 聊天数据浏览器可视化工具',
+    summary: 'OpenAI 开源 Euphony，基于浏览器的可视化工具，用于分析 Harmony 聊天数据和 Codex 会话日志，为 AI 安全研究、模型行为分析和 Codex 调试提供标准化工具。',
+    source: 'MarkTechPost',
+    date: '2026-04-21',
+    tags: ['OpenAI', 'Euphony', '开源', 'Codex', '可视化'],
+    hot: false,
+    link: 'https://www.marktechpost.com/2026/04/21/openai-open-sources-euphony-a-browser-based-visualization-tool-for-harmony-chat-data-and-codex-session-logs/',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-04-22（第27轮更新 — MIT TR / MCP安全 / Databricks IPO / Forbes AI 50 / MLPerf）
   // ══════════════════════════════════════════════════════
   {

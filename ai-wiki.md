@@ -343,27 +343,27 @@ maxwell-knowledge/
 └── content/                     # 内容数据目录（Markdown + JSON）
 ```
 
+
 ---
 
-*最后更新：2026-04-22*
+*最后更新：2026-04-23*
 
 **本次主要更新内容**：
-- 📚 **每日内容更新**：声浪 +10 条（→65 条）、文章 +2 篇（→77 篇）、书籍 +1 章更新、论文 +1 篇解读、模型 +2 个（→60 个）、全行业动态 +10 条
-- 🌊 **声浪新增 10 条真实新闻**（通过 ai-news skill 从 TechCrunch/IT之家/钛媒体实时获取）：
-  - 🔥 SpaceX-Cursor $600 亿收购选项（TechCrunch 4/21）
-  - 🔥 Anthropic 获 Amazon $50 亿投资，承诺 $1000 亿 AWS 云支出（TechCrunch 4/20）
-  - 🔥 蚂蚁百灵 Ling-2.6-flash 日均 100B tokens（IT之家 4/22）
-  - 🔥 Google Deep Research 集成 MCP 协议（钛媒体 4/22）
-  - Anthropic Mythos 网络安全工具泄露 / NeoCognition $4000 万种子轮 / Meta 采集员工操作数据 / ChatGPT Images 2.0 / 黄仁勋「最低成本 token」/ 智驾赛道白热化
+- 📚 **第28轮每日内容更新**：声浪 +5 条（→83 条）、文章 +2 篇（→79 篇）、全行业动态 +5 条（→60 条）
+- 🌊 **声浪新增 5 条真实新闻**（通过 The Decoder / MarkTechPost 实时获取，全部 curl 验证 200）：
+  - 🔥 OpenAI ChatGPT Workspace Agents 上线：从聊天机器人进化为团队自动化平台（The Decoder 4/22）
+  - 🔥 Google Cloud Next '26：第8代 TPU + Agent 平台 + Workspace AI 层三连发（The Decoder 4/22）
+  - 🔥 阿里 Qwen3.6-27B 发布：270亿参数密集模型超越397B MoE（MarkTechPost 4/22）
+  - HuggingFace ml-intern：自动化 LLM 后训练全流程的开源 AI Agent（MarkTechPost 4/21）
+  - OpenAI 开源 Euphony：Codex 会话日志与 Harmony 聊天数据可视化工具（MarkTechPost 4/21）
 - ✨ **新增 2 篇深度文章**：
-  - 《AI 基础设施军备竞赛：Anthropic-Amazon $1000 亿云支出协议的经济学解读》
-  - 《MCP 协议从开发者走向消费级：Google Deep Research 集成 MCP 的里程碑意义》
-- 📖 **书籍更新**：《AI Agent 实战指南》第 7 章追加「最新进展」小节（MCP 消费级进展 + Agent 安全新挑战 + Agent 经济学新数据）
-- 📄 **论文解读**：UniSim 2.0 物理一致性世界模型（Seed-AD 核心合成数据组件，2000+ 字详细解读）
-- 🏢 **全行业动态新增 10 条**（id 2511-2520）：SpaceX-Cursor/Anthropic-Amazon/Mythos/百灵/OneDrive 等，所有 link 经 curl 验证
-- 🤖 **模型库新增 2 个**：蚂蚁百灵 Ling-2.6-flash + 月之暗面 Kimi K2.6
+  - 《OpenAI Workspace Agents：ChatGPT 从聊天机器人进化为团队自动化平台》（深度解析技术架构、与 Custom GPTs 差异、企业落地路径）
+  - 《Google Cloud Next '26 全景：第8代 TPU、Agent 平台与 Workspace AI 层的战略布局》（全栈 AI 竞争格局分析）
+- 🏢 **全行业动态新增 5 条**（id 2532-2536）：OpenAI Workspace Agents / Google Cloud Next '26 / Qwen3.6-27B / HF ml-intern / Euphony，所有 link 经 curl 验证 200
 
 ---
+
+
 
 ## 七、自动化任务提示词
 
