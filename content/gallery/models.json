@@ -1,5 +1,81 @@
 [
   {
+    "id": "gemini-25-pro",
+    "name": "Gemini 2.5 Pro",
+    "org": "Google DeepMind",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": false,
+    "params": "未公开（MoE）",
+    "date": "2025-03",
+    "context": "1M tokens",
+    "attention": "MQA",
+    "factSheet": {
+      "highlight": "Google 最强推理模型，原生多模态 + 100 万 token 上下文，LMArena 综合排名第一",
+      "training": "MoE 架构，支持文本/图像/音频/视频原生输入，内置 Thinking 模式",
+      "inference": "支持 Deep Think 深度推理，可处理超长文档和代码库级别任务",
+      "benchmarks": "MATH-500 97.8% / GPQA Diamond 82.0% / SWE-bench Verified 63.8%"
+    }
+  },
+  {
+    "id": "gemini-25-flash",
+    "name": "Gemini 2.5 Flash",
+    "org": "Google DeepMind",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": false,
+    "params": "未公开（MoE）",
+    "date": "2025-04",
+    "context": "1M tokens",
+    "attention": "MQA",
+    "factSheet": {
+      "highlight": "Gemini 2.5 系列的高性价比版本，推理速度快 3-5 倍，成本仅 Pro 的 1/10",
+      "training": "基于 Gemini 2.5 Pro 蒸馏，保留核心推理能力，优化推理效率",
+      "inference": "支持 Thinking 模式可配置 token 预算，平衡速度与质量",
+      "benchmarks": "MATH-500 95.2% / GPQA Diamond 70.5% / 性价比远超同级竞品"
+    }
+  },
+  {
+    "id": "claude-4-opus",
+    "name": "Claude 4 Opus",
+    "org": "Anthropic",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": false,
+    "params": "未公开",
+    "date": "2025-06",
+    "context": "200K tokens",
+    "attention": "MHA",
+    "factSheet": {
+      "highlight": "Anthropic 旗舰模型，SWE-bench 72.5% 创纪录，Agent 编程能力业界最强",
+      "training": "RLHF + Constitutional AI 对齐，支持 Extended Thinking 深度推理",
+      "inference": "支持工具调用、代码执行、多步推理，专为 Agent 场景优化",
+      "benchmarks": "SWE-bench Verified 72.5% / GPQA Diamond 83.3% / 编程任务全面领先"
+    }
+  },
+  {
+    "id": "claude-4-sonnet",
+    "name": "Claude 4 Sonnet",
+    "org": "Anthropic",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": false,
+    "params": "未公开",
+    "date": "2025-05",
+    "context": "200K tokens",
+    "attention": "MHA",
+    "factSheet": {
+      "highlight": "Anthropic 主力模型，编程能力接近 Opus 但速度快 3 倍，日常开发首选",
+      "training": "基于 Claude 4 架构，平衡推理深度与响应速度",
+      "inference": "支持 Extended Thinking，工具调用延迟低，适合高频 Agent 交互",
+      "benchmarks": "SWE-bench Verified 70.3% / GPQA Diamond 78.1% / 性价比最优"
+    }
+  },
+  {
     "id": "gpt-55-agent",
     "name": "GPT-5.5 Agent",
     "org": "OpenAI",

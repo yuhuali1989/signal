@@ -2001,8 +2001,8 @@ export const SITE_ROADMAP = {
   sprintPlan: {
     sprintDate: '2026-04-23',
     editorTasks: [
-      { source: 'productPlans.content.模型中心补全', action: '补充 Gemini 2.5 Pro、Gemini 2.5 Flash、Claude 4 Opus、Claude 4 Sonnet 四个模型卡片到 models.json，每个包含 id/name/type/org/params/releaseDate/description/tags', files: ['content/gallery/models.json'], done: false },
-      { source: 'productPlans.content.Agent生态专题', action: '写 1 篇企业 Agent 平台对比文章（OpenAI Workspace Agents vs Google Agent Platform vs AWS Bedrock Agents vs MS Copilot Studio），不少于 1500 字，放入 content/articles/，文件名 enterprise-agent-platforms-2026-04-23.md', files: ['content/articles/'], done: false },
+      { source: 'productPlans.content.模型中心补全', action: '补充 Gemini 2.5 Pro、Gemini 2.5 Flash、Claude 4 Opus、Claude 4 Sonnet 四个模型卡片到 models.json，每个包含 id/name/type/org/params/releaseDate/description/tags', files: ['content/gallery/models.json'], done: true },
+      { source: 'productPlans.content.Agent生态专题', action: '写 1 篇企业 Agent 平台对比文章（OpenAI Workspace Agents vs Google Agent Platform vs AWS Bedrock Agents vs MS Copilot Studio），不少于 1500 字，放入 content/articles/，文件名 enterprise-agent-platforms-2026-04-23.md', files: ['content/articles/'], done: true },
     ],
     publisherTasks: [
       { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx"', done: false },
@@ -2038,8 +2038,8 @@ export const SITE_ROADMAP = {
         name: '内容建设',
         cadence: '持续',
         items: [
-          { priority: '🔴', title: '模型中心补全', desc: '优先补充 Qwen3 / Gemini 2.5 / Claude 4 / GPT-5 系列最新模型卡片' },
-          { priority: '🔴', title: 'Agent 生态专题', desc: '企业 Agent 平台对比（OpenAI/Google/AWS/MS）+ Agent 记忆引擎（cognee/mem0）+ 框架（openai-agents/LangGraph）' },
+          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23），待补：GPT-5 系列 / InternLM 系列' },
+          { priority: '🔴', title: 'Agent 生态专题', desc: '已完成批次1：企业Agent平台对比文章（4/23），待完成：批次2 Agent记忆引擎 / 批次3 多Agent框架对比' },
           { priority: '🟡', title: 'VLA 架构扩充', desc: '补充 OpenVLA、π₀、Seed-AD、Alpamayo-R1 等新架构方案' },
         ],
       },

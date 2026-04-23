@@ -110,6 +110,81 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-04-23（第30轮更新 — Google ADK开源 / OpenAI-Infosys合作 / 千里科技智驾 / Anthropic欧洲扩张 / 华为ADS5+鸿蒙座舱 / GPU短缺）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2601,
+    category: 'cloud',
+    region: 'global',
+    title: 'Google Cloud Next \'26：发布新一代 TPU 芯片 + Agent Development Kit 开源',
+    summary: 'Google Cloud 在年度大会上发布两款新 TPU 芯片对标 NVIDIA，同时开源 Agent Development Kit (ADK) 框架。Workspace 全面接入 Gemini AI，Chrome 变身企业 AI 协作助手。',
+    source: 'TechCrunch',
+    date: '2026-04-23',
+    tags: ['Google Cloud', 'TPU', 'ADK', 'Agent'],
+    hot: true,
+    link: 'https://techcrunch.com/2026/04/22/google-cloud-next-new-tpu-ai-chips-compete-with-nvidia/',
+  },
+  {
+    id: 2602,
+    category: 'software',
+    region: 'global',
+    title: 'OpenAI 与 Infosys 达成战略合作，AI 工具进入企业服务生态',
+    summary: 'OpenAI 与印度 IT 巨头 Infosys 合作，将 ChatGPT Enterprise 和 API 整合到 Infosys 的企业服务中，目标触达数千家全球企业客户。',
+    source: 'TechCrunch',
+    date: '2026-04-23',
+    tags: ['OpenAI', 'Infosys', '企业AI'],
+    hot: false,
+    link: 'https://techcrunch.com/2026/04/22/openai-teams-up-with-infosys-to-bring-ai-tools-to-more-businesses/',
+  },
+  {
+    id: 2603,
+    category: 'startup',
+    region: 'china',
+    title: '千里科技智驾装车量破 46 万辆，半年跻身行业第二极',
+    summary: '千里科技公布智驾装车量突破 46 万辆，覆盖极氪、领克 17 款车型，预计 2026 年进入百万量级，形成华为之外的「智驾双雄」格局。',
+    source: '36Kr',
+    date: '2026-04-23',
+    tags: ['千里科技', '智驾', '自动驾驶'],
+    hot: true,
+    link: 'https://36kr.com/p/3779369343144965',
+  },
+  {
+    id: 2604,
+    category: 'cloud',
+    region: 'global',
+    title: 'Anthropic 欧洲数据中心扩张：招聘专员洽谈算力合作',
+    summary: 'Anthropic 正积极推进在欧洲达成数据中心合作协议，招聘六位数薪酬专员负责洽谈算力容量。此前其二级市场估值已升至约 1 万亿美元。',
+    source: '36Kr / 新浪财经',
+    date: '2026-04-23',
+    tags: ['Anthropic', '数据中心', '欧洲'],
+    hot: false,
+    link: 'https://36kr.com/newsflashes/3779388327629831',
+  },
+  {
+    id: 2605,
+    category: 'software',
+    region: 'china',
+    title: '华为乾崑智驾 ADS 5 + 鸿蒙座舱 HarmonySpace 6 双发布',
+    summary: '华为发布 ADS 5 智驾系统（车位到车位 3.0）和鸿蒙座舱 HarmonySpace 6（小艺智能体），2026 年研发投入超 180 亿元。18 家合作车企高管同台亮相。',
+    source: 'IT之家',
+    date: '2026-04-23',
+    tags: ['华为', '乾崑', 'ADS5', '鸿蒙座舱'],
+    hot: true,
+    link: 'https://www.ithome.com/0/942/800.htm',
+  },
+  {
+    id: 2606,
+    category: 'market',
+    region: 'global',
+    title: 'AI 科学计算加剧全球 GPU 短缺，天文学与商业 AI 争夺算力',
+    summary: '天文学家使用 AI 模型分析银河系数据，与商业 AI 训练争夺 GPU 算力，凸显 AI 基础设施供需矛盾。',
+    source: 'TechCrunch',
+    date: '2026-04-23',
+    tags: ['GPU', '算力', 'AI科学'],
+    hot: false,
+    link: 'https://techcrunch.com/2026/04/23/ai-galaxy-hunters-are-adding-to-the-global-gpu-crunch/',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-04-23（第29轮更新 — Anthropic万亿估值 / Google Cloud Next TPU / Tesla HW3 FSD / Thinking Machines Lab / Meta键盘数据）
   // ══════════════════════════════════════════════════════
   {
