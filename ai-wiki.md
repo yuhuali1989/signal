@@ -318,15 +318,15 @@ Next.js 14 (App Router)  +  React  +  Tailwind CSS
 
 | 板块 | 维护方 | 数据源 |
 |------|--------|--------|
-| 🔧 **平台技术债** | 开发者人工 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
-| 🚀 **产品迭代规划** | 开发者人工 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
-| 🎨 **AI 设计师机会雷达** | 角色 E（AI 设计师）自动 | `src/lib/strategy-data.js` → `SITE_ROADMAP` 的 `topOpportunities / githubFindings / coverageGaps / moduleProposals / suggestedSources` |
+| 🔧 **平台技术债** | 角色 D（发布员）每次发布时维护 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
+| 🚀 **产品迭代规划** | 角色 B（编辑员）每日更新时维护 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
+| 🎨 **AI 设计师机会雷达** | 角色 E（AI 设计师）按需扫描 | `src/lib/strategy-data.js` → `SITE_ROADMAP` 的 `topOpportunities / githubFindings / coverageGaps / moduleProposals / suggestedSources` |
 
 ### 🔧 修改指引
 
-- **调整技术债**：编辑 `SITE_ROADMAP.techDebts.items[]` 和 `.resolved[]`
-- **调整产品迭代规划**：编辑 `SITE_ROADMAP.productPlans.categories[]`（3 个子分类：platform / content / ux）
-- **AI 设计师建议**：角色 E 自动扫描写入，人工只在「从机会雷达搬运到产品规划」时编辑
+- **调整技术债**：角色 D（发布员）在每次发布流程中维护 `SITE_ROADMAP.techDebts.items[]` 和 `.resolved[]`
+- **调整产品迭代规划**：角色 B（编辑员）在每日更新中维护 `SITE_ROADMAP.productPlans.categories[]`（3 个子分类：platform / content / ux）
+- **AI 设计师建议**：角色 E 按需扫描写入，人工只在「从机会雷达搬运到产品规划」时编辑
 - 每次修改后更新对应字段的 `lastUpdated` 时间戳
 
 ---
@@ -429,11 +429,11 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 
 | 角色 | 职责 | 输入 | 输出 | 触发时机 |
 |------|------|------|------|---------|
-| **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，输出扩充建议 | 现有模块结构 + GitHub trending | 扩充建议报告（不写文件） | 按需触发（每周/每月） |
+| **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，输出扩充建议 + **维护机会雷达** | 现有模块结构 + GitHub trending | 扩充建议写入 `SITE_ROADMAP`（机会雷达部分） | 按需触发（每周/每月） |
 | **A 采集员** | 从信息源采集新闻、验链、去重，输出草稿 | 信息源白名单 | 草稿 JSON（不写文件） | 每日触发 |
-| **B 编辑员** | 将草稿写入各数据文件 | 采集员草稿 | 变更后的数据文件 | 每日触发 |
+| **B 编辑员** | 将草稿写入各数据文件 + **维护产品迭代规划** | 采集员草稿 | 变更后的数据文件 + `SITE_ROADMAP.productPlans` | 每日触发 |
 | **C 质检员** | 三维度校验（链接/对应关系/日期） | 变更后的数据文件 | 质检报告 | 每日触发 |
-| **D 发布员** | 修复质检问题、更新文档、git push | 质检报告 | 已推送的 commit | 每日触发 |
+| **D 发布员** | 修复质检问题、更新文档、git push + **维护平台技术债** | 质检报告 | 已推送的 commit + `SITE_ROADMAP.techDebts` | 每日触发 |
 
 **日常执行顺序**：A → B → C → D（C 不通过则回到 B 修复，不得跳过 C 直接发布）
 
@@ -444,8 +444,8 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 ### 🎨 角色 E：设计师（Designer）
 
 `````text
-你是 Signal 知识平台的 AI 设计师，职责是**扫描行业生态、发现内容盲区、输出网站扩充建议**。
-你不写入任何数据文件，只输出结构化的扩充建议报告，由人工决策后交由编辑员实施。
+你是 Signal 知识平台的 AI 设计师，职责是**扫描行业生态、发现内容盲区、维护 Roadmap 机会雷达**。
+你负责将扫描结果写入 `src/lib/strategy-data.js` 的 `SITE_ROADMAP`（机会雷达部分），由人工决策后交由编辑员实施具体任务。
 
 ## 前置步骤
 
@@ -918,6 +918,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 ### 📊 本次采集目标
 
 - **声浪**：8-10 条，覆盖 LLM 前沿 / AI Infra / Agent/MCP / 自动驾驶 / 全行业
+  - ⚡ **Roadmap 重点方向**：Agent 生态（企业 Agent 平台、Agent 记忆引擎 cognee/mem0、框架 openai-agents/LangGraph）和国产开源模型（Qwen3/DeepSeek）是当前最高优先级采集方向，每次采集至少各覆盖 1-2 条
 - **全行业动态**：10 条，覆盖 data/cloud/software/security/startup/market 6 大分类，国内外各半
 - **当日没有可验证的重大事件时**：可以少于目标数，严禁凑数编造
 
@@ -979,6 +980,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 3. 确认不存在标题重复 / 主题重复 / 角度重复
 
 **选题方向**（优先选当前最热的 + 尚未覆盖的角度）：
+- ⚡ **Agent 生态专题**（Roadmap 🔴高优）：企业 Agent 平台对比（OpenAI Workspace Agents / Google Agent Platform / AWS Bedrock Agents / MS Copilot Studio）、Agent 记忆引擎（cognee / mem0）、多 Agent 框架（openai-agents / LangGraph / CrewAI）—— 每周至少产出 1 篇 Agent 方向文章
 - LLM 推理优化新进展（Speculative Decoding / MLA / 量化）
 - 闭环 Infra 与合成数据最新实践
 - 自动驾驶 VLA/世界模型最新进展
@@ -986,6 +988,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 **文章格式**（Markdown）：
 - frontmatter: title, date, tags[], summary, category
+- ⚡ **Roadmap 标签体系统一**（🟡中优）：tags 字段使用统一标签词表，与论文/书籍保持一致。常用标签：`llm` / `agent` / `vla` / `infra` / `mcp` / `reasoning` / `multimodal` / `training` / `inference` / `data-synthesis` / `autonomous-driving` / `open-source`。新增文章/论文/书籍时必须从此词表选取 tags，避免同义不同词（如 `推理优化` vs `inference`）
 - 正文：背景→核心技术→实现细节→实际效果→总结，不少于 1500 字
 - 包含代码示例（Python/伪代码）和数据对比表格
 - 文件名：{topic}-{date}.md，全小写英文，用连字符
@@ -994,6 +997,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 - 优先更新：《自动驾驶大模型》/ 《AI Agent 实战指南》/ 《推理引擎》
 - 在章节末尾追加「最新进展」小节，不改动原有内容结构
+- ⚡ **Roadmap VLA 架构扩充**（🟡中优）：《自动驾驶大模型》需补充 OpenVLA、π₀、Seed-AD、Alpamayo-R1 等新架构方案，每次更新优先补充 1 个新架构
 
 ### 任务 5：新增/更新论文解读 content/papers/（每次至少 1 篇）
 
@@ -1016,6 +1020,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 ### 任务 8：更新模型数据 content/gallery/models.json（每次至少补充 2 个模型）
 
 - 重点补充：自动驾驶专用模型 + 最新基础模型
+- ⚡ **Roadmap 模型中心补全**（🔴高优）：优先补充 Qwen3 系列 / Gemini 2.5 系列 / Claude 4 系列 / GPT-5 系列最新模型卡片，国产开源模型（DeepSeek / InternLM）同步跟进
 - models.json 是大文件(122KB)，使用 replace_in_file 追加，不要整体重写
 
 ### 任务 9：写入进化日志 content/evolution-log.json
@@ -1035,6 +1040,51 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
   ```
 
 - 每次至少追加 5-8 条独立日志
+
+### 任务 10：执行并维护产品迭代规划中的内容任务（Roadmap）
+
+> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans`
+> 📍 页面展示：`/roadmap/`（侧边栏 战略 → Roadmap 建议）
+
+每次日常更新时，**从 Roadmap 的 content 分类中挑选 1-2 项内容任务执行**，然后更新 Roadmap 状态。每次至少消化 1 项，按优先级从高到低。
+
+#### 10a. 当前待执行的内容任务（按优先级排序）
+
+**🔴 高优先级（每次更新优先挑选）**：
+
+1. **模型中心补全**（content 🔴）
+   - 每次更新时，从以下清单中补充 2-3 个模型到 `content/gallery/models.json`：
+     - Qwen3 系列（Qwen3-235B-A22B / Qwen3-30B-A3B / Qwen3-32B / Qwen3-14B / Qwen3-8B / Qwen3-4B 等）
+     - Gemini 2.5 系列（Gemini 2.5 Pro / Gemini 2.5 Flash）
+     - Claude 4 系列（Claude Opus 4 / Claude Sonnet 4）
+     - GPT-5 系列
+     - DeepSeek 系列（DeepSeek-V3 / DeepSeek-R1）
+     - InternLM 系列
+   - 每个模型卡片必须包含：id / name / type / org / params / releaseDate / description / tags
+   - 全部补完后，从 `productPlans.categories[content].items[]` 中移除此条目
+
+2. **Agent 生态专题**（content 🔴）
+   - 分 3 批次逐步建设：
+     - **批次 1**：写 1 篇企业 Agent 平台对比文章（OpenAI Workspace Agents vs Google Agent Platform vs AWS Bedrock Agents vs MS Copilot Studio），放入 `content/articles/`
+     - **批次 2**：写 1 篇 Agent 记忆引擎文章（cognee vs mem0 vs Zep），放入 `content/articles/`
+     - **批次 3**：写 1 篇多 Agent 框架对比文章（openai-agents vs LangGraph vs CrewAI vs AutoGen），放入 `content/articles/`
+   - 每次更新推进 1 个批次，3 次更新完成全部专题
+   - 全部完成后，从 `productPlans.categories[content].items[]` 中移除此条目
+
+**🟡 中优先级（高优完成后再做）**：
+
+3. **VLA 架构扩充**（content 🟡）
+   - 在《自动驾驶大模型》书籍中逐步补充新架构方案：OpenVLA → π₀ → Seed-AD → Alpamayo-R1
+   - 每次更新补充 1 个架构，4 次更新完成
+
+#### 10b. 执行后更新 Roadmap 状态
+
+1. **已完成的条目**：从 `productPlans.categories[].items[]` 中移除，在进化日志中记录
+2. **部分完成的条目**：更新 desc 标注进度（如"Agent 生态专题已完成 2/3 批次"）
+3. **新发现的需求**：新增到对应分类的 items 中
+4. **更新时间戳**：`productPlans.lastUpdated`
+
+**使用 `replace_in_file` 局部替换对应字段，严禁全量重写 strategy-data.js**
 
 ---
 
@@ -1505,7 +1555,72 @@ done
 tail -5 /tmp/signal-dev.log
 ```
 
-### 任务 4：提交代码并推送
+### 任务 4：执行并维护平台技术债 + 产品迭代中的工程任务（Roadmap）
+
+> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` + `SITE_ROADMAP.productPlans`
+> 📍 页面展示：`/roadmap/`（侧边栏 战略 → Roadmap 建议）
+
+每次发布流程中，**从 Roadmap 中挑选 1-2 项工程类条目执行**，然后更新 Roadmap 状态。每次至少消化 1 项，按优先级从高到低执行。
+
+#### 4a. 当前待执行的工程任务（按优先级排序）
+
+**🔴 高优先级（每次发布优先挑选）**：
+
+1. **删除 Navbar.js 遗留文件**（技术债 🟢，但 5 秒搞定，优先清理）
+   ```bash
+   rm src/components/Navbar.js
+   # 确认无引用
+   grep -r "Navbar" src/ --include="*.js" --include="*.jsx"
+   ```
+   完成后：从 `techDebts.items[]` 移到 `resolved[]`
+
+2. **4 个大组件懒加载**（技术债 🔴 + 产品迭代 🔴）
+   对 VlaArchViz / VlaNotebook / DataInfraViz / StrategyViz 逐个改造为 `next/dynamic` 按需加载：
+   ```js
+   // 改造前（直接 import）
+   import VlaArchViz from '@/components/VlaArchViz';
+   
+   // 改造后（动态加载）
+   import dynamic from 'next/dynamic';
+   const VlaArchViz = dynamic(() => import('@/components/VlaArchViz'), {
+     loading: () => <div className="animate-pulse h-96 bg-gray-100 rounded-lg" />,
+     ssr: false,
+   });
+   ```
+   - 每次发布改造 1 个组件，4 次发布完成全部改造
+   - 改造顺序：DataInfraViz(~165KB) → VlaArchViz(~120KB) → StrategyViz(~110KB) → VlaNotebook(~85KB)
+   - 每完成 1 个，更新 `techDebts.items[]` 中的 desc（标注已完成的组件）
+
+3. **全站搜索**（产品迭代 🔴，分 3 阶段实施）
+   - **阶段 1**（本次可做）：创建 `src/app/search/page.js` 搜索页面 + Sidebar 加入搜索入口
+   - **阶段 2**：构建客户端静态索引（基于 flexsearch / fuse.js），索引覆盖文章/论文/书籍/模型/声浪
+   - **阶段 3**：搜索结果高亮 + 分类筛选 + 热门搜索推荐
+   - 每次发布推进 1 个阶段
+
+**🟡 中优先级（高优完成后再做）**：
+
+4. **移动端可视化适配**（技术债 🟡）
+   - 对 SVG 架构图组件添加 `viewBox` + `max-width: 100%` + 横向滚动容器
+   - 对模型对比表格添加响应式断点
+
+**🟢 低优先级（有余力时做）**：
+
+5. **RSS 订阅**（产品迭代 🟢）
+   - 创建 `src/app/feed.xml/route.js`，生成包含最新声浪 + 文章的 RSS Feed
+
+6. **暗色模式**（产品迭代 🟢）
+   - 全站 Tailwind `dark:` 类适配，需要较大工作量，可分模块逐步推进
+
+#### 4b. 执行后更新 Roadmap 状态
+
+1. **已完成的条目**：从 `techDebts.items[]` 移到 `resolved[]`；从 `productPlans.categories[].items[]` 中移除
+2. **部分完成的条目**：更新 desc/status 标注进度（如"4 个大组件已完成 2 个"）
+3. **新发现的问题**：新增到 `techDebts.items[]`
+4. **更新时间戳**：`techDebts.lastUpdated` 和 `productPlans.lastUpdated`
+
+**使用 `replace_in_file` 局部替换对应字段，严禁全量重写 strategy-data.js**
+
+### 任务 5：提交代码并推送
 
 ```bash
 cd /Users/harrisyu/WorkBuddy/20260409114249/signal
@@ -1517,7 +1632,7 @@ git push github main
 
 > ⚠️ 如果 WOA 端因 committer 邮箱校验被拒，只要 github 推送成功即可（它控制线上部署）。
 
-### 任务 5：发布确认
+### 任务 6：发布确认
 
 输出发布报告：
 
