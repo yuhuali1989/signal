@@ -1997,6 +1997,24 @@ export const SITE_ROADMAP = {
   lastUpdated: '2026-04-23',
   summary: '本期重点：① 全站搜索是当前最紧迫的平台短板；② Agent 生态（企业平台 + 记忆引擎 + 框架）是 2026 年最大内容机会；③ 4 个大组件需统一做懒加载拆分以改善性能。',
 
+  // 📋 本轮迭代计划（角色 F 调度员每轮开始时写入，角色 B/D 读取执行）
+  sprintPlan: {
+    sprintDate: '2026-04-23',
+    editorTasks: [
+      // 角色 B 编辑员本轮需执行的 Roadmap 任务
+      // 调度员从 productPlans / topOpportunities 中挑选，写入具体可执行指令
+    ],
+    publisherTasks: [
+      // 角色 D 发布员本轮需执行的 Roadmap 工程任务
+      // 调度员从 techDebts / productPlans(platform/ux) 中挑选，写入具体可执行指令
+    ],
+    collectorFocus: [
+      // 角色 A 采集员本轮需重点关注的采集方向
+      // 调度员根据 topOpportunities / coverageGaps 动态调整
+    ],
+    notes: '等待调度员（角色 F）首次分配',
+  },
+
   // 🚀 产品迭代规划（开发者人工维护）
   productPlans: {
     lastUpdated: '2026-04-23',
