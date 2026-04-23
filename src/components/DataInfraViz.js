@@ -574,6 +574,39 @@ function DatalakeTab() {
                 </div>
               </div>
 
+              {/* 存储介质 */}
+              {stage.storageMedia && (
+                <div className="mb-4 rounded-xl border p-3"
+                  style={{ borderColor: stage.color + '25', background: stage.color + '06' }}>
+                  <div className="text-[10px] font-semibold text-gray-600 mb-2">
+                    {stage.storageMedia.icon} 存储介质：{stage.storageMedia.title}
+                  </div>
+                  <div className="text-[9px] font-mono font-semibold mb-1.5" style={{ color: stage.color }}>
+                    {stage.storageMedia.spec}
+                  </div>
+                  <div className="text-[9px] text-gray-600 mb-2 leading-relaxed">{stage.storageMedia.why}</div>
+                  <div className="flex flex-wrap gap-2 mb-2 text-[8px]">
+                    <span className="text-gray-400">生命周期：<span className="text-gray-600">{stage.storageMedia.lifecycle}</span></span>
+                    {stage.storageMedia.costNote && (
+                      <span className="text-gray-400">成本参考：<span className="text-gray-600">{stage.storageMedia.costNote}</span></span>
+                    )}
+                  </div>
+                  {stage.storageMedia.alternatives && (
+                    <div>
+                      <div className="text-[8px] text-gray-400 mb-1">为什么不用其他方案：</div>
+                      <div className="space-y-0.5">
+                        {stage.storageMedia.alternatives.map((alt, i) => (
+                          <div key={i} className="flex items-start gap-1.5 text-[8px] text-gray-500">
+                            <span className="font-mono font-semibold text-gray-600 flex-shrink-0">{alt.name}：</span>
+                            <span>{alt.reason}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Schema */}
               <div className="mb-4">
                 <div className="text-[10px] font-semibold text-gray-600 mb-2">📐 Schema 设计</div>
