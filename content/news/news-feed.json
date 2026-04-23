@@ -1,5 +1,41 @@
 [
   {
+    "id": "news-20260423-20",
+    "title": "Qwen 发布 Qwen3.6-27B 开源模型，Agent 编程性能达旗舰级",
+    "summary": "阿里巴巴 Qwen 团队开源 Qwen3.6-27B，270 亿参数密集模型，支持多模态 Thinking/Non-thinking 双模式。在 Agent 编程任务上达到旗舰级性能，超越上一代开源旗舰模型。这是社区呼声最高的参数量级开源版本。",
+    "source": "Qwen AI Research",
+    "url": "https://qwen.ai/research",
+    "date": "2026-04-22",
+    "category": "llm",
+    "tags": ["Qwen3.6", "开源", "27B", "Agent编程", "多模态"],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260423-21",
+    "title": "Qwen3.6-Max-Preview 发布：世界知识与指令跟随能力大幅提升",
+    "summary": "Qwen 发布下一代专有模型预览版 Qwen3.6-Max-Preview，相比 Qwen3.6-Plus 在世界知识和指令跟随方面有显著增强，Agent 编程能力也全面提升。该版本仍在活跃开发中，是 Qwen3.6 系列的最强版本预览。",
+    "source": "Qwen AI Research",
+    "url": "https://qwen.ai/research",
+    "date": "2026-04-18",
+    "category": "llm",
+    "tags": ["Qwen3.6", "Max", "Preview", "专有模型", "Agent编程"],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260423-22",
+    "title": "Qwen3.6-35B-A3B 开源：35B 总参数仅激活 3B，Agent 编程性能超越更大模型",
+    "summary": "Qwen 开源 Qwen3.6-35B-A3B，采用 MoE 架构，总参数 350 亿但仅激活 30 亿参数，在 Agent 编程任务上大幅超越上一代 Qwen3.5-35B-A3B，并可媲美更大规模的密集模型，是效率与性能的极佳平衡。",
+    "source": "Qwen AI Research",
+    "url": "https://qwen.ai/research",
+    "date": "2026-04-15",
+    "category": "llm",
+    "tags": ["Qwen3.6", "MoE", "35B", "开源", "Agent编程"],
+    "hot": false,
+    "region": "china"
+  },
+  {
     "id": "news-20260423-09",
     "title": "Anthropic 二级市场估值升至万亿美元，超越 OpenAI",
     "summary": "Anthropic 在 Forge Global 等未上市企业股权交易平台上的估值已升至约 1 万亿美元，超过 OpenAI 的 8800 亿美元。买家正在竞相抢购 Anthropic 日益减少的二级市场股票，推动估值迅速攀升。这标志着 AI 领域估值格局发生重大变化。",
