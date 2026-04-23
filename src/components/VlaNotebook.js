@@ -1849,27 +1849,30 @@ export default function VlaNotebook() {
       </div>
       
       {/* 二级 Tab 分组 */}
-      <div className="flex gap-2 p-1 bg-[#161b22] rounded-2xl border border-[#21262d]">
-        {NOTEBOOK_GROUPS.map(g => (
-          <button key={g.id} onClick={() => setActiveGroup(g.id)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium transition-all flex-1 justify-center"
-            style={activeGroup === g.id
-              ? { background: g.color + '22', color: g.color, border: `1px solid ${g.color}44` }
-              : { color: '#4a5568' }}>
-            <span>{g.icon}</span>
-            <span>{g.label}</span>
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full ml-1"
-              style={{ background: activeGroup === g.id ? g.color + '30' : '#21262d', color: activeGroup === g.id ? g.color : '#4a5568' }}>
-              {g.cellIds.length}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* 当前分组描述 */}
-      <div className="flex items-center gap-2 text-[11px] text-[#4a5568] px-1">
-        <span style={{ color: currentGroup.color }}>{currentGroup.icon}</span>
-        <span>{currentGroup.desc}</span>
+      <div className="rounded-2xl border border-[#30363d] overflow-hidden" style={{ background: '#0d1117' }}>
+        <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[#21262d]">
+          <span className="text-[10px] font-bold tracking-widest uppercase text-[#8b949e]">📂 阶段导航</span>
+        </div>
+        <div className="flex gap-1.5 p-2">
+          {NOTEBOOK_GROUPS.map(g => (
+            <button key={g.id} onClick={() => setActiveGroup(g.id)}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex-1 justify-center"
+              style={activeGroup === g.id
+                ? { background: g.color + '28', color: g.color, border: `1.5px solid ${g.color}66`, boxShadow: `0 0 8px ${g.color}22` }
+                : { background: '#161b22', color: '#8b949e', border: '1.5px solid #30363d' }}>
+              <span className="text-sm">{g.icon}</span>
+              <span>{g.label}</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-full ml-1 font-mono"
+                style={{ background: activeGroup === g.id ? g.color + '30' : '#21262d', color: activeGroup === g.id ? g.color : '#6e7681' }}>
+                {g.cellIds.length}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 px-3 pb-2.5 text-[11px] text-[#6e7681]">
+          <span style={{ color: currentGroup.color }}>{currentGroup.icon}</span>
+          <span>{currentGroup.desc}</span>
+        </div>
       </div>
 
       {/* 进度条（运行全部时显示） */}
