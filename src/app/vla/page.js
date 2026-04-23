@@ -42,13 +42,6 @@ const TABS = [
     desc: '数据加载 → 数据处理 → 模型搭建 → 三阶段训练 · 可逐步运行的 Notebook',
     color: '#e17055',
   },
-  {
-    id: 'dataloop',
-    label: '数据闭环',
-    icon: '🔄',
-    desc: '数据采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 自动驾驶专项闭环架构',
-    color: '#00cec9',
-  },
 ];
 
 // 研究项目卡片数据
@@ -394,8 +387,6 @@ const SEEDAD_TABS = [
     desc: '三阶段架构图（想象→反思→行动）· 对比 DriveWorld-VLA · 数据集选型 · 训练配置' },
   { id: 'notebook', label: '全链路实验',  icon: '📓', color: '#f39c12',
     desc: '数据下载 → Tokenize → 三阶段模型搭建 → 三阶段训练 → 蒸馏到 13B → 预测可视化' },
-  { id: 'dataloop', label: '数据闭环',    icon: '🔄', color: '#00cec9',
-    desc: '8 层闭环架构（含 UniSim 2.0 合成数据层，Seed-AD 专属创新）' },
 ];
 
 function SeedAdSection() {
@@ -427,7 +418,6 @@ function SeedAdSection() {
       <div>
         {tab === 'arch'     && <SeedAdArchViz />}
         {tab === 'notebook' && <SeedAdNotebook />}
-        {tab === 'dataloop' && <SeedAdDataLoop />}
       </div>
 
       <div className="mt-10 p-4 bg-emerald-50/30 rounded-2xl border border-emerald-100 text-xs text-gray-500 leading-relaxed">
@@ -453,6 +443,7 @@ export default function VlaPage() {
   const [topTab, setTopTab] = useState('research');
   const [activeTab, setActiveTab] = useState('arch');
   const [activeProject, setActiveProject] = useState('driveworld');
+  const [dataloopTab, setDataloopTab] = useState('arch');
 
   return (
     <>
@@ -502,7 +493,6 @@ export default function VlaPage() {
                 <div>
                   {activeTab === 'arch' && <ArchViz />}
                   {activeTab === 'notebook' && <Notebook />}
-                  {activeTab === 'dataloop' && <DataLoop />}
                 </div>
                 <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">
                   <span className="font-medium text-gray-500">📌 说明：</span>
@@ -521,18 +511,32 @@ export default function VlaPage() {
 
         {/* ── 数据闭环 ── */}
         {topTab === 'dataloop' && (
-          <div className="space-y-8">
-            <DataLoop />
-            <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/03 p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-lg">🏞️</span>
-                <div>
-                  <div className="text-sm font-bold text-gray-800">多模态存储方案</div>
-                  <div className="text-xs text-gray-400">车端采集 → Landing → Bronze → Silver → Gold 全链路存储规范与技术选型</div>
-                </div>
-              </div>
-              <DatalakeTab />
+          <div>
+            {/* 页面标题 */}
+            <div className="mb-6">
+              <h1 className="text-xl font-bold text-gray-900 mb-1">🔄 自动驾驶数据闭环</h1>
+              <p className="text-sm text-gray-500">采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全链路闭环架构与多模态存储方案</p>
             </div>
+
+            {/* 二级目录 */}
+            <div className="flex gap-2 mb-6 p-1 bg-gray-50 rounded-2xl border border-gray-100 w-fit">
+              {[
+                { id: 'arch',    label: '闭环架构',   icon: '🏗️', color: '#6c5ce7' },
+                { id: 'storage', label: '存储方案',   icon: '🗄️', color: '#00cec9' },
+              ].map(t => (
+                <button key={t.id} onClick={() => setDataloopTab(t.id)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all"
+                  style={dataloopTab === t.id
+                    ? { background: '#fff', color: t.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${t.color}33` }
+                    : { color: '#94a3b8' }}>
+                  <span>{t.icon}</span>
+                  <span>{t.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {dataloopTab === 'arch' && <DataLoop />}
+            {dataloopTab === 'storage' && <DatalakeTab />}
           </div>
         )}
 
