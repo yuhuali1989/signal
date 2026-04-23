@@ -849,10 +849,9 @@ function DatalakeTab() {
               )}
             </div>
           ))}
+          </div>
         </div>
       )}
-
-      {/* ── Schema 设计 ── */}
       {activeSubTab === 'schema' && (
         <div className="space-y-4">
           {/* ① 数据粒度层次（最顶部，先看这里）*/}
