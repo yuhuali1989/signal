@@ -3,503 +3,393 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Footer from '@/components/Footer';
 
-// ─── Prompt 模板库 ────────────────────────────────────────────
-const PROMPT_TEMPLATES = [
+// ═══════════════════════════════════════════════════════════════
+// 模拟器 / 仿真工具网站数据
+// ═══════════════════════════════════════════════════════════════
+const SIMULATOR_TOOLS = [
+  // ── 自动驾驶仿真 ──────────────────────────────────────────
   {
-    id: 'cot',
-    category: '推理',
-    name: 'Chain-of-Thought（思维链）',
-    desc: '引导模型逐步推理，显著提升复杂问题准确率',
-    icon: '🧠',
-    color: '#6c5ce7',
-    template: `请一步一步地思考以下问题，展示完整的推理过程，最后给出答案。
-
-问题：{{问题}}
-
-推理步骤：
-1. 首先，我需要理解...
-2. 接着分析...
-3. 因此...
-
-最终答案：`,
+    id: 'carla',
+    name: 'CARLA',
+    category: '自动驾驶仿真',
+    logo: '🚗',
+    tagline: '开源自动驾驶仿真平台',
+    desc: '基于 Unreal Engine 的开源自动驾驶仿真器，支持传感器建模（Camera/LiDAR/Radar）、交通流生成、天气/光照变化，是学术界最广泛使用的 AD 仿真平台。',
+    url: 'https://carla.org',
+    github: 'https://github.com/carla-simulator/carla',
+    stars: '11k+',
+    license: 'MIT',
+    tags: ['自动驾驶', '传感器仿真', 'Python API', 'Unreal Engine'],
+    badge: '🔬 学术标准',
+    badgeColor: '#6c5ce7',
+    highlight: '支持 ROS2 集成，可直接对接 VLA 模型推理',
   },
   {
-    id: 'rag',
-    category: 'RAG',
-    name: 'RAG 检索增强生成',
-    desc: '基于给定上下文文档回答问题，减少幻觉',
-    icon: '📄',
-    color: '#00b894',
-    template: `你是一个专业助手。请仅根据以下提供的上下文信息来回答问题，不要使用你的训练知识。如果上下文中没有足够信息，请明确说明。
-
-<context>
-{{检索到的文档内容}}
-</context>
-
-问题：{{用户问题}}
-
-基于上下文的回答：`,
+    id: 'waymax',
+    name: 'Waymax',
+    category: '自动驾驶仿真',
+    logo: '🛣️',
+    tagline: 'Waymo 开源加速仿真器',
+    desc: 'Waymo 开源的基于 JAX 的轻量级自动驾驶仿真器，专为 RL 训练设计，支持 GPU/TPU 并行加速，可在单机上同时运行数千个仿真环境。基于真实 Waymo Open Dataset 场景。',
+    url: 'https://github.com/waymo-research/waymax',
+    github: 'https://github.com/waymo-research/waymax',
+    stars: '1.2k+',
+    license: 'Apache 2.0',
+    tags: ['JAX', 'RL训练', 'GPU并行', 'Waymo数据'],
+    badge: '⚡ RL 加速',
+    badgeColor: '#e17055',
+    highlight: '单 GPU 可并行 4096 个环境，RL 训练效率极高',
   },
   {
-    id: 'react',
-    category: 'Agent',
-    name: 'ReAct 推理-行动',
-    desc: '交替进行思考和行动，适合工具调用和 Agent 场景',
-    icon: '🤖',
-    color: '#0984e3',
-    template: `你是一个能够使用工具解决问题的 AI 助手。按照以下格式交替进行思考和行动：
-
-思考：分析当前状态和下一步需要做什么
-行动：选择一个工具并执行
-观察：工具返回的结果
-...（重复直到得出最终答案）
-最终答案：综合所有观察给出结论
-
-可用工具：{{工具列表}}
-
-任务：{{任务描述}}
-
-思考：`,
+    id: 'metadrive',
+    name: 'MetaDrive',
+    category: '自动驾驶仿真',
+    logo: '🌐',
+    tagline: '可组合驾驶场景生成器',
+    desc: '支持程序化生成无限多样化驾驶场景，内置 RL 环境接口（Gym/PettingZoo），支持多智能体交互，可导入真实地图（OpenStreetMap/Waymo/nuScenes）重建场景。',
+    url: 'https://metadriverse.github.io/metadrive/',
+    github: 'https://github.com/metadriverse/metadrive',
+    stars: '1.1k+',
+    license: 'Apache 2.0',
+    tags: ['场景生成', 'RL环境', '多智能体', 'OpenStreetMap'],
+    badge: '🎲 场景多样',
+    badgeColor: '#00b894',
+    highlight: '程序化生成场景，避免过拟合特定地图',
   },
   {
-    id: 'structured_output',
-    category: '输出格式',
-    name: 'JSON 结构化输出',
-    desc: '强制模型输出符合 Schema 的 JSON，适合下游程序处理',
-    icon: '{}',
-    color: '#e17055',
-    template: `请分析以下内容，并严格按照 JSON 格式输出结果，不要包含任何额外的文字说明。
-
-输入：{{待分析内容}}
-
-请输出以下 JSON 格式：
-{
-  "summary": "一句话摘要",
-  "key_points": ["要点1", "要点2", "要点3"],
-  "sentiment": "positive | neutral | negative",
-  "confidence": 0.0-1.0,
-  "tags": ["标签1", "标签2"]
-}`,
+    id: 'lgsvl',
+    name: 'SVL Simulator',
+    category: '自动驾驶仿真',
+    logo: '🏙️',
+    tagline: 'LG 开源高保真 AD 仿真器',
+    desc: 'LG Electronics 开源的高保真自动驾驶仿真平台，基于 Unity 引擎，支持多传感器配置、高精地图、ROS/ROS2/Cyber RT 接口，与 Apollo/Autoware 深度集成。',
+    url: 'https://www.svlsimulator.com',
+    github: 'https://github.com/lgsvl/simulator',
+    stars: '2.2k+',
+    license: 'Apache 2.0',
+    tags: ['Unity', 'ROS2', 'Apollo', 'Autoware'],
+    badge: '🏗️ 工程级',
+    badgeColor: '#0984e3',
+    highlight: '与 Baidu Apollo 官方集成，国内工程落地首选',
+  },
+  // ── 机器人仿真 ──────────────────────────────────────────
+  {
+    id: 'isaac-sim',
+    name: 'NVIDIA Isaac Sim',
+    category: '机器人仿真',
+    logo: '🤖',
+    tagline: 'NVIDIA 机器人仿真与合成数据平台',
+    desc: '基于 Omniverse 的机器人仿真平台，支持物理精确的传感器仿真（Camera/LiDAR/IMU）、合成数据生成（Domain Randomization）、ROS2 集成，是具身智能训练数据生成的主流平台。',
+    url: 'https://developer.nvidia.com/isaac-sim',
+    github: 'https://github.com/isaac-sim',
+    stars: '—',
+    license: '免费（需 NVIDIA 账号）',
+    tags: ['Omniverse', '合成数据', 'Domain Randomization', 'ROS2'],
+    badge: '🏆 具身智能首选',
+    badgeColor: '#76b900',
+    highlight: 'RT-2/π0 等 VLA 模型的主要训练数据来源之一',
   },
   {
-    id: 'few_shot',
-    category: '推理',
-    name: 'Few-Shot 示例学习',
-    desc: '提供少量示例引导模型理解任务格式和期望输出',
-    icon: '📌',
-    color: '#fdcb6e',
-    template: `请参考以下示例完成任务：
-
-示例 1：
-输入：{{示例输入1}}
-输出：{{示例输出1}}
-
-示例 2：
-输入：{{示例输入2}}
-输出：{{示例输出2}}
-
-示例 3：
-输入：{{示例输入3}}
-输出：{{示例输出3}}
-
-现在请处理：
-输入：{{实际输入}}
-输出：`,
+    id: 'mujoco',
+    name: 'MuJoCo',
+    category: '机器人仿真',
+    logo: '⚙️',
+    tagline: '高精度物理仿真引擎',
+    desc: 'DeepMind 开源的高精度物理仿真引擎，专为接触力学、肌肉骨骼系统建模设计，是 RL 机器人控制研究的标准平台。OpenAI Gym 大量环境基于 MuJoCo 构建。',
+    url: 'https://mujoco.org',
+    github: 'https://github.com/google-deepmind/mujoco',
+    stars: '8.5k+',
+    license: 'Apache 2.0（2022年开源）',
+    tags: ['物理仿真', 'RL', 'DeepMind', '接触力学'],
+    badge: '🔬 RL 标准',
+    badgeColor: '#6c5ce7',
+    highlight: 'Humanoid 控制、灵巧手操作的首选仿真器',
   },
   {
-    id: 'system_persona',
-    category: '角色设定',
-    name: '专家角色 System Prompt',
-    desc: '设定模型角色和专业背景，提升垂直领域回答质量',
-    icon: '👤',
-    color: '#a29bfe',
-    template: `你是一位资深的{{领域}}专家，拥有{{年数}}年从业经验。你的专长包括{{专长列表}}。
-
-在回答时，你应该：
-- 使用专业但易懂的语言
-- 引用具体案例和数据支持观点
-- 指出常见误区和注意事项
-- 在不确定时明确说明
-
-背景：{{用户背景或项目信息}}
-
-请回答：{{问题}}`,
+    id: 'genesis',
+    name: 'Genesis',
+    category: '机器人仿真',
+    logo: '🌱',
+    tagline: '通用物理仿真平台（GPU 原生）',
+    desc: '2024 年底发布的新一代 GPU 原生物理仿真平台，支持刚体/软体/流体/布料统一仿真，速度比 Isaac Sim 快 10-80x，内置生成式场景创建（文本→仿真场景），专为具身智能设计。',
+    url: 'https://genesis-world.readthedocs.io',
+    github: 'https://github.com/Genesis-Embodied-AI/Genesis',
+    stars: '24k+',
+    license: 'Apache 2.0',
+    tags: ['GPU原生', '具身智能', '生成式场景', '统一物理'],
+    badge: '🔥 2024 新星',
+    badgeColor: '#e17055',
+    highlight: '发布 48 小时 GitHub 破万 star，速度比 Isaac Sim 快 80x',
   },
   {
-    id: 'summarize',
-    category: '文本处理',
-    name: '分层摘要',
-    desc: '按不同粒度生成摘要，适合长文档处理',
-    icon: '✂️',
-    color: '#55efc4',
-    template: `请对以下文本生成三个层次的摘要：
-
-<text>
-{{待摘要的文本}}
-</text>
-
-1. 一句话摘要（≤30字）：
-
-2. 段落摘要（100-150字）：
-
-3. 要点列表（5-7个关键点）：
-   • 
-   • 
-   • `,
+    id: 'gazebo',
+    name: 'Gazebo / Ignition',
+    category: '机器人仿真',
+    logo: '🏭',
+    tagline: 'ROS 官方机器人仿真器',
+    desc: 'ROS 生态官方仿真器，支持复杂机器人系统建模、传感器仿真、多机器人协同，与 ROS/ROS2 无缝集成。新版 Ignition Gazebo（现更名 Gazebo）支持分布式仿真。',
+    url: 'https://gazebosim.org',
+    github: 'https://github.com/gazebosim/gz-sim',
+    stars: '700+',
+    license: 'Apache 2.0',
+    tags: ['ROS', 'ROS2', '多机器人', '传感器仿真'],
+    badge: '🔗 ROS 标准',
+    badgeColor: '#00b894',
+    highlight: 'ROS2 生态必备，工业机器人部署前验证首选',
+  },
+  // ── AI 世界模型 / 神经仿真 ──────────────────────────────
+  {
+    id: 'wayve-gaia',
+    name: 'GAIA-1 (Wayve)',
+    category: '神经世界模型',
+    logo: '🌍',
+    tagline: '自动驾驶神经世界模型',
+    desc: 'Wayve 发布的生成式世界模型，可根据驾驶动作生成逼真的未来视频帧，用于自动驾驶场景的神经仿真。代表了从传统物理仿真向神经仿真的范式转变。',
+    url: 'https://wayve.ai/thinking/scaling-gaia-1',
+    github: null,
+    stars: '—',
+    license: '闭源',
+    tags: ['世界模型', '视频生成', '神经仿真', '自动驾驶'],
+    badge: '🧠 神经仿真',
+    badgeColor: '#fd79a8',
+    highlight: '首个大规模自动驾驶世界模型，开创神经仿真方向',
   },
   {
-    id: 'code_review',
-    category: '代码',
-    name: '代码审查',
-    desc: '系统化审查代码质量、安全性和可维护性',
-    icon: '🔍',
-    color: '#74b9ff',
-    template: `请对以下代码进行全面审查，重点关注：
-
-\`\`\`{{语言}}
-{{代码}}
-\`\`\`
-
-请从以下维度分析：
-
-**🐛 Bug 与逻辑问题**
-（列出潜在 bug 和逻辑错误）
-
-**🔒 安全性**
-（SQL 注入、XSS、未校验输入等）
-
-**⚡ 性能**
-（时间复杂度、内存使用、可优化点）
-
-**📖 可读性 & 可维护性**
-（命名、注释、代码结构）
-
-**✅ 改进建议**
-（优先级排序的具体改进项）`,
+    id: 'unisim',
+    name: 'UniSim (Google)',
+    category: '神经世界模型',
+    logo: '🎮',
+    tagline: '通用神经交互仿真器',
+    desc: 'Google Research 提出的通用神经仿真器，可模拟真实世界中的物理交互，支持机器人操作、自动驾驶等场景的神经渲染与交互仿真，是合成训练数据的重要来源。',
+    url: 'https://universal-simulator.github.io',
+    github: null,
+    stars: '—',
+    license: '研究用途',
+    tags: ['神经渲染', '交互仿真', 'Google', '合成数据'],
+    badge: '🔬 前沿研究',
+    badgeColor: '#4285f4',
+    highlight: 'Seed-AD 训练数据 UniSim 2.0 合成层的理论基础',
+  },
+  {
+    id: 'dreamer',
+    name: 'DreamerV3',
+    category: '神经世界模型',
+    logo: '💭',
+    tagline: '基于世界模型的 RL 框架',
+    desc: 'DeepMind 的 DreamerV3 在学习的世界模型内部进行 RL 训练，无需大量真实环境交互。在 Atari/DMControl/Minecraft 等多个 benchmark 上达到 SOTA，是世界模型 + RL 的代表性工作。',
+    url: 'https://danijar.com/project/dreamerv3/',
+    github: 'https://github.com/danijar/dreamerv3',
+    stars: '2.3k+',
+    license: 'MIT',
+    tags: ['世界模型', 'RL', 'DeepMind', 'RSSM'],
+    badge: '🏆 世界模型RL',
+    badgeColor: '#6c5ce7',
+    highlight: '单一算法在 7 个不同领域达到 SOTA，泛化能力极强',
+  },
+  // ── 物理 / 科学仿真 ──────────────────────────────────────
+  {
+    id: 'taichi',
+    name: 'Taichi Lang',
+    category: '物理仿真',
+    logo: '☯️',
+    tagline: '高性能并行计算 + 物理仿真',
+    desc: '清华大学胡渊鸣开发的高性能并行计算语言，内嵌于 Python，支持 GPU/CPU 自动并行，内置 MPM/SPH/FEM 等物理仿真算法，广泛用于流体、布料、弹性体仿真研究。',
+    url: 'https://taichi-lang.org',
+    github: 'https://github.com/taichi-dev/taichi',
+    stars: '26k+',
+    license: 'Apache 2.0',
+    tags: ['物理仿真', 'GPU并行', 'MPM', '流体仿真'],
+    badge: '🇨🇳 国产之光',
+    badgeColor: '#e17055',
+    highlight: '清华出品，SIGGRAPH 最佳论文，国内物理仿真领域标杆',
+  },
+  {
+    id: 'warp',
+    name: 'NVIDIA Warp',
+    category: '物理仿真',
+    logo: '🌀',
+    tagline: 'NVIDIA GPU 物理仿真框架',
+    desc: 'NVIDIA 开源的 GPU 加速物理仿真框架，支持刚体/软体/流体/布料统一仿真，与 PyTorch 深度集成，支持可微分仿真（用于梯度优化），是 Isaac Sim 的底层物理引擎。',
+    url: 'https://developer.nvidia.com/warp-python',
+    github: 'https://github.com/NVIDIA/warp',
+    stars: '4.5k+',
+    license: 'Apache 2.0',
+    tags: ['GPU仿真', '可微分', 'PyTorch集成', '刚体/软体'],
+    badge: '⚡ 可微分仿真',
+    badgeColor: '#76b900',
+    highlight: '支持可微分仿真，可直接用梯度优化物理参数',
+  },
+  {
+    id: 'brax',
+    name: 'Brax',
+    category: '物理仿真',
+    logo: '🦾',
+    tagline: 'Google JAX 物理仿真库',
+    desc: 'Google 基于 JAX 开发的可微分物理仿真库，专为 RL 研究设计，支持 GPU/TPU 大规模并行，可在单 TPU Pod 上同时运行百万个仿真环境，速度比 MuJoCo 快 100x+。',
+    url: 'https://github.com/google/brax',
+    github: 'https://github.com/google/brax',
+    stars: '2.2k+',
+    license: 'Apache 2.0',
+    tags: ['JAX', 'TPU并行', 'RL', '可微分'],
+    badge: '🚀 百万并行',
+    badgeColor: '#4285f4',
+    highlight: '单 TPU Pod 可并行 100 万环境，RL 训练速度革命性提升',
+  },
+  // ── 交互式在线工具 ──────────────────────────────────────
+  {
+    id: 'physion',
+    name: 'Physion',
+    category: '在线交互仿真',
+    logo: '🎯',
+    tagline: '物理直觉评测基准',
+    desc: 'MIT 开发的物理直觉评测平台，包含 8 类物理场景（碰撞/支撑/滚动/连接等），用于评测 AI 模型的物理常识推理能力，是世界模型物理理解能力的标准 benchmark。',
+    url: 'https://physion-benchmark.github.io',
+    github: 'https://github.com/cogtoolslab/physion',
+    stars: '200+',
+    license: 'MIT',
+    tags: ['物理推理', 'Benchmark', '世界模型评测', 'MIT'],
+    badge: '📊 评测基准',
+    badgeColor: '#ffa657',
+    highlight: '评测 AI 物理直觉的标准 benchmark，世界模型研究必备',
+  },
+  {
+    id: 'matter-js',
+    name: 'Matter.js Playground',
+    category: '在线交互仿真',
+    logo: '⚽',
+    tagline: '2D 物理引擎在线演示',
+    desc: '浏览器端 2D 物理引擎，支持刚体碰撞、约束、复合体等物理效果，提供在线 Playground 可实时调整参数观察物理行为，适合快速验证物理直觉和教学演示。',
+    url: 'https://brm.io/matter-js/',
+    github: 'https://github.com/liabru/matter-js',
+    stars: '17k+',
+    license: 'MIT',
+    tags: ['2D物理', '浏览器端', '实时交互', '教学'],
+    badge: '🌐 浏览器可用',
+    badgeColor: '#00b894',
+    highlight: '无需安装，浏览器直接运行，快速验证 2D 物理场景',
+  },
+  {
+    id: 'three-js-physics',
+    name: 'Rapier (Rust 物理引擎)',
+    category: '在线交互仿真',
+    logo: '⚡',
+    tagline: 'Rust/WASM 高性能物理引擎',
+    desc: 'Rust 编写的跨平台物理引擎，支持 2D/3D 刚体/软体/流体仿真，通过 WASM 在浏览器中运行，性能接近原生，被 Bevy 游戏引擎和多个机器人仿真项目采用。',
+    url: 'https://rapier.rs',
+    github: 'https://github.com/dimforge/rapier',
+    stars: '4.5k+',
+    license: 'Apache 2.0',
+    tags: ['Rust', 'WASM', '2D/3D', '高性能'],
+    badge: '🦀 Rust 性能',
+    badgeColor: '#e17055',
+    highlight: 'WASM 版本可在浏览器中运行，性能接近原生 C++',
   },
 ];
 
-const PROMPT_CATEGORIES = ['全部', '推理', 'RAG', 'Agent', '输出格式', '角色设定', '文本处理', '代码'];
+const SIM_CATEGORIES = ['全部', '自动驾驶仿真', '机器人仿真', '神经世界模型', '物理仿真', '在线交互仿真'];
 
-// ─── MCP Server 目录数据 ──────────────────────────────────────
-const MCP_SERVERS = [
-  {
-    id: 'filesystem',
-    name: 'Filesystem',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/filesystem',
-    category: '文件系统',
-    stars: '14k+',
-    desc: '读写本地文件系统，支持目录遍历、文件搜索、内容读写',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'github',
-    name: 'GitHub',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/github',
-    category: '代码托管',
-    stars: '14k+',
-    desc: '操作 GitHub 仓库：搜索代码、读取文件、创建 Issue/PR、管理 Workflow',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/github',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'postgres',
-    name: 'PostgreSQL',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/postgres',
-    category: '数据库',
-    stars: '14k+',
-    desc: '连接 PostgreSQL 数据库，执行 SQL 查询，读取 Schema 信息',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/postgres',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'sqlite',
-    name: 'SQLite',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/sqlite',
-    category: '数据库',
-    stars: '14k+',
-    desc: '操作本地 SQLite 数据库，适合轻量级数据分析场景',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'brave-search',
-    name: 'Brave Search',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/brave-search',
-    category: '搜索',
-    stars: '14k+',
-    desc: '调用 Brave Search API 进行网页搜索，支持本地搜索和新闻搜索',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'puppeteer',
-    name: 'Puppeteer',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/puppeteer',
-    category: '浏览器',
-    stars: '14k+',
-    desc: '控制 Chromium 浏览器：截图、点击、填表、抓取动态页面内容',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'slack',
-    name: 'Slack',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/slack',
-    category: '通讯协作',
-    stars: '14k+',
-    desc: '读取 Slack 频道消息、发送消息、搜索历史记录',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/slack',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'google-maps',
-    name: 'Google Maps',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/google-maps',
-    category: '地图/位置',
-    stars: '14k+',
-    desc: '地点搜索、路线规划、地理编码，适合位置感知 Agent',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/google-maps',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'memory',
-    name: 'Memory',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/memory',
-    category: '记忆/知识图谱',
-    stars: '14k+',
-    desc: '基于知识图谱的持久化记忆，让 Agent 跨会话记住用户信息',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/memory',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'sequential-thinking',
-    name: 'Sequential Thinking',
-    repo: 'modelcontextprotocol/servers',
-    path: 'src/sequentialthinking',
-    category: '推理增强',
-    stars: '14k+',
-    desc: '结构化多步推理工具，引导模型分解复杂问题，适合规划类任务',
-    url: 'https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking',
-    badge: '官方',
-    badgeColor: '#6c5ce7',
-  },
-  {
-    id: 'context7',
-    name: 'Context7',
-    repo: 'upstash/context7',
-    path: '',
-    category: '文档检索',
-    stars: '8k+',
-    desc: '为 AI 编程助手提供最新的库文档，解决 LLM 知识截止问题，支持 npm/PyPI 包',
-    url: 'https://github.com/upstash/context7',
-    badge: '热门',
-    badgeColor: '#e17055',
-  },
-  {
-    id: 'firecrawl',
-    name: 'Firecrawl',
-    repo: 'mendableai/firecrawl-mcp-server',
-    path: '',
-    category: '网页抓取',
-    stars: '5k+',
-    desc: '高质量网页内容抓取，自动处理 JS 渲染、反爬虫，输出干净 Markdown',
-    url: 'https://github.com/mendableai/firecrawl-mcp-server',
-    badge: '热门',
-    badgeColor: '#e17055',
-  },
-  {
-    id: 'exa',
-    name: 'Exa Search',
-    repo: 'exa-labs/exa-mcp-server',
-    path: '',
-    category: '搜索',
-    stars: '3k+',
-    desc: '语义搜索引擎，专为 AI Agent 设计，返回高质量结构化结果',
-    url: 'https://github.com/exa-labs/exa-mcp-server',
-    badge: '推荐',
-    badgeColor: '#00b894',
-  },
-  {
-    id: 'desktop-commander',
-    name: 'Desktop Commander',
-    repo: 'wonderwhy-er/DesktopCommanderMCP',
-    path: '',
-    category: '系统控制',
-    stars: '4k+',
-    desc: '控制桌面应用、执行终端命令、管理进程，赋予 Agent 完整系统操作能力',
-    url: 'https://github.com/wonderwhy-er/DesktopCommanderMCP',
-    badge: '推荐',
-    badgeColor: '#00b894',
-  },
-];
-
-const MCP_CATEGORIES = ['全部', '文件系统', '数据库', '搜索', '浏览器', '代码托管', '通讯协作', '记忆/知识图谱', '推理增强', '文档检索', '网页抓取', '地图/位置', '系统控制'];
-
-function MCPDirectory() {
+function SimulatorsDirectory() {
   const [activeCategory, setActiveCategory] = useState('全部');
-  const filtered = activeCategory === '全部' ? MCP_SERVERS : MCP_SERVERS.filter(s => s.category === activeCategory);
+  const filtered = activeCategory === '全部'
+    ? SIMULATOR_TOOLS
+    : SIMULATOR_TOOLS.filter(s => s.category === activeCategory);
+
+  const categoryCount = (cat) => cat === '全部'
+    ? SIMULATOR_TOOLS.length
+    : SIMULATOR_TOOLS.filter(s => s.category === cat).length;
 
   return (
     <div>
       {/* 说明 */}
-      <div className="mb-5 p-4 rounded-2xl border border-[#6c5ce7]/15 bg-[#6c5ce7]/[0.03] flex items-start gap-3">
-        <span className="text-xl flex-shrink-0">🔌</span>
+      <div className="mb-5 p-4 rounded-2xl border border-[#00b894]/20 bg-[#00b894]/[0.03] flex items-start gap-3">
+        <span className="text-xl flex-shrink-0">🌐</span>
         <div>
-          <p className="text-sm font-semibold text-gray-800 mb-0.5">MCP Server 生态目录</p>
+          <p className="text-sm font-semibold text-gray-800 mb-0.5">仿真工具导航</p>
           <p className="text-xs text-gray-500 leading-relaxed">
-            Model Context Protocol（MCP）是 Anthropic 提出的开放协议，让 AI 助手能够安全地连接外部工具和数据源。
-            以下收录了 <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener noreferrer" className="text-[#6c5ce7] hover:underline">官方仓库</a> 及社区高 star 的 MCP Server，持续更新。
+            覆盖自动驾驶仿真、机器人仿真、神经世界模型、物理仿真引擎五大方向，收录学术界和工业界主流仿真平台。
+            重点关注与 VLA / 具身智能 / RL 训练相关的工具链。
           </p>
         </div>
       </div>
 
       {/* Category 筛选 */}
       <div className="flex flex-wrap gap-2 mb-5">
-        {MCP_CATEGORIES.map(cat => (
+        {SIM_CATEGORIES.map(cat => (
           <button key={cat} onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${activeCategory === cat ? 'bg-[#6c5ce7]/10 text-[#6c5ce7] border-[#6c5ce7]/30' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'}`}>
+            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all flex items-center gap-1.5 ${activeCategory === cat
+              ? 'bg-[#00b894]/10 text-[#00b894] border-[#00b894]/30'
+              : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'}`}>
             {cat}
+            <span className={`text-[9px] px-1 py-0.5 rounded-full font-mono ${activeCategory === cat ? 'bg-[#00b894]/20 text-[#00b894]' : 'bg-gray-100 text-gray-400'}`}>
+              {categoryCount(cat)}
+            </span>
           </button>
         ))}
       </div>
 
-      {/* Server 列表 */}
+      {/* 工具卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {filtered.map(server => (
-          <a key={server.id} href={server.url} target="_blank" rel="noopener noreferrer"
+        {filtered.map(tool => (
+          <a key={tool.id} href={tool.url} target="_blank" rel="noopener noreferrer"
             className="group block rounded-2xl border border-gray-100 bg-white p-4 hover:shadow-sm hover:border-gray-200 transition-all">
             <div className="flex items-start justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium text-gray-500 bg-gray-100 flex-shrink-0">{server.category}</span>
-                <h3 className="text-sm font-semibold text-gray-800 truncate group-hover:text-[#6c5ce7] transition-colors">{server.name}</h3>
+              <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                <span className="text-xl flex-shrink-0">{tool.logo}</span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm font-bold text-gray-800 group-hover:text-[#00b894] transition-colors">{tool.name}</h3>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white flex-shrink-0"
+                      style={{ background: tool.badgeColor }}>{tool.badge}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-400 mt-0.5">{tool.tagline}</p>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 flex-shrink-0">
-                <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white"
-                  style={{ background: server.badgeColor }}>{server.badge}</span>
-                <span className="text-[10px] text-gray-400">⭐ {server.stars}</span>
+              <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">{tool.category}</span>
+                {tool.stars !== '—' && (
+                  <span className="text-[9px] text-gray-400">⭐ {tool.stars}</span>
+                )}
               </div>
             </div>
-            <p className="text-xs text-gray-500 leading-relaxed mb-2">{server.desc}</p>
-            <p className="text-[10px] font-mono text-gray-300 truncate">{server.repo}</p>
+
+            <p className="text-xs text-gray-500 leading-relaxed mb-2.5">{tool.desc}</p>
+
+            {/* 亮点 */}
+            <div className="flex items-start gap-1.5 mb-2.5 p-2 rounded-xl bg-gray-50">
+              <span className="text-[10px] text-gray-400 flex-shrink-0 mt-0.5">💡</span>
+              <p className="text-[10px] text-gray-600 leading-relaxed">{tool.highlight}</p>
+            </div>
+
+            {/* 标签 + 链接 */}
+            <div className="flex items-center justify-between">
+              <div className="flex flex-wrap gap-1">
+                {tool.tags.slice(0, 3).map(tag => (
+                  <span key={tag} className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500">{tag}</span>
+                ))}
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {tool.github && (
+                  <span onClick={e => { e.preventDefault(); window.open(tool.github, '_blank'); }}
+                    className="text-[10px] text-gray-400 hover:text-gray-600 cursor-pointer">GitHub →</span>
+                )}
+                <span className="text-[9px] text-gray-300">{tool.license}</span>
+              </div>
+            </div>
           </a>
         ))}
       </div>
 
-      <p className="mt-4 text-center text-[11px] text-gray-400">
-        更多 Server 见 <a href="https://github.com/modelcontextprotocol/servers" target="_blank" rel="noopener noreferrer" className="text-[#6c5ce7] hover:underline">github.com/modelcontextprotocol/servers</a> · 共 {MCP_SERVERS.length} 个已收录
+      <p className="mt-5 text-center text-[11px] text-gray-400">
+        共收录 {SIMULATOR_TOOLS.length} 个仿真工具 · 持续更新 · 重点关注 VLA / 具身智能 / 自动驾驶方向
       </p>
     </div>
   );
 }
 
-
-
 // ═══════════════════════════════════════════════════════════════
-// Tab 4: Prompt 模板库
-// ═══════════════════════════════════════════════════════════════
-function PromptTemplates({ templates }) {
-  const [activeCategory, setActiveCategory] = useState('全部');
-  const [expandedId, setExpandedId] = useState(null);
-  const [copiedId, setCopiedId] = useState(null);
-
-  const filtered = activeCategory === '全部' ? templates : templates.filter(t => t.category === activeCategory);
-
-  const handleCopy = (t) => {
-    navigator.clipboard.writeText(t.template);
-    setCopiedId(t.id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
-  return (
-    <div>
-      {/* Category tabs */}
-      <div className="flex flex-wrap gap-2 mb-5">
-        {PROMPT_CATEGORIES.map(cat => (
-          <button key={cat} onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-all ${activeCategory === cat ? 'bg-[#6c5ce7]/10 text-[#6c5ce7] border-[#6c5ce7]/30' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'}`}>
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filtered.map(t => (
-          <div key={t.id} className="rounded-2xl border border-gray-100 bg-white hover:shadow-sm transition-all overflow-hidden">
-            {/* Header */}
-            <div className="p-4 pb-3">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                  <div className="w-8 h-8 rounded-xl flex items-center justify-center text-sm font-mono font-bold flex-shrink-0"
-                    style={{ background: t.color + '18', color: t.color }}>
-                    {t.icon}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-sm font-semibold text-gray-800 truncate">{t.name}</h3>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0"
-                        style={{ background: t.color + '18', color: t.color }}>
-                        {t.category}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-400 mt-0.5">{t.desc}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="px-4 pb-4 flex gap-2">
-              <button onClick={() => setExpandedId(expandedId === t.id ? null : t.id)}
-                className="flex-1 py-1.5 text-xs font-medium text-gray-500 border border-gray-200 rounded-lg hover:border-gray-300 hover:text-gray-700 transition-all">
-                {expandedId === t.id ? '收起 ▲' : '展开预览 ▼'}
-              </button>
-              <button onClick={() => handleCopy(t)}
-                className="flex-1 py-1.5 text-xs font-medium rounded-lg transition-all"
-                style={{ background: copiedId === t.id ? '#00b894' : t.color, color: '#fff' }}>
-                {copiedId === t.id ? '✓ 已复制' : '一键复制'}
-              </button>
-            </div>
-
-            {/* Expanded preview */}
-            {expandedId === t.id && (
-              <div className="border-t border-gray-100 mx-4 mb-4">
-                <pre className="mt-3 text-[11px] leading-relaxed text-gray-600 whitespace-pre-wrap font-mono bg-gray-50 rounded-xl p-3 max-h-64 overflow-y-auto">
-                  {t.template}
-                </pre>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════════
-// Tab 0: Tokenizer
+// Tokenizer
 // ═══════════════════════════════════════════════════════════════
 
-// 彩色调色板（循环使用）
 const TOKEN_COLORS = [
   { bg: '#e0f2fe', text: '#0369a1', border: '#bae6fd' },
   { bg: '#fce7f3', text: '#9d174d', border: '#fbcfe8' },
@@ -511,7 +401,6 @@ const TOKEN_COLORS = [
   { bg: '#fff1f2', text: '#9f1239', border: '#fecdd3' },
 ];
 
-// 模型 → 编码方案映射（按模型家族分组）
 const MODEL_GROUPS = [
   {
     group: 'OpenAI GPT-4o / o 系列',
@@ -520,18 +409,8 @@ const MODEL_GROUPS = [
       { id: 'gpt-4o',       label: 'GPT-4o',        enc: 'o200k_base', badge: '最新' },
       { id: 'gpt-4o-mini',  label: 'GPT-4o mini',   enc: 'o200k_base' },
       { id: 'o1',           label: 'o1',             enc: 'o200k_base', badge: '推理' },
-      { id: 'o1-mini',      label: 'o1-mini',        enc: 'o200k_base' },
       { id: 'o3',           label: 'o3',             enc: 'o200k_base', badge: '推理' },
       { id: 'o3-mini',      label: 'o3-mini',        enc: 'o200k_base' },
-    ],
-  },
-  {
-    group: 'OpenAI GPT-4 / GPT-3.5',
-    color: '#10a37f',
-    models: [
-      { id: 'gpt-4',        label: 'GPT-4',          enc: 'cl100k_base' },
-      { id: 'gpt-4-turbo',  label: 'GPT-4 Turbo',    enc: 'cl100k_base' },
-      { id: 'gpt-3.5-turbo',label: 'GPT-3.5 Turbo',  enc: 'cl100k_base' },
     ],
   },
   {
@@ -540,7 +419,6 @@ const MODEL_GROUPS = [
     models: [
       { id: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet', enc: 'cl100k_base', badge: '近似' },
       { id: 'claude-3-5-sonnet', label: 'Claude 3.5 Sonnet', enc: 'cl100k_base', badge: '近似' },
-      { id: 'claude-3-opus',     label: 'Claude 3 Opus',     enc: 'cl100k_base', badge: '近似' },
     ],
   },
   {
@@ -564,7 +442,6 @@ const MODEL_GROUPS = [
     color: '#0064e0',
     models: [
       { id: 'llama-3',      label: 'Llama 3 系列',  enc: 'cl100k_base', badge: '近似' },
-      { id: 'llama-2',      label: 'Llama 2 系列',  enc: 'p50k_base',   badge: '近似' },
     ],
   },
   {
@@ -572,7 +449,6 @@ const MODEL_GROUPS = [
     color: '#ff6a00',
     models: [
       { id: 'qwen2.5',      label: 'Qwen 2.5 系列', enc: 'cl100k_base', badge: '近似' },
-      { id: 'qwen2',        label: 'Qwen 2 系列',   enc: 'cl100k_base', badge: '近似' },
     ],
   },
   {
@@ -582,13 +458,10 @@ const MODEL_GROUPS = [
       { id: 'enc:cl100k_base', label: 'cl100k_base', enc: 'cl100k_base', badge: '编码' },
       { id: 'enc:o200k_base',  label: 'o200k_base',  enc: 'o200k_base',  badge: '编码' },
       { id: 'enc:p50k_base',   label: 'p50k_base',   enc: 'p50k_base',   badge: '编码' },
-      { id: 'enc:r50k_base',   label: 'r50k_base',   enc: 'r50k_base',   badge: '编码' },
-      { id: 'enc:gpt2',        label: 'gpt2',         enc: 'gpt2',        badge: '编码' },
     ],
   },
 ];
 
-// 扁平化查找
 const ALL_MODELS = MODEL_GROUPS.flatMap(g => g.models.map(m => ({ ...m, groupColor: g.color, groupName: g.group })));
 
 const TOKENIZER_EXAMPLES = [
@@ -598,8 +471,6 @@ const TOKENIZER_EXAMPLES = [
   { label: '中英混合', text: 'ChatGPT在推理能力方面有了显著提升（benchmark: MMLU 89.8%，GPQA Diamond 78.3%）' },
   { label: '特殊字符', text: '🚀 emoji & symbols: <|endoftext|> [INST] <<SYS>>\n\t spaces and\ttabs' },
   { label: 'JSON 结构', text: '{"model": "gpt-4o", "temperature": 0.7, "messages": [{"role": "user", "content": "你好"}]}' },
-  { label: 'Prompt 模板', text: 'You are a helpful assistant. Please analyze the following text and provide a detailed summary:\n\n{{TEXT}}' },
-  { label: '数学公式', text: 'The softmax function: σ(z)_i = e^{z_i} / Σ_j e^{z_j}, where z is the input vector.' },
 ];
 
 function TokenizerTool() {
@@ -610,12 +481,11 @@ function TokenizerTool() {
   const [error, setError] = useState('');
   const [showIds, setShowIds] = useState(false);
   const [showModelPicker, setShowModelPicker] = useState(false);
-  const encCacheRef = useRef({});  // 缓存已加载的 encoder，避免重复 import
+  const encCacheRef = useRef({});
 
   const selectedModel = ALL_MODELS.find(m => m.id === selectedModelId) || ALL_MODELS[0];
   const encoding = selectedModel.enc;
 
-  // 重新 tokenize（js-tiktoken 纯 JS，同步运行，无 wasm 等待）
   const tokenize = useCallback(async (inputText, enc) => {
     if (!inputText.trim()) { setTokens([]); return; }
     setLoading(true);
@@ -625,17 +495,13 @@ function TokenizerTool() {
       if (!encoder) {
         const { getEncoding } = await import('js-tiktoken');
         encoder = getEncoding(enc);
-        encCacheRef.current[enc] = encoder;  // 缓存起来，切换模型秒切
+        encCacheRef.current[enc] = encoder;
       }
-
       const encoded = encoder.encode(inputText);
-
-      // 逐 token 解码，将多字节 UTF-8 fragment 合并为完整字符
       const result = [];
       let colorIdx = 0;
       let pendingBytes = [];
       let pendingIds = [];
-
       const flushPending = () => {
         if (!pendingIds.length) return;
         const buf = new Uint8Array(pendingBytes);
@@ -645,7 +511,6 @@ function TokenizerTool() {
         pendingBytes = [];
         pendingIds = [];
       };
-
       for (let i = 0; i < encoded.length; i++) {
         const tokenId = encoded[i];
         const bytes = encoder.decode(new Uint32Array([tokenId]));
@@ -658,7 +523,6 @@ function TokenizerTool() {
         if (!testDecode.includes('\uFFFD')) flushPending();
       }
       flushPending();
-
       setTokens(result);
     } catch (e) {
       setError('Tokenize 出错: ' + e.message);
@@ -667,7 +531,6 @@ function TokenizerTool() {
     }
   }, []);
 
-  // 文本或编码改变时重新计算
   useEffect(() => {
     const timer = setTimeout(() => tokenize(text, encoding), 150);
     return () => clearTimeout(timer);
@@ -678,7 +541,6 @@ function TokenizerTool() {
 
   return (
     <div className="space-y-5">
-      {/* 模型选择器 */}
       <div>
         <div className="flex items-center justify-between mb-2">
           <label className="block text-xs font-medium text-gray-600">选择模型</label>
@@ -687,8 +549,6 @@ function TokenizerTool() {
             {showModelPicker ? '收起' : '展开全部模型'}
           </button>
         </div>
-
-        {/* 当前选中 + 快速切换热门 */}
         {!showModelPicker && (
           <div className="flex flex-wrap gap-2">
             {['gpt-4o', 'o3', 'claude-3-7-sonnet', 'gemini-2.0-flash', 'deepseek-r1', 'llama-3', 'qwen2.5'].map(mid => {
@@ -716,13 +576,11 @@ function TokenizerTool() {
             </button>
           </div>
         )}
-
-        {/* 展开的完整模型列表（按家族分组） */}
         {showModelPicker && (
           <div className="space-y-3 p-4 bg-gray-50 rounded-2xl border border-gray-100">
             {MODEL_GROUPS.map(group => (
               <div key={group.group}>
-                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-1.5"
+                <p className="text-[10px] font-semibold uppercase tracking-wide mb-1.5"
                   style={{ color: group.color }}>{group.group}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {group.models.map(m => {
@@ -746,14 +604,11 @@ function TokenizerTool() {
                 </div>
               </div>
             ))}
-            <p className="text-[10px] text-gray-400 pt-1">
-              ⚠️ 标注「近似」的模型使用对应 OpenAI 编码估算（实际分词可能略有差异）
-            </p>
+            <p className="text-[10px] text-gray-400 pt-1">⚠️ 标注「近似」的模型使用对应 OpenAI 编码估算</p>
           </div>
         )}
       </div>
 
-      {/* 输入区 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-2">
@@ -772,8 +627,6 @@ function TokenizerTool() {
             className="w-full h-28 px-3 py-2.5 text-sm border border-gray-200 rounded-xl resize-none focus:outline-none focus:border-[#6c5ce7]/50 focus:ring-2 focus:ring-[#6c5ce7]/10 text-gray-700 placeholder-gray-300 font-mono"
           />
         </div>
-
-        {/* 统计卡片 */}
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 content-start">
           {[
             { label: 'Token 数', value: loading ? '…' : uniqueTokenCount.toLocaleString(), color: '#6c5ce7', sub: selectedModel.label },
@@ -785,30 +638,21 @@ function TokenizerTool() {
               <p className="text-[10px] text-gray-300 mt-0.5 truncate">{card.sub}</p>
             </div>
           ))}
-          <div className="lg:col-span-1">
-            <button onClick={() => setShowIds(!showIds)}
-              className={`w-full py-2 text-xs font-medium rounded-xl border transition-all ${showIds ? 'bg-[#6c5ce7]/10 border-[#6c5ce7]/30 text-[#6c5ce7]' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'}`}>
-              {showIds ? '▲ 隐藏 Token ID' : '▼ 显示 Token ID'}
-            </button>
-          </div>
+          <button onClick={() => setShowIds(!showIds)}
+            className={`w-full py-2 text-xs font-medium rounded-xl border transition-all ${showIds ? 'bg-[#6c5ce7]/10 border-[#6c5ce7]/30 text-[#6c5ce7]' : 'bg-white border-gray-200 text-gray-500 hover:border-gray-300'}`}>
+            {showIds ? '▲ 隐藏 Token ID' : '▼ 显示 Token ID'}
+          </button>
         </div>
       </div>
 
-      {error && (
-        <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-600">{error}</div>
-      )}
+      {error && <div className="px-4 py-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-600">{error}</div>}
 
-      {/* 可视化区域 */}
       {tokens.length > 0 && !loading && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-medium text-gray-600">
-              Token 可视化 · <span className="text-gray-400">共 {uniqueTokenCount} 个 token</span>
-            </p>
-            <p className="text-[10px] text-gray-300">编码：<span className="font-mono">{encoding}</span> · 每种颜色代表一个独立 token</p>
+            <p className="text-xs font-medium text-gray-600">Token 可视化 · <span className="text-gray-400">共 {uniqueTokenCount} 个 token</span></p>
+            <p className="text-[10px] text-gray-300">编码：<span className="font-mono">{encoding}</span></p>
           </div>
-
-          {/* 彩色 token 块 */}
           <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 leading-8 min-h-20">
             <div className="flex flex-wrap gap-0.5 items-baseline">
               {tokens.map((tok, i) => {
@@ -818,23 +662,18 @@ function TokenizerTool() {
                   <span key={`${i}-${pi}`}>
                     {pi > 0 && <br />}
                     {part !== '' && (
-                      <span
-                        title={`Token ID: ${tok.id}  |  "${tok.text.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}"`}
+                      <span title={`Token ID: ${tok.id}  |  "${tok.text.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}"`}
                         className="inline-block px-0.5 rounded text-xs font-mono border cursor-default hover:opacity-80 transition-opacity"
                         style={{ background: c.bg, color: c.text, borderColor: c.border }}>
                         {part.replace(/ /g, '\u00B7')}
                       </span>
                     )}
-                    {part === '' && pi > 0 && (
-                      <span className="inline-block text-[10px] text-gray-300 font-mono">↵</span>
-                    )}
+                    {part === '' && pi > 0 && <span className="inline-block text-[10px] text-gray-300 font-mono">↵</span>}
                   </span>
                 ));
               })}
             </div>
           </div>
-
-          {/* Token ID 列表 */}
           {showIds && (
             <div className="mt-3 p-3 bg-gray-900 rounded-2xl border border-gray-800 overflow-x-auto">
               <p className="text-[10px] text-gray-500 mb-2 font-mono">Token IDs · {selectedModel.label} ({encoding})</p>
@@ -842,8 +681,7 @@ function TokenizerTool() {
                 {tokens.map((tok, i) => {
                   const c = TOKEN_COLORS[tok.colorIdx];
                   return (
-                    <span key={i}
-                      title={`"${tok.text.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}"`}
+                    <span key={i} title={`"${tok.text.replace(/\n/g, '\\n').replace(/\t/g, '\\t')}"`}
                       className="text-[10px] font-mono px-1.5 py-0.5 rounded border cursor-default"
                       style={{ background: c.bg + '22', color: c.text, borderColor: c.border + '44' }}>
                       {tok.id}
@@ -853,16 +691,8 @@ function TokenizerTool() {
               </div>
             </div>
           )}
-
           {tokens.some(t => t.text.includes(' ')) && (
-            <p className="mt-2 text-[11px] text-gray-400">
-              💡 英文单词前通常带空格（显示为 ·），这是 BPE 的特性
-            </p>
-          )}
-          {tokens.some(t => /[\u4e00-\u9fff]/.test(t.text) && t.text.length > 2) && (
-            <p className="mt-1 text-[11px] text-gray-400">
-              💡 中文字词通常被切成多个 token，所以中文比英文消耗更多 token
-            </p>
+            <p className="mt-2 text-[11px] text-gray-400">💡 英文单词前通常带空格（显示为 ·），这是 BPE 的特性</p>
           )}
         </div>
       )}
@@ -871,7 +701,6 @@ function TokenizerTool() {
         <div className="flex flex-col items-center justify-center py-16 text-gray-300">
           <span className="text-4xl mb-3">🔬</span>
           <p className="text-sm">在上方输入文本，实时看到 BPE 分词可视化</p>
-          <p className="text-xs mt-1">或点击右侧示例快速体验中文/代码/特殊字符的分词差异</p>
         </div>
       )}
     </div>
@@ -881,406 +710,27 @@ function TokenizerTool() {
 // ═══════════════════════════════════════════════════════════════
 // 主页面
 // ═══════════════════════════════════════════════════════════════
-// ═══════════════════════════════════════════════════════════════
-// Tab 3: AI 编程工具对比矩阵
-// ═══════════════════════════════════════════════════════════════
-
-const AI_CODING_TOOLS = [
-  {
-    id: 'cursor',
-    name: 'Cursor',
-    logo: '🖱️',
-    tagline: 'AI-first 代码编辑器',
-    url: 'https://cursor.com',
-    pricing: '$20/月（Pro）',
-    freeTier: '有限免费',
-    baseModel: 'Claude 3.7 / GPT-4o / o3',
-    contextWindow: '200k tokens',
-    codeCompletion: 5,
-    chatQuality: 5,
-    agentMode: 5,
-    codebaseUnderstanding: 5,
-    multiFile: 5,
-    terminalIntegration: 4,
-    mcpSupport: true,
-    highlights: ['Tab 补全极快', 'Composer 多文件编辑', 'Agent 模式自主执行', '@codebase 全库检索'],
-    weaknesses: ['订阅费较高', '依赖第三方模型'],
-    bestFor: '全职开发者 / AI 原生开发',
-    color: '#6c5ce7',
-    badge: '🔥 最热门',
-  },
-  {
-    id: 'github-copilot',
-    name: 'GitHub Copilot',
-    logo: '🐙',
-    tagline: 'GitHub 官方 AI 编程助手',
-    url: 'https://github.com/features/copilot',
-    pricing: '$10/月（个人）/ $19/月（商业）',
-    freeTier: '学生/开源免费',
-    baseModel: 'GPT-4o / Claude 3.5',
-    contextWindow: '64k tokens',
-    codeCompletion: 5,
-    chatQuality: 4,
-    agentMode: 3,
-    codebaseUnderstanding: 4,
-    multiFile: 4,
-    terminalIntegration: 4,
-    mcpSupport: false,
-    highlights: ['GitHub 深度集成', 'PR 自动 Review', '企业级安全合规', 'VS Code 原生支持'],
-    weaknesses: ['Agent 能力弱于 Cursor', '上下文窗口较小'],
-    bestFor: '企业团队 / GitHub 重度用户',
-    color: '#24292f',
-    badge: '🏢 企业首选',
-  },
-  {
-    id: 'windsurf',
-    name: 'Windsurf',
-    logo: '🏄',
-    tagline: 'Codeium 出品的 AI IDE',
-    url: 'https://codeium.com/windsurf',
-    pricing: '$15/月（Pro）',
-    freeTier: '免费版功能较完整',
-    baseModel: 'Claude 3.7 / GPT-4o',
-    contextWindow: '128k tokens',
-    codeCompletion: 4,
-    chatQuality: 4,
-    agentMode: 4,
-    codebaseUnderstanding: 4,
-    multiFile: 4,
-    terminalIntegration: 4,
-    mcpSupport: true,
-    highlights: ['Cascade Agent 自主执行', '免费版功能丰富', '价格低于 Cursor', 'Flows 工作流'],
-    weaknesses: ['生态不如 Cursor 成熟', '社区规模较小'],
-    bestFor: '预算有限的开发者 / Cursor 替代',
-    color: '#0984e3',
-    badge: '💰 性价比高',
-  },
-  {
-    id: 'claude-code',
-    name: 'Claude Code',
-    logo: '🤖',
-    tagline: 'Anthropic 官方 CLI Agent',
-    url: 'https://claude.ai/code',
-    pricing: 'API 按量计费',
-    freeTier: '无',
-    baseModel: 'Claude 3.7 Sonnet',
-    contextWindow: '200k tokens',
-    codeCompletion: 3,
-    chatQuality: 5,
-    agentMode: 5,
-    codebaseUnderstanding: 5,
-    multiFile: 5,
-    terminalIntegration: 5,
-    mcpSupport: true,
-    highlights: ['终端原生 Agent', '自主执行复杂任务', 'MCP 深度集成', '200k 超长上下文'],
-    weaknesses: ['无 GUI 编辑器', '按量计费成本不可控', '学习曲线陡'],
-    bestFor: '高级开发者 / 自动化脚本 / 复杂重构',
-    color: '#d4863a',
-    badge: '⚡ Agent 最强',
-  },
-  {
-    id: 'devin',
-    name: 'Devin',
-    logo: '🦾',
-    tagline: '首个「AI 软件工程师」',
-    url: 'https://devin.ai',
-    pricing: '$500/月（团队版）',
-    freeTier: '无',
-    baseModel: '自研模型',
-    contextWindow: '未公开',
-    codeCompletion: 3,
-    chatQuality: 4,
-    agentMode: 5,
-    codebaseUnderstanding: 4,
-    multiFile: 5,
-    terminalIntegration: 5,
-    mcpSupport: false,
-    highlights: ['完全自主执行任务', '可处理完整 Issue→PR 流程', '内置浏览器/终端/编辑器'],
-    weaknesses: ['价格极高', '不适合日常辅助编程', '自主性有时过强'],
-    bestFor: '企业自动化 / 批量任务处理',
-    color: '#e17055',
-    badge: '🤖 最自主',
-  },
-  {
-    id: 'aider',
-    name: 'Aider',
-    logo: '🔧',
-    tagline: '开源 CLI AI 编程助手',
-    url: 'https://aider.chat',
-    pricing: '免费（自带 API Key）',
-    freeTier: '完全免费开源',
-    baseModel: '支持所有主流模型',
-    contextWindow: '取决于所选模型',
-    codeCompletion: 3,
-    chatQuality: 4,
-    agentMode: 4,
-    codebaseUnderstanding: 4,
-    multiFile: 5,
-    terminalIntegration: 5,
-    mcpSupport: false,
-    highlights: ['完全开源免费', '支持任意 LLM', 'Git 深度集成', '多文件编辑能力强'],
-    weaknesses: ['无 GUI', '需要自备 API Key', '上手门槛较高'],
-    bestFor: '开源爱好者 / 自托管需求 / 成本敏感',
-    color: '#00b894',
-    badge: '🆓 开源免费',
-  },
-];
-
-const SCORE_LABELS = {
-  codeCompletion: '代码补全',
-  chatQuality: '对话质量',
-  agentMode: 'Agent 能力',
-  codebaseUnderstanding: '代码库理解',
-  multiFile: '多文件编辑',
-  terminalIntegration: '终端集成',
-};
-
-function ScoreBar({ score, color }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <div className="flex gap-0.5">
-        {[1, 2, 3, 4, 5].map(i => (
-          <div key={i} className="w-3 h-3 rounded-sm transition-all"
-            style={{ background: i <= score ? color : '#e5e7eb' }} />
-        ))}
-      </div>
-      <span className="text-[10px] text-gray-400 font-mono">{score}/5</span>
-    </div>
-  );
-}
-
-function CodingToolsMatrix() {
-  const [selectedTool, setSelectedTool] = useState(null);
-  const [compareMode, setCompareMode] = useState(false);
-  const [compareList, setCompareList] = useState([]);
-
-  const toggleCompare = (id) => {
-    setCompareList(prev =>
-      prev.includes(id) ? prev.filter(x => x !== id) : prev.length < 3 ? [...prev, id] : prev
-    );
-  };
-
-  const compareTools = AI_CODING_TOOLS.filter(t => compareList.includes(t.id));
-
-  return (
-    <div>
-      {/* 说明 */}
-      <div className="mb-5 p-4 rounded-2xl border border-[#ffa657]/20 bg-[#ffa657]/[0.03] flex items-start gap-3">
-        <span className="text-xl flex-shrink-0">⚔️</span>
-        <div>
-          <p className="text-sm font-semibold text-gray-800 mb-0.5">AI 编程工具横向对比</p>
-          <p className="text-xs text-gray-500 leading-relaxed">
-            覆盖 Cursor / GitHub Copilot / Windsurf / Claude Code / Devin / Aider 六大主流工具，从补全质量、Agent 能力、价格等维度横向对比，帮助你选择最适合的工具。
-            数据更新于 2026-04-22。
-          </p>
-        </div>
-      </div>
-
-      {/* 对比模式切换 */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-xs text-gray-500">
-          {compareMode ? `已选 ${compareList.length}/3 个工具进行对比` : '点击卡片查看详情'}
-        </p>
-        <button onClick={() => { setCompareMode(!compareMode); setCompareList([]); setSelectedTool(null); }}
-          className={`px-3 py-1.5 text-xs font-medium rounded-xl border transition-all ${compareMode ? 'bg-[#ffa657]/10 text-[#ffa657] border-[#ffa657]/30' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'}`}>
-          {compareMode ? '退出对比模式' : '⚖️ 对比模式'}
-        </button>
-      </div>
-
-      {/* 工具卡片网格 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
-        {AI_CODING_TOOLS.map(tool => {
-          const isSelected = compareMode ? compareList.includes(tool.id) : selectedTool?.id === tool.id;
-          return (
-            <div key={tool.id}
-              onClick={() => compareMode ? toggleCompare(tool.id) : setSelectedTool(selectedTool?.id === tool.id ? null : tool)}
-              className={`rounded-2xl border p-4 cursor-pointer transition-all ${isSelected ? 'shadow-md' : 'bg-white border-gray-100 hover:shadow-sm hover:border-gray-200'}`}
-              style={isSelected ? { borderColor: tool.color + '50', background: tool.color + '08' } : {}}>
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">{tool.logo}</span>
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="text-sm font-bold text-gray-800">{tool.name}</h3>
-                      {compareMode && isSelected && <span className="text-[9px] px-1.5 py-0.5 rounded-full text-white font-bold" style={{ background: tool.color }}>✓</span>}
-                    </div>
-                    <p className="text-[10px] text-gray-400">{tool.tagline}</p>
-                  </div>
-                </div>
-                <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white flex-shrink-0"
-                  style={{ background: tool.color }}>{tool.badge}</span>
-              </div>
-
-              {/* 核心评分 */}
-              <div className="space-y-1.5 mb-3">
-                {['codeCompletion', 'agentMode', 'codebaseUnderstanding'].map(key => (
-                  <div key={key} className="flex items-center justify-between">
-                    <span className="text-[10px] text-gray-400 w-20 flex-shrink-0">{SCORE_LABELS[key]}</span>
-                    <ScoreBar score={tool[key]} color={tool.color} />
-                  </div>
-                ))}
-              </div>
-
-              {/* 价格 */}
-              <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                <span className="text-[10px] text-gray-400">💰 {tool.pricing}</span>
-                <span className="text-[10px] text-gray-400">{tool.freeTier}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* 详情面板 */}
-      {!compareMode && selectedTool && (
-        <div className="rounded-2xl border p-5 bg-white" style={{ borderColor: selectedTool.color + '30' }}>
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{selectedTool.logo}</span>
-              <div>
-                <h3 className="text-base font-bold text-gray-800">{selectedTool.name}</h3>
-                <p className="text-xs text-gray-400">{selectedTool.tagline} · <a href={selectedTool.url} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: selectedTool.color }}>{selectedTool.url.replace('https://', '')}</a></p>
-              </div>
-            </div>
-            <button onClick={() => setSelectedTool(null)} className="text-gray-300 hover:text-gray-500 text-lg">×</button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* 全部评分 */}
-            <div>
-              <p className="text-xs font-semibold text-gray-600 mb-2">能力评分</p>
-              <div className="space-y-2">
-                {Object.keys(SCORE_LABELS).map(key => (
-                  <div key={key} className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500 w-24 flex-shrink-0">{SCORE_LABELS[key]}</span>
-                    <ScoreBar score={selectedTool[key]} color={selectedTool.color} />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="text-xs text-gray-500">MCP 支持</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${selectedTool.mcpSupport ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
-                  {selectedTool.mcpSupport ? '✓ 支持' : '✗ 不支持'}
-                </span>
-              </div>
-            </div>
-
-            {/* 优缺点 */}
-            <div className="space-y-3">
-              <div>
-                <p className="text-xs font-semibold text-gray-600 mb-1.5">✅ 亮点</p>
-                <ul className="space-y-1">
-                  {selectedTool.highlights.map((h, i) => (
-                    <li key={i} className="text-xs text-gray-500 flex items-start gap-1.5">
-                      <span style={{ color: selectedTool.color }} className="flex-shrink-0 mt-0.5">•</span>{h}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-gray-600 mb-1.5">⚠️ 不足</p>
-                <ul className="space-y-1">
-                  {selectedTool.weaknesses.map((w, i) => (
-                    <li key={i} className="text-xs text-gray-400 flex items-start gap-1.5">
-                      <span className="flex-shrink-0 mt-0.5">•</span>{w}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="pt-2 border-t border-gray-50">
-                <p className="text-xs text-gray-500">🎯 <span className="font-medium">最适合</span>：{selectedTool.bestFor}</p>
-                <p className="text-xs text-gray-500 mt-1">🧠 <span className="font-medium">底层模型</span>：{selectedTool.baseModel}</p>
-                <p className="text-xs text-gray-500 mt-1">📏 <span className="font-medium">上下文</span>：{selectedTool.contextWindow}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 对比面板 */}
-      {compareMode && compareList.length >= 2 && (
-        <div className="rounded-2xl border border-gray-100 bg-white overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-gray-100">
-                <th className="text-left p-3 text-gray-400 font-medium w-28">维度</th>
-                {compareTools.map(t => (
-                  <th key={t.id} className="p-3 text-center">
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="text-base">{t.logo}</span>
-                      <span className="font-bold text-gray-800">{t.name}</span>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(SCORE_LABELS).map(key => (
-                <tr key={key} className="border-b border-gray-50">
-                  <td className="p-3 text-gray-500">{SCORE_LABELS[key]}</td>
-                  {compareTools.map(t => (
-                    <td key={t.id} className="p-3 text-center">
-                      <ScoreBar score={t[key]} color={t.color} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-              <tr className="border-b border-gray-50">
-                <td className="p-3 text-gray-500">MCP 支持</td>
-                {compareTools.map(t => (
-                  <td key={t.id} className="p-3 text-center">
-                    <span className={`px-1.5 py-0.5 rounded-full font-medium ${t.mcpSupport ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
-                      {t.mcpSupport ? '✓' : '✗'}
-                    </span>
-                  </td>
-                ))}
-              </tr>
-              <tr className="border-b border-gray-50">
-                <td className="p-3 text-gray-500">价格</td>
-                {compareTools.map(t => (
-                  <td key={t.id} className="p-3 text-center text-gray-600">{t.pricing}</td>
-                ))}
-              </tr>
-              <tr>
-                <td className="p-3 text-gray-500">最适合</td>
-                {compareTools.map(t => (
-                  <td key={t.id} className="p-3 text-center text-gray-500">{t.bestFor}</td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
-    </div>
-  );
-}
-
 const TABS = [
-  { id: 'tokenizer', label: 'Tokenizer', icon: '🔬', desc: 'BPE 分词可视化 · 查看真实 token 切分' },
-  { id: 'mcp', label: 'MCP 目录', icon: '🔌', desc: 'MCP Server 生态目录 · 官方 + 社区精选' },
-  { id: 'coding-tools', label: 'AI 编程工具', icon: '⚔️', desc: 'Cursor vs Copilot vs Windsurf 横向对比' },
-  { id: 'prompts', label: 'Prompt 模板库', icon: '📌', desc: '8 个常用高质量模板' },
+  { id: 'simulators', label: '仿真工具', icon: '🌐', desc: '自动驾驶 / 机器人 / 物理仿真 / 神经世界模型' },
+  { id: 'tokenizer',  label: 'Tokenizer', icon: '🔬', desc: 'BPE 分词可视化 · 查看真实 token 切分' },
 ];
 
 export default function ToolsPage() {
-  const [activeTab, setActiveTab] = useState('tokenizer');
+  const [activeTab, setActiveTab] = useState('simulators');
   const active = TABS.find(t => t.id === activeTab);
 
   return (
     <>
-      
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-        {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-2xl font-bold text-gray-900">🧰 工具箱</h1>
             <span className="px-2.5 py-0.5 text-xs font-medium bg-purple-50 text-purple-600 border border-purple-100 rounded-full">实用工具</span>
           </div>
-          <p className="text-sm text-gray-500">LLM 开发者日常必备 — Tokenizer 可视化 · MCP 目录 · AI 编程工具对比 · Prompt 模板</p>
+          <p className="text-sm text-gray-500">仿真工具导航 · Tokenizer 可视化</p>
         </div>
 
-        {/* Tab bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+        <div className="grid grid-cols-2 gap-2 mb-6">
           {TABS.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`flex flex-col items-center gap-1 py-3 px-2 rounded-2xl border text-center transition-all ${activeTab === tab.id ? 'bg-white border-[#6c5ce7]/20 shadow-sm' : 'bg-gray-50 border-transparent hover:bg-white hover:border-gray-100'}`}>
@@ -1290,11 +740,14 @@ export default function ToolsPage() {
           ))}
         </div>
 
-        {/* Content */}
+        <div className="flex items-center gap-2 mb-5">
+          <span className="text-base">{active?.icon}</span>
+          <h2 className="text-sm font-semibold text-gray-700">{active?.label}</h2>
+          <span className="text-xs text-gray-400">· {active?.desc}</span>
+        </div>
+
+        {activeTab === 'simulators' && <SimulatorsDirectory />}
         {activeTab === 'tokenizer' && <TokenizerTool />}
-        {activeTab === 'mcp' && <MCPDirectory />}
-        {activeTab === 'coding-tools' && <CodingToolsMatrix />}
-        {activeTab === 'prompts' && <PromptTemplates templates={PROMPT_TEMPLATES} />}
       </div>
       <Footer />
     </>
