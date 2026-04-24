@@ -2006,7 +2006,7 @@ export const SITE_ROADMAP = {
     ],
     publisherTasks: [
       { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx"', done: false },
-      { source: 'techDebts.大组件未做懒加载+productPlans.ux.大组件懒加载', action: '将 src/app/strategy/page.js 中的 StrategyViz 从直接 import 改为 next/dynamic 懒加载（其余 3 个已完成），改完后更新 techDebts 将此条标记为 resolved', files: ['src/app/strategy/page.js'], verify: 'grep -n "dynamic.*StrategyViz\\|import StrategyViz" src/app/strategy/page.js', done: false },
+      { source: 'techDebts.大组件未做懒加载+productPlans.ux.大组件懒加载', action: '将 src/app/strategy/page.js 中的 StrategyViz 从直接 import 改为 next/dynamic 懒加载（其余 3 个已完成），改完后更新 techDebts 将此条标记为 resolved', files: ['src/app/strategy/page.js'], verify: 'grep -n "dynamic.*StrategyViz\\|import StrategyViz" src/app/strategy/page.js', done: true },
     ],
     collectorFocus: [
       { direction: 'Agent 生态（企业平台 + 记忆引擎 + 框架）', reason: 'topOpportunities 3 个 P0 均与 Agent 相关，coverageGaps 标记为严重缺失', targetCount: 3 },
@@ -2049,7 +2049,6 @@ export const SITE_ROADMAP = {
         name: '体验与性能',
         cadence: '中期',
         items: [
-          { priority: '🔴', title: '大组件懒加载', desc: 'VlaArchViz / VlaNotebook / DataInfraViz / StrategyViz 四个大文件（合计 ~480KB）按需加载' },
           { priority: '🟡', title: '移动端可视化适配', desc: 'SVG 架构图/模型对比在窄屏下挤压严重' },
           { priority: '🟢', title: '暗色模式', desc: '全站 Dark Mode 支持' },
         ],
@@ -2062,12 +2061,12 @@ export const SITE_ROADMAP = {
     lastUpdated: '2026-04-23',
     note: '工程优化清单。严重程度：🔴 高 / 🟡 中 / 🟢 低。',
     items: [
-      { severity: '🔴', title: '4 个大组件未做懒加载', desc: 'VlaArchViz(~120KB) / VlaNotebook(~85KB) / DataInfraViz(~165KB) / StrategyViz(~110KB) 全量加载，严重影响首屏性能', status: '待统一拆分' },
       { severity: '🔴', title: 'VLA 实验使用模拟数据', desc: '全链路实验的训练数据为随机生成，非真实 nuScenes 数据', status: '待接入真实数据' },
       { severity: '🟡', title: '移动端可视化体验差', desc: 'SVG 架构图/模型对比在窄屏下挤压变形', status: '待适配' },
-      { severity: '🟢', title: 'Navbar.js 遗留文件', desc: '已无页面引用，可直接删除', status: '待清理' },
+      { severity: '🟢', title: 'Navbar.js 遗留文件', desc: '已无页面引用，可直接删除', status: '待人工执行 rm src/components/Navbar.js' },
     ],
     resolved: [
+      '4 个大组件全部完成懒加载（DataInfraViz/VlaArchViz/VlaNotebook 已完成 + StrategyViz 本轮完成 4/23）',
       'data-infra/ 页面已完整上线（DataInfraViz 12 Tab）',
       'gallery/ 和 benchmarks/ 以 redirect("/models/") 处理，统一入口',
       '工具箱清理（去 MCP 目录 / AI 编程工具对比 / Prompt 模板库，改为仿真工具 + Tokenizer 两 Tab）',
