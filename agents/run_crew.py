@@ -464,6 +464,83 @@ BOOK_TOPICS = [
             '可以进一步优化的方向——2026 前沿与未来',
         ],
     },
+    # ── 开源项目源码解析系列 ──────────────────────────────────────
+    {
+        'title': 'Apache Iceberg 源码深度解析（v1.10.1）',
+        'slug_prefix': 'iceberg-src',
+        'tags': ['Iceberg', '数据湖仓', '源码解析', '开放表格式'],
+        'description': '基于 Apache Iceberg 1.10.1 源码，深度解析开放表格式的核心设计：三层元数据、Snapshot 隔离、Schema/Partition 演化、Compaction、行级删除与 PyIceberg',
+        'source_repo': 'https://github.com/apache/iceberg',
+        'source_version': 'apache-iceberg-1.10.1',
+        'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/iceberg-1.10.1',
+        'chapters': [
+            'Iceberg 架构总览——为什么需要开放表格式（v1.10.1 核心模块）',
+            '三层元数据结构——Catalog / TableMetadata / Snapshot 源码剖析',
+            'Snapshot 隔离与时间旅行——MVCC 实现与增量读取 API',
+            'Schema 演化——field-id 机制与安全类型变更源码解析',
+            'Partition Evolution——隐式分区与 Transform 源码实现',
+            'Compaction 深度解析——RewriteDataFilesAction / Sort / Z-Order',
+            '行级删除——Position Delete vs Equality Delete 与 MERGE INTO 实现',
+            'PyIceberg——Python 原生 API 与 REST Catalog 集成',
+        ],
+    },
+    {
+        'title': 'Apache Airflow 3.x 源码深度解析（v3.2.1）',
+        'slug_prefix': 'airflow-src',
+        'tags': ['Airflow', '工作流编排', '源码解析', 'Kubernetes'],
+        'description': '基于 Apache Airflow 3.2.1 源码，深度解析 Airflow 3.x 重大架构变革：Task SDK 独立化、FastAPI 重写、Asset Partitioning、DAG Bundle、Scheduler 调度循环与 KubernetesExecutor',
+        'source_repo': 'https://github.com/apache/airflow',
+        'source_version': '3.2.1',
+        'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/airflow-3.2.1',
+        'chapters': [
+            'Airflow 3.x 架构革命——Task SDK 独立化与 FastAPI 重写（vs 2.x 对比）',
+            'Scheduler 调度循环——_run_scheduler_loop() 与 TaskInstance 状态机源码',
+            'KubernetesExecutor——execute_async() / sync() 与 Pod Spec 动态生成',
+            'DAG 定义新范式——TaskFlow API / @task 装饰器 / Asset 数据感知调度',
+            'Asset Partitioning——3.2 新特性：分区级数据感知触发源码解析',
+            'Deferrable Operator——Triggerer 异步等待机制与 asyncio 实现',
+            'DAG Bundle 与 Git 同步——3.x 新 DAG 分发机制源码剖析',
+            '监控与可观测性——StatsD 指标 / OpenTelemetry / 告警规则',
+        ],
+    },
+    {
+        'title': 'Unity Catalog 源码深度解析（v0.4.1）',
+        'slug_prefix': 'unitycatalog-src',
+        'tags': ['Unity Catalog', '数据治理', '源码解析', 'Iceberg', 'Delta Lake'],
+        'description': '基于 Unity Catalog 0.4.1 源码，深度解析开源数据目录的核心设计：三层命名空间、Iceberg REST Catalog 兼容、Delta 协议集成、权限模型（JCasbin）与 AI/ML 资产管理',
+        'source_repo': 'https://github.com/unitycatalog/unitycatalog',
+        'source_version': 'v0.4.1',
+        'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/unitycatalog-0.4.1',
+        'chapters': [
+            'Unity Catalog 架构总览——三层命名空间（Catalog/Schema/Table）与 Vert.x 服务端',
+            'REST API 设计——OpenAPI 3.0 规范与 Catalog/Schema/Table CRUD 源码',
+            'Iceberg REST Catalog 兼容——IcebergRestCatalog 接口实现源码解析',
+            'Delta 协议集成——Delta Commits API 与 Checkpoint 管理源码',
+            '权限模型——JCasbin 授权引擎与 @AuthorizeExpression 注解机制',
+            '临时凭证——S3/ADLS/GCS 临时访问凭证生成源码（STS/SAS Token）',
+            'AI/ML 资产管理——Model / Function / Volume 注册与版本管理',
+            '多引擎集成——Spark / Trino / DuckDB / PyIceberg 接入实战',
+        ],
+    },
+    {
+        'title': 'MLflow 3.x 源码深度解析（v3.11.1）',
+        'slug_prefix': 'mlflow-src',
+        'tags': ['MLflow', 'MLOps', '源码解析', '实验追踪', '模型注册'],
+        'description': '基于 MLflow 3.11.1 源码，深度解析 MLOps 平台核心：Tracking Server / Model Registry / Artifact Store 三层架构，以及 3.x 新特性：AI Gateway、Tracing、GenAI 评估与 Unity Catalog 集成',
+        'source_repo': 'https://github.com/mlflow/mlflow',
+        'source_version': 'v3.11.1',
+        'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/mlflow-3.11.1',
+        'chapters': [
+            'MLflow 3.x 架构总览——Tracking / Registry / Artifacts 三层设计与 3.x 新特性',
+            'Tracking Server 源码——Run / Metric / Param / Tag 的存储与查询实现',
+            'Fluent API 源码——mlflow.start_run() / log_metric() 的调用链路解析',
+            'Model Registry 源码——RegisteredModel / ModelVersion 状态机与审批流',
+            'Artifact Store——S3/ADLS/GCS 多后端抽象与 MLmodel 格式规范',
+            'MLflow Tracing——3.x 新特性：LLM 调用链路追踪与 OpenTelemetry 集成',
+            'AI Gateway——统一 LLM 代理：OpenAI/Anthropic/Bedrock 路由源码解析',
+            'GenAI 评估——mlflow.evaluate() 与 LLM-as-Judge 评估框架源码',
+        ],
+    },
 ]
 
 
@@ -595,6 +672,20 @@ def run_books():
         book_slug = book.get('slug_prefix', slugify(book['title']))
         print(f"  📚 {book['title']}")
 
+        # 源码解析书籍：预加载源码上下文
+        source_context = None
+        if 'source_path' in book:
+            source_path = Path(book['source_path'])
+            if source_path.exists():
+                print(f"    📂 源码路径: {source_path} (版本: {book.get('source_version', 'unknown')})")
+                source_context = {
+                    'repo': book.get('source_repo', ''),
+                    'version': book.get('source_version', ''),
+                    'path': str(source_path),
+                }
+            else:
+                print(f"    ⚠️  源码路径不存在: {source_path}，请先 git clone")
+
         for i, chapter in enumerate(book['chapters'], 1):
             slug = f"{book_slug}-ch{i:02d}"
             filepath = BOOKS_DIR / f"{slug}.md"
@@ -609,8 +700,17 @@ def run_books():
                     print(f"      ⏭️  跳过（已有 {line_count} 行）")
                     continue
 
-            # 运行三角色流水线
+            # 构建主题字符串（源码解析书籍注入版本和路径信息）
             topic_str = f"《{book['title']}》第 {i} 章: {chapter}"
+            if source_context:
+                topic_str += (
+                    f"\n\n[源码信息] 版本: {source_context['version']}"
+                    f" | 仓库: {source_context['repo']}"
+                    f" | 本地路径: {source_context['path']}"
+                    f"\n请基于该版本的真实源码进行分析，引用具体的类名、方法名和文件路径。"
+                )
+
+            # 运行三角色流水线
             body = run_pipeline(topic_str, existing, 'book_chapter')
             if not body:
                 body = generate_book_chapter_template(book, chapter, i)
@@ -628,6 +728,9 @@ def run_books():
                 'tags': book['tags'],
                 'type': 'book',
             }
+            if source_context:
+                frontmatter['sourceVersion'] = source_context['version']
+                frontmatter['sourceRepo'] = source_context['repo']
 
             save_markdown(BOOKS_DIR, slug, frontmatter, body)
 
