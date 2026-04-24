@@ -1666,96 +1666,382 @@ function PipelineTab() {
 // ─────────────────────────────────────────────────────────────
 function MLOpsTab() {
   const { experimentPlatform, cicd, abTesting, modelRegistry } = MLOPS_DATA;
+  const [activeSubTab, setActiveSubTab] = useState('practice');
+
+  const SUB_TABS = [
+    { id: 'practice', label: '平台实践', icon: '🧪' },
+    { id: 'source',   label: '源码解析', icon: '🔬' },
+  ];
 
   return (
     <div className="space-y-4">
-      {/* 实验追踪 */}
-      <SectionCard icon="📈" title="实验追踪 & 模型管理" desc={experimentPlatform.tracking.name}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-          {experimentPlatform.tracking.features.map(f => (
-            <div key={f.name} className="flex items-start gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-              <span className="text-sm flex-shrink-0">{f.icon}</span>
-              <div>
-                <div className="text-xs font-semibold text-gray-700">{f.name}</div>
-                <div className="text-[10px] text-gray-500">{f.desc}</div>
+      {/* Sub Tab 切换 */}
+      <div className="flex gap-1.5 flex-wrap">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveSubTab(t.id)}
+            className="text-xs px-3 py-1.5 rounded-full border transition-all"
+            style={{
+              background: activeSubTab === t.id ? '#3fb950' : 'transparent',
+              color: activeSubTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeSubTab === t.id ? '#3fb950' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 平台实践 */}
+      {activeSubTab === 'practice' && (
+        <div className="space-y-4">
+          {/* 实验追踪 */}
+          <SectionCard icon="📈" title="实验追踪 & 模型管理" desc={experimentPlatform.tracking.name}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+              {experimentPlatform.tracking.features.map(f => (
+                <div key={f.name} className="flex items-start gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                  <span className="text-sm flex-shrink-0">{f.icon}</span>
+                  <div>
+                    <div className="text-xs font-semibold text-gray-700">{f.name}</div>
+                    <div className="text-[10px] text-gray-500">{f.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-gray-100 pt-3">
+              <div className="text-[10px] font-semibold text-gray-600 mb-2">🏷️ {experimentPlatform.dataVersion.name}</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {experimentPlatform.dataVersion.features.map(f => (
+                  <div key={f.name} className="flex items-start gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                    <span className="text-sm flex-shrink-0">{f.icon}</span>
+                    <div>
+                      <div className="text-xs font-semibold text-gray-700">{f.name}</div>
+                      <div className="text-[10px] text-gray-500">{f.desc}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-        <div className="border-t border-gray-100 pt-3">
-          <div className="text-[10px] font-semibold text-gray-600 mb-2">🏷️ {experimentPlatform.dataVersion.name}</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {experimentPlatform.dataVersion.features.map(f => (
-              <div key={f.name} className="flex items-start gap-2 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-                <span className="text-sm flex-shrink-0">{f.icon}</span>
-                <div>
-                  <div className="text-xs font-semibold text-gray-700">{f.name}</div>
-                  <div className="text-[10px] text-gray-500">{f.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </SectionCard>
+          </SectionCard>
 
-      {/* CI/CD */}
-      <SectionCard icon="🔄" title="CI/CD 流水线" desc="从代码提交到模型上线的自动化流程">
-        <div className="space-y-2">
-          {cicd.stages.map((s, i) => (
-            <div key={s.name} className="flex items-center gap-3">
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-[#3fb950]/10 border border-[#3fb950]/30 flex items-center justify-center text-sm flex-shrink-0">
-                  {s.icon}
+          {/* CI/CD */}
+          <SectionCard icon="🔄" title="CI/CD 流水线" desc="从代码提交到模型上线的自动化流程">
+            <div className="space-y-2">
+              {cicd.stages.map((s, i) => (
+                <div key={s.name} className="flex items-center gap-3">
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 rounded-full bg-[#3fb950]/10 border border-[#3fb950]/30 flex items-center justify-center text-sm flex-shrink-0">
+                      {s.icon}
+                    </div>
+                    {i < cicd.stages.length - 1 && <div className="w-px h-4 bg-[#3fb950]/20 mt-1" />}
+                  </div>
+                  <div className="flex-1 rounded-xl border border-gray-100 bg-gray-50/30 p-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-gray-700">{s.name}</span>
+                      <span className="text-[10px] text-gray-500">{s.desc}</span>
+                      <Badge color="#3fb950">{s.tool}</Badge>
+                    </div>
+                  </div>
                 </div>
-                {i < cicd.stages.length - 1 && <div className="w-px h-4 bg-[#3fb950]/20 mt-1" />}
-              </div>
-              <div className="flex-1 rounded-xl border border-gray-100 bg-gray-50/30 p-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-gray-700">{s.name}</span>
-                  <span className="text-[10px] text-gray-500">{s.desc}</span>
-                  <Badge color="#3fb950">{s.tool}</Badge>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </SectionCard>
+          </SectionCard>
 
-      {/* A/B 测试 */}
-      <SectionCard icon="🚦" title="A/B 测试 & 灰度发布" desc={`策略: ${abTesting.strategy}`}>
-        <div className="space-y-2">
-          {abTesting.steps.map(s => {
-            const phaseColors = { Shadow: '#6c5ce7', 'Canary 1%': '#ffa657', 'Canary 5%': '#fd79a8', 'Canary 20%': '#00cec9', 'Full Rollout': '#3fb950' };
-            return (
-              <div key={s.phase} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-                <Badge color={phaseColors[s.phase] || '#6c5ce7'}>{s.phase}</Badge>
-                <span className="text-[10px] font-mono text-gray-600 w-16">{s.traffic}</span>
-                <span className="text-[10px] text-gray-400 w-12">{s.duration}</span>
-                <span className="text-[10px] text-gray-500 flex-1">{s.criteria}</span>
-              </div>
-            );
-          })}
-        </div>
-      </SectionCard>
+          {/* A/B 测试 */}
+          <SectionCard icon="🚦" title="A/B 测试 & 灰度发布" desc={`策略: ${abTesting.strategy}`}>
+            <div className="space-y-2">
+              {abTesting.steps.map(s => {
+                const phaseColors = { Shadow: '#6c5ce7', 'Canary 1%': '#ffa657', 'Canary 5%': '#fd79a8', 'Canary 20%': '#00cec9', 'Full Rollout': '#3fb950' };
+                return (
+                  <div key={s.phase} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                    <Badge color={phaseColors[s.phase] || '#6c5ce7'}>{s.phase}</Badge>
+                    <span className="text-[10px] font-mono text-gray-600 w-16">{s.traffic}</span>
+                    <span className="text-[10px] text-gray-400 w-12">{s.duration}</span>
+                    <span className="text-[10px] text-gray-500 flex-1">{s.criteria}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </SectionCard>
 
-      {/* 模型注册表 */}
-      <SectionCard icon="📦" title="模型注册表" desc="所有模型版本的统一管理">
-        <div className="space-y-2">
-          {modelRegistry.map(m => {
-            const statusColors = { active: '#3fb950', testing: '#ffa657', archived: '#94a3b8' };
-            const stageColors = { Production: '#3fb950', Staging: '#ffa657', Archived: '#94a3b8' };
-            return (
-              <div key={m.name} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: statusColors[m.status] }} />
-                <span className="text-xs font-mono font-semibold text-gray-700 flex-1 min-w-0 truncate">{m.name}</span>
-                <Badge color={stageColors[m.stage]}>{m.stage}</Badge>
-                <span className="text-[9px] font-mono text-gray-400 hidden sm:inline">{m.metrics}</span>
-                <span className="text-[9px] text-gray-300">{m.date}</span>
-              </div>
-            );
-          })}
+          {/* 模型注册表 */}
+          <SectionCard icon="📦" title="模型注册表" desc="所有模型版本的统一管理">
+            <div className="space-y-2">
+              {modelRegistry.map(m => {
+                const statusColors = { active: '#3fb950', testing: '#ffa657', archived: '#94a3b8' };
+                const stageColors = { Production: '#3fb950', Staging: '#ffa657', Archived: '#94a3b8' };
+                return (
+                  <div key={m.name} className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: statusColors[m.status] }} />
+                    <span className="text-xs font-mono font-semibold text-gray-700 flex-1 min-w-0 truncate">{m.name}</span>
+                    <Badge color={stageColors[m.stage]}>{m.stage}</Badge>
+                    <span className="text-[9px] font-mono text-gray-400 hidden sm:inline">{m.metrics}</span>
+                    <span className="text-[9px] text-gray-300">{m.date}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </SectionCard>
         </div>
-      </SectionCard>
+      )}
+
+      {/* MLflow 源码解析 */}
+      {activeSubTab === 'source' && (
+        <div className="space-y-4">
+          {/* 仓库概览 */}
+          <SectionCard icon="📦" title="仓库概览" desc="mlflow/mlflow · GitHub · Apache-2.0 · 全球最流行的 MLOps 开源平台">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+              {[
+                { label: 'Stars', value: '19k+', icon: '⭐', color: '#f39c12' },
+                { label: 'Commits', value: '11,915+', icon: '📝', color: '#6c5ce7' },
+                { label: '主语言', value: 'Python', icon: '🐍', color: '#3fb950' },
+                { label: '最新版本', value: 'v3.11.1', icon: '🏷️', color: '#e84393' },
+              ].map(m => (
+                <div key={m.label} className="rounded-xl border border-gray-100 bg-gray-50/50 p-3 text-center">
+                  <div className="text-lg mb-1">{m.icon}</div>
+                  <div className="text-sm font-bold font-mono" style={{ color: m.color }}>{m.value}</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">{m.label}</div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {['Python', 'TypeScript', 'Java', 'R', 'Scala', 'Shell'].map(lang => (
+                <span key={lang} className="text-[9px] px-2 py-0.5 rounded-full font-mono bg-gray-100 text-gray-500">{lang}</span>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* 顶层目录结构 */}
+          <SectionCard icon="🗂️" title="顶层目录结构" desc="Python 为主体，支持 50+ ML 框架集成，近年大幅扩展 LLM/Agent 能力">
+            <pre className="text-[10px] leading-[1.6] text-gray-700 bg-gray-50 border border-gray-200 p-4 rounded-xl overflow-x-auto font-mono whitespace-pre">{`mlflow/
+├── mlflow/                    # 核心 Python 包
+│   ├── tracking/              # 实验追踪（核心模块）
+│   │   ├── client.py          # MlflowClient 主入口
+│   │   ├── fluent.py          # mlflow.log_metric() 等顶层 API
+│   │   ├── _tracking_service/ # TrackingService 抽象层
+│   │   └── _model_registry/   # 模型注册服务
+│   ├── store/                 # 存储后端抽象
+│   │   ├── tracking/          # 实验数据存储（SQLAlchemy / FileStore）
+│   │   ├── model_registry/    # 模型注册存储
+│   │   ├── artifact/          # Artifact 存储（S3/GCS/ADLS/HDFS）
+│   │   ├── _unity_catalog/    # Unity Catalog 后端适配
+│   │   └── db_migrations/     # Alembic 数据库迁移脚本
+│   ├── models/                # MLflow Model 格式 & Flavor 系统
+│   ├── entities/              # 数据模型（Run/Experiment/Metric 等）
+│   ├── tracing/               # LLM 追踪（2024 新增，核心增长点）
+│   ├── evaluation/            # 模型评估框架
+│   ├── deployments/           # 模型部署（REST API / Kubernetes）
+│   ├── server/                # MLflow Tracking Server（Flask）
+│   ├── gateway/               # AI Gateway（LLM 统一代理）
+│   ├── mcp/                   # MCP Server 集成（2025 新增）
+│   │
+│   ├── # ── LLM/Agent 框架集成（近年大幅扩展）──
+│   ├── langchain/             # LangChain 自动追踪
+│   ├── openai/                # OpenAI API 追踪
+│   ├── anthropic/             # Anthropic Claude 追踪
+│   ├── gemini/                # Google Gemini 追踪
+│   ├── llama_index/           # LlamaIndex 追踪
+│   ├── ag2/ agno/ crewai/     # Multi-Agent 框架追踪
+│   ├── smolagents/ strands/   # 新兴 Agent 框架
+│   │
+│   ├── # ── 传统 ML 框架集成 ──
+│   ├── sklearn/ pytorch/ tensorflow/ keras/
+│   ├── xgboost/ lightgbm/ catboost/ statsmodels/
+│   └── spark/ pyspark/ transformers/ diffusers/
+│
+├── tests/                     # 测试套件（与 mlflow/ 目录镜像）
+├── docs/                      # 文档（MkDocs）
+└── requirements/              # 依赖管理（按功能分文件）`}</pre>
+          </SectionCard>
+
+          {/* 核心模块解析 */}
+          <SectionCard icon="🔍" title="核心模块深度解析" desc="从实验记录到模型部署的完整链路">
+            <div className="space-y-3">
+              {[
+                {
+                  module: 'tracking/ — 实验追踪核心',
+                  path: 'mlflow/tracking/',
+                  role: '最核心模块',
+                  color: '#3fb950',
+                  desc: 'MLflow 的核心价值所在。fluent.py 提供 mlflow.start_run() / log_metric() 等顶层 API，client.py 提供 MlflowClient 面向对象接口。底层通过 TrackingServiceInterface 抽象，支持本地文件、SQLAlchemy 数据库、远程 REST Server 三种后端。',
+                  keyPoints: [
+                    'fluent.py：mlflow.start_run() 创建 Run 上下文，自动记录 Git commit / 环境信息',
+                    'client.py：MlflowClient 封装所有 REST API 调用，支持 async 模式（v3.11 新增）',
+                    '_tracking_service/：TrackingServiceInterface 抽象，RestStore / SqlAlchemyStore / FileStore 三种实现',
+                    'context/：自动检测 Databricks / GitHub Actions / Kubernetes 运行环境',
+                    'request_auth/：支持 Bearer Token / Basic Auth / Databricks PAT 认证',
+                  ],
+                },
+                {
+                  module: 'store/ — 存储后端抽象',
+                  path: 'mlflow/store/',
+                  role: '多后端存储',
+                  color: '#6c5ce7',
+                  desc: '存储层完全抽象，支持多种后端。tracking/ 存实验元数据，artifact/ 存模型文件和大型 Artifact，model_registry/ 存模型版本信息。_unity_catalog/ 是 Databricks UC 的专用适配器。',
+                  keyPoints: [
+                    'tracking/sqlalchemy_store.py：SQLAlchemy ORM，支持 MySQL/PostgreSQL/SQLite',
+                    'tracking/file_store.py：本地文件系统存储，开发调试首选',
+                    'artifact/s3_artifact_repo.py：S3 Artifact 存储，支持 STS 临时凭证',
+                    '_unity_catalog/：UC 模型注册表适配，与 Databricks 深度集成',
+                    'db_migrations/：Alembic 迁移脚本，支持跨版本数据库升级',
+                  ],
+                },
+                {
+                  module: 'tracing/ — LLM 追踪（核心增长点）',
+                  path: 'mlflow/tracing/',
+                  role: '2024 新增，快速增长',
+                  color: '#e84393',
+                  desc: '2024 年新增的 LLM 追踪模块，是 MLflow 向 AI Engineering Platform 转型的核心。自动追踪 LLM 调用链路（输入/输出/Token 用量/延迟），支持 OpenAI / Anthropic / LangChain 等主流框架的零代码自动追踪。',
+                  keyPoints: [
+                    'mlflow.tracing.enable()：一行代码开启自动追踪，无需修改业务代码',
+                    'Span 树形结构：记录完整的 LLM 调用链（Agent → Tool → LLM → Response）',
+                    'async 支持：v3.11 默认开启异步 Trace 日志，不阻塞主线程',
+                    '与 OpenTelemetry 兼容：Span 格式遵循 OTEL 标准，可导出到 Jaeger/Zipkin',
+                    'mlflow.openai.autolog() / mlflow.langchain.autolog()：框架级自动追踪',
+                  ],
+                },
+                {
+                  module: 'models/ — Model Flavor 系统',
+                  path: 'mlflow/models/',
+                  role: '模型打包标准',
+                  color: '#ffa657',
+                  desc: 'MLflow Model 是一种标准化的模型打包格式，通过 Flavor 系统支持 50+ ML 框架。每个 Flavor 定义了如何序列化/反序列化模型，以及如何部署为 REST API。MLmodel 文件是模型的元数据清单。',
+                  keyPoints: [
+                    'MLmodel 文件：YAML 格式，记录 Flavor 列表、Python 环境、签名（输入/输出 Schema）',
+                    'pyfunc Flavor：通用 Python 函数接口，任何模型都可以包装为 pyfunc',
+                    'mlflow.models.signature：自动推断模型输入/输出类型（支持 pandas/numpy/dict）',
+                    'mlflow.evaluate()：统一评估框架，支持分类/回归/LLM 评估指标',
+                    'Model Registry：Staging → Production 阶段管理 + 版本别名',
+                  ],
+                },
+                {
+                  module: 'server/ — Tracking Server',
+                  path: 'mlflow/server/',
+                  role: 'Flask REST Server',
+                  color: '#00cec9',
+                  desc: 'MLflow Tracking Server 是一个 Flask 应用，提供 REST API 供客户端记录实验数据。支持多用户并发，可配置 SQLAlchemy 后端数据库和 Artifact 存储位置。生产部署推荐使用 gunicorn + PostgreSQL + S3。',
+                  keyPoints: [
+                    'mlflow server --backend-store-uri postgresql://... --default-artifact-root s3://...',
+                    'REST API：/api/2.0/mlflow/runs/create、/api/2.0/mlflow/metrics/log 等',
+                    'Auth 插件：mlflow-server-auth 提供基础用户认证（v2.5+）',
+                    'Prometheus 指标：/metrics 端点暴露服务器运行指标',
+                    'Docker 镜像：ghcr.io/mlflow/mlflow 官方镜像，支持 K8s 部署',
+                  ],
+                },
+                {
+                  module: 'gateway/ — AI Gateway',
+                  path: 'mlflow/gateway/',
+                  role: 'LLM 统一代理',
+                  color: '#a29bfe',
+                  desc: 'MLflow AI Gateway 是一个 LLM 统一代理层，将多个 LLM Provider（OpenAI/Anthropic/Cohere/Azure OpenAI）统一为一个 API 接口。支持负载均衡、速率限制、成本追踪。',
+                  keyPoints: [
+                    '统一 /gateway/routes/{route_name}/invocations 接口',
+                    '配置文件驱动：YAML 定义路由规则和 Provider 映射',
+                    '自动追踪：所有 Gateway 调用自动记录到 MLflow Tracking',
+                    '与 mlflow.deployments 集成：模型部署到 Gateway 路由',
+                  ],
+                },
+              ].map(mod => (
+                <div key={mod.module} className="rounded-xl border p-4"
+                  style={{ borderColor: mod.color + '25', background: mod.color + '03' }}>
+                  <div className="flex items-start gap-3 mb-2">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs font-bold font-mono" style={{ color: mod.color }}>{mod.module}</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
+                          style={{ background: mod.color + '15', color: mod.color }}>{mod.role}</span>
+                      </div>
+                      <div className="text-[9px] text-gray-400 font-mono mb-1.5">{mod.path}</div>
+                      <p className="text-[10px] text-gray-600 leading-relaxed mb-2">{mod.desc}</p>
+                      <ul className="space-y-1">
+                        {mod.keyPoints.map((p, i) => (
+                          <li key={i} className="flex items-start gap-1.5 text-[10px] text-gray-500">
+                            <span style={{ color: mod.color }} className="flex-shrink-0 mt-0.5">▸</span>
+                            {p}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* 核心调用链路 */}
+          <SectionCard icon="🔄" title="核心调用链路" desc="mlflow.log_metric() 的完整执行路径">
+            <pre className="text-[10px] leading-[1.7] text-gray-700 bg-gray-50 border border-gray-200 p-4 rounded-xl overflow-x-auto font-mono whitespace-pre">{`mlflow.log_metric("loss", 0.42, step=100)
+         │
+         ▼
+fluent.py: log_metric()        # 顶层 API，获取当前 active run
+         │
+         ▼
+MlflowClient.log_metric()      # client.py，委托给 tracking service
+         │
+         ▼
+TrackingServiceInterface       # 抽象层，根据 MLFLOW_TRACKING_URI 选择实现
+    │
+    ├─► RestStore              # 远程 Server 模式
+    │       └─ POST /api/2.0/mlflow/runs/log-metric
+    │               └─ MLflow Tracking Server (Flask)
+    │                       └─ SqlAlchemyStore.log_metric()
+    │                               └─ INSERT INTO metrics (run_uuid, key, value, step)
+    │
+    ├─► SqlAlchemyStore        # 直连数据库模式
+    │       └─ SQLAlchemy ORM → PostgreSQL / MySQL / SQLite
+    │
+    └─► FileStore              # 本地文件模式（开发调试）
+            └─ 写入 mlruns/{experiment_id}/{run_id}/metrics/loss`}</pre>
+          </SectionCard>
+
+          {/* LLM 追踪调用链路 */}
+          <SectionCard icon="🤖" title="LLM 自动追踪链路" desc="mlflow.openai.autolog() 的工作原理">
+            <pre className="text-[10px] leading-[1.7] text-gray-700 bg-gray-50 border border-gray-200 p-4 rounded-xl overflow-x-auto font-mono whitespace-pre">{`mlflow.openai.autolog()        # 一行开启自动追踪
+         │
+         ▼
+Monkey-patch openai.OpenAI     # 拦截 openai 客户端
+         │
+         ▼
+用户代码: client.chat.completions.create(...)
+         │
+         ▼
+MLflow Wrapper                 # 拦截调用
+    │
+    ├─► 创建 Span（type=LLM）
+    │       ├─ span.set_inputs(messages)
+    │       ├─ span.set_attribute("model", "gpt-4o")
+    │       └─ span.set_attribute("temperature", 0.7)
+    │
+    ├─► 调用原始 OpenAI API
+    │
+    ├─► 记录响应
+    │       ├─ span.set_outputs(response.choices[0].message)
+    │       ├─ span.set_attribute("usage.prompt_tokens", N)
+    │       └─ span.set_attribute("usage.completion_tokens", M)
+    │
+    └─► 异步写入 Trace 到 Tracking Server
+            └─ POST /api/2.0/mlflow/traces`}</pre>
+          </SectionCard>
+
+          {/* 关键设计决策 */}
+          <SectionCard icon="💡" title="关键设计决策" desc="MLflow 源码中体现的架构哲学">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[
+                { title: 'Fluent API + Client API 双轨', desc: 'fluent.py 提供 mlflow.xxx() 全局函数（适合脚本/Notebook），MlflowClient 提供面向对象接口（适合生产代码）。两者底层共享同一套 TrackingService。', color: '#3fb950' },
+                { title: 'Flavor 插件系统', desc: '每个 ML 框架对应一个 Flavor 模块（mlflow/sklearn、mlflow/pytorch 等），通过统一的 save_model/load_model 接口实现框架无关的模型打包。新框架只需实现 Flavor 接口即可接入。', color: '#6c5ce7' },
+                { title: 'autolog 零侵入追踪', desc: '通过 Python monkey-patching 拦截框架的训练/推理调用，无需修改用户代码即可自动记录参数、指标、模型。每个框架的 autolog 实现在对应的 mlflow/{framework}/ 目录下。', color: '#e84393' },
+                { title: 'async Trace 日志（v3.11）', desc: '2026 年 4 月默认开启异步 Trace 日志，Trace 数据在后台线程批量写入，不阻塞主线程。对高并发 LLM 应用尤其重要，避免追踪开销影响推理延迟。', color: '#ffa657' },
+                { title: 'OpenTelemetry 兼容', desc: 'Tracing 模块的 Span 格式遵循 OpenTelemetry 标准，可以将 MLflow Trace 导出到任何 OTEL 兼容的后端（Jaeger/Zipkin/Datadog）。', color: '#00cec9' },
+                { title: 'MCP Server 集成（2025）', desc: 'mlflow/mcp/ 目录实现了 MLflow 作为 MCP Server，允许 AI Agent 通过 MCP 协议直接查询实验数据、获取模型信息，是 MLflow 向 Agentic 工作流演进的关键一步。', color: '#a29bfe' },
+              ].map(item => (
+                <div key={item.title} className="rounded-xl border p-3"
+                  style={{ borderColor: item.color + '25', background: item.color + '04' }}>
+                  <div className="text-[10px] font-bold mb-1" style={{ color: item.color }}>{item.title}</div>
+                  <p className="text-[10px] text-gray-500 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+        </div>
+      )}
     </div>
   );
 }
@@ -2948,6 +3234,7 @@ function UnityCatalogTab() {
     { id: 'lineage',   label: '数据血缘', icon: '🔗' },
     { id: 'vs',        label: 'vs MLflow',  icon: '⚖️' },
     { id: 'integrate', label: '工具集成', icon: '🔌' },
+    { id: 'source',    label: '源码解析', icon: '🔬' },
   ];
 
   return (
@@ -3104,6 +3391,219 @@ function UnityCatalogTab() {
             ))}
           </div>
         </SectionCard>
+      )}
+
+      {/* 源码解析 */}
+      {activeSubTab === 'source' && (
+        <div className="space-y-4">
+          {/* 仓库概览 */}
+          <SectionCard icon="📦" title="仓库概览" desc="unitycatalog/unitycatalog · GitHub · Apache-2.0">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+              {[
+                { label: 'Stars', value: '3.4k', icon: '⭐', color: '#f39c12' },
+                { label: 'Commits', value: '689+', icon: '📝', color: '#6c5ce7' },
+                { label: '主语言', value: 'Java 49%', icon: '☕', color: '#e84393' },
+                { label: '最新版本', value: 'v0.5.0-SNAPSHOT', icon: '🏷️', color: '#3fb950' },
+              ].map(m => (
+                <div key={m.label} className="rounded-xl border border-gray-100 bg-gray-50/50 p-3 text-center">
+                  <div className="text-lg mb-1">{m.icon}</div>
+                  <div className="text-sm font-bold font-mono" style={{ color: m.color }}>{m.value}</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">{m.label}</div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {['Java 49%', 'Python 26%', 'Jupyter 14%', 'TypeScript 8%', 'Scala 3%'].map(lang => (
+                <span key={lang} className="text-[9px] px-2 py-0.5 rounded-full font-mono bg-gray-100 text-gray-500">{lang}</span>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* 顶层目录结构 */}
+          <SectionCard icon="🗂️" title="顶层目录结构" desc="monorepo 架构，服务端 Java + Python AI SDK + TypeScript UI">
+            <pre className="text-[10px] leading-[1.6] text-gray-700 bg-gray-50 border border-gray-200 p-4 rounded-xl overflow-x-auto font-mono whitespace-pre">{`unitycatalog/
+├── server/                    # 核心服务端（Java / Scala）
+│   └── src/main/java/io/unitycatalog/server/
+│       ├── UnityCatalogServer.java   # 入口：Vert.x HTTP 服务器
+│       ├── service/                  # REST API 处理层
+│       │   ├── CatalogService.java   # Catalog CRUD
+│       │   ├── TableService.java     # Table / Delta 操作
+│       │   ├── ModelService.java     # 模型注册
+│       │   ├── SchemaService.java    # Schema 管理
+│       │   ├── VolumeService.java    # 非结构化数据卷
+│       │   ├── FunctionService.java  # UDF 注册
+│       │   ├── AuthService.java      # 认证服务
+│       │   ├── PermissionService.java# 权限管理
+│       │   ├── IcebergRestCatalogService.java  # Iceberg REST 协议
+│       │   └── credential/           # 临时凭证下发
+│       ├── persist/                  # 持久化层（Hibernate ORM）
+│       │   ├── CatalogRepository.java
+│       │   ├── TableRepository.java
+│       │   ├── ModelRepository.java
+│       │   ├── SchemaRepository.java
+│       │   ├── VolumeRepository.java
+│       │   └── dao/                  # JPA Entity 定义
+│       ├── auth/                     # 认证 & JWT
+│       ├── security/                 # 权限表达式引擎
+│       └── utils/                    # 工具类
+├── ai/                        # Python AI SDK（unitycatalog-ai）
+│   ├── core/                         # 核心 Python 客户端
+│   └── integrations/                 # LangChain / OpenAI / Anthropic 集成
+├── api/                       # OpenAPI 规范（YAML）
+├── clients/                   # 多语言客户端（Java / Python）
+├── connectors/spark/          # Apache Spark 连接器
+├── ui/                        # TypeScript React 前端
+├── integration-tests/         # 集成测试
+└── helm/                      # Kubernetes Helm Chart`}</pre>
+          </SectionCard>
+
+          {/* 核心模块解析 */}
+          <SectionCard icon="🔍" title="核心模块深度解析" desc="从 HTTP 请求到数据库持久化的完整链路">
+            <div className="space-y-3">
+              {[
+                {
+                  module: 'UnityCatalogServer.java',
+                  path: 'server/src/main/java/io/unitycatalog/server/',
+                  role: '服务入口',
+                  color: '#e84393',
+                  desc: '基于 Vert.x 构建的异步 HTTP 服务器。注册所有 REST 路由，初始化 Hibernate ORM 连接池，启动 JWT 认证中间件。支持 HTTP/1.1 和 HTTP/2。',
+                  keyPoints: [
+                    'Vert.x Web Router 注册 /api/2.1/unity-catalog/* 路由',
+                    'HikariCP 连接池 + H2（开发）/ PostgreSQL（生产）',
+                    'AuthDecorator 拦截所有请求做 JWT 验证',
+                    'URLTranscoderVerticle 处理 gRPC-HTTP 转码',
+                  ],
+                },
+                {
+                  module: 'service/ 层',
+                  path: 'server/src/main/java/io/unitycatalog/server/service/',
+                  role: 'REST API 处理',
+                  color: '#6c5ce7',
+                  desc: '每个资源类型对应一个 Service 类，实现 CRUD 操作。Service 层调用 Repository 层做持久化，调用 AuthorizedService 做权限检查。',
+                  keyPoints: [
+                    'TableService：处理 Delta Lake 表的 CRUD + 临时凭证下发',
+                    'ModelService：MLflow 兼容的模型注册 API',
+                    'IcebergRestCatalogService：实现 Iceberg REST Catalog 协议，兼容 Spark/Flink',
+                    'CredentialService：为 S3/GCS/ADLS 下发短期 STS 凭证',
+                    'PermissionService：列级权限 + 行级过滤表达式',
+                  ],
+                },
+                {
+                  module: 'persist/ 层',
+                  path: 'server/src/main/java/io/unitycatalog/server/persist/',
+                  role: '数据持久化（Hibernate ORM）',
+                  color: '#00cec9',
+                  desc: 'Repository 模式封装所有数据库操作。使用 Hibernate 6 + JPA，支持 H2（嵌入式）和 PostgreSQL（生产）。dao/ 子目录存放 JPA Entity 定义。',
+                  keyPoints: [
+                    'Repositories.java：单例工厂，统一管理所有 Repository 实例',
+                    'TableRepository：Delta 表元数据 + 分区信息 + 列血缘',
+                    'ModelRepository：模型版本 + 阶段（Staging/Production）管理',
+                    'dao/：TableInfoDAO / ModelVersionInfoDAO 等 JPA Entity',
+                    '事务管理：@Transactional 注解 + 手动 Session 管理',
+                  ],
+                },
+                {
+                  module: 'security/ 层',
+                  path: 'server/src/main/java/io/unitycatalog/server/security/',
+                  role: '权限表达式引擎',
+                  color: '#ffa657',
+                  desc: '基于 CEL（Common Expression Language）的权限表达式引擎。支持列级权限、行级过滤、资源标签匹配。AuthorizeResourceKey 统一标识被授权资源。',
+                  keyPoints: [
+                    'CEL 表达式：如 resource.owner == caller.id',
+                    'AuthorizeResourceKey：统一资源标识符（catalog.schema.table）',
+                    'SCIM 2.0 用户/组管理（Scim2UserService）',
+                    '支持 OAuth2 / OIDC 外部身份提供商',
+                  ],
+                },
+                {
+                  module: 'ai/ Python SDK',
+                  path: 'ai/core/ + ai/integrations/',
+                  role: 'AI 工具函数注册',
+                  color: '#3fb950',
+                  desc: 'unitycatalog-ai Python 包，让 AI Agent 可以发现和调用 UC 中注册的 Python 函数。支持 LangChain / OpenAI Function Calling / Anthropic Tool Use。',
+                  keyPoints: [
+                    'UnityCatalogFunctionClient：注册/调用 UC 中的 Python UDF',
+                    'UCFunctionToolkit：将 UC 函数转换为 LangChain Tool',
+                    'integrations/：LangChain / LlamaIndex / OpenAI / Anthropic 适配器',
+                    '函数签名自动转换为 JSON Schema（供 LLM 理解）',
+                  ],
+                },
+              ].map(mod => (
+                <div key={mod.module} className="rounded-xl border p-4"
+                  style={{ borderColor: mod.color + '25', background: mod.color + '03' }}>
+                  <div className="flex items-start gap-3 mb-2">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs font-bold font-mono" style={{ color: mod.color }}>{mod.module}</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded-full font-medium"
+                          style={{ background: mod.color + '15', color: mod.color }}>{mod.role}</span>
+                      </div>
+                      <div className="text-[9px] text-gray-400 font-mono mb-1.5">{mod.path}</div>
+                      <p className="text-[10px] text-gray-600 leading-relaxed mb-2">{mod.desc}</p>
+                      <ul className="space-y-1">
+                        {mod.keyPoints.map((p, i) => (
+                          <li key={i} className="flex items-start gap-1.5 text-[10px] text-gray-500">
+                            <span style={{ color: mod.color }} className="flex-shrink-0 mt-0.5">▸</span>
+                            {p}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* 核心调用链路 */}
+          <SectionCard icon="🔄" title="核心调用链路" desc="一次 CREATE TABLE 请求的完整生命周期">
+            <pre className="text-[10px] leading-[1.7] text-gray-700 bg-gray-50 border border-gray-200 p-4 rounded-xl overflow-x-auto font-mono whitespace-pre">{`HTTP POST /api/2.1/unity-catalog/tables
+         │
+         ▼
+URLTranscoderVerticle          # Vert.x 路由分发
+         │
+         ▼
+AuthDecorator.handle()         # JWT 验证 + 提取 caller identity
+         │
+         ▼
+TableService.createTable()     # 业务逻辑入口
+    │
+    ├─► AuthorizedService      # 权限检查（CEL 表达式）
+    │       └─ 检查 caller 是否有 CREATE TABLE 权限
+    │
+    ├─► 参数校验 + 类型推断
+    │       └─ Delta / Iceberg / CSV / Parquet 格式识别
+    │
+    ├─► TableRepository.create()   # 持久化
+    │       ├─ Hibernate Session.save(TableInfoDAO)
+    │       ├─ 写入列信息 ColumnInfoDAO[]
+    │       └─ 写入分区信息 PartitionInfoDAO[]
+    │
+    ├─► 血缘记录                # 记录 lineage 事件
+    │
+    └─► 返回 TableInfo JSON    # 序列化响应`}</pre>
+          </SectionCard>
+
+          {/* 关键设计决策 */}
+          <SectionCard icon="💡" title="关键设计决策" desc="UC 源码中体现的架构哲学">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[
+                { title: 'Vert.x 异步框架', desc: '选择 Vert.x 而非 Spring Boot，获得更高的并发吞吐量和更低的内存占用。所有 I/O 操作非阻塞，适合高并发元数据查询场景。', color: '#e84393' },
+                { title: 'OpenAPI 优先', desc: 'api/ 目录存放 OpenAPI YAML 规范，所有客户端代码（Java/Python/TypeScript）均由 OpenAPI Generator 自动生成，保证多语言 API 一致性。', color: '#6c5ce7' },
+                { title: 'Iceberg REST 协议兼容', desc: 'IcebergRestCatalogService 实现了 Iceberg REST Catalog 标准协议，使 Spark/Flink/Trino 可以直接将 UC 作为 Iceberg Catalog，无需额外适配层。', color: '#00cec9' },
+                { title: 'CEL 权限表达式', desc: '使用 Google CEL（Common Expression Language）而非硬编码权限逻辑，支持灵活的列级/行级权限表达式，如 resource.tags.contains("pii") → 需要 PII 权限。', color: '#ffa657' },
+                { title: '临时凭证下发', desc: 'TemporaryTableCredentialsService 为每次数据访问下发短期 STS 凭证（15 分钟），数据平面（S3/GCS）与控制平面（UC 服务器）完全解耦，数据不经过 UC 服务器。', color: '#3fb950' },
+                { title: 'Helm Chart 原生支持', desc: 'helm/ 目录提供完整的 Kubernetes Helm Chart，支持 PostgreSQL 外部数据库、TLS 证书、RBAC 权限配置，生产部署开箱即用。', color: '#a29bfe' },
+              ].map(item => (
+                <div key={item.title} className="rounded-xl border p-3"
+                  style={{ borderColor: item.color + '25', background: item.color + '04' }}>
+                  <div className="text-[10px] font-bold mb-1" style={{ color: item.color }}>{item.title}</div>
+                  <p className="text-[10px] text-gray-500 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+        </div>
       )}
     </div>
   );
