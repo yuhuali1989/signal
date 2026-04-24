@@ -434,17 +434,15 @@ Next.js 14 (App Router)  +  React  +  Tailwind CSS
 
 | 板块 | 维护方 | 数据源 |
 |------|--------|--------|
-| 📋 **本轮迭代计划** | 角色 F（调度员）每轮开始时分配 | `src/lib/strategy-data.js` → `SITE_ROADMAP.sprintPlan` |
-| 🔧 **平台技术债** | 角色 D（发布员）按调度执行 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
-| 🚀 **产品迭代规划** | 角色 B1~B5（编辑层）按调度执行 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
-| 🎨 **AI 设计师机会雷达** | 角色 E（AI 设计师）按需扫描 | `src/lib/strategy-data.js` → `SITE_ROADMAP` 的 `topOpportunities / githubFindings / coverageGaps / moduleProposals / suggestedSources` |
+| 🔧 **平台技术债** | 角色 D（发布员）自主处理 | `src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts` |
+| 🚀 **产品迭代规划** | 各模块角色（B1~B6）自主更新 | `src/lib/strategy-data.js` → `SITE_ROADMAP.productPlans` |
+| 🎯 **全局机会雷达** | 各模块角色自主追加 + 角色 E（设计师）定期扫描 | `src/lib/strategy-data.js` → `SITE_ROADMAP.topOpportunities / coverageGaps / githubFindings / moduleProposals` |
 
 ### 🔧 修改指引
 
-- **每轮迭代分配**：角色 F（调度员）在每轮开始时读取全量 Roadmap，将具体任务写入 `SITE_ROADMAP.sprintPlan`，供 A/B/D 读取执行
-- **调整技术债**：角色 D（发布员）按 `sprintPlan.publisherTasks` 执行，完成后更新 `techDebts.items[]` 和 `.resolved[]`
-- **调整产品迭代规划**：角色 B1~B5（编辑层）按 `sprintPlan.editorTasks` 执行，完成后更新 `productPlans.categories[]`
-- **AI 设计师建议**：角色 E 按需扫描写入机会雷达，人工决策后由角色 F 在下轮分配执行
+- **技术债处理**：角色 D（发布员）每次发布时自主读取 `techDebts.items[]`，按优先级处理，完成后移到 `resolved[]`
+- **产品迭代规划**：各模块角色（B1~B6）在每次执行后，自主更新本模块相关的 `productPlans.categories[]` 条目（完成则移除，新发现则追加）
+- **全局机会雷达**：各模块角色发现新机会时自主追加到 `topOpportunities`；角色 E 定期扫描生态写入 `githubFindings / moduleProposals`
 - 每次修改后更新对应字段的 `lastUpdated` 时间戳
 
 ---
@@ -522,42 +520,48 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 
 ---
 
-## 🏗️ 多角色分工架构（gstack 风格）
+## 🏗️ 多角色分工架构（自治模块化）
+
+> **设计原则**：去中心化。每个模块角色**自采集、自编辑、自规划 Roadmap**，无需中央调度员分配任务，无需中央采集员提供草稿。各角色独立运行，互不阻塞，最后由质检员统一校验、发布员统一推送。
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│                              Signal 内容更新流水线                                          │
-│                                                                                            │
-│  角色 E（按需触发，不在日常流水线中）                                                          │
-│  设计师 Designer  ──→ 扫描生态写入机会雷达 ──→ 人工决策 ──→ 交由 F 分配                      │
-│                                                                                            │
-│  角色 F      角色 A      ┌─────────────────────────────┐     角色 C      角色 D            │
-│  调度员      采集员      │      编辑层（B1~B5 并行）      │     质检员      发布员            │
-│  Dispatcher → Collector →│ B1新闻  B2内容  B3模型        │→ Inspector → Publisher          │
-│                          │ B4数据  B5系统               │                                  │
-│  读取Roadmap  采集+验链   └─────────────────────────────┘  三维度校验    文档+推送           │
-│  分配本轮任务  输出草稿    各模块专属写入+联动检查             输出报告      执行工程任务        │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                           Signal 内容更新流水线（去中心化）                                  │
+│                                                                                           │
+│  角色 E（按需触发）                                                                         │
+│  设计师  ──→ 扫描生态 ──→ 写入全局机会雷达 ──→ 各模块角色自行读取参考                          │
+│                                                                                           │
+│  ┌──────────────────────────────────────────────────────────────────┐                   │
+│  │                    模块编辑层（B1~B6 各自独立运行）                  │                   │
+│  │                                                                  │                   │
+│  │  B1 新闻编辑员   B2 内容编辑员   B3 模型编辑员                      │  → C 质检员       │
+│  │  自采+写入新闻   自采+写文章/书   自采+更新模型                      │  → D 发布员       │
+│  │                                                                  │                   │
+│  │  B4 数据编辑员   B5 系统编辑员   B6 Infra编辑员                     │                   │
+│  │  自采+雷达/经济  汇总日志/文档   自采+更新Infra                      │                   │
+│  └──────────────────────────────────────────────────────────────────┘                   │
+│                                                                                           │
+│  每个 B 角色执行流程：读Roadmap → 自采信息源 → 编辑内容 → 更新本模块Roadmap → 告知质检员      │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 **角色职责边界（严格遵守，不得越权）**：
 
-| 角色 | 职责 | 负责模块 | 输入 | 输出 | 触发时机 |
-|------|------|---------|------|------|---------|
-| **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，维护机会雷达 | Roadmap 机会雷达 | 现有模块结构 + GitHub trending | 扩充建议写入 `SITE_ROADMAP` | 按需触发（每周/每月） |
-| **F 调度员** | 读取 Roadmap 全量数据，为本轮迭代分配各角色具体任务 | 全局调度 | `SITE_ROADMAP` 全量 | `SITE_ROADMAP.sprintPlan` | **每轮迭代开始时，最先执行** |
-| **A 采集员** | 从信息源采集新闻、验链、去重，输出草稿 | 信息采集 | 信息源白名单 + `sprintPlan.collectorFocus` | 草稿 JSON（不写文件） | 每日触发 |
-| **B1 新闻编辑员** | 写入声浪 + 全行业动态，联动触发排行榜/架构演进更新 | `/news/` · 全行业动态 | 采集员草稿 | `news-feed.json` · `IndustryNewsFeed.js` | 每日触发 |
-| **B2 内容编辑员** | 新增文章、更新书架章节、新增论文解读 | `/articles/` · `/books/` · `/papers/` | 采集员草稿 + `sprintPlan.editorTasks` | `content/articles/` · `content/books/` · `content/papers/` | 每日触发 |
-| **B3 模型编辑员** | 补充模型卡片、刷新排行榜、更新架构演进时间线 | `/models/` · 排行榜 · 架构演进 | 采集员草稿 + `sprintPlan.editorTasks` | `models.json` · `benchmarks.json` · `ArchEvolution.js` | 每日触发 |
-| **B4 数据编辑员** | 更新创业雷达信号、更新经济研究数据 | `/quant/` · `/economy/` · 创业雷达 | 采集员草稿 + 市场数据 | `IdeaRadar.js` · `economy/page.js` | 每日触发 |
-| **B5 系统编辑员** | 写入进化日志、执行 Roadmap 内容任务、更新 ai-wiki.md | 进化日志 · Roadmap · 文档 | 各 B 角色完成情况 + `sprintPlan.editorTasks` | `evolution-log.json` · `strategy-data.js` · `ai-wiki.md` | 每日触发（最后执行） |
-| **C 质检员** | 三维度校验（链接/对应关系/日期） | 全站 | 变更后的数据文件 | 质检报告 | 每日触发 |
-| **D 发布员** | 修复质检问题、更新文档、git push + **执行调度员分配的工程任务** | 全站发布 | 质检报告 + `sprintPlan.publisherTasks` | 已推送的 commit + 更新 `SITE_ROADMAP` 状态 | 每日触发 |
+| 角色 | 职责 | 负责模块 | 自采信息源 | 输出 | 触发时机 |
+|------|------|---------|-----------|------|---------|
+| **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，维护全局机会雷达 | Roadmap 机会雷达 | GitHub trending + 社区 | 扩充建议写入 `SITE_ROADMAP.topOpportunities` | 按需触发（每周/每月） |
+| **B1 新闻编辑员** | 自采新闻 → 写入声浪 + 全行业动态 → 联动排行榜/架构演进 → 更新本模块 Roadmap | `/news/` · 全行业动态 | AI 公司博客 · 媒体 · GitHub Releases | `news-feed.json` · `IndustryNewsFeed.js` · Roadmap | 每日触发 |
+| **B2 内容编辑员** | 自采前沿进展 → 新增文章/书架/论文 → 更新本模块 Roadmap | `/articles/` · `/books/` · `/papers/` | arXiv · 顶会 · 技术博客 · AI Infra 开源仓库 | `content/articles/` · `content/books/` · `content/papers/` · Roadmap | 每日触发 |
+| **B3 模型编辑员** | 自采模型发布 → 补充模型卡片/排行榜/架构演进 → 更新本模块 Roadmap | `/models/` · 排行榜 · 架构演进 | 各厂商博客 · HuggingFace · Benchmark 榜单 | `models.json` · `benchmarks.json` · `ArchEvolution.js` · Roadmap | 每日触发 |
+| **B4 数据编辑员** | 自采市场/创业信号 → 更新创业雷达/经济研究 → 更新本模块 Roadmap | `/quant/` · `/economy/` · 创业雷达 | 市场数据 · VC 动态 · 宏观经济数据源 | `IdeaRadar.js` · `economy/page.js` · Roadmap | 每日触发 |
+| **B5 系统编辑员** | 汇总各 B 角色操作 → 写进化日志 → 整合全局 Roadmap → 更新 ai-wiki.md | 进化日志 · 全局 Roadmap · 文档 | 各 B 角色完成情况 | `evolution-log.json` · `strategy-data.js` · `ai-wiki.md` | 每日触发（最后执行） |
+| **B6 Infra 编辑员** | 自采 AI Infra 开源进展 → 更新闭环 Infra 所有 Tab → 更新本模块 Roadmap | `/data-infra/`（全部 12 Tab） | K8s/Iceberg/Airflow/MLflow/UC/Spark/Ray GitHub Releases · 官方博客 | `data-infra-data.js` · `DataInfraViz.js` · Roadmap | 每日/每周触发 |
+| **C 质检员** | 三维度校验（链接/对应关系/日期） | 全站 | — | 质检报告 | 每日触发 |
+| **D 发布员** | 修复质检问题、更新文档、git push、执行工程技术债 | 全站发布 | — | 已推送的 commit · 更新 `SITE_ROADMAP.techDebts` | 每日触发 |
 
-**日常执行顺序**：F → A → B1/B2/B3/B4（可并行）→ B5 → C → D（C 不通过则回到对应 B 角色修复，不得跳过 C 直接发布）
+**日常执行顺序**：B1/B2/B3/B4/B6（可并行，各自独立）→ B5（汇总）→ C → D
 
-**设计师触发**：独立运行，不阻塞日常流水线；输出建议后由人工决策是否纳入 Roadmap，下轮由 F 调度员分配执行
+**设计师触发**：独立运行，不阻塞日常流水线；输出全局机会雷达后，各模块角色自行读取参考，无需人工分配
 
 ---
 
@@ -595,100 +599,7 @@ sleep 10
 curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/
 ```
 
-**适用角色**：B1/B2/B3/B4/B5（编辑层）、D（发布员）、E（设计师）—— 即所有会修改 `.js` 文件的角色。A（采集员）和 C（质检员）不修改文件，无需执行。
-
----
-
-### 📋 角色 F：调度员（Dispatcher）
-
-`````text
-你是 Signal 知识平台的 AI 调度员，职责是**在每轮迭代开始时，读取 Roadmap 全量数据，为本轮 A/B/D 角色分配具体可执行的任务**。
-你是流水线的第一个环节，你的输出决定了本轮迭代中各角色除日常工作外还要额外完成哪些 Roadmap 条目。
-
-## 前置步骤
-
-1. 读取 `src/lib/strategy-data.js` 中的 `SITE_ROADMAP` 对象，全面了解：
-   - `productPlans`：当前产品迭代规划（3 个分类：platform / content / ux）
-   - `techDebts`：当前平台技术债清单
-   - `topOpportunities`：TOP 5 最高价值机会
-   - `coverageGaps`：新闻角度盲区
-   - `sprintPlan`：上一轮的分配计划（检查哪些已完成、哪些未完成需要继续）
-2. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和各角色能力边界。
-
----
-
-## 调度任务
-
-### 步骤 1：回顾上轮执行情况
-
-检查 `sprintPlan` 中上轮分配的任务：
-- 已完成的：确认对应的 `productPlans` / `techDebts` 条目已被更新（如果没有，本轮补更新）
-- 未完成的：评估是否继续分配到本轮，还是降低优先级
-
-### 步骤 2：为本轮分配任务
-
-从 `productPlans` / `techDebts` / `topOpportunities` 中，按优先级（🔴 > 🟡 > 🟢）挑选条目，分配给对应角色：
-
-**角色 A（采集员）— collectorFocus**：
-- 从 `topOpportunities` 和 `coverageGaps` 中，挑选 2-3 个本轮需要重点采集的方向
-- 输出格式：`{ direction: '方向名', reason: '为什么本轮要重点采集', targetCount: N }`
-
-**角色 B1~B5（编辑层）— editorTasks**：
-- 从 `productPlans.categories[content]` 中挑选 1-2 项内容任务，按模块分配给对应角色（B2=文章/书架/论文，B3=模型/排行榜，B4=创业雷达/经济研究，B5=Roadmap执行）
-- 将 Roadmap 条目拆解为**具体可执行的指令**（不能只写"补全模型"，要写"补充 Qwen3-235B-A22B 和 Gemini 2.5 Pro 到 models.json"）
-- 输出格式：`{ source: 'productPlans.content.xxx', action: '具体执行步骤', assignTo: 'B2/B3/B4/B5', files: ['涉及的文件'], done: false }`
-
-**角色 D（发布员）— publisherTasks**：
-- 从 `techDebts.items[]` 和 `productPlans.categories[platform/ux]` 中挑选 1-2 项工程任务
-- 同样拆解为具体可执行的代码操作指令（包含代码示例、文件路径、验证方法）
-- 输出格式：`{ source: 'techDebts.xxx / productPlans.platform.xxx', action: '具体执行步骤', files: ['涉及的文件'], verify: '验证方法', done: false }`
-
-### 步骤 3：写入 sprintPlan
-
-将分配结果写入 `src/lib/strategy-data.js` 的 `SITE_ROADMAP.sprintPlan`：
-
-```js
-sprintPlan: {
-  sprintDate: 'YYYY-MM-DD',  // 本轮日期
-  editorTasks: [
-    { source: 'productPlans.content.模型中心补全', action: '补充 Qwen3-235B-A22B 和 Gemini 2.5 Pro 两个模型卡片到 models.json', files: ['content/gallery/models.json'], done: false },
-  ],
-  publisherTasks: [
-    { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/', done: false },
-  ],
-  collectorFocus: [
-    { direction: 'Agent 生态', reason: 'topOpportunities P0，当前覆盖严重不足', targetCount: 3 },
-  ],
-  notes: '本轮重点：清理 Navbar 遗留 + 补充 2 个模型 + Agent 方向采集加强',
-}
-```
-
-**使用 `replace_in_file` 局部替换 `sprintPlan` 字段，严禁全量重写 strategy-data.js**
-
-### 步骤 4：输出调度摘要
-
-在对话中输出本轮分配摘要，供人工确认：
-
-```
-📋 本轮迭代调度计划（YYYY-MM-DD）
-
-🔍 角色 A 采集员重点方向：
-  - [方向1]（原因）
-  - [方向2]（原因）
-
-✍️ 编辑层 B1~B5 Roadmap 任务：
-  - [B2/B3/...] [任务1]：[具体执行步骤]
-  - [B2/B3/...] [任务2]：[具体执行步骤]
-
-🚀 角色 D 发布员 Roadmap 任务：
-  - [任务1]：[具体执行步骤]
-  - [任务2]：[具体执行步骤]
-
-📝 备注：[本轮重点说明]
-```
-
-5. 输出完成后，**明确告知采集员**："调度计划已就绪，请角色 A 采集员开始采集"
-`````
+**适用角色**：B1/B2/B3/B4/B5/B6（编辑层）、D（发布员）、E（设计师）—— 即所有会修改 `.js` 文件的角色。C（质检员）不修改文件，无需执行。
 
 ---
 
@@ -1016,212 +927,70 @@ sprintPlan: {
 
 ---
 
-### 🔍 角色 A：采集员（Collector）
+### 📰 角色 B1：新闻编辑员（News Editor）
 
 `````text
-你是 Signal 知识平台的 AI 采集员，职责是**采集新闻、验证链接、输出草稿**。
-你不写入任何文件，只输出结构化草稿供编辑员使用。
+你是 Signal 知识平台的 AI 新闻编辑员，职责是**自主采集新闻 → 验链 → 写入声浪和全行业动态 → 联动更新排行榜/架构演进 → 更新本模块 Roadmap**。
+你独立完成从采集到写入的全流程，不依赖中央采集员。
 
 ## 前置步骤
 
-1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解信息源白名单和真实性铁律。
-2. 读取 content/news/news-feed.json 前 100 行，了解已有声浪条目（去重用）。
-3. 读取 src/components/IndustryNewsFeed.js 前 80 行，了解已有全行业动态条目（去重用）。
+1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和信息源白名单。
+2. 读取 `content/news/news-feed.json` 前 100 行，了解已有声浪条目（去重用）。
+3. 读取 `src/components/IndustryNewsFeed.js` 前 80 行，了解已有全行业动态条目（去重用）。
+4. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `coverageGaps`，了解本模块的重点采集方向。
 
 ---
 
-## 采集任务
-
-### ⛔ 真实性铁律（违反则本次采集作废）
+## ⛔ 真实性铁律（违反则本次采集作废）
 
 1. **每一条新闻必须来自真实、可追溯的公开信息源**，严禁凭印象 / 大模型幻觉 / 行业惯性编造任何内容。
 2. **禁止虚构的元素**：公司名 / 产品名 / 模型名 / 版本号 / 参数量 / 发布日期 / 融资金额 / Benchmark 分数 / 人名 / URL。
 3. **每条新闻的 url/link 字段必须是真实可访问的原始出处**，不是搜索结果页、聚合首页或已失效页面。
 4. **不确定时**：宁可少写一条，也不允许编造填充凑数。宁缺毋滥。
 
-### ✅ 信息源白名单（只能从以下来源采集）
+---
 
-#### 🤖 AI 公司官方博客/新闻
+## ✅ 信息源白名单（只能从以下来源采集）
 
-| 来源 | URL 基础路径 | curl 行为 |
-|------|-------------|-----------|
-| Anthropic | `https://www.anthropic.com/news/` | ✅ 200 |
-| Anthropic 研究 | `https://www.anthropic.com/research/` | ✅ 200 |
-| OpenAI | `https://openai.com/index/` | ⚠️ 403（需人工确认） |
-| Google DeepMind | `https://deepmind.google/discover/blog/` | ✅ 200 |
-| Google Blog | `https://blog.google/technology/google-deepmind/` | ✅ 200 |
-| Meta AI | `https://ai.meta.com/blog/` | ✅ 200 |
-| Qwen 通义千问 | `https://qwenlm.github.io/blog/` | ✅ 200 |
-| DeepSeek | `https://www.deepseek.com/blog/` | ✅ 200 |
-| Mistral | `https://mistral.ai/news/` | ✅ 200 |
-| NVIDIA 新闻 | `https://nvidianews.nvidia.com/news/` | ✅ 200 |
-| NVIDIA 开发者 | `https://developer.nvidia.com/blog/` | ✅ 200 |
+**AI 公司官方博客**：Anthropic (`anthropic.com/news/`) · OpenAI (`openai.com/index/`) · Google DeepMind (`deepmind.google/discover/blog/`) · Meta AI (`ai.meta.com/blog/`) · Qwen (`qwenlm.github.io/blog/`) · DeepSeek (`deepseek.com/blog/`) · Mistral (`mistral.ai/news/`) · NVIDIA (`nvidianews.nvidia.com/news/` · `developer.nvidia.com/blog/`)
 
-#### 📦 代码/模型/论文
+**代码/模型/论文**：GitHub Releases (`github.com/{org}/{repo}/releases/`) · HuggingFace Blog (`huggingface.co/blog/`) · arXiv (`arxiv.org/abs/{id}`)
 
-| 来源 | URL 模式 | curl 行为 |
-|------|---------|-----------|
-| GitHub Releases | `https://github.com/{org}/{repo}/releases/tag/{version}` | ✅ 200 |
-| HuggingFace 博客 | `https://huggingface.co/blog/` | ✅ 200 |
-| arXiv | `https://arxiv.org/abs/{id}` | ✅ 200 |
+**AI Infra 开源项目 Releases（重点追踪，近 14 天内新版本）**：
+- Kubernetes: `github.com/kubernetes/kubernetes/releases`
+- Volcano: `github.com/volcano-sh/volcano/releases`
+- Koordinator: `github.com/koordinator-sh/koordinator/releases`
+- HAMi: `github.com/Project-HAMi/HAMi/releases`
+- Kueue: `github.com/kubernetes-sigs/kueue/releases`
+- Apache Iceberg: `github.com/apache/iceberg/releases`
+- Apache Airflow: `github.com/apache/airflow/releases`
+- MLflow: `github.com/mlflow/mlflow/releases`
+- Unity Catalog: `github.com/unitycatalog/unitycatalog/releases`
+- Apache Spark: `github.com/apache/spark/releases`
+- Ray: `github.com/ray-project/ray/releases`
 
-#### 🏗️ AI Infra 开源项目（GitHub Releases 专项追踪）
+**权威媒体**：VentureBeat · MIT Tech Review · Ars Technica · TechCrunch（需验链）· The Verge（需验链）
 
-| 项目 | Releases URL | 说明 |
-|------|-------------|------|
-| Kubernetes | `https://github.com/kubernetes/kubernetes/releases` | K8s 主版本 |
-| Volcano | `https://github.com/volcano-sh/volcano/releases` | GPU 批调度器 |
-| Koordinator | `https://github.com/koordinator-sh/koordinator/releases` | 混部调度 |
-| HAMi | `https://github.com/Project-HAMi/HAMi/releases` | GPU 细粒度虚拟化 |
-| Kueue | `https://github.com/kubernetes-sigs/kueue/releases` | K8s 原生队列 |
-| Apache Iceberg | `https://github.com/apache/iceberg/releases` | 开放表格式 |
-| PyIceberg | `https://github.com/apache/iceberg-python/releases` | Python 客户端 |
-| Apache Airflow | `https://github.com/apache/airflow/releases` | 工作流编排 |
-| MLflow | `https://github.com/mlflow/mlflow/releases` | MLOps 平台 |
-| Unity Catalog | `https://github.com/unitycatalog/unitycatalog/releases` | 开源数据目录 |
-| Apache Spark | `https://github.com/apache/spark/releases` | 分布式计算 |
-| Ray | `https://github.com/ray-project/ray/releases` | 分布式 AI 框架 |
-| KubeRay | `https://github.com/ray-project/kuberay/releases` | Ray on K8s |
+**国内来源**：36Kr · 机器之心 · 量子位 · 虎嗅 · 极客公园
 
-> 采集规则：每次采集时检查上述仓库最新 Release（近 14 天内），有新版本则采集 Release Notes 摘要作为声浪条目（category: `infra`）
+**软件行业公司官方（全行业动态专用）**：Databricks · Snowflake · AWS · Google Cloud · Salesforce · CrowdStrike · Vercel · Cloudflare
 
-#### 📰 权威媒体
+---
 
-| 来源 | URL 基础路径 | curl 行为 |
-|------|-------------|-----------|
-| VentureBeat | `https://venturebeat.com/` | ✅ 200 |
-| MIT Tech Review | `https://www.technologyreview.com/` | ✅ 200 |
-| Ars Technica | `https://arstechnica.com/` | ✅ 200 |
-| TechCrunch | `https://techcrunch.com/` | ⚠️ 常 404，**必须 curl 验证** |
-| The Verge | `https://www.theverge.com/` | ⚠️ 常 404，**必须 curl 验证** |
-| Bloomberg | `https://www.bloomberg.com/` | ⚠️ 403，需人工确认 |
+## 📋 采集流程（按顺序执行，不可跳步）
 
-#### 🇨🇳 国内来源
-
-| 来源 | URL 基础路径 | curl 行为 |
-|------|-------------|-----------|
-| 36Kr | `https://36kr.com/` | ✅ 200 |
-| 机器之心 | `https://www.jiqizhixin.com/` | ✅ 200 |
-| 量子位 | `https://www.qbitai.com/` | ✅ 200 |
-| 虎嗅 | `https://www.huxiu.com/` | ✅ 200 |
-| 极客公园 | `https://www.geekpark.net/` | ✅ 200 |
-
-#### 🏢 软件行业公司官方（全行业动态专用）
-
-| 来源 | URL 基础路径 | curl 行为 |
-|------|-------------|-----------|
-| Databricks | `https://www.databricks.com/blog/` | ✅ 200 |
-| Snowflake | `https://www.snowflake.com/en/blog/` | ✅ 200 |
-| AWS | `https://aws.amazon.com/blogs/` | ✅ 200 |
-| Google Cloud | `https://cloud.google.com/blog/` | ✅ 200 |
-| Salesforce | `https://www.salesforce.com/news/` | ✅ 200 |
-| CrowdStrike | `https://www.crowdstrike.com/blog/` | ✅ 200 |
-| Vercel | `https://vercel.com/blog/` | ✅ 200 |
-| Cloudflare | `https://blog.cloudflare.com/` | ✅ 200 |
-
-#### ❌ 禁用来源
-
-- 任何未核实的自媒体号、公众号二手转载
-- Reddit / X 未经核实的爆料帖
-- AI 生成的"行业观察"类自媒体
-- **绝对禁止**：自行拼接 URL 路径，不确定时必须先 curl 验证
-
-### 📋 采集流程（按顺序执行，不可跳步）
-
-**步骤 1：扫描信息源**
-- 扫描上方白名单中的信息源，记录候选新闻（标题 + 原始 URL + 原文发布日期）
+**步骤 1：扫描信息源**，记录候选新闻（标题 + 原始 URL + 原文发布日期）
 
 **步骤 2：验链（每条必做）**
 ```bash
 curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBot)" <url>
 ```
-- 返回 200/301/302 → 保留
-- 返回 403 → 标记"需人工确认"
-- 返回 404/5xx/timeout → **丢弃**
+- 200/301/302 → 保留；403 → 标记"需人工确认"；404/5xx/timeout → **丢弃**
 
-**步骤 3：去重**
-- 与 news-feed.json 近 60 天条目对比标题和 url，避免重复
+**步骤 3：去重**，与 news-feed.json 近 60 天条目对比标题和 url
 
-**步骤 4：输出草稿**
-- 将通过验链的条目输出为结构化草稿（见下方格式），**不写入任何文件**
-
-### 📝 草稿输出格式
-
-#### 声浪草稿（供编辑员写入 news-feed.json）
-
-```json
-[
-  {
-    "id": "news-YYYYMMDD-xxx",
-    "title": "来自原文的准确标题（允许适度中文化，不得夸大语义）",
-    "summary": "80-150 字，基于原文事实，关键数字必须和原文一致",
-    "source": "原始出处名称",
-    "url": "https://原始出处的完整链接（已通过 curl 校验）",
-    "date": "YYYY-MM-DD（原文发布日期）",
-    "category": "llm | infra | agent | ad | data | industry",
-    "tags": ["..."],
-    "hot": true,
-    "region": "global | china",
-    "_curl_status": "200"
-  }
-]
-```
-
-#### 全行业动态草稿（供编辑员写入 IndustryNewsFeed.js）
-
-```json
-[
-  {
-    "id": 2511,
-    "category": "data | cloud | software | security | startup | market",
-    "region": "global | china",
-    "title": "来自原文的准确标题",
-    "summary": "80-150 字，基于原文事实",
-    "source": "一手出处名",
-    "date": "YYYY-MM-DD（原文真实发布日）",
-    "tags": ["..."],
-    "hot": true,
-    "link": "https://原文完整 URL（已通过 curl 校验）",
-    "_curl_status": "200"
-  }
-]
-```
-
-### 📊 本次采集目标
-
-- **声浪**：8-10 条，覆盖 LLM 前沿 / AI Infra / Agent/MCP / 自动驾驶 / 全行业
-  - ⚡ **调度员重点方向**：读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.collectorFocus`，按调度员指定的方向和目标数量重点采集。如果 `collectorFocus` 为空，则按默认方向均匀采集
-- **全行业动态**：10 条，覆盖 data/cloud/software/security/startup/market 6 大分类，国内外各半
-- **当日没有可验证的重大事件时**：可以少于目标数，严禁凑数编造
-
-### ⏰ 日期覆盖硬性要求（每日必检）
-
-- **声浪（news-feed.json）和全行业动态（IndustryNewsFeed.js）的 date 字段必须覆盖到当天（即执行日期）**
-- 如果当天确实没有重大新闻，至少保证有 2-3 条当天日期的条目（可从官方博客、GitHub Release、arXiv 等稳定更新源采集）
-- **禁止出现"提交日期是 4/23，但最新声浪日期只到 4/22"的情况**——这说明采集员没有扫描当天的信息源
-- 采集员在输出草稿前，必须自检：草稿中是否包含 `date` 为当天的条目？如果没有，必须补充扫描当天信息源后再输出
-
-### 🚨 采集员输出规范
-
-1. 在回复末尾输出完整草稿 JSON（声浪 + 全行业动态分开列出）
-2. 每条附上 `_curl_status` 字段，标注 HTTP 状态码
-3. 对 403 状态的条目，在草稿中标注 `"_needs_human_verify": true`
-4. 草稿输出后，**明确告知编辑层**："草稿已就绪，请角色 B1 新闻编辑员接手写入文件"
-`````
-
----
-
-### 📰 角色 B1：新闻编辑员（News Editor）
-
-`````text
-你是 Signal 知识平台的 AI 新闻编辑员，职责是**将采集员草稿中的新闻写入声浪和全行业动态，并联动触发排行榜/架构演进更新**。
-你只消费采集员输出的草稿，不自行采集新闻，不自行拼接 URL。
-
-## 前置步骤
-
-1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展。
-2. 确认采集员草稿已就绪（草稿中每条都有 `_curl_status` 字段）。
-3. **拒绝处理**：如果草稿中有条目缺少 `url`/`link` 字段，或 `_curl_status` 为 404/5xx，直接跳过该条目。
+**步骤 4：写入**（通过验链后直接写入，不输出中间草稿）
 
 ---
 
@@ -1229,33 +998,40 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 ### 任务 1：写入声浪 content/news/news-feed.json
 
-- 将采集员草稿中的声浪条目写入 news-feed.json 头部
-- **只写入** `_curl_status` 为 200/301/302 的条目
-- **跳过** `_needs_human_verify: true` 的条目（等人工确认后再写）
-- 写入时去掉 `_curl_status` / `_needs_human_verify` 等草稿专用字段
+- 将通过验链的声浪条目写入 news-feed.json 头部（只写 200/301/302 的条目）
+- 写入格式：`{ "id": "news-YYYYMMDD-xxx", "title": "...", "summary": "80-150字", "source": "...", "url": "...", "date": "YYYY-MM-DD", "category": "llm|infra|agent|ad|data|industry", "tags": [...], "hot": true, "region": "global|china" }`
 - JSON 文件使用 UTF-8 直接写中文，严禁 `\uXXXX` 转义
 - 对 30 天前的旧条目，将同类话题合并为一条摘要条目
 
 > 🔔 **新闻写入后联动检查（必须执行）**：
-> 1. **排行榜**：若本次新闻中出现新模型发布 / Benchmark 刷新 / 价格调整等信息，立即执行任务 8b（`content/benchmarks/benchmarks.json`），将相关模型加入对应榜单或更新排名/分数
-> 2. **架构演进时间线**：若本次新闻中出现新模型架构创新（新 Attention 机制 / MoE 变体 / 量化方案 / 推理范式等），立即在 `src/components/ArchEvolution.js` 的 `TIMELINE` 数组头部追加新记录，并视情况更新 `EVOLUTION_PATHS` 当前状态描述
+> 1. **排行榜**：若本次新闻中出现新模型发布 / Benchmark 刷新 / 价格调整等信息，立即更新 `content/benchmarks/benchmarks.json`
+> 2. **架构演进时间线**：若本次新闻中出现新模型架构创新，立即在 `src/components/ArchEvolution.js` 的 `TIMELINE` 数组头部追加新记录
 
 ### 任务 2：写入全行业动态 src/components/IndustryNewsFeed.js
 
-- 将采集员草稿中的全行业动态条目写入 NEWS_DATA 数组头部
-- **只写入** `_curl_status` 为 200/301/302 的条目
+- 将通过验链的全行业动态条目写入 NEWS_DATA 数组头部
 - category 字段只能使用：`data | cloud | software | security | startup | market`
-- 对超过 90 天的旧条目进行合并归档
-- 保持活跃列表 ≤60 条
+- 对超过 90 天的旧条目进行合并归档，保持活跃列表 ≤60 条
+
+### 任务 3：更新本模块 Roadmap
+
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若发现新的内容盲区或高价值方向，追加到 `coverageGaps` 或 `topOpportunities`
+- 若本轮有重大新闻方向未覆盖，在 `productPlans.categories[content]` 中新增条目
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
+
+### ⏰ 日期覆盖硬性要求
+
+- **date 字段必须覆盖到当天**（即执行日期）
+- 写入前自检：是否包含 `date` 为当天的条目？如果没有，必须补充扫描当天信息源后再写入
 
 ## 重要注意事项
 
-- ⛔ **不得自行采集**：所有 url/link 必须来自采集员草稿，不得自行拼接或编造
 - 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX）
 - JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
-- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2（验证 localhost:3000 是否正常），如果异常则执行缓存修复 SOP
-- 写入完成后，**明确告知内容编辑员**："新闻写入完成，请角色 B2 内容编辑员接手"
+- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2
+- 写入完成后，**明确告知系统编辑员**："B1 新闻写入完成"
 `````
 
 ---
@@ -1263,14 +1039,14 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 ### 📝 角色 B2：内容编辑员（Content Editor）
 
 `````text
-你是 Signal 知识平台的 AI 内容编辑员，职责是**新增文章、更新书架章节、新增论文解读**。
-你只消费采集员输出的草稿，不自行采集新闻，不自行拼接 URL。
+你是 Signal 知识平台的 AI 内容编辑员，职责是**自主调研前沿进展 → 新增文章/书架/论文 → 更新本模块 Roadmap**。
+你独立完成从信息调研到内容写入的全流程，不依赖中央采集员。
 
 ## 前置步骤
 
 1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和目录结构。
-2. 确认采集员草稿已就绪（草稿中每条都有 `_curl_status` 字段）。
-3. **拒绝处理**：如果草稿中有条目缺少 `url`/`link` 字段，或 `_curl_status` 为 404/5xx，直接跳过该条目。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `productPlans`，了解本模块的重点方向和待完成任务。
+3. 基于最新公开信息（arXiv / 顶会 / 技术博客 / AI Infra 开源仓库 GitHub Releases）自主调研选题，所有引用 URL 必须真实可访问。
 
 ---
 
@@ -1320,13 +1096,20 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
   - 正文结构：TL;DR → 研究背景 → 核心方法 → 关键实验结果 → 创新点分析 → 局限性 → 工程启示
   - 同步更新 papers-index.json
 
+### 任务 4：更新本模块 Roadmap
+
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若本轮发现新的高价值内容方向，追加到 `topOpportunities` 或 `coverageGaps`
+- 若本轮完成了 `productPlans` 中的条目，将其标记为完成或移除
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
+
 ## 重要注意事项
 
-- ⛔ **不得自行采集**：所有 url/link 必须来自采集员草稿，不得自行拼接或编造
+- 所有引用 URL 必须真实可访问（写入前 curl 验证）
 - 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX）
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
 - ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2
-- 写入完成后，**明确告知模型编辑员**："内容写入完成，请角色 B3 模型编辑员接手"
+- 写入完成后，**明确告知系统编辑员**："B2 内容写入完成"
 `````
 
 ---
@@ -1334,13 +1117,14 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 ### 🤖 角色 B3：模型编辑员（Model Editor）
 
 `````text
-你是 Signal 知识平台的 AI 模型编辑员，职责是**补充模型卡片、刷新评测排行榜、更新架构演进时间线**。
-你只消费采集员输出的草稿，不自行采集新闻，不自行拼接 URL。
+你是 Signal 知识平台的 AI 模型编辑员，职责是**自主追踪模型发布 → 补充模型卡片/排行榜/架构演进 → 更新本模块 Roadmap**。
+你独立完成从信息追踪到数据写入的全流程，不依赖中央采集员。
 
 ## 前置步骤
 
 1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和目录结构。
-2. 确认采集员草稿已就绪（草稿中每条都有 `_curl_status` 字段）。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `productPlans`，了解本模块的重点方向和待完成任务。
+3. 自主扫描各厂商官方博客、HuggingFace、Benchmark 榜单，获取最新模型发布和评测数据，所有引用 URL 必须真实可访问。
 
 ---
 
@@ -1503,11 +1287,20 @@ Vision Encoder   Tokenizer
 
 ## 重要注意事项
 
-- ⛔ **不得自行采集**：所有 url/link 必须来自采集员草稿，不得自行拼接或编造
+### 任务 4：更新本模块 Roadmap
+
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若本轮发现新模型/新 Benchmark，追加到 `topOpportunities`
+- 若本轮完成了 `productPlans` 中的模型补全条目，将其标记为完成或移除
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
+
+## 重要注意事项
+
+- 所有引用 URL 必须真实可访问（写入前 curl 验证）
 - 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX）
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
 - ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2
-- 写入完成后，**明确告知数据编辑员**："模型数据更新完成，请角色 B4 数据编辑员接手"
+- 写入完成后，**明确告知系统编辑员**："B3 模型数据更新完成"
 `````
 
 ---
@@ -1515,13 +1308,14 @@ Vision Encoder   Tokenizer
 ### 📊 角色 B4：数据编辑员（Data Editor）
 
 `````text
-你是 Signal 知识平台的 AI 数据编辑员，职责是**更新创业雷达信号和经济研究数据**。
-你只消费采集员输出的草稿，不自行采集新闻，不自行拼接 URL。
+你是 Signal 知识平台的 AI 数据编辑员，职责是**自主追踪市场/创业信号 → 更新创业雷达/经济研究 → 更新本模块 Roadmap**。
+你独立完成从信号追踪到数据写入的全流程，不依赖中央采集员。
 
 ## 前置步骤
 
 1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展。
-2. 确认采集员草稿已就绪（草稿中每条都有 `_curl_status` 字段）。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities`，了解本模块的重点方向。
+3. 自主扫描 VC 动态、创业新闻、宏观经济数据源，获取最新市场信号，所有引用 URL 必须真实可访问。
 
 ---
 
@@ -1539,10 +1333,19 @@ Vision Encoder   Tokenizer
 
 ## 重要注意事项
 
-- ⛔ **不得自行采集**：所有 url/link 必须来自采集员草稿，不得自行拼接或编造
+### 任务 3：更新本模块 Roadmap
+
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若本轮发现新的创业方向或市场机会，追加到 `topOpportunities`
+- 若本轮完成了 `productPlans` 中的条目，将其标记为完成或移除
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
+
+## 重要注意事项
+
+- 所有引用 URL 必须真实可访问（写入前 curl 验证）
 - 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX）
 - ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2
-- 写入完成后，**明确告知系统编辑员**："数据更新完成，请角色 B5 系统编辑员接手"
+- 写入完成后，**明确告知系统编辑员**："B4 数据更新完成"
 `````
 
 ---
@@ -1550,13 +1353,14 @@ Vision Encoder   Tokenizer
 ### ⚙️ 角色 B5：系统编辑员（System Editor）
 
 `````text
-你是 Signal 知识平台的 AI 系统编辑员，职责是**汇总本轮所有 B 角色的操作、写入进化日志、执行 Roadmap 内容任务、更新 ai-wiki.md 文档**。
-你在 B1/B2/B3/B4 全部完成后最后执行。
+你是 Signal 知识平台的 AI 系统编辑员，职责是**汇总本轮所有 B 角色的操作 → 写入进化日志 → 整合全局 Roadmap → 更新 ai-wiki.md 文档**。
+你在 B1/B2/B3/B4/B6 全部完成后最后执行。
 
 ## 前置步骤
 
-1. 收集 B1/B2/B3/B4 各角色本轮完成的操作摘要。
-2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.editorTasks`，确认待执行任务。
+1. 收集 B1/B2/B3/B4/B6 各角色本轮完成的操作摘要。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP` 全量，了解各模块角色本轮更新的 Roadmap 状态。
+3. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前文档状态。
 
 ---
 
@@ -1570,7 +1374,7 @@ Vision Encoder   Tokenizer
   ```json
   {
     "id": "evo-YYYYMMDD-xxx",
-    "type": "news | article | book | paper | model | system",
+    "type": "news | article | book | paper | model | system | infra",
     "title": "一句话简明标题（≤40字，体现核心变更）",
     "description": "3-5 句详细描述：本次做了什么、为什么做、影响范围/数据指标",
     "date": "YYYY-MM-DD HH:MM",
@@ -1578,34 +1382,21 @@ Vision Encoder   Tokenizer
   }
   ```
 
-- 每次至少追加 5-8 条独立日志
+- 每次至少追加 5-8 条独立日志（覆盖 B1~B6 各角色的主要操作）
 
-### 任务 2：执行调度员分配的 Roadmap 内容任务
+### 任务 2：整合全局 Roadmap
 
-> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.sprintPlan.editorTasks`
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 汇总各模块角色本轮更新的 `topOpportunities` / `coverageGaps` / `productPlans`
+- 去重合并，更新 `productPlans.lastUpdated` 为今日日期
+- 若发现跨模块的全局性机会或技术债，追加到对应字段
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
 
-每次日常更新时，**读取 `sprintPlan.editorTasks`，逐项执行调度员分配的内容任务**。
+### 任务 3：更新 ai-wiki.md 文档
 
-#### 2a. 执行步骤
-
-1. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.editorTasks`
-2. 对每个 `done: false` 的任务，按 `action` 字段的具体指令执行
-3. 执行完成后，将该任务的 `done` 改为 `true`
-4. 如果任务涉及 `productPlans` 中的条目且已全部完成，从 `productPlans.categories[].items[]` 中移除该条目
-
-#### 2b. 执行后更新 Roadmap 状态
-
-1. 更新 `sprintPlan.editorTasks[].done` 为 `true`
-2. 已完成的 `productPlans` 条目从 items 中移除
-3. 部分完成的条目更新 desc 标注进度
-4. 新发现的需求新增到 `productPlans.categories[].items[]`
-5. 更新 `productPlans.lastUpdated` 为今日日期
-
-**如果 `sprintPlan.editorTasks` 为空或全部 `done: true`，跳过此任务。**
-
-**使用 `replace_in_file` 局部替换对应字段，严禁全量重写 strategy-data.js**
-
----
+- 若本轮有新增模块、新增 Tab、新增角色等结构性变更，更新「二、当前模块进展」对应章节
+- 若本轮有数据统计变化（书籍数/文章数/模型数等），更新「当前数据快照」
+- 使用 `replace_in_file` 局部更新，严禁全量重写 ai-wiki.md
 
 ## 重要注意事项
 
@@ -1613,7 +1404,75 @@ Vision Encoder   Tokenizer
 - JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
 - ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2（验证 localhost:3000 是否正常），如果异常则执行缓存修复 SOP
-- 写入完成后，**明确告知质检员**："B1/B2/B3/B4/B5 全部完成，请角色 C 质检员接手校验"
+- 写入完成后，**明确告知质检员**："B1/B2/B3/B4/B5/B6 全部完成，请角色 C 质检员接手校验"
+`````
+
+---
+
+### 🏗️ 角色 B6：Infra 编辑员（Infra Editor）
+
+`````text
+你是 Signal 知识平台的 AI Infra 编辑员，职责是**自主追踪 AI Infra 开源项目进展 → 更新闭环 Infra 页面所有 Tab → 更新本模块 Roadmap**。
+你独立完成从信息追踪到页面更新的全流程，不依赖中央采集员。
+
+## 前置步骤
+
+1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前 `/data-infra/` 页面的所有 Tab 内容和数据结构。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `productPlans`，了解本模块的重点方向和待完成任务。
+3. 自主扫描以下 AI Infra 开源项目的最新 Release（近 14 天内）：
+   - K8s 调度器：`github.com/volcano-sh/volcano/releases` · `github.com/koordinator-sh/koordinator/releases` · `github.com/Project-HAMi/HAMi/releases` · `github.com/kubernetes-sigs/kueue/releases`
+   - 数据湖仓：`github.com/apache/iceberg/releases` · `github.com/apache/iceberg-python/releases` · `github.com/unitycatalog/unitycatalog/releases`
+   - 数据流水线：`github.com/apache/airflow/releases`
+   - MLOps：`github.com/mlflow/mlflow/releases`
+   - 计算引擎：`github.com/apache/spark/releases` · `github.com/ray-project/ray/releases` · `github.com/ray-project/kuberay/releases`
+4. 所有引用 URL 必须真实可访问（写入前 curl 验证）。
+
+---
+
+## 写入任务（全程免审批）
+
+### 任务 1：更新 K8s & 容器 Tab（`src/lib/data-infra-data.js` → `K8S_DATA`）
+
+- 若有调度器新版本（Volcano/Koordinator/HAMi/Kueue/GPU Operator），更新 `schedulerComparison.schedulers[]` 中对应条目的 `version` 字段和 `coreFeatures`
+- 若有 GPU 细粒度调度新技术，更新 `schedulerComparison.gpuFineGrained.techniques[]`
+- 若有 K8s 新版本，更新 `components[]` 中 Kubernetes 的版本号
+
+### 任务 2：更新数据湖仓 Tab（`src/lib/data-infra-data.js` → `DATALAKE_DATA`）
+
+- 若 Iceberg 有新版本，更新 `icebergSource.overview.version` 和相关源码解析内容
+- 若 Unity Catalog 有新版本，更新对应的源码解析内容
+- 若有新的表格式特性（Puffin/Deletion Vector/REST Catalog 演进），更新 `tableFormat` 相关内容
+
+### 任务 3：更新数据流水线 Tab（`src/lib/data-infra-data.js` → `PIPELINE_DATA`）
+
+- 若 Airflow 有新版本，更新 Airflow 源码解析中的版本信息和新特性描述
+- 若有 Asset Partitioning / Task SDK / DAG Bundle 等新特性落地，更新对应子页内容
+
+### 任务 4：更新 MLOps Tab（`src/lib/data-infra-data.js` → `MLOPS_DATA`）
+
+- 若 MLflow 有新版本，更新版本信息和新特性（Tracing/AI Gateway/GenAI 评估）
+- 若有 Unity Catalog 集成新进展，更新对应内容
+
+### 任务 5：更新计算引擎选型 Tab（`src/lib/data-infra-data.js` → `COMPUTE_ENGINE_DATA`）
+
+- 若 Spark/Ray 有新版本，更新对应引擎的版本信息和新特性描述
+- 若有新的引擎选型建议，更新选型矩阵
+
+### 任务 6：更新本模块 Roadmap
+
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若本轮发现新的 AI Infra 技术方向或开源项目，追加到 `topOpportunities`
+- 若本轮完成了 `productPlans` 中的 Infra 相关条目，将其标记为完成或移除
+- 若发现需要新增 Tab 或新增子页的需求，追加到 `productPlans.categories[content]`
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
+
+## 重要注意事项
+
+- 所有引用 URL 必须真实可访问（写入前 curl 验证）
+- 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX）
+- 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
+- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2（验证 localhost:3000 是否正常），如果异常则执行缓存修复 SOP
+- 写入完成后，**明确告知系统编辑员**："B6 Infra 更新完成"
 `````
 
 ---
@@ -2080,32 +1939,26 @@ tail -5 /tmp/signal-dev.log
 > ❌ **如果 30 次检测后仍非 200**：检查 `/tmp/signal-dev.log` 中的编译错误，修复后重新执行此步骤。
 > 绝不允许在前端异常的状态下执行后续的 git push。
 
-### 任务 4：执行调度员分配的 Roadmap 工程任务
+### 任务 4：自主处理技术债
 
-> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.sprintPlan.publisherTasks`
+> 📍 数据位置：`src/lib/strategy-data.js` → `SITE_ROADMAP.techDebts`
 
-每次发布流程中，**读取 `sprintPlan.publisherTasks`，逐项执行调度员分配的工程任务**。
+每次发布流程中，**读取 `techDebts.items[]`，自主判断并处理优先级高的工程技术债**。
 
 #### 4a. 执行步骤
 
-1. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.sprintPlan.publisherTasks`
-2. 对每个 `done: false` 的任务：
-   - 按 `action` 字段的具体指令执行代码操作
-   - 按 `verify` 字段的方法验证执行结果
-   - 执行完成后，将该任务的 `done` 改为 `true`
-3. 如果任务涉及 `techDebts` 中的条目且已解决，从 `techDebts.items[]` 移到 `resolved[]`
-4. 如果任务涉及 `productPlans` 中的条目且已完成，从 `productPlans.categories[].items[]` 中移除
+1. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.techDebts.items[]`
+2. 按优先级（🔴 > 🟡 > 🟢）选取 1-2 项本轮可处理的技术债
+3. 按 `desc` 字段的描述执行代码操作，并验证执行结果
+4. 执行完成后，将该条目从 `techDebts.items[]` 移到 `resolved[]`
 
 #### 4b. 执行后更新 Roadmap 状态
 
-1. 更新 `sprintPlan.publisherTasks[].done` 为 `true`
-2. 已解决的技术债从 `techDebts.items[]` 移到 `resolved[]`
-3. 已完成的产品规划从 `productPlans.categories[].items[]` 中移除
-4. 部分完成的条目更新 desc/status 标注进度
-5. 新发现的问题新增到 `techDebts.items[]`
-6. 更新 `techDebts.lastUpdated` 和 `productPlans.lastUpdated`
+1. 已解决的技术债从 `techDebts.items[]` 移到 `resolved[]`
+2. 新发现的工程问题新增到 `techDebts.items[]`
+3. 更新 `techDebts.lastUpdated` 为今日日期
 
-**如果 `sprintPlan.publisherTasks` 为空或全部 `done: true`，跳过此任务。**
+**如果 `techDebts.items[]` 为空，跳过此任务。**
 
 **使用 `replace_in_file` 局部替换对应字段，严禁全量重写 strategy-data.js**
 
