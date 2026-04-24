@@ -1127,94 +1127,104 @@ export const PIPELINE_DATA = {
   // ── Airflow 源码解析 ─────────────────────────────────────────
   airflowSource: {
     overview: {
-      title: 'Apache Airflow 核心架构',
-      desc: 'Airflow 是一个以 Python 编写的工作流编排平台，核心由 Scheduler、Executor、DAG Processor、Metadata DB 四大组件构成，通过 DAG（有向无环图）定义任务依赖关系。',
-      version: '2.x（当前主流）',
+      title: 'Apache Airflow 3.x 核心架构',
+      desc: 'Airflow 3.x 对架构进行了彻底重构：UI 与 API Server 完全分离（React SPA + FastAPI）、Worker 通过 Task Execution API 与 API Server 通信（不再直连 DB）、DAG Processor 完全独立、原生 DAG Versioning 与 Asset 驱动调度。',
+      version: '3.2.1（最新）',
       repoUrl: 'https://github.com/apache/airflow',
       coreComponents: [
-        { name: 'Scheduler', file: 'airflow/scheduler/scheduler_job_runner.py', color: '#6c5ce7', icon: '⏰',
-          desc: '核心调度循环，负责解析 DAG、生成 TaskInstance、触发可执行任务。每隔 heartbeat_interval（默认 5s）扫描一次。',
+        { name: 'API Server', file: 'airflow/api_fastapi/app.py', color: '#6c5ce7', icon: '🔌',
+          desc: '3.x 核心枢纽。Flask 完全替换为 FastAPI，提供完整 OpenAPI 规范的 REST API。UI、Worker、外部系统均通过 API Server 交互，Worker 不再直连 Metadata DB。',
+          keyClass: 'AirflowApp',
+          keyMethod: 'create_app() / Task Execution API',
+          flow: ['FastAPI 替代 Flask/Gunicorn', 'Worker 通过 Task Execution API 上报状态', '外部触发 DAG Run / 查询状态', 'OpenAPI 3.0 规范，自动生成文档'],
+        },
+        { name: 'UI Server', file: 'airflow/ui/ (React SPA)', color: '#a29bfe', icon: '🖥️',
+          desc: '3.x 全新独立前端服务，React + TypeScript 重写，与 API Server 完全解耦。不再是 Flask Jinja 模板，支持独立部署和扩展。',
+          keyClass: 'React SPA',
+          keyMethod: '调用 API Server REST API',
+          flow: ['React + TypeScript 重写 UI', '独立部署，与 API Server 解耦', '通过 REST API 获取所有数据', '支持 DAG Versioning 可视化'],
+        },
+        { name: 'Scheduler', file: 'airflow/scheduler/scheduler_job_runner.py', color: '#00cec9', icon: '⏰',
+          desc: '3.x Scheduler 不再解析 DAG 文件（由独立 DAG Processor 负责），专注于调度决策：读取已解析的 DAG、创建 DagRun、推进 TaskInstance 状态机、提交任务给 Executor。',
           keyClass: 'SchedulerJobRunner',
           keyMethod: '_run_scheduler_loop()',
-          flow: ['扫描 DAG 文件目录', '解析 DAG → DagRun', '评估任务依赖 → TaskInstance 状态机', '提交可执行 TI 给 Executor'],
+          flow: ['从 DB 读取已解析 DAG（不再扫描文件）', '按 schedule / Asset 触发创建 DagRun', '评估任务依赖 → TaskInstance 状态机', '提交可执行 TI 给 Executor'],
         },
-        { name: 'Executor', file: 'airflow/executors/kubernetes_executor.py', color: '#00cec9', icon: '🚀',
-          desc: 'Executor 是任务执行的抽象层，KubernetesExecutor 将每个 TaskInstance 转化为一个独立 K8s Pod，实现资源隔离与弹性扩缩。',
-          keyClass: 'KubernetesExecutor',
-          keyMethod: 'execute_async() / sync()',
-          flow: ['接收 Scheduler 提交的 TI', '调用 K8s API 创建 Pod', '监听 Pod 状态（Running/Succeeded/Failed）', '回写 TI 状态到 Metadata DB'],
+        { name: 'DAG Processor', file: 'airflow/dag_processing/manager.py', color: '#fd79a8', icon: '📄',
+          desc: '3.x 完全独立的进程/服务，专门解析 DAG Python 文件。Scheduler 不再需要访问 DAG 文件系统，解析错误完全隔离，支持 DAG Bundle（打包分发）。',
+          keyClass: 'DagProcessorJobRunner',
+          keyMethod: '_run_parsing_loop()',
+          flow: ['独立进程，与 Scheduler 完全解耦', '解析 DAG 文件 → SerializedDag 写入 DB', '支持 DAG Bundle（Git/S3 分发）', '解析错误不影响调度主进程'],
         },
-        { name: 'DAG Processor', file: 'airflow/dag_processing/processor.py', color: '#fd79a8', icon: '📄',
-          desc: '独立进程，专门负责解析 DAG Python 文件，将 DAG 对象序列化写入 Metadata DB，与 Scheduler 解耦，防止解析错误影响调度。',
-          keyClass: 'DagFileProcessorProcess',
-          keyMethod: '_parse_file()',
-          flow: ['监听 DAG 文件目录变更', '子进程 import DAG Python 文件', '提取 DAG/Task 元数据', '写入 SerializedDag 表'],
+        { name: 'Worker + Task SDK', file: 'task_sdk/src/airflow/sdk/', color: '#ffa657', icon: '🚀',
+          desc: '3.x Worker 通过 Task Execution API 与 API Server 通信，不再直连 Metadata DB。Task SDK 独立 PyPI 包（apache-airflow-task-sdk），Worker 无需安装完整 Airflow。',
+          keyClass: 'TaskSDK / BaseExecutor',
+          keyMethod: 'execute_async() / Task Execution API',
+          flow: ['Worker 通过 HTTP Task Execution API 上报状态', '不再直连 Metadata DB（安全隔离）', 'Task SDK 独立包，Worker 镜像更轻量', 'KubernetesExecutor / CeleryExecutor 均支持'],
         },
-        { name: 'Metadata DB', file: 'airflow/models/', color: '#ffa657', icon: '🗄️',
-          desc: 'PostgreSQL（生产推荐）存储所有运行时状态：DagRun、TaskInstance、XCom、Variable、Connection 等。Airflow 通过 SQLAlchemy ORM 操作。',
-          keyClass: 'DagRun / TaskInstance / XCom',
+        { name: 'Metadata DB', file: 'airflow/models/', color: '#3fb950', icon: '🗄️',
+          desc: 'PostgreSQL（生产推荐）存储所有运行时状态。3.x 新增 DAG Versioning 表（dag_version）、Asset 表（asset / asset_event），Worker 不再直连，只有 API Server 和 Scheduler 访问。',
+          keyClass: 'DagRun / TaskInstance / DagVersion / Asset',
           keyMethod: 'ti.set_state() / dag_run.update_state()',
-          flow: ['DagRun：一次 DAG 执行实例', 'TaskInstance：单个任务执行记录', 'XCom：任务间数据传递（小数据）', 'Variable/Connection：配置中心'],
-        },
-        { name: 'Web Server', file: 'airflow/www/app.py', color: '#3fb950', icon: '🌐',
-          desc: 'Flask + Gunicorn 提供 Web UI 和 REST API（Airflow 2.x 引入 OpenAPI 3.0），用于 DAG 管理、任务监控、日志查看、手动触发。',
-          keyClass: 'create_app()',
-          keyMethod: 'REST API: /api/v1/dags/{dag_id}/dagRuns',
-          flow: ['Flask Blueprint 注册路由', 'FAB（Flask-AppBuilder）权限控制', 'REST API 触发 DAG Run', 'WebSocket 实时日志推送'],
+          flow: ['新增 dag_version 表：原生 DAG 版本管理', '新增 asset / asset_event 表：Asset 驱动调度', 'Worker 不再直连（通过 API Server 中转）', 'Variable/Connection：配置中心'],
         },
         { name: 'Triggerer', file: 'airflow/jobs/triggerer_job_runner.py', color: '#79c0ff', icon: '⚡',
-          desc: 'Airflow 2.2+ 新增，支持 Deferrable Operator。任务可挂起（defer）等待外部事件（如 S3 文件到达），释放 Worker 资源，由 Triggerer 异步监听。',
+          desc: '支持 Deferrable Operator。任务可挂起（defer）等待外部事件（如 S3 文件到达），释放 Worker 资源，由 Triggerer 异步监听。3.x 中 Triggerer 也通过 Task Execution API 通信。',
           keyClass: 'TriggerRunner',
           keyMethod: 'run_trigger()',
-          flow: ['Task 调用 self.defer(trigger=...) 挂起', 'Triggerer 接管异步等待', '事件触发后恢复 Task 执行', '节省 Worker 资源（无需占用线程等待）'],
+          flow: ['Task 调用 self.defer(trigger=...) 挂起', 'Triggerer 接管 asyncio 异步等待', '事件触发后通过 API Server 恢复 Task', '节省 Worker 资源（无需占用线程等待）'],
         },
       ],
     },
 
     schedulerLoop: {
-      title: 'Scheduler 核心调度循环',
-      desc: 'SchedulerJobRunner._run_scheduler_loop() 是 Airflow 的心脏，每个 heartbeat 执行以下步骤：',
-      code: `# airflow/scheduler/scheduler_job_runner.py
+      title: 'Scheduler 核心调度循环（3.x）',
+      desc: '3.x Scheduler 不再解析 DAG 文件，专注调度决策。新增 Asset 事件驱动触发、DAG Versioning 感知，_run_scheduler_loop() 每个 heartbeat 执行以下步骤：',
+      code: `# airflow/scheduler/scheduler_job_runner.py（Airflow 3.x）
 class SchedulerJobRunner:
     def _run_scheduler_loop(self):
-        """主调度循环，每 heartbeat_interval 执行一次"""
+        """主调度循环（3.x：不再解析 DAG 文件，由独立 DAG Processor 负责）"""
         while not self.num_runs_done:
             loop_start = time.monotonic()
 
-            # 1. 处理 DAG 文件解析结果（从 DagFileProcessor 读取）
             with create_session() as session:
-                self._process_executor_events(session)   # 处理 Executor 回调
-                self._emit_pool_metrics(session)          # 发送资源池指标
+                # 1. 处理 Executor 回调事件
+                self._process_executor_events(session)
+                self._emit_pool_metrics(session)
 
-            # 2. 调度核心：评估哪些 TaskInstance 可以运行
+                # 2. 处理 Asset 事件（3.x 新增）
+                #    Asset 到达 → 触发关联 DAG Run
+                self._process_asset_events(session)
+
+            # 3. 调度核心：评估哪些 TaskInstance 可以运行
             with create_session() as session:
                 num_queued = self._do_scheduling(session)
 
-            # 3. 心跳：更新 Scheduler 存活状态
+            # 4. 心跳：更新 Scheduler 存活状态
             self.job_runner.heartbeat()
 
-            # 4. 控制循环频率
             loop_duration = time.monotonic() - loop_start
-            sleep_time = max(0, self.job_runner.heartbeat_interval - loop_duration)
-            time.sleep(sleep_time)
+            time.sleep(max(0, self.job_runner.heartbeat_interval - loop_duration))
 
     def _do_scheduling(self, session) -> int:
-        """核心调度逻辑：DAG Run 创建 + Task 状态推进"""
-        # 创建新的 DagRun（按 schedule_interval 触发）
+        """核心调度逻辑（3.x：感知 DAG Version，支持 Asset 触发）"""
+        # 创建新的 DagRun（按 schedule / Asset 事件触发）
+        # 3.x：DagRun 关联 dag_version_id，记录执行时的 DAG 版本
         dag_runs = self._create_dag_runs(dag_models, session)
 
         # 推进 DagRun 中 TaskInstance 的状态机
-        # scheduled → queued → running → success/failed
         self._start_queued_dagruns(session)
 
         # 提交 queued TI 给 Executor
+        # 3.x：Worker 通过 Task Execution API 上报状态，不直连 DB
         num_queued = self._execute_task_instances(session)
         return num_queued`,
       stateTransitions: [
         { from: 'none', to: 'scheduled', trigger: 'DAG Run 创建，依赖满足', color: '#6c5ce7' },
+        { from: 'none', to: 'scheduled', trigger: '(3.x) Asset 事件到达触发', color: '#a29bfe' },
         { from: 'scheduled', to: 'queued', trigger: 'Executor 接受任务', color: '#00cec9' },
-        { from: 'queued', to: 'running', trigger: 'Pod 启动成功', color: '#ffa657' },
-        { from: 'running', to: 'success', trigger: 'Task 返回 0', color: '#3fb950' },
+        { from: 'queued', to: 'running', trigger: 'Pod 启动 / Worker 接管', color: '#ffa657' },
+        { from: 'running', to: 'success', trigger: 'Task 返回 0（via Task Execution API）', color: '#3fb950' },
         { from: 'running', to: 'failed', trigger: 'Task 异常 / 超时', color: '#e17055' },
         { from: 'failed', to: 'up_for_retry', trigger: 'retries > 0', color: '#fd79a8' },
         { from: 'running', to: 'deferred', trigger: 'self.defer() 调用', color: '#79c0ff' },
