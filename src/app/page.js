@@ -422,9 +422,9 @@ export default function Home() {
               {logs.map((log, i) => (
                 <div key={i} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/60 border border-gray-100/80">
                   <span className="text-sm flex-shrink-0">
-                    {log.type === 'book' ? '📖' : log.type === 'article' ? '📝' : log.type === 'paper' ? '📄' : log.type === 'news' ? '🌊' : '🔄'}
+                    {log.type === 'book' ? '📖' : log.type === 'article' ? '📝' : log.type === 'paper' ? '📄' : log.type === 'news' ? '🌊' : log.type === 'model' ? '🤖' : log.type === 'system' ? '⚙️' : '🔄'}
                   </span>
-                  <p className="text-sm text-gray-600 flex-1 min-w-0 truncate">{log.message}</p>
+                  <p className="text-sm text-gray-600 flex-1 min-w-0 truncate">{log.title || log.message || '(无标题)'}</p>
                   <span className="text-[11px] text-gray-300 font-mono flex-shrink-0">{log.date}</span>
                   <span className="text-[11px] text-[#a29bfe] flex-shrink-0">{log.agent}</span>
                 </div>
