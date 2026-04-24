@@ -253,6 +253,25 @@ const IDEAS = [
     china: '高',
     tags: ['MCP', 'Agent', '中间件'],
   },
+  {
+    id: 16,
+    industry: 'dev-tools',
+    title: 'AI 编码 Agent（自主软件工程师）',
+    signal: '🔥🔥 爆发',
+    signalDate: '2026-04',
+    summary: 'Cognition AI（Devin）以 $250B 估值融资，Cursor 传闻被 SpaceX 以 $60B 收购，Sierra 收购 Fragment。AI 编码 Agent 从"辅助工具"升级为"自主软件工程师"，能独立完成需求分析→编码→测试→部署全流程。',
+    opportunity: '国内软件外包市场规模超 $1000 亿，AI 编码 Agent 可将交付效率提升 5-10x。本土化需求（中文代码注释、国内框架适配、私有化部署）为国内玩家提供保护。',
+    overseas: [
+      { name: 'Cognition AI (Devin)', url: 'https://cognition.ai', desc: '首个 AI 软件工程师，估值 $250B' },
+      { name: 'Cursor', url: 'https://cursor.com', desc: 'AI 代码编辑器，传闻估值 $60B' },
+      { name: 'Windsurf (Codeium)', url: 'https://codeium.com', desc: 'AI 编码助手，企业版增长快' },
+      { name: 'Sierra', url: 'https://sierra.ai', desc: 'AI 客服 Agent，收购 Fragment' },
+    ],
+    market: '$50B+（全球软件开发服务市场的 AI 替代空间）',
+    barrier: '高',
+    china: '中',
+    tags: ['AI编码', 'Agent', '软件工程', '开发工具'],
+  },
 
   // ── 企业 SaaS ────────────────────────────────────────────────────────────
   {

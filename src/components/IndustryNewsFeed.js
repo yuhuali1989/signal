@@ -110,6 +110,69 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-04-24（第32轮更新 — Qwen3.6-27B开源 / Claude Opus 4.7发布 / Ray 2.55.1 / K8s v1.36.0 DRA GA / 特斯拉接入豆包）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2708,
+    category: 'llm',
+    region: 'china',
+    title: 'Qwen3.6-27B 正式开源：MoE 架构 + 思维链无缝切换，开源模型新标杆',
+    summary: '阿里巴巴 Qwen 团队正式开源 Qwen3.6-27B，采用 MoE（混合专家）架构，总参数 27B，激活参数约 3B。最大亮点是支持「思考模式」与「非思考模式」无缝切换——推理任务自动启用 Chain-of-Thought，简单任务直接输出，无需重新加载模型。在 MATH-500、GPQA 等基准上与同量级闭源模型相当，模型权重已上传 HuggingFace，Apache 2.0 协议支持商业使用。',
+    source: 'Qwen Blog',
+    date: '2026-04-24',
+    tags: ['Qwen', 'Qwen3.6', 'MoE', '开源模型', '阿里'],
+    hot: true,
+    link: 'https://qwenlm.github.io/blog/',
+  },
+  {
+    id: 2709,
+    category: 'llm',
+    region: 'global',
+    title: 'Claude Opus 4.7 发布：SWE-bench Pro 87.6%，编码能力登顶',
+    summary: 'Anthropic 发布 Claude Opus 4.7，在编码能力上取得重大突破，SWE-bench Pro 得分达 87.6%，超越此前所有已知模型。新版本在复杂多步骤代码重构、跨文件依赖分析方面表现显著提升。Anthropic 同步发布了关于 Claude Code 质量问题的更新说明，承认近期部分用户反馈的代码质量下降问题，并在 4.7 版本中进行了针对性修复。',
+    source: 'Anthropic',
+    date: '2026-04-24',
+    tags: ['Claude', 'Anthropic', 'Claude Opus 4.7', '编码能力', 'SWE-bench'],
+    hot: true,
+    link: 'https://www.anthropic.com/news',
+  },
+  {
+    id: 2710,
+    category: 'infra',
+    region: 'global',
+    title: 'Kubernetes v1.36.0 发布：DRA 进入 GA，GPU 细粒度调度能力正式成熟',
+    summary: 'Kubernetes v1.36.0 于 2026-04-22 正式发布，最重要的里程碑是 Dynamic Resource Allocation（DRA）进入 GA（正式可用）阶段。DRA 支持 GPU 等异构硬件的细粒度资源分配，允许 Pod 请求特定型号的 GPU 分片、MIG 实例或自定义硬件资源，彻底解决了 AI 训练/推理工作负载的 GPU 调度精度问题。同时改进 Topology Aware Scheduling，优化 AI 训练任务的跨节点通信效率。',
+    source: 'GitHub Releases',
+    date: '2026-04-24',
+    tags: ['Kubernetes', 'DRA', 'GPU调度', 'AI Infra', 'v1.36'],
+    hot: true,
+    link: 'https://github.com/kubernetes/kubernetes/releases/tag/v1.36.0',
+  },
+  {
+    id: 2711,
+    category: 'infra',
+    region: 'global',
+    title: 'Ray 2.55.1 发布：修复 Ray Data 内存泄漏，KubeRay 稳定性提升',
+    summary: 'Ray 2.55.1 于 2026-04-22 正式发布，主要修复 Ray Data 在大规模流式处理场景下的内存泄漏问题，同时改善 KubeRay Operator 在 Kubernetes 集群中的 Pod 调度稳定性。Ray 是分布式 AI 计算的核心基础设施，广泛用于大模型训练（Ray Train）、超参搜索（Ray Tune）和推理服务（Ray Serve）。建议生产环境用户尽快从 2.55.0 升级。',
+    source: 'GitHub Releases',
+    date: '2026-04-24',
+    tags: ['Ray', 'KubeRay', '分布式计算', 'AI Infra'],
+    hot: false,
+    link: 'https://github.com/ray-project/ray/releases/tag/ray-2.55.1',
+  },
+  {
+    id: 2712,
+    category: 'llm',
+    region: 'china',
+    title: '特斯拉中国版车载语音助手正式接入字节跳动豆包大模型',
+    summary: '特斯拉中国版车载语音助手正式接入字节跳动豆包大模型，成为首个与国内头部大模型深度集成的国际车企。豆包模型将为特斯拉提供中文语义理解、多轮对话和车控指令解析能力。此次合作标志着国内大模型在汽车智能座舱场景的商业化落地提速，也是字节跳动豆包在 B 端场景的重要突破，进一步验证了国产大模型在垂直行业的商业化路径。',
+    source: 'AIbase 日报',
+    date: '2026-04-24',
+    tags: ['特斯拉', '豆包', '字节跳动', '智能座舱', '车载AI'],
+    hot: false,
+    link: 'https://www.aibase.com/zh/daily',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-04-24（第31轮更新 — GPT-5.5发布 / DeepSeek-v4上线 / cURL-AI漏洞预警 / JetBrains远程开发修复 / Cognition $250B估值）
   // ══════════════════════════════════════════════════════
   {

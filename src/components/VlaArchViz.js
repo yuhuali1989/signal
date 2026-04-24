@@ -1991,6 +1991,7 @@ function VlaLabView() {
             { year: '2024', name: 'UniSim / Genie 2', desc: '神经场景重建 + 可交互 3D 世界，闭环仿真替代真实路测', color: '#74b9ff', icon: '🌍' },
             { year: '2025', name: 'OpenDriveVLA', desc: '首个开源 LLM 端到端驾驶 VLA，证明 VLA 范式可行且可复现', color: '#00cec9', icon: '🤖' },
             { year: '2026', name: 'DriveWorld-VLA', desc: '统一潜空间 VLA + 世界模型，Latent CoT，nuScenes/NAVSIM 三大 SOTA', color: '#6c5ce7', icon: '⭐' },
+            { year: '2026 Q2', name: 'Alpamayo-R1 / π₀.5', desc: 'Alpamayo-R1 引入 RL 奖励驱动的 VLA 微调，π₀.5 将 Flow Matching 扩展到多任务机器人操作，VLA 从自动驾驶向通用具身智能延伸', color: '#e17055', icon: '🚀' },
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-3 mb-3 pl-8 relative">
               <div className="absolute left-1.5 w-3 h-3 rounded-full border-2 border-white flex-shrink-0"

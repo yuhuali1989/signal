@@ -43,6 +43,8 @@ const TIMELINE = [
   { date: '2026-03', model: 'Qwen3-235B-A22B（正式版）', innovation: '细粒度 MoE + 双模式推理 + FP8 全链路', contribution: '开源最强 MoE，Codeforces 2056 ELO，AIME 2025 85.7%，Apache 2.0', tag: 'MoE+推理', color: 'bg-amber-100 text-amber-700' },
   { date: '2026-04', model: 'Llama 4 Behemoth（训练中）', innovation: '超大规模 MoE（2T 参数）+ 多模态原生', contribution: '2T 总参数 / 288B 激活，教师模型蒸馏 Scout/Maverick；STEM 超越 GPT-5/Gemini 2.5 Pro', tag: '规模扩展', color: 'bg-blue-100 text-blue-700' },
   { date: '2026-04', model: 'Gemini 2.5 Pro（0414）', innovation: '深度思考 v2 + 原生代码执行沙箱', contribution: 'AIME 2025 92.0%，SWE-bench 63.8%，Humanity Last Exam 18.8%，全面刷新 SOTA', tag: '推理增强', color: 'bg-teal-100 text-teal-700' },
+  { date: '2026-04', model: 'Qwen3.6-27B（开源）', innovation: '轻量 MoE + 无缝思维链切换（Thinking/Non-Thinking 双模式）', contribution: '27B 总参数 / 3B 激活，开源 MoE 新标杆；思维链切换无需重新加载模型，MATH-500 / GPQA 与同量级闭源模型相当，Apache 2.0', tag: 'MoE+推理', color: 'bg-amber-100 text-amber-700' },
+  { date: '2026-04', model: 'Claude Opus 4.7', innovation: '编码专项强化 + 多步骤代码重构能力', contribution: 'SWE-bench Pro 87.6%（超越所有已知模型）；跨文件依赖分析与复杂重构能力大幅提升；同步修复 Claude Code 质量回退问题', tag: '编码增强', color: 'bg-purple-100 text-purple-700' },
 ];
 
 const EVOLUTION_PATHS = [
@@ -134,7 +136,7 @@ export default function ArchEvolution() {
       {/* 页头 */}
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-1">模型架构演进</h2>
-      <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-24</p>
+      <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-24（含 Qwen3.6-27B / Claude Opus 4.7）</p>
       </div>
 
       {/* 子 Tab */}
@@ -190,7 +192,7 @@ export default function ArchEvolution() {
       {/* ── 创新时间线 ── */}
       {activeTab === 'timeline' && (
         <div>
-          <p className="text-xs text-gray-400 mb-6">2024-05 至今，每次新模型发布时若有关键 Layer 创新，在此追踪记录。共 {TIMELINE.length} 条记录，最新更新至 2026-04-24。</p>
+          <p className="text-xs text-gray-400 mb-6">2024-05 至今，每次新模型发布时若有关键 Layer 创新，在此追踪记录。共 {TIMELINE.length} 条记录，最新更新至 2026-04-24（Qwen3.6-27B + Claude Opus 4.7）。</p>
           <div className="relative">
             {/* 竖线 */}
             <div className="absolute left-[88px] top-0 bottom-0 w-px bg-gray-200" />

@@ -96,7 +96,7 @@ export const INDUSTRY_CRISIS = {
 export const GLOBAL_BREAKOUT = {
   title: '全球软件行业破局思路',
   subtitle: '从"卖代码"到"卖决策"——价值链重构',
-  lastUpdated: '2026-04',
+  lastUpdated: '2026-04-24',
   strategies: [
     {
       id: 'palantir',
@@ -120,6 +120,7 @@ export const GLOBAL_BREAKOUT = {
         { date: '2025-03', tag: '产品', level: 'hot', text: 'AIP for Defense 发布，将 LLM 直接接入战场指挥系统，TITAN 边缘节点量产' },
         { date: '2025-04', tag: '市场', level: 'watch', text: '欧洲商业客户增速加快，Airbus/Philips 等大客户续约并扩容，FDE 团队扩至 800+' },
         { date: '2025-04', tag: '竞争', level: 'watch', text: 'Microsoft 推 Fabric + Copilot 正面竞争 Foundry，Palantir 强调 Ontology 差异化' },
+        { date: '2026-04', tag: '战略', level: 'hot', text: 'DeepSeek-V4 预览版发布并开放 API（flash + pro 双版本），国产大模型 API 生态持续完善，对 Palantir 类数据操作系统模式形成竞争压力——低成本 API 降低了企业 AI 化门槛，但也压缩了中间层利润空间' },
       ],
       deepDive: {
         why: 'Palantir 的核心不是技术领先，而是"业务理解深度"。FDE 驻场 6-18 个月后，客户的 Ontology 已经成为业务运转的神经系统，任何替换都意味着重建整个数字孪生。',
@@ -147,6 +148,7 @@ export const GLOBAL_BREAKOUT = {
         { date: '2025-03', tag: '法律', level: 'hot', text: 'Harvey AI 估值 $3B，Allen & Overy 等顶级律所全面部署，合同审查效率提升 10x' },
         { date: '2025-04', tag: '金融', level: 'watch', text: 'Ramp（AI 财务）ARR 突破 $500M，AI 支出分析 + 自动报销成为标配' },
         { date: '2025-04', tag: '制造', level: 'watch', text: 'Sight Machine（工厂 AI）被 Rockwell Automation 收购，工业 AI 整合加速' },
+        { date: '2026-04', tag: '汽车', level: 'hot', text: '特斯拉中国版车载语音接入字节豆包大模型，国产大模型在智能座舱垂直场景商业化落地，验证了垂直 AI 的 B 端商业路径——豆包从 C 端消费品升级为 B 端基础设施' },
       ],
       deepDive: {
         why: '垂直 AI 的护城河来自三层叠加：①行业数据（无法公开获取）②合规认证（FDA/FedRAMP/金融牌照）③工作流嵌入（替换成本 = 重新培训所有员工）。通用 LLM 能做 80% 的事，但最后 20% 的行业特殊性决定了生死。',
@@ -173,6 +175,7 @@ export const GLOBAL_BREAKOUT = {
         { date: '2025-03', tag: 'Databricks', level: 'hot', text: '估值 $62B，收购 Tabular（Apache Iceberg 创始团队），统一数据湖仓格局' },
         { date: '2025-04', tag: 'ServiceNow', level: 'watch', text: 'AI Agent 处理 40% 的 IT 工单无需人工介入，客户 ROI 平均 4.2x' },
         { date: '2025-04', tag: '竞争', level: 'watch', text: 'Microsoft 365 Copilot + Power Platform 形成闭环，传统平台厂商面临降维打击' },
+        { date: '2026-04', tag: 'Agent编码', level: 'hot', text: 'Cognition AI（Devin）以 $250B 估值融资，AI 编码 Agent 从辅助工具升级为自主软件工程师，Sierra 收购 Fragment 加速 AI 客服 Agent 整合，平台生态玩家需要重新思考 Agent 层的竞争格局' },
       ],
       deepDive: {
         why: '平台战略的本质是"控制 Agent 的行动空间"。当 AI Agent 需要读写数据、触发工作流、调用 API 时，谁控制了这些接口，谁就控制了 Agent 的能力边界。Salesforce 的 Agentforce 本质上是把 CRM 数据变成 Agent 的"行动地图"。',
