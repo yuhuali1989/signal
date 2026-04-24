@@ -156,11 +156,20 @@ def run_researcher(topic, existing_content=None):
 3. 如果有现有内容，指出过时信息和需要补充的地方
 4. 输出结构化的研究报告
 
+重点关注领域（AI Infra 开源项目）：
+- Kubernetes 生态：Volcano/Koordinator/HAMi/Kueue 调度器、GPU 虚拟化、AI 工作负载 CRD
+- Apache Iceberg：表格式演进、Puffin 统计、Deletion Vector、REST Catalog、PyIceberg
+- Apache Airflow 3.x：Task SDK、Asset Partitioning、DAG Bundle、FastAPI 迁移
+- MLflow 3.x：LLM Tracing、AI Gateway、GenAI 评估、Unity Catalog 集成
+- Unity Catalog：AI/ML 资产管理、多引擎集成、权限模型演进
+- Apache Spark 4.x：Python UDF、Spark Connect、GPU 加速、Iceberg/Delta 集成
+- Ray 2.x：Ray Data、Ray Serve、KubeRay、分布式训练优化
+
 输出格式：
 ## 研究报告
 ### 核心发现
 - ...
-### 关键论文/项目
+### 关键论文/项目/Release
 - ...
 ### 现有内容评估（如果有）
 - 过时内容：...
@@ -386,6 +395,40 @@ ARTICLE_TOPICS = [
     {'title': 'RAG 2.0：从朴素检索到自适应知识增强',
      'description': 'RAG 技术的演进路线和前沿方向',
      'tags': ['RAG', '知识库', '检索增强'], 'category': '工具与生态'},
+    # ── AI Infra 开源项目进展追踪 ──────────────────────────────
+    {'title': 'Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性',
+     'description': '追踪 K8s 社区最新进展：Volcano/Koordinator/HAMi/Kueue 调度器更新、GPU 细粒度调度新特性、AI 工作负载 CRD 演进',
+     'tags': ['Kubernetes', 'GPU 调度', 'Volcano', 'HAMi', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['kubernetes/kubernetes', 'volcano-sh/volcano', 'koordinator-sh/koordinator',
+                   'Project-HAMi/HAMi', 'kubernetes-sigs/kueue', 'google/dynamic-workload-scheduler']},
+    {'title': 'Apache Iceberg 社区进展：新版本特性、性能优化与生态集成',
+     'description': '追踪 Iceberg 最新 Release 亮点：Puffin 统计文件、Deletion Vector、REST Catalog 演进、多引擎兼容性更新',
+     'tags': ['Iceberg', '数据湖仓', '开放表格式', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['apache/iceberg', 'apache/iceberg-python'],
+     'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/iceberg-1.10.1'},
+    {'title': 'Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性',
+     'description': '追踪 Airflow 3.x 最新动态：Task SDK 独立化进展、Asset Partitioning 落地、FastAPI 迁移、Provider 生态更新',
+     'tags': ['Airflow', '工作流编排', 'Task SDK', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['apache/airflow'],
+     'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/airflow-3.2.1'},
+    {'title': 'MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性',
+     'description': '追踪 MLflow 最新 Release：LLM Tracing 增强、AI Gateway 多模型路由、GenAI 评估框架、Unity Catalog 集成进展',
+     'tags': ['MLflow', 'MLOps', 'LLM Tracing', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['mlflow/mlflow'],
+     'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/mlflow-3.11.1'},
+    {'title': 'Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成',
+     'description': '追踪 Unity Catalog 最新动态：AI/ML 资产管理增强、Iceberg REST Catalog 兼容、Spark/Trino/DuckDB 集成进展',
+     'tags': ['Unity Catalog', '数据治理', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['unitycatalog/unitycatalog'],
+     'source_path': '/Users/harrisyu/WorkBuddy/20260409114249/oss-repos/unitycatalog-0.4.1'},
+    {'title': 'Apache Spark 社区进展：Spark 4.x 新特性与 AI/ML 工作负载优化',
+     'description': '追踪 Spark 4.x 最新动态：Python UDF 性能提升、Spark Connect 演进、GPU 加速、与 Iceberg/Delta 深度集成',
+     'tags': ['Spark', '大数据', 'Spark 4.x', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['apache/spark']},
+    {'title': 'Ray 社区进展：Ray 2.x 分布式 AI 框架新特性与生产落地',
+     'description': '追踪 Ray 最新动态：Ray Data 流式处理、Ray Serve 推理优化、RayJob on K8s、KubeRay Operator 更新',
+     'tags': ['Ray', '分布式计算', 'RayServe', 'AI Infra'], 'category': 'AI Infra',
+     'oss_watch': ['ray-project/ray', 'ray-project/kuberay']},
 ]
 
 BOOK_TOPICS = [
@@ -634,8 +677,20 @@ def run_articles(count=2):
                 print(f"    ⏭️  跳过（已有 {line_count} 行）")
                 continue
 
+        # 构建主题字符串（AI Infra 追踪主题注入 oss_watch 和 source_path）
+        topic_title = topic['title']
+        if 'oss_watch' in topic:
+            topic_title += (
+                f"\n\n[开源项目追踪] 重点关注以下仓库的最新 Release/PR/Issue："
+                f"\n" + "\n".join(f"  - https://github.com/{r}" for r in topic['oss_watch'])
+            )
+        if 'source_path' in topic:
+            source_path = Path(topic['source_path'])
+            if source_path.exists():
+                topic_title += f"\n\n[本地源码] {source_path}（请基于真实源码分析）"
+
         # 运行三角色流水线
-        body = run_pipeline(topic['title'], existing, 'article')
+        body = run_pipeline(topic_title, existing, 'article')
         if not body:
             body = generate_article_template(topic)
             print(f"    📝 使用模板 (后端: {BACKEND})")

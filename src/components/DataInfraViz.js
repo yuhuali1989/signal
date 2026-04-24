@@ -115,85 +115,265 @@ function OverviewTab() {
 // 2. K8s & 容器
 // ─────────────────────────────────────────────────────────────
 function K8sTab() {
-  const { clusters, components, namespaces, gpuStrategy } = K8S_DATA;
+  const { clusters, components, namespaces, gpuStrategy, schedulerComparison } = K8S_DATA;
+  const [activeSubTab, setActiveSubTab] = useState('overview');
+  const [activeScheduler, setActiveScheduler] = useState(null);
+
+  const SUB_TABS = [
+    { id: 'overview',   label: '集群总览',   icon: '🖥️' },
+    { id: 'scheduler',  label: '调度器选型', icon: '⚡' },
+  ];
 
   return (
     <div className="space-y-4">
-      {/* 集群矩阵 */}
-      <SectionCard icon="🖥️" title="集群矩阵" desc="3 套 K8s 集群，按工作负载类型隔离">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {clusters.map(c => (
-            <div key={c.name} className="rounded-xl border p-4"
-              style={{ borderColor: c.color + '33', background: c.color + '06' }}>
-              <div className="text-sm font-semibold text-gray-800 mb-1">{c.name}</div>
-              <div className="text-[10px] text-gray-500 mb-3">{c.purpose}</div>
-              <div className="space-y-1.5 text-[10px]">
-                {[
-                  { label: '节点', value: c.nodes },
-                  { label: 'GPU', value: c.gpu },
-                  { label: '网络', value: c.network },
-                  { label: '存储', value: c.storage },
-                  { label: '调度', value: c.scheduler },
-                ].map(item => (
-                  <div key={item.label} className="flex items-center gap-2">
-                    <span className="text-gray-400 w-8">{item.label}</span>
-                    <span className="font-mono text-gray-600">{item.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      {/* K8s 组件 */}
-      <SectionCard icon="☸️" title="核心组件" desc="Kubernetes 生态关键组件">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {components.map(c => (
-            <div key={c.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
-              <span className="text-lg flex-shrink-0 mt-0.5">{c.icon}</span>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-xs font-semibold text-gray-700">{c.name}</span>
-                  <Badge color="#326ce5">{c.category}</Badge>
-                </div>
-                <div className="text-[10px] text-gray-500">{c.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      {/* Namespace */}
-      <SectionCard icon="📁" title="Namespace 规划" desc="按职能隔离，独立资源配额">
-        <div className="space-y-2">
-          {namespaces.map(ns => (
-            <div key={ns.name} className="flex items-center gap-3 rounded-xl border p-3"
-              style={{ borderColor: ns.color + '33', background: ns.color + '04' }}>
-              <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: ns.color }} />
-              <span className="text-xs font-mono font-semibold text-gray-700 w-28">{ns.name}</span>
-              <span className="text-[10px] text-gray-500 flex-1">{ns.desc}</span>
-              <span className="text-[9px] font-mono text-gray-400 flex-shrink-0">{ns.quota}</span>
-            </div>
-          ))}
-        </div>
-      </SectionCard>
-
-      {/* GPU 调度策略 */}
-      <div className="rounded-2xl border border-[#326ce5]/20 bg-[#326ce5]/5 p-5">
-        <div className="text-xs font-semibold text-gray-700 mb-3">🎮 GPU 调度策略</div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {Object.entries(gpuStrategy).map(([key, value]) => {
-            const labels = { topology: '拓扑感知', mig: 'MIG 切分', timeshare: '时间片共享', preemption: '抢占策略', monitoring: 'GPU 监控' };
-            return (
-              <div key={key} className="rounded-lg border border-[#326ce5]/20 bg-white/80 p-2.5">
-                <div className="text-[9px] text-gray-400 mb-0.5">{labels[key] || key}</div>
-                <div className="text-[10px] text-gray-700">{value}</div>
-              </div>
-            );
-          })}
-        </div>
+      {/* Sub Tab 切换 */}
+      <div className="flex gap-2">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveSubTab(t.id)}
+            className="text-xs px-4 py-1.5 rounded-full border transition-all font-medium"
+            style={{
+              background: activeSubTab === t.id ? '#326ce5' : 'transparent',
+              color: activeSubTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeSubTab === t.id ? '#326ce5' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
       </div>
+
+      {/* ── 集群总览 ── */}
+      {activeSubTab === 'overview' && (
+        <div className="space-y-4">
+          {/* 集群矩阵 */}
+          <SectionCard icon="🖥️" title="集群矩阵" desc="3 套 K8s 集群，按工作负载类型隔离">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {clusters.map(c => (
+                <div key={c.name} className="rounded-xl border p-4"
+                  style={{ borderColor: c.color + '33', background: c.color + '06' }}>
+                  <div className="text-sm font-semibold text-gray-800 mb-1">{c.name}</div>
+                  <div className="text-[10px] text-gray-500 mb-3">{c.purpose}</div>
+                  <div className="space-y-1.5 text-[10px]">
+                    {[
+                      { label: '节点', value: c.nodes },
+                      { label: 'GPU', value: c.gpu },
+                      { label: '网络', value: c.network },
+                      { label: '存储', value: c.storage },
+                      { label: '调度', value: c.scheduler },
+                    ].map(item => (
+                      <div key={item.label} className="flex items-center gap-2">
+                        <span className="text-gray-400 w-8">{item.label}</span>
+                        <span className="font-mono text-gray-600">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* K8s 组件 */}
+          <SectionCard icon="☸️" title="核心组件" desc="Kubernetes 生态关键组件">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {components.map(c => (
+                <div key={c.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                  <span className="text-lg flex-shrink-0 mt-0.5">{c.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-xs font-semibold text-gray-700">{c.name}</span>
+                      <Badge color="#326ce5">{c.category}</Badge>
+                    </div>
+                    <div className="text-[10px] text-gray-500">{c.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* Namespace */}
+          <SectionCard icon="📁" title="Namespace 规划" desc="按职能隔离，独立资源配额">
+            <div className="space-y-2">
+              {namespaces.map(ns => (
+                <div key={ns.name} className="flex items-center gap-3 rounded-xl border p-3"
+                  style={{ borderColor: ns.color + '33', background: ns.color + '04' }}>
+                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: ns.color }} />
+                  <span className="text-xs font-mono font-semibold text-gray-700 w-28">{ns.name}</span>
+                  <span className="text-[10px] text-gray-500 flex-1">{ns.desc}</span>
+                  <span className="text-[9px] font-mono text-gray-400 flex-shrink-0">{ns.quota}</span>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* GPU 调度策略 */}
+          <div className="rounded-2xl border border-[#326ce5]/20 bg-[#326ce5]/5 p-5">
+            <div className="text-xs font-semibold text-gray-700 mb-3">🎮 GPU 调度策略</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {Object.entries(gpuStrategy).map(([key, value]) => {
+                const labels = { topology: '拓扑感知', mig: 'MIG 切分', timeshare: '时间片共享', preemption: '抢占策略', monitoring: 'GPU 监控' };
+                return (
+                  <div key={key} className="rounded-lg border border-[#326ce5]/20 bg-white/80 p-2.5">
+                    <div className="text-[9px] text-gray-400 mb-0.5">{labels[key] || key}</div>
+                    <div className="text-[10px] text-gray-700">{value}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── 调度器选型 ── */}
+      {activeSubTab === 'scheduler' && (
+        <div className="space-y-4">
+          {/* 定位说明 */}
+          <div className="rounded-2xl border border-[#326ce5]/20 bg-[#326ce5]/04 p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">⚡</span>
+              <div>
+                <div className="text-sm font-bold text-gray-800 mb-1">{schedulerComparison.title}</div>
+                <div className="text-[10px] text-gray-500 leading-relaxed">{schedulerComparison.desc}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 调度器卡片列表 */}
+          <div className="space-y-3">
+            {schedulerComparison.schedulers.map(s => (
+              <div key={s.name} className="rounded-2xl border overflow-hidden"
+                style={{ borderColor: s.color + '30' }}>
+                {/* 卡片头部（可点击展开） */}
+                <button
+                  className="w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-gray-50/50"
+                  style={{ background: s.color + '04' }}
+                  onClick={() => setActiveScheduler(activeScheduler === s.name ? null : s.name)}>
+                  <span className="text-2xl flex-shrink-0">{s.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                      <span className="text-sm font-bold text-gray-800">{s.name}</span>
+                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                        style={{ background: s.color + '15', color: s.color }}>{s.version}</span>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full font-semibold"
+                        style={{ background: s.verdictColor + '15', color: s.verdictColor }}>{s.verdict}</span>
+                      {/* 评分 */}
+                      <div className="flex gap-0.5 ml-auto">
+                        {[1,2,3,4,5].map(i => (
+                          <div key={i} className="w-3 h-1.5 rounded-full"
+                            style={{ background: i <= s.score ? s.color : s.color + '25' }} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-[9px] text-gray-400">{s.org}</div>
+                  </div>
+                  <span className="text-[9px] text-gray-400 flex-shrink-0">{activeScheduler === s.name ? '▲' : '▼'}</span>
+                </button>
+
+                {/* 展开内容 */}
+                {activeScheduler === s.name && (
+                  <div className="px-4 pb-4 space-y-3" style={{ background: s.color + '02' }}>
+                    <p className="text-[10px] text-gray-500 leading-relaxed pt-2">{s.desc}</p>
+
+                    {/* 核心特性 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {s.coreFeatures.map(f => (
+                        <div key={f.name} className="rounded-xl border border-gray-100 bg-white/80 p-3">
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <span className="text-sm">{f.icon}</span>
+                            <span className="text-[10px] font-semibold text-gray-700">{f.name}</span>
+                          </div>
+                          <p className="text-[9px] text-gray-500">{f.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* 适用场景 + 局限 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="rounded-xl border border-gray-100 bg-white/80 p-3">
+                        <div className="text-[9px] font-semibold text-[#3fb950] mb-1.5">✅ 适用场景</div>
+                        {s.useCases.map((u, i) => (
+                          <div key={i} className="text-[9px] text-gray-500 mb-0.5">· {u}</div>
+                        ))}
+                      </div>
+                      <div className="rounded-xl border border-gray-100 bg-white/80 p-3">
+                        <div className="text-[9px] font-semibold text-[#e17055] mb-1.5">⚠️ 局限</div>
+                        {s.limitations.map((l, i) => (
+                          <div key={i} className="text-[9px] text-gray-500 mb-0.5">· {l}</div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 配置示例 */}
+                    <div>
+                      <div className="text-[9px] font-semibold text-gray-600 mb-1.5">📋 配置示例</div>
+                      <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+                        style={{ background: s.color + '08', color: s.color, border: `1px solid ${s.color}20` }}>
+                        {s.keyConfig}
+                      </pre>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* GPU 细粒度调度技术全景 */}
+          <SectionCard icon="🔬" title={schedulerComparison.gpuFineGrained.title}
+            desc={schedulerComparison.gpuFineGrained.desc}>
+            <div className="space-y-3 mb-4">
+              {schedulerComparison.gpuFineGrained.techniques.map(t => (
+                <div key={t.name} className="rounded-xl border p-3"
+                  style={{ borderColor: t.color + '25', background: t.color + '04' }}>
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <span className="text-[10px] font-bold text-gray-800">{t.name}</span>
+                    <span className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                      style={{ background: t.color + '15', color: t.color }}>{t.vendor}</span>
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">{t.isolation}</span>
+                  </div>
+                  <div className="text-[9px] font-mono text-gray-500 mb-2 bg-gray-50 rounded px-2 py-1">{t.granularity}</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <div className="text-[8px] font-semibold text-[#3fb950] mb-1">✅ 优势</div>
+                      {t.pros.map((p, i) => <div key={i} className="text-[9px] text-gray-500 mb-0.5">· {p}</div>)}
+                    </div>
+                    <div>
+                      <div className="text-[8px] font-semibold text-[#e17055] mb-1">⚠️ 局限</div>
+                      {t.cons.map((c, i) => <div key={i} className="text-[9px] text-gray-500 mb-0.5">· {c}</div>)}
+                    </div>
+                  </div>
+                  <div className="mt-2 text-[9px] rounded-lg px-2 py-0.5 inline-block"
+                    style={{ background: t.color + '12', color: t.color }}>💡 {t.bestFor}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* 选型矩阵 */}
+            <div>
+              <div className="text-[10px] font-semibold text-gray-600 mb-2">📊 {schedulerComparison.gpuFineGrained.decisionMatrix.title}</div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-[9px]">
+                  <thead>
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left py-1.5 px-2 text-gray-400 font-medium">调度器</th>
+                      {schedulerComparison.gpuFineGrained.decisionMatrix.scenarios.map(s => (
+                        <th key={s} className="text-center py-1.5 px-1 text-gray-400 font-medium whitespace-nowrap text-[8px]">{s}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {schedulerComparison.gpuFineGrained.decisionMatrix.rows.map((row, i) => (
+                      <tr key={row.scheduler} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                        <td className="py-1.5 px-2 font-mono font-semibold text-[#326ce5]">{row.scheduler}</td>
+                        {row.scores.map((s, j) => (
+                          <td key={j} className="py-1.5 px-1 text-center text-[8px]">{s}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </SectionCard>
+        </div>
+      )}
     </div>
   );
 }
