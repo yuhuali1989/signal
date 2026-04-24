@@ -10,9 +10,9 @@ export const INFRA_TABS = [
   { id: 'overview',      label: '全景总览',        icon: '🗺️', color: '#6c5ce7', desc: '数据闭环全景架构 · 技术栈全图 · 核心指标' },
   { id: 'k8s',           label: 'K8s & 容器',      icon: '☸️', color: '#326ce5', desc: 'Kubernetes 集群 · 调度策略 · 服务网格 · GitOps' },
   { id: 'datalake',      label: '数据湖仓',         icon: '🏞️', color: '#00cec9', desc: 'Iceberg · Parquet · WebDataset · LakeFS 版本管理 · Schema 设计 · IO 优化' },
-  { id: 'pipeline',      label: '数据流水线',       icon: '⚙️', color: '#fd79a8', desc: '采集 → 清洗 → 标注 → 挖掘 · Airflow DAG 编排' },
+  { id: 'pipeline',      label: '数据流水线',       icon: '⚙️', color: '#fd79a8', desc: '采集 → 清洗 → 标注 → 挖掘 · Airflow DAG 编排 · Airflow 源码解析' },
   { id: 'compute',       label: '计算引擎选型',     icon: '⚡', color: '#f39c12', desc: 'Spark · Ray · Flink · Trino · RAPIDS · 场景选型矩阵' },
-  { id: 'unitycatalog',  label: 'Unity Catalog',   icon: '🗂️', color: '#e84393', desc: '统一元数据 · 模型注册 · 数据集管理 · 列级血缘' },
+  { id: 'unitycatalog',  label: 'Unity Catalog',   icon: '🗂️', color: '#e84393', desc: '统一元数据 · 模型注册 · 数据集管理 · 血缘（Roadmap 规划中）' },
   { id: 'mlops',         label: 'MLOps 实验',       icon: '🧪', color: '#3fb950', desc: '实验管理 · 模型注册 · CI/CD · 自动评测 · A/B 测试' },
   { id: 'observability', label: '可观测性',         icon: '📊', color: '#ffa657', desc: 'Prometheus · Grafana · ELK · 分布式追踪 · 告警' },
   { id: 'vectordb',      label: '向量 & 特征',      icon: '🧬', color: '#d2a8ff', desc: '向量数据库 · 特征仓库 · 嵌入检索 · 场景挖掘' },
@@ -120,1767 +120,276 @@ export const K8S_DATA = {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// 3. 数据湖仓 — 自动驾驶多模态存储方案
+// 3. 数据湖仓 — 存算分离 · 对象存储 · 缓存加速 · 表格式选型
 // ═══════════════════════════════════════════════════════════════
 export const DATALAKE_DATA = {
 
-  // ── 存储格式全景（5阶段格式决策地图）────────────────────────
-  storageFormats: {
-    title: '数据链路存储格式全景',
-    subtitle: '从采集侧到训练前，每个阶段的最优存储格式、Schema 设计、访问方式与转换逻辑',
-
-    stages: [
-      // ─────────────────────────────────────────────────────────
-      // 阶段 1：采集侧（车端落盘）
-      // ─────────────────────────────────────────────────────────
-      {
-        id: 'collect',
-        name: '① 采集侧',
-        subtitle: '车端落盘格式',
-        icon: '🚗',
-        color: '#6c5ce7',
-        location: 'NVMe SSD（车载 2TB）',
-        lifecycle: '上传完成后保留 24h',
-
-        verdict: {
-          format: 'MCAP',
-          reason: '唯一合理选择',
-          score: 5,
-        },
-        whyThisFormat: [
-          '多模态统一容器：6路相机 + LiDAR + 雷达 + CAN（车辆总线信号：车速/方向盘/油门/刹车/接管事件）写入同一文件，统一纳秒级时间戳索引',
-          '流式写入：Chunk 机制（1s/块 zstd 压缩），写入延迟 < 1ms，不阻塞采集进程',
-          'ChunkIndex 支持随机访问：不需要解压整个文件即可定位任意时刻的数据',
-          '开放标准：Foxglove 开源，ROS2 原生支持，工具链成熟（mcap-cli/Foxglove Studio）',
-          '为什么不用 ROS2 Bag：ROS2 Bag 底层就是 MCAP，MCAP 是其超集，直接用 MCAP 更灵活',
-          '为什么不直接存 MP4 + CSV：多模态时间戳对齐困难，无法原子性写入，恢复困难',
-          '⚠️ 为什么 MCAP 不能直接用于训练（不能与 WebDataset 统一）：MCAP 是时序流格式（按时间轴交织所有 topic），训练需要随机采样（打乱顺序），用 MCAP 训练 = 每次 epoch 顺序扫描全量原始数据，GPU 等 IO；此外 MCAP 录制时没有标注，标注是事后生成的，WebDataset 打包时才把 label.json 和传感器数据合并进同一 tar；最后 WebDataset 里的 can.npy/hist.npy 是从 MCAP 提取后预处理的结果（聚合/积分），不是原始信号，无法反向还原成 MCAP 格式',
-        ],
-        storageMedia: {
-          title: '车载 NVMe SSD',
-          icon: '💾',
-          spec: '2TB NVMe SSD（PCIe 4.0 × 4，顺序写入 ~3 GB/s）',
-          why: '车端唯一可行选择：需要支持 6路相机（H.265）+ LiDAR + 雷达 + CAN 同时写入，总带宽峰值 ~500 MB/s；NVMe 写入延迟 < 0.1ms，不阻塞实时采集进程；SSD 无机械部件，抗振动（车辆行驶颠簸）',
-          lifecycle: '上传完成后 24h 内清除（循环写入）',
-          alternatives: [
-            { name: 'eMMC', reason: '❌ 带宽不足（~300 MB/s），无法支持多路高清视频同时写入' },
-            { name: 'HDD', reason: '❌ 机械硬盘抗振动差，车辆颠簸时磁头损坏风险高' },
-            { name: '云端直传', reason: '❌ 4G/5G 带宽不稳定，隧道/地库无信号时数据丢失' },
-          ],
-        },
-        schema: {
-          desc: 'MCAP 没有传统意义的 Schema，而是通过 Channel + Message 组织数据',
-          keyFields: [
-            { field: 'log_time (ns)',    type: 'uint64',  desc: '消息接收时间戳（纳秒，PTP 同步后的系统时钟）' },
-            { field: 'publish_time (ns)', type: 'uint64', desc: '消息发布时间戳（传感器驱动层时间）' },
-            { field: 'channel_id',       type: 'uint16',  desc: '传感器通道 ID，对应 /camera/front 等 topic' },
-            { field: 'data',             type: 'bytes',   desc: '序列化的消息体（Protobuf/ROS2 msg）' },
-            { field: 'sequence',         type: 'uint32',  desc: '消息序号，用于检测丢帧' },
-          ],
-          fileNaming: '{vehicle_id}_{start_timestamp_us}_{camera_id}.mcap',
-          fileSize: '~5~15 GB/Session（压缩前）/ ~1~3 GB（H.265 视频压缩后）',
-        },
-        accessPatterns: [
-          {
-            pattern: '顺序读取（上传/回放）',
-            tool: 'mcap-cli / Python mcap 库',
-            code: `import mcap
-from mcap.reader import make_reader
-
-with open("session_v001_20240315.mcap", "rb") as f:
-    reader = make_reader(f)
-    for schema, channel, message in reader.iter_messages(
-        topics=["/camera/front/image_raw", "/lidar/points"],
-        start_time=1710460800_000000000,  # 纳秒
-        end_time=1710460820_000000000,
-    ):
-        # message.data 是 Protobuf 序列化的原始字节
-        print(f"topic={channel.topic} ts={message.log_time}")`,
-            note: '按 topic 过滤，只读需要的 Channel，不解压其他 Channel 的 Chunk',
-          },
-          {
-            pattern: '随机访问（调试/回放特定时刻）',
-            tool: 'Foxglove Studio / mcap seek',
-            code: `# 利用 ChunkIndex 直接 seek 到指定时间戳
-reader.seek(timestamp_ns=1710460810_000000000)
-schema, channel, message = next(reader.iter_messages())`,
-            note: 'ChunkIndex 存储每个 Chunk 的时间范围，seek 只需读 Footer + ChunkIndex，O(log n)',
-          },
-        ],
-        toNextStage: '上传到 S3 Landing Zone，触发 Airflow DAG 解码',
-        dailyVolume: '~8 TB（1000辆车，压缩后）',
-      },
-
-      // ─────────────────────────────────────────────────────────
-      // 阶段 2：原始数据（Landing Zone + Bronze Layer）
-      // ─────────────────────────────────────────────────────────
-      {
-        id: 'raw',
-        name: '② 原始数据',
-        subtitle: 'Landing Zone + Bronze Layer',
-        icon: '📥',
-        color: '#ff7b72',
-        location: 'S3 Standard（Landing）+ S3（Bronze）',
-        lifecycle: 'Landing 7天 → Bronze 90天',
-
-        verdict: {
-          format: 'Landing: MCAP 原样 | Bronze: session_index（MCAP文件粒度）+ lidar_frames（帧粒度）。雷达/CAN 不建帧级表，Silver 层从 MCAP 聚合进 scene_index。',
-          reason: 'Bronze 层不解码视频不存 JPEG，只存 MCAP 文件级元数据',
-          score: 5,
-        },
-        whyThisFormat: [
-          '⚠️ MCAP 里没有 JPEG：相机数据是 H.265 连续视频流（sensor_msgs/CompressedImage），不是独立帧，无法直接抽取 JPEG，必须解码整段视频才能得到帧',
-          'Bronze 层不解码视频：解码 H.265 是计算密集操作，Bronze 层只需元数据（时间范围/传感器状态/帧数统计），不需要图像内容',
-          '不存帧级 JPEG 的核心原因：去重后只保留 ~30% 的 Scene，如果 Bronze 层全量解码存 JPEG，70% 的解码和存储都是浪费（1000辆车/天 → 2.16亿个 JPEG 文件）',
-          'Bronze 层粒度 = Session（MCAP 文件）：1行 = 1个 Session，记录 MCAP 文件路径、时间范围、传感器完整性、帧数统计',
-          'LiDAR 例外：点云数据量小且结构化，Bronze 层解码存帧级 Parquet（~900万行/天），用于场景切分时的时序对齐和标注关联',
-          '雷达和 CAN 不建帧级表：Silver 层处理时从 MCAP 按时间范围解码，直接聚合成 scene_index 的统计字段，无需单独存帧级表',
-        ],
-        schema: {
-          desc: 'Bronze 层核心表：session_index（MCAP 文件粒度）+ lidar_frames（帧粒度）。雷达和 CAN 不建帧级表，Silver 层从 MCAP 解码后聚合进 scene_index。',
-          tables: [
-            {
-              name: 'raw_data.sessions.session_index',
-              rowUnit: '1行 = 1个 Session（1个 MCAP 文件，15分钟）',
-              keyFields: [
-                { field: 'session_id',       type: 'STRING',    desc: '主键，格式 {vehicle_id}_{start_timestamp_us}' },
-                { field: 'vehicle_id',       type: 'STRING',    desc: '车辆 ID' },
-                { field: 'start_us',         type: 'LONG',      desc: 'Session 开始时间戳（微秒）' },
-                { field: 'end_us',           type: 'LONG',      desc: 'Session 结束时间戳（微秒）' },
-                { field: 'duration_s',       type: 'FLOAT',     desc: '时长（秒），典型值 900s = 15min' },
-                { field: 'mcap_path',        type: 'STRING',    desc: 'S3 MCAP 文件路径，如 s3://landing/{vehicle_id}/{date}/{session_id}.mcap' },
-                { field: 'mcap_size_bytes',  type: 'LONG',      desc: 'MCAP 文件大小（字节）' },
-                { field: 'camera_channels',  type: 'LIST<STRING>', desc: '可用相机 Channel 列表，如 [front, rear, left_front, ...]' },
-                { field: 'camera_fps',       type: 'INT',       desc: '相机帧率（Hz），典型值 20' },
-                { field: 'camera_frame_count', type: 'INT',     desc: '相机总帧数（所有相机之和）' },
-                { field: 'has_lidar',        type: 'BOOLEAN',   desc: 'LiDAR 数据是否完整' },
-                { field: 'has_radar',        type: 'BOOLEAN',   desc: '雷达数据是否完整' },
-                { field: 'has_can',          type: 'BOOLEAN',   desc: 'CAN 总线数据是否完整（CAN = Controller Area Network，车辆内部总线，记录车速/方向盘角度/油门/刹车/档位/接管事件等车辆状态信号）' },
-                { field: 'intrinsic_json',   type: 'STRING',    desc: '相机内参 JSON（Session 级别，从 MCAP Header 提取，不需要每帧存）' },
-                { field: 'extrinsic_json',   type: 'STRING',    desc: '外参 JSON（Session 级别）' },
-                { field: 'cut_reason',       type: 'STRING',    desc: 'Session 切割原因：timer_15min / file_size / ign_off / network_resume' },
-                { field: 'upload_status',    type: 'STRING',    desc: 'pending / uploaded / verified' },
-                { field: 'event_time',       type: 'TIMESTAMP', desc: '分区字段' },
-              ],
-              partitionBy: 'days(event_time), vehicle_id',
-              rowsPerDay: '~1000行（1000辆车 × 1 Session均值）',
-              volumeRef: 'raw_data.sessions.mcap_volume → MCAP 文件（~5~15GB/Session）',
-            },
-            {
-              name: 'raw_data.lidar.lidar_frames',
-              rowUnit: '1行 = 1帧（LiDAR 一次旋转扫描，100ms）',
-              keyFields: [
-                { field: 'frame_id',      type: 'STRING', desc: '主键，格式 {session_id}_{timestamp_us}' },
-                { field: 'session_id',    type: 'STRING', desc: '外键，关联 session_index' },
-                { field: 'scene_id',      type: 'STRING', desc: '外键，Silver 层场景切分后回填（初始为 NULL）' },
-                { field: 'vehicle_id',    type: 'STRING', desc: '车辆 ID' },
-                { field: 'timestamp_us',  type: 'LONG',   desc: 'Unix 时间戳（微秒），多模态对齐基准' },
-                { field: 'event_time',    type: 'TIMESTAMP', desc: '分区字段' },
-                { field: 'pcd_path',      type: 'STRING', desc: 'S3 Volume 路径，指向 .pcd.draco 文件（~500KB）' },
-                { field: 'num_points',    type: 'INT',    desc: '点云点数（典型值 ~100K）' },
-                { field: 'ego_pose_json', type: 'STRING', desc: '车体位姿 JSON（4×4 变换矩阵）' },
-              ],
-              partitionBy: 'days(event_time)',
-              rowsPerDay: '~900万行（1000辆×9000帧）',
-              volumeRef: 'raw_data.lidar.pcd_volume → .pcd.draco 文件',
-            },
-          ],
-          note: '⚠️ Bronze 层只有 session_index 一张表。雷达/CAN/LiDAR 原始帧级数据均在 MCAP 文件中，Silver 层处理时从 MCAP 解码聚合进 scene_index。',
-        },
-        accessPatterns: [
-          {
-            pattern: '查询某车车某天的 Session 列表',
-            tool: 'Trino SQL',
-            code: `-- 查询某车车某天的所有 Session（MCAP 文件）
-SELECT session_id, start_us, end_us, mcap_path,
-       camera_frame_count, has_lidar, has_radar, has_can
-FROM raw_data.sessions.session_index
-WHERE vehicle_id = 'v001'
-  AND DATE(event_time) = '2024-03-15'
-ORDER BY start_us`,
-            note: 'Bronze 层只有 session_index 一张表。所有模态原始数据均在 MCAP 文件里，通过 mcap_path 访问',
-          },
-        ],
-        storageMedia: {
-          title: 'S3 对象存储（双层）',
-          icon: '☁️',
-          spec: 'Landing Zone：S3 Standard（高频访问，7天）→ Bronze：S3 Standard（90天）',
-          why: 'Landing Zone 用 S3 Standard 是因为上传后立即触发 Airflow DAG 处理，访问频率高；Bronze 层 MCAP 文件 90天内可能被重新解码（重标注/回放调试），仍用 Standard；session_index 元数据存 Iceberg on S3，支持 Trino SQL 查询',
-          lifecycle: 'Landing 7天后自动转 Bronze；Bronze 90天后转 S3 Glacier（归档）',
-          costNote: 'MCAP 文件是主要存储成本：1000辆车 × 8TB/天 × 90天 = ~720TB，约 $16K/月（S3 Standard $0.023/GB）',
-          alternatives: [
-            { name: 'HDFS', reason: '❌ 运维成本高，不支持弹性扩缩容，云原生场景已被 S3 替代' },
-            { name: 'NFS', reason: '❌ 单点故障风险，带宽瓶颈，不适合 PB 级多模态数据' },
-            { name: 'S3 Glacier 直接归档', reason: '❌ 取回延迟 3-5h，Bronze 层需要快速访问（重标注/调试）' },
-          ],
-        },
-        toNextStage: 'Silver 层从 MCAP 解码雷达/CAN/LiDAR 数据，聚合进 scene_index → 场景切分 → 去重',
-        dailyVolume: '~1 TB（session_index 元数据 + MCAP 文件）',
-      },
-
-      // ─────────────────────────────────────────────────────────
-      // 阶段 3：去重清理后数据（Silver Layer）
-      // ─────────────────────────────────────────────────────────
-      {
-        id: 'silver',
-        name: '③ 去重清理后',
-        subtitle: 'Silver Layer',
-        icon: '⚪',
-        color: '#79c0ff',
-        location: 'S3 Standard-IA（低频访问）',
-        lifecycle: '1年温存储',
-
-        verdict: {
-          format: 'scene_index（1行=1个Scene，含雷达/CAN聚合字段）。相机/雷达/CAN 均不存帧级表。',
-          reason: 'Silver 层核心是场景切分和去重，雷达/CAN 聚合进 scene_index，无需帧级表',
-          score: 5,
-        },
-        whyThisFormat: [
-          'Silver 层也不解码视频、不存 JPEG：场景切分只需要 CAN/LiDAR 时间戳 + 事件标记，不需要图像内容',
-          'CLIP 去重只需抽关键帧：每个 Scene 只抽 1~3 帧关键帧（从 MCAP 解码单帧）计算 CLIP 嵌入，不全量解码',
-          'scene_index 是 Silver 层核心表：1行=1个Scene（20s），记录时间范围/传感器完整性/去重状态/标注状态',
-          'LiDAR 帧级表回填 scene_id：Bronze 层已有 lidar_frames，Silver 层通过 UPDATE 回填 scene_id（Iceberg 行级更新）',
-          '雷达/CAN 无帧级表：Silver 层处理时直接从 MCAP 按 scene 时间范围解码，聚合成 scene_index 的统计字段，不单独建表',
-          '相机帧级表在 Gold 层才生成：只对去重后保留的 Scene 解码，直接打包进 WebDataset，不单独存 JPEG',
-        ],
-        schema: {
-          desc: 'Silver 层新增 scene_index 核心表（1行=1个Scene），Bronze 层各模态帧级表回填 scene_id',
-          tables: [
-            {
-              name: 'processed_data.scenes.scene_index',
-              rowUnit: '1行 = 1个 Scene（20s 固定窗口 / 事件触发）',
-              keyFields: [
-                { field: 'scene_id',         type: 'STRING',       desc: '主键，格式 {vehicle_id}_{date}_{session}_{seq}' },
-                { field: 'vehicle_id',        type: 'STRING',       desc: '车辆 ID' },
-                { field: 'session_id',        type: 'STRING',       desc: '外键，关联 session_index（来自哪个 MCAP 文件）' },
-                { field: 'start_us',          type: 'LONG',         desc: 'Scene 开始时间戳（微秒）' },
-                { field: 'end_us',            type: 'LONG',         desc: 'Scene 结束时间戳（微秒）' },
-                { field: 'duration_s',        type: 'FLOAT',        desc: '时长（秒），典型值 20s' },
-                { field: 'city',              type: 'STRING',       desc: '城市（分区字段）' },
-                { field: 'weather',           type: 'STRING',       desc: 'sunny/rainy/foggy/night（从 MCAP 元数据或模型推断）' },
-                { field: 'scenario_tags',     type: 'LIST<STRING>', desc: '[long_tail, highway, intersection, ...]' },
-                { field: 'has_takeover',      type: 'BOOLEAN',      desc: '是否含接管事件（从 CAN 数据检测）' },
-                { field: 'nav_command',        type: 'STRING',       desc: '导航路口指令：go_straight / turn_left / turn_right / u_turn / change_lane_left / change_lane_right / follow_lane（来自地图导航系统，表示该 Scene 内下一个路口的动作，训练时作为高层意图输入）' },
-                { field: 'ego_traj_hist_json', type: 'STRING',       desc: '历史轨迹 JSON（过去 2s，[20帧×(x,y,yaw)]，从 CAN 速度/方向盘积分 + IMU 修正），训练时告诉模型"车刚才怎么走的"' },
-                { field: 'has_lidar',         type: 'BOOLEAN',      desc: 'LiDAR 数据完整性' },
-                { field: 'has_radar',         type: 'BOOLEAN',      desc: '雷达数据完整性' },
-                { field: 'dedup_hash',        type: 'STRING',       desc: '场景感知哈希（pHash，从 MCAP 抽 1 帧关键帧计算），Hamming 距离 < 8 则去重' },
-                { field: 'clip_embedding',    type: 'BINARY',       desc: 'CLIP ViT-L/14 嵌入（FP16，512维，从 MCAP 抽 1 帧关键帧计算），余弦相似度 > 0.95 则去重' },
-                { field: 'is_duplicate',      type: 'BOOLEAN',      desc: '是否被标记为重复（去重后丢弃）' },
-                { field: 'annotation_status', type: 'STRING',       desc: 'pending / auto_labeled / human_reviewed / rejected' },
-                { field: 'dataset_version',   type: 'STRING',       desc: '所属数据集版本（Gold 层打包后回填）' },
-                { field: 'webdataset_shard',  type: 'STRING',       desc: 'WebDataset shard 路径（Gold 层打包后回填）' },
-                { field: 'cut_reason',        type: 'STRING',       desc: '切割原因：fixed_window / takeover / aeb / bad_weather / construction' },
-                { field: 'start_time',        type: 'TIMESTAMP',    desc: '分区字段' },
-              ],
-              partitionBy: 'days(start_time), city',
-              rowsPerDay: '~45000行（1000辆×45 Scene/Session）',
-            },
-          ],
-          silverTransform: [
-            { op: '场景切分', desc: '读取 CAN + LiDAR 时间戳，按 20s 固定窗口 + 事件触发切割，生成 scene_id，写入 scene_index' },
-            { op: 'CAN 聚合（车辆总线信号）', desc: 'CAN（Controller Area Network）是汽车内部通信总线，记录车辆底层状态：车速（m/s）、方向盘转角（deg）、油门/刹车踏板开度（%）、档位（P/R/N/D）、横纵向加速度、人工接管标志（is_takeover）、AEB 自动紧急制动触发标志（is_aeb）等。对每个 Scene 时间范围内的 CAN 帧做聚合：avg_speed_mps / max_brake_pct / has_takeover / has_aeb / 轨迹积分（ego_trajectory），写入 scene_index 对应字段。同时生成 ego_traj_hist_json（过去 2s 历史轨迹，从 CAN 速度/方向盘积分 + IMU 修正）。CAN 帧级表不保留（已聚合）。' },
-            { op: '导航指令写入（nav_command）', desc: '从地图导航系统（/planning/route_commands topic）提取该 Scene 内下一个路口的动作指令，编码为 go_straight / turn_left / turn_right / u_turn / change_lane_left / change_lane_right / follow_lane，写入 scene_index.nav_command 字段。注意：这不是 CAN 数据，而是导航系统的高层意图，与 CAN 的底层电气信号是两个不同来源。训练时作为离散 token 输入模型，告诉模型"该往哪走"。' },
-            { op: '雷达聚合', desc: '对每个 Scene 时间范围内的雷达数据做聚合：平均目标数/最近目标距离/迎面车标记，写入 scene_index 对应字段。雷达帧级表不保留。' },
-            { op: 'scene_id 回填', desc: '将 scene_id UPDATE 回填到 lidar_frames 表（Iceberg 行级更新）。雷达和 CAN 已聚合进 scene_index，无需回填。' },
-            { op: '关键帧抽取（轻量）', desc: '每个 Scene 从 MCAP 解码 1~3 帧关键帧，用于计算 pHash 和 CLIP 嵌入，不全量解码' },
-            { op: '感知哈希去重', desc: '计算 pHash，Hamming 距离 < 8 则标记 is_duplicate=true' },
-            { op: 'CLIP 嵌入去重', desc: 'CLIP ViT-L/14 提取场景嵌入，余弦相似度 > 0.95 则去重' },
-            { op: '质量过滤', desc: '传感器故障/数据缺失/时间戳异常 → 标记 annotation_status=rejected' },
-          ],
-          note: '⚠️ Silver 层不存相机帧级表，不存 JPEG。雷达和 CAN 帧级数据聚合进 scene_index 后不单独保留帧级表。',
-        },
-        accessPatterns: [
-          {
-            pattern: '训练数据采样（最核心的查询）',
-            tool: 'Trino SQL',
-            code: `-- 分层采样：雨天 + 有行人 + 未去重 的场景
-SELECT scene_id, webdataset_shard, weather, scenario_tags
-FROM processed_data.scenes.scene_index
-WHERE annotation_status = 'human_reviewed'
-  AND is_duplicate = false
-  AND has_lidar = true
-  AND weather = 'rain'
-  AND ARRAY_CONTAINS(scenario_tags, 'pedestrian')
-  AND dataset_version = 'v2.3.0'
-  AND dataset_split = 'train'
-ORDER BY RANDOM()
-LIMIT 50000`,
-            note: 'scene_index 是训练采样唯一入口，所有过滤条件都在这里，不需要扫描帧级表',
-          },
-          {
-            pattern: '查询某 Scene 的 LiDAR 帧（用于标注/调试）',
-            tool: 'Spark SQL',
-            code: `-- 给定 scene_id，获取 LiDAR 帧列表（雷达/CAN 已聚合到 scene_index，无需 JOIN）
-SELECT l.frame_id, l.timestamp_us, l.pcd_path, l.ego_pose_json
-FROM raw_data.lidar.lidar_frames l
-WHERE l.scene_id = 'v001_20240315_s003_0042'
-ORDER BY l.timestamp_us
--- 雷达原始帧级数据如需可从 MCAP 按时间范围解码`,
-            note: '雷达和 CAN 已聚合进 scene_index，不需要 JOIN 帧级表。只有 LiDAR 帧级表保留（因为有 pcd_path 和标注关联）。',
-          },
-        ],
-        storageMedia: {
-          title: 'S3 Standard-IA（低频访问）',
-          icon: '🧊',
-          spec: 'S3 Standard-IA（Infrequent Access），存储成本 $0.0125/GB/月（比 Standard 低 46%）',
-          why: 'Silver 层 scene_index 元数据访问频率中等（训练采样查询），但 LiDAR pcd 文件访问频率低（只在标注/调试时访问）；Standard-IA 最低存储时间 30天，符合 Silver 层 1年温存储策略；Iceberg 表元数据（manifest/snapshot）存 S3 Standard，数据文件存 Standard-IA',
-          lifecycle: '1年后转 S3 Glacier Instant Retrieval（毫秒级取回，$0.004/GB/月）',
-          costNote: 'scene_index：~45K行/天 × 365天 = ~1600万行，Parquet 约 5GB，可忽略；LiDAR pcd 文件：~900万帧/天 × 500KB × 365天 ≈ 1.6PB，是主要成本',
-          alternatives: [
-            { name: 'S3 Standard', reason: '❌ 成本高 46%，Silver 层访问频率不需要 Standard 级别' },
-            { name: 'S3 Glacier', reason: '❌ 取回延迟 1-5min（Instant）或 3-5h（Flexible），训练采样查询无法接受' },
-            { name: 'Azure Data Lake', reason: '⚠️ 可行，但需要跨云，增加数据传输成本和延迟' },
-          ],
-        },
-        toNextStage: '对保留的 Scene（去重后 ~70%）解码 MCAP → 打包 WebDataset shard → Gold Layer',
-        dailyVolume: '~1 TB（scene_index + LiDAR/雷达帧级元数据，无图像）',
-      },
-
-      // ─────────────────────────────────────────────────────────
-      // 阶段 4：带标签数据（Gold 标注层）
-      // ─────────────────────────────────────────────────────────
-      {
-        id: 'gold',
-        name: '④ 带标签数据',
-        subtitle: 'Gold Layer（标注层）',
-        icon: '🏷️',
-        color: '#ffa657',
-        location: 'S3 Standard + NVMe 热缓存',
-        lifecycle: '永久保留',
-
-        verdict: {
-          format: 'Parquet（结构化标注）+ JSON Volume（nuScenes 格式）+ PNG Volume（分割 mask）',
-          reason: '标注数据结构化存 Parquet 便于统计，原始标注 JSON 存 Volume 便于工具链兼容',
-          score: 5,
-        },
-        whyThisFormat: [
-          'Gold 层才解码视频：只对去重后保留的 Scene（~30% 的 Session）从 MCAP 解码相机帧，避免全量解码的浪费',
-          '解码后直接打包 WebDataset：不单独存 JPEG 文件，解码 → 直接写入 tar shard，消灭小文件问题',
-          '3D 检测框存 Parquet：cx/cy/cz/l/w/h/yaw 等数值字段，支持按类别/置信度/城市过滤，Iceberg 列裁剪高效',
-          '语义分割 mask 存 PNG Volume：RLE 压缩的 PNG，不适合存 Parquet 列（二进制大对象），通过 mask_path 关联',
-          'nuScenes JSON 格式兼容：保留 nuScenes 格式的原始标注 JSON，便于与开源工具链（mmdetection3d/OpenPCDet）直接对接',
-          '标注版本化：dataset_version 字段 + Iceberg Time Travel，可回溯任意版本的标注',
-          '自动标注置信度存储：confidence 字段区分自动标注（< 0.9 需人工审核）和人工标注（= 1.0）',
-        ],
-        schema: {
-          desc: '标注数据按类型拆分为独立 Iceberg 表，通过 frame_id 关联传感器数据',
-          tables: [
-            {
-              name: 'processed_data.annotations.bbox_3d',
-              rowUnit: '1行 = 1个 3D 检测框（单帧单目标）',
-              keyFields: [
-                { field: 'anno_id',       type: 'STRING',  desc: '主键' },
-                { field: 'frame_id',      type: 'STRING',  desc: '外键，关联 lidar.pointcloud_v2' },
-                { field: 'scene_id',      type: 'STRING',  desc: '外键，关联 scene_index' },
-                { field: 'track_id',      type: 'STRING',  desc: '跨帧追踪 ID（同一目标在多帧中相同）' },
-                { field: 'category',      type: 'STRING',  desc: 'car/truck/pedestrian/cyclist/cone' },
-                { field: 'cx,cy,cz',      type: 'FLOAT',   desc: '3D 中心坐标（车体坐标系，米）' },
-                { field: 'l,w,h',         type: 'FLOAT',   desc: '长宽高（米）' },
-                { field: 'yaw',           type: 'FLOAT',   desc: '偏航角（弧度）' },
-                { field: 'velocity_json', type: 'STRING',  desc: '速度向量 {vx,vy,vz}（m/s）' },
-                { field: 'confidence',    type: 'FLOAT',   desc: '置信度 0-1（自动标注 < 0.9，人工 = 1.0）' },
-                { field: 'source',        type: 'STRING',  desc: 'auto_bevfusion/human/auto+human' },
-                { field: 'dataset_version', type: 'STRING', desc: '标注版本，如 v2.3.0' },
-              ],
-              partitionBy: 'days(created_at), dataset_version',
-              rowsPerDay: '~5000万行（1000辆×50框/帧×200帧/Scene×45Scene），仅用于标注工具链读取，训练时打包进 WebDataset shard',
-            },
-          ],
-        },
-        accessPatterns: [
-          {
-            pattern: '按场景统计标注分布（直接查 scene_index）',
-            tool: 'Trino SQL',
-            code: `-- 标注统计查询：直接用 scene_index 的聚合字段，无需 JOIN 帧级标注表
-SELECT city, weather,
-       COUNT(*) AS total_scenes,
-       SUM(CASE WHEN has_pedestrian THEN 1 ELSE 0 END) AS pedestrian_scenes,
-       AVG(object_count_avg) AS avg_objects,
-       AVG(label_confidence_avg) AS avg_confidence
-FROM processed_data.scenes.scene_index
-WHERE dataset_version = 'v2.3.0'
-  AND annotation_status = 'human_reviewed'
-GROUP BY city, weather
-ORDER BY city, total_scenes DESC`,
-            note: '标注聚合字段已在 scene_index 中，无需 JOIN bbox_3d 帧级表',
-          },
-        ],
-        storageMedia: {
-          title: 'S3 Standard + NVMe 热缓存',
-          icon: '🔥',
-          spec: 'S3 Standard（永久保留）+ 本地 NVMe 热缓存（JuiceFS，~50TB）',
-          why: 'Gold 层标注数据永久保留，S3 Standard 提供高可用（99.999999999% 耐久性）；标注 Parquet 表（bbox_3d/seg_masks）访问频率高（标注工具链/质检），用 S3 Standard；WebDataset shard 训练时高频读取，用 JuiceFS 挂载 NVMe 热缓存（缓存命中率 ~80%，IO 吞吐从 ~200MB/s 提升到 ~2GB/s）',
-          lifecycle: '永久保留，按 dataset_version 版本化管理（Iceberg Time Travel）',
-          costNote: 'bbox_3d 标注表：~5000万行/天 × 365天 = ~180亿行，Parquet 约 500GB；WebDataset shard：~50TB 总量，S3 Standard ~$1150/月',
-          alternatives: [
-            { name: 'S3 Standard-IA', reason: '❌ Gold 层访问频率高（标注工具链每天查询），Standard-IA 取回费用反而更贵' },
-            { name: 'Lustre 并行文件系统', reason: '⚠️ 训练集群内可用，但成本高（$0.14/GB/月 vs S3 $0.023/GB），适合超大规模训练集群' },
-            { name: 'HDFS', reason: '❌ 不支持弹性扩缩容，运维成本高，已被云原生方案替代' },
-          ],
-        },
-        toNextStage: 'Ray 打包为 WebDataset shard（含相机/LiDAR/雷达/CAN/标注）→ 训练前数据',
-        dailyVolume: '~2 TB（标注数据 + 实体文件）',
-      },
-
-      // ─────────────────────────────────────────────────────────
-      // 阶段 5：训练前数据（WebDataset + 预计算特征）
-      // ─────────────────────────────────────────────────────────
-      {
-        id: 'train',
-        name: '⑤ 训练前数据',
-        subtitle: 'Gold WebDataset + Feature Store',
-        icon: '🚀',
-        color: '#3fb950',
-        location: 'S3 + NVMe 热缓存（JuiceFS）',
-        lifecycle: '永久保留（按版本管理）',
-
-        verdict: {
-          format: 'WebDataset tar（多模态打包）+ FP16 Parquet（预计算特征）',
-          reason: '训练 IO 吞吐 ~2 GB/s，GPU 利用率 90%+',
-          score: 5,
-        },
-        whyThisFormat: [
-          'WebDataset tar：消灭小文件问题（2.16亿 JPEG → 5万 shard），顺序读取吞吐 ~2 GB/s vs 随机读 ~50 MB/s',
-          'FP16 预计算特征：BEV 特征/语言嵌入离线预计算存 Parquet，训练时直接读取，跳过重计算（节省 40% 训练时间）',
-          '为什么不用 TFRecord：TFRecord 是 TensorFlow 专属，PyTorch 生态不友好；WebDataset 框架无关',
-          '为什么不用 LMDB：LMDB 不支持分布式读取，多节点训练时需要复制整个数据库',
-          '为什么不用 Zarr：Zarr 适合科学计算的多维数组，不适合多模态异构数据',
-          'Shard 大小 ~1GB：太小（shard 数量多，调度开销大）/ 太大（单 shard 读取时间长，GPU 等待）',
-          '⚠️ 为什么 WebDataset 不能直接替代 MCAP（不能与采集侧统一）：WebDataset 是训练打包格式（面向 GPU 随机采样），MCAP 是原始录制格式（面向时序回放/调试）；WebDataset 里的数据是预处理后的结果（can.npy 是聚合后的状态向量，hist.npy 是积分后的历史轨迹），不是原始信号，无法用于重新标注或回放调试；MCAP 是"原材料仓库"，WebDataset 是"配好料的半成品"，两者都必须保留',
-        ],
-        storageMedia: {
-          title: 'S3 + NVMe 热缓存（JuiceFS）',
-          icon: '⚡',
-          spec: 'S3 Standard（~50TB 总量）+ JuiceFS 挂载 NVMe 热缓存（训练集群本地，~10TB 缓存）',
-          why: 'WebDataset shard 训练时顺序读取，JuiceFS 预取机制将 S3 吞吐从 ~200MB/s 提升到 ~2GB/s（128×A100 集群需要 ~15GB/s 总 IO）；NVMe 热缓存缓存最近访问的 shard（LRU 策略，命中率 ~80%）；预计算特征 Parquet 存 S3，按 scene_id 分区，PyArrow 列裁剪读取',
-          lifecycle: '永久保留，按 dataset_version 版本化（LakeFS Git-like 工作流）',
-          costNote: 'WebDataset shard：~50TB × $0.023/GB = ~$1150/月；NVMe 热缓存：~10TB NVMe SSD，一次性硬件成本 ~$5K；JuiceFS 元数据存 Redis（~$200/月）',
-          alternatives: [
-            { name: 'Lustre 并行文件系统', reason: '⚠️ 超大规模训练集群（1000+ GPU）可用，吞吐更高，但成本高 6× 且运维复杂' },
-            { name: 'GPFS（IBM Spectrum Scale）', reason: '⚠️ 企业级高性能，但许可证费用高，云原生场景不推荐' },
-            { name: '纯 S3 直读', reason: '❌ 吞吐 ~200MB/s，128×A100 训练时 GPU 利用率仅 ~30%，IO 成为瓶颈' },
-            { name: 'Alluxio 缓存', reason: '⚠️ 功能类似 JuiceFS，但 JVM 内存开销大，JuiceFS 更轻量（Go 实现）' },
-          ],
-        },
-        schema: {
-          desc: 'WebDataset 通过文件命名约定组织数据，无传统 Schema；预计算特征存 Parquet',
-          tarLayout: [
-            { file: '{scene_id}_{frame_idx:06d}.jpg',        desc: '前摄像头帧（JPEG，~150KB）' },
-            { file: '{scene_id}_{frame_idx:06d}.lidar.npy',  desc: '点云矩阵（float32 [N,4]，~500KB）' },
-            { file: '{scene_id}_{frame_idx:06d}.radar.npy',  desc: '雷达点云（float32 [M,5]，~5KB，M 个目标点，每点含 x/y/z/径向速度/RCS）' },
-            { file: '{scene_id}_{frame_idx:06d}.can.npy',    desc: 'CAN 车辆状态向量（float32 [8]，~0.1KB，含车速/方向盘角度/油门/刹车/横纵向加速度/接管标志/AEB标志，从 can_bus 表按时间戳最近邻查询）' },
-            { file: '{scene_id}_{frame_idx:06d}.hist.npy',   desc: '历史轨迹矩阵（float32 [20,3]，~0.2KB，过去 2s 的 ego x/y/yaw，从 CAN+IMU 积分，告诉模型"车刚才怎么走的"）' },
-            { file: '{scene_id}_{frame_idx:06d}.label.json', desc: '3D 标注框列表（nuScenes 格式）' },
-            { file: '{scene_id}_nav.json',                   desc: 'Scene 级导航指令（{"command":"turn_right","dist_to_junction_m":120}，来自地图导航系统，非 CAN 数据）' },
-            { file: '{scene_id}_{frame_idx:06d}.pose.json',  desc: '车体位姿（4×4 变换矩阵）' },
-            { file: '{scene_id}_{frame_idx:06d}.meta.json',  desc: '帧元数据（timestamp_us/camera_id/对齐状态）' },
-            { file: '{scene_id}_scene_meta.json',            desc: 'Scene 级元数据（天气/城市/标签/帧数）' },
-          ],
-          featureParquet: {
-            name: 'feature_store.offline.bev_features_v2',
-            desc: '预计算 BEV 特征（FP16），训练时直接读取，跳过 BEVFusion 推理',
-            keyFields: [
-              { field: 'scene_id',      type: 'STRING',  desc: '主键' },
-              { field: 'frame_id',      type: 'STRING',  desc: '帧 ID' },
-              { field: 'bev_feat',      type: 'BINARY',  desc: 'BEV 特征张量（FP16，[256,200,200]，~20MB/帧）' },
-              { field: 'lang_embed',    type: 'BINARY',  desc: '语言嵌入（FP16，[1,4096]，~8KB/帧）' },
-              { field: 'model_version', type: 'STRING',  desc: '生成特征的模型版本' },
-            ],
-          },
-        },
-        accessPatterns: [
-          {
-            pattern: 'PyTorch 训练读取（标准方式）',
-            tool: 'WebDataset + PyTorch DataLoader',
-            code: `import webdataset as wds
-from torch.utils.data import DataLoader
-
-# Step 1: Iceberg 筛选目标 shard（只读 10% 的 shard）
-target_shards = trino.query("""
-    SELECT DISTINCT webdataset_shard
-    FROM processed_data.scenes.scene_index
-    WHERE weather = 'rain' AND has_pedestrian = true
-      AND dataset_version = 'v2.3.0'
-""").to_list()  # 返回 ~200 个 shard 路径
-
-# Step 2: WebDataset 流式读取
-dataset = (
-    wds.WebDataset(target_shards, shardshuffle=True)
-    .decode("rgb8")                    # JPEG → numpy uint8
-    .to_tuple("jpg", "lidar.npy", "label.json", "pose.json")
-    .shuffle(buffer_size=2000)         # 跨 shard buffer shuffle
-    .map(preprocess_multimodal)
-    .batched(32, partial=False)
-)
-loader = DataLoader(dataset, num_workers=8, pin_memory=True)`,
-            note: 'Iceberg 筛选（秒级）→ WebDataset 只读目标 shard（200/50000），IO 吞吐 ~2 GB/s',
-          },
-          {
-            pattern: '读取预计算特征（加速训练）',
-            tool: 'PyArrow + PyTorch',
-            code: `import pyarrow.parquet as pq
-import torch, numpy as np
-
-# 读取预计算 BEV 特征（FP16，跳过 BEVFusion 推理）
-def load_bev_feature(scene_id: str, frame_id: str) -> torch.Tensor:
-    table = pq.read_table(
-        f"s3://features/bev/{scene_id[:8]}/bev_features_v2.parquet",
-        filters=[("frame_id", "=", frame_id)],
-        columns=["bev_feat"]
-    )
-    feat_bytes = table["bev_feat"][0].as_py()
-    feat = np.frombuffer(feat_bytes, dtype=np.float16)
-    return torch.from_numpy(feat.reshape(256, 200, 200))`,
-            note: '预计算特征节省 40% 训练时间（跳过 BEVFusion 推理），FP16 存储节省 50% 空间',
-          },
-          {
-            pattern: '调试：随机访问单帧（WebDataset 局限性解决方案）',
-            tool: 'Python tarfile',
-            code: `import tarfile, json
-
-# Iceberg 查询：找到 scene_id 对应的 shard 路径
-row = trino.query(f"""
-    SELECT webdataset_shard
-    FROM processed_data.scenes.scene_index
-    WHERE scene_id = '{scene_id}'
-""").fetchone()
-
-# 用 offset 直接定位 tar 包内的文件
-with tarfile.open(row.webdataset_shard) as tar:
-    tar.fileobj.seek(row.shard_frame_offset)
-    member = tar.next()
-    img_bytes = tar.extractfile(member).read()`,
-            note: 'frames_v2 表新增 shard_frame_offset 字段，解决 WebDataset 随机访问困难的问题',
-          },
-        ],
-        toNextStage: 'GPU 训练（128×A100，~15 GB/s IO 吞吐）',
-        dailyVolume: '~50 TB（训练集总量，按版本管理）',
-      },
+  // ── 存算分离架构总览 ─────────────────────────────────────────
+  computeStorageSeparation: {
+    title: '存算分离架构',
+    subtitle: '计算层与存储层独立扩缩，按需付费，消除资源耦合',
+    principle: '将计算（Spark/Trino/Flink Worker）与存储（S3/OSS/MinIO）彻底解耦：存储层永久保存数据，计算层按任务弹性拉起，任务结束后释放，互不影响。',
+    benefits: [
+      { icon: '💰', title: '成本优化', desc: '存储按 GB 计费（~$0.023/GB/月），计算按小时计费，空闲时计算资源归零，相比传统 HDFS 集群节省 40-70% 成本' },
+      { icon: '⚡', title: '弹性扩缩', desc: '训练高峰期可在 2 分钟内拉起 200 个 Spark Executor，任务结束后自动缩容至 0，HDFS 做不到' },
+      { icon: '🔒', title: '数据持久性', desc: 'S3/OSS 提供 11 个 9 的持久性（99.999999999%），远超 HDFS 3 副本的可靠性' },
+      { icon: '🔗', title: '多引擎共享', desc: 'Spark、Trino、Flink、DuckDB 同时读写同一份 S3 数据，无需数据搬迁，通过 Iceberg 元数据协调并发' },
     ],
-
-    // 格式选型决策矩阵
-    decisionMatrix: {
-      title: '各阶段存储格式选型决策矩阵',
-      dimensions: ['格式', '写入方式', '读取方式', '查询能力', '版本管理', '适合规模', '主要局限'],
-      formats: [
-        { name: 'MCAP',          stage: '采集侧',   write: '流式写入 <1ms', read: '顺序/随机（ChunkIndex）', query: '无 SQL，只能按 topic/时间过滤', version: '文件级', scale: '单车 ~2TB/天', limit: '无结构化查询，不适合云端分析' },
-        { name: 'Iceberg+Parquet', stage: 'Bronze/Silver/Gold', write: 'ACID 批量写入', read: 'SQL 谓词下推，列裁剪', query: '完整 SQL，支持 JOIN/聚合/过滤', version: '快照级 Time Travel', scale: '亿级行，PB 级', limit: '不适合直接训练读取（随机 IO）' },
-        { name: 'S3 Volume',     stage: 'Bronze/Gold', write: 'PUT 对象', read: 'GET 对象（需知道 key）', query: '无，只能通过 Iceberg 表的 file_path 间接查询', version: '无（依赖 Iceberg）', scale: '无限', limit: '小文件问题（亿级文件时 LIST 极慢）' },
-        { name: 'WebDataset tar', stage: '训练前',  write: '批量打包（Ray）', read: '顺序流式读取 ~2GB/s', query: '无，依赖 Iceberg 筛选 shard', version: '文件级（配合 LakeFS）', scale: '万级 shard', limit: '随机访问困难，增量更新需重新打包' },
-        { name: 'FP16 Parquet',  stage: '训练前',   write: '离线预计算写入', read: '列裁剪，按 frame_id 过滤', query: '有限 SQL', version: '字段版本化', scale: '百亿行', limit: '特征维度固定，模型更新需重新计算' },
+    vsHDFS: [
+      { dim: '扩缩方式', separation: '存储/计算独立扩缩', hdfs: '整体扩缩（加节点同时增加存储和计算）' },
+      { dim: '空闲成本', separation: '计算可缩容至 0', hdfs: '集群常驻，空闲仍计费' },
+      { dim: '数据共享', separation: '多引擎直接读 S3', hdfs: '需要数据搬迁或统一 NameNode' },
+      { dim: '运维复杂度', separation: '无状态计算节点，故障自愈', hdfs: 'NameNode 单点，DataNode 故障需手动处理' },
+      { dim: '冷数据成本', separation: 'S3 Glacier ~$0.004/GB/月', hdfs: '3副本 HDD，成本固定' },
+    ],
+    architecture: {
+      layers: [
+        { name: '计算层', items: ['Spark on K8s', 'Trino Cluster', 'Flink on K8s', 'DuckDB（本地）'], color: '#6c5ce7' },
+        { name: '缓存层', items: ['Alluxio / JuiceFS 缓存', 'NVMe SSD 本地缓存', 'EBS gp3 缓存盘'], color: '#00cec9' },
+        { name: '元数据层', items: ['Iceberg Catalog', 'Unity Catalog', 'Hive Metastore', 'LakeFS 版本管理'], color: '#fd79a8' },
+        { name: '存储层', items: ['S3 / OSS / MinIO', 'S3 Standard / IA / Glacier', 'HDFS（遗留）'], color: '#ffa657' },
       ],
     },
   },
 
-  // ── 车端采集客户端（工程实现细节）────────────────────────────
-  edgeClient: {
-    title: '车端采集客户端工程实现',
-    subtitle: '从传感器驱动到 MCAP 落盘、增量上传、切分触发的完整工程细节',
-
-    // 车端软件栈
-    softwareStack: {
-      os: 'Linux 5.15 (RT 实时补丁)',
-      middleware: 'ROS2 Humble (DDS: CycloneDDS)',
-      runtime: 'NVIDIA Orin + CUDA 11.8',
-      container: 'k3s + containerd（各采集进程容器化）',
-      recorder: 'mcap-ros2-recorder v2.3（自研扩展）',
-      uploader: '自研增量上传 Agent（Go 实现）',
-      trigger: '自研触发引擎（C++ 实现，<5ms 响应）',
-    },
-
-    // MCAP 文件内部结构
-    mcapStructure: {
-      title: 'MCAP 文件内部结构（车端落盘格式）',
-      desc: 'MCAP 是 Foxglove 开源的多模态容器格式，一个文件包含所有传感器的 Channel，统一时间戳索引',
-      fileLayout: [
-        { section: 'Header',    desc: 'Magic bytes + 版本 + 库信息', size: '固定 8 bytes' },
-        { section: 'Schema',    desc: '每个 Channel 的消息格式定义（Protobuf/ROS2 msg schema）', size: '~几 KB' },
-        { section: 'Channel',   desc: '每个传感器对应一个 Channel，含 topic 名、schema_id、元数据', size: '~几百 bytes/Channel' },
-        { section: 'Message',   desc: '实际数据帧，含 channel_id + log_time（纳秒）+ publish_time + data', size: '变长，主体数据' },
-        { section: 'Chunk',     desc: '消息按时间分块压缩（默认 1s 一个 Chunk，zstd 压缩）', size: '~1~5 MB/Chunk' },
-        { section: 'ChunkIndex', desc: 'Chunk 的时间范围索引，支持随机访问', size: '~几十 bytes/Chunk' },
-        { section: 'Statistics', desc: '全文件统计（消息数/时间范围/Channel 列表）', size: '~几 KB' },
-        { section: 'Footer',    desc: 'SummaryOffset + Magic bytes，文件完整性标志', size: '固定 20 bytes' },
-      ],
-      channels: [
-        { topic: '/camera/front/image_raw',      schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '前视相机，H.265 编码后直接写入' },
-        { topic: '/camera/rear/image_raw',       schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '后视相机' },
-        { topic: '/camera/left_front/image_raw', schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '左前相机' },
-        { topic: '/camera/right_front/image_raw',schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '右前相机' },
-        { topic: '/camera/left_rear/image_raw',  schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '左后相机' },
-        { topic: '/camera/right_rear/image_raw', schema: 'sensor_msgs/CompressedImage', rate: '20Hz', encoding: 'h265',    note: '右后相机' },
-        { topic: '/lidar/points',                schema: 'sensor_msgs/PointCloud2',     rate: '10Hz', encoding: 'draco',   note: 'LiDAR 点云，Draco 压缩' },
-        { topic: '/radar/front/targets',         schema: 'custom_msgs/RadarTargets',    rate: '13Hz', encoding: 'protobuf', note: '前向雷达目标列表' },
-        { topic: '/radar/rear/targets',          schema: 'custom_msgs/RadarTargets',    rate: '13Hz', encoding: 'protobuf', note: '后向雷达' },
-        { topic: '/gnss/fix',                    schema: 'sensor_msgs/NavSatFix',       rate: '10Hz', encoding: 'protobuf', note: 'GNSS 定位' },
-        { topic: '/imu/data',                    schema: 'sensor_msgs/Imu',             rate: '100Hz', encoding: 'protobuf', note: 'IMU 加速度/角速度' },
-        { topic: '/vehicle/can_signals',         schema: 'custom_msgs/CanSignals',      rate: '100Hz', encoding: 'protobuf', note: 'CAN 总线解码信号（车辆状态：车速/方向盘角度/油门/刹车/档位/接管事件/AEB 触发等）' },
-        { topic: '/perception/objects',          schema: 'custom_msgs/PerceptionResult', rate: '10Hz', encoding: 'protobuf', note: '感知结果（用于触发判断）' },
-        { topic: '/planning/trajectory',         schema: 'custom_msgs/Trajectory',      rate: '10Hz', encoding: 'protobuf', note: '规划轨迹（用于触发判断）' },
-        { topic: '/system/trigger_events',       schema: 'custom_msgs/TriggerEvent',    rate: '事件', encoding: 'protobuf', note: '触发事件记录（接管/AEB/异常）' },
-      ],
-    },
-
-    // 时间戳同步机制（多模态拼接的基础）
-    timestampSync: {
-      title: '时间戳同步机制（多模态拼接的基础）',
-      desc: '所有传感器必须在同一时钟域内，才能用 timestamp_us 做精确对齐',
-      methods: [
-        {
-          name: 'PTP 硬件同步（主要方案）',
-          precision: '< 1 μs',
-          desc: 'IEEE 1588 PTP 协议，Orin 作为 PTP Slave，同步到车载 GPS 时钟（PTP Master）。所有传感器通过硬件 trigger 信号对齐到同一时钟域。',
-          impl: 'linuxptp (ptp4l + phc2sys) + NVIDIA Orin PTP 硬件支持',
-          color: '#6c5ce7',
-        },
-        {
-          name: 'FPGA 触发同步（相机-LiDAR）',
-          precision: '< 0.5 ms',
-          desc: 'FPGA 产生 trigger 脉冲，同时触发所有相机曝光 + LiDAR 旋转角度标记，消除相机间的相对时延。',
-          impl: '自研 FPGA Trigger Board，GPIO 连接各相机 trigger 引脚',
-          color: '#00cec9',
-        },
-        {
-          name: 'ROS2 Header 时间戳',
-          precision: '< 1 ms（软件层）',
-          desc: '每条 ROS2 消息的 header.stamp 使用 CLOCK_REALTIME（已 PTP 同步），写入 MCAP 时同时记录 log_time（接收时间）和 publish_time（发布时间）。',
-          impl: 'ROS2 Time API + MCAP log_time/publish_time 双时间戳',
-          color: '#fd79a8',
-        },
-      ],
-      alignRule: '云端对齐规则：以 LiDAR 帧时间戳为基准，在 ±5ms 窗口内查找最近的相机帧、雷达帧，超出窗口则标记为对齐失败（丢弃或插值）。',
-    },
-
-    // 车端存储策略（落盘逻辑）
-    storageStrategy: {
-      title: '车端存储策略（落盘逻辑）',
-      desc: '车端 NVMe 作为缓冲区，MCAP 文件按 Session 切割，上传后保留 24h 再删除',
-      localStorage: {
-        device: 'NVMe SSD 2TB（车载）',
-        filesystem: 'ext4 + noatime（减少写放大）',
-        path: '/data/mcap/{date}/{session_id}/',
-        retention: '上传完成后保留 24h，然后删除（保留 24h 用于重传）',
-        freeSpaceGuard: '剩余空间 < 200GB 时停止录制，触发告警',
+  // ── 对象存储选型与配置 ───────────────────────────────────────
+  objectStorage: {
+    title: '对象存储选型与配置',
+    subtitle: '云端 S3/OSS vs 私有化 MinIO，存储类型与生命周期策略',
+    options: [
+      {
+        name: 'AWS S3',
+        icon: '☁️',
+        color: '#ff9900',
+        type: '公有云',
+        pros: ['11个9持久性，SLA 99.99%', '原生与 EMR/Glue/Athena 集成', 'S3 Express One Zone 单区高性能（延迟 <10ms）', 'Intelligent-Tiering 自动冷热分层'],
+        cons: ['出流量费用高（$0.09/GB）', '跨 AZ 访问有延迟', '数据主权合规风险'],
+        bestFor: '公有云原生部署，数据量 PB 级以上',
       },
-      writeMode: [
-        {
-          name: '直写模式（Write-Through）',
-          desc: '传感器数据直接写入 MCAP 文件，不经过内存缓冲。适合低延迟场景。',
-          pros: '延迟低，数据不丢失', cons: 'IOPS 压力大',
-          used: '相机（高带宽，需要持续写入）',
-        },
-        {
-          name: '缓冲写模式（Buffered Write）',
-          desc: '数据先写入内存环形缓冲区（Ring Buffer），定期 flush 到 MCAP。',
-          pros: '减少 IOPS，批量写入效率高', cons: '断电可能丢失缓冲数据',
-          used: 'LiDAR / 雷达 / CAN（数据量小，可接受缓冲）',
-          bufferSize: '环形缓冲区 512MB，每 1s flush 一次',
-        },
-        {
-          name: '事件触发回写（Retroactive Write）',
-          desc: '内存中保留最近 30s 的环形缓冲，触发事件时将缓冲数据回写到独立 MCAP 文件。',
-          pros: '捕获事件前的数据', cons: '内存占用大',
-          used: '接管/AEB/碰撞事件（需要事件前 15s 数据）',
-          bufferSize: '内存环形缓冲 30s × 全模态 ≈ 6GB',
-        },
-      ],
-    },
-
-    // Session 切割时机（核心问题）
-    sessionCut: {
-      title: 'Session 切割时机（何时产生新 MCAP 文件）',
-      desc: '切割 = 关闭当前 MCAP 文件 + 打开新文件，切割点两侧各保留 2s 重叠（防止切割点数据丢失）',
-      triggers: [
-        {
-          trigger: '定时切割（主要）',
-          condition: '每 15 分钟自动切割',
-          priority: 1,
-          detail: '最常见的切割方式。15min = 18,000 相机帧 × 6 路 = 108,000 帧，MCAP 文件大小约 5~15 GB（压缩前）/ 1~3 GB（H.265 压缩后）。',
-          color: '#6c5ce7',
-          icon: '⏰',
-        },
-        {
-          trigger: '文件大小切割',
-          condition: '单文件超过 4 GB',
-          priority: 2,
-          detail: '防止单文件过大导致上传失败或内存溢出。4GB 约对应 10~12 分钟的录制。',
-          color: '#00cec9',
-          icon: '📦',
-        },
-        {
-          trigger: '点火/熄火切割',
-          condition: 'CAN 信号检测到 IGN_ON / IGN_OFF',
-          priority: 3,
-          detail: '车辆启动时开始新 Session，熄火时关闭当前 Session。一次 Trip 的边界。',
-          color: '#3fb950',
-          icon: '🔑',
-        },
-        {
-          trigger: '网络恢复切割',
-          condition: '网络从断开恢复，且当前文件 > 5min',
-          priority: 4,
-          detail: '网络恢复时切割，便于立即上传最新数据，而不是等待当前 Session 结束。',
-          color: '#ffa657',
-          icon: '📶',
-        },
-        {
-          trigger: '存储空间切割',
-          condition: '可用空间 < 500GB',
-          priority: 5,
-          detail: '存储紧张时缩短 Session 时长（改为 5min 切割），加快上传释放空间。',
-          color: '#fd79a8',
-          icon: '💾',
-        },
-      ],
-      overlapSeconds: 2,
-      namingConvention: '{vehicle_id}_{date}_{start_timestamp_us}_{camera_id}.mcap',
-      example: 'v001_20240315_1710460800000000_front.mcap',
-    },
-
-    // 增量读取机制（上传 Agent 如何知道哪些是新数据）
-    incrementalRead: {
-      title: '增量读取机制（上传 Agent 如何感知新数据）',
-      desc: '上传 Agent 需要知道：哪些文件是新的、哪些已上传、断点续传从哪里继续',
-      methods: [
-        {
-          name: '文件状态数据库（SQLite）',
-          desc: '本地 SQLite 记录每个 MCAP 文件的状态：pending / uploading / uploaded / failed',
-          schema: 'files(session_id, file_path, size_bytes, sha256, status, upload_offset, created_at, uploaded_at)',
-          how: '录制进程写完文件后，向 SQLite 插入 pending 记录；上传 Agent 轮询 pending 记录，按优先级排序上传。',
-          color: '#6c5ce7',
-          icon: '🗄️',
-        },
-        {
-          name: 'inotify 文件系统监听',
-          desc: 'Linux inotify 监听 /data/mcap/ 目录，文件 CLOSE_WRITE 事件触发上传 Agent 处理。',
-          how: '录制进程关闭文件（Session 切割）时，inotify 立即通知上传 Agent，无需轮询，延迟 < 100ms。',
-          color: '#00cec9',
-          icon: '👁️',
-        },
-        {
-          name: 'S3 Multipart Upload + 断点续传',
-          desc: '大文件分块上传（每块 64MB），上传进度记录在 SQLite 的 upload_offset 字段。网络中断后从 offset 继续。',
-          how: 'S3 CreateMultipartUpload → UploadPart（记录 offset）→ CompleteMultipartUpload。失败时用 upload_id 继续。',
-          color: '#fd79a8',
-          icon: '⏸️',
-        },
-        {
-          name: '优先级队列',
-          desc: '上传队列按优先级排序：事件触发文件 > 最新 Session > 历史 Session',
-          priority: [
-            { level: 'P0 紧急', condition: '含接管/AEB/碰撞事件的 Session', delay: '< 5min 上传' },
-            { level: 'P1 高',   condition: '最近 1h 内的 Session', delay: '< 30min 上传' },
-            { level: 'P2 中',   condition: '当天的 Session', delay: '< 4h 上传' },
-            { level: 'P3 低',   condition: '历史 Session（补传）', delay: '空闲时上传' },
-          ],
-          color: '#ffa657',
-          icon: '📋',
-        },
-      ],
-    },
-
-    // Raw 层 Iceberg 一条数据的窗口（核心问题）
-    rawIcebergRow: {
-      title: 'Raw 层 Iceberg 表：一行数据对应什么粒度？',
-      desc: '这是最容易混淆的问题。不同模态的 Iceberg 表，行粒度不同，但都以"单次采样"为基本单元。',
-      tables: [
-        {
-          table: 'raw_data.camera.frames_v2',
-          rowUnit: '1 行 = 1 帧（单相机单次曝光）',
-          timeWindow: '50ms（20Hz）',
-          rowsPerSession: '18,000 行 / Session / 相机 = 108,000 行 / Session（6路）',
-          rowsPerDay: '~2.16 亿行 / 天（1000辆车 × 6相机 × 18000帧）',
-          keyFields: 'frame_id（主键）, scene_id（外键）, timestamp_us, file_path',
-          fileRef: '每行的 file_path 指向 S3 Volume 中的一个 JPEG 文件（~150KB）',
-          whenInserted: 'Bronze 层处理时：MCAP 解码 → 每帧抽取 JPEG → 写 S3 → 插入 Iceberg 行',
-          color: '#6c5ce7',
-          icon: '📷',
-        },
-        {
-          table: 'raw_data.lidar.pointcloud_v2',
-          rowUnit: '1 行 = 1 帧（LiDAR 一次旋转扫描）',
-          timeWindow: '100ms（10Hz）',
-          rowsPerSession: '9,000 行 / Session',
-          rowsPerDay: '~900 万行 / 天（1000辆车）',
-          keyFields: 'frame_id（主键）, scene_id（外键）, timestamp_us, file_path',
-          fileRef: '每行的 file_path 指向 S3 Volume 中的一个 .pcd.draco 文件（~500KB）',
-          whenInserted: 'Bronze 层处理时：MCAP 解码 → 每帧提取点云 → Draco 压缩 → 写 S3 → 插入 Iceberg 行',
-          color: '#3fb950',
-          icon: '🟢',
-        },
-        {
-          table: 'raw_data.radar.radar_4d_v1',
-          rowUnit: '1 行 = 1 帧（雷达一次扫描，含所有目标点）',
-          timeWindow: '77ms（13Hz）',
-          rowsPerSession: '11,700 行 / Session / 雷达 = 58,500 行 / Session（5路）',
-          rowsPerDay: '~5.85 亿行 / 天（1000辆车 × 5雷达）',
-          keyFields: 'frame_id（主键）, scene_id（外键）, timestamp_us, radar_id, points（LIST<STRUCT>）',
-          fileRef: '无 file_path，points 字段直接存 LIST<STRUCT>（x/y/z/v_r/rcs/snr），数据量小可内联',
-          whenInserted: 'Bronze 层处理时：MCAP 解码 → 解析雷达目标 → 直接插入 Iceberg 行（无需 Volume）',
-          color: '#ffa657',
-          icon: '📡',
-        },
-        {
-          table: 'raw_data.vehicle.can_bus',
-          rowUnit: '1 行 = 1 个 CAN 采样时刻（100Hz，每 10ms 一条，记录该时刻所有车辆状态信号的快照）',
-          timeWindow: '10ms（100Hz）',
-          rowsPerSession: '90,000 行 / Session（100Hz × 900s）',
-          rowsPerDay: '~9000 万行 / 天（1000辆车）',
-          keyFields: 'record_id（主键）, scene_id（外键）, timestamp_us, speed_mps（车速 m/s）, steering_angle_deg（方向盘角度）, throttle_pct（油门 0-100%）, brake_pct（制动踏板 0-100%）, gear（档位 P/R/N/D）, is_takeover（人工接管标志）, is_aeb（AEB 触发标志）, lateral_accel / longitudinal_accel（横纵向加速度）',
-          fileRef: '无 file_path，所有信号字段直接存 Parquet 列（宽表设计，数据量小 ~5GB/天）',
-          whenInserted: 'Bronze 层处理时：MCAP 解码 /vehicle/can_signals 消息 → DBC 文件解析原始 CAN 帧为工程量信号 → 直接插入 Iceberg 行',
-          color: '#00cec9',
-          icon: '🔌',
-        },
-        {
-          table: 'raw_data.camera.video_sessions',
-          rowUnit: '1 行 = 1 个 Session（一个 MCAP 文件对应的视频段）',
-          timeWindow: '15 分钟（900s）',
-          rowsPerSession: '1 行 / Session / 相机 = 6 行 / Session（6路）',
-          rowsPerDay: '~6000 行 / 天（1000辆车 × 6相机 × 1 Session均值）',
-          keyFields: 'session_id（主键）, vehicle_id, camera_id, start_time, end_time, file_path',
-          fileRef: '每行的 file_path 指向 S3 Volume 中的一个 MP4 文件（~1~3GB）',
-          whenInserted: 'Landing Zone 处理时：MCAP 上传完成 → 提取视频流 → 写 S3 → 插入 Iceberg 行',
-          color: '#e84393',
-          icon: '🎬',
-        },
-      ],
-      // 关键结论
-      keyInsights: [
-        { insight: 'Bronze 层相机数据：不解码视频，不存帧级表。用 session_index 表（1行=1个 MCAP 文件）管理相机数据', detail: 'MCAP 里存的是 H.265 视频流，不是 JPEG。解码成本高，且 Bronze 层不需要图像内容。全量解码存 JPEG 会产生 2.16 亿个小文件，70% 会在去重后丢弃。' },
-        { insight: 'LiDAR/雷达例外：Bronze 层就解码存帧级表，用于场景切分时的时序对齐', detail: 'LiDAR 数据量小（~900万帧/天），解码成本低，帧级 Parquet 表用于场景切分时的时序对齐和标注。雷达数据直接内联存 Parquet。' },
-        { insight: 'Silver 层也不解码视频：scene_index 是核心表，1行=1个 Scene', detail: 'Silver 层只需要 CAN + LiDAR 时间戳做场景切分。CLIP 去重只抽取 1~3 帧关键帧计算嵌入，不全量解码。' },
-        { insight: 'Gold 层才解码视频：只对去重后保留的 Scene（~30%）解码，直接打包 WebDataset', detail: '解码 → 直接写入 tar shard，不单独存 JPEG 文件。这样只解码需要的数据，消灭小文件问题。' },
-        { insight: 'CAN/雷达数据内联存储，不需要 Volume', detail: 'CAN（车辆总线信号，100Hz，~5GB/天）和雷达（~50GB/天）数据量小，直接存 Parquet 列，避免小文件问题。CAN 数据包含车速/方向盘/油门/刹车/接管事件，是场景切分和长尾挖掘的核心依据。' },
-      ],
-    },
-
-    // 多模态拼接规则（云端处理时）
-    joinRules: {
-      title: '多模态拼接规则（Bronze → Silver 处理时）',
-      desc: '云端处理时，如何将不同采样率的传感器数据对齐拼接',
-      baseModality: 'LiDAR（10Hz）作为时间基准，其他模态向 LiDAR 帧对齐',
+      {
+        name: 'Alibaba OSS',
+        icon: '☁️',
+        color: '#ff6a00',
+        type: '公有云',
+        pros: ['国内访问延迟低', '与 MaxCompute/EMR 深度集成', 'OSS-HDFS 语义兼容层（支持 rename/append）', '合规数据主权'],
+        cons: ['生态不如 S3 丰富', 'SDK 与 S3 不完全兼容'],
+        bestFor: '国内业务，需要数据主权合规',
+      },
+      {
+        name: 'MinIO',
+        icon: '🏠',
+        color: '#c0392b',
+        type: '私有化',
+        pros: ['S3 API 完全兼容，零迁移成本', '私有化部署，数据不出内网', '高性能：单集群 325 GiB/s 读，165 GiB/s 写', '开源免费（AGPL），企业版提供 SLA'],
+        cons: ['需要自运维（硬件、扩容、故障处理）', '持久性依赖硬件 RAID/EC 配置', '运维成本高'],
+        bestFor: '私有化部署，数据安全要求高，已有 IDC 资源',
+      },
+      {
+        name: 'Ceph RGW',
+        icon: '🐙',
+        color: '#2980b9',
+        type: '私有化',
+        pros: ['统一存储（对象/块/文件）', 'CRUSH 算法自动数据分布', '大规模集群（EB 级）'],
+        cons: ['运维极其复杂', '性能不如 MinIO', '学习曲线陡峭'],
+        bestFor: '超大规模私有云，已有 Ceph 运维团队',
+      },
+    ],
+    storageClasses: [
+      { name: 'S3 Standard', cost: '$0.023/GB/月', latency: '<10ms', useCase: '热数据：近 30 天训练数据、Gold 层特征', retrieval: '免费' },
+      { name: 'S3 Standard-IA', cost: '$0.0125/GB/月', latency: '<10ms', useCase: '温数据：30-90 天 Silver 层场景数据', retrieval: '$0.01/GB' },
+      { name: 'S3 Glacier IR', cost: '$0.004/GB/月', latency: '毫秒级', useCase: '冷数据：90 天以上 Bronze 层原始 MCAP', retrieval: '$0.03/GB' },
+      { name: 'S3 Glacier DA', cost: '$0.00099/GB/月', latency: '12h', useCase: '归档：1年以上历史数据，合规留存', retrieval: '$0.02/GB + 请求费' },
+    ],
+    lifecyclePolicy: {
+      desc: '通过 S3 生命周期策略自动迁移数据，无需人工干预',
       rules: [
-        {
-          modality: '相机 → LiDAR 对齐',
-          method: '最近邻匹配',
-          tolerance: '±5ms',
-          detail: '对每个 LiDAR 帧（100ms 间隔），在 ±5ms 窗口内查找最近的相机帧。20Hz 相机帧间隔 50ms，理论上每个 LiDAR 帧都能找到对应相机帧。',
-          fallback: '超出 ±5ms 则标记 camera_aligned=false，该帧不参与 BEV 融合',
-          color: '#6c5ce7',
-        },
-        {
-          modality: '雷达 → LiDAR 对齐',
-          method: '最近邻匹配 + 线性插值',
-          tolerance: '±10ms',
-          detail: '雷达 13Hz（77ms 间隔），LiDAR 10Hz（100ms 间隔）。用线性插值将雷达点云插值到 LiDAR 时间戳，补偿 ~40ms 的时间差。',
-          fallback: '超出 ±10ms 则标记 radar_aligned=false',
-          color: '#ffa657',
-        },
-        {
-          modality: 'CAN → 任意帧对齐',
-          method: '时间范围查询',
-          tolerance: '±10ms',
-          detail: 'CAN（Controller Area Network，车辆总线）100Hz（10ms 间隔），记录车速/方向盘/油门/刹车/接管事件等车辆状态。对任意传感器帧，在 ±10ms 内查找最近的 CAN 记录，获取该时刻的车辆状态（用于场景标签生成：如 has_takeover / has_aeb / 高速/低速场景分类）。CAN 密度足够（100Hz），几乎总能找到对应记录。',
-          fallback: '极少情况下 CAN 丢包，用前后两条记录线性插值',
-          color: '#00cec9',
-        },
-        {
-          modality: 'GNSS/IMU → 任意帧对齐',
-          method: 'IMU 积分推算',
-          tolerance: '无限制（IMU 100Hz，总能覆盖）',
-          detail: 'IMU 100Hz，用 IMU 积分（预积分）推算任意时刻的车体位姿，精度 < 1cm（短时间内）。GNSS 10Hz 用于修正 IMU 漂移。',
-          fallback: 'GNSS 信号丢失时纯 IMU 推算，误差随时间累积',
-          color: '#3fb950',
-        },
+        { trigger: '上传后 30 天', action: 'Standard → Standard-IA', saving: '节省 46%' },
+        { trigger: '上传后 90 天', action: 'Standard-IA → Glacier IR', saving: '节省 83%' },
+        { trigger: '上传后 365 天', action: 'Glacier IR → Glacier DA', saving: '节省 96%' },
+        { trigger: '上传后 2555 天（7年）', action: '永久删除（合规期满）', saving: '彻底清零' },
       ],
-      sceneJoinSQL: `-- Silver 层场景切分后，将 LiDAR 帧归属到 scene_id
--- 雷达/CAN 已聚合进 scene_index，无需回填帧级表
-
--- 步骤1：将 scene_id 回填到 lidar_frames
-UPDATE raw_data.lidar.lidar_frames l
-SET scene_id = s.scene_id
-FROM processed_data.scenes.scene_index s
-WHERE l.timestamp_us BETWEEN s.start_us AND s.end_us
-  AND l.vehicle_id = s.vehicle_id;
-
--- 步骤2：训练采样（通过 scene_index 直接读取，无需 JOIN 雷达/CAN 帧级表）
-SELECT
-  s.scene_id,
-  s.avg_speed_mps,          -- CAN 聚合字段，直接可用
-  s.radar_nearest_m,        -- 雷达聚合字段，直接可用
-  s.has_takeover,
-  l.pcd_path     AS lidar_path,
-  l.ego_pose_json
-FROM processed_data.scenes.scene_index s
-JOIN raw_data.lidar.lidar_frames l
-  ON s.scene_id = l.scene_id
-WHERE s.scene_id = 'v001_20240315_s003_0042'
-ORDER BY l.timestamp_us`,
     },
-  },
-
-  // ── 多模态数据链路（车端→训练全链路）──────────────────────────
-  dataChain: {
-    title: '多模态数据链路（车端 → 训练全链路）',
-    stages: [
-      {
-        name: '车端采集',
-        icon: '🚗',
-        color: '#6c5ce7',
-        location: 'Edge (Orin)',
-        modalities: [
-          { name: '环视相机 ×6', format: 'H.265 / JPEG', rate: '20Hz', size: '~180MB/s', compress: 'H.265 5:1' },
-          { name: 'LiDAR ×1',    format: 'MCAP / PCD',   rate: '10Hz', size: '~30MB/s',  compress: 'Draco 4:1' },
-          { name: '毫米波雷达 ×5', format: 'CSV / Binary', rate: '13Hz', size: '~2MB/s',   compress: 'zstd' },
-          { name: 'GNSS/IMU',    format: 'NMEA / Binary', rate: '100Hz', size: '~0.1MB/s', compress: '无' },
-          { name: 'CAN Bus',     format: 'DBC / Binary',  rate: '100Hz', size: '~0.05MB/s', compress: '无' },
-        ],
-        output: 'MCAP 多模态容器（统一时间戳）',
-        dailyVolume: '~2 TB/车（压缩后 ~400 GB）',
-      },
-      {
-        name: 'Landing Zone',
-        icon: '📥',
-        color: '#ff7b72',
-        location: 'S3 Standard',
-        desc: '原始数据着陆，保留原始格式，7 天生命周期',
-        format: 'MCAP / ROS2 Bag',
-        partition: 'vehicle_id / date / session_id',
-        lifecycle: '7 天 → 归档',
-        dailyVolume: '~8 TB（1000辆车上传）',
-        ops: ['SHA-256 完整性校验', 'Kafka 消息确认', '元数据注册到 Unity Catalog'],
-      },
-      {
-        name: 'Bronze Layer',
-        icon: '🟤',
-        color: '#ffa657',
-        location: 'S3 + JuiceFS 缓存',
-        desc: '解码 + 时间戳对齐 + 坐标系统一，按模态拆分存储',
-        format: 'Parquet（结构化）+ Volume（非结构化）',
-        partition: 'date / vehicle_id / modality',
-        lifecycle: '90 天热存储',
-        dailyVolume: '~6 TB',
-        modalStorage: [
-          { modality: '相机帧', format: 'JPEG（原始）/ Parquet（元数据）', partition: 'date/camera_id/hour', size: '~4 TB/天' },
-          { modality: '点云',   format: 'PCD + Draco 压缩 / Parquet（元数据）', partition: 'date/lidar_id/hour', size: '~800 GB/天' },
-          { modality: '雷达',   format: 'Parquet（结构化点云）', partition: 'date/radar_id', size: '~50 GB/天' },
-          { modality: '位姿/IMU', format: 'Parquet（时序）', partition: 'date/vehicle_id', size: '~10 GB/天' },
-          { modality: 'CAN',   format: 'Parquet（信号解码）', partition: 'date/vehicle_id', size: '~5 GB/天' },
-        ],
-      },
-      {
-        name: 'Silver Layer',
-        icon: '⚪',
-        color: '#79c0ff',
-        location: 'S3 Standard-IA',
-        desc: '清洗 + 去重 + 多模态时序对齐 + 场景切分',
-        format: 'Parquet + Iceberg (Schema V2)',
-        partition: 'scene_id / date / city',
-        lifecycle: '1 年温存储',
-        dailyVolume: '~4 TB',
-        ops: [
-          '时间戳对齐（PTP 精度 <1μs，软件插值 <5ms）',
-          '坐标系统一（相机/LiDAR/雷达 → 车体坐标系）',
-          '场景切分（按时间窗口 20s / 按事件触发）',
-          '去重（感知哈希 + CLIP 嵌入相似度）',
-          '质量过滤（模糊帧/遮挡/传感器故障剔除）',
-        ],
-      },
-      {
-        name: 'Gold Layer',
-        icon: '🟡',
-        color: '#3fb950',
-        location: 'S3 + NVMe 热缓存',
-        desc: '自动标注 + 人工审核 + 训练就绪数据集',
-        format: 'WebDataset tar + Iceberg（索引）',
-        partition: 'dataset_version / split（train/val/test）',
-        lifecycle: '永久保留',
-        dailyVolume: '~2 TB',
-        annotations: [
-          { type: '3D 检测框', tool: 'BEVFusion 自动标注', autoRate: '90%', format: 'nuScenes JSON' },
-          { type: '语义分割', tool: 'SAM2 自动分割', autoRate: '85%', format: 'PNG mask + RLE' },
-          { type: '车道线',   tool: 'MapTR 自动提取', autoRate: '92%', format: 'Polyline JSON' },
-          { type: '语言描述', tool: 'InternVL2 生成', autoRate: '70%', format: 'JSON QA pairs' },
-          { type: '轨迹标注', tool: 'MTR 预测 + 人工校正', autoRate: '80%', format: 'Trajectory JSON' },
-        ],
-      },
+    performanceTips: [
+      '前缀分散：避免热点分区，用 hash 前缀（如 ab/cd/session_id）而非日期前缀，S3 按前缀分片',
+      'Multipart Upload：文件 > 100MB 必须用分片上传（5MB/片），支持断点续传，并行上传提速 10x',
+      'S3 Transfer Acceleration：跨地域上传（车端 → 云端）启用加速端点，利用 CloudFront 边缘节点',
+      'VPC Endpoint：计算节点通过 VPC Endpoint 访问 S3，避免公网流量费用，延迟降低 30%',
+      'Request Rate：单前缀支持 3500 PUT/s + 5500 GET/s，超过需要前缀分散或 S3 Express',
     ],
   },
 
-  // ── Iceberg 表 Schema 设计 ────────────────────────────────────
-  icebergSchemas: {
-    title: 'Iceberg 表 Schema 设计 & 多模态关联',
-    desc: '所有模态通过 scene_id + frame_id 双键关联，文件路径存 Iceberg 表，实体存 S3 Volume',
+  // ── 缓存加速方案 ─────────────────────────────────────────────
+  cacheAcceleration: {
+    title: '缓存加速方案',
+    subtitle: '解决对象存储高延迟瓶颈，提升训练/查询 IO 吞吐',
+    problem: '对象存储（S3/OSS）延迟 ~10-50ms，IOPS 有限；训练任务需要随机读取大量小文件（WebDataset tar 内的 JPEG/PCD），直接读 S3 会导致 GPU 利用率 < 30%，IO 成为瓶颈。',
+    solutions: [
+      {
+        name: 'JuiceFS',
+        icon: '🧃',
+        color: '#00b894',
+        type: '分布式缓存文件系统',
+        desc: '将 S3 挂载为 POSIX 文件系统，内置多级缓存（内存 → SSD → HDD），对上层应用透明',
+        cacheHierarchy: ['L1: 内存缓存（默认 1GB，可调至 64GB）', 'L2: 本地 SSD 缓存（NVMe，推荐 2-4TB）', 'L3: S3 持久化存储'],
+        pros: ['POSIX 兼容，无需修改训练代码', '分布式缓存：多节点共享缓存，命中率更高', '元数据存 Redis/TiKV，目录操作 <1ms', '支持预热（juicefs warmup）提前加载热数据'],
+        cons: ['需要额外部署 Redis/TiKV 存元数据', '缓存一致性依赖 TTL，不适合频繁更新的数据'],
+        perfGain: '训练 IO 吞吐提升 5-10x，GPU 利用率从 30% 提升至 85%+',
+        useCase: '训练集读取、特征工程、频繁访问的 Gold 层数据',
+      },
+      {
+        name: 'Alluxio',
+        icon: '⚡',
+        color: '#6c5ce7',
+        type: '数据编排层',
+        desc: '在计算层和存储层之间提供统一命名空间和分布式缓存，支持跨存储系统（S3/HDFS/OSS）透明访问',
+        cacheHierarchy: ['MEM 层：内存缓存（最快，容量有限）', 'SSD 层：NVMe 缓存（高吞吐）', 'HDD 层：大容量缓存'],
+        pros: ['统一命名空间：一个路径访问 S3/HDFS/OSS', '与 Spark/Presto/Flink 深度集成', '细粒度缓存策略（按目录/文件类型）', '支持异步预取（prefetch）'],
+        cons: ['部署运维复杂度高', '内存占用大', '社区活跃度下降（被 JuiceFS 逐渐替代）'],
+        perfGain: 'Spark 作业提速 3-5x（缓存命中时），Trino 查询延迟降低 60%',
+        useCase: '混合云/多存储系统场景，Spark 大规模 ETL 加速',
+      },
+      {
+        name: 'NVMe 本地缓存',
+        icon: '💾',
+        color: '#fd79a8',
+        type: '节点本地缓存',
+        desc: '训练节点本地挂载 NVMe SSD，训练前将 tar 文件预拷贝到本地，训练时直接读本地磁盘',
+        cacheHierarchy: ['本地 NVMe SSD（3.5 GB/s 顺序读）', '无网络开销，延迟 <0.1ms'],
+        pros: ['最高 IO 性能，无网络瓶颈', '实现简单（rsync/s5cmd 预拷贝）', '适合固定数据集的长期训练'],
+        cons: ['节点间无共享，每个节点独立缓存', '数据集更新需要重新同步', '存储容量受单节点限制'],
+        perfGain: '顺序读吞吐 3.5 GB/s，随机 IOPS 700K+，接近内存速度',
+        useCase: '固定训练集的大规模 GPU 训练，数据集 < 节点 SSD 容量',
+      },
+      {
+        name: 'S3 Express One Zone',
+        icon: '🚀',
+        color: '#ffa657',
+        type: '高性能对象存储',
+        desc: 'AWS 推出的单可用区高性能 S3，延迟 <10ms（vs 标准 S3 的 50-100ms），专为计算密集型工作负载设计',
+        cacheHierarchy: ['单 AZ 部署，与计算节点同区', '无需额外缓存层'],
+        pros: ['无需部署缓存系统，架构简单', '延迟比标准 S3 低 10x', '与 EC2/EKS 同 AZ 访问免流量费'],
+        cons: ['仅单 AZ，无跨 AZ 冗余', '价格比标准 S3 高 7x（$0.16/GB/月）', '仅 AWS 可用'],
+        perfGain: '延迟 <10ms，吞吐无上限（按请求并发扩展）',
+        useCase: '公有云 AWS 部署，对延迟敏感的训练/推理场景',
+      },
+    ],
+    decisionMatrix: {
+      title: '缓存方案选型矩阵',
+      criteria: ['部署复杂度', '性能提升', '成本', '适用场景'],
+      rows: [
+        { solution: 'JuiceFS', scores: ['中', '高（5-10x）', '中', '通用训练/查询'] },
+        { solution: 'Alluxio', scores: ['高', '高（3-5x）', '高', '多存储系统/Spark ETL'] },
+        { solution: 'NVMe 本地缓存', scores: ['低', '极高（10x+）', '低', '固定数据集训练'] },
+        { solution: 'S3 Express', scores: ['极低', '中（2-3x）', '高', 'AWS 云原生'] },
+      ],
+    },
+  },
 
-    // ── 数据粒度层次（最重要，先看这里）────────────────────────
-    granularity: {
-      title: '数据粒度层次（从大到小）',
-      desc: '理解四层粒度是读懂所有 Schema 的前提',
-      levels: [
-        {
-          level: 'Trip（行程）',
-          icon: '🚗',
-          color: '#6c5ce7',
-          duration: '30 分钟 ~ 4 小时',
-          size: '~50 GB ~ 400 GB（压缩后）',
-          desc: '车辆一次完整出行，从点火到熄火。一辆车每天 1~3 次 Trip。',
-          keyId: 'trip_id',
-          icebergTable: '无独立表，通过 vehicle_id + date 隐式标识',
-          example: '早高峰通勤：07:30 出发 → 08:45 到达，约 75 分钟',
-          note: '⚠️ Trip 不是存储单元，只是逻辑概念，不对应 Iceberg 表',
-        },
-        {
-          level: 'Session（录制段）',
-          icon: '🎬',
-          color: '#e84393',
-          duration: '10 ~ 30 分钟（默认 15 分钟自动切割）',
-          size: '~5 ~ 15 GB（压缩前）/ ~1 ~ 3 GB（H.265 压缩后）',
-          desc: '车端按固定时长自动切割的连续录制片段，是视频文件的存储单元。一次 Trip 包含 2~16 个 Session。',
-          keyId: 'session_id',
-          icebergTable: 'raw_data.camera.video_sessions（每个 Session 一行）',
-          example: 'session_v001_20240315_s003：07:30:00 ~ 07:45:00，15 分钟，6 路相机各一个 MP4 文件',
-          note: '💡 Session 是视频文件的粒度。一个 Session = 6 个相机视频文件（6路环视）',
-          videoFiles: '6 路相机 × 1 个 MP4 = 6 个视频文件 / Session',
-          frameCount: '15 min × 60s × 20Hz = 18,000 帧 / Session / 相机',
-        },
-        {
-          level: 'Scene（场景）',
-          icon: '🎯',
-          color: '#ffa657',
-          duration: '20 秒（固定窗口）或 10 ~ 60 秒（事件触发）',
-          size: '~200 ~ 600 MB（所有模态）',
-          desc: '从 Session 中切割出的有意义片段，是训练数据的基本单元。一个 Session 包含 ~45 个 Scene（20s 固定切割）。',
-          keyId: 'scene_id',
-          icebergTable: 'processed_data.scenes.scene_index（每个 Scene 一行）',
-          example: 'scene_v001_20240315_s003_0042：07:37:20 ~ 07:37:40，20 秒，400 帧（相机）/ 200 帧（LiDAR）',
-          note: '💡 Scene 是标注和训练的粒度。一个 WebDataset shard 包含 ~50 个 Scene',
-          cutStrategy: [
-            { type: '固定窗口切割', desc: '每 20s 切一个 Scene，用于基线数据积累', ratio: '~70%' },
-            { type: '事件触发切割', desc: '接管/急刹/AEB 触发，前后各 15s，共 30s', ratio: '~20%' },
-            { type: '场景触发切割', desc: '检测到施工区/恶劣天气/复杂路口，10~60s', ratio: '~10%' },
+  // ── 表格式选型 ───────────────────────────────────────────────
+  tableFormat: {
+    title: '开放表格式选型',
+    subtitle: 'Apache Iceberg vs Delta Lake vs Apache Hudi — 湖仓一体核心基础',
+    intro: '开放表格式在对象存储之上提供 ACID 事务、Schema 演化、时间旅行、分区裁剪等能力，是湖仓一体架构的核心。',
+    formats: [
+      {
+        name: 'Apache Iceberg',
+        icon: '🧊',
+        color: '#00cec9',
+        verdict: '推荐首选',
+        verdictColor: '#00b894',
+        score: 5,
+        origin: 'Netflix 开源，Apache 顶级项目',
+        coreDesign: '快照（Snapshot）+ 清单文件（Manifest）三层元数据结构，与计算引擎完全解耦',
+        keyFeatures: [
+          { name: 'Hidden Partitioning', desc: '分区对查询透明，无需在 SQL 中手写分区过滤，引擎自动利用分区裁剪', icon: '🔍' },
+          { name: 'Schema Evolution', desc: '支持 Add/Drop/Rename/Reorder 列，不需要重写数据文件，元数据变更即可', icon: '📐' },
+          { name: 'Time Travel', desc: '基于快照 ID 或时间戳查询历史版本，SELECT * FROM t FOR SYSTEM_TIME AS OF timestamp', icon: '⏰' },
+          { name: 'ACID 事务', desc: '乐观并发控制（OCC），多引擎并发写入时通过 CAS 操作保证原子性', icon: '🔒' },
+          { name: 'Row-level Delete', desc: '支持 Merge-on-Read（MoR）和 Copy-on-Write（CoW）两种删除模式', icon: '🗑️' },
+          { name: '引擎兼容性', desc: 'Spark / Trino / Flink / Hive / DuckDB / StarRocks 全部原生支持', icon: '🔗' },
+        ],
+        metadataStructure: {
+          desc: 'Iceberg 三层元数据结构',
+          layers: [
+            { name: 'Catalog', desc: '存储当前快照指针（current-snapshot-id），可用 Hive Metastore / REST Catalog / Glue / Unity Catalog', example: 's3://bucket/warehouse/db/table/metadata/v3.metadata.json' },
+            { name: 'Manifest List', desc: '每个快照对应一个 Manifest List，记录所有 Manifest 文件路径及统计信息（行数、文件大小、分区范围）', example: 'snap-{snapshot-id}-{attempt-id}.avro' },
+            { name: 'Manifest File', desc: '记录数据文件路径、分区值、列级统计（min/max/null_count），用于分区裁剪和谓词下推', example: '{uuid}-m0.avro' },
+            { name: 'Data Files', desc: '实际数据文件（Parquet/ORC/Avro），存储在 S3 对象存储上', example: 'data/part-00000-{uuid}.parquet' },
           ],
         },
-        {
-          level: 'Frame（帧）',
-          icon: '🖼️',
-          color: '#3fb950',
-          duration: '50ms（相机 20Hz）/ 100ms（LiDAR 10Hz）/ 77ms（雷达 13Hz）',
-          size: '~150 KB（单相机 JPEG）/ ~500 KB（点云 PCD）',
-          desc: '单个传感器的一次采样，是 Iceberg 表的最小存储粒度（每行 = 一帧）。',
-          keyId: 'frame_id',
-          icebergTable: 'raw_data.camera.frames_v2 / raw_data.lidar.pointcloud_v2 / raw_data.radar.radar_4d_v1',
-          example: 'frame_v001_20240315_s003_0042_1710460800123456：时间戳精确到微秒',
-          note: '💡 Frame 是 Iceberg 表的行粒度。一个 Scene（20s）= 400 相机帧 + 200 LiDAR 帧 + 260 雷达帧',
-          rowsPerScene: {
-            camera: '400 行 / Scene（20Hz × 20s）× 6 相机 = 2400 行',
-            lidar: '200 行 / Scene（10Hz × 20s）',
-            radar: '260 行 / Scene（13Hz × 20s）× 5 雷达 = 1300 行',
-            can: '2000 行 / Scene（100Hz × 20s）',
-          },
-        },
-      ],
-      // 粒度换算关系
-      conversion: [
-        { from: '1 Trip',    to: '2~16 Sessions',    note: '按 15min 自动切割' },
-        { from: '1 Session', to: '~45 Scenes',        note: '20s 固定窗口' },
-        { from: '1 Scene',   to: '400 相机帧',         note: '20Hz × 20s' },
-        { from: '1 Scene',   to: '200 LiDAR 帧',       note: '10Hz × 20s' },
-        { from: '1 Session', to: '18,000 相机帧',      note: '20Hz × 15min × 60s' },
-        { from: '1 Session', to: '6 个视频文件',        note: '6 路环视相机各一个 MP4' },
-        { from: '1 Session', to: '~1~3 GB 视频',       note: 'H.265 压缩后' },
-        { from: '1 天',      to: '~1000 Sessions',     note: '1000辆车 × 1 Session/车（均值）' },
-      ],
-    },
-
-    // 核心关联键说明
-    joinKeys: [
-      { key: 'scene_id',    type: 'STRING',  desc: '场景唯一标识，格式 {vehicle_id}_{date}_{session}_{seq}，所有模态表的主关联键', example: 'v001_20240315_s003_0042' },
-      { key: 'frame_id',    type: 'STRING',  desc: '帧唯一标识，格式 {scene_id}_{timestamp_us}，精确到微秒', example: 'v001_20240315_s003_0042_1710460800123456' },
-      { key: 'timestamp_us', type: 'LONG',   desc: 'Unix 时间戳（微秒），所有模态时序对齐的基准', example: '1710460800123456' },
-      { key: 'vehicle_id',  type: 'STRING',  desc: '车辆唯一标识，用于多租户隔离和行级权限过滤', example: 'v001' },
-    ],
-
-    // 各模态 Iceberg 表 Schema
-    tables: [
-      {
-        name: 'raw_data.sessions.session_index',
-        icon: '🎬',
-        color: '#6c5ce7',
-        desc: 'Session 元数据表（Bronze 层核心表，1行=1个MCAP文件=15min录制段）。相机数据不存帧级表，通过 mcap_path 读取原始 MCAP 文件。',
-        partitionBy: 'days(event_time), vehicle_id',
-        sortBy: 'vehicle_id, start_us',
-        fields: [
-          { name: 'session_id',       type: 'STRING',       nullable: false, pk: true,  desc: '主键，格式 {vehicle_id}_{start_timestamp_us}' },
-          { name: 'vehicle_id',       type: 'STRING',       nullable: false, pk: false, desc: '车辆 ID，行级权限过滤' },
-          { name: 'start_us',         type: 'LONG',         nullable: false, pk: false, desc: 'Session 开始时间戳（微秒）' },
-          { name: 'end_us',           type: 'LONG',         nullable: false, pk: false, desc: 'Session 结束时间戳（微秒）' },
-          { name: 'duration_s',       type: 'FLOAT',        nullable: false, pk: false, desc: '时长（秒），典型值 900s = 15min' },
-          { name: 'event_time',       type: 'TIMESTAMP',    nullable: false, pk: false, desc: '分区字段（由 start_us 转换）' },
-          { name: 'mcap_path',        type: 'STRING',       nullable: false, pk: false, desc: 'S3 MCAP 文件路径，如 s3://landing/{vehicle_id}/{date}/{session_id}.mcap' },
-          { name: 'mcap_size_bytes',  type: 'LONG',         nullable: false, pk: false, desc: 'MCAP 文件大小（字节），典型值 5~15 GB' },
-          { name: 'camera_channels',  type: 'LIST<STRING>', nullable: true,  pk: false, desc: '可用相机 Channel 列表，如 [front, rear, left_front, ...]' },
-          { name: 'camera_fps',       type: 'INT',          nullable: false, pk: false, desc: '相机帧率（Hz），典型值 20' },
-          { name: 'camera_frame_count', type: 'INT',        nullable: false, pk: false, desc: '相机总帧数（所有相机之和），典型值 108000（6路×18000帧）' },
-          { name: 'has_lidar',        type: 'BOOLEAN',      nullable: false, pk: false, desc: 'LiDAR 数据是否完整' },
-          { name: 'has_radar',        type: 'BOOLEAN',      nullable: false, pk: false, desc: '雷达数据是否完整' },
-          { name: 'has_can',          type: 'BOOLEAN',      nullable: false, pk: false, desc: 'CAN 总线数据是否完整（车速/方向盘/油门/刹车/接管事件等车辆状态信号）' },
-          { name: 'intrinsic_json',   type: 'STRING',       nullable: true,  pk: false, desc: '相机内参 JSON（Session 级别，从 MCAP Header 提取，不需要每帧存）' },
-          { name: 'extrinsic_json',   type: 'STRING',       nullable: true,  pk: false, desc: '外参 JSON（Session 级别）' },
-          { name: 'cut_reason',       type: 'STRING',       nullable: false, pk: false, desc: 'Session 切割原因：timer_15min / file_size / ign_off / network_resume' },
-          { name: 'upload_status',    type: 'STRING',       nullable: false, pk: false, desc: 'pending / uploaded / verified' },
-        ],
-        volumeRef: 'raw_data.sessions.mcap_volume（实体 MCAP 文件，~5~15GB/Session）',
-        note: '⚠️ 相机数据不在 Iceberg 帧级表中。访问相机帧需要：1) 查 session_index 得到 mcap_path；2) 用 mcap 库按时间范围解码视频流。Gold 层打包时才解码，直接写入 WebDataset shard。',
-        joinExample: '-- 查找某辆车某天的所有 Session\nSELECT session_id, start_us, end_us, mcap_path, camera_frame_count\nFROM raw_data.sessions.session_index\nWHERE vehicle_id = \'v001\'\n  AND DATE(event_time) = \'2024-03-15\'\nORDER BY start_us',
+        pros: ['Hidden Partition 是独有优势，避免分区陷阱', '引擎兼容性最广，社区最活跃', '元数据与引擎解耦，迁移成本低', 'Partition Evolution：可以在不重写数据的情况下修改分区策略'],
+        cons: ['小文件问题需要定期 compaction', 'Catalog 依赖外部服务（Hive MS / REST）', '流式写入延迟略高于 Hudi'],
+        bestFor: '湖仓一体主力格式，批流一体，多引擎共享',
       },
       {
-        name: 'raw_data.lidar.lidar_frames',
-        icon: '🟢',
-        color: '#3fb950',
-        desc: 'LiDAR 帧级元数据表（Bronze 层，1行=1帧，实体 PCD 文件存 Volume）',
-        partitionBy: 'days(event_time)',
-        sortBy: 'session_id, timestamp_us',
-        fields: [
-          { name: 'frame_id',           type: 'STRING',    nullable: false, pk: true,  desc: '主键，格式 {session_id}_{timestamp_us}' },
-          { name: 'scene_id',           type: 'STRING',    nullable: true,  pk: false, desc: '外键，Silver 层场景切分后回填（初始为 NULL）' },
-          { name: 'session_id',         type: 'STRING',    nullable: false, pk: false, desc: '外键，关联 session_index，Bronze 层写入时填充' },
-          { name: 'vehicle_id',         type: 'STRING',    nullable: false, pk: false, desc: '车辆 ID' },
-          { name: 'timestamp_us',       type: 'LONG',      nullable: false, pk: false, desc: 'Unix 时间戳（微秒），多模态对齐基准' },
-          { name: 'event_time',         type: 'TIMESTAMP', nullable: false, pk: false, desc: '分区字段' },
-          { name: 'pcd_path',           type: 'STRING',    nullable: false, pk: false, desc: 'S3 Volume 路径，指向 .pcd.draco 文件（~500KB）' },
-          { name: 'num_points',         type: 'INT',       nullable: false, pk: false, desc: '点云点数（典型值 ~100K）' },
-          { name: 'range_m',            type: 'FLOAT',     nullable: false, pk: false, desc: '最大探测距离（米）' },
-          { name: 'ego_pose_json',      type: 'STRING',    nullable: true,  pk: false, desc: '车体位姿 JSON（4×4 变换矩阵，坐标系转换用）' },
-          { name: 'bbox_3d_count',      type: 'INT',       nullable: true,  pk: false, desc: '自动标注 3D 框数量（Gold 层标注完成后回填）' },
+        name: 'Delta Lake',
+        icon: '△',
+        color: '#0078d4',
+        verdict: '次选（Databricks 生态）',
+        verdictColor: '#ffa657',
+        score: 4,
+        origin: 'Databricks 开源，Linux Foundation 项目',
+        coreDesign: '事务日志（_delta_log）+ JSON/Parquet 检查点，深度绑定 Spark',
+        keyFeatures: [
+          { name: 'Delta Log', desc: '所有变更记录在 _delta_log 目录的 JSON 文件中，每 10 次提交生成 Parquet 检查点', icon: '📋' },
+          { name: 'ACID 事务', desc: '基于乐观并发控制，Spark 原生支持最佳', icon: '🔒' },
+          { name: 'Schema Enforcement', desc: '写入时强制 Schema 校验，防止脏数据写入', icon: '🛡️' },
+          { name: 'Time Travel', desc: 'VERSION AS OF / TIMESTAMP AS OF 语法', icon: '⏰' },
+          { name: 'Z-Order Clustering', desc: '多列联合排序优化，提升多维过滤查询性能', icon: '📊' },
+          { name: 'Liquid Clustering', desc: '新版自适应聚簇，替代静态分区，自动优化数据布局', icon: '💧' },
         ],
-        volumeRef: 'raw_data.lidar.pcd_volume（实体 .pcd.draco 文件）',
-        note: 'LiDAR 是唯一保留帧级表的模态，仅用于 Bronze 层场景切分时的时序对齐。Gold 层打包 WebDataset 后此表不再参与训练。',
-        joinExample: 'JOIN processed_data.scenes.scene_index USING (scene_id)',
+        pros: ['与 Databricks/Spark 集成最深，开箱即用', 'Z-Order/Liquid Clustering 查询优化效果好', 'DML（UPDATE/DELETE/MERGE）支持成熟'],
+        cons: ['非 Spark 引擎支持较弱（Trino/Flink 需要额外配置）', 'Databricks 主导，开源版功能滞后商业版', '无 Hidden Partition，需手动管理分区'],
+        bestFor: 'Databricks 平台用户，Spark 为主的数据团队',
       },
       {
-        name: 'processed_data.scenes.scene_index',
-        icon: '🎬',
-        color: '#a29bfe',
-        desc: '场景索引表（所有模态的汇聚入口，训练采样的唯一核心表）。雷达和 CAN 数据不单独建帧级表，直接聚合进此表。',
-        partitionBy: 'days(start_time), city',
-        sortBy: 'scene_id',
-        fields: [
-          { name: 'scene_id',              type: 'STRING',       nullable: false, pk: true,  desc: '场景唯一标识，格式 {vehicle_id}_{date}_{session}_{seq}' },
-          { name: 'vehicle_id',            type: 'STRING',       nullable: false, pk: false, desc: '车辆 ID，行级权限过滤' },
-          { name: 'session_id',            type: 'STRING',       nullable: false, pk: false, desc: '外键，关联 session_index（来自哪个 MCAP 文件）' },
-          { name: 'start_time',            type: 'TIMESTAMP',    nullable: false, pk: false, desc: '场景开始时间（分区字段）' },
-          { name: 'start_us',              type: 'LONG',         nullable: false, pk: false, desc: '开始时间戳（微秒），用于从 MCAP 按时间范围解码' },
-          { name: 'end_us',                type: 'LONG',         nullable: false, pk: false, desc: '结束时间戳（微秒）' },
-          { name: 'duration_s',            type: 'FLOAT',        nullable: false, pk: false, desc: '时长（秒），典型值 20s' },
-          { name: 'city',                  type: 'STRING',       nullable: false, pk: false, desc: '城市（分区字段）' },
-          { name: 'weather',               type: 'STRING',       nullable: true,  pk: false, desc: 'sunny/rainy/foggy/night' },
-          { name: 'scenario_tags',         type: 'LIST<STRING>', nullable: true,  pk: false, desc: '场景标签 [long_tail, highway, intersection, ...]' },
-          { name: 'cut_reason',            type: 'STRING',       nullable: false, pk: false, desc: '切割原因：fixed_window / takeover / aeb / bad_weather / construction' },
-
-          { name: 'has_lidar',             type: 'BOOLEAN',      nullable: false, pk: false, desc: 'LiDAR 数据完整性' },
-          { name: 'has_radar',             type: 'BOOLEAN',      nullable: false, pk: false, desc: '雷达数据完整性' },
-                { name: 'has_can',               type: 'BOOLEAN',      nullable: false, pk: false, desc: 'CAN 总线数据完整性（车速/方向盘/油门/刹车/接管事件等车辆状态信号）' },
-
-          { name: 'avg_speed_mps',         type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内平均车速（m/s），从 CAN 数据聚合' },
-          { name: 'max_accel_mps2',        type: 'FLOAT',        nullable: true,  pk: false, desc: '最大纵向加速度（m/s²），急加速场景识别用' },
-          { name: 'max_brake_pct',         type: 'FLOAT',        nullable: true,  pk: false, desc: '最大制动开度（%），急刻场景识别用' },
-          { name: 'has_takeover',          type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否含接管事件（从 CAN takeover_flag 检测）' },
-          { name: 'has_aeb',               type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否触发 AEB（从 CAN 检测）' },
-          { name: 'ego_trajectory',        type: 'BINARY',       nullable: true,  pk: false, desc: '未来轨迹 GT（FP32 [N,3]，x/y/yaw），从 GNSS/IMU 提取，训练时作为监督信号（模型需预测这个轨迹）' },
-          { name: 'ego_traj_hist_json',    type: 'STRING',       nullable: true,  pk: false, desc: '历史轨迹（过去 2s，[20帧×(x,y,yaw)]，从 CAN 速度/方向盘积分 + IMU 修正），训练时作为输入特征，告诉模型"车刚才怎么走的"' },
-          { name: 'nav_command',           type: 'STRING',       nullable: true,  pk: false, desc: '导航路口指令：go_straight / turn_left / turn_right / u_turn / change_lane_left / change_lane_right / follow_lane（来自地图导航系统，非 CAN 数据，训练时作为高层意图输入）' },
-
-          { name: 'radar_target_count_avg', type: 'FLOAT',       nullable: true,  pk: false, desc: '场景内雷达平均目标数，从雷达数据聚合' },
-          { name: 'radar_nearest_m',       type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内雷达最近目标距离（米），近距驾驶场景识别用' },
-          { name: 'radar_has_oncoming',    type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否有迎面车（径向速度 v_r > 5m/s）' },
-
-          { name: 'has_pedestrian',         type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否含行人目标（从标注聚合，Gold 层打包后回填）' },
-          { name: 'has_vehicle',            type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否含车辆目标' },
-          { name: 'has_cyclist',            type: 'BOOLEAN',      nullable: true,  pk: false, desc: '是否含骑行者目标' },
-          { name: 'object_count_avg',       type: 'FLOAT',        nullable: true,  pk: false, desc: '场景内每帧平均目标数（从 bbox_3d 聚合）' },
-          { name: 'category_stats_json',    type: 'STRING',       nullable: true,  pk: false, desc: '各类别目标数 JSON，如 {"car":120,"pedestrian":30}，用于数据集统计' },
-          { name: 'label_source',           type: 'STRING',       nullable: true,  pk: false, desc: '标注来源：auto_bevfusion / human / auto+human' },
-          { name: 'label_confidence_avg',   type: 'FLOAT',        nullable: true,  pk: false, desc: '平均标注置信度（< 0.9 说明自动标注质量低，需人工复核）' },
-          { name: 'qa_pairs_json',          type: 'STRING',       nullable: true,  pk: false, desc: 'VLA 训练用 QA 对 JSON 数组（场景级，Gold 层打包后回填）' },
-
-          { name: 'dedup_hash',            type: 'STRING',       nullable: true,  pk: false, desc: '场景感知哈希（pHash），Hamming 距离 < 8 则标记重复' },
-          { name: 'clip_embedding',        type: 'BINARY',       nullable: true,  pk: false, desc: 'CLIP ViT-L/14 场景嵌入（FP16，512维），余弦相似度 > 0.95 则去重' },
-          { name: 'is_duplicate',          type: 'BOOLEAN',      nullable: false, pk: false, desc: '是否被标记为重复（去重后丢弃）' },
-          { name: 'annotation_status',     type: 'STRING',       nullable: false, pk: false, desc: '标注状态：pending / auto_labeled / human_reviewed / rejected' },
-          { name: 'dataset_split',         type: 'STRING',       nullable: true,  pk: false, desc: '训练集划分 train/val/test' },
-          { name: 'dataset_version',       type: 'STRING',       nullable: true,  pk: false, desc: '所属数据集版本（Gold 层打包后回填）' },
-          { name: 'webdataset_shard',      type: 'STRING',       nullable: true,  pk: false, desc: 'WebDataset shard 路径（Gold 层打包后回填，训练直接读取）' },
+        name: 'Apache Hudi',
+        icon: '🌊',
+        color: '#e17055',
+        verdict: '流式场景专用',
+        verdictColor: '#74b9ff',
+        score: 3,
+        origin: 'Uber 开源，Apache 顶级项目',
+        coreDesign: '时间线（Timeline）+ MoR/CoW 双模式，专为流式 Upsert 优化',
+        keyFeatures: [
+          { name: 'Upsert 优化', desc: 'Bloom Filter + HFile 索引，Upsert 性能比 Iceberg/Delta 高 3-5x', icon: '🔄' },
+          { name: 'MoR 模式', desc: 'Merge-on-Read：写入快（追加 delta log），读时合并，适合高频写入', icon: '✍️' },
+          { name: 'CoW 模式', desc: 'Copy-on-Write：写时合并，读取快，适合读多写少', icon: '📖' },
+          { name: 'Incremental Query', desc: '增量查询：只读取指定时间范围内变更的数据，CDC 场景利器', icon: '📈' },
+          { name: 'Timeline', desc: '所有操作（commit/compaction/clean）记录在 .hoodie 目录时间线上', icon: '⏱️' },
         ],
-        volumeRef: '无 Volume，此表是整个数据链路唯一的 Iceberg 索引表（配合 session_index）。所有模态原始数据均在 MCAP 文件中，标注/雷达/CAN 均聚合为字段，训练时通过 webdataset_shard 直接读取 shard，零 JOIN。',
-        note: '⚠️ 这是 Silver/Gold 层唯一的 Iceberg 表。lidar_frames/bbox_3d/seg_masks/language_qa 等帧级表均已删除——原始数据在 MCAP 中，标注聚合为字段，详细标注打包进 WebDataset shard。',
-        joinExample: `-- 训练采样：一张表，零 JOIN
-SELECT webdataset_shard
-FROM processed_data.scenes.scene_index
-WHERE annotation_status = 'human_reviewed'
-  AND is_duplicate = false
-  AND has_pedestrian = true   -- 标注聚合字段，无需 JOIN bbox_3d
-  AND radar_nearest_m < 20   -- 雷达聚合字段，无需 JOIN 雷达表
-  AND avg_speed_mps > 5      -- CAN 聚合字段，无需 JOIN CAN 表
-  AND dataset_version = 'v2.3.0'`,
+        pros: ['Upsert 性能最优，适合 CDC/实时数仓', '增量查询原生支持，流批一体', 'MoR 模式写入延迟极低'],
+        cons: ['查询性能不如 Iceberg（MoR 模式需要合并）', '引擎兼容性最差（Trino 支持有限）', '运维复杂（需要定期 compaction + clean）', '社区活跃度下降'],
+        bestFor: '高频 Upsert 场景（CDC 同步、实时特征更新）',
       },
     ],
-
-    // 视频数据存储方案（专项说明）
-    videoStorage: {
-      title: '视频数据存储方案',
-      desc: '视频不直接存 Iceberg 表，而是文件存 Volume + 元数据存 Iceberg，通过 session_id 关联',
-      strategy: [
-        {
-          type: '原始录制视频',
-          format: 'H.265 MP4 / MCAP 容器',
-          where: 'S3 Volume: raw_data.camera.video_volume',
-          path: 's3://raw/camera/{vehicle_id}/{date}/{session_id}/front_camera.mp4',
-          icebergRef: 'raw_data.camera.video_sessions 表（元数据）',
-          note: '1 Session = 15 分钟连续录制，6 路相机各 1 个 MP4，共 6 文件。文件大小 ~1~3 GB/文件（H.265）。一次 Trip（30min~4h）= 2~16 个 Session。',
-          color: '#6c5ce7',
-        },
-        {
-          type: '关键帧（训练用）',
-          format: 'JPEG / WebP',
-          where: 'S3 Volume: raw_data.camera.frames_volume',
-          path: 's3://raw/camera/{vehicle_id}/{date}/{scene_id}/{frame_id}.jpg',
-          icebergRef: 'raw_data.camera.frames_v2 表（file_path 字段指向此路径）',
-          note: '⚠️ Bronze 层：从视频按 20Hz 抽帧，存独立 JPEG（file_path 指向单帧）。Gold 层打包后：file_path 仍保留（调试用），新增 shard_path + shard_frame_offset（训练用）。训练时应走 shard，不走单帧 JPEG。',
-          color: '#3fb950',
-        },
-        {
-          type: '事件回放视频',
-          format: 'MP4（H.264）',
-          where: 'S3 Volume: governance.audit.replay_volume',
-          path: 's3://governance/replay/{vehicle_id}/{event_id}/replay.mp4',
-          icebergRef: 'governance.audit.event_log 表（replay_path 字段）',
-          note: '接管/碰撞事件的完整回放，合规留存 3 年',
-          color: '#ffa657',
-        },
-      ],
-      videoSessionSchema: {
-        name: 'raw_data.camera.video_sessions',
-        desc: '视频 Session 元数据表（与帧表通过 session_id 关联）',
-        fields: [
-          { name: 'session_id',   type: 'STRING',    desc: 'Session 唯一标识' },
-          { name: 'vehicle_id',   type: 'STRING',    desc: '车辆 ID' },
-          { name: 'camera_id',    type: 'STRING',    desc: '相机编号' },
-          { name: 'start_time',   type: 'TIMESTAMP', desc: '录制开始时间' },
-          { name: 'end_time',     type: 'TIMESTAMP', desc: '录制结束时间' },
-          { name: 'duration_s',   type: 'FLOAT',     desc: '时长（秒）' },
-          { name: 'fps',          type: 'INT',       desc: '帧率' },
-          { name: 'resolution',   type: 'STRING',    desc: '分辨率 1920x1080' },
-          { name: 'codec',        type: 'STRING',    desc: '编码格式 H.265/H.264' },
-          { name: 'file_path',    type: 'STRING',    desc: 'S3 Volume 视频文件路径' },
-          { name: 'file_size_mb', type: 'LONG',      desc: '文件大小（MB）' },
-          { name: 'frame_count',  type: 'INT',       desc: '总帧数' },
-        ],
-      },
-    },
-
-    // 多模态关联关系（ER 图）
-    erDiagram: {
-      title: '多模态表关联关系（以 scene_id / frame_id 为核心）',
-      centerTable: 'processed_data.scenes.scene_index',
-      relations: [
-        { from: 'scene_index',        to: 'sessions.session_index',  key: 'session_id',       type: 'N:1', desc: '多个场景来自同一个 Session（MCAP 文件）' },
-        { from: 'scene_index',        to: 'annotations.bbox_3d',     key: 'scene_id',         type: '1:N', desc: '一个场景含多个 3D 标注框（仅标注工具链读取，训练时标注已打包进 shard）' },
-        { from: 'scene_index',        to: 'WebDataset shard',        key: 'webdataset_shard', type: '1:1', desc: '场景对应的训练数据包（相机/LiDAR/雷达/CAN/标注全部打包）' },
-      ],
-      queryExample: `-- 训练采样：一张表，零 JOIN
-SELECT
-  s.scene_id,
-  s.weather,
-  s.scenario_tags,
-  s.has_pedestrian,       -- 标注聚合字段，无需 JOIN bbox_3d
-  s.object_count_avg,     -- 标注聚合字段
-  s.radar_nearest_m,      -- 雷达聚合字段，无需 JOIN 雷达表
-  s.avg_speed_mps,        -- CAN 聚合字段，无需 JOIN CAN 表
-  s.webdataset_shard      -- 训练数据包路径，交给 WebDataset 读取
-FROM processed_data.scenes.scene_index s
-WHERE s.annotation_status = 'human_reviewed'
-  AND s.is_duplicate = false
-  AND s.has_pedestrian = true
-  AND s.dataset_version = 'v2.3.0'
-  AND s.dataset_split = 'train'`,
-    },
-  },
-
-  // ── 各模态存储规格 ────────────────────────────────────────────
-  modalSpecs: [
-    {
-      modality: '相机（Camera）',
-      icon: '📷',
-      color: '#6c5ce7',
-      rawFormat: 'H.265 / JPEG',
-      storedFormat: 'JPEG（原始帧）+ WebP（训练集）',
-      compression: 'H.265 5:1（录制）/ WebP 3:1（训练）',
-      partitionKey: 'date / camera_id / scene_id',
-      accessPattern: '随机帧访问 + 时序滑窗（8帧）',
-      indexing: 'Iceberg 表存储帧元数据（时间戳/曝光/内参）',
-      trainFormat: 'WebDataset tar（每 shard ~1GB，含图像+标注）',
-      scale: '~4 TB/天 · ~120 TB/月',
-      readBW: '~10 GB/s（训练时）',
-    },
-    {
-      modality: 'LiDAR（点云）',
-      icon: '🟢',
-      color: '#3fb950',
-      rawFormat: 'MCAP / PCD',
-      storedFormat: 'Draco 压缩 PCD + Parquet（元数据）',
-      compression: 'Draco 4:1（几何压缩）',
-      partitionKey: 'date / lidar_id / scene_id',
-      accessPattern: '按场景批量读取（10帧/场景）',
-      indexing: 'Iceberg 表存储点云元数据（帧数/点数/bbox范围）',
-      trainFormat: 'NumPy .npy（点云矩阵）+ WebDataset 打包',
-      scale: '~800 GB/天 · ~24 TB/月',
-      readBW: '~2 GB/s（训练时）',
-    },
-    {
-      modality: '毫米波雷达',
-      icon: '📡',
-      color: '#ffa657',
-      rawFormat: 'Binary / CSV',
-      storedFormat: 'Parquet（结构化点云：x/y/z/v/rcs）',
-      compression: 'Parquet zstd 8:1',
-      partitionKey: 'date / radar_id / scene_id',
-      accessPattern: '与相机/LiDAR 联合读取（BEV 融合）',
-      indexing: 'Iceberg 表，与相机帧通过 scene_id 关联',
-      trainFormat: 'Parquet 直接读取（小数据量）',
-      scale: '~50 GB/天 · ~1.5 TB/月',
-      readBW: '~200 MB/s（训练时）',
-    },
-    {
-      modality: '标注数据',
-      icon: '🏷️',
-      color: '#fd79a8',
-      rawFormat: 'nuScenes JSON / KITTI txt',
-      storedFormat: 'Parquet（结构化）+ JSON（原始）',
-      compression: 'Parquet zstd 10:1',
-      partitionKey: 'dataset_version / scene_id / annotation_type',
-      accessPattern: '与传感器数据 JOIN（scene_id 关联）',
-      indexing: 'Iceberg 表，支持按类别/置信度/城市过滤',
-      trainFormat: 'WebDataset tar（与传感器数据打包）',
-      scale: '~200 GB/天 · ~6 TB/月',
-      readBW: '~500 MB/s（训练时）',
-    },
-    {
-      modality: '语言/QA 数据',
-      icon: '💬',
-      color: '#a29bfe',
-      rawFormat: 'JSON',
-      storedFormat: 'Parquet（结构化 QA 对）',
-      compression: 'Parquet zstd 5:1',
-      partitionKey: 'dataset_version / scene_id / qa_type',
-      accessPattern: '与视觉数据配对读取（VLA 训练）',
-      indexing: 'Iceberg 表，支持按问题类型/场景类别过滤',
-      trainFormat: 'JSON Lines + WebDataset 打包',
-      scale: '~10 GB/天 · ~300 GB/月',
-      readBW: '~100 MB/s（训练时）',
-    },
-  ],
-
-  // ── WebDataset 详解 ───────────────────────────────────────────
-  webdatasetData: {
-    title: 'WebDataset — 训练 IO 层',
-    subtitle: '基于 tar 包的流式数据集格式，解决大规模训练的 IO 瓶颈，与 Iceberg 互补分工',
-    color: '#e17055',
-
-    // 核心概念
-    concept: {
-      oneLiner: '把"一个样本的所有模态文件"打包进 tar，按顺序流式读取，彻底消灭小文件问题',
-      keyIdea: '命名约定驱动对齐：同一前缀（000000）的所有文件自动识别为同一样本',
-      tarLayout: [
-        { file: 'scene_0042_000000.jpg',        desc: '前摄像头帧（~150KB）' },
-        { file: 'scene_0042_000000.lidar.npy',  desc: '对应点云矩阵（~500KB）' },
-        { file: 'scene_0042_000000.radar.npy',  desc: '雷达点云（float32 [M,5]，~5KB，含目标 x/y/z/径向速度/RCS）' },
-        { file: 'scene_0042_000000.can.npy',    desc: 'CAN 车辆状态向量（float32 [8]，~0.1KB，含车速/方向盘/油门/刹车/加速度/接管标志/AEB标志）' },
-        { file: 'scene_0042_000000.hist.npy',   desc: '历史轨迹（float32 [20,3]，~0.2KB，过去 2s ego x/y/yaw）' },
-        { file: 'scene_0042_nav.json',          desc: '导航指令（场景级）：{"command": "turn_right", "dist_to_junction_m": 120}' },
-        { file: 'scene_0042_000000.label.json', desc: '3D 标注框（~10KB）' },
-        { file: 'scene_0042_000000.pose.json',  desc: '车体位姿（~1KB）' },
-        { file: 'scene_0042_000001.jpg',        desc: '下一帧...' },
-        { file: '...',                           desc: '共 400 帧（20s × 20Hz）' },
-        { file: 'scene_0042_meta.json',         desc: 'Scene 级元数据（天气/城市/标签）' },
-      ],
-      shardDesign: {
-        unit: '1 Shard = ~50 个 Scene',
-        size: '~1 GB（经验最优值）',
-        totalShards: '~50K shards（500K 场景 ÷ 50）',
-        naming: 'camera_lidar_{000000..049999}.tar',
-        whyOneGB: [
-          '< 100MB：shard 数量多，S3 LIST 开销大，调度复杂',
-          '> 5GB：单 shard 读取时间长，GPU 等待，流水线气泡大',
-          '~1GB：约 50 Scene，读取时间 ~0.5s，流水线填充充分',
-        ],
-      },
-    },
-
-    // 与 Iceberg 的分工（核心）
-    vsIceberg: {
-      title: 'WebDataset vs Iceberg — 分工与协作',
-      analogy: 'Iceberg 是导航系统（规划路线），WebDataset 是高速公路（高速行驶）。先导航，再上高速。',
-      comparison: [
-        { capability: '训练 IO 吞吐',     webdataset: '✅ ~2 GB/s 顺序读',       iceberg: '❌ 不负责 IO',              winner: 'wds' },
-        { capability: '条件过滤查询',     webdataset: '❌ 无法，需全量扫描',      iceberg: '✅ SQL WHERE 谓词下推',      winner: 'ice' },
-        { capability: '聚合统计',         webdataset: '❌ 无法',                  iceberg: '✅ GROUP BY / COUNT',        winner: 'ice' },
-        { capability: '行级删除/更新',    webdataset: '❌ 需重新打包整个 shard',  iceberg: '✅ ACID 事务，秒级完成',     winner: 'ice' },
-        { capability: 'Schema 演化',      webdataset: '❌ 无 schema 概念',        iceberg: '✅ 无缝加字段',              winner: 'ice' },
-        { capability: '数据版本管理',     webdataset: '❌ 文件级别，无快照',      iceberg: '✅ 快照级，Time Travel',     winner: 'ice' },
-        { capability: '数据血缘追踪',     webdataset: '❌ 无',                    iceberg: '✅ 列级血缘',                winner: 'ice' },
-        { capability: '行/列级权限控制',  webdataset: '❌ 只有 S3 桶级别',        iceberg: '✅ RBAC + ABAC',             winner: 'ice' },
-        { capability: '多模态 JOIN',      webdataset: '⚠️ 依赖打包时对齐',       iceberg: '✅ SQL JOIN 任意组合',       winner: 'ice' },
-        { capability: '增量写入',         webdataset: '❌ 需重新打包',            iceberg: '✅ 流式追加',                winner: 'ice' },
-        { capability: 'GPU 喂数据效率',   webdataset: '✅ 流式，无随机 IO',       iceberg: '❌ 不直接用于训练',          winner: 'wds' },
-        { capability: '小文件问题',       webdataset: '✅ tar 打包，无小文件',    iceberg: '⚠️ 元数据表行数多',         winner: 'wds' },
-      ],
-      workflow: {
-        title: '协作工作流（两步走）',
-        steps: [
-          {
-            step: 'Step 1：Iceberg 筛选',
-            desc: '用 SQL 从 scene_index 表过滤出目标场景，得到 shard 路径列表',
-            code: `SELECT DISTINCT webdataset_shard
-FROM processed_data.scenes.scene_index
-WHERE weather = 'rain'
-  AND has_pedestrian = true
-  AND dataset_version = 'v2.3.0'
-  AND dataset_split = 'train'
--- 返回 200 个 shard 路径（而非全量 50K）`,
-            color: '#00cec9',
-            icon: '🔍',
-          },
-          {
-            step: 'Step 2：WebDataset 训练',
-            desc: '只读筛选出的 200 个 shard，流式喂给 GPU，IO 吞吐 ~2 GB/s',
-            code: `import webdataset as wds
-
-shards = iceberg_query_result  # 200 个 shard 路径
-dataset = (
-    wds.WebDataset(shards, shardshuffle=True)
-    .decode("rgb8")
-    .to_tuple("jpg", "lidar.npy", "label.json")
-    .shuffle(buffer_size=1000)   # 跨 shard buffer shuffle
-    .map(preprocess_fn)
-    .batched(32)
-)
-loader = DataLoader(dataset, num_workers=8)`,
-            color: '#e17055',
-            icon: '🚀',
-          },
-        ],
-        bridgeField: {
-          table: 'processed_data.scenes.scene_index',
-          field: 'webdataset_shard',
-          desc: '这个字段是 Iceberg 和 WebDataset 的桥梁：Iceberg 负责筛选 scene_id，通过此字段找到对应的 shard 路径，WebDataset 负责高效读取',
-        },
-      },
-    },
-
-    // 打包流程（Ray 实现）
-    packingPipeline: {
-      title: '打包流程（Silver → Gold WebDataset shard）',
-      desc: '用 Ray 并行打包，每个 worker 负责 50 个 Scene，输出 1 个 shard',
-      steps: [
-        { step: '① Iceberg 采样', desc: 'Trino SQL 按分层策略采样 500K scene_id，保证多样性', color: '#6c5ce7' },
-        { step: '② 时序对齐', desc: '对每个 scene，按 LiDAR 时间戳对齐相机/雷达/CAN，生成对齐帧列表', color: '#00cec9' },
-        { step: '③ Ray 并行打包', desc: '每个 Ray worker 处理 50 个 scene，读取 S3 文件，写入 tar shard', color: '#e17055' },
-        { step: '④ Iceberg 回写', desc: '打包完成后，将 shard_path 回写到 scene_index.webdataset_shard 字段', color: '#3fb950' },
-        { step: '⑤ LakeFS 版本化', desc: 'LakeFS commit 打 tag dataset_v2.3.0，绑定 shard 快照', color: '#ffa657' },
-      ],
-      code: `@ray.remote
-def pack_scenes_to_shard(scene_ids: list, shard_path: str):
-    """将 50 个 scene 打包为 1 个 WebDataset shard（~1GB）"""
-    with wds.TarWriter(shard_path) as sink:
-        for scene_id in scene_ids:
-            # 从 Iceberg 查询该 scene 的所有对齐帧
-            frames = query_iceberg(f"""
-                SELECT l.frame_id, l.timestamp_us,
-                       l.pcd_path AS lidar_path,
-                       s.radar_nearest_m,   -- 雷达聚合字段，无需 JOIN
-                       s.avg_speed_mps      -- CAN 聚合字段，无需 JOIN
-                FROM raw_data.lidar.lidar_frames l
-                JOIN processed_data.scenes.scene_index s
-                  ON l.scene_id = s.scene_id
-                WHERE l.scene_id = '{scene_id}'
-                ORDER BY l.timestamp_us
-            """)
-            for i, frame in enumerate(frames):
-                key = f"{scene_id}_{i:06d}"
-                sink.write({
-                    "__key__":    key,
-                    "jpg":        read_s3(frame.cam_path),
-                    "lidar.npy":  pointcloud_to_numpy(frame.lidar_path),
-                    "radar.json": json.dumps(frame.radar_points).encode(),
-                    "label.json": get_annotations(frame.frame_id),
-                    "pose.json":  get_ego_pose(frame.frame_id),
-                })
-    # 回写 shard 路径到 Iceberg
-    update_scene_shard_ref(scene_ids, shard_path)
-
-# 并行打包 50K shards
-ray.get([
-    pack_scenes_to_shard.remote(batch, f"s3://gold/shards/shard_{i:06d}.tar")
-    for i, batch in enumerate(chunks(all_scene_ids, 50))
-])`,
-    },
-
-    // 训练侧读取
-    trainingRead: {
-      title: '训练侧读取（PyTorch DataLoader）',
-      code: `import webdataset as wds
-from torch.utils.data import DataLoader
-
-# Step 1: Iceberg 筛选目标 shard（只读 10% 的 shard）
-target_shards = trino.query("""
-    SELECT DISTINCT webdataset_shard
-    FROM processed_data.scenes.scene_index
-    WHERE weather IN ('rain', 'fog') AND has_pedestrian = true
-""").to_list()
-
-# Step 2: WebDataset 流式读取
-dataset = (
-    wds.WebDataset(
-        target_shards,
-        shardshuffle=True,      # shard 级别 shuffle（跨节点分发）
-        resampled=True,         # 无限循环，适合多 epoch 训练
-        handler=wds.warn_and_continue,  # 跳过损坏的 shard
-    )
-    .decode("rgb8")             # JPEG → numpy uint8 自动解码
-    .to_tuple("jpg", "lidar.npy", "label.json", "pose.json")
-    .shuffle(buffer_size=2000)  # 内存 buffer shuffle（跨 shard 混洗）
-    .map(preprocess_multimodal) # 数据增强 + 坐标系转换
-    .batched(32, partial=False) # 固定 batch size
-)
-
-loader = DataLoader(
-    dataset,
-    num_workers=8,          # 每个 worker 负责不同 shard
-    pin_memory=True,        # 锁页内存，加速 CPU→GPU 传输
-    persistent_workers=True # worker 复用，避免重复初始化
-)`,
-      keyPoints: [
-        { point: 'shardshuffle=True', desc: 'shard 级别 shuffle，不同训练节点读取不同 shard，天然无锁并行' },
-        { point: 'buffer_size=2000', desc: '内存中保留 2000 个样本的 buffer，随机采样，补偿 shard 内时序相关性' },
-        { point: 'num_workers=8', desc: '每个 worker 独立读取一个 shard，8 个 worker 同时流式读取 8 个 shard' },
-        { point: 'resampled=True', desc: '无限循环模式，适合多 epoch 训练，自动 reshuffle' },
-      ],
-    },
-
-    // 局限性与解决方案
-    limitations: [
-      {
-        problem: '随机访问困难',
-        detail: '调试时想看某一帧，需要知道它在哪个 shard 的哪个字节偏移',
-        solution: 'Iceberg frames_v2 表新增 shard_path + frame_offset_bytes 字段，用 tarfile.extractfile(offset) 定位',
-        color: '#ff7b72',
-        icon: '🔍',
-      },
-      {
-        problem: 'Shard 内 shuffle 不充分',
-        detail: '同一 shard 内的帧来自相同时间段，时序相关性强，影响训练收敛',
-        solution: 'shardshuffle=True（shard 级）+ shuffle(buffer_size=2000)（样本级）双重 shuffle',
-        color: '#ffa657',
-        icon: '🔀',
-      },
-      {
-        problem: '增量更新麻烦',
-        detail: '新数据来了，不能直接追加到已有 shard，必须新建 shard',
-        solution: '新数据攒成新 shard（shard_v2.3.1_*.tar），Iceberg 表记录版本，训练时合并读取多版本 shard',
-        color: '#79c0ff',
-        icon: '➕',
-      },
-      {
-        problem: '多模态对齐依赖打包时正确性',
-        detail: '000000.jpg 和 000000.lidar.npy 必须严格对应同一时刻，框架不做校验',
-        solution: '打包时写入 000000.meta.json（含 timestamp_us），训练侧读取后校验时间戳差值 < 5ms',
-        color: '#a29bfe',
-        icon: '⚠️',
-      },
-      {
-        problem: '不支持列裁剪',
-        detail: '读取 shard 时必须解压整个样本，即使只需要相机帧，点云也会被读取',
-        solution: '按模态拆分 shard（camera_only_*.tar / lidar_only_*.tar），单模态任务只读对应 shard',
-        color: '#fd79a8',
-        icon: '📦',
-      },
+    comparisonTable: [
+      { feature: '开放标准', iceberg: '✅ Apache 顶级项目', delta: '⚠️ Linux Foundation（Databricks 主导）', hudi: '✅ Apache 顶级项目' },
+      { feature: 'Hidden Partition', iceberg: '✅ 独有特性', delta: '❌ 不支持', hudi: '❌ 不支持' },
+      { feature: 'Schema Evolution', iceberg: '✅ 完整（Add/Drop/Rename/Reorder）', delta: '✅ 支持（Add/Rename）', hudi: '⚠️ 部分支持' },
+      { feature: 'Time Travel', iceberg: '✅ 快照级（snapshot-id/timestamp）', delta: '✅ 版本级（version/timestamp）', hudi: '✅ 时间线级（instant time）' },
+      { feature: 'ACID 事务', iceberg: '✅ OCC（乐观并发）', delta: '✅ OCC（Spark 最优）', hudi: '✅ OCC（Upsert 最优）' },
+      { feature: 'Upsert 性能', iceberg: '⚠️ 一般', delta: '⚠️ 一般', hudi: '✅ 最优（Bloom Filter 索引）' },
+      { feature: '引擎兼容性', iceberg: '✅ Spark/Trino/Flink/DuckDB 全支持', delta: '⚠️ Spark 最优，其他需配置', hudi: '⚠️ Spark/Flink，Trino 有限' },
+      { feature: '流式写入', iceberg: '✅ Flink 原生支持', delta: '✅ Spark Streaming', hudi: '✅ 最优（MoR 低延迟）' },
+      { feature: '社区活跃度', iceberg: '🔥 最活跃（2024 年贡献者最多）', delta: '🔥 活跃（Databricks 驱动）', hudi: '⚠️ 下降中' },
+      { feature: '推荐场景', iceberg: '湖仓主力，多引擎共享', delta: 'Databricks 平台', hudi: 'CDC/高频 Upsert' },
     ],
-
-    // 性能数据
-    perfNumbers: [
-      { metric: 'S3 文件数（1000辆/天）', singleFile: '~2.16 亿个 JPEG', webdataset: '~2000 个 shard', winner: 'wds' },
-      { metric: '训练 IO 吞吐',           singleFile: '~50 MB/s（随机）', webdataset: '~2 GB/s（顺序）', winner: 'wds' },
-      { metric: 'GPU 利用率',             singleFile: '40~60%（IO 瓶颈）', webdataset: '90%+',           winner: 'wds' },
-      { metric: 'S3 PUT 请求费用/天',     singleFile: '极高（×2.16亿）',  webdataset: '低（×2000）',    winner: 'wds' },
-      { metric: '随机访问单帧',           singleFile: '✅ 直接',          webdataset: '⚠️ 需 offset',   winner: 'single' },
-      { metric: '条件过滤',               singleFile: '❌ 无法',          webdataset: '❌ 无法（需 Iceberg）', winner: 'none' },
+    icebergBestPractices: [
+      { title: '分区策略', desc: '用 Hidden Partition（days/hours/bucket），避免手写分区过滤；大表用 bucket 分区（按 scene_id hash），小表用 days(event_time)', icon: '📂' },
+      { title: '文件大小', desc: '目标文件大小 128-512MB（Parquet），过小触发 compaction，过大影响并行度；用 write.target-file-size-bytes 控制', icon: '📏' },
+      { title: '定期 Compaction', desc: '每天运行 rewrite_data_files 合并小文件，每周运行 expire_snapshots 清理历史快照，释放 S3 存储', icon: '🔧' },
+      { title: 'Catalog 选型', desc: '生产环境用 REST Catalog（Polaris/Unity Catalog），开发环境用 HiveCatalog；避免用 HadoopCatalog（无并发控制）', icon: '📚' },
+      { title: '列裁剪与谓词下推', desc: '查询时只 SELECT 需要的列，WHERE 条件尽量包含分区列；Iceberg 会利用 Manifest 统计信息跳过不相关文件', icon: '✂️' },
     ],
   },
 
-  // ── 训练数据集构建流程 ─────────────────────────────────────────
-  trainDatasetBuild: {
-    title: '训练数据集构建（Gold → 训练就绪）',
-    steps: [
-      {
-        step: '① 场景采样',
-        desc: '从 Gold 层按场景类别/城市/天气/时段分层采样，保证数据多样性',
-        tech: 'Trino SQL + Spark 采样',
-        output: 'scene_id 列表（~500K 场景）',
-        color: '#6c5ce7',
-        icon: '🎯',
-      },
-      {
-        step: '② 多模态打包',
-        desc: '将相机帧/点云/雷达/标注/语言 QA 按 scene_id 对齐，打包为 WebDataset shard',
-        tech: 'Ray + WebDataset',
-        output: '~50K tar shards（每 shard ~1GB）',
-        color: '#00cec9',
-        icon: '📦',
-      },
-      {
-        step: '③ 时序窗口构建',
-        desc: '构建 8 帧历史 + 当前帧 + 6 帧未来的时序样本，支持 BEVFormer 时序建模',
-        tech: 'Spark + NumPy',
-        output: '时序样本索引（Iceberg 表）',
-        color: '#fd79a8',
-        icon: '🎞️',
-      },
-      {
-        step: '④ 数据集版本化',
-        desc: 'LakeFS commit + DVC 双版本记录，绑定 Git commit 与数据集快照',
-        tech: 'LakeFS + DVC + MLflow',
-        output: 'dataset_v2.3.0 快照',
-        color: '#ffa657',
-        icon: '🏷️',
-      },
-      {
-        step: '⑤ 预计算特征',
-        desc: '离线预计算 BEV 特征/语言嵌入/场景嵌入，存入 Feast 特征仓库，训练时直接读取',
-        tech: 'Ray + BEVFusion + InternLM2',
-        output: 'feature_store.offline.scene_feat_v2',
-        color: '#3fb950',
-        icon: '🧬',
-      },
-      {
-        step: '⑥ 训练集注册',
-        desc: '将数据集元数据注册到 Unity Catalog model_registry，与训练实验绑定',
-        tech: 'Unity Catalog + MLflow',
-        output: 'processed_data.scenes.train_split_v2',
-        color: '#e84393',
-        icon: '📋',
-      },
-    ],
-    outputSpec: {
-      totalScenes: '~500K 场景',
-      totalShards: '~50K tar shards',
-      totalSize: '~50 TB（训练集）',
-      modalCoverage: '相机 100% · LiDAR 100% · 雷达 85% · 语言 60%',
-      trainValTest: '80% / 10% / 10%',
-      avgShardSize: '~1 GB / shard',
-      readThroughput: '~15 GB/s（128×A100 训练时）',
-    },
-  },
-
-  // ── 训练 IO 优化 ──────────────────────────────────────────────
-  ioOptimization: {
-    title: '训练 IO 优化（解决存储瓶颈）',
-    bottleneck: '128×A100 训练时需要 ~15 GB/s 持续读取带宽，S3 直读仅 ~2 GB/s，需多级缓存加速',
-    strategies: [
-      {
-        name: 'JuiceFS 分布式缓存',
-        desc: '在训练节点本地 NVMe 上构建 JuiceFS 缓存层，热数据命中率 >90%',
-        gain: '读取速度 2GB/s → 12GB/s',
-        config: '每节点 8×NVMe 3.84TB，缓存容量 ~30TB',
-        color: '#6c5ce7',
-        icon: '⚡',
-      },
-      {
-        name: 'WebDataset 顺序读取',
-        desc: 'tar shard 顺序读取，避免随机 IO，充分利用 S3 顺序读取带宽',
-        gain: '随机 IO → 顺序 IO，吞吐提升 5×',
-        config: 'shard 大小 1GB，prefetch_factor=4',
-        color: '#00cec9',
-        icon: '📦',
-      },
-      {
-        name: '多进程预取（DataLoader）',
-        desc: 'PyTorch DataLoader num_workers=16，CPU 解码与 GPU 训练流水线并行',
-        gain: 'GPU 利用率从 65% → 92%',
-        config: 'num_workers=16, pin_memory=True, persistent_workers=True',
-        color: '#fd79a8',
-        icon: '🔄',
-      },
-      {
-        name: 'Lustre 并行文件系统',
-        desc: '训练集群挂载 Lustre 2PB，提供 POSIX 接口，支持 MPI-IO 并行读取',
-        gain: '聚合带宽 ~40 GB/s（16节点）',
-        config: 'Lustre 2PB，OST ×32，条带宽度 4MB',
-        color: '#3fb950',
-        icon: '🗄️',
-      },
-      {
-        name: '预计算特征缓存',
-        desc: '将 BEV 特征/语言嵌入离线预计算并缓存，训练时直接读取 FP16 张量，跳过重计算',
-        gain: '每步训练时间减少 40%（跳过 BEVFusion 推理）',
-        config: 'FP16 存储，NVMe 热缓存，Feast 在线服务',
-        color: '#ffa657',
-        icon: '🧬',
-      },
-      {
-        name: 'DALI GPU 解码',
-        desc: 'NVIDIA DALI 将图像解码/增强从 CPU 移至 GPU，消除 CPU 解码瓶颈',
-        gain: 'CPU 解码瓶颈消除，GPU 利用率 +8%',
-        config: 'DALI Pipeline + TensorRT 预处理',
-        color: '#79c0ff',
-        icon: '🚀',
-      },
-    ],
-    ioStack: [
-      { layer: 'GPU 显存', size: '80GB × 128', latency: 'ns 级', bw: '~2 TB/s', color: '#ff7b72' },
-      { layer: 'NVMe 本地缓存', size: '~30 TB（JuiceFS）', latency: 'μs 级', bw: '~40 GB/s', color: '#ffa657' },
-      { layer: 'Lustre 并行 FS', size: '2 PB', latency: 'ms 级', bw: '~40 GB/s', color: '#79c0ff' },
-      { layer: 'S3 对象存储', size: '~500 PB', latency: '10ms 级', bw: '~2 GB/s（单节点）', color: '#3fb950' },
-    ],
-  },
-
-  // ── Iceberg 特性（保留）────────────────────────────────────────
-  icebergFeatures: [
-    { name: 'Schema Evolution', desc: '无需重写数据即可添加/删除/重命名列，标注字段迭代无痛', icon: '🔄' },
-    { name: 'Hidden Partitioning', desc: '自动分区裁剪，按 scene_id/date/city 查询无需感知分区', icon: '📂' },
-    { name: 'Time Travel', desc: '按快照 ID 或时间戳查询历史版本，复现任意训练集', icon: '⏰' },
-    { name: 'ACID Transactions', desc: '并发标注写入安全，支持 Serializable 隔离', icon: '🔒' },
-    { name: 'Compaction', desc: '自动合并小文件（标注增量写入产生），优化查询性能', icon: '📦' },
-    { name: 'Row-level Deletes', desc: '支持行级删除（GDPR 合规删除 PII 数据）', icon: '✂️' },
-  ],
-
-  // ── LakeFS 数据版本工作流（保留）──────────────────────────────
-  lakeFSWorkflow: [
-    { step: 1, action: 'branch', desc: '从 main 创建 feature/new-labels-v2.3 分支', icon: '🌿' },
-    { step: 2, action: 'write',  desc: '新标注数据写入分支（BEVFusion v4.2 输出）', icon: '✏️' },
-    { step: 3, action: 'diff',   desc: '对比分支与 main 的数据差异（新增 50K 场景）', icon: '🔍' },
-    { step: 4, action: 'test',   desc: '在分支上运行 Great Expectations 数据质量测试', icon: '✅' },
-    { step: 5, action: 'merge',  desc: '测试通过后合并到 main，触发 Airflow DAG', icon: '🔀' },
-    { step: 6, action: 'tag',    desc: '打标签 dataset_v2.3.0，绑定 MLflow 实验', icon: '🏷️' },
-  ],
-
-  // ── 格式对比（保留）──────────────────────────────────────────
-  comparison: [
-    { feature: '开放标准', iceberg: '✅ Apache 开源', delta: '⚠️ Databricks 主导', hudi: '✅ Apache 开源' },
-    { feature: 'Schema Evolution', iceberg: '✅ 完整支持', delta: '✅ 支持', hudi: '⚠️ 部分支持' },
-    { feature: 'Hidden Partition', iceberg: '✅ 原生支持', delta: '❌ 不支持', hudi: '❌ 不支持' },
-    { feature: 'Time Travel', iceberg: '✅ 快照级', delta: '✅ 版本级', hudi: '✅ 时间线级' },
-    { feature: '引擎兼容', iceberg: '✅ Spark/Trino/Flink', delta: '⚠️ Spark 优先', hudi: '✅ Spark/Flink' },
-    { feature: '社区活跃度', iceberg: '🔥 最活跃', delta: '🔥 活跃', hudi: '⚠️ 一般' },
-  ],
-
-  // ── 查询引擎（更新）──────────────────────────────────────────
+  // ── 查询引擎 ─────────────────────────────────────────────────
   queryEngines: [
-    { name: 'Trino', role: '联邦查询', desc: '跨 Catalog 联邦查询（Unity Catalog 统一入口），Ad-hoc 分析', latency: '秒级', icon: '🔍' },
-    { name: 'Spark SQL', role: '批处理', desc: '大规模 ETL + 特征工程 + 数据集构建', latency: '分钟级', icon: '⚡' },
-    { name: 'DuckDB', role: '本地分析', desc: '开发者本地快速探索 Parquet/Iceberg，零配置', latency: '毫秒级', icon: '🦆' },
-    { name: 'Flink SQL', role: '流式查询', desc: '实时接入数据的流式聚合与质量监控', latency: '<100ms', icon: '🌊' },
+    { name: 'Trino', role: '联邦查询', desc: '跨 Catalog 联邦查询（Unity Catalog 统一入口），Ad-hoc 分析，支持 Iceberg/Delta/Hudi', latency: '秒级', icon: '🔍' },
+    { name: 'Spark SQL', role: '批处理', desc: '大规模 ETL + 特征工程 + 数据集构建，与 Iceberg 深度集成', latency: '分钟级', icon: '⚡' },
+    { name: 'DuckDB', role: '本地分析', desc: '开发者本地快速探索 Parquet/Iceberg，零配置，支持直接查询 S3', latency: '毫秒级', icon: '🦆' },
+    { name: 'Flink SQL', role: '流式查询', desc: '实时写入 Iceberg 表，流批一体，支持 Upsert 和 Append 模式', latency: '<100ms', icon: '🌊' },
   ],
 };
 
