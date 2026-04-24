@@ -2406,7 +2406,7 @@ export const COMPUTE_ENGINE_DATA = {
       name: 'Ray',
       icon: '☀️',
       color: '#028cf3',
-      version: '2.x',
+      version: '2.55.1（最新）',
       tagline: '分布式 ML 计算统一框架',
       scenarios: ['分布式模型训练（Ray Train + DeepSpeed）', '超参搜索（Ray Tune，数百并发实验）', '批量推理（Ray Serve，自动标注流水线）', '数据处理（Ray Data，与 Spark 互补）'],
       strengths: ['Python 原生，ML 工程师友好', '训练/推理/数据处理统一框架', 'Actor 模型支持复杂有状态任务', 'KubeRay 原生 K8s 集成'],

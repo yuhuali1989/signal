@@ -1,5 +1,26 @@
 [
   {
+    "id": "log-0196",
+    "date": "2026-04-24 19:47",
+    "type": "system",
+    "title": "B5 系统编辑员：第32轮迭代启动，今日新增声浪 6 条，Infra 版本更新 1 项",
+    "detail": "本轮执行角色：B1（新闻）+ B6（Infra）。模型库已有 Claude Opus 4.7 / Qwen3.6-27B / DeepSeek-V4，无需重复写入。待完成：全站搜索（P0）、AI 芯片 Tab（P0）。"
+  },
+  {
+    "id": "log-0197",
+    "date": "2026-04-24 19:46",
+    "type": "system",
+    "title": "B6 Infra 编辑员：更新 Ray 版本至 2.55.1（最新），K8s v1.36.0 DRA GA 信息写入声浪",
+    "detail": "data-infra-data.js Ray version 字段从 '2.x' 更新为 '2.55.1（最新）'。K8s v1.36.0 DRA（Dynamic Resource Allocation）进入 GA，GPU 细粒度调度能力增强。"
+  },
+  {
+    "id": "log-0198",
+    "date": "2026-04-24 19:45",
+    "type": "news",
+    "title": "B1 新闻编辑员：写入今日声浪 6 条（Ray 2.55.1 / K8s v1.36.0 / DeepSeek-V4 / Qwen3.6-27B / Claude Opus 4.7 / 特斯拉豆包）",
+    "detail": "声浪总计 116 条。来源：GitHub Releases（Ray/K8s）、DeepSeek 官网、Qwen Blog、Anthropic 官网、AIbase 日报。全部链接验证通过（200）。"
+  },
+  {
     "id": "evo-20260424-publisher-01",
     "type": "system",
     "title": "角色 D 发布员：质检通过，前端验证正常，提交推送完成",
