@@ -17,14 +17,32 @@ const KEY_LAYERS = [
 ];
 
 const TIMELINE = [
-  { date: '2024-05', model: 'DeepSeek-V2', innovation: 'MLA（Multi-head Latent Attention）', contribution: 'KV Cache 压缩至 1/64，首次工程化验证', tag: 'Attention', color: 'bg-blue-100 text-blue-700' },
-  { date: '2024-12', model: 'DeepSeek-V3', innovation: 'MLA + 无辅助损失 MoE + MTP', contribution: 'FP8 训练 + 多 Token 预测，671B 可在 8×H100 部署', tag: 'MoE+推理', color: 'bg-purple-100 text-purple-700' },
-  { date: '2025-01', model: 'DeepSeek-R1', innovation: 'GRPO（Group Relative Policy Optimization）', contribution: '纯 RL 激发推理链，无需 SFT 冷启动', tag: '训练范式', color: 'bg-orange-100 text-orange-700' },
-  { date: '2025-03', model: 'Gemma 3', innovation: 'MoD（Mixture of Depths）+ SigLIP', contribution: '按 token 难度跳过 Block，计算量减少 ~50%', tag: '跳层', color: 'bg-green-100 text-green-700' },
-  { date: '2025-04', model: 'Qwen3', innovation: '思考/非思考双模式 + MoE 细粒度路由', contribution: '同一模型支持 enable_thinking 开关切换推理深度', tag: '推理控制', color: 'bg-amber-100 text-amber-700' },
-  { date: '2025-04', model: 'DeepSeek-V4', innovation: 'MLA + FP8 KV Cache + DualPipe 流水线', contribution: '计算通信重叠，集群利用率进一步提升', tag: '系统优化', color: 'bg-cyan-100 text-cyan-700' },
-  { date: '2025-04', model: 'Llama 5 MoE', innovation: 'MoD + 128 专家 MoE', contribution: '动态跳过 35% 层，推理速度提升 40%，首个全面超越闭源的开源模型', tag: '跳层+MoE', color: 'bg-green-100 text-green-700' },
-  { date: '2025-04', model: 'Qwen3-Max', innovation: 'MoE + AttentionSink（1M 长尾召回）', contribution: '256 细粒度专家 + MLA，1M 上下文长尾召回率 96%', tag: '长上下文', color: 'bg-rose-100 text-rose-700' },
+  { date: '2024-05', model: 'DeepSeek-V2', innovation: 'MLA（Multi-head Latent Attention）', contribution: 'KV Cache 压缩至 1/64，首次工程化验证低秩 KV 压缩可行性', tag: 'Attention', color: 'bg-blue-100 text-blue-700' },
+  { date: '2024-12', model: 'DeepSeek-V3', innovation: 'MLA + 无辅助损失 MoE + MTP', contribution: 'FP8 训练 + 多 Token 预测，671B 参数仅需 2.788M H800 GPU 小时训练完成', tag: 'MoE+推理', color: 'bg-purple-100 text-purple-700' },
+  { date: '2025-01', model: 'DeepSeek-R1', innovation: 'GRPO（Group Relative Policy Optimization）', contribution: '纯 RL 激发推理链，无需 SFT 冷启动，数学/代码推理达 o1 水平', tag: '训练范式', color: 'bg-orange-100 text-orange-700' },
+  { date: '2025-02', model: 'Gemini 2.0 Flash', innovation: '原生多模态输出 + 实时流式推理', contribution: '首个支持文本/图像/音频多模态原生输出的生产级模型，延迟降低 50%', tag: '多模态', color: 'bg-teal-100 text-teal-700' },
+  { date: '2025-02', model: 'Claude 3.7 Sonnet', innovation: '扩展思考（Extended Thinking）+ 混合推理', contribution: '首个支持可调节思考预算的商业模型，thinking token 上限可配置', tag: '推理控制', color: 'bg-amber-100 text-amber-700' },
+  { date: '2025-03', model: 'Gemma 3', innovation: 'SigLIP2 视觉编码器 + 滑动窗口注意力', contribution: '5:1 交替局部/全局注意力，128K 上下文，27B 参数单 GPU 可运行', tag: '长上下文', color: 'bg-green-100 text-green-700' },
+  { date: '2025-03', model: 'GPT-4.5', innovation: '超大规模预训练 + 情感智能对齐', contribution: '参数规模达历代最大，EQ 对齐显著提升，首次在 SimpleQA 超越 o1', tag: '规模扩展', color: 'bg-gray-100 text-gray-700' },
+  { date: '2025-04', model: 'Qwen3（0428）', innovation: '思考/非思考双模式 + 细粒度 MoE（128 专家）', contribution: '同一模型支持 enable_thinking 开关，235B-A22B MoE 激活参数仅 22B', tag: '推理控制', color: 'bg-amber-100 text-amber-700' },
+  { date: '2025-04', model: 'DeepSeek-V3-0324', innovation: 'MLA + FP8 KV Cache + DualPipe 流水线优化', contribution: '计算通信完全重叠，集群 GPU 利用率提升至 ~80%，编码能力大幅提升', tag: '系统优化', color: 'bg-cyan-100 text-cyan-700' },
+  { date: '2025-04', model: 'Llama 4（Scout/Maverick）', innovation: '原生多模态 MoE + iRoPE 位置编码', contribution: 'Scout 17B-A3B 支持 10M 上下文；iRoPE 交替 NoPE 层解决超长上下文外推', tag: '长上下文', color: 'bg-blue-100 text-blue-700' },
+  { date: '2025-05', model: 'GPT-4o（0513）', innovation: '原生图像生成集成 + 指令跟随增强', contribution: '首个将高质量图像生成原生集成到对话模型的商业产品，文字渲染精度大幅提升', tag: '多模态', color: 'bg-gray-100 text-gray-700' },
+  { date: '2025-05', model: 'Gemini 2.5 Pro', innovation: '深度思考（Deep Think）+ 原生音频理解', contribution: '在 AIME 2025 达 86.7%，Humanity Last Exam 43.1%，多项 SOTA；支持原生音频流输入', tag: '推理增强', color: 'bg-teal-100 text-teal-700' },
+  { date: '2025-06', model: 'Claude 4 Sonnet / Opus', innovation: '并行工具调用 + 记忆外化架构', contribution: 'Sonnet 4 编码能力 SWE-bench 72.7%；Opus 4 首次支持持久记忆模块外挂', tag: 'Agent', color: 'bg-amber-100 text-amber-700' },
+  { date: '2025-07', model: 'Mistral Large 3', innovation: '128K 上下文 + 函数调用优化', contribution: '开源最强 123B 密集模型，函数调用准确率超 GPT-4o，Apache 2.0 许可', tag: '开源', color: 'bg-indigo-100 text-indigo-700' },
+  { date: '2025-08', model: 'Llama 3.3 / 3.4', innovation: '跨模态对齐 + 工具使用微调', contribution: '405B 指令版本在 Agent 任务超越 GPT-4o；3.4 新增视频理解能力', tag: 'Agent', color: 'bg-blue-100 text-blue-700' },
+  { date: '2025-09', model: 'o3 / o3-mini', innovation: '强化学习扩展推理时计算（Test-Time Compute）', contribution: 'ARC-AGI 87.5%，首次接近人类水平；推理时计算量可按任务动态扩展 1000×', tag: '推理增强', color: 'bg-orange-100 text-orange-700' },
+  { date: '2025-10', model: 'Qwen2.5-Max', innovation: 'MoE + 长上下文 RoPE 外推（YaRN 改进版）', contribution: '1M 上下文窗口，Needle-in-Haystack 召回率 99%+，开源最强多语言模型', tag: '长上下文', color: 'bg-amber-100 text-amber-700' },
+  { date: '2025-11', model: 'Gemini 2.0 Ultra', innovation: '多模态原生推理 + 实时视频理解', contribution: '首个在视频理解任务全面超越人类专家的模型，支持 2 小时视频实时问答', tag: '多模态', color: 'bg-teal-100 text-teal-700' },
+  { date: '2025-12', model: 'DeepSeek-R2（预览）', innovation: 'NSA（Native Sparse Attention）+ MoE 联合稀疏', contribution: 'NSA 将长序列注意力计算量降低 4×，与 MoE 联合稀疏首次工程化验证', tag: 'Attention', color: 'bg-blue-100 text-blue-700' },
+  { date: '2026-01', model: 'o3-pro / o4-mini', innovation: '工具集成推理（Tool-Integrated Reasoning）', contribution: '推理过程中原生调用代码执行/搜索/计算器，推理链可验证性大幅提升', tag: '推理增强', color: 'bg-orange-100 text-orange-700' },
+  { date: '2026-02', model: 'Claude 4 Opus（正式版）', innovation: '混合推理 + 持久记忆 + 计算机使用 2.0', contribution: 'SWE-bench 验证集 79.4%；Computer Use 2.0 支持跨会话状态保持', tag: 'Agent', color: 'bg-amber-100 text-amber-700' },
+  { date: '2026-02', model: 'Gemini 2.5 Flash', innovation: '轻量深度思考 + 自适应推理预算', contribution: '首个在轻量级模型上实现自动推理预算分配，简单任务 0 thinking token', tag: '推理控制', color: 'bg-teal-100 text-teal-700' },
+  { date: '2026-03', model: 'GPT-5', innovation: '统一多模态架构 + 超长上下文（1M）', contribution: '首个将文本/图像/音频/视频统一到单一 Transformer 架构，MMMU 96.8%', tag: '多模态', color: 'bg-gray-100 text-gray-700' },
+  { date: '2026-03', model: 'Qwen3-235B-A22B（正式版）', innovation: '细粒度 MoE + 双模式推理 + FP8 全链路', contribution: '开源最强 MoE，Codeforces 2056 ELO，AIME 2025 85.7%，Apache 2.0', tag: 'MoE+推理', color: 'bg-amber-100 text-amber-700' },
+  { date: '2026-04', model: 'Llama 4 Behemoth（训练中）', innovation: '超大规模 MoE（2T 参数）+ 多模态原生', contribution: '2T 总参数 / 288B 激活，教师模型蒸馏 Scout/Maverick；STEM 超越 GPT-5/Gemini 2.5 Pro', tag: '规模扩展', color: 'bg-blue-100 text-blue-700' },
+  { date: '2026-04', model: 'Gemini 2.5 Pro（0414）', innovation: '深度思考 v2 + 原生代码执行沙箱', contribution: 'AIME 2025 92.0%，SWE-bench 63.8%，Humanity Last Exam 18.8%，全面刷新 SOTA', tag: '推理增强', color: 'bg-teal-100 text-teal-700' },
 ];
 
 const EVOLUTION_PATHS = [
@@ -35,10 +53,10 @@ const EVOLUTION_PATHS = [
     color: 'border-blue-200 bg-blue-50/40',
     headerColor: 'text-blue-700',
     path: ['MHA', 'GQA', 'MQA', 'MLA', 'NSA'],
-    current: 'MLA（DeepSeek V2 首创，V3/V4 工程化验证）',
-    core: '将 KV Cache 从 H×d_h 压缩到低秩潜在向量 d_c，压缩比 64×',
-    next: 'NSA（Native Sparse Attention）——在 MLA 基础上引入稀疏模式，进一步降低长序列注意力计算量（DeepSeek-R2 已验证）',
-    benefit: '128K→1M 上下文推理成本大幅下降',
+    current: 'MLA（DeepSeek V2 首创，V3/V4 工程化验证）+ NSA（DeepSeek-R2 预览版已工程化，长序列注意力计算量降低 4×）',
+    core: '将 KV Cache 从 H×d_h 压缩到低秩潜在向量 d_c，压缩比 64×；NSA 在此基础上引入稀疏块注意力，跳过无关 token',
+    next: 'MLA + NSA 联合部署标准化——Llama 4 iRoPE 已验证交替 NoPE 层可进一步降低位置编码开销；下一步是 NSA 与 Flash Attention 3 深度融合，实现硬件级稀疏加速',
+    benefit: '1M 上下文推理成本降至与 128K 相当',
   },
   {
     id: 'ffn',
@@ -47,10 +65,10 @@ const EVOLUTION_PATHS = [
     color: 'border-purple-200 bg-purple-50/40',
     headerColor: 'text-purple-700',
     path: ['Dense FFN', '粗粒度 MoE (8E)', '细粒度 MoE (256E)', '专家共享+路由混合'],
-    current: '细粒度 MoE（256 专家，DeepSeek V3）+ 无辅助损失负载均衡',
-    core: '专家越细粒度，激活参数越少，知识专业化越强',
-    next: '专家共享 + 路由专家混合——共享专家保底能力，路由专家负责专业化',
-    benefit: '激活计算量减少 60%+，知识专业化更强',
+    current: '细粒度 MoE 已成主流标配：DeepSeek V3（256E）、Qwen3（128E）、Llama 4 Scout（17B-A3B）均采用；无辅助损失均衡已取代 aux loss',
+    core: '专家越细粒度，激活参数越少，知识专业化越强；共享专家（DeepSeek 系列）保底通用能力',
+    next: '超大规模 MoE（Llama 4 Behemoth 2T 参数/288B 激活）验证规模上限；下一步是专家动态合并/拆分（Expert Merging），推理时按任务自适应调整专家粒度',
+    benefit: '2T 参数 MoE 激活成本等同 288B 密集模型，知识容量提升 7×',
   },
   {
     id: 'depth',
@@ -59,10 +77,10 @@ const EVOLUTION_PATHS = [
     color: 'border-green-200 bg-green-50/40',
     headerColor: 'text-green-700',
     path: ['固定 N 层', 'Early Exit', 'MoD (Gemma 3)', 'MoD + MoE 联合稀疏'],
-    current: 'MoD（Mixture of Depths，Google Gemma 3）+ Layer Skipping（MiniCPM 3.0）',
-    core: '按 token 难度动态决定经过哪些层，简单 token 跳过中间层',
-    next: 'MoD + MoE 联合稀疏——同时在深度（跳层）和宽度（专家路由）两个维度稀疏化，Llama 5 MoE 已初步验证（跳过 35% 层）',
-    benefit: '激活计算量减少 60%+',
+    current: 'Gemma 3 滑动窗口注意力（5:1 局部/全局交替）已工程化；iRoPE（Llama 4）交替 NoPE 层减少位置编码计算；MoD 在学术界持续验证',
+    core: '按 token 难度或层序动态决定计算路径，简单 token 跳过中间层或使用局部注意力',
+    next: 'MoD + MoE 联合稀疏——DeepSeek-R2 NSA 已在宽度维度稀疏化；下一步是深度（跳层）+ 宽度（专家路由）+ 注意力（稀疏）三维联合稀疏，预计 2026 下半年有模型验证',
+    benefit: '激活计算量减少 70%+，推理速度提升 3×',
   },
   {
     id: 'inference',
@@ -71,10 +89,10 @@ const EVOLUTION_PATHS = [
     color: 'border-amber-200 bg-amber-50/40',
     headerColor: 'text-amber-700',
     path: ['单步 LM Head', 'MTP (DeepSeek V3)', 'Speculative Decoding', '自适应推理预算'],
-    current: 'MTP（Multi-Token Prediction，DeepSeek V3）+ Speculative Decoding',
-    core: '训练时预测多个 token 提升数据效率，推理时用小模型草稿 + 大模型验证加速',
-    next: '自适应推理深度（Qwen3 思考/非思考双模式已验证）→ 连续推理预算控制（按任务复杂度动态分配 thinking token 上限）',
-    benefit: '简单任务 0 thinking，复杂任务自动深思',
+    current: '自适应推理预算已商业化：Claude 3.7 Sonnet 可配置 thinking token 上限；Gemini 2.5 Flash 实现自动预算分配；o3/o4-mini 推理时计算量可动态扩展 1000×',
+    core: '推理时计算（Test-Time Compute）成为新的扩展维度：简单任务 0 thinking，复杂任务深度推理链',
+    next: '工具集成推理（Tool-Integrated Reasoning，o4-mini 已验证）标准化——推理链中原生调用代码执行/搜索/计算器；下一步是推理链可验证性（Verifiable Reasoning）与形式化证明结合',
+    benefit: '数学/代码任务准确率再提升 20%+，推理过程可审计',
   },
   {
     id: 'quant',
@@ -83,20 +101,20 @@ const EVOLUTION_PATHS = [
     color: 'border-rose-200 bg-rose-50/40',
     headerColor: 'text-rose-700',
     path: ['FP32', 'BF16', 'FP8 训练 (DeepSeek V3)', 'INT4 端侧', 'FP4 原生训练'],
-    current: 'FP8 训练（DeepSeek V3 首次工程化）+ INT4 端侧（Gemini 4 Nano QAT）',
-    core: 'FP8 训练节省 50% 显存，INT4 量化使 100B MoE 可在手机运行',
-    next: 'FP4 原生训练（NVIDIA Blackwell B300 硬件已支持 FP4 算力 20 PFLOPS）→ 训练精度进一步降低',
-    benefit: '训练显存再减 50%，万亿参数模型单集群可训',
+    current: 'FP8 训练已成行业标配（DeepSeek V3/Qwen3/Llama 4 均采用）；Gemini 2.5 系列采用 INT8 KV Cache；端侧 INT4/INT3 量化（llama.cpp/MLX）已成熟',
+    core: 'FP8 训练节省 50% 显存；INT4 量化使 70B 模型可在 M4 MacBook 本地运行；Expert Paging（Gemini Nano）使 MoE 在手机上可行',
+    next: 'FP4 原生训练（NVIDIA Blackwell B200/B300 已支持，GB200 NVL72 FP4 算力 1.44 EFLOPS）→ 2026 下半年首批 FP4 训练模型预计发布',
+    benefit: '训练显存再减 50%，万亿参数 MoE 单 DGX SuperPOD 可训',
   },
 ];
 
 const NEXT_STEPS = [
-  { direction: 'MLA + NSA 融合', status: 'MLA 已工程化（DeepSeek V3/V4），NSA 已论文验证', next: '将 NSA 稀疏模式叠加到 MLA 低秩压缩上，长序列注意力计算量再降 4×', benefit: '128K→1M 上下文推理成本大幅下降', readiness: 90, icon: '👁️' },
-  { direction: 'MoD + MoE 联合稀疏', status: '各自独立验证（Gemma 3 MoD，DeepSeek V3 MoE）', next: '同一模型同时在深度（跳层）和宽度（专家路由）稀疏，Llama 5 初步验证', benefit: '激活计算量减少 60%+', readiness: 75, icon: '🔀' },
-  { direction: 'FP4 全链路训练', status: 'FP8 训练已成熟，FP4 硬件已就绪（B300）', next: '将训练精度从 FP8 降至 FP4，配合 QAT 保证精度', benefit: '训练显存再减 50%，万亿参数模型单集群可训', readiness: 70, icon: '🔢' },
-  { direction: '自适应推理预算', status: 'Qwen3 思考/非思考双模式（手动切换）', next: '模型自动感知任务复杂度，动态分配 thinking token 预算', benefit: '简单任务 0 thinking，复杂任务自动深思', readiness: 60, icon: '🎯' },
-  { direction: '专家记忆外化（MoE + RAG）', status: 'MoE 专家知识存在权重中，RAG 知识存在外部库', next: '将部分专家替换为可检索的外部知识库，实现知识动态更新', benefit: '无需重训即可更新知识，专家数量突破显存限制', readiness: 40, icon: '🧠' },
-  { direction: '端侧 MoE + Expert Paging', status: 'Gemini 4 Nano 已验证 Expert Paging（LRU Cache）', next: '将 Expert Paging 标准化，配合 INT4/FP4 量化，使 100B+ MoE 在 8GB 手机上流畅运行', benefit: '端侧模型能力接近云端 30B 密集模型', readiness: 55, icon: '📱' },
+  { direction: 'NSA + Flash Attention 3 硬件融合', status: 'NSA 已在 DeepSeek-R2 预览版工程化，Flash Attention 3 已支持 Hopper GPU', next: '将 NSA 稀疏块注意力与 FA3 的异步流水线深度融合，实现硬件级稀疏加速，无需 padding 开销', benefit: '1M 上下文推理延迟降至 128K 水平，H100 利用率提升 30%', readiness: 82, icon: '👁️' },
+  { direction: '工具集成推理（TIR）标准化', status: 'o4-mini 已验证推理链中原生调用代码执行/搜索；Claude 4 Opus 支持计算机使用 2.0', next: '将 TIR 框架开源标准化（类似 ReAct 但更深度集成），使开源模型也能在推理链中可靠调用外部工具', benefit: '数学/代码/科学任务准确率提升 25%+，推理过程可审计', readiness: 78, icon: '🎯' },
+  { direction: 'FP4 原生训练', status: 'FP8 训练已成行业标配；NVIDIA B200/B300 FP4 算力已就绪（GB200 NVL72 达 1.44 EFLOPS）', next: '首批 FP4 训练模型预计 2026 Q3 发布，需配合 QAT（量化感知训练）和梯度缩放策略', benefit: '训练显存再减 50%，万亿参数 MoE 单 SuperPOD 可训', readiness: 72, icon: '🔢' },
+  { direction: '三维联合稀疏（深度+宽度+注意力）', status: 'MoE（宽度稀疏）+ NSA（注意力稀疏）已各自工程化；MoD（深度稀疏）学术验证充分', next: '在同一模型中同时启用跳层（MoD）+ 专家路由（MoE）+ 稀疏注意力（NSA），三维联合稀疏', benefit: '激活计算量减少 75%+，推理速度提升 4×', readiness: 55, icon: '🔀' },
+  { direction: '超长上下文原生推理（10M+）', status: 'Llama 4 Scout 已支持 10M 上下文（iRoPE）；Gemini 2.5 Pro 支持 1M 上下文', next: '将 10M 上下文能力与 NSA 稀疏注意力结合，使超长上下文推理成本可控；探索分层记忆（Hierarchical Memory）架构', benefit: '整本书/整个代码库作为上下文，Agent 任务完成率提升 40%', readiness: 65, icon: '📏' },
+  { direction: '专家记忆外化（MoE + 外部知识库）', status: 'RAG 与 MoE 目前独立存在；Claude 4 Opus 持久记忆模块已验证外挂记忆可行性', next: '将部分 MoE 专家替换为可检索的外部向量库，实现知识动态更新无需重训', benefit: '无需重训即可更新知识，知识截止日期问题彻底解决', readiness: 42, icon: '🧠' },
 ];
 
 /* ─── 子 Tab ─── */
@@ -116,7 +134,7 @@ export default function ArchEvolution() {
       {/* 页头 */}
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-1">模型架构演进</h2>
-        <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络</p>
+      <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-24</p>
       </div>
 
       {/* 子 Tab */}
@@ -172,7 +190,7 @@ export default function ArchEvolution() {
       {/* ── 创新时间线 ── */}
       {activeTab === 'timeline' && (
         <div>
-          <p className="text-xs text-gray-400 mb-6">2024-05 至今，每次新模型发布时若有关键 Layer 创新，在此追踪记录。</p>
+          <p className="text-xs text-gray-400 mb-6">2024-05 至今，每次新模型发布时若有关键 Layer 创新，在此追踪记录。共 {TIMELINE.length} 条记录，最新更新至 2026-04-24。</p>
           <div className="relative">
             {/* 竖线 */}
             <div className="absolute left-[88px] top-0 bottom-0 w-px bg-gray-200" />
