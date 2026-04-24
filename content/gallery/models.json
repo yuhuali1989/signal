@@ -16,7 +16,8 @@
       "training": "MoE 架构，原生多模态（文本/图像/音频/视频），内置深度推理和工具调用能力",
       "inference": "更高效的 token 使用，推理速度和质量同步提升，支持超长上下文",
       "benchmarks": "HN 热度 1148 / 791 评论，OpenAI 称全维度超越 GPT-5"
-    }
+    },
+    "textArch": "Text / Image / Audio / Video\n         │\n   Multimodal Encoder\n         │\n    Embedding Layer\n         │\n┌────────▼──────────────────────────┐\n│   MoE Transformer Block ×N        │\n│  ┌────────────────────────────┐   │\n│  │  Multi-Head Attention      │   │\n│  │  (Sparse / Flash Attn)     │   │\n│  └────────────┬───────────────┘   │\n│               │  Add & Norm       │\n│  ┌────────────▼───────────────┐   │\n│  │  Router → Top-K Gate       │   │\n│  │  Expert 1  │  Expert 2     │   │\n│  │  Expert 3  │  ...          │   │\n│  └────────────┬───────────────┘   │\n│               │  Add & Norm       │\n└───────────────┼───────────────────┘\n                │\n    Deep Reasoning Module\n    (Chain-of-Thought / Tool Call)\n                │\n            LM Head\n                │\n          Output Tokens"
   },
   {
     "id": "deepseek-v4-flash",
@@ -35,7 +36,8 @@
       "training": "MoE 架构 + Multi-head Latent Attention，延续 DeepSeek-v3 的高效训练范式",
       "inference": "高吞吐低延迟推理，适合大规模 API 调用场景",
       "benchmarks": "4/24 接口上线，具体评测数据待公布"
-    }
+    },
+    "textArch": "Input Tokens (128K ctx)\n        │\n   Embedding Layer\n        │\n┌───────▼────────────────────────────┐\n│   MoE Transformer Block ×N         │\n│  ┌─────────────────────────────┐   │\n│  │  MLA (Multi-head Latent     │   │\n│  │  Attention)                 │   │\n│  │  KV Cache 压缩 → 低显存     │   │\n│  └──────────────┬──────────────┘   │\n│                 │  Add & Norm      │\n│  ┌──────────────▼──────────────┐   │\n│  │  Router → Top-K Experts     │   │\n│  │  (稀疏激活，高性价比)        │   │\n│  └──────────────┬──────────────┘   │\n│                 │  Add & Norm      │\n└─────────────────┼──────────────────┘\n                  │\n              LM Head\n                  │\n            Output Tokens"
   },
   {
     "id": "deepseek-v4-pro",
@@ -54,7 +56,8 @@
       "training": "MoE 架构 + Multi-head Latent Attention + 强化学习对齐，深度推理能力大幅提升",
       "inference": "支持深度思考模式，复杂推理和代码生成能力显著增强",
       "benchmarks": "4/24 接口上线，具体评测数据待公布"
-    }
+    },
+    "textArch": "Input Tokens (128K ctx)\n        │\n   Embedding Layer\n        │\n┌───────▼────────────────────────────┐\n│   MoE Transformer Block ×N         │\n│  ┌─────────────────────────────┐   │\n│  │  MLA (Multi-head Latent     │   │\n│  │  Attention)                 │   │\n│  │  KV Cache 压缩 → 低显存     │   │\n│  └──────────────┬──────────────┘   │\n│                 │  Add & Norm      │\n│  ┌──────────────▼──────────────┐   │\n│  │  Router → Top-K Experts     │   │\n│  │  (稀疏激活，旗舰推理)        │   │\n│  └──────────────┬──────────────┘   │\n│                 │  Add & Norm      │\n└─────────────────┼──────────────────┘\n                  │\n     Deep Thinking Module\n     (强化学习对齐 / CoT)\n                  │\n              LM Head\n                  │\n            Output Tokens"
   },
   {
     "id": "gemini-25-pro",
