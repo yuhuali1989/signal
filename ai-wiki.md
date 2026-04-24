@@ -1258,6 +1258,35 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 - models.json 是大文件，使用 replace_in_file 追加，不要整体重写
 - 🔬 **架构创新追踪**：每次新增模型时，若该模型在 Attention / FFN / 位置编码 / 路由机制 / 输出头等关键 Layer 有创新，必须同步更新 ai-wiki.md 中「模型模块 → 近期架构创新追踪」表格（新增一行），并在 `factSheet.training` 或 `highlights` 中注明创新点
 
+#### 8b. 排行榜刷新（**每次迭代必须执行**）
+
+> 📍 数据文件：`content/benchmarks/benchmarks.json`
+> 前端组件：`src/components/BenchmarkBoard.js`（读取 `benchmarks` prop，展示 6 个榜单）
+
+**当前 6 个榜单**（id → 说明）：
+- `coding-2026q1` — 编码能力（SWE-bench Pro / HumanEval+ / CodeContests）
+- `reasoning-2026q1` — 推理能力（GPQA Diamond / MATH-500 / ARC-AGI-2）
+- `overall-2026q1` — 综合能力（MMLU-Pro / Arena Elo）
+- `agent-2026q1` — Agent 能力（SWE-bench / WebArena / ToolBench）
+- `cost-2026q1` — 性价比（综合分 / 输入输出价格）
+- `ad-vla-2026q1` — 自动驾驶 VLA（nuScenes L2 / 碰撞率）
+
+**刷新规则**：
+1. **每次迭代必须检查**：`date` 字段是否落后当天超过 7 天，若是则必须刷新
+2. **刷新内容**：
+   - 将 `date` 更新为当天日期（`YYYY-MM-DD`）
+   - 将 `id` 中的季度标识更新为当前季度（如 `2026q1` → `2026q2`）
+   - 根据最新公开 Benchmark 数据调整各模型排名、分数和 `change` 字段
+   - 新发布的重要模型（近 30 天内）加入对应榜单，标注 `"change": "🆕"`
+   - 已被超越的模型更新排名变化（`↑N` / `↓N` / `→`）
+3. **change 字段规则**：`🆕`（新上榜）/ `↑N`（上升 N 位）/ `↓N`（下降 N 位）/ `→`（不变）
+4. **数据来源**（只能引用真实公开数据，禁止编造分数）：
+   - LMSYS Chatbot Arena：https://chat.lmsys.org/
+   - OpenCompass：https://opencompass.org.cn/leaderboard-llm
+   - SWE-bench：https://www.swebench.com/
+   - 各厂商官方 Blog / 技术报告
+5. **使用 replace_in_file 替换整个 JSON 数组**，不要只改部分字段
+
 #### 8a. 模型卡片必填字段规范
 
 每个模型卡片必须包含以下字段，**缺一不可**：
