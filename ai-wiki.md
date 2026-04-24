@@ -1153,7 +1153,120 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 - 重点补充：自动驾驶专用模型 + 最新基础模型
 - ⚡ **Roadmap 模型中心补全**（🔴高优）：优先补充 Qwen3 系列 / Gemini 2.5 系列 / Claude 4 系列 / GPT-5 系列最新模型卡片，国产开源模型（DeepSeek / InternLM）同步跟进
-- models.json 是大文件(122KB)，使用 replace_in_file 追加，不要整体重写
+- models.json 是大文件，使用 replace_in_file 追加，不要整体重写
+
+#### 8a. 模型卡片必填字段规范
+
+每个模型卡片必须包含以下字段，**缺一不可**：
+
+```json
+{
+  "id": "model-name-slug",
+  "name": "模型显示名称",
+  "org": "发布机构",
+  "type": "dense | moe | multimodal | reasoning | vla | autonomous | video | ssm | small",
+  "typeLabel": "中文类型标签",
+  "typeIcon": "对应 emoji",
+  "open": true/false,
+  "params": "参数量（如 671B MoE / 未公开）",
+  "date": "YYYY-MM",
+  "context": "上下文长度（如 128K tokens）",
+  "attention": "注意力机制（如 MHA / MLA / MQA / GQA）",
+  "factSheet": {
+    "highlight": "一句话核心亮点",
+    "training": "训练架构与方法",
+    "inference": "推理特性与优化",
+    "benchmarks": "关键评测数据"
+  },
+  "highlights": ["亮点1", "亮点2", "亮点3"],
+  "textArch": "ASCII 架构图（见下方格式规范）",
+  "paperUrl": "论文链接（无则省略）",
+  "blogUrl": "官方博客链接（无则省略）",
+  "tags": ["标签1", "标签2"]
+}
+```
+
+#### 8b. textArch 架构图格式规范（**强制填写，不得留空**）
+
+`textArch` 是前端「🏗️ 架构图」区块的数据源，**每个新增模型必须填写**，不得留 `"架构图待补充"`。
+
+格式为 ASCII 文本框图，参考以下模板（根据模型实际架构调整）：
+
+**Dense Transformer 模板**：
+```
+Input Tokens
+     │
+  Embedding
+     │
+┌────▼────────────────────┐
+│   Transformer Block ×N  │
+│  ┌──────────────────┐   │
+│  │  Multi-Head Attn │   │
+│  │  (MHA / GQA)     │   │
+│  └────────┬─────────┘   │
+│           │ Add & Norm  │
+│  ┌────────▼─────────┐   │
+│  │   FFN (SwiGLU)   │   │
+│  └────────┬─────────┘   │
+│           │ Add & Norm  │
+└───────────┼─────────────┘
+            │
+         LM Head
+            │
+      Output Logits
+```
+
+**MoE 模板**：
+```
+Input Tokens
+     │
+  Embedding
+     │
+┌────▼────────────────────────┐
+│   MoE Transformer Block ×N  │
+│  ┌──────────────────────┐   │
+│  │  Attention (MLA/MQA) │   │
+│  └──────────┬───────────┘   │
+│             │ Add & Norm    │
+│  ┌──────────▼───────────┐   │
+│  │  Router → Top-K Gate │   │
+│  │  Expert 1 │ Expert 2 │   │
+│  │  Expert 3 │ ...      │   │
+│  └──────────┬───────────┘   │
+│             │ Add & Norm    │
+└─────────────┼───────────────┘
+              │
+           LM Head
+              │
+        Output Logits
+```
+
+**VLA / 多模态模板**：
+```
+Image Input    Text Input
+     │               │
+Vision Encoder   Tokenizer
+(ViT / SigLIP)       │
+     │           Embedding
+     └──────┬────────┘
+            │
+    Language Model (LLM)
+            │
+      Action Head / LM Head
+            │
+  Robot Actions / Text Output
+```
+
+> 💡 **原则**：架构图要体现该模型的核心创新点（如 MoE 的路由机制、MLA 的 KV 压缩、VLA 的视觉-语言-动作链路）。不需要完全精确，但要能让读者一眼看出架构特点。
+
+#### 8c. 存量模型架构图补全（每次迭代补充 ≥3 个）
+
+当前 models.json 中有大量模型缺少 `textArch` 字段（显示"架构图待补充"）。**每次迭代除新增模型外，还需对已有模型补充 `textArch`**，优先顺序：
+1. 最新添加的模型（GPT-5.5 / DeepSeek-v4 系列等）
+2. 热门模型（Gemini 2.5 / Claude 4 / Qwen3 系列）
+3. 自动驾驶专用模型（VLA 类）
+
+补充方式：使用 `replace_in_file` 找到对应模型的 `"factSheet"` 结尾处，在其后追加 `"textArch": "..."` 字段。
 
 ### 任务 9：写入进化日志 content/evolution-log.json
 
