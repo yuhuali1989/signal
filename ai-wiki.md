@@ -990,6 +990,26 @@ sprintPlan: {
 | HuggingFace 博客 | `https://huggingface.co/blog/` | ✅ 200 |
 | arXiv | `https://arxiv.org/abs/{id}` | ✅ 200 |
 
+#### 🏗️ AI Infra 开源项目（GitHub Releases 专项追踪）
+
+| 项目 | Releases URL | 说明 |
+|------|-------------|------|
+| Kubernetes | `https://github.com/kubernetes/kubernetes/releases` | K8s 主版本 |
+| Volcano | `https://github.com/volcano-sh/volcano/releases` | GPU 批调度器 |
+| Koordinator | `https://github.com/koordinator-sh/koordinator/releases` | 混部调度 |
+| HAMi | `https://github.com/Project-HAMi/HAMi/releases` | GPU 细粒度虚拟化 |
+| Kueue | `https://github.com/kubernetes-sigs/kueue/releases` | K8s 原生队列 |
+| Apache Iceberg | `https://github.com/apache/iceberg/releases` | 开放表格式 |
+| PyIceberg | `https://github.com/apache/iceberg-python/releases` | Python 客户端 |
+| Apache Airflow | `https://github.com/apache/airflow/releases` | 工作流编排 |
+| MLflow | `https://github.com/mlflow/mlflow/releases` | MLOps 平台 |
+| Unity Catalog | `https://github.com/unitycatalog/unitycatalog/releases` | 开源数据目录 |
+| Apache Spark | `https://github.com/apache/spark/releases` | 分布式计算 |
+| Ray | `https://github.com/ray-project/ray/releases` | 分布式 AI 框架 |
+| KubeRay | `https://github.com/ray-project/kuberay/releases` | Ray on K8s |
+
+> 采集规则：每次采集时检查上述仓库最新 Release（近 14 天内），有新版本则采集 Release Notes 摘要作为声浪条目（category: `infra`）
+
 #### 📰 权威媒体
 
 | 来源 | URL 基础路径 | curl 行为 |
@@ -1162,6 +1182,15 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 - 闭环 Infra 与合成数据最新实践
 - 自动驾驶 VLA/世界模型最新进展
 - MCP/Agent 生态最新动向
+- ⚡ **AI Infra 开源项目进展追踪**（每轮至少产出 1 篇，优先选最近有新 Release 的项目）：
+  - **Kubernetes 生态**：Volcano / Koordinator / HAMi / Kueue 调度器新版本特性、GPU 细粒度调度进展（GitHub: volcano-sh/volcano, koordinator-sh/koordinator, Project-HAMi/HAMi, kubernetes-sigs/kueue）
+  - **Apache Iceberg**：新版本 Release 亮点、Puffin 统计文件、Deletion Vector、REST Catalog 演进、PyIceberg 更新（GitHub: apache/iceberg, apache/iceberg-python）
+  - **Apache Airflow 3.x**：Task SDK 独立化进展、Asset Partitioning 落地、DAG Bundle、FastAPI 迁移、Provider 生态更新（GitHub: apache/airflow）
+  - **MLflow 3.x**：LLM Tracing 增强、AI Gateway 多模型路由、GenAI 评估框架、Unity Catalog 集成（GitHub: mlflow/mlflow）
+  - **Unity Catalog**：AI/ML 资产管理增强、Iceberg REST Catalog 兼容、多引擎集成进展（GitHub: unitycatalog/unitycatalog）
+  - **Apache Spark 4.x**：Python UDF 性能提升、Spark Connect 演进、GPU 加速、Iceberg/Delta 深度集成（GitHub: apache/spark）
+  - **Ray 2.x**：Ray Data 流式处理、Ray Serve 推理优化、KubeRay Operator 更新、RayJob on K8s（GitHub: ray-project/ray, ray-project/kuberay）
+  - 写作角度：新版本 Release Notes 解读 / 核心特性深度分析 / 与竞品对比 / 生产落地实践
 
 **文章格式**（Markdown）：
 - frontmatter: title, date, tags[], summary, category
