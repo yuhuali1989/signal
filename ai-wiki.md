@@ -1232,6 +1232,10 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 - JSON 文件使用 UTF-8 直接写中文，严禁 `\uXXXX` 转义
 - 对 30 天前的旧条目，将同类话题合并为一条摘要条目
 
+> 🔔 **新闻写入后联动检查（必须执行）**：
+> 1. **排行榜**：若本次新闻中出现新模型发布 / Benchmark 刷新 / 价格调整等信息，立即执行任务 8b（`content/benchmarks/benchmarks.json`），将相关模型加入对应榜单或更新排名/分数
+> 2. **架构演进时间线**：若本次新闻中出现新模型架构创新（新 Attention 机制 / MoE 变体 / 量化方案 / 推理范式等），立即在 `src/components/ArchEvolution.js` 的 `TIMELINE` 数组头部追加新记录，并视情况更新 `EVOLUTION_PATHS` 当前状态描述
+
 ### 任务 2：写入全行业动态 src/components/IndustryNewsFeed.js
 
 - 将采集员草稿中的全行业动态条目写入 NEWS_DATA 数组头部
@@ -1305,6 +1309,12 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 > 📍 数据文件：`content/benchmarks/benchmarks.json`
 > 前端组件：`src/components/BenchmarkBoard.js`（读取 `benchmarks` prop，展示 6 个榜单）
+
+> 🔔 **触发时机**：以下任一情况发生时必须刷新，不得等到下次迭代：
+> - 任务 1/2 写入的新闻中出现**新模型发布**（需加入对应榜单）
+> - 任务 1/2 写入的新闻中出现**Benchmark 分数更新**（需更新排名）
+> - 任务 1/2 写入的新闻中出现**API 价格调整**（需更新性价比榜）
+> - 榜单 `date` 字段落后当天超过 **7 天**
 
 **当前 6 个榜单**（id → 说明）：
 - `coding-2026q1` — 编码能力（SWE-bench Pro / HumanEval+ / CodeContests）
