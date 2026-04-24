@@ -391,6 +391,357 @@ export const DATALAKE_DATA = {
     { name: 'DuckDB', role: '本地分析', desc: '开发者本地快速探索 Parquet/Iceberg，零配置，支持直接查询 S3', latency: '毫秒级', icon: '🦆' },
     { name: 'Flink SQL', role: '流式查询', desc: '实时写入 Iceberg 表，流批一体，支持 Upsert 和 Append 模式', latency: '<100ms', icon: '🌊' },
   ],
+
+  // ── Iceberg 源码解析 ─────────────────────────────────────────
+  icebergSource: {
+    overview: {
+      title: 'Apache Iceberg 核心架构',
+      desc: 'Iceberg 是 Netflix 开源的开放表格式，核心解决大规模分析场景下的 ACID 事务、Schema 演化、时间旅行和多引擎互操作问题。其设计哲学是"元数据即一切"——所有状态都通过不可变文件 + 原子指针切换来保证一致性。',
+      version: '1.x（当前主流）',
+      repoUrl: 'https://github.com/apache/iceberg',
+      coreModules: [
+        { name: 'Catalog', pkg: 'iceberg-core / iceberg-hive-metastore', color: '#00cec9', icon: '📚',
+          desc: 'Catalog 是 Iceberg 的入口，负责表的注册、发现和元数据指针管理。支持 HiveCatalog、RESTCatalog、GlueCatalog、JdbcCatalog 等多种实现。',
+          keyClass: 'BaseMetastoreCatalog',
+          keyMethod: 'loadTable() / createTable() / dropTable()',
+          flow: ['客户端调用 catalog.loadTable(identifier)', '查询 Metastore 获取 metadata.json 路径', '加载 TableMetadata 对象', '返回 BaseTable 实例'],
+        },
+        { name: 'TableMetadata', pkg: 'iceberg-core/src/main/java/org/apache/iceberg/TableMetadata.java', color: '#6c5ce7', icon: '📋',
+          desc: 'TableMetadata 是表的"大脑"，以 JSON 文件形式存储在对象存储上，记录 Schema 历史、Partition Spec、Sort Order、Snapshot 列表和当前快照指针。',
+          keyClass: 'TableMetadata',
+          keyMethod: 'buildFrom() / replaceCurrentSnapshot() / updateSchema()',
+          flow: ['每次写操作生成新的 metadata-{uuid}.json', '原子更新 Catalog 中的指针（CAS 操作）', '旧 metadata 文件保留用于时间旅行', 'Schema/Partition 变更追加到历史列表'],
+        },
+        { name: 'Snapshot', pkg: 'iceberg-core/src/main/java/org/apache/iceberg/Snapshot.java', color: '#fd79a8', icon: '📸',
+          desc: 'Snapshot 代表表在某一时刻的完整状态，包含一个 manifest-list 文件路径。每次 append/overwrite/delete 操作都会生成新 Snapshot，旧 Snapshot 保留支持时间旅行。',
+          keyClass: 'BaseSnapshot',
+          keyMethod: 'allManifests() / dataManifests() / deleteManifests()',
+          flow: ['写操作完成后创建新 Snapshot', 'Snapshot 指向 manifest-list 文件', 'manifest-list 列出所有 ManifestFile', 'ManifestFile 记录 DataFile 路径和统计信息'],
+        },
+        { name: 'ManifestFile', pkg: 'iceberg-core/src/main/java/org/apache/iceberg/ManifestFile.java', color: '#ffa657', icon: '📑',
+          desc: 'ManifestFile 是 Avro 格式的索引文件，记录一批 DataFile 的路径、分区值、行数、列级统计（min/max/null_count）。Planner 利用这些统计信息做分区裁剪和列裁剪，跳过不相关文件。',
+          keyClass: 'ManifestReader / ManifestWriter',
+          keyMethod: 'read() / append() / rewrite()',
+          flow: ['ManifestWriter 批量写入 DataFile 元数据', '每个 ManifestFile 对应一个分区范围', 'Planner 读取 ManifestFile 做统计裁剪', 'Compaction 合并小 ManifestFile'],
+        },
+        { name: 'DataFile', pkg: 'iceberg-core/src/main/java/org/apache/iceberg/DataFile.java', color: '#3fb950', icon: '📦',
+          desc: 'DataFile 描述一个物理数据文件（Parquet/ORC/Avro），包含文件路径、格式、分区值、行数、文件大小、列级统计。Iceberg 通过 DataFile 实现文件级别的精确追踪。',
+          keyClass: 'GenericDataFile',
+          keyMethod: 'path() / recordCount() / columnSizes() / lowerBounds() / upperBounds()',
+          flow: ['写入时创建 DataFile 对象', '记录列级 min/max/null_count', '写入 ManifestFile', '查询时用于统计裁剪（跳过不相关文件）'],
+        },
+        { name: 'Transaction', pkg: 'iceberg-core/src/main/java/org/apache/iceberg/Transaction.java', color: '#79c0ff', icon: '🔒',
+          desc: 'Transaction 封装多个操作的原子提交，通过乐观并发控制（OCC）实现 ACID。提交时检测冲突（基于 Snapshot 版本），冲突则重试，成功则原子更新 Catalog 指针。',
+          keyClass: 'BaseTransaction',
+          keyMethod: 'newAppend() / newOverwrite() / newDelete() / commitTransaction()',
+          flow: ['开启 Transaction', '执行多个 append/overwrite/delete 操作', 'commitTransaction() 原子提交', 'CAS 更新 Catalog 指针，失败则重试'],
+        },
+      ],
+    },
+
+    metadataLayer: {
+      title: '三层元数据结构',
+      desc: 'Iceberg 的核心设计：所有元数据以不可变文件存储在对象存储上，通过 Catalog 维护当前版本指针，实现无锁并发和时间旅行。',
+      layers: [
+        {
+          level: 'L1', name: 'Catalog 层', color: '#00cec9',
+          desc: 'Catalog 存储表名 → metadata.json 路径的映射，是唯一的可变状态（原子 CAS 更新）',
+          files: ['HiveMetastore: TBLS 表中的 metadata_location 字段', 'RESTCatalog: HTTP PUT /v1/namespaces/{ns}/tables/{table}', 'GlueCatalog: AWS Glue Data Catalog 中的 table properties'],
+        },
+        {
+          level: 'L2', name: 'TableMetadata 层', color: '#6c5ce7',
+          desc: 'metadata-{uuid}.json 记录表的完整历史：Schema 列表、Partition Spec 列表、Snapshot 列表',
+          files: ['metadata/metadata-{uuid}.json（每次写操作生成新文件）', '包含 current-snapshot-id 指向当前快照', '包含 schemas 数组（Schema 演化历史）', '包含 partition-specs 数组（分区变更历史）'],
+        },
+        {
+          level: 'L3', name: 'Snapshot 层', color: '#fd79a8',
+          desc: 'Snapshot → ManifestList → ManifestFile → DataFile 四级索引，支持文件级精确追踪',
+          files: ['metadata/snap-{snapshot-id}-{uuid}.avro（manifest-list）', 'metadata/{uuid}-m{n}.avro（manifest file，Avro 格式）', 'data/{partition}/{uuid}.parquet（实际数据文件）'],
+        },
+      ],
+      code: `// TableMetadata JSON 结构示例
+{
+  "format-version": 2,
+  "table-uuid": "9c12d441-03fe-4693-9a96-a0705ddf69c2",
+  "location": "s3://ad-data/iceberg/gold_labeled",
+  "current-snapshot-id": 3776207205136740000,
+
+  // Schema 演化历史（追加，不删除）
+  "schemas": [
+    { "schema-id": 0, "fields": [
+      { "id": 1, "name": "frame_id", "type": "string" },
+      { "id": 2, "name": "timestamp_ns", "type": "long" }
+    ]},
+    { "schema-id": 1, "fields": [
+      { "id": 1, "name": "frame_id", "type": "string" },
+      { "id": 2, "name": "timestamp_ns", "type": "long" },
+      { "id": 3, "name": "label_version", "type": "string" }  // 新增列
+    ]}
+  ],
+  "current-schema-id": 1,
+
+  // Partition Spec（支持分区演化）
+  "partition-specs": [
+    { "spec-id": 0, "fields": [
+      { "source-id": 2, "transform": "day", "name": "day" }
+    ]}
+  ],
+
+  // Snapshot 列表（时间旅行的基础）
+  "snapshots": [
+    {
+      "snapshot-id": 3776207205136740000,
+      "timestamp-ms": 1714000000000,
+      "manifest-list": "s3://ad-data/iceberg/gold_labeled/metadata/snap-3776207205136740000.avro",
+      "summary": { "operation": "append", "added-data-files": "42", "added-records": "1048576" }
+    }
+  ]
+}`,
+    },
+
+    snapshotIsolation: {
+      title: 'Snapshot 隔离与时间旅行',
+      desc: 'Iceberg 基于 Snapshot 实现 MVCC（多版本并发控制），读操作始终基于某个 Snapshot，不受并发写影响。',
+      code: `// Java API：时间旅行查询
+Table table = catalog.loadTable(TableIdentifier.of("gold", "labeled_frames"));
+
+// 方式1：按 Snapshot ID 读取历史版本
+TableScan scan = table.newScan()
+    .useSnapshot(3776207205136740000L);
+
+// 方式2：按时间戳读取（AS OF TIMESTAMP）
+TableScan scan = table.newScan()
+    .asOfTime(Instant.parse("2024-04-20T00:00:00Z").toEpochMilli());
+
+// 方式3：Spark SQL 时间旅行
+spark.sql("""
+  SELECT * FROM gold.labeled_frames
+  TIMESTAMP AS OF '2024-04-20 00:00:00'
+""");
+
+// 方式4：读取 Snapshot 变更（增量读取）
+IncrementalAppendScan scan = table.newIncrementalAppendScan()
+    .fromSnapshotId(fromSnapshotId)
+    .toSnapshotId(toSnapshotId);
+// 只读取两个 Snapshot 之间新增的数据文件，高效增量处理`,
+      snapshotOps: [
+        { op: 'append', desc: '追加新数据文件，生成新 Snapshot，不修改旧文件', color: '#3fb950' },
+        { op: 'overwrite', desc: '替换满足条件的分区数据，原子替换旧文件', color: '#ffa657' },
+        { op: 'delete', desc: '逻辑删除（写 delete file），或物理删除（rewrite）', color: '#e17055' },
+        { op: 'replace', desc: 'Compaction：用合并后的大文件替换多个小文件', color: '#6c5ce7' },
+      ],
+    },
+
+    schemaEvolution: {
+      title: 'Schema 演化源码解析',
+      desc: 'Iceberg 通过字段 ID（field-id）而非字段名追踪列，实现安全的 Schema 演化，不需要重写历史数据。',
+      code: `// Java API：Schema 演化操作
+Table table = catalog.loadTable(identifier);
+
+// 1. 新增列（安全，旧文件读取时返回 null）
+table.updateSchema()
+    .addColumn("label_version", Types.StringType.get())
+    .addColumn("meta", "confidence", Types.FloatType.get())  // 嵌套列
+    .commit();
+
+// 2. 重命名列（通过 field-id 追踪，不影响旧文件）
+table.updateSchema()
+    .renameColumn("timestamp_ns", "capture_time_ns")
+    .commit();
+
+// 3. 修改列类型（仅支持安全类型提升：int→long, float→double）
+table.updateSchema()
+    .updateColumn("frame_count", Types.LongType.get())
+    .commit();
+
+// 4. 删除列（逻辑删除，旧文件仍可读，新写入忽略该列）
+table.updateSchema()
+    .deleteColumn("deprecated_field")
+    .commit();
+
+// ── 底层实现：SchemaUpdate.java ──
+// 每次 updateSchema().commit() 生成新的 metadata-{uuid}.json
+// 新 Schema 追加到 schemas 数组，current-schema-id 更新
+// 旧 DataFile 仍用旧 schema-id 读取，Iceberg 自动做列映射`,
+      safeOps: [
+        { op: '新增列', safe: true, desc: '旧文件读取时该列返回 null/默认值' },
+        { op: '重命名列', safe: true, desc: '通过 field-id 追踪，与列名解耦' },
+        { op: '类型提升', safe: true, desc: 'int→long, float→double 等安全提升' },
+        { op: '删除列', safe: true, desc: '逻辑删除，旧文件不受影响' },
+        { op: '修改分区', safe: true, desc: 'Partition Evolution，旧分区数据不重写' },
+        { op: '类型降级', safe: false, desc: 'long→int 不安全，Iceberg 拒绝执行' },
+      ],
+    },
+
+    partitionEvolution: {
+      title: 'Partition Evolution（分区演化）',
+      desc: 'Iceberg 独有特性：可以在不重写历史数据的情况下修改分区策略，新旧分区数据共存，查询引擎自动处理。',
+      code: `// 分区演化：从按天分区改为按小时分区
+Table table = catalog.loadTable(identifier);
+
+// 查看当前分区 Spec
+PartitionSpec currentSpec = table.spec();
+// PartitionSpec{[1000: day(capture_time_ns)]]}
+
+// 演化分区：新增小时分区（旧数据不重写！）
+table.updateSpec()
+    .addField(Expressions.hour("capture_time_ns"))
+    .removeField("day")
+    .commit();
+
+// 演化后：
+// - 旧数据文件仍按 day 分区存储
+// - 新写入数据按 hour 分区存储
+// - 查询时 Planner 自动识别两种分区 Spec，分别裁剪
+
+// ── 隐式分区（Hidden Partitioning）──
+// 用户写 SQL 时无需感知分区列，Iceberg 自动推断
+spark.sql("""
+  SELECT * FROM gold.labeled_frames
+  WHERE capture_time_ns >= 1714000000000000000
+    AND capture_time_ns <  1714086400000000000
+""");
+// Iceberg Planner 自动将时间范围转换为分区裁剪
+// 无论底层是 day 分区还是 hour 分区，都能正确裁剪`,
+      transforms: [
+        { name: 'identity', desc: '原值分区，适合低基数列（如 region、sensor_type）', example: 'identity(sensor_type)' },
+        { name: 'year/month/day/hour', desc: '时间截断，适合时序数据', example: 'day(capture_time_ns)' },
+        { name: 'bucket[N]', desc: '哈希分桶，适合高基数列（如 vehicle_id）', example: 'bucket[256](vehicle_id)' },
+        { name: 'truncate[W]', desc: '字符串/整数截断，适合前缀分区', example: 'truncate[4](frame_id)' },
+      ],
+    },
+
+    compaction: {
+      title: 'Compaction（文件合并）源码解析',
+      desc: '流式写入会产生大量小文件，Compaction 将小文件合并为大文件，提升查询性能。Iceberg 提供 RewriteDataFilesAction 实现后台 Compaction。',
+      code: `// Spark 执行 Compaction（推荐方式）
+import org.apache.iceberg.spark.actions.SparkActions;
+
+SparkActions.get(spark)
+    .rewriteDataFiles(table)
+    // 目标文件大小：512MB
+    .option("target-file-size-bytes", String.valueOf(512 * 1024 * 1024))
+    // 只合并小于 100MB 的文件
+    .option("min-file-size-bytes", String.valueOf(100 * 1024 * 1024))
+    // 按分区并行执行
+    .option("max-concurrent-file-group-rewrites", "10")
+    // 只处理特定分区（增量 Compaction）
+    .filter(Expressions.equal("day", "2024-04-20"))
+    .execute();
+
+// ── 底层实现：RewriteDataFilesAction.java ──
+// 1. 扫描 ManifestFile，找出需要合并的小文件组
+// 2. 每组文件启动一个 Spark Task 读取并重写
+// 3. 生成新的 DataFile，写入新 ManifestFile
+// 4. 提交 replaceFiles Transaction（原子替换）
+// 5. 旧文件进入 orphan 状态，等待 expireSnapshots 清理
+
+// Manifest Compaction（合并小 ManifestFile）
+SparkActions.get(spark)
+    .rewriteManifests(table)
+    .rewriteIf(manifest -> manifest.length() < 10 * 1024 * 1024)  // < 10MB
+    .execute();
+
+// 过期 Snapshot 清理（释放存储空间）
+table.expireSnapshots()
+    .expireOlderThan(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7))
+    .retainLast(5)  // 保留最近 5 个 Snapshot
+    .commit();`,
+      strategies: [
+        { name: 'Binpack', desc: '将小文件装箱合并到目标大小，最常用', color: '#00cec9' },
+        { name: 'Sort', desc: '合并同时按指定列排序，提升范围查询性能', color: '#6c5ce7' },
+        { name: 'Z-Order', desc: '多列 Z-Order 排序，提升多维过滤性能（适合点云/BEV 数据）', color: '#fd79a8' },
+      ],
+    },
+
+    rowLevelOps: {
+      title: 'Row-Level Delete（行级删除）',
+      desc: 'Iceberg v2 引入 Position Delete 和 Equality Delete，支持高效的行级更新/删除，无需重写整个数据文件。',
+      code: `// Spark MERGE INTO（Upsert）
+spark.sql("""
+  MERGE INTO gold.labeled_frames AS target
+  USING new_labels AS source
+  ON target.frame_id = source.frame_id
+  WHEN MATCHED THEN
+    UPDATE SET target.label_version = source.label_version,
+               target.confidence = source.confidence
+  WHEN NOT MATCHED THEN
+    INSERT *
+""");
+
+// ── 底层实现（Iceberg v2 格式）──
+// MERGE INTO 生成两类文件：
+//
+// 1. Position Delete File（位置删除文件）
+//    记录被删除行的 (data_file_path, pos) 对
+//    格式：Parquet，包含 file_path + pos 两列
+//    读取时：扫描 DataFile 时跳过 DeleteFile 中标记的行
+//
+// 2. Equality Delete File（等值删除文件）
+//    记录被删除行的主键值（如 frame_id）
+//    读取时：Join DataFile 和 DeleteFile，过滤匹配行
+//
+// 3. 后台 Compaction 将 Delete File 物化合并
+//    rewriteDataFiles 时自动合并 DataFile + DeleteFile
+//    生成干净的新 DataFile，删除旧的 DeleteFile`,
+      deleteTypes: [
+        { type: 'Position Delete', desc: '记录 (文件路径, 行位置)，精确定位，读取开销小', useCase: '少量行更新/删除', color: '#ffa657' },
+        { type: 'Equality Delete', desc: '记录主键值，写入简单，读取需 Join', useCase: 'CDC 场景，按主键 Upsert', color: '#6c5ce7' },
+      ],
+    },
+
+    pyicebergApi: {
+      title: 'PyIceberg API（Python 集成）',
+      desc: 'PyIceberg 是 Iceberg 的 Python 原生实现，支持直接从 Python 读写 Iceberg 表，无需 JVM，适合 ML 训练数据加载。',
+      code: `# pip install pyiceberg[s3,hive]
+from pyiceberg.catalog import load_catalog
+from pyiceberg.expressions import GreaterThanOrEqual, And, EqualTo
+import pyarrow as pa
+
+# 连接 REST Catalog
+catalog = load_catalog("rest",
+    uri="http://iceberg-rest-catalog:8181",
+    warehouse="s3://ad-data/iceberg",
+    **{"s3.region": "us-east-1"},
+)
+
+# 加载表
+table = catalog.load_table("gold.labeled_frames")
+
+# ── 读取：谓词下推 + 列裁剪 ──
+scan = (
+    table.scan(
+        row_filter=And(
+            GreaterThanOrEqual("capture_time_ns", 1714000000000000000),
+            EqualTo("sensor_type", "camera"),
+        ),
+        selected_fields=("frame_id", "label_version", "bboxes"),
+        limit=10000,
+    )
+)
+# 转换为 PyArrow Table（零拷贝）
+arrow_table = scan.to_arrow()
+
+# 转换为 Pandas DataFrame
+df = scan.to_pandas()
+
+# ── 写入：追加数据 ──
+new_data = pa.table({
+    "frame_id": pa.array(["frame_001", "frame_002"]),
+    "capture_time_ns": pa.array([1714000000000000000, 1714000001000000000]),
+    "label_version": pa.array(["v4.2", "v4.2"]),
+})
+table.append(new_data)
+
+# ── Schema 演化 ──
+with table.update_schema() as update:
+    update.add_column("model_score", pa.float32())
+
+# ── 时间旅行 ──
+snapshot = table.snapshot_by_id(3776207205136740000)
+old_scan = table.scan().use_snapshot(snapshot.snapshot_id)`,
+    },
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════

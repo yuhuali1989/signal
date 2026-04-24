@@ -438,8 +438,9 @@ function EdgeClientContent({ edgeClient }) {
 // 3. 数据湖仓 — 存算分离 · 对象存储 · 缓存加速 · 表格式选型
 // ─────────────────────────────────────────────────────────────
 export function DatalakeTab() {
-  const { computeStorageSeparation, objectStorage, cacheAcceleration, tableFormat, queryEngines } = DATALAKE_DATA;
+  const { computeStorageSeparation, objectStorage, cacheAcceleration, tableFormat, queryEngines, icebergSource } = DATALAKE_DATA;
   const [activeSubTab, setActiveSubTab] = useState('separation');
+  const [activeIcebergTab, setActiveIcebergTab] = useState('overview');
 
   const SUB_TABS = [
     { id: 'separation', label: '存算分离',   icon: '🏗️' },
@@ -447,6 +448,18 @@ export function DatalakeTab() {
     { id: 'cache',      label: '缓存加速',   icon: '⚡' },
     { id: 'format',     label: '表格式选型', icon: '🧊' },
     { id: 'engines',    label: '查询引擎',   icon: '🔍' },
+    { id: 'iceberg',    label: 'Iceberg 源码', icon: '🔬' },
+  ];
+
+  const ICEBERG_TABS = [
+    { id: 'overview',    label: '架构总览',    icon: '🏗️' },
+    { id: 'metadata',    label: '元数据结构',  icon: '📋' },
+    { id: 'snapshot',    label: 'Snapshot',   icon: '📸' },
+    { id: 'schema',      label: 'Schema 演化', icon: '🔄' },
+    { id: 'partition',   label: '分区演化',    icon: '📂' },
+    { id: 'compaction',  label: 'Compaction', icon: '🗜️' },
+    { id: 'rowdelete',   label: '行级删除',    icon: '🗑️' },
+    { id: 'pyiceberg',   label: 'PyIceberg',  icon: '🐍' },
   ];
 
   return (
@@ -839,6 +852,268 @@ export function DatalakeTab() {
               ))}
             </div>
           </SectionCard>
+        </div>
+      )}
+
+      {/* ── Iceberg 源码解析 ── */}
+      {activeSubTab === 'iceberg' && (
+        <div className="space-y-4">
+          {/* 定位说明 */}
+          <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/04 p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">🧊</span>
+              <div>
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.overview.title}</div>
+                <div className="text-[10px] text-gray-500 leading-relaxed mb-2">{icebergSource.overview.desc}</div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                    style={{ background: '#00cec920', color: '#00cec9', border: '1px solid #00cec930' }}>
+                    v{icebergSource.overview.version}
+                  </span>
+                  <a href={icebergSource.overview.repoUrl} target="_blank" rel="noopener noreferrer"
+                    className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                    style={{ background: '#00cec920', color: '#00cec9', border: '1px solid #00cec930' }}>
+                    GitHub ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Iceberg Sub Tab 切换 */}
+          <div className="flex gap-1.5 flex-wrap">
+            {ICEBERG_TABS.map(t => (
+              <button key={t.id} onClick={() => setActiveIcebergTab(t.id)}
+                className="text-xs px-3 py-1.5 rounded-full border transition-all"
+                style={{
+                  background: activeIcebergTab === t.id ? '#00cec9' : 'transparent',
+                  color: activeIcebergTab === t.id ? '#fff' : '#64748b',
+                  borderColor: activeIcebergTab === t.id ? '#00cec9' : '#e2e8f0',
+                }}>
+                {t.icon} {t.label}
+              </button>
+            ))}
+          </div>
+
+          {/* ── 架构总览 ── */}
+          {activeIcebergTab === 'overview' && (
+            <div className="space-y-3">
+              {icebergSource.overview.coreModules.map(mod => (
+                <div key={mod.name} className="rounded-2xl border p-4"
+                  style={{ borderColor: mod.color + '30', background: mod.color + '05' }}>
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl flex-shrink-0">{mod.icon}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-sm font-bold text-gray-800">{mod.name}</span>
+                        <span className="text-[9px] font-mono px-2 py-0.5 rounded"
+                          style={{ background: mod.color + '15', color: mod.color }}>{mod.keyClass}</span>
+                      </div>
+                      <div className="text-[9px] font-mono text-gray-400 mb-1 break-all">{mod.pkg}</div>
+                      <p className="text-[10px] text-gray-500 leading-relaxed">{mod.desc}</p>
+                    </div>
+                  </div>
+                  <div className="rounded-lg border border-gray-100 bg-white/80 p-2 mb-2">
+                    <span className="text-[9px] text-gray-400">核心方法：</span>
+                    <span className="text-[9px] font-mono font-semibold ml-1" style={{ color: mod.color }}>{mod.keyMethod}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 items-center">
+                    {mod.flow.map((step, i) => (
+                      <div key={i} className="flex items-center gap-1">
+                        <span className="text-[9px] px-2 py-0.5 rounded-full"
+                          style={{ background: mod.color + '12', color: mod.color, border: `1px solid ${mod.color}25` }}>
+                          {step}
+                        </span>
+                        {i < mod.flow.length - 1 && <span className="text-gray-200 text-xs">→</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ── 三层元数据结构 ── */}
+          {activeIcebergTab === 'metadata' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.metadataLayer.title}</div>
+                <div className="text-[10px] text-gray-500 mb-4">{icebergSource.metadataLayer.desc}</div>
+                {/* 三层结构 */}
+                <div className="space-y-3 mb-4">
+                  {icebergSource.metadataLayer.layers.map(layer => (
+                    <div key={layer.level} className="rounded-2xl border p-4"
+                      style={{ borderColor: layer.color + '30', background: layer.color + '05' }}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded"
+                          style={{ background: layer.color + '20', color: layer.color }}>{layer.level}</span>
+                        <span className="text-sm font-bold text-gray-800">{layer.name}</span>
+                      </div>
+                      <p className="text-[10px] text-gray-500 mb-2">{layer.desc}</p>
+                      <div className="space-y-1">
+                        {layer.files.map((f, i) => (
+                          <div key={i} className="text-[9px] font-mono text-gray-400 rounded px-2 py-0.5"
+                            style={{ background: layer.color + '08' }}>· {f}</div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {/* metadata JSON 示例 */}
+                <div className="text-[10px] font-semibold text-gray-600 mb-2">📄 TableMetadata JSON 结构示例</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#00cec908', color: '#00cec9', border: '1px solid #00cec920' }}>
+                  {icebergSource.metadataLayer.code}
+                </pre>
+              </div>
+            </div>
+          )}
+
+          {/* ── Snapshot 隔离与时间旅行 ── */}
+          {activeIcebergTab === 'snapshot' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.snapshotIsolation.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{icebergSource.snapshotIsolation.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#fd79a808', color: '#fd79a8', border: '1px solid #fd79a820' }}>
+                  {icebergSource.snapshotIsolation.code}
+                </pre>
+              </div>
+              <SectionCard icon="📸" title="Snapshot 操作类型" desc="">
+                <div className="space-y-2">
+                  {icebergSource.snapshotIsolation.snapshotOps.map(op => (
+                    <div key={op.op} className="flex items-start gap-3 rounded-xl border p-3"
+                      style={{ borderColor: op.color + '25', background: op.color + '05' }}>
+                      <span className="text-[10px] font-mono font-bold w-20 flex-shrink-0"
+                        style={{ color: op.color }}>{op.op}</span>
+                      <p className="text-[10px] text-gray-500">{op.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── Schema 演化 ── */}
+          {activeIcebergTab === 'schema' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.schemaEvolution.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{icebergSource.schemaEvolution.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#6c5ce708', color: '#6c5ce7', border: '1px solid #6c5ce720' }}>
+                  {icebergSource.schemaEvolution.code}
+                </pre>
+              </div>
+              <SectionCard icon="✅" title="Schema 演化安全性" desc="">
+                <div className="space-y-2">
+                  {icebergSource.schemaEvolution.safeOps.map(op => (
+                    <div key={op.op} className="flex items-center gap-3 rounded-xl border p-2.5"
+                      style={{ borderColor: op.safe ? '#3fb95025' : '#e1705525', background: op.safe ? '#3fb95005' : '#e1705505' }}>
+                      <span className="text-sm flex-shrink-0">{op.safe ? '✅' : '❌'}</span>
+                      <span className="text-[10px] font-semibold w-20 flex-shrink-0"
+                        style={{ color: op.safe ? '#3fb950' : '#e17055' }}>{op.op}</span>
+                      <p className="text-[10px] text-gray-500">{op.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── 分区演化 ── */}
+          {activeIcebergTab === 'partition' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#ffa657]/20 bg-[#ffa657]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.partitionEvolution.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{icebergSource.partitionEvolution.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#ffa65708', color: '#ffa657', border: '1px solid #ffa65720' }}>
+                  {icebergSource.partitionEvolution.code}
+                </pre>
+              </div>
+              <SectionCard icon="📂" title="分区 Transform 类型" desc="">
+                <div className="space-y-2">
+                  {icebergSource.partitionEvolution.transforms.map(t => (
+                    <div key={t.name} className="rounded-xl border border-[#ffa657]/15 bg-[#ffa657]/04 p-3">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-[10px] font-mono font-bold text-[#ffa657]">{t.name}</span>
+                        <span className="text-[9px] font-mono text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">{t.example}</span>
+                      </div>
+                      <p className="text-[10px] text-gray-500">{t.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── Compaction ── */}
+          {activeIcebergTab === 'compaction' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.compaction.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{icebergSource.compaction.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#00cec908', color: '#00cec9', border: '1px solid #00cec920' }}>
+                  {icebergSource.compaction.code}
+                </pre>
+              </div>
+              <SectionCard icon="🗜️" title="Compaction 策略" desc="">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {icebergSource.compaction.strategies.map(s => (
+                    <div key={s.name} className="rounded-xl border p-3"
+                      style={{ borderColor: s.color + '25', background: s.color + '05' }}>
+                      <div className="text-xs font-bold mb-1" style={{ color: s.color }}>{s.name}</div>
+                      <p className="text-[10px] text-gray-500">{s.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── 行级删除 ── */}
+          {activeIcebergTab === 'rowdelete' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#e17055]/20 bg-[#e17055]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.rowLevelOps.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{icebergSource.rowLevelOps.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#e1705508', color: '#e17055', border: '1px solid #e1705520' }}>
+                  {icebergSource.rowLevelOps.code}
+                </pre>
+              </div>
+              <SectionCard icon="🗑️" title="Delete File 类型对比" desc="">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {icebergSource.rowLevelOps.deleteTypes.map(d => (
+                    <div key={d.type} className="rounded-xl border p-3"
+                      style={{ borderColor: d.color + '25', background: d.color + '05' }}>
+                      <div className="text-xs font-bold mb-1" style={{ color: d.color }}>{d.type}</div>
+                      <p className="text-[10px] text-gray-500 mb-1">{d.desc}</p>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full"
+                        style={{ background: d.color + '15', color: d.color }}>适用：{d.useCase}</span>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── PyIceberg ── */}
+          {activeIcebergTab === 'pyiceberg' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#3fb950]/20 bg-[#3fb950]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.pyicebergApi.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{icebergSource.pyicebergApi.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#3fb95008', color: '#3fb950', border: '1px solid #3fb95020' }}>
+                  {icebergSource.pyicebergApi.code}
+                </pre>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
