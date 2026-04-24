@@ -2001,11 +2001,11 @@ export const SITE_ROADMAP = {
   sprintPlan: {
     sprintDate: '2026-04-24',
     editorTasks: [
-      { source: 'productPlans.content.模型中心补全', action: '紧急补充 GPT-5.5、DeepSeek-v4-flash、DeepSeek-v4-pro 三个模型卡片到 models.json，每个包含 id/name/type/org/params/releaseDate/description/tags', files: ['content/gallery/models.json'], done: false },
-      { source: 'topOpportunities.agent-coding-boom', action: '写 1 篇 AI 编码 Agent 赛道分析文章（Devin $250B 估值 / Cursor / Windsurf / Claude Code），不少于 1500 字，放入 content/articles/', files: ['content/articles/'], done: false },
+      { source: 'productPlans.content.模型中心补全', action: '紧急补充 GPT-5.5、DeepSeek-v4-flash、DeepSeek-v4-pro 三个模型卡片到 models.json，每个包含 id/name/type/org/params/releaseDate/description/tags', files: ['content/gallery/models.json'], done: true },
+      { source: 'topOpportunities.agent-coding-boom', action: '写 1 篇 AI 编码 Agent 赛道分析文章（Devin $250B 估值 / Cursor / Windsurf / Claude Code），不少于 1500 字，放入 content/articles/', files: ['content/articles/'], done: true },
     ],
     publisherTasks: [
-      { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved。注意：需手动执行 rm src/components/Navbar.js', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx"', done: false },
+      { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx" 仅返回 strategy-data.js 中的记录', done: true },
       { source: 'bugfix.进化日志message为空', action: '已修复首页进化日志 log.message → log.title || log.message 兼容（角色 E 阶段已完成）', files: ['src/app/page.js'], verify: '检查首页最近进化区块文字是否正常显示', done: true },
     ],
     collectorFocus: [
@@ -2038,7 +2038,7 @@ export const SITE_ROADMAP = {
         name: '内容建设',
         cadence: '持续',
         items: [
-          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23），紧急待补：GPT-5.5（4/24 发布）+ DeepSeek-v4-flash/v4-pro（4/24 接口上线）+ 腾讯混元新模型' },
+          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23）+ GPT-5.5 + DeepSeek-v4-flash/v4-pro（4/24）。待补：腾讯混元新模型' },
           { priority: '🔴', title: 'Agent 生态专题', desc: '已完成批次1：企业Agent平台对比文章（4/23），待完成：批次2 Agent记忆引擎 / 批次3 多Agent框架对比。Cognition AI 估值 $250B，Sierra 收购 Fragment，赛道加速整合' },
           { priority: '🟡', title: 'VLA 架构扩充', desc: '补充 OpenVLA、π₀、Seed-AD、Alpamayo-R1 等新架构方案' },
         ],
@@ -2063,10 +2063,10 @@ export const SITE_ROADMAP = {
     items: [
       { severity: '🔴', title: 'VLA 实验使用模拟数据', desc: '全链路实验的训练数据为随机生成，非真实 nuScenes 数据', status: '待接入真实数据' },
       { severity: '🟡', title: '移动端可视化体验差', desc: 'SVG 架构图/模型对比在窄屏下挤压变形', status: '待适配' },
-      { severity: '🟢', title: 'Navbar.js 遗留文件', desc: '已无页面引用，可直接删除', status: '待人工执行 rm src/components/Navbar.js' },
     ],
     resolved: [
       '4 个大组件全部完成懒加载（DataInfraViz/VlaArchViz/VlaNotebook 已完成 + StrategyViz 本轮完成 4/23）',
+      'Navbar.js 遗留文件已删除（4/24 迭代完成）',
       'data-infra/ 页面已完整上线（DataInfraViz 12 Tab）',
       'gallery/ 和 benchmarks/ 以 redirect("/models/") 处理，统一入口',
       '工具箱清理（去 MCP 目录 / AI 编程工具对比 / Prompt 模板库，改为仿真工具 + Tokenizer 两 Tab）',
