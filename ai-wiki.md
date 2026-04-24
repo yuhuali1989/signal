@@ -440,6 +440,44 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 
 ---
 
+### ⚠️ 全局规则：前端样式保护（所有角色必须遵守）
+
+> **背景**：Next.js 开发服务器在 `.js` 文件被修改时会触发 HMR（热模块替换）。如果短时间内大量 `.js` 文件被修改，或编辑过程中文件短暂处于语法错误状态，会导致 `.next` 构建缓存损坏，CSS 等静态资源返回 404，页面样式全部丢失（纯文本平铺）。
+
+**规则 1：修改 `.js` 文件前，确认开发服务器状态**
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/
+```
+- 如果返回非 200（或无响应），先执行缓存修复（见下方），再开始修改文件。
+
+**规则 2：批量修改 `.js` 文件后，必须验证前端是否正常**
+```bash
+# 等待 HMR 编译完成
+sleep 5
+status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 http://localhost:3000/ 2>/dev/null)
+if [ "$status" != "200" ]; then
+  echo "⚠️ 前端异常（HTTP $status），执行缓存修复..."
+  pkill -f "next dev" 2>/dev/null; sleep 2
+  rm -rf /Users/harrisyu/WorkBuddy/20260409114249/signal/.next
+  cd /Users/harrisyu/WorkBuddy/20260409114249/signal && nohup npx next dev > /tmp/signal-dev.log 2>&1 &
+  sleep 10
+  echo "✅ 服务已重启"
+fi
+```
+
+**规则 3：缓存修复 SOP（任何角色发现样式异常时执行）**
+```bash
+pkill -f "next dev" 2>/dev/null; sleep 2
+rm -rf /Users/harrisyu/WorkBuddy/20260409114249/signal/.next
+cd /Users/harrisyu/WorkBuddy/20260409114249/signal && nohup npx next dev > /tmp/signal-dev.log 2>&1 &
+sleep 10
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/
+```
+
+**适用角色**：B（编辑员）、D（发布员）、E（设计师）—— 即所有会修改 `.js` 文件的角色。A（采集员）和 C（质检员）不修改文件，无需执行。
+
+---
+
 ### 📋 角色 F：调度员（Dispatcher）
 
 `````text
@@ -830,6 +868,7 @@ sprintPlan: {
    - 更新 `moduleProposals`（模块扩充建议，每项包含 name/type/priority/effort/value/desc/dataSource/implementHint）
    - 更新 `suggestedSources`（建议新增信息源，每项包含 name/url/type/reason）
    - **使用 `replace_in_file` 局部替换，严禁全量重写整个文件**
+   - ⚡ **前端保护**：写入 `strategy-data.js` 后，必须执行「全局规则：前端样式保护」中的规则 2（验证 localhost:3000 是否正常），如果异常则执行缓存修复 SOP
 4. **报告末尾附上执行摘要**（输出到对话中，供人工快速决策）：
 
 ```markdown
@@ -1166,6 +1205,7 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 - 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\uXXXX）
 - JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
 - 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
+- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2（验证 localhost:3000 是否正常），如果异常则执行缓存修复 SOP。**不得将样式损坏的状态传递给质检员**
 - 写入完成后，**明确告知质检员**："文件写入完成，请角色 C 质检员接手校验"
 `````
 
@@ -1600,20 +1640,23 @@ for f in files:
    - 运行 `grep -n "maxwell-knowledge" ai-wiki.md`，确保无残留旧路径
    - 确认新增的页面/功能在文档中有对应描述
 
-### 任务 3：重启服务（如有代码变更）
+### 任务 3：重启服务并验证前端（**强制执行，不得跳过**）
+
+> ⚠️ **铁律**：每次发布前必须清除 `.next` 缓存并重启服务。日常迭代中角色 B/E 修改大量 `.js` 文件，
+> 极易导致 HMR 缓存损坏、CSS 404、页面样式丢失。此步骤是防止「前端格式乱掉」的最后防线。
 
 ```bash
-# 停止现有服务
+# 1. 停止现有服务
 pkill -f "next dev" 2>/dev/null; sleep 2
 
-# 清除 Next.js 构建缓存
+# 2. 强制清除 Next.js 构建缓存（不论是否有代码变更）
 rm -rf /Users/harrisyu/WorkBuddy/20260409114249/signal/.next
 
-# 重启开发服务器
+# 3. 重启开发服务器
 cd /Users/harrisyu/WorkBuddy/20260409114249/signal
 nohup npx next dev > /tmp/signal-dev.log 2>&1 &
 
-# 等待编译完成
+# 4. 等待编译完成
 echo "等待 Next.js 编译完成..."
 for i in $(seq 1 30); do
   status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 3 http://localhost:3000/ 2>/dev/null)
@@ -1626,6 +1669,9 @@ for i in $(seq 1 30); do
 done
 tail -5 /tmp/signal-dev.log
 ```
+
+> ❌ **如果 30 次检测后仍非 200**：检查 `/tmp/signal-dev.log` 中的编译错误，修复后重新执行此步骤。
+> 绝不允许在前端异常的状态下执行后续的 git push。
 
 ### 任务 4：执行调度员分配的 Roadmap 工程任务
 
