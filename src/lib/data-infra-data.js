@@ -499,6 +499,363 @@ export const PIPELINE_DATA = {
     secrets: 'Kubernetes Secrets + Vault',
     monitoring: 'StatsD → Prometheus → Grafana',
   },
+
+  // ── Airflow 源码解析 ─────────────────────────────────────────
+  airflowSource: {
+    overview: {
+      title: 'Apache Airflow 核心架构',
+      desc: 'Airflow 是一个以 Python 编写的工作流编排平台，核心由 Scheduler、Executor、DAG Processor、Metadata DB 四大组件构成，通过 DAG（有向无环图）定义任务依赖关系。',
+      version: '2.x（当前主流）',
+      repoUrl: 'https://github.com/apache/airflow',
+      coreComponents: [
+        { name: 'Scheduler', file: 'airflow/scheduler/scheduler_job_runner.py', color: '#6c5ce7', icon: '⏰',
+          desc: '核心调度循环，负责解析 DAG、生成 TaskInstance、触发可执行任务。每隔 heartbeat_interval（默认 5s）扫描一次。',
+          keyClass: 'SchedulerJobRunner',
+          keyMethod: '_run_scheduler_loop()',
+          flow: ['扫描 DAG 文件目录', '解析 DAG → DagRun', '评估任务依赖 → TaskInstance 状态机', '提交可执行 TI 给 Executor'],
+        },
+        { name: 'Executor', file: 'airflow/executors/kubernetes_executor.py', color: '#00cec9', icon: '🚀',
+          desc: 'Executor 是任务执行的抽象层，KubernetesExecutor 将每个 TaskInstance 转化为一个独立 K8s Pod，实现资源隔离与弹性扩缩。',
+          keyClass: 'KubernetesExecutor',
+          keyMethod: 'execute_async() / sync()',
+          flow: ['接收 Scheduler 提交的 TI', '调用 K8s API 创建 Pod', '监听 Pod 状态（Running/Succeeded/Failed）', '回写 TI 状态到 Metadata DB'],
+        },
+        { name: 'DAG Processor', file: 'airflow/dag_processing/processor.py', color: '#fd79a8', icon: '📄',
+          desc: '独立进程，专门负责解析 DAG Python 文件，将 DAG 对象序列化写入 Metadata DB，与 Scheduler 解耦，防止解析错误影响调度。',
+          keyClass: 'DagFileProcessorProcess',
+          keyMethod: '_parse_file()',
+          flow: ['监听 DAG 文件目录变更', '子进程 import DAG Python 文件', '提取 DAG/Task 元数据', '写入 SerializedDag 表'],
+        },
+        { name: 'Metadata DB', file: 'airflow/models/', color: '#ffa657', icon: '🗄️',
+          desc: 'PostgreSQL（生产推荐）存储所有运行时状态：DagRun、TaskInstance、XCom、Variable、Connection 等。Airflow 通过 SQLAlchemy ORM 操作。',
+          keyClass: 'DagRun / TaskInstance / XCom',
+          keyMethod: 'ti.set_state() / dag_run.update_state()',
+          flow: ['DagRun：一次 DAG 执行实例', 'TaskInstance：单个任务执行记录', 'XCom：任务间数据传递（小数据）', 'Variable/Connection：配置中心'],
+        },
+        { name: 'Web Server', file: 'airflow/www/app.py', color: '#3fb950', icon: '🌐',
+          desc: 'Flask + Gunicorn 提供 Web UI 和 REST API（Airflow 2.x 引入 OpenAPI 3.0），用于 DAG 管理、任务监控、日志查看、手动触发。',
+          keyClass: 'create_app()',
+          keyMethod: 'REST API: /api/v1/dags/{dag_id}/dagRuns',
+          flow: ['Flask Blueprint 注册路由', 'FAB（Flask-AppBuilder）权限控制', 'REST API 触发 DAG Run', 'WebSocket 实时日志推送'],
+        },
+        { name: 'Triggerer', file: 'airflow/jobs/triggerer_job_runner.py', color: '#79c0ff', icon: '⚡',
+          desc: 'Airflow 2.2+ 新增，支持 Deferrable Operator。任务可挂起（defer）等待外部事件（如 S3 文件到达），释放 Worker 资源，由 Triggerer 异步监听。',
+          keyClass: 'TriggerRunner',
+          keyMethod: 'run_trigger()',
+          flow: ['Task 调用 self.defer(trigger=...) 挂起', 'Triggerer 接管异步等待', '事件触发后恢复 Task 执行', '节省 Worker 资源（无需占用线程等待）'],
+        },
+      ],
+    },
+
+    schedulerLoop: {
+      title: 'Scheduler 核心调度循环',
+      desc: 'SchedulerJobRunner._run_scheduler_loop() 是 Airflow 的心脏，每个 heartbeat 执行以下步骤：',
+      code: `# airflow/scheduler/scheduler_job_runner.py
+class SchedulerJobRunner:
+    def _run_scheduler_loop(self):
+        """主调度循环，每 heartbeat_interval 执行一次"""
+        while not self.num_runs_done:
+            loop_start = time.monotonic()
+
+            # 1. 处理 DAG 文件解析结果（从 DagFileProcessor 读取）
+            with create_session() as session:
+                self._process_executor_events(session)   # 处理 Executor 回调
+                self._emit_pool_metrics(session)          # 发送资源池指标
+
+            # 2. 调度核心：评估哪些 TaskInstance 可以运行
+            with create_session() as session:
+                num_queued = self._do_scheduling(session)
+
+            # 3. 心跳：更新 Scheduler 存活状态
+            self.job_runner.heartbeat()
+
+            # 4. 控制循环频率
+            loop_duration = time.monotonic() - loop_start
+            sleep_time = max(0, self.job_runner.heartbeat_interval - loop_duration)
+            time.sleep(sleep_time)
+
+    def _do_scheduling(self, session) -> int:
+        """核心调度逻辑：DAG Run 创建 + Task 状态推进"""
+        # 创建新的 DagRun（按 schedule_interval 触发）
+        dag_runs = self._create_dag_runs(dag_models, session)
+
+        # 推进 DagRun 中 TaskInstance 的状态机
+        # scheduled → queued → running → success/failed
+        self._start_queued_dagruns(session)
+
+        # 提交 queued TI 给 Executor
+        num_queued = self._execute_task_instances(session)
+        return num_queued`,
+      stateTransitions: [
+        { from: 'none', to: 'scheduled', trigger: 'DAG Run 创建，依赖满足', color: '#6c5ce7' },
+        { from: 'scheduled', to: 'queued', trigger: 'Executor 接受任务', color: '#00cec9' },
+        { from: 'queued', to: 'running', trigger: 'Pod 启动成功', color: '#ffa657' },
+        { from: 'running', to: 'success', trigger: 'Task 返回 0', color: '#3fb950' },
+        { from: 'running', to: 'failed', trigger: 'Task 异常 / 超时', color: '#e17055' },
+        { from: 'failed', to: 'up_for_retry', trigger: 'retries > 0', color: '#fd79a8' },
+        { from: 'running', to: 'deferred', trigger: 'self.defer() 调用', color: '#79c0ff' },
+      ],
+    },
+
+    kubernetesExecutor: {
+      title: 'KubernetesExecutor 源码解析',
+      desc: 'KubernetesExecutor 是生产环境首选，每个 Task 独立 Pod，资源隔离彻底，支持异构资源（CPU/GPU/内存）按需分配。',
+      code: `# airflow/executors/kubernetes_executor.py
+class KubernetesExecutor(BaseExecutor):
+
+    def execute_async(self, key, command, queue=None, executor_config=None):
+        """异步提交 Task 到 K8s"""
+        # 构建 Pod Spec（从 KubernetesExecutorConfig 读取资源需求）
+        kube_config = self.kube_config
+        pod = PodGenerator.construct_pod(
+            dag_id=key.dag_id,
+            task_id=key.task_id,
+            run_id=key.run_id,
+            try_number=key.try_number,
+            kube_image=kube_config.worker_container_image,
+            executor_config=executor_config,  # 可覆盖 CPU/MEM/GPU
+        )
+        # 调用 K8s API 创建 Pod
+        self.kube_client.create_namespaced_pod(
+            namespace=kube_config.namespace,
+            body=pod,
+        )
+
+    def sync(self):
+        """定期同步 Pod 状态 → TaskInstance 状态"""
+        # 列出所有 airflow-worker Pod
+        pod_list = self.kube_client.list_namespaced_pod(
+            namespace=self.kube_config.namespace,
+            label_selector="airflow-worker=True",
+        )
+        for pod in pod_list.items:
+            # 解析 Pod Phase → TI 状态
+            if pod.status.phase == "Succeeded":
+                self.change_state(key, TaskInstanceState.SUCCESS)
+            elif pod.status.phase == "Failed":
+                self.change_state(key, TaskInstanceState.FAILED)`,
+      podSpec: {
+        title: 'Pod Spec 关键字段',
+        fields: [
+          { field: 'metadata.labels', value: 'dag_id / task_id / run_id / try_number', desc: '用于 Scheduler 关联 TI' },
+          { field: 'spec.containers[0].image', value: 'worker_container_image', desc: '统一 Worker 镜像，含 Airflow + 业务依赖' },
+          { field: 'spec.containers[0].resources', value: 'executor_config 覆盖', desc: '每个 Task 可独立指定 CPU/MEM/GPU' },
+          { field: 'spec.volumes', value: 'DAG 挂载 + Secret 挂载', desc: 'Git-sync sidecar 或 PVC 挂载 DAG 文件' },
+          { field: 'spec.serviceAccountName', value: 'airflow-worker', desc: '访问 K8s API / S3 的 IRSA 权限' },
+          { field: 'spec.tolerations', value: 'GPU 节点污点容忍', desc: 'GPU Task 调度到 GPU 节点' },
+        ],
+      },
+      executorConfig: `# DAG 中为单个 Task 指定资源（覆盖默认配置）
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from kubernetes.client import models as k8s
+
+annotate_task = KubernetesPodOperator(
+    task_id="auto_annotate",
+    image="auto-label:v4.2",
+    executor_config={
+        "pod_override": k8s.V1Pod(
+            spec=k8s.V1PodSpec(
+                containers=[k8s.V1Container(
+                    name="base",
+                    resources=k8s.V1ResourceRequirements(
+                        requests={"cpu": "16", "memory": "64Gi",
+                                  "nvidia.com/gpu": "2"},
+                        limits={"nvidia.com/gpu": "2"},
+                    ),
+                )],
+                tolerations=[k8s.V1Toleration(
+                    key="nvidia.com/gpu", operator="Exists",
+                )],
+            )
+        )
+    },
+)`,
+    },
+
+    dagDefinition: {
+      title: 'DAG 定义与 TaskFlow API',
+      desc: 'Airflow 2.0 引入 TaskFlow API（@task 装饰器），大幅简化 DAG 编写，自动处理 XCom 传递，推荐替代传统 Operator 写法。',
+      traditional: `# 传统写法：显式 Operator + XCom
+from airflow import DAG
+from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from airflow.operators.python import PythonOperator
+
+with DAG(
+    dag_id="ad_data_pipeline",
+    schedule_interval="@hourly",
+    start_date=datetime(2024, 1, 1),
+    catchup=False,
+    default_args={"retries": 3, "retry_delay": timedelta(minutes=5)},
+) as dag:
+
+    ingest = KubernetesPodOperator(
+        task_id="ingest",
+        image="data-ingest:v2.3",
+        cmds=["python", "ingest.py"],
+        env_vars={"S3_BUCKET": "ad-data-landing"},
+    )
+
+    decode = KubernetesPodOperator(task_id="decode", image="data-decode:v1.8")
+    clean  = SparkKubernetesOperator(task_id="clean", application="clean.py")
+
+    # 定义依赖关系
+    ingest >> decode >> clean`,
+      taskflow: `# TaskFlow API（推荐）：@task 装饰器自动 XCom
+from airflow.decorators import dag, task
+from airflow.utils.dates import days_ago
+
+@dag(schedule_interval="@hourly", start_date=days_ago(1), catchup=False)
+def ad_data_pipeline():
+
+    @task(executor_config={"pod_override": gpu_pod_spec})
+    def ingest() -> dict:
+        """从 S3 Landing Zone 接入 MCAP 文件"""
+        files = list_s3_files("s3://ad-data-landing/")
+        return {"file_count": len(files), "files": files}
+
+    @task
+    def decode(ingest_result: dict) -> dict:
+        """解码对齐，返回 Bronze 表路径"""
+        # ingest_result 自动从 XCom 读取，无需手动 xcom_pull
+        return {"bronze_path": "s3://ad-data/bronze/"}
+
+    @task.branch
+    def quality_gate(decode_result: dict) -> str:
+        """质量门禁：数据量不足则跳过标注"""
+        if decode_result["frame_count"] > 1000:
+            return "annotate"
+        return "skip_annotate"
+
+    # 自动推断依赖（Python 函数调用顺序）
+    ingest_result = ingest()
+    decode_result = decode(ingest_result)
+    quality_gate(decode_result)
+
+pipeline = ad_data_pipeline()`,
+      xcoms: [
+        { key: 'return_value', desc: '@task 函数返回值自动推送到 XCom', example: 'ti.xcom_push(key="return_value", value=result)' },
+        { key: 'file_count', desc: '自定义 key，跨 Task 传递元数据', example: 'ti.xcom_pull(task_ids="ingest", key="file_count")' },
+        { key: '注意', desc: 'XCom 存储在 Metadata DB，仅适合小数据（< 1MB）；大数据用 S3 路径传递', example: '大数据 → 写 S3 → XCom 传路径' },
+      ],
+    },
+
+    deferrable: {
+      title: 'Deferrable Operator（异步等待）',
+      desc: 'Airflow 2.2+ 核心特性。传统 Sensor 会占用 Worker 线程轮询等待，Deferrable Operator 将等待逻辑交给 Triggerer 异步处理，Worker 线程立即释放。',
+      code: `# 传统 S3KeySensor（阻塞 Worker）
+from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor
+
+wait_for_data = S3KeySensor(
+    task_id="wait_for_mcap",
+    bucket_name="ad-data-landing",
+    bucket_key="raw/{{ ds }}/*.mcap",
+    poke_interval=60,   # 每 60s 轮询一次，期间 Worker 线程被占用
+    timeout=3600,
+)
+
+# ─────────────────────────────────────────────────────────────
+
+# Deferrable S3KeySensor（释放 Worker）
+from airflow.providers.amazon.aws.sensors.s3 import S3KeySensorAsync
+
+wait_for_data = S3KeySensorAsync(   # 同名，加 Async 后缀
+    task_id="wait_for_mcap",
+    bucket_name="ad-data-landing",
+    bucket_key="raw/{{ ds }}/*.mcap",
+    # 无需 poke_interval，Triggerer 异步监听 S3 事件
+)
+
+# 底层实现：Task 调用 self.defer() 挂起
+class S3KeySensorAsync(BaseSensorOperator):
+    def execute(self, context):
+        if not self._check_key():
+            self.defer(
+                trigger=S3KeyTrigger(bucket=self.bucket_name, key=self.key),
+                method_name="execute_complete",  # 恢复时调用的方法
+            )
+
+    def execute_complete(self, context, event):
+        """Triggerer 触发后恢复执行"""
+        return event["key"]`,
+      benefits: [
+        { icon: '💰', title: '节省 Worker 资源', desc: '1000 个等待中的 Sensor 只需 1 个 Triggerer 协程，而非 1000 个 Worker 线程' },
+        { icon: '⚡', title: '更高并发', desc: 'Triggerer 基于 asyncio，单进程可管理数千个异步触发器' },
+        { icon: '🔄', title: '适合数据到达驱动', desc: '自动驾驶数据上传时间不固定，Deferrable Sensor 完美匹配事件驱动架构' },
+      ],
+    },
+
+    plugins: {
+      title: 'Airflow Plugin 扩展机制',
+      desc: '通过 Plugin 可以扩展 Airflow 的 Operator、Hook、Sensor、Executor，以及 Web UI 菜单。Plugin 放在 $AIRFLOW_HOME/plugins/ 目录，自动加载。',
+      code: `# plugins/ad_pipeline_plugin.py
+from airflow.plugins_manager import AirflowPlugin
+from airflow.models import BaseOperator
+from airflow.hooks.base import BaseHook
+
+class MCAPValidatorOperator(BaseOperator):
+    """自定义 Operator：验证 MCAP 文件完整性"""
+
+    def __init__(self, s3_path: str, min_duration_sec: int = 10, **kwargs):
+        super().__init__(**kwargs)
+        self.s3_path = s3_path
+        self.min_duration_sec = min_duration_sec
+
+    def execute(self, context):
+        import mcap
+        # 从 S3 下载并验证 MCAP 文件
+        hook = S3Hook(aws_conn_id="aws_default")
+        local_path = hook.download_file(self.s3_path)
+
+        reader = mcap.Reader(local_path)
+        stats = reader.get_summary().statistics
+        duration = stats.message_end_time - stats.message_start_time
+
+        if duration < self.min_duration_sec * 1e9:  # nanoseconds
+            raise ValueError(f"MCAP 时长不足: {duration/1e9:.1f}s")
+
+        return {"duration": duration, "message_count": stats.message_count}
+
+class IcebergHook(BaseHook):
+    """自定义 Hook：封装 Iceberg REST Catalog 操作"""
+    conn_type = "iceberg"
+
+    def get_table(self, namespace: str, table: str):
+        from pyiceberg.catalog import load_catalog
+        catalog = load_catalog("rest", uri=self.get_connection(self.conn_id).host)
+        return catalog.load_table(f"{namespace}.{table}")
+
+class ADPipelinePlugin(AirflowPlugin):
+    name = "ad_pipeline_plugin"
+    operators = [MCAPValidatorOperator]
+    hooks = [IcebergHook]`,
+      builtinPlugins: [
+        { name: 'KubernetesPodOperator', pkg: 'apache-airflow-providers-cncf-kubernetes', desc: '在 K8s 中运行任意容器，支持完整 Pod Spec 定制' },
+        { name: 'SparkKubernetesOperator', pkg: 'apache-airflow-providers-apache-spark', desc: '提交 Spark on K8s 作业，支持 SparkApplication CRD' },
+        { name: 'S3KeySensor / Async', pkg: 'apache-airflow-providers-amazon', desc: '等待 S3 文件到达，Async 版本支持 Deferrable' },
+        { name: 'TrinoOperator', pkg: 'apache-airflow-providers-trino', desc: '执行 Trino SQL，用于 Iceberg 表查询和 ETL' },
+        { name: 'SlackWebhookOperator', pkg: 'apache-airflow-providers-slack', desc: '任务失败/成功时发送 Slack 通知' },
+      ],
+    },
+
+    observability: {
+      title: '监控与可观测性',
+      desc: 'Airflow 内置 StatsD 指标上报，配合 Prometheus + Grafana 实现全链路监控。',
+      metrics: [
+        { metric: 'airflow.dag_processing.total_parse_time', type: 'Gauge', desc: 'DAG 文件解析总耗时，过高说明 DAG 文件过多或解析慢' },
+        { metric: 'airflow.scheduler.tasks.starving', type: 'Gauge', desc: '因资源不足无法调度的 Task 数，过高需扩容 Worker' },
+        { metric: 'airflow.executor.open_slots', type: 'Gauge', desc: 'Executor 可用槽位数，KubernetesExecutor 通常无上限' },
+        { metric: 'airflow.ti.start', type: 'Counter', desc: 'TaskInstance 启动次数，按 dag_id/task_id 分组' },
+        { metric: 'airflow.ti.finish', type: 'Counter', desc: 'TaskInstance 完成次数，含 success/failed/skipped' },
+        { metric: 'airflow.dag_run.duration', type: 'Timer', desc: 'DAG Run 总耗时，用于 SLA 监控告警' },
+      ],
+      alertRules: [
+        { name: 'DAG SLA 超时', condition: 'dag_run.duration > 4h', action: 'PagerDuty + Slack 告警' },
+        { name: 'Task 连续失败', condition: 'ti.finish{state=failed} > 3 in 10min', action: 'Slack 通知 + 自动暂停 DAG' },
+        { name: 'Scheduler 心跳丢失', condition: 'scheduler.heartbeat 超过 30s 无更新', action: 'K8s 自动重启 Scheduler Pod' },
+        { name: '任务积压', condition: 'tasks.starving > 50', action: 'HPA 扩容 Worker 节点' },
+      ],
+    },
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════

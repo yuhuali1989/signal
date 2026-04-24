@@ -848,73 +848,408 @@ export function DatalakeTab() {
 // 4. 数据流水线
 // ─────────────────────────────────────────────────────────────
 function PipelineTab() {
-  const { dagOverview, stages, airflowConfig } = PIPELINE_DATA;
+  const { dagOverview, stages, airflowConfig, airflowSource } = PIPELINE_DATA;
+  const [activeSubTab, setActiveSubTab] = useState('dag');
+  const [activeSourceTab, setActiveSourceTab] = useState('overview');
+
+  const SUB_TABS = [
+    { id: 'dag',     label: 'DAG 流水线', icon: '🌊' },
+    { id: 'source',  label: 'Airflow 源码', icon: '🔬' },
+  ];
+
+  const SOURCE_TABS = [
+    { id: 'overview',    label: '架构总览',    icon: '🏗️' },
+    { id: 'scheduler',   label: 'Scheduler',  icon: '⏰' },
+    { id: 'executor',    label: 'K8s Executor', icon: '🚀' },
+    { id: 'dag_def',     label: 'DAG 定义',   icon: '📄' },
+    { id: 'deferrable',  label: 'Deferrable', icon: '⚡' },
+    { id: 'plugin',      label: 'Plugin 扩展', icon: '🔌' },
+    { id: 'observ',      label: '监控告警',   icon: '📊' },
+  ];
 
   return (
     <div className="space-y-4">
-      {/* DAG 概览 */}
-      <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/5 p-5 mb-4">
-        <div className="text-xs font-semibold text-gray-700 mb-3">🌊 Airflow DAG 概览</div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {Object.entries(dagOverview).map(([key, value]) => {
-            const labels = { name: 'DAG 名称', schedule: '调度策略', executor: '执行器', concurrency: '并发数', retries: '重试次数', sla: 'SLA' };
-            return (
-              <div key={key} className="rounded-lg border border-[#fd79a8]/20 bg-white/80 p-2.5">
-                <div className="text-[9px] text-gray-400 mb-0.5">{labels[key] || key}</div>
-                <div className="text-[10px] font-mono text-gray-700">{value}</div>
-              </div>
-            );
-          })}
-        </div>
+      {/* Sub Tab 切换 */}
+      <div className="flex gap-2">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setActiveSubTab(t.id)}
+            className="text-xs px-4 py-1.5 rounded-full border transition-all font-medium"
+            style={{
+              background: activeSubTab === t.id ? '#fd79a8' : 'transparent',
+              color: activeSubTab === t.id ? '#fff' : '#64748b',
+              borderColor: activeSubTab === t.id ? '#fd79a8' : '#e2e8f0',
+            }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
       </div>
 
-      {/* 流水线阶段 */}
-      <SectionCard icon="⚙️" title="数据处理流水线" desc="7 阶段全容器化 DAG，从原始数据到训练就绪">
-        <div className="space-y-3">
-          {stages.map((s, i) => (
-            <div key={s.id}>
-              <div className="rounded-xl border p-4"
-                style={{ borderColor: s.color + '33', background: s.color + '04' }}>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold" style={{ color: s.color }}>{s.name}</span>
-                    <Badge color={s.color}>{s.image}</Badge>
+      {/* ── DAG 流水线 ── */}
+      {activeSubTab === 'dag' && (
+        <div className="space-y-4">
+          {/* DAG 概览 */}
+          <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/5 p-5">
+            <div className="text-xs font-semibold text-gray-700 mb-3">🌊 Airflow DAG 概览</div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {Object.entries(dagOverview).map(([key, value]) => {
+                const labels = { name: 'DAG 名称', schedule: '调度策略', executor: '执行器', concurrency: '并发数', retries: '重试次数', sla: 'SLA' };
+                return (
+                  <div key={key} className="rounded-lg border border-[#fd79a8]/20 bg-white/80 p-2.5">
+                    <div className="text-[9px] text-gray-400 mb-0.5">{labels[key] || key}</div>
+                    <div className="text-[10px] font-mono text-gray-700">{value}</div>
                   </div>
-                  <span className="text-[10px] font-mono text-gray-400">{s.duration}</span>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 流水线阶段 */}
+          <SectionCard icon="⚙️" title="数据处理流水线" desc="7 阶段全容器化 DAG，从原始数据到训练就绪">
+            <div className="space-y-3">
+              {stages.map((s, i) => (
+                <div key={s.id}>
+                  <div className="rounded-xl border p-4"
+                    style={{ borderColor: s.color + '33', background: s.color + '04' }}>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold" style={{ color: s.color }}>{s.name}</span>
+                        <Badge color={s.color}>{s.image}</Badge>
+                      </div>
+                      <span className="text-[10px] font-mono text-gray-400">{s.duration}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500 mb-2">{s.input} → {s.output}</p>
+                    <div className="flex items-center gap-4 text-[9px] text-gray-400 font-mono flex-wrap">
+                      <span>CPU: {s.resources.cpu}</span>
+                      <span>MEM: {s.resources.mem}</span>
+                      {s.resources.gpu !== '-' && <span className="text-[#3fb950]">GPU: {s.resources.gpu}</span>}
+                      <span>×{s.resources.replicas}</span>
+                      <div className="flex items-center gap-1 ml-auto flex-wrap justify-end">
+                        {s.tech.map(t => (
+                          <span key={t} className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  {i < stages.length - 1 && (
+                    <div className="text-center text-[9px] text-gray-300 py-1">↓</div>
+                  )}
                 </div>
-                <p className="text-[10px] text-gray-500 mb-2">{s.input} → {s.output}</p>
-                <div className="flex items-center gap-4 text-[9px] text-gray-400 font-mono flex-wrap">
-                  <span>CPU: {s.resources.cpu}</span>
-                  <span>MEM: {s.resources.mem}</span>
-                  {s.resources.gpu !== '-' && <span className="text-[#3fb950]">GPU: {s.resources.gpu}</span>}
-                  <span>×{s.resources.replicas}</span>
-                  <div className="flex items-center gap-1 ml-auto flex-wrap justify-end">
-                    {s.tech.map(t => (
-                      <span key={t} className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">{t}</span>
+              ))}
+            </div>
+          </SectionCard>
+
+          {/* Airflow 配置 */}
+          <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/5 p-5">
+            <div className="text-xs font-semibold text-gray-700 mb-3">☸️ Airflow on K8s 配置</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {Object.entries(airflowConfig).map(([key, value]) => (
+                <div key={key} className="rounded-lg border border-[#fd79a8]/20 bg-white/80 p-2.5">
+                  <div className="text-[9px] text-gray-400 mb-0.5">{key}</div>
+                  <div className="text-[10px] text-gray-700">{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Airflow 源码解析 ── */}
+      {activeSubTab === 'source' && (
+        <div className="space-y-4">
+          {/* 定位说明 */}
+          <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/04 p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">🔬</span>
+              <div>
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.overview.title}</div>
+                <div className="text-[10px] text-gray-500 leading-relaxed mb-2">{airflowSource.overview.desc}</div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                    style={{ background: '#fd79a820', color: '#fd79a8', border: '1px solid #fd79a830' }}>
+                    v{airflowSource.overview.version}
+                  </span>
+                  <a href={airflowSource.overview.repoUrl} target="_blank" rel="noopener noreferrer"
+                    className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                    style={{ background: '#fd79a820', color: '#fd79a8', border: '1px solid #fd79a830' }}>
+                    GitHub ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Source Sub Tab 切换 */}
+          <div className="flex gap-1.5 flex-wrap">
+            {SOURCE_TABS.map(t => (
+              <button key={t.id} onClick={() => setActiveSourceTab(t.id)}
+                className="text-xs px-3 py-1.5 rounded-full border transition-all"
+                style={{
+                  background: activeSourceTab === t.id ? '#fd79a8' : 'transparent',
+                  color: activeSourceTab === t.id ? '#fff' : '#64748b',
+                  borderColor: activeSourceTab === t.id ? '#fd79a8' : '#e2e8f0',
+                }}>
+                {t.icon} {t.label}
+              </button>
+            ))}
+          </div>
+
+          {/* ── 架构总览 ── */}
+          {activeSourceTab === 'overview' && (
+            <div className="space-y-3">
+              {airflowSource.overview.coreComponents.map(comp => (
+                <div key={comp.name} className="rounded-2xl border p-4"
+                  style={{ borderColor: comp.color + '30', background: comp.color + '05' }}>
+                  <div className="flex items-start gap-3 mb-3">
+                    <span className="text-2xl flex-shrink-0">{comp.icon}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-sm font-bold text-gray-800">{comp.name}</span>
+                        <span className="text-[9px] font-mono px-2 py-0.5 rounded"
+                          style={{ background: comp.color + '15', color: comp.color }}>
+                          {comp.keyClass}
+                        </span>
+                      </div>
+                      <div className="text-[9px] font-mono text-gray-400 mb-1">{comp.file}</div>
+                      <p className="text-[10px] text-gray-500 leading-relaxed">{comp.desc}</p>
+                    </div>
+                  </div>
+                  {/* 核心方法 */}
+                  <div className="rounded-lg border border-gray-100 bg-white/80 p-2 mb-2">
+                    <span className="text-[9px] text-gray-400">核心方法：</span>
+                    <span className="text-[9px] font-mono font-semibold ml-1" style={{ color: comp.color }}>{comp.keyMethod}</span>
+                  </div>
+                  {/* 执行流程 */}
+                  <div className="flex flex-wrap gap-1.5 items-center">
+                    {comp.flow.map((step, i) => (
+                      <div key={i} className="flex items-center gap-1">
+                        <span className="text-[9px] px-2 py-0.5 rounded-full"
+                          style={{ background: comp.color + '12', color: comp.color, border: `1px solid ${comp.color}25` }}>
+                          {step}
+                        </span>
+                        {i < comp.flow.length - 1 && <span className="text-gray-200 text-xs">→</span>}
+                      </div>
                     ))}
                   </div>
                 </div>
-              </div>
-              {i < stages.length - 1 && (
-                <div className="text-center text-[9px] text-gray-300 py-1">↓</div>
-              )}
+              ))}
             </div>
-          ))}
-        </div>
-      </SectionCard>
+          )}
 
-      {/* Airflow 配置 */}
-      <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/5 p-5">
-        <div className="text-xs font-semibold text-gray-700 mb-3">☸️ Airflow on K8s 配置</div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {Object.entries(airflowConfig).map(([key, value]) => (
-            <div key={key} className="rounded-lg border border-[#fd79a8]/20 bg-white/80 p-2.5">
-              <div className="text-[9px] text-gray-400 mb-0.5">{key}</div>
-              <div className="text-[10px] text-gray-700">{value}</div>
+          {/* ── Scheduler 调度循环 ── */}
+          {activeSourceTab === 'scheduler' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.schedulerLoop.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{airflowSource.schedulerLoop.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#6c5ce708', color: '#6c5ce7', border: '1px solid #6c5ce720' }}>
+                  {airflowSource.schedulerLoop.code}
+                </pre>
+              </div>
+              {/* TaskInstance 状态机 */}
+              <SectionCard icon="🔄" title="TaskInstance 状态机" desc="Scheduler 驱动 TI 在各状态间流转">
+                <div className="space-y-2">
+                  {airflowSource.schedulerLoop.stateTransitions.map((t, i) => (
+                    <div key={i} className="flex items-center gap-3 rounded-xl border p-2.5"
+                      style={{ borderColor: t.color + '25', background: t.color + '05' }}>
+                      <span className="text-[9px] font-mono font-semibold w-24 flex-shrink-0 text-right"
+                        style={{ color: t.color }}>{t.from}</span>
+                      <span className="text-gray-200">→</span>
+                      <span className="text-[9px] font-mono font-bold w-24 flex-shrink-0"
+                        style={{ color: t.color }}>{t.to}</span>
+                      <span className="text-[9px] text-gray-400 flex-1">{t.trigger}</span>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
             </div>
-          ))}
+          )}
+
+          {/* ── KubernetesExecutor ── */}
+          {activeSourceTab === 'executor' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.kubernetesExecutor.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{airflowSource.kubernetesExecutor.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#00cec908', color: '#00cec9', border: '1px solid #00cec920' }}>
+                  {airflowSource.kubernetesExecutor.code}
+                </pre>
+              </div>
+              {/* Pod Spec 关键字段 */}
+              <SectionCard icon="☸️" title={airflowSource.kubernetesExecutor.podSpec.title} desc="">
+                <div className="overflow-x-auto mb-4">
+                  <table className="w-full text-[9px]">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        {['字段', '值', '说明'].map(h => (
+                          <th key={h} className="text-left py-1.5 px-2 text-gray-400 font-medium">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {airflowSource.kubernetesExecutor.podSpec.fields.map((f, i) => (
+                        <tr key={f.field} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                          <td className="py-1.5 px-2 font-mono font-semibold text-[#00cec9]">{f.field}</td>
+                          <td className="py-1.5 px-2 font-mono text-gray-500 text-[8px]">{f.value}</td>
+                          <td className="py-1.5 px-2 text-gray-500">{f.desc}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="text-[9px] font-semibold text-gray-600 mb-2">📋 executor_config 示例（Task 级资源覆盖）</div>
+                <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+                  style={{ background: '#00cec908', color: '#00cec9', border: '1px solid #00cec920' }}>
+                  {airflowSource.kubernetesExecutor.executorConfig}
+                </pre>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── DAG 定义 ── */}
+          {activeSourceTab === 'dag_def' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#fd79a8]/20 bg-[#fd79a8]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.dagDefinition.title}</div>
+                <div className="text-[10px] text-gray-500 mb-4">{airflowSource.dagDefinition.desc}</div>
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <div className="text-[10px] font-semibold text-gray-600 mb-2">📌 传统写法（Operator + XCom）</div>
+                    <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+                      style={{ background: '#64748b08', color: '#64748b', border: '1px solid #64748b20' }}>
+                      {airflowSource.dagDefinition.traditional}
+                    </pre>
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-semibold text-[#fd79a8] mb-2">✅ TaskFlow API（推荐，Airflow 2.0+）</div>
+                    <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+                      style={{ background: '#fd79a808', color: '#fd79a8', border: '1px solid #fd79a820' }}>
+                      {airflowSource.dagDefinition.taskflow}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+              {/* XCom 说明 */}
+              <SectionCard icon="📦" title="XCom 任务间数据传递" desc="">
+                <div className="space-y-2">
+                  {airflowSource.dagDefinition.xcoms.map((x, i) => (
+                    <div key={i} className="rounded-xl border border-[#fd79a8]/15 bg-[#fd79a8]/04 p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[9px] font-mono font-bold text-[#fd79a8]">{x.key}</span>
+                      </div>
+                      <div className="text-[10px] text-gray-500 mb-1">{x.desc}</div>
+                      <div className="text-[8px] font-mono text-gray-400 bg-gray-50 rounded px-2 py-1">{x.example}</div>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── Deferrable Operator ── */}
+          {activeSourceTab === 'deferrable' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#79c0ff]/20 bg-[#79c0ff]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.deferrable.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{airflowSource.deferrable.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#79c0ff08', color: '#79c0ff', border: '1px solid #79c0ff20' }}>
+                  {airflowSource.deferrable.code}
+                </pre>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {airflowSource.deferrable.benefits.map(b => (
+                  <div key={b.title} className="rounded-xl border border-[#79c0ff]/20 bg-[#79c0ff]/04 p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-base">{b.icon}</span>
+                      <span className="text-xs font-semibold text-gray-700">{b.title}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500">{b.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Plugin 扩展 ── */}
+          {activeSourceTab === 'plugin' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#ffa657]/20 bg-[#ffa657]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.plugins.title}</div>
+                <div className="text-[10px] text-gray-500 mb-3">{airflowSource.plugins.desc}</div>
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#ffa65708', color: '#ffa657', border: '1px solid #ffa65720' }}>
+                  {airflowSource.plugins.code}
+                </pre>
+              </div>
+              <SectionCard icon="📦" title="常用 Provider 包" desc="apache-airflow-providers-* 系列">
+                <div className="space-y-2">
+                  {airflowSource.plugins.builtinPlugins.map(p => (
+                    <div key={p.name} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/30 p-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                          <span className="text-[10px] font-bold font-mono text-[#ffa657]">{p.name}</span>
+                          <span className="text-[8px] font-mono text-gray-400">{p.pkg}</span>
+                        </div>
+                        <p className="text-[10px] text-gray-500">{p.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+          )}
+
+          {/* ── 监控告警 ── */}
+          {activeSourceTab === 'observ' && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-[#3fb950]/20 bg-[#3fb950]/04 p-4">
+                <div className="text-sm font-bold text-gray-800 mb-1">{airflowSource.observability.title}</div>
+                <div className="text-[10px] text-gray-500 mb-4">{airflowSource.observability.desc}</div>
+                {/* 指标表 */}
+                <div className="overflow-x-auto mb-4">
+                  <table className="w-full text-[9px]">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        {['指标名', '类型', '含义'].map(h => (
+                          <th key={h} className="text-left py-1.5 px-2 text-gray-400 font-medium">{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {airflowSource.observability.metrics.map((m, i) => (
+                        <tr key={m.metric} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                          <td className="py-1.5 px-2 font-mono text-[#3fb950] text-[8px]">{m.metric}</td>
+                          <td className="py-1.5 px-2">
+                            <span className="text-[8px] px-1.5 py-0.5 rounded font-mono"
+                              style={{ background: '#3fb95015', color: '#3fb950' }}>{m.type}</span>
+                          </td>
+                          <td className="py-1.5 px-2 text-gray-500">{m.desc}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {/* 告警规则 */}
+                <div className="text-[10px] font-semibold text-gray-600 mb-2">🚨 告警规则</div>
+                <div className="space-y-2">
+                  {airflowSource.observability.alertRules.map(r => (
+                    <div key={r.name} className="rounded-xl border border-[#3fb950]/15 bg-[#3fb950]/04 p-3">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="text-[10px] font-semibold text-gray-700">{r.name}</span>
+                        <span className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+                          style={{ background: '#e1705515', color: '#e17055' }}>{r.condition}</span>
+                      </div>
+                      <div className="text-[9px] text-gray-400">→ {r.action}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 }
