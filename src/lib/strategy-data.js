@@ -2018,7 +2018,7 @@ export const SITE_ROADMAP = {
 
   // 🚀 产品迭代规划（开发者人工维护）
   productPlans: {
-    lastUpdated: '2026-04-23',
+    lastUpdated: '2026-04-24',
     note: '开发者人工维护。优先级：🔴 高 / 🟡 中 / 🟢 低。聚焦「近期可落地」的事项，远期愿景不在此列。',
     categories: [
       {
@@ -2041,6 +2041,9 @@ export const SITE_ROADMAP = {
           { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23）+ GPT-5.5 + DeepSeek-v4-flash/v4-pro（4/24）。待补：腾讯混元新模型' },
           { priority: '🔴', title: 'Agent 生态专题', desc: '已完成批次1：企业Agent平台对比文章（4/23），待完成：批次2 Agent记忆引擎 / 批次3 多Agent框架对比。Cognition AI 估值 $250B，Sierra 收购 Fragment，赛道加速整合' },
           { priority: '🟡', title: 'VLA 架构扩充', desc: '补充 OpenVLA、π₀、Seed-AD、Alpamayo-R1 等新架构方案' },
+          { priority: '🟡', title: 'K8s v1.36.0 DRA GA 专题文章', desc: 'K8s v1.36.0（2026-04-22）DRA 进入 GA，GPU 细粒度调度能力重大里程碑，值得写一篇深度解析文章。B6自检-2026-04-24', source: 'B6自检-2026-04-24' },
+          { priority: '🟡', title: 'Qwen3.6 系列模型深度对比', desc: 'Qwen3.6-27B 开源（2026-04-24），MoE 架构 + 思维链切换，与 DeepSeek-V4 flash/pro 的对比分析值得写文章。B1自检-2026-04-24', source: 'B1自检-2026-04-24' },
+          { priority: '🟢', title: 'AI Infra 版本追踪页面', desc: '当前 data-infra-data.js 中各开源项目版本号分散，建议增加一个「版本追踪」Tab，集中展示 K8s/Ray/Airflow/Iceberg/MLflow/Spark/UC 的最新版本和更新日期。B6自检-2026-04-24', source: 'B6自检-2026-04-24' },
         ],
       },
       {
