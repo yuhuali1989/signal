@@ -117,6 +117,279 @@ export const K8S_DATA = {
     preemption: '低优先级任务可被训练任务抢占',
     monitoring: 'DCGM Exporter → Prometheus → Grafana GPU 仪表盘',
   },
+
+  // ── 调度器社区选型 ────────────────────────────────────────────
+  schedulerComparison: {
+    title: 'K8s 调度器社区选型',
+    desc: 'Kubernetes 默认调度器在 AI/ML 大规模 GPU 集群场景下存在明显局限（不感知 Gang、不理解 GPU 拓扑、无队列公平性），社区涌现出多种专用调度方案。',
+    schedulers: [
+      {
+        name: 'Volcano',
+        version: 'v1.10',
+        org: 'CNCF Incubating',
+        color: '#e17055',
+        icon: '🌋',
+        verdict: '训练首选',
+        verdictColor: '#3fb950',
+        score: 5,
+        desc: '专为 AI/ML 批处理设计的 K8s 批调度器，支持 Gang Scheduling、队列管理、公平调度，是国内 AI 集群最主流的选择。',
+        coreFeatures: [
+          { name: 'Gang Scheduling', desc: 'All-or-Nothing：所有 Pod 同时调度或全部等待，避免死锁和资源碎片', icon: '🔗' },
+          { name: '队列管理', desc: '多队列 + 权重 + 资源借用（Borrowing），支持团队间公平分配 GPU', icon: '📋' },
+          { name: '抢占与回收', desc: '低优先级 Job 可被高优先级抢占，支持 Preemptable/Reclaim 策略', icon: '⚡' },
+          { name: '拓扑感知', desc: '与 NVIDIA Device Plugin 配合，感知 NVLink/NVSwitch 拓扑亲和性', icon: '🗺️' },
+        ],
+        useCases: ['PyTorch DDP / FSDP 分布式训练', 'MPI 作业（Horovod）', 'Spark on K8s 批处理', 'Ray on K8s'],
+        limitations: ['Web UI 较弱', '与 Istio 集成需额外配置', '不支持细粒度 GPU 分片（需配合 HAMi）'],
+        keyConfig: `# Volcano Queue 配置示例
+apiVersion: scheduling.volcano.sh/v1beta1
+kind: Queue
+metadata:
+  name: training-team-a
+spec:
+  weight: 3          # 权重：A 队 3 份，B 队 1 份
+  capability:
+    nvidia.com/gpu: 64   # 最多使用 64 GPU
+  reclaimable: true  # 允许借用其他队列空闲资源`,
+      },
+      {
+        name: 'Koordinator',
+        version: 'v1.5',
+        org: 'CNCF Sandbox（阿里云开源）',
+        color: '#6c5ce7',
+        icon: '🎯',
+        verdict: '混部推荐',
+        verdictColor: '#6c5ce7',
+        score: 4,
+        desc: '阿里云开源的 K8s 混部调度系统，核心能力是在线推理与离线训练任务的混部，通过 QoS 分级和动态资源超卖大幅提升集群利用率。',
+        coreFeatures: [
+          { name: 'QoS 分级', desc: 'LSE/LSR/LS/BE 四级 QoS，在线任务（推理）与离线任务（训练）混部不互扰', icon: '🏷️' },
+          { name: '动态超卖', desc: '将在线任务的 CPU/GPU 空闲资源动态分配给离线任务，利用率提升 40%+', icon: '📈' },
+          { name: '细粒度 GPU 共享', desc: '支持 GPU Share（显存隔离）和 GPU Overcommit（超卖），推理任务共享 GPU', icon: '🎮' },
+          { name: '负载感知调度', desc: '基于实时 CPU/GPU 利用率做调度决策，避免热点节点', icon: '🌡️' },
+        ],
+        useCases: ['在线推理 + 离线训练混部', '多租户 GPU 集群', '推理服务弹性扩缩', '集群利用率优化'],
+        limitations: ['社区相对较小', '与 Volcano 功能有重叠，需权衡', '超卖场景需精细调优'],
+        keyConfig: `# Koordinator QoS 标注示例
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    # 在线推理：LS 级别，保障延迟
+    koordinator.sh/qosClass: "LS"
+    # GPU 共享：申请 50% 显存
+    scheduling.koordinator.sh/gpu-memory-ratio: "50"
+spec:
+  containers:
+  - resources:
+      requests:
+        koordinator.sh/gpu: "50"  # 50% GPU 算力`,
+      },
+      {
+        name: 'HAMi（原 k8s-vGPU）',
+        version: 'v2.4',
+        org: 'CNCF Sandbox（第四范式开源）',
+        color: '#00cec9',
+        icon: '🔬',
+        verdict: 'GPU 细粒度首选',
+        verdictColor: '#00cec9',
+        score: 5,
+        desc: 'Heterogeneous AI Computing Virtualization Middleware，K8s 异构 AI 算力虚拟化中间件，实现 GPU 显存和算力的细粒度切分与隔离，无需 MIG 硬件支持。',
+        coreFeatures: [
+          { name: '显存硬隔离', desc: '通过 LD_PRELOAD 劫持 CUDA API，实现容器级显存上限强制隔离（不超卖不越界）', icon: '🔒' },
+          { name: '算力限制', desc: '限制容器 GPU SM 使用率上限（如 50%），多容器共享同一 GPU 时互不干扰', icon: '⚙️' },
+          { name: '多卡虚拟化', desc: '支持将 1 张物理 GPU 虚拟为多个 vGPU，每个容器独立申请显存和算力', icon: '🃏' },
+          { name: '多厂商支持', desc: '支持 NVIDIA / AMD / 寒武纪 / 昇腾 / 海光 DCU 等异构 GPU', icon: '🌐' },
+        ],
+        useCases: ['推理服务 GPU 共享（节省成本）', '开发环境 GPU 分时复用', '多租户 GPU 隔离', '国产 GPU 适配'],
+        limitations: ['基于 LD_PRELOAD，对 CUDA 版本有依赖', '不适合极致性能训练场景', '显存隔离非硬件级（vs MIG）'],
+        keyConfig: `# HAMi vGPU 申请示例（1 张 A100 切 4 份）
+resources:
+  limits:
+    nvidia.com/gpu: 1          # 申请 1 个 vGPU
+    nvidia.com/gpumem: 20480   # 显存上限 20GB（A100 80GB 的 1/4）
+    nvidia.com/gpucores: 25    # 算力上限 25%（SM 使用率）`,
+      },
+      {
+        name: 'NVIDIA GPU Operator',
+        version: 'v24.9',
+        org: 'NVIDIA 官方',
+        color: '#76b900',
+        icon: '🟢',
+        verdict: '基础设施必备',
+        verdictColor: '#76b900',
+        score: 4,
+        desc: 'NVIDIA 官方 K8s Operator，自动化管理 GPU 驱动、CUDA、Device Plugin、MIG、DCGM 等全套 GPU 基础设施，是所有 GPU 集群的基础层。',
+        coreFeatures: [
+          { name: 'MIG 管理', desc: 'A100/H100 MIG 切分自动化：single/mixed 策略，支持动态重配置', icon: '✂️' },
+          { name: 'Time-Slicing', desc: 'GPU 时间片共享，多 Pod 轮流使用同一 GPU（无显存隔离，适合推理）', icon: '⏱️' },
+          { name: 'DCGM 集成', desc: 'Data Center GPU Manager 自动部署，提供 GPU 健康检查和性能指标', icon: '📊' },
+          { name: 'CDI 支持', desc: 'Container Device Interface，标准化 GPU 设备挂载，支持非 Docker 运行时', icon: '🔌' },
+        ],
+        useCases: ['GPU 驱动自动化安装', 'MIG 切分管理', 'GPU 健康监控', 'DCGM 指标采集'],
+        limitations: ['仅支持 NVIDIA GPU', 'MIG 需要 A100/H100 硬件', 'Time-Slicing 无显存隔离'],
+        keyConfig: `# MIG 策略配置（A100 切 7 份 1g.10gb）
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-mig-parted-config
+data:
+  config.yaml: |
+    version: v1
+    mig-configs:
+      all-1g.10gb:
+        - devices: all
+          mig-enabled: true
+          mig-devices:
+            1g.10gb: 7   # 1 张 A100 → 7 个 10GB MIG 实例`,
+      },
+      {
+        name: 'Kueue',
+        version: 'v0.9',
+        org: 'K8s SIG Scheduling（Google 主导）',
+        color: '#326ce5',
+        icon: '☸️',
+        verdict: 'K8s 原生队列',
+        verdictColor: '#326ce5',
+        score: 3,
+        desc: 'Kubernetes 官方 SIG Scheduling 孵化的作业队列管理器，设计目标是成为 K8s 原生的批处理队列标准，与 JobSet、LeaderWorkerSet 深度集成。',
+        coreFeatures: [
+          { name: 'ClusterQueue', desc: '集群级资源池，定义 GPU/CPU 配额，支持 BorrowingLimit 和 LendingLimit', icon: '🏦' },
+          { name: 'LocalQueue', desc: '命名空间级队列，映射到 ClusterQueue，实现多租户隔离', icon: '📬' },
+          { name: 'Cohort', desc: '队列组，同 Cohort 内的队列可互相借用空闲资源', icon: '🤝' },
+          { name: 'Preemption', desc: '支持 LowerPriority / BorrowWithinCohort 两种抢占策略', icon: '⚡' },
+        ],
+        useCases: ['K8s 原生批处理（JobSet）', 'Ray on K8s（RayJob）', 'Kubeflow Training Operator', '多租户 GPU 配额管理'],
+        limitations: ['Gang Scheduling 能力弱于 Volcano', '生态成熟度不如 Volcano', '不支持 MPI 作业'],
+        keyConfig: `# Kueue ClusterQueue 配置
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: cluster-queue
+spec:
+  cohort: "ai-team"
+  resourceGroups:
+  - coveredResources: ["nvidia.com/gpu"]
+    flavors:
+    - name: "a100-80gb"
+      resources:
+      - name: "nvidia.com/gpu"
+        nominalQuota: 64    # 标准配额 64 GPU
+        borrowingLimit: 32  # 最多借用 32 GPU`,
+      },
+      {
+        name: 'DWS（Dynamic Workload Scheduler）',
+        version: 'v0.6',
+        org: 'Google Cloud 开源',
+        color: '#ffa657',
+        icon: '☁️',
+        verdict: '云端弹性',
+        verdictColor: '#ffa657',
+        score: 3,
+        desc: 'Google Cloud 开源的动态工作负载调度器，专为 GPU 资源稀缺场景设计，通过 ProvisioningRequest 机制实现"先申请后调度"，避免 GPU 节点长期空占。',
+        coreFeatures: [
+          { name: 'ProvisioningRequest', desc: '训练开始前先向云厂商申请 GPU 节点，节点就绪后再创建 Pod，避免 Pending 浪费', icon: '📝' },
+          { name: '弹性配额', desc: '与 Kueue 集成，支持按需申请超出配额的 GPU（Spot/On-demand）', icon: '📈' },
+          { name: '多云支持', desc: '支持 GKE / EKS / AKS 等主流云厂商的 GPU 节点池动态扩缩', icon: '☁️' },
+          { name: 'CheckpointRestart', desc: '与 Volcano/Kueue 配合，支持训练任务 Checkpoint 后抢占再恢复', icon: '💾' },
+        ],
+        useCases: ['云端 GPU 按需申请', 'Spot GPU 训练（低成本）', '大规模训练弹性扩缩', '多云 GPU 调度'],
+        limitations: ['依赖云厂商 API', '本地集群不适用', '延迟较高（需等待节点就绪）'],
+        keyConfig: `# DWS ProvisioningRequest 示例
+apiVersion: autoscaling.x-k8s.io/v1beta1
+kind: ProvisioningRequest
+metadata:
+  name: train-job-provision
+spec:
+  provisioningClassName: "queued-provisioning.gke.io"
+  parameters:
+    maxRunDurationSeconds: "86400"  # 最长运行 24h
+  podSets:
+  - count: 8   # 申请 8 个 GPU 节点
+    podTemplateRef:
+      name: train-pod-template`,
+      },
+    ],
+
+    gpuFineGrained: {
+      title: 'GPU 细粒度调度技术全景',
+      desc: '从粗粒度（整卡）到细粒度（显存/算力切片），GPU 调度技术持续演进，核心目标是提升 GPU 利用率（训练集群通常只有 30-50%）。',
+      techniques: [
+        {
+          name: 'MIG（Multi-Instance GPU）',
+          vendor: 'NVIDIA 硬件级',
+          color: '#76b900',
+          isolation: '硬件级（完全隔离）',
+          granularity: 'A100: 7×1g.10gb / 3×2g.20gb / 1×3g.40gb',
+          pros: ['完全硬件隔离，性能可预期', '支持独立 CUDA 上下文', '适合多租户 SLA 保障'],
+          cons: ['仅 A100/H100 支持', '切分后不可动态调整', '小实例性能损耗 ~5%'],
+          bestFor: '多租户推理服务、开发环境隔离',
+        },
+        {
+          name: 'Time-Slicing（时间片）',
+          vendor: 'NVIDIA GPU Operator',
+          color: '#ffa657',
+          isolation: '软件级（无显存隔离）',
+          granularity: '1 GPU → N 个虚拟 GPU（共享全部显存）',
+          pros: ['零额外开销', '配置简单', '适合轻量推理'],
+          cons: ['无显存隔离（OOM 影响所有容器）', '无算力保障', '不适合训练'],
+          bestFor: '轻量推理、CI/CD 测试环境',
+        },
+        {
+          name: 'HAMi vGPU（显存+算力隔离）',
+          vendor: 'CNCF Sandbox（第四范式）',
+          color: '#00cec9',
+          isolation: '软件级（CUDA API 劫持）',
+          granularity: '任意显存 MB 级 + 算力 % 级切分',
+          pros: ['灵活切分（任意比例）', '支持多厂商 GPU', '显存超出自动 OOM 隔离'],
+          cons: ['依赖 LD_PRELOAD，有兼容性风险', '非硬件级隔离', '性能损耗 ~2-5%'],
+          bestFor: '推理服务 GPU 共享、国产 GPU 适配',
+        },
+        {
+          name: 'GPU Share（Koordinator）',
+          vendor: 'CNCF Sandbox（阿里云）',
+          color: '#6c5ce7',
+          isolation: '软件级（显存隔离）',
+          granularity: '显存 MB 级切分，算力按比例',
+          pros: ['与 K8s 调度深度集成', '支持混部场景', '利用率监控完善'],
+          cons: ['仅支持 NVIDIA GPU', '需要 Koordinator 全套部署'],
+          bestFor: '在线推理 + 离线训练混部',
+        },
+        {
+          name: 'NVIDIA MPS（Multi-Process Service）',
+          vendor: 'NVIDIA 软件级',
+          color: '#76b900',
+          isolation: '进程级（共享 CUDA 上下文）',
+          granularity: '多进程共享 GPU，可设置算力上限',
+          pros: ['低延迟（共享 CUDA 上下文）', '适合小 Batch 推理', '官方支持'],
+          cons: ['一个进程崩溃影响所有进程', '无显存隔离', '调试困难'],
+          bestFor: '高并发小 Batch 推理（如 LLM 服务）',
+        },
+        {
+          name: 'NVIDIA NIM + Triton',
+          vendor: 'NVIDIA 推理平台',
+          color: '#76b900',
+          isolation: '模型级（多模型共享 GPU）',
+          granularity: '多模型分时复用 GPU，动态 Batch',
+          pros: ['生产级推理优化', '支持 TensorRT/vLLM 后端', '自动 Batch 合并'],
+          cons: ['仅适合推理场景', '配置复杂', '依赖 NVIDIA 生态'],
+          bestFor: '生产级多模型推理服务',
+        },
+      ],
+      decisionMatrix: {
+        title: '调度器 × 场景选型矩阵',
+        scenarios: ['大规模分布式训练', 'GPU 细粒度共享', '在线推理混部', '多租户隔离', '云端弹性扩缩', '国产 GPU 支持'],
+        rows: [
+          { scheduler: 'Volcano', scores: ['✅ 首选', '⚠️ 需配合 HAMi', '⚠️ 需配合 Koordinator', '✅ 队列隔离', '⚠️ 需 DWS', '✅ 支持'] },
+          { scheduler: 'Koordinator', scores: ['⚠️ 支持但非专长', '✅ GPU Share', '✅ 首选', '✅ QoS 分级', '⚠️ 部分支持', '⚠️ 有限'] },
+          { scheduler: 'HAMi', scores: ['❌ 不适合', '✅ 首选', '✅ 推理共享', '✅ 显存隔离', '❌ 不涉及', '✅ 首选'] },
+          { scheduler: 'Kueue', scores: ['✅ 与 JobSet 集成', '❌ 不支持', '⚠️ 有限', '✅ 配额管理', '✅ 与 DWS 集成', '❌ 不支持'] },
+          { scheduler: 'GPU Operator', scores: ['✅ MIG 基础', '✅ MIG/Time-Slicing', '⚠️ Time-Slicing', '✅ MIG 硬隔离', '⚠️ 部分', '❌ 仅 NVIDIA'] },
+          { scheduler: 'DWS', scores: ['✅ 云端训练', '❌ 不涉及', '❌ 不涉及', '❌ 不涉及', '✅ 首选', '❌ 不支持'] },
+        ],
+      },
+    },
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════
