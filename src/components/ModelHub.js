@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import DatasetExplorer from '@/components/DatasetExplorer';
 import BenchmarkBoard from '@/components/BenchmarkBoard';
 import ArchDiffTool from '@/components/ArchDiffTool';
+import ArchEvolution from '@/components/ArchEvolution';
 
 /* ─── 模型类型标签 ─── */
 const categoryLabels = {
@@ -201,6 +202,7 @@ const TABS = [
   { id: 'diff',        label: '🔀 架构对比',  desc: '两模型技术参数横向比较' },
   { id: 'leaderboard', label: '🏆 排行榜',    desc: '综合性能 / 编码 / 推理' },
   { id: 'datasets',    label: '🗂️ 数据集',   desc: '主流 Benchmark 全景' },
+  { id: 'evolution',   label: '🧭 架构演进',  desc: '关键 Layer · 创新时间线 · 演进路径 · 下一步' },
 ];
 
 export default function ModelHub({ models, benchmarks, datasets }) {
@@ -272,6 +274,13 @@ export default function ModelHub({ models, benchmarks, datasets }) {
             </span>
           </div>
           <DatasetExplorer datasets={datasets} />
+        </section>
+      )}
+
+      {/* ── 架构演进 ── */}
+      {activeTab === 'evolution' && (
+        <section>
+          <ArchEvolution />
         </section>
       )}
     </div>
