@@ -987,7 +987,11 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/
 
 **国内来源**：36Kr · 机器之心 · 量子位 · 虎嗅 · 极客公园
 
-**软件行业公司官方（全行业动态专用）**：Databricks · Snowflake · AWS · Google Cloud · Salesforce · CrowdStrike · Vercel · Cloudflare
+**软件/云/数据行业（全行业动态专用）**：Databricks · Snowflake · AWS · Google Cloud · Salesforce · CrowdStrike · Vercel · Cloudflare · Microsoft · Palantir · ServiceNow · HashiCorp
+
+**游戏/硬件/消费电子（全行业动态专用）**：NVIDIA 新闻 (`nvidianews.nvidia.com/news/`) · AMD (`amd.com/en/newsroom`) · Intel (`newsroom.intel.com`) · Apple (`apple.com/newsroom`) · Sony · Nintendo · Steam/Valve · IGN · GameSpot
+
+**AI Infra / 开源生态（全行业动态专用）**：GitHub Blog (`github.blog`) · CNCF Blog (`cncf.io/blog`) · Linux Foundation · Apache Blog · Kubernetes Blog (`kubernetes.io/blog`)
 
 ---
 
@@ -1022,8 +1026,31 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 ### 任务 2：写入全行业动态 src/components/IndustryNewsFeed.js
 
+> **⚠️ 定位说明（必读，严禁与声浪内容重复）**
+>
+> **全行业动态 ≠ AI 技术新闻**。两者的本质区别：
+> - **声浪（news-feed.json）**：AI 技术信号，关注模型发布/架构创新/开源进展，面向 AI 工程师
+> - **全行业动态（IndustryNewsFeed.js）**：AI 对各行业的冲击与产业格局变化，面向更广泛的商业/产业读者
+>
+> **全行业动态的正确视角**：同一件事，要从「行业影响」角度写，而非「技术本身」角度。
+> - ❌ 错误：「OpenAI 发布 GPT-5，推理能力大幅提升」（这是声浪的内容）
+> - ✅ 正确：「GPT-5 发布冲击知识工作市场：咨询/法律/教育行业面临结构性变革」（这是全行业动态）
+
+**覆盖范围（每次至少覆盖 3 个不同行业方向）**：
+- 🖥️ **软件行业**：SaaS 格局变化、AI 原生软件崛起、传统软件公司 AI 转型、开发工具生态
+- 🎮 **游戏行业**：AI 生成内容（AIGC）对游戏制作的冲击、游戏公司 AI 战略、3D/音频/剧情生成
+- 💻 **硬件行业**：GPU/NPU 竞争格局、AI 手机/PC 军备竞赛、芯片供应链、边缘计算硬件
+- ☁️ **云计算/Infra**：云厂商 AI 战略对比、AI 工作负载迁移、开源 Infra 生态（K8s/Iceberg/Airflow/MLflow/Spark/Ray）对产业的影响
+- 🏢 **企业软件**：AI Agent 在企业的落地、CRM/ERP/HR 系统 AI 化、企业采购决策变化
+- 🔒 **安全行业**：AI 驱动的新型攻击、AI 安全工具、合规与监管动态
+- 💰 **投融资/创业**：AI 赛道融资动态、独角兽估值变化、创业公司商业化进展
+- 🌏 **国际/国内产业**：国内外 AI 产业政策、出海动态、产业竞争格局
+
+**写入规范**：
 - 将通过验链的全行业动态条目写入 NEWS_DATA 数组头部
-- category 字段只能使用：`data | cloud | software | security | startup | market`
+- category 字段只能使用：`software | game | hardware | cloud | infra | enterprise | security | startup | market | policy`
+- 每条 summary 必须体现「行业影响」视角，而非技术描述（参考上方示例）
+- 国内外各半，每次 8-12 条
 - 对超过 90 天的旧条目进行合并归档，保持活跃列表 ≤60 条
 
 ### 任务 3：更新本模块 Roadmap
