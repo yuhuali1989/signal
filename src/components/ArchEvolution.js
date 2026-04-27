@@ -45,6 +45,8 @@ const TIMELINE = [
   { date: '2026-04', model: 'Gemini 2.5 Pro（0414）', innovation: '深度思考 v2 + 原生代码执行沙箱', contribution: 'AIME 2025 92.0%，SWE-bench 63.8%，Humanity Last Exam 18.8%，全面刷新 SOTA', tag: '推理增强', color: 'bg-teal-100 text-teal-700' },
   { date: '2026-04', model: 'Qwen3.6-27B（开源）', innovation: '轻量 MoE + 无缝思维链切换（Thinking/Non-Thinking 双模式）', contribution: '27B 总参数 / 3B 激活，开源 MoE 新标杆；思维链切换无需重新加载模型，MATH-500 / GPQA 与同量级闭源模型相当，Apache 2.0', tag: 'MoE+推理', color: 'bg-amber-100 text-amber-700' },
   { date: '2026-04', model: 'Claude Opus 4.7', innovation: '编码专项强化 + 多步骤代码重构能力', contribution: 'SWE-bench Pro 87.6%（超越所有已知模型）；跨文件依赖分析与复杂重构能力大幅提升；同步修复 Claude Code 质量回退问题', tag: '编码增强', color: 'bg-purple-100 text-purple-700' },
+  { date: '2026-04', model: 'Qwen3.6-35B-A3B（开源）', innovation: '轻量 MoE 专家池扩展：同等激活参数（3B）下增加专家数量', contribution: '总参数 35B / 激活 3B，知识密集型任务（MMLU-Pro 75.8%）相比 27B 版本提升 3.3pp；验证了"增加专家池 > 增加激活参数"对知识覆盖的边际收益规律', tag: 'MoE扩展', color: 'bg-amber-100 text-amber-700' },
+  { date: '2026-04', model: 'Gemini 3.1 Pro 深度研究代理', innovation: '多源并行检索 + 研究规划 + 迭代深化的 Agent 架构', contribution: '首个深度集成 Google Scholar/YouTube/Books 的多模态研究 Agent；支持数小时自主研究任务；研究规划→并行检索→可信度评估→迭代深化的四层 Agent 架构', tag: 'Agent架构', color: 'bg-green-100 text-green-700' },
 ];
 
 const EVOLUTION_PATHS = [
@@ -136,7 +138,7 @@ export default function ArchEvolution() {
       {/* 页头 */}
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-1">模型架构演进</h2>
-      <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-24（含 Qwen3.6-27B / Claude Opus 4.7）</p>
+      <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-27（含 Qwen3.6-35B-A3B / Gemini 3.1 Pro 深度研究代理）</p>
       </div>
 
       {/* 子 Tab */}

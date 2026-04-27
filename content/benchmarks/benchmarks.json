@@ -226,7 +226,7 @@
     "category": "overall",
     "categoryName": "综合能力",
     "categoryIcon": "📊",
-    "date": "2026-04-24",
+    "date": "2026-04-27",
     "models": [
       {
         "rank": 1,
@@ -300,6 +300,16 @@
       },
       {
         "rank": 8,
+        "name": "Kimi K2.6",
+        "provider": "月之暗面",
+        "score": 90.2,
+        "arena_elo": 1355,
+        "mmlu_pro": 86.8,
+        "change": "🆕",
+        "badge": ""
+      },
+      {
+        "rank": 9,
         "name": "Meta Muse Spark",
         "provider": "Meta",
         "score": 89.8,
@@ -309,7 +319,7 @@
         "badge": ""
       },
       {
-        "rank": 9,
+        "rank": 10,
         "name": "GLM-5.1",
         "provider": "智谱 AI",
         "score": 89.2,
@@ -319,7 +329,7 @@
         "badge": ""
       },
       {
-        "rank": 10,
+        "rank": 11,
         "name": "Llama 4 Maverick",
         "provider": "Meta",
         "score": 87.8,
@@ -436,7 +446,7 @@
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-04-24",
+    "date": "2026-04-27",
     "models": [
       {
         "rank": 1,
@@ -473,6 +483,17 @@
       },
       {
         "rank": 4,
+        "name": "Qwen3.6-35B-A3B (Self-hosted)",
+        "provider": "阿里（开源）",
+        "input_price": 0.0,
+        "output_price": 0.0,
+        "score": 89.2,
+        "value_score": 99.0,
+        "change": "🆕",
+        "badge": "🌟开源"
+      },
+      {
+        "rank": 5,
         "name": "Gemini 3.1 Flash-Lite",
         "provider": "Google",
         "input_price": 0.025,
@@ -483,7 +504,7 @@
         "badge": ""
       },
       {
-        "rank": 5,
+        "rank": 6,
         "name": "Qwen3.6-27B (Self-hosted)",
         "provider": "阿里（开源）",
         "input_price": 0.0,
@@ -494,7 +515,7 @@
         "badge": "🌟开源"
       },
       {
-        "rank": 6,
+        "rank": 7,
         "name": "Qwen 3.6 Max",
         "provider": "阿里",
         "input_price": 0.8,
@@ -505,7 +526,7 @@
         "badge": ""
       },
       {
-        "rank": 7,
+        "rank": 8,
         "name": "Llama 4 Maverick (Self-hosted)",
         "provider": "Meta",
         "input_price": 0,
@@ -516,7 +537,7 @@
         "badge": ""
       },
       {
-        "rank": 8,
+        "rank": 9,
         "name": "GPT-4o-mini",
         "provider": "OpenAI",
         "input_price": 0.15,
@@ -527,7 +548,7 @@
         "badge": ""
       },
       {
-        "rank": 9,
+        "rank": 10,
         "name": "Claude Sonnet 4.6",
         "provider": "Anthropic",
         "input_price": 3.0,

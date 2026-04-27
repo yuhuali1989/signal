@@ -330,6 +330,46 @@ const IDEAS = [
     china: '高',
     tags: ['Agent安全', 'MCP', 'DevSecOps', '审计'],
   },
+
+  // ── 新增方向：AI 深度研究工具 ──────────────────────────────────────────
+  {
+    id: 17,
+    industry: 'enterprise',
+    title: 'AI 深度研究工具（知识工作者的 AI 同事）',
+    signal: '🔥🔥 爆发',
+    signalDate: '2026-04',
+    summary: 'Gemini 3.1 Pro 深度研究代理（2026-04-26）、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技，验证了深度研究 Agent 的市场需求。咨询顾问、研究员、分析师等职业的初级工作（文献综述、市场调研）将被大幅自动化。',
+    opportunity: '国内咨询/投研/法律/医疗等知识密集型行业对深度研究工具需求旺盛，但现有产品均为海外产品，数据合规和中文语料质量是本土玩家的核心壁垒。',
+    overseas: [
+      { name: 'Perplexity', url: 'https://perplexity.ai', desc: 'AI 搜索+深度研究，估值 $9B' },
+      { name: 'Elicit', url: 'https://elicit.com', desc: '学术研究 AI 助手，专注论文分析' },
+      { name: 'Consensus', url: 'https://consensus.app', desc: '科学文献 AI 搜索' },
+    ],
+    market: '$30B+（知识工作者工具市场）',
+    barrier: '高',
+    china: '高',
+    tags: ['深度研究', 'AI Agent', '知识工作', '咨询'],
+  },
+
+  // ── 新增方向：端侧 AI 手机模型 ────────────────────────────────────────
+  {
+    id: 18,
+    industry: 'consumer',
+    title: '端侧 AI 手机模型（离线智能的下一个战场）',
+    signal: '🔥 热点',
+    signalDate: '2026-04',
+    summary: '小米 MiMo-V2.5（2026-04-25）公测，专为手机 NPU 优化的小参数推理模型。苹果 Apple Intelligence、三星 Galaxy AI、华为盘古端侧版均已落地。端侧 AI 模型正在成为高端手机的核心差异化卖点，数据隐私和离线能力是驱动因素。',
+    opportunity: '国内手机厂商（小米/OPPO/vivo）均有端侧 AI 布局，但模型能力参差不齐。专注手机 NPU 优化的小参数模型（1B-7B）是高价值细分赛道，与手机厂商深度合作可获得稳定收入。',
+    overseas: [
+      { name: 'Apple Intelligence', url: 'https://apple.com/apple-intelligence/', desc: '苹果端侧 AI，深度集成 iOS' },
+      { name: 'Qualcomm AI Hub', url: 'https://aihub.qualcomm.com', desc: '骁龙 NPU 模型优化平台' },
+      { name: 'MediaTek NeuroPilot', url: 'https://neuropilot.mediatek.com', desc: '联发科端侧 AI 平台' },
+    ],
+    market: '$20B+（AI 手机市场，IDC 2026 预测）',
+    barrier: '高',
+    china: '高',
+    tags: ['端侧AI', '手机', 'NPU', '离线推理'],
+  },
 ];
 
 // ─── 子组件 ──────────────────────────────────────────────────────────────────

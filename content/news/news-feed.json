@@ -1,5 +1,262 @@
 [
   {
+    "id": "news-20260427-01",
+    "title": "Kimi K2.6 发布：月之暗面最新旗舰，长文本推理能力大幅提升",
+    "summary": "月之暗面（Moonshot AI）正式发布 Kimi K2.6，在长文本理解和多步骤推理方面取得重大突破，支持超长上下文窗口。K2.6 在数学推理、代码生成和复杂问答任务上均有显著提升，是继 K2 之后的重要版本迭代。Kimi 持续在长上下文赛道深耕，与 Claude 和 GPT 系列形成差异化竞争。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-27",
+    "category": "llm",
+    "tags": [
+      "Kimi",
+      "月之暗面",
+      "长上下文",
+      "大模型"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260427-02",
+    "title": "腾讯 QClaw 海外版正式上线：AI 搜索产品出海，对标 Perplexity",
+    "summary": "腾讯旗下 AI 搜索产品 QClaw 海外版正式上线，主打 AI 驱动的深度搜索与问答能力，直接对标 Perplexity AI。QClaw 依托腾讯的搜索技术积累和大模型能力，支持多语言实时搜索、引用溯源和深度研究报告生成。这是腾讯 AI 产品出海的重要一步，也是国内 AI 搜索赛道向全球市场扩张的缩影。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-27",
+    "category": "llm",
+    "tags": [
+      "腾讯",
+      "QClaw",
+      "AI搜索",
+      "出海"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260427-03",
+    "title": "Anthropic 推出 Claude Design：AI 辅助 UI/UX 设计工具",
+    "summary": "Anthropic 正式推出 Claude Design，这是一款基于 Claude 模型的 AI 辅助设计工具，支持从自然语言描述直接生成 UI 组件、设计稿和交互原型。Claude Design 深度集成了 Figma 和 React 生态，设计师可以通过对话方式迭代设计方案。这标志着 Anthropic 从纯 LLM API 提供商向垂直应用工具延伸，与 OpenAI 的 Canvas 和 Google 的 Project IDX 形成竞争。",
+    "source": "Anthropic",
+    "url": "https://www.anthropic.com/news",
+    "date": "2026-04-27",
+    "category": "agent",
+    "tags": [
+      "Anthropic",
+      "Claude Design",
+      "UI设计",
+      "AI工具"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260427-04",
+    "title": "DeepSeek 开启首轮外部融资：估值或超 $500 亿，国产 AI 独角兽再升级",
+    "summary": "据多方消息，DeepSeek 正在进行首轮外部融资谈判，估值预计超过 500 亿美元。此前 DeepSeek 一直由幻方量化自筹资金运营，此次引入外部资本标志着其商业化战略的重大转变。DeepSeek-V4 系列的成功发布和 API 商业化落地，为此次融资提供了强有力的支撑。若融资成功，DeepSeek 将成为中国估值最高的 AI 独角兽之一。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-27",
+    "category": "llm",
+    "tags": [
+      "DeepSeek",
+      "融资",
+      "独角兽",
+      "国产AI"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260427-05",
+    "title": "SWE-bench Verified 已无法衡量前沿编码能力，评测体系面临升级压力",
+    "summary": "Hacker News 热议：随着 Claude Opus 4.7（87.6%）等模型在 SWE-bench Verified 上接近饱和，该基准已无法有效区分顶尖模型的编码能力差异。社区正在讨论 SWE-bench Pro、LiveCodeBench 等更难的替代基准。这一现象折射出 AI 能力进步速度远超评测体系更新速度的深层矛盾，也预示着下一代编码评测标准即将到来。",
+    "source": "Hacker News",
+    "url": "https://news.ycombinator.com/",
+    "date": "2026-04-27",
+    "category": "llm",
+    "tags": [
+      "SWE-bench",
+      "评测",
+      "编码能力",
+      "基准测试"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260426-01",
+    "title": "OpenAI 发布 ChatGPT Images 2.0：原生图像生成能力全面升级",
+    "summary": "OpenAI 正式发布 ChatGPT Images 2.0，带来全面升级的原生图像生成能力。新版本支持更精准的文字渲染、更一致的人物形象保持和更复杂的场景构图。ChatGPT Images 2.0 基于 GPT-5.5 的多模态架构，实现了文本与图像的深度融合，用户可以在对话中无缝切换文字和图像创作。这是 OpenAI 在多模态生成领域对 Midjourney 和 Stable Diffusion 的正面挑战。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-26",
+    "category": "llm",
+    "tags": [
+      "OpenAI",
+      "ChatGPT",
+      "图像生成",
+      "多模态"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260426-02",
+    "title": "谷歌推出 Gemini 3.1 Pro 深度研究代理：自主完成复杂研究任务",
+    "summary": "谷歌正式推出 Gemini 3.1 Pro 深度研究代理（Deep Research Agent），能够自主规划研究路径、检索多源信息、综合分析并生成结构化研究报告。该代理支持长达数小时的自主研究任务，可处理学术论文、新闻、数据库等多种信息源。与 Perplexity Deep Research 和 OpenAI Deep Research 相比，Gemini 3.1 Pro 在多模态信息处理和 Google 搜索深度集成方面具有独特优势。",
+    "source": "Google Blog",
+    "url": "https://blog.google/products/gemini/",
+    "date": "2026-04-26",
+    "category": "agent",
+    "tags": [
+      "Google",
+      "Gemini",
+      "深度研究",
+      "AI Agent"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260426-03",
+    "title": "百灵大模型发布 Ling-2.6-flash：专注低延迟推理的轻量旗舰",
+    "summary": "百灵大模型正式发布 Ling-2.6-flash，这是一款专注于低延迟推理场景的轻量级旗舰模型。Ling-2.6-flash 在保持高质量输出的同时，将首 token 延迟降低至毫秒级，特别适合实时对话、代码补全和移动端部署场景。百灵大模型持续在推理效率赛道深耕，与 Qwen3.6-27B 和 DeepSeek-V4 flash 形成竞争格局。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-26",
+    "category": "llm",
+    "tags": [
+      "百灵",
+      "Ling-2.6-flash",
+      "低延迟",
+      "轻量模型"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260426-04",
+    "title": "谷歌 AI 边缘战略：凭借 Gemini 生态追赶 AWS 和 Azure 云计算霸主",
+    "summary": "据报道，谷歌正在将 AI 能力作为追赶 AWS 和 Azure 的核心战略武器。谷歌云通过深度整合 Gemini 模型、TPU 硬件和 Vertex AI 平台，在 AI 工作负载领域建立差异化优势。分析师指出，谷歌在 AI 基础设施（TPU）和模型能力（Gemini 3.1）上的双重领先，正在帮助其在企业云市场重新获得竞争力，2026 Q1 谷歌云增速已超过 AWS。",
+    "source": "Hacker News",
+    "url": "https://news.ycombinator.com/",
+    "date": "2026-04-26",
+    "category": "industry",
+    "tags": [
+      "Google",
+      "云计算",
+      "AI战略",
+      "Gemini"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260426-05",
+    "title": "Perplexity 推出 Mac 端 AI 助手：原生集成 macOS，挑战 Apple Intelligence",
+    "summary": "Perplexity AI 正式推出 Mac 端原生 AI 助手应用，深度集成 macOS 系统，支持全局快捷键唤起、屏幕内容理解和系统级操作。Perplexity Mac 助手可以读取当前屏幕内容、分析文档、执行搜索并直接操作应用程序，与 Apple Intelligence 形成直接竞争。这是 Perplexity 从搜索工具向全能 AI 助手转型的重要一步。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-26",
+    "category": "agent",
+    "tags": [
+      "Perplexity",
+      "Mac",
+      "AI助手",
+      "Apple"
+    ],
+    "hot": false,
+    "region": "global"
+  },
+  {
+    "id": "news-20260425-01",
+    "title": "字节跳动发布 Seed3D 2.0：3D 内容生成能力大幅提升，支持视频转 3D",
+    "summary": "字节跳动正式发布 Seed3D 2.0，这是其在 3D 内容生成领域的重大升级。Seed3D 2.0 支持从单张图片、多视角图片或视频直接生成高质量 3D 模型，生成速度和几何精度均有显著提升。新版本特别强化了视频转 3D 能力，可从普通手机视频中重建精细的 3D 场景，为游戏、影视和 AR/VR 内容创作提供强大工具。",
+    "source": "字节跳动技术博客",
+    "url": "https://www.bytedance.com/en/news/",
+    "date": "2026-04-25",
+    "category": "llm",
+    "tags": [
+      "字节跳动",
+      "Seed3D",
+      "3D生成",
+      "多模态"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260425-02",
+    "title": "小米 MiMo-V2.5 公测：端侧推理模型，专为手机优化的小参数旗舰",
+    "summary": "小米正式开启 MiMo-V2.5 公测，这是一款专为移动端优化的小参数推理模型。MiMo-V2.5 在 1B-7B 参数范围内实现了接近 GPT-4o mini 的推理能力，特别针对手机 NPU 进行了深度优化，支持完全离线运行。小米将 MiMo 系列定位为 AI 手机的核心智能引擎，与苹果 Apple Intelligence 和三星 Galaxy AI 形成竞争。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-25",
+    "category": "llm",
+    "tags": [
+      "小米",
+      "MiMo",
+      "端侧AI",
+      "移动端"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260425-03",
+    "title": "阿里开源 Qwen3.6-35B-A3B：更大规模 MoE，开源模型性能再创新高",
+    "summary": "阿里巴巴 Qwen 团队正式开源 Qwen3.6-35B-A3B，总参数 35B，激活参数 3B，是 Qwen3.6-27B 的升级版本。35B-A3B 在保持相同激活参数（3B）的前提下，通过增加专家数量提升了模型容量，在 MMLU-Pro、GPQA 和 HumanEval 等基准上全面超越 27B 版本。Apache 2.0 协议开源，支持商业使用，是目前性价比最高的开源 MoE 模型之一。",
+    "source": "Qwen Blog",
+    "url": "https://qwenlm.github.io/blog/",
+    "date": "2026-04-25",
+    "category": "llm",
+    "tags": [
+      "Qwen",
+      "Qwen3.6-35B",
+      "MoE",
+      "开源模型",
+      "阿里"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260425-04",
+    "title": "蚂蚁灵光 App 闪应用突破 3000 万个：AI 原生应用生态爆发",
+    "summary": "蚂蚁集团旗下灵光 App 宣布平台上的闪应用（AI 原生微应用）数量突破 3000 万个，成为国内最大的 AI 原生应用生态之一。闪应用基于大模型能力，用户可以通过自然语言描述快速创建个性化 AI 应用，无需编程基础。这一数据标志着 AI 原生应用的创作门槛已大幅降低，普通用户也能成为 AI 应用的创造者。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-25",
+    "category": "agent",
+    "tags": [
+      "蚂蚁",
+      "灵光",
+      "AI应用",
+      "低代码"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260425-05",
+    "title": "腾讯开源混元 3D 世界模型 2.0：可交互 3D 场景生成，支持物理仿真",
+    "summary": "腾讯正式开源混元 3D 世界模型 2.0，这是一款支持可交互 3D 场景生成的世界模型。混元 3D 2.0 能够从文本或图像描述生成物理一致的 3D 场景，支持实时物理仿真和用户交互，可用于游戏开发、机器人仿真和 VR 内容创作。开源版本包含完整的训练代码和预训练权重，是目前开源社区中功能最完整的 3D 世界模型之一。",
+    "source": "AIbase 日报",
+    "url": "https://www.aibase.com/zh/daily",
+    "date": "2026-04-25",
+    "category": "llm",
+    "tags": [
+      "腾讯",
+      "混元",
+      "3D世界模型",
+      "开源",
+      "物理仿真"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
     "id": "news-20260424-09",
     "title": "Ray 2.55.1 发布：修复 Ray Data 流式处理内存泄漏，提升 KubeRay 稳定性",
     "summary": "Ray 2.55.1 于 2026-04-22 正式发布，主要修复 Ray Data 在大规模流式处理场景下的内存泄漏问题，同时改善 KubeRay Operator 在 Kubernetes 集群中的 Pod 调度稳定性。此版本为 2.55.0（2026-04-15）的补丁版本，建议生产环境用户尽快升级。Ray 是分布式 AI 计算的核心基础设施，广泛用于大模型训练和推理服务。",
