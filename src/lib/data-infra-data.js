@@ -93,7 +93,7 @@ export const K8S_DATA = {
     },
   ],
   components: [
-    { name: 'Kubernetes 1.29', role: '容器编排核心', desc: '统一管理所有计算资源，支持 GPU 拓扑感知调度', icon: '☸️', category: '核心' },
+    { name: 'Kubernetes 1.36.0', role: '容器编排核心', desc: '统一管理所有计算资源，支持 GPU 拓扑感知调度；v1.36.0 DRA（Dynamic Resource Allocation）进入 GA，GPU 细粒度分片调度正式成熟', icon: '☸️', category: '核心' },
     { name: 'Volcano 1.9', role: 'GPU 批调度器', desc: 'Gang Scheduling + Fair Share + 队列管理，训练任务不抢占', icon: '🌋', category: '调度' },
     { name: 'Istio 1.21', role: '服务网格', desc: 'mTLS 加密 + 流量管理 + 金丝雀发布 + 可观测性', icon: '🕸️', category: '网络' },
     { name: 'Argo CD', role: 'GitOps 部署', desc: 'Git 仓库即真相源，声明式部署，自动同步', icon: '🔄', category: '部署' },
