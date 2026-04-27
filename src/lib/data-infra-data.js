@@ -736,24 +736,67 @@ export const DATALAKE_DATA = {
           title: 'V3 核心设计源码解析',
           sections: [
             {
-              name: 'Binary Deletion Vector（DV）— Puffin 文件结构',
+              name: 'Binary Deletion Vector（DV）— Puffin 文件结构与 DataFile 定位机制',
               color: '#a29bfe',
-              desc: 'V3 用 Roaring Bitmap 替代 V2 的 Position Delete File，彻底解决 Flink 流式写入后 Delete File 数量爆炸问题。',
-              code: `// Puffin 文件格式 (iceberg-core/.../puffin/)
+              desc: 'V3 用 Roaring Bitmap 替代 V2 的 Position Delete File，彻底解决 Flink 流式写入后 Delete File 数量爆炸问题。核心设计：ManifestFile 中 DataFile 与 DV 双向绑定，写入时已知目标 DataFile，无需运行时扫描。',
+              code: `// ── Puffin 文件格式 (iceberg-core/.../puffin/) ──
 // 文件结构: [Magic(4B)][Blob1]...[BlobN][Footer JSON][FooterSize(4B)][Magic(4B)]
 // 每个 Blob 对应一个 DataFile 的删除位图:
 //   blob.type       = "deletion-vector-v1"
-//   blob.fields     = [data_file_content_id]
-//   blob.properties = {"cardinality": "42"}  // 被删除行数
+//   blob.fields     = [data_file_content_id]   ← 绑定到具体 DataFile
+//   blob.properties = {"cardinality": "42"}    ← 被删除行数（快速统计用）
 //   blob.data       = <Roaring Bitmap 序列化字节>
 
-// DV 读取路径:
-// 1. 扫描 ManifestFile，发现 DataFile 有关联的 puffin_path
-// 2. 加载 Puffin 文件，按 content_id 找到对应 Blob
-// 3. 反序列化 Roaring Bitmap -> deletedRows
-// 4. 读取 DataFile 时，按行号跳过 deletedRows 中标记的行
+// ── DataFile 与 DV 的双向绑定（ManifestFile 中）──
+// ManifestFile 中每条 DataFile 记录（V3 新增字段）:
+//   content_file_id: "abc-uuid-123"       ← DataFile 唯一 ID（写入时生成）
+//   puffin_path:     "s3://bucket/dv/snap-xxx.puffin"  ← 指向 DV 文件
+//   puffin_offset:   128                  ← Blob 在 Puffin 文件中的字节偏移
+//   puffin_length:   4096                 ← Blob 字节长度（支持 Range GET）
+//
+// 双向绑定关系:
+//   ManifestFile → DataFile.puffin_path → Puffin 文件
+//   Puffin Blob.fields[0] = content_file_id → 反查回 DataFile
+// 好处: 读取时 O(1) 定位 DV，无需扫描所有 Puffin 文件
 
-// V2 vs V3 删除文件对比 (Flink 1min checkpoint, parallelism=32):
+// ── 写入时如何知道要更新哪个 DataFile 的 DV？──
+// 关键: Upsert 引擎在写入时就已知被删除行在哪个 DataFile，不需要运行时扫描
+//
+// Upsert 流程（以 Flink Equality Delete 为例）:
+// 1. 收到 UPDATE id=42 SET score=0.9
+// 2. 引擎 Lookup（Bloom Filter / 主键索引）:
+//    → 找到 id=42 在 "part-00001.parquet" 的第 137 行
+//    → 这一步是 Upsert 本来就要做的，不是 DV 额外引入的开销
+// 3. 写新行到新 DataFile（Append）
+// 4. 更新 "part-00001.parquet" 的 DV:
+//    a. 从 ManifestFile 读取 puffin_path（已知，O(1)，通常已缓存）
+//    b. S3 Range GET puffin_offset~puffin_offset+puffin_length（只读该 Blob）
+//    c. 反序列化 Roaring Bitmap → 设置第 137 位 → 重新序列化
+//    d. 写新 Puffin 文件（旧 Puffin 文件不可变，生成新版本）
+// 5. 提交 Snapshot，ManifestFile 更新 puffin_path 指向新 Puffin 文件
+
+// ── 真正的额外开销分析 ──
+// 步骤                    开销       说明
+// Lookup 找行位置         已有开销   Upsert 本来就要做，非 DV 引入
+// 读 ManifestFile         极低       通常已在 Planner 内存缓存
+// S3 Range GET Puffin     中等       10~50ms/次，每个被更新的 DataFile 各一次
+// Bitmap OR 合并          极低       1~3ms，Roaring Bitmap 内存操作极快
+// 写新 Puffin 文件        低         KB 级，S3 PUT 约 20~100ms
+//
+// ⚠️ 关键: 若一次 checkpoint 更新了 N 个不同 DataFile 的行 → N 次 S3 GET
+// 优化手段:
+//   1. 引擎侧缓存热点 DataFile 的 Puffin 文件（避免重复 S3 GET）
+//   2. Flink checkpoint 内按 DataFile 分组攒积，每个 DataFile 只读一次旧 Puffin
+//   3. Compaction 控制 DataFile 数量（DataFile 越少，需更新的 Puffin 越少）
+//   4. 利用 puffin_offset + puffin_length 做 Range GET，不读整个 Puffin 文件
+
+// ── DV 读取路径 ──
+// 1. 扫描 ManifestFile，发现 DataFile 有 puffin_path 字段
+// 2. S3 Range GET puffin_offset~puffin_offset+puffin_length（精确读取该 Blob）
+// 3. 反序列化 Roaring Bitmap -> deletedRows
+// 4. 读取 DataFile 时，按行号跳过 deletedRows 中标记的行（位图 AND NOT 操作）
+
+// ── V2 vs V3 删除文件对比 (Flink 1min checkpoint, parallelism=32) ──
 // V2: 每次 checkpoint 生成 32 个 .parquet 删除文件
 //   -> 1 小时后: 1920 个删除文件，查询需 Join 1920 个文件
 //   -> 24 小时后: 46080 个删除文件 -> 查询性能崩溃
