@@ -638,7 +638,9 @@ export function DatalakeTab() {
     { id: 'schema',      label: 'Schema 演化', icon: '🔄' },
     { id: 'partition',   label: '分区演化',    icon: '📂' },
     { id: 'compaction',  label: 'Compaction', icon: '🗜️' },
-    { id: 'rowdelete',   label: '行级删除',    icon: '🗑️' },
+    { id: 'rowdelete',   label: '行级删除 V2→V3', icon: '🗑️' },
+    { id: 'v3flow',      label: 'V3 读写流程', icon: '⚡' },
+    { id: 'timeline',    label: '功能时间线',  icon: '📅' },
     { id: 'pyiceberg',   label: 'PyIceberg',  icon: '🐍' },
   ];
 
@@ -1450,26 +1452,152 @@ export function DatalakeTab() {
               <div className="rounded-2xl border border-[#e17055]/20 bg-[#e17055]/04 p-4">
                 <div className="text-sm font-bold text-gray-800 mb-1">{icebergSource.rowLevelOps.title}</div>
                 <div className="text-[10px] text-gray-500 mb-3">{icebergSource.rowLevelOps.desc}</div>
-                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
-                  style={{ background: '#e1705508', color: '#e17055', border: '1px solid #e1705520' }}>
-                  {icebergSource.rowLevelOps.code}
-                </pre>
               </div>
-              <SectionCard icon="🗑️" title="Delete File 类型对比" desc="">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* V2 vs V3 删除类型对比 */}
+              <SectionCard icon="🗑️" title="V2 vs V3 删除机制对比" desc="">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {icebergSource.rowLevelOps.deleteTypes.map(d => (
                     <div key={d.type} className="rounded-xl border p-3"
                       style={{ borderColor: d.color + '25', background: d.color + '05' }}>
-                      <div className="text-xs font-bold mb-1" style={{ color: d.color }}>{d.type}</div>
-                      <p className="text-[10px] text-gray-500 mb-1">{d.desc}</p>
-                      <span className="text-[9px] px-2 py-0.5 rounded-full"
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="text-[8px] px-1.5 py-0.5 rounded-full font-bold"
+                          style={{ background: d.color + '20', color: d.color }}>{d.version}</span>
+                        <span className="text-xs font-bold" style={{ color: d.color }}>{d.type}</span>
+                      </div>
+                      <p className="text-[9px] text-gray-500 mb-1">{d.desc}</p>
+                      <span className="text-[8px] px-2 py-0.5 rounded-full"
                         style={{ background: d.color + '15', color: d.color }}>适用：{d.useCase}</span>
                     </div>
                   ))}
                 </div>
               </SectionCard>
+              {/* V2 实现代码 */}
+              <SectionCard icon="📄" title="V2 底层实现" desc="Position Delete File + Equality Delete File">
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#ffa65708', color: '#e17055', border: '1px solid #ffa65720' }}>
+                  {icebergSource.rowLevelOps.v2Code}
+                </pre>
+              </SectionCard>
+              {/* V3 DV 实现代码 */}
+              <SectionCard icon="⚡" title="V3 Deletion Vector（DV）底层实现" desc="Roaring Bitmap 替代 Delete File，文件数不再线性增长">
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#00b89408', color: '#00b894', border: '1px solid #00b89420' }}>
+                  {icebergSource.rowLevelOps.v3Code}
+                </pre>
+              </SectionCard>
+              {/* Compaction 说明 */}
+              <SectionCard icon="🗜️" title="Compaction：V2 和 V3 共同的物化合并手段" desc="">
+                <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                  style={{ background: '#6c5ce708', color: '#6c5ce7', border: '1px solid #6c5ce720' }}>
+                  {icebergSource.rowLevelOps.compactionNote}
+                </pre>
+              </SectionCard>
             </div>
           )}
+
+          {/* ── V3 读写流程 + Bloom Filter ── */}
+          {activeIcebergTab === 'v3flow' && icebergSource.v3FlowAndBF && (() => {
+            const v3 = icebergSource.v3FlowAndBF;
+            return (
+              <div className="space-y-4">
+                {/* Bloom Filter 说明 */}
+                <div className="rounded-2xl border border-[#00b894]/20 bg-[#00b894]/04 p-4">
+                  <div className="text-sm font-bold text-gray-800 mb-1">🌸 Bloom Filter — 是什么/谁创建/是否必须</div>
+                  <div className="text-[10px] text-gray-500 mb-3">{v3.bloomFilterDesc}</div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                    {v3.bloomFilterUseCases.map((uc, i) => (
+                      <div key={i} className={`rounded-xl border p-2.5 ${i===0?'border-green-100 bg-green-50/30':'border-red-100 bg-red-50/30'}`}>
+                        <div className={`text-[9px] font-bold mb-1 ${i===0?'text-green-700':'text-red-600'}`}>{uc.label}</div>
+                        {uc.cases.map((c, ci) => <div key={ci} className="text-[8px] text-gray-500">· {c}</div>)}
+                      </div>
+                    ))}
+                  </div>
+                  <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+                    style={{ background: '#00b89408', color: '#00b894', border: '1px solid #00b89420' }}>
+                    {v3.bloomFilterSetup}
+                  </pre>
+                </div>
+                {/* BF 大小权衡表 */}
+                <SectionCard icon="📊" title="Bloom Filter 误判率 vs 文件大小（100万行）" desc="">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-[9px]">
+                      <thead><tr className="border-b border-gray-100">
+                        <th className="text-left py-1 px-2 text-gray-400">误判率 FPP</th>
+                        <th className="text-left py-1 px-2 text-gray-400">每 key 空间</th>
+                        <th className="text-left py-1 px-2 text-gray-400">100万行大小</th>
+                        <th className="text-left py-1 px-2 text-gray-400">备注</th>
+                      </tr></thead>
+                      <tbody>
+                        {v3.bfSizeTable.map((row, i) => (
+                          <tr key={i} className={`border-b border-gray-50 ${i===1?'bg-green-50/30 font-semibold':''}`}>
+                            <td className="py-1 px-2 text-gray-700">{row.fpp}</td>
+                            <td className="py-1 px-2 text-gray-500">{row.bytesPerKey} bytes</td>
+                            <td className="py-1 px-2 text-gray-500">{row.size1M}</td>
+                            <td className="py-1 px-2 text-gray-400">{row.note}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </SectionCard>
+                {/* 写入流程 */}
+                <SectionCard icon="✍️" title="V3 完整 Upsert 写入流程" desc="Flink checkpoint 内的完整 S3 操作链路">
+                  <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                    style={{ background: '#a29bfe08', color: '#6c5ce7', border: '1px solid #a29bfe20' }}>
+                    {v3.writeFlowCode}
+                  </pre>
+                </SectionCard>
+                {/* 读取流程 */}
+                <SectionCard icon="🔍" title="V3 完整读取流程" desc="点查（BF 加速）+ 范围查询（列统计裁剪）">
+                  <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
+                    style={{ background: '#00cec908', color: '#00cec9', border: '1px solid #00cec920' }}>
+                    {v3.readFlowCode}
+                  </pre>
+                </SectionCard>
+              </div>
+            );
+          })()}
+
+          {/* ── 功能时间线 ── */}
+          {activeIcebergTab === 'timeline' && icebergSource.icebergTimeline && (() => {
+            const tl = icebergSource.icebergTimeline;
+            return (
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-[#74b9ff]/20 bg-[#74b9ff]/04 p-4">
+                  <div className="text-sm font-bold text-gray-800 mb-1">📅 {tl.title}</div>
+                  <div className="text-[10px] text-gray-500">{tl.desc}</div>
+                </div>
+                <div className="relative">
+                  {/* 时间线竖线 */}
+                  <div className="absolute left-[72px] top-0 bottom-0 w-px bg-gray-200" />
+                  <div className="space-y-4">
+                    {tl.events.map((ev, ei) => (
+                      <div key={ei} className="flex gap-4">
+                        {/* 日期+版本 */}
+                        <div className="w-[68px] flex-shrink-0 text-right">
+                          <div className="text-[9px] font-bold" style={{ color: ev.color }}>{ev.date}</div>
+                          <div className="text-[8px] text-gray-400 leading-tight">{ev.version}</div>
+                        </div>
+                        {/* 圆点 */}
+                        <div className="flex-shrink-0 w-3 h-3 rounded-full border-2 mt-1 z-10"
+                          style={{ borderColor: ev.color, background: ev.color + '30' }} />
+                        {/* 内容 */}
+                        <div className="flex-1 pb-2">
+                          {ev.highlights.map((h, hi) => (
+                            <div key={hi} className="mb-1.5 rounded-lg border p-2"
+                              style={{ borderColor: ev.color + '20', background: ev.color + '06' }}>
+                              <div className="text-[9px] font-bold mb-0.5" style={{ color: ev.color }}>{h.name}</div>
+                              <div className="text-[8px] text-gray-500">{h.desc}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* ── PyIceberg ── */}
           {activeIcebergTab === 'pyiceberg' && (
