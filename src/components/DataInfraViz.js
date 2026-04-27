@@ -641,6 +641,7 @@ export function DatalakeTab() {
     { id: 'rowdelete',   label: '行级删除 V2→V3', icon: '🗑️' },
     { id: 'v3flow',      label: 'V3 读写流程', icon: '⚡' },
     { id: 'timeline',    label: '功能时间线',  icon: '📅' },
+    { id: 'flink',       label: 'Flink 集成 🆕', icon: '🔗' },
     { id: 'pyiceberg',   label: 'PyIceberg',  icon: '🐍' },
   ];
 
@@ -1599,7 +1600,157 @@ export function DatalakeTab() {
             );
           })()}
 
+          {/* ── Flink 集成 🆕 ── */}
+          {activeIcebergTab === 'flink' && icebergSource.flinkIntegration && (() => {
+            const fi = icebergSource.flinkIntegration;
+            return (
+              <div className="space-y-4">
+                {/* 总览 */}
+                <div className="rounded-2xl border border-[#00b894]/20 bg-[#00b894]/04 p-4">
+                  <div className="text-sm font-bold text-gray-800 mb-1">🔗 {fi.title}</div>
+                  <div className="text-[10px] text-gray-500">{fi.desc}</div>
+                </div>
+
+                {/* 1. FlinkSink vs IcebergSink 对比 */}
+                <SectionCard icon="⚖️" title={fi.sinkComparison.title} desc={fi.sinkComparison.desc}>
+                  <div className="overflow-x-auto mb-3">
+                    <table className="w-full text-[9px]">
+                      <thead><tr className="border-b border-gray-100">
+                        <th className="text-left py-1.5 px-2 text-gray-400">维度</th>
+                        <th className="text-left py-1.5 px-2 text-gray-500 font-semibold">FlinkSink（V1）</th>
+                        <th className="text-left py-1.5 px-2 font-semibold text-[#00b894]">IcebergSink（V2）</th>
+                      </tr></thead>
+                      <tbody>
+                        {fi.sinkComparison.rows.map((row, i) => (
+                          <tr key={i} className={`border-b border-gray-50 ${row.highlight ? 'bg-green-50/30' : ''}`}>
+                            <td className="py-1.5 px-2 font-semibold text-gray-600">{row.dim}</td>
+                            <td className="py-1.5 px-2 text-gray-400">{row.v1}</td>
+                            <td className="py-1.5 px-2 text-[#00b894] font-medium">{row.v2}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto"
+                    style={{ background: '#00b89408', color: '#00b894', border: '1px solid #00b89420' }}>
+                    {fi.sinkComparison.v2CompactCode}
+                  </pre>
+                </SectionCard>
+
+                {/* 2. 分布模式 */}
+                <SectionCard icon="🔀" title={fi.distributionMode.title} desc={fi.distributionMode.desc}>
+                  <div className="space-y-3 mb-2">
+                    {fi.distributionMode.modes.map(m => (
+                      <div key={m.name} className="rounded-xl border p-3"
+                        style={{ borderColor: m.color + '30', background: m.color + '06' }}>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded"
+                            style={{ background: m.color + '20', color: m.color }}>{m.name}</span>
+                          <span className="text-[9px] text-gray-500">{m.useCase}</span>
+                        </div>
+                        <p className="text-[9px] text-gray-500 mb-2">{m.desc}</p>
+                        <pre className="text-[8px] font-mono rounded-lg p-2 leading-relaxed overflow-x-auto"
+                          style={{ background: m.color + '08', color: m.color, border: `1px solid ${m.color}20` }}>
+                          {m.code}
+                        </pre>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-[9px] text-gray-400 rounded-lg border border-gray-100 p-2">
+                    💡 {fi.distributionMode.statisticsNote}
+                  </div>
+                </SectionCard>
+
+                {/* 3. Upsert / CDC 写入 */}
+                <SectionCard icon="🔄" title={fi.upsertCdc.title} desc={fi.upsertCdc.desc}>
+                  <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto mb-3"
+                    style={{ background: '#6c5ce708', color: '#6c5ce7', border: '1px solid #6c5ce720' }}>
+                    {fi.upsertCdc.code}
+                  </pre>
+                  <div className="overflow-x-auto mb-2">
+                    <table className="w-full text-[9px]">
+                      <thead><tr className="border-b border-gray-100">
+                        <th className="text-left py-1 px-2 text-gray-400">RowKind</th>
+                        <th className="text-left py-1 px-2 text-gray-400">upsert=true 行为</th>
+                        <th className="text-left py-1 px-2 text-gray-400">Delete 类型</th>
+                      </tr></thead>
+                      <tbody>
+                        {fi.upsertCdc.writeLogic.map((row, i) => (
+                          <tr key={i} className="border-b border-gray-50">
+                            <td className="py-1 px-2 font-mono font-bold text-[8px]" style={{ color: row.color }}>{row.rowKind}</td>
+                            <td className="py-1 px-2 text-gray-500">{row.upsertBehavior}</td>
+                            <td className="py-1 px-2 text-gray-400">{row.deleteType}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="text-[9px] text-amber-600 rounded-lg border border-amber-100 bg-amber-50/30 p-2">
+                    ⚠️ {fi.upsertCdc.keyInsight}
+                  </div>
+                </SectionCard>
+
+                {/* 4. DynamicIcebergSink */}
+                <SectionCard icon="🔀" title={fi.dynamicSink.title} desc={fi.dynamicSink.desc}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                    {fi.dynamicSink.highlights.map((h, i) => (
+                      <div key={i} className="rounded-xl border border-[#fd79a8]/20 bg-[#fd79a8]/04 p-2.5">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="text-sm">{h.icon}</span>
+                          <span className="text-[9px] font-bold text-gray-700">{h.name}</span>
+                        </div>
+                        <p className="text-[8px] text-gray-500">{h.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto mb-2"
+                    style={{ background: '#fd79a808', color: '#e84393', border: '1px solid #fd79a820' }}>
+                    {fi.dynamicSink.code}
+                  </pre>
+                  <div className="space-y-1">
+                    {fi.dynamicSink.limitations.map((l, i) => (
+                      <div key={i} className="text-[8px] text-gray-400 flex items-start gap-1">
+                        <span className="text-amber-400 flex-shrink-0">⚠</span>{l}
+                      </div>
+                    ))}
+                  </div>
+                </SectionCard>
+
+                {/* 5. Dynamic Table SQL */}
+                <SectionCard icon="📋" title={fi.dynamicTable.title} desc={fi.dynamicTable.desc}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                    {fi.dynamicTable.sourceCapabilities.map((cap, i) => (
+                      <div key={i} className="rounded-xl border border-[#74b9ff]/20 bg-[#74b9ff]/04 p-2.5">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="text-sm">{cap.icon}</span>
+                          <span className="text-[9px] font-bold text-[#74b9ff]">{cap.name}</span>
+                        </div>
+                        <p className="text-[8px] text-gray-500">{cap.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <pre className="text-[8px] font-mono rounded-xl p-3 leading-relaxed overflow-x-auto mb-3"
+                    style={{ background: '#74b9ff08', color: '#0984e3', border: '1px solid #74b9ff20' }}>
+                    {fi.dynamicTable.sqlExample}
+                  </pre>
+                  <div className="space-y-1.5">
+                    {fi.dynamicTable.sourceSwitch.map((s, i) => (
+                      <div key={i} className="rounded-lg border border-gray-100 p-2 flex items-start gap-2">
+                        <span className="text-[8px] font-mono text-gray-400 flex-shrink-0">{i === 0 ? '默认' : 'FLIP-27'}</span>
+                        <div>
+                          <div className="text-[8px] font-mono text-gray-600">{s.config}</div>
+                          <div className="text-[8px] text-gray-400">{s.impl} — {s.note}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </SectionCard>
+              </div>
+            );
+          })()}
+
           {/* ── PyIceberg ── */}
+
           {activeIcebergTab === 'pyiceberg' && (
             <div className="space-y-4">
               <div className="rounded-2xl border border-[#3fb950]/20 bg-[#3fb950]/04 p-4">
