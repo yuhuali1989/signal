@@ -920,6 +920,168 @@ export const DATALAKE_DATA = {
 //   .execute();
 // Compaction 后 DV 消失，DataFile 变为干净文件，写入延迟恢复基准`,
             },
+            {
+              name: 'V3 完整读写流程 + Bloom Filter 机制详解',
+              color: '#00b894',
+              desc: 'Bloom Filter 是 Iceberg 可选的列级索引，存储在 Puffin 文件中，用于 Upsert Lookup 时快速判断"某个主键值是否在某个 DataFile 里"，避免扫描所有 DataFile。V3 不强制要求，但 Upsert 场景强烈建议开启。',
+              code: `// ════════════════════════════════════════════════════════════
+// ── PART 1: Bloom Filter 是什么、谁创建、是否必须 ──
+// ════════════════════════════════════════════════════════════
+//
+// Bloom Filter 本质: 概率型数据结构，用极小空间（约 1~2 bytes/key）
+// 回答"某个值是否可能在这个集合里"
+//   → 返回 false: 100% 不在，直接跳过该 DataFile（零 I/O）
+//   → 返回 true:  可能在（有误判率，默认 1%），需要实际读取确认
+//
+// ── 谁创建 Bloom Filter？──
+// 写入引擎（Spark/Flink）在写 DataFile 时，同步为指定列生成 Bloom Filter
+// 并将其作为 Puffin Blob 写入同一个 Puffin 文件（与 DV 共存）:
+//
+//   Puffin 文件结构（V3，同时含 DV 和 Bloom Filter）:
+//   [Magic][BF-Blob-col1][BF-Blob-col2][DV-Blob-file1][DV-Blob-file2][Footer][Magic]
+//
+//   BF Blob 字段:
+//     blob.type       = "apache-datasketches-theta-v1"  ← Theta Sketch 实现
+//     blob.fields     = [column_id]                     ← 对应哪一列
+//     blob.properties = {"ndv": "50000"}                ← 估计不同值数量
+//     blob.data       = <序列化的 Theta Sketch 字节>
+//
+// ── 是否必须开启？──
+// 不是必须的，V3 格式本身不强制要求 Bloom Filter
+// 但以下场景强烈建议开启:
+//   ✅ Upsert / MERGE INTO（需要 Lookup 主键所在 DataFile）
+//   ✅ 点查（SELECT * WHERE id = xxx）
+//   ✅ CDC 场景（高频按主键 DELETE/UPDATE）
+// 以下场景不需要:
+//   ❌ 纯 Append（无需 Lookup，直接写新文件）
+//   ❌ 全表扫描 / 范围查询（Bloom Filter 对范围查询无效）
+//
+// ── 如何开启 Bloom Filter？──
+// Spark 写入时指定（Iceberg 1.4+）:
+//   spark.sql("""
+//     ALTER TABLE db.events
+//     SET TBLPROPERTIES (
+//       'write.parquet.bloom-filter-enabled.column.id' = 'true',
+//       'write.parquet.bloom-filter-fpp'               = '0.01'  -- 误判率 1%
+//     )
+//   """)
+// Flink 写入时指定:
+//   tableEnv.executeSql("""
+//     CREATE TABLE events (...) WITH (
+//       'write.parquet.bloom-filter-enabled.column.id' = 'true'
+//     )
+//   """)
+// 注意: Bloom Filter 是 Parquet 列级特性，存储在 Parquet 文件的 ColumnChunk 里
+//       Iceberg 的 Puffin BF 是另一套（Theta Sketch），两者可共存
+
+// ════════════════════════════════════════════════════════════
+// ── PART 2: V3 完整写入流程（Upsert 场景，Flink 为例）──
+// ════════════════════════════════════════════════════════════
+//
+// 前置条件:
+//   - 表已开启 Bloom Filter（主键列 id）
+//   - 表已有若干 DataFile，每个 DataFile 有对应的 Puffin 文件（含 BF + DV）
+//
+// 步骤 1: Flink Task 收到一批 Upsert 记录（checkpoint 内攒积）
+//   records = [(id=42, score=0.9, op=UPDATE), (id=99, score=0.5, op=INSERT), ...]
+//
+// 步骤 2: Lookup 阶段 — 找到每条 UPDATE/DELETE 记录所在的 DataFile
+//   for each record where op != INSERT:
+//     2a. 读取当前 Snapshot 的 ManifestList → 获取所有 ManifestFile 路径
+//     2b. 对每个 ManifestFile，读取 DataFile 的 puffin_path
+//     2c. S3 Range GET Puffin 中的 BF Blob（按 column_id 定位）
+//     2d. 查询 Bloom Filter: bloomFilter.mightContain(id=42)
+//         → false: 跳过该 DataFile（零 I/O）
+//         → true:  读取 DataFile 的行级索引（Parquet RowGroup 统计 / 实际扫描）
+//                  确认 id=42 在第 137 行
+//     2e. 记录: id=42 → DataFile "part-00001.parquet", row=137
+//
+// 步骤 3: 写新 DataFile（Append 新版本数据）
+//   newDataFile = writeParquet([
+//     {id=42, score=0.9, first_row_id=R},    ← 新版本
+//     {id=99, score=0.5, first_row_id=R+1},  ← 新插入
+//   ])
+//   同时为新 DataFile 生成新的 Bloom Filter Blob（写入新 Puffin 文件）
+//
+// 步骤 4: 更新旧 DataFile 的 DV（标记旧行已删除）
+//   for each (dataFile, rowPosition) in lookupResults:
+//     4a. S3 Range GET 旧 Puffin 中的 DV Blob
+//     4b. 反序列化 Roaring Bitmap → 设置 bit[137] = 1
+//     4c. 重新序列化 → 写入新 Puffin 文件（旧 Puffin 不可变）
+//
+// 步骤 5: 提交 Snapshot
+//   5a. 写新 ManifestFile（Avro）:
+//       - 新 DataFile: puffin_path → 新 Puffin（含 BF + 空 DV）
+//       - 旧 DataFile: puffin_path → 新 Puffin（含旧 BF + 更新后 DV）
+//   5b. 写新 ManifestList（Avro）
+//   5c. CAS 更新 TableMetadata:
+//       - current-snapshot-id → 新 Snapshot
+//       - next-row-id += 写入行数（Row Lineage）
+//
+// 总 S3 操作:
+//   GET: N_updated_files 次（读旧 Puffin DV Blob）
+//        + M_candidate_files 次（读 BF Blob，大部分被 BF 过滤掉）
+//   PUT: 1 个新 DataFile + K 个新 Puffin 文件 + 1 ManifestFile + 1 ManifestList + 1 metadata.json
+
+// ════════════════════════════════════════════════════════════
+// ── PART 3: V3 完整读取流程（点查 + 范围查询）──
+// ════════════════════════════════════════════════════════════
+//
+// 场景 A: 点查  SELECT * FROM events WHERE id = 42
+//
+// 步骤 1: Catalog 加载 TableMetadata → 获取 current-snapshot-id
+// 步骤 2: 读取 ManifestList → 获取所有 ManifestFile 路径
+// 步骤 3: 读取每个 ManifestFile，获取 DataFile 列表 + 分区统计
+//         → 分区裁剪: 跳过分区范围不含 id=42 的 ManifestFile
+// 步骤 4: 对剩余 DataFile，读取 Puffin 中的 BF Blob
+//         → bloomFilter.mightContain(42) = false → 跳过（大部分文件在此被过滤）
+//         → bloomFilter.mightContain(42) = true  → 进入步骤 5
+// 步骤 5: 读取 DataFile（Parquet）
+//         → Parquet RowGroup 统计裁剪（min/max）
+//         → 读取目标 RowGroup，找到 id=42 的行（row_position=137）
+// 步骤 6: 检查 DV（若 DataFile 有 puffin_path）
+//         → S3 Range GET DV Blob → 反序列化 Roaring Bitmap
+//         → bitmap.contains(137) = true → 该行已被删除，跳过
+//         → bitmap.contains(137) = false → 返回该行数据
+// 步骤 7: 合并多版本（若同一 id 在多个 DataFile 中存在）
+//         → 取 _row_id 最大的版本（最新写入）
+//
+// 场景 B: 范围查询  SELECT * FROM events WHERE ts BETWEEN '2026-01-01' AND '2026-04-01'
+//
+// 步骤 1~3: 同上（Catalog → ManifestList → ManifestFile 分区裁剪）
+// 步骤 4: Bloom Filter 对范围查询无效，跳过 BF 检查
+//         → 直接用 ManifestFile 中的列统计（min_ts / max_ts）做裁剪
+// 步骤 5: 读取 DataFile → Parquet RowGroup 统计裁剪 → 读取目标 RowGroup
+// 步骤 6: 检查 DV（同上，跳过已删除行）
+//
+// ── 读取性能对比（V2 vs V3，高更新场景）──
+// V2（运行 24h 后）:
+//   步骤 6 变为: 扫描 46080 个 Position Delete File，Join 找到被删除行
+//   → 查询延迟从 100ms 膨胀到 10s+
+// V3（运行 24h 后）:
+//   步骤 6 仍为: 读 1 个 Puffin Blob（KB 级），Bitmap 查询 O(1)
+//   → 查询延迟稳定在 100~200ms
+
+// ════════════════════════════════════════════════════════════
+// ── PART 4: Bloom Filter 误判率与文件大小权衡 ──
+// ════════════════════════════════════════════════════════════
+//
+// 误判率 (FPP) vs 每个 key 占用空间:
+//   FPP=10%  → ~0.48 bytes/key
+//   FPP=1%   → ~0.96 bytes/key  ← 默认推荐
+//   FPP=0.1% → ~1.44 bytes/key
+//
+// 实际大小估算（DataFile 100万行，主键列，FPP=1%）:
+//   BF 大小 ≈ 100万 * 0.96 bytes ≈ 960KB ≈ 1MB
+//   → 每次 Lookup 读 1MB BF Blob（S3 GET 约 10~30ms）
+//   → 过滤掉 99% 的 DataFile，只有 1% 需要实际读取
+//
+// 建议:
+//   - 主键列（id/uuid）: FPP=1%，收益最大
+//   - 高基数列（user_id/device_id）: FPP=1%
+//   - 低基数列（status/type）: 不建议开 BF，用分区裁剪代替
+//   - DataFile 行数 < 10万: BF 收益有限，可不开`,
+            },
           ],
         },
       },
