@@ -1436,38 +1436,231 @@ SparkActions.get(spark)
     },
 
     rowLevelOps: {
-      title: 'Row-Level Delete（行级删除）',
-      desc: 'Iceberg v2 引入 Position Delete 和 Equality Delete，支持高效的行级更新/删除，无需重写整个数据文件。',
-      code: `// Spark MERGE INTO（Upsert）
-spark.sql("""
-  MERGE INTO gold.labeled_frames AS target
-  USING new_labels AS source
-  ON target.frame_id = source.frame_id
-  WHEN MATCHED THEN
-    UPDATE SET target.label_version = source.label_version,
-               target.confidence = source.confidence
-  WHEN NOT MATCHED THEN
-    INSERT *
-""");
-
-// ── 底层实现（Iceberg v2 格式）──
+      title: 'Row-Level Delete（行级删除）V2 → V3 演进',
+      desc: 'Iceberg V2 引入 Position/Equality Delete File 实现行级删除；V3 用 Binary Deletion Vector（DV）彻底替代，解决 Delete File 随时间线性堆积的问题。Compaction 是两个版本共同的物化合并手段。',
+      v2Code: `// ── V2 行级删除底层实现 ──
 // MERGE INTO 生成两类文件：
 //
 // 1. Position Delete File（位置删除文件）
-//    记录被删除行的 (data_file_path, pos) 对
 //    格式：Parquet，包含 file_path + pos 两列
-//    读取时：扫描 DataFile 时跳过 DeleteFile 中标记的行
+//    写入：每次 checkpoint 生成 1 个新 .parquet 删除文件
+//    读取：扫描 DataFile 时跳过 DeleteFile 中标记的行
+//    ⚠️ 问题：Flink 1min checkpoint + parallelism=32 → 24h 后 46080 个删除文件
 //
 // 2. Equality Delete File（等值删除文件）
-//    记录被删除行的主键值（如 frame_id）
-//    读取时：Join DataFile 和 DeleteFile，过滤匹配行
+//    格式：Parquet，包含主键列值
+//    写入：按主键值记录被删除行
+//    读取：Join DataFile 和 DeleteFile，过滤匹配行
+//    ⚠️ 问题：读取时需要 Join 所有 Equality Delete File，随数量增加性能急剧下降
 //
-// 3. 后台 Compaction 将 Delete File 物化合并
-//    rewriteDataFiles 时自动合并 DataFile + DeleteFile
-//    生成干净的新 DataFile，删除旧的 DeleteFile`,
+// 3. 后台 Compaction 物化合并（V2 必须定期执行）
+//    SparkActions.get(spark).rewriteDataFiles(table)
+//      .option("delete-file-threshold", "2")  // 有 2+ 删除文件时触发
+//      .execute();
+//    → 合并 DataFile + DeleteFile → 生成干净 DataFile → 删除旧 DeleteFile`,
+      v3Code: `// ── V3 Binary Deletion Vector（DV）底层实现 ──
+// DV 用 Roaring Bitmap 替代 Delete File，存储在 Puffin 文件中
+//
+// ManifestFile 中 DataFile 记录（V3 新增字段）:
+//   content_file_id: "abc-uuid-123"       ← DataFile 唯一 ID
+//   puffin_path:     "s3://bucket/dv/snap-xxx.puffin"
+//   puffin_offset:   128                  ← Blob 字节偏移（支持 Range GET）
+//   puffin_length:   4096                 ← Blob 字节长度
+//
+// Puffin Blob 结构:
+//   blob.type       = "deletion-vector-v1"
+//   blob.fields     = [content_file_id]   ← 绑定到具体 DataFile
+//   blob.properties = {"cardinality": "42"}
+//   blob.data       = <Roaring Bitmap 序列化字节>
+//
+// V3 Upsert 写入流程:
+// 1. Lookup: BF 过滤 → 找到 id=42 在 "part-001.parquet" 第 137 行
+// 2. 写新 DataFile（Append 新版本数据）
+// 3. 更新旧 DataFile 的 DV:
+//    S3 Range GET 旧 Puffin DV Blob
+//    → 反序列化 Bitmap → 设置 bit[137]=1 → 重新序列化
+//    → 写新 Puffin 文件（旧 Puffin 不可变）
+// 4. 提交 Snapshot（ManifestFile 更新 puffin_path）
+//
+// V3 读取流程（点查）:
+// Catalog → ManifestList → ManifestFile 分区裁剪
+// → BF 过滤（99% DataFile 被跳过）
+// → Parquet RowGroup 统计裁剪
+// → 读目标行 → DV 检查: bitmap.contains(row) → 跳过已删除行
+//
+// ✅ 效果对比（Flink 1min checkpoint, parallelism=32, 运行 24h）:
+//   V2: 46080 个删除文件 → 查询需 Join 46080 个文件 → 延迟 10s+
+//   V3: 删除文件数 ≤ DataFile 数量（通常 < 1000）→ 延迟稳定 100~200ms`,
+      compactionNote: `// ── Compaction：V2 和 V3 共同的物化合并手段 ──
+// V2: 必须定期执行，否则 Delete File 堆积导致查询崩溃
+// V3: 当 DataFile 删除率 > 50% 时建议执行，清理 DV 恢复干净文件
+//
+// SparkActions.get(spark).rewriteDataFiles(table)
+//   .option("delete-file-threshold", "2")   // V2: 有 2+ 删除文件时触发
+//   .option("min-file-size-bytes", String.valueOf(50 * 1024 * 1024))
+//   .option("target-file-size-bytes", String.valueOf(256 * 1024 * 1024))
+//   .execute();
+//
+// Compaction 后: DataFile 变为干净文件，DV/DeleteFile 消失，查询性能恢复基准`,
       deleteTypes: [
-        { type: 'Position Delete', desc: '记录 (文件路径, 行位置)，精确定位，读取开销小', useCase: '少量行更新/删除', color: '#ffa657' },
-        { type: 'Equality Delete', desc: '记录主键值，写入简单，读取需 Join', useCase: 'CDC 场景，按主键 Upsert', color: '#6c5ce7' },
+        { type: 'V2 Position Delete', desc: '记录 (文件路径, 行位置)，精确定位，读取开销小。问题：每次 checkpoint 生成 1 个新文件，长期运行后文件数爆炸', useCase: 'V2 少量行更新/删除', color: '#ffa657', version: 'V2' },
+        { type: 'V2 Equality Delete', desc: '记录主键值，写入简单，读取需 Join 所有 Equality Delete File。问题：随文件数增加读性能急剧下降', useCase: 'V2 CDC/按主键 Upsert', color: '#6c5ce7', version: 'V2' },
+        { type: 'V3 Deletion Vector（DV）', desc: 'Roaring Bitmap 存于 Puffin 文件，每个 DataFile 最多 1 个 DV Blob，多次 Upsert 做 Bitmap OR 合并，文件数不再线性增长', useCase: 'V3 高频 Upsert/CDC（推荐）', color: '#00b894', version: 'V3' },
+      ],
+    },
+
+    // ── Iceberg 功能时间线（近两年真实数据）──
+    icebergTimeline: {
+      title: 'Apache Iceberg 近两年功能时间线',
+      desc: '基于 Apache Iceberg GitHub Releases 和官方博客整理，覆盖 2023 年至今的重要版本和功能里程碑。',
+      events: [
+        {
+          date: '2023-05',
+          version: 'Iceberg 1.3.0',
+          color: '#74b9ff',
+          highlights: [
+            { name: 'REST Catalog GA', desc: 'REST Catalog 协议正式稳定，成为多引擎共享 Catalog 的标准方案，Polaris/Unity Catalog 均基于此协议' },
+            { name: 'Puffin 文件格式引入', desc: '新增 Puffin 统计文件格式（.puffin），用于存储列级统计信息（NDV/Theta Sketch），为 V3 DV 奠定基础' },
+            { name: 'Flink 1.17 写入优化', desc: 'Flink sink 支持 upsert 模式，改善流式写入小文件问题' },
+          ],
+        },
+        {
+          date: '2023-11',
+          version: 'Iceberg 1.4.0',
+          color: '#74b9ff',
+          highlights: [
+            { name: 'Bloom Filter 列索引', desc: 'Parquet Bloom Filter 正式集成到 Iceberg 写入路径，通过表属性 write.parquet.bloom-filter-enabled.column.xxx 开启，支持 Upsert Lookup 加速' },
+            { name: 'Incremental Read API', desc: '新增增量读取 API，支持只读取两个 Snapshot 之间的变更数据，CDC 场景效率大幅提升' },
+            { name: 'Spark 3.5 深度集成', desc: 'Spark 3.5 原生支持 Iceberg V2 MERGE INTO，性能提升 30%+' },
+          ],
+        },
+        {
+          date: '2024-02',
+          version: 'Iceberg 1.5.0',
+          color: '#a29bfe',
+          highlights: [
+            { name: 'V3 Spec 草案发布', desc: 'Apache Iceberg Format Spec V3 草案公开，引入 Deletion Vector、Row Lineage、Variant 类型、地理空间类型等核心特性' },
+            { name: 'Trino 支持 V2 MoR 读取', desc: 'Trino 440+ 完整支持 V2 Merge-on-Read，Position/Equality Delete File 读取性能优化' },
+            { name: 'PyIceberg 0.6.0', desc: 'PyIceberg 支持 REST Catalog、谓词下推、列裁剪，Python 生态无需 JVM 即可读写 Iceberg 表' },
+          ],
+        },
+        {
+          date: '2024-06',
+          version: 'Iceberg 1.6.0',
+          color: '#a29bfe',
+          highlights: [
+            { name: 'V3 Spec 正式定稿', desc: 'Iceberg Format Spec V3 正式发布，明确 Binary Deletion Vector、Row Lineage（_row_id）、Variant 类型、timestamp_ns、geometry/geography 类型规范' },
+            { name: 'Deletion Vector 实验性支持', desc: 'Iceberg 核心库加入 DV 读写实验性实现，Puffin 文件中 deletion-vector-v1 Blob 格式确定' },
+            { name: 'Unity Catalog REST Catalog 兼容', desc: 'Unity Catalog 0.2.x 实现 Iceberg REST Catalog 协议，成为多引擎统一 Catalog 方案' },
+          ],
+        },
+        {
+          date: '2024-10',
+          version: 'Iceberg 1.7.0',
+          color: '#fd79a8',
+          highlights: [
+            { name: 'DV 写入正式支持（Spark）', desc: 'Spark 3.5+ 写入路径正式支持 V3 Deletion Vector，通过 write.delete.mode=merge-on-read 触发 DV 路径' },
+            { name: 'Row Lineage 实现', desc: '_row_id 全局唯一行 ID 分配机制实现，DataFile 新增 first-row-id 字段，next-row-id 写入 TableMetadata' },
+            { name: 'Variant 类型实验性支持', desc: 'Parquet VariantEncoding 集成，Variant 列拆分为 value BINARY + metadata BINARY 双列存储' },
+          ],
+        },
+        {
+          date: '2025-01',
+          version: 'Iceberg 1.8.0',
+          color: '#fd79a8',
+          highlights: [
+            { name: 'V3 全面 GA（Spark 4.0 配套）', desc: 'Iceberg 1.8 配合 Spark 4.0（2025 Q2 发布）正式 GA V3 格式，DV/Row Lineage/Variant 全部进入稳定 API' },
+            { name: 'PyIceberg 0.9 V3 支持', desc: 'PyIceberg 0.9 支持 V3 Variant 读写、DV 读取，Python 生态可直接操作 V3 表' },
+            { name: 'Trino 460+ DV 读取 GA', desc: 'Trino 460+ 正式支持 V3 DV 读取，查询 V3 表时自动应用 Bitmap 过滤' },
+          ],
+        },
+        {
+          date: '2025-Q3',
+          version: 'Iceberg 1.9.x（规划中）',
+          color: '#55efc4',
+          highlights: [
+            { name: 'Flink 2.1 DV 写入支持', desc: 'Flink 2.1（预计 2026 Q2 GA）将支持 V3 DV 写入路径，彻底解决 Flink 流式写入小文件爆炸问题' },
+            { name: 'Row-id 段批量分配优化', desc: '解决多并发写入者 next-row-id CAS 竞争问题，Catalog 端批量分配 row-id 段' },
+            { name: 'DuckDB 1.2+ V3 读取', desc: 'DuckDB 1.2+ 支持 V3 格式读取，Variant 类型对接 JSON 生态' },
+          ],
+        },
+      ],
+    },
+
+    // ── V3 完整读写流程 + Bloom Filter ──
+    v3FlowAndBF: {
+      title: 'V3 完整读写流程 + Bloom Filter 机制',
+      bloomFilterDesc: 'Bloom Filter 是 Iceberg 可选的列级索引，存储在 Puffin 文件中（Theta Sketch 实现）。V3 不强制要求，但 Upsert/点查/CDC 场景强烈建议开启，可过滤 99% 的无关 DataFile。',
+      bloomFilterRequired: false,
+      bloomFilterUseCases: [
+        { label: '✅ 强烈建议', cases: ['Upsert / MERGE INTO（Lookup 主键）', '点查（WHERE id = xxx）', 'CDC 高频 DELETE/UPDATE'] },
+        { label: '❌ 不需要', cases: ['纯 Append（无 Lookup）', '全表扫描', '范围查询（用分区裁剪代替）'] },
+      ],
+      bloomFilterSetup: `-- Spark 开启 Bloom Filter（Iceberg 1.4+）
+ALTER TABLE db.events SET TBLPROPERTIES (
+  'write.parquet.bloom-filter-enabled.column.id' = 'true',
+  'write.parquet.bloom-filter-fpp' = '0.01'  -- 误判率 1%
+);
+
+-- Flink 建表时开启
+CREATE TABLE events (...) WITH (
+  'connector' = 'iceberg',
+  'write.parquet.bloom-filter-enabled.column.id' = 'true'
+);`,
+      writeFlowCode: `// ── V3 完整 Upsert 写入流程（Flink 为例）──
+//
+// 步骤 1: Flink checkpoint 内攒积一批 Upsert 记录
+//   records = [(id=42, score=0.9, op=UPDATE), (id=99, op=INSERT), ...]
+//
+// 步骤 2: Lookup 阶段（找到每条 UPDATE/DELETE 所在 DataFile）
+//   for each record where op != INSERT:
+//     读 ManifestList → ManifestFile → DataFile 的 puffin_path
+//     S3 Range GET Puffin BF Blob（按 column_id 定位）
+//     BF.mightContain(id=42) = false → 跳过（零 I/O）
+//     BF.mightContain(id=42) = true  → 读 Parquet 确认行位置（row=137）
+//
+// 步骤 3: 写新 DataFile（Append 新版本数据 + 生成新 BF）
+//   newDataFile = writeParquet([{id=42, score=0.9, first_row_id=R}, ...])
+//
+// 步骤 4: 更新旧 DataFile 的 DV
+//   for each (dataFile, rowPos) in lookupResults:
+//     S3 Range GET 旧 Puffin DV Blob（puffin_offset + puffin_length）
+//     反序列化 Roaring Bitmap → 设置 bit[rowPos]=1 → 重新序列化
+//     写新 Puffin 文件（旧 Puffin 不可变）
+//
+// 步骤 5: 提交 Snapshot
+//   写新 ManifestFile（新/旧 DataFile 各自的新 puffin_path）
+//   写新 ManifestList
+//   CAS 更新 TableMetadata（next-row-id += 写入行数）
+//
+// 总 S3 操作:
+//   GET: N_updated_files 次（读旧 DV Blob）+ M_candidate_files 次（读 BF Blob）
+//   PUT: 1 DataFile + K Puffin + 1 ManifestFile + 1 ManifestList + 1 metadata.json`,
+      readFlowCode: `// ── V3 完整读取流程 ──
+//
+// 场景 A: 点查  SELECT * FROM events WHERE id = 42
+//   1. Catalog → TableMetadata → current-snapshot-id
+//   2. ManifestList → ManifestFile（分区裁剪）
+//   3. BF 过滤: BF.mightContain(42) = false → 跳过（99% 文件在此被过滤）
+//   4. Parquet RowGroup 统计裁剪（min/max）
+//   5. 读目标行（row=137）
+//   6. DV 检查: bitmap.contains(137) = true → 已删除，跳过
+//              bitmap.contains(137) = false → 返回该行
+//
+// 场景 B: 范围查询  SELECT * FROM events WHERE ts BETWEEN '2026-01' AND '2026-04'
+//   1~2. 同上
+//   3. BF 对范围无效，跳过 BF 检查
+//      用 ManifestFile 列统计（min_ts/max_ts）做裁剪
+//   4. Parquet RowGroup 统计裁剪
+//   5. 读目标行 → DV 检查（同上）
+//
+// V2 vs V3 读取性能对比（高更新场景，运行 24h）:
+//   V2: 步骤 6 变为扫描 46080 个 Delete File → 延迟 10s+
+//   V3: 步骤 6 仍为读 1 个 Puffin Blob（KB 级）→ 延迟稳定 100~200ms`,
+      bfSizeTable: [
+        { fpp: '10%', bytesPerKey: '0.48', size1M: '~480KB', note: '误判率高，不推荐' },
+        { fpp: '1%（推荐）', bytesPerKey: '0.96', size1M: '~1MB', note: '主键列默认选择' },
+        { fpp: '0.1%', bytesPerKey: '1.44', size1M: '~1.5MB', note: '超高精度场景' },
       ],
     },
 
