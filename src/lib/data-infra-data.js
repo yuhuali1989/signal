@@ -1883,6 +1883,235 @@ with table.update_schema() as update:
 snapshot = table.snapshot_by_id(3776207205136740000)
 old_scan = table.scan().use_snapshot(snapshot.snapshot_id)`,
     },
+
+    // ── Flink 深度集成（基于 iceberg-1.10.1 源码）──
+    flinkIntegration: {
+      title: 'Flink 深度集成（iceberg-1.10.1）',
+      desc: 'Iceberg 1.10.1 提供了完整的 Flink 集成方案，包含两套 Sink API（FlinkSink V1 / IcebergSink V2）、Dynamic Table 支持、以及全新的 DynamicIcebergSink 多表写入能力。',
+
+      // ── 1. 两套 Sink API 对比 ──
+      sinkComparison: {
+        title: 'FlinkSink（V1）vs IcebergSink（V2）',
+        desc: '1.10.1 同时提供两套 Sink 实现，通过 TABLE_EXEC_ICEBERG_USE_V2_SINK 配置切换。V2 基于 Flink Sink2 API，支持并发执行尝试和内置 Compaction。',
+        rows: [
+          { dim: 'Flink Sink API', v1: 'V1（DataStreamSink）', v2: 'V2（Sink<RowData>）', highlight: false },
+          { dim: '并发执行尝试', v1: '❌ 不支持', v2: '✅ SupportsConcurrentExecutionAttempts', highlight: true },
+          { dim: '内置 Compaction', v1: '❌ 需外部 Spark Job', v2: '✅ compactMode + TableMaintenance', highlight: true },
+          { dim: 'Pre/Post Commit Hook', v1: '❌', v2: '✅ SupportsPreCommitTopology / SupportsPostCommitTopology', highlight: false },
+          { dim: 'Commit Aggregator', v1: 'IcebergFilesCommitter（单并行度）', v2: 'IcebergWriteAggregator → IcebergCommitter', highlight: false },
+          { dim: '启用方式', v1: '默认（不设置配置项）', v2: "TABLE_EXEC_ICEBERG_USE_V2_SINK = 'true'", highlight: false },
+          { dim: '稳定性', v1: '生产稳定', v2: '@Experimental（1.10.1）', highlight: false },
+        ],
+        v2CompactCode: `// IcebergSink V2 内置 Compaction（compactMode）
+// 写入完成后自动触发 TableMaintenance，无需外部 Spark Job
+IcebergSink.forRowData(dataStream)
+    .tableLoader(tableLoader)
+    .equalityFieldColumns(List.of("id"))
+    // 开启内置 Compaction
+    .set("write.compact.enabled", "true")
+    .set("write.compact.target-file-size-bytes", String.valueOf(256 * 1024 * 1024))
+    .append();
+
+// 底层实现（IcebergSink.addPostCommitTopology）:
+// 1. CommittableToTableChangeConverter 将 commit 事件转为 TableChange
+// 2. RewriteDataFiles.Builder 配置 Compaction 策略
+// 3. TableMaintenance.forChangeStream() 监听变更，触发 Compaction
+// 4. TriggerLockFactory 防止并发 Compaction 冲突`,
+      },
+
+      // ── 2. 分布模式（Distribution Mode）──
+      distributionMode: {
+        title: '写入分布模式（Distribution Mode）',
+        desc: 'FlinkSink/IcebergSink 支持三种数据分布策略，影响数据如何路由到各 Writer Task。正确选择分布模式对写入性能和文件质量至关重要。',
+        modes: [
+          {
+            name: 'NONE',
+            color: '#74b9ff',
+            desc: '不做额外分布。有 equalityFieldIds 时自动按主键 keyBy（EqualityFieldKeySelector），否则直接透传',
+            useCase: '纯 Append 场景，或已在上游做好分区',
+            code: `// NONE 模式（有主键时自动 keyBy）
+FlinkSink.forRowData(stream)
+    .distributionMode(DistributionMode.NONE)
+    .equalityFieldColumns(List.of("id"))  // 自动 keyBy(id)
+    .append();`,
+          },
+          {
+            name: 'HASH',
+            color: '#a29bfe',
+            desc: '按分区键或主键做 Hash 分布。有主键时按主键 keyBy，有分区时按分区键 keyBy，确保同一分区数据写入同一 Writer',
+            useCase: 'Upsert/CDC 场景（推荐），保证同主键数据路由到同一 Writer，避免跨 Writer 的 EqualityDelete 冲突',
+            code: `// HASH 模式（推荐 Upsert 场景）
+FlinkSink.forRowData(stream)
+    .distributionMode(DistributionMode.HASH)
+    .equalityFieldColumns(List.of("id"))
+    .upsert(true)
+    .append();
+// 底层：input.keyBy(new EqualityFieldKeySelector(schema, flinkRowType, equalityFieldIds))`,
+          },
+          {
+            name: 'RANGE',
+            color: '#fd79a8',
+            desc: '按 SortOrder 做范围分布，使用 DataStatisticsOperatorFactory 收集数据分布统计，再用 RangePartitioner 做均衡分区。支持 StatisticsType.Auto/Map/Sketch',
+            useCase: '写入后需要按列排序的场景（如时序数据按时间排序），提升范围查询性能',
+            code: `// RANGE 模式（排序写入）
+FlinkSink.forRowData(stream)
+    .distributionMode(DistributionMode.RANGE)
+    // 统计类型：Auto（低基数用 Map，高基数自动切换 Sketch）
+    .rangeDistributionStatisticsType(StatisticsType.Auto)
+    // 长尾优化：每个 sort key 最小权重 2%，避免过多小文件
+    .rangeDistributionSortKeyBaseWeight(0.02)
+    .append();
+
+// 底层算子链：
+// input → DataStatisticsOperator（收集分布统计）
+//       → RangePartitioner（均衡分区）
+//       → flatMap（过滤统计记录）
+//       → IcebergStreamWriter（写入）`,
+          },
+        ],
+        statisticsNote: 'StatisticsType.Auto：初始使用 Map 统计（低基数精确），当基数超过 10K（SketchUtil.OPERATOR_SKETCH_SWITCH_THRESHOLD）时自动切换为 Sketch 蓄水池采样，兼顾精度与内存。',
+      },
+
+      // ── 3. Upsert / CDC 写入 ──
+      upsertCdc: {
+        title: 'Upsert / CDC 写入（源码实证）',
+        desc: '基于 BaseDeltaTaskWriter + BaseEqualityDeltaWriter 源码，Flink Upsert 写入的真实机制：checkpoint 内用内存 HashMap 追踪主键位置，同 checkpoint 内重复主键用 PositionDelete，跨 checkpoint 旧数据用 EqualityDelete。',
+        code: `// Flink SQL：CDC 写入 Iceberg（推荐配置）
+CREATE TABLE cdc_sink (
+  id     BIGINT,
+  name   STRING,
+  score  DOUBLE,
+  PRIMARY KEY (id) NOT ENFORCED   -- 自动提取为 equalityFieldColumns
+) WITH (
+  'connector'                          = 'iceberg',
+  'catalog-name'                       = 'rest',
+  'catalog-type'                       = 'rest',
+  'uri'                                = 'http://iceberg-rest:8181',
+  'warehouse'                          = 's3://bucket/warehouse',
+  'write.upsert.enabled'               = 'true',
+  'write.distribution-mode'            = 'hash',   -- 同主键路由到同 Writer
+  'write.merge.mode'                   = 'merge-on-read',
+  'write.target-file-size-bytes'       = '134217728'
+);
+
+-- DataStream API：
+FlinkSink.forRowData(cdcStream)
+    .tableLoader(tableLoader)
+    .equalityFieldColumns(List.of("id"))
+    .upsert(true)
+    .distributionMode(DistributionMode.HASH)
+    .append();`,
+        writeLogic: [
+          { rowKind: 'INSERT', upsertBehavior: '查 insertedRowMap 未命中 → 直接写新行，put 到 map', deleteType: '无', color: '#3fb950' },
+          { rowKind: 'UPDATE_AFTER', upsertBehavior: '查 insertedRowMap：命中 → PositionDelete 旧行；未命中 → 无操作。写新行，put 到 map', deleteType: '命中时 PositionDelete', color: '#ffa657' },
+          { rowKind: 'UPDATE_BEFORE', upsertBehavior: '直接 break 丢弃！（源码第 87 行）', deleteType: '无（丢弃）', color: '#b2bec3' },
+          { rowKind: 'DELETE', upsertBehavior: '查 insertedRowMap：命中 → PositionDelete；未命中 → EqualityDelete（写主键值到 .parquet）', deleteType: 'PositionDelete 或 EqualityDelete', color: '#e17055' },
+        ],
+        keyInsight: 'insertedRowMap = StructLikeMap（checkpoint 内内存 HashMap，结束即清空）。跨 checkpoint 的旧数据无法通过 PositionDelete 处理，只能写 EqualityDelete 文件，这是 V2 读取性能随时间退化的根本原因。',
+      },
+
+      // ── 4. DynamicIcebergSink（新特性 @Experimental）──
+      dynamicSink: {
+        title: 'DynamicIcebergSink（@Experimental，1.10.1 新增）',
+        desc: '突破传统 1:1 Sink/Table 限制，支持单个 Flink Job 写入任意数量的 Iceberg 表，并能根据路由逻辑自动创建/更新表的 Schema 和 PartitionSpec。',
+        highlights: [
+          { icon: '🔀', name: '多表写入', desc: '单 Flink Job 写入 N 个 Iceberg 表，打破 1:1 Sink/Topic 关系' },
+          { icon: '🔄', name: 'Schema 自动演化', desc: 'DynamicTableUpdateOperator 检测 Schema 差异，自动调用 EvolveSchemaVisitor 演化目标表' },
+          { icon: '🗂️', name: '动态路由', desc: 'DynamicRecordGenerator 接口：用户自定义每条记录路由到哪个表、用哪个 Schema' },
+          { icon: '💾', name: 'LRU 缓存', desc: 'TableMetadataCache + TableSerializerCache，避免频繁加载表元数据，默认缓存 100 个表' },
+          { icon: '⚡', name: '按表 keyBy', desc: 'DynamicWriteResultAggregator 按 tableName keyBy，保证同表的 WriteResult 聚合到同一 Committer' },
+        ],
+        code: `// DynamicIcebergSink 使用示例
+// 场景：Kafka 多 topic → 多 Iceberg 表，一个 Job 搞定所有路由
+
+// 1. 实现 DynamicRecordGenerator（路由逻辑）
+DynamicRecordGenerator<KafkaRecord> generator = (record, out) -> {
+    // 根据 record 内容决定写入哪个表
+    TableIdentifier tableId = TableIdentifier.of(
+        record.database(),   // namespace
+        record.table()       // table name
+    );
+    Schema schema = inferSchema(record);
+    PartitionSpec spec = PartitionSpec.unpartitioned();
+
+    out.collect(new DynamicRecord(
+        tableId,
+        "main",              // branch
+        schema,
+        toRowData(record),
+        spec,
+        DistributionMode.HASH,
+        4                    // writeParallelism
+    ));
+};
+
+// 2. 构建 DynamicIcebergSink
+DynamicIcebergSink.forInput(kafkaStream)
+    .generator(generator)
+    .catalogLoader(CatalogLoader.rest("rest", hadoopConf, catalogProps))
+    .cacheMaxSize(200)           // 最多缓存 200 个表的元数据
+    .cacheRefreshMs(5_000)       // 每 5 秒刷新缓存
+    .immediateTableUpdate(true)  // 立即更新 Schema（不等下次 checkpoint）
+    .uidPrefix("dynamic-iceberg")
+    .append();
+
+// 底层算子链：
+// kafkaStream
+//   → DynamicRecordProcessor（路由 + Schema 对比，Side Output 处理 Schema 变更）
+//   → DynamicTableUpdateOperator（异步 Schema 演化，keyBy tableName）
+//   → union（合并正常记录 + Schema 更新后的记录）
+//   → DynamicIcebergSink（Writer → WriteResultAggregator → Committer）`,
+        limitations: [
+          '当前为 @Experimental 状态，API 可能在后续版本变更',
+          '不支持 Upsert/EqualityDelete（仅 Append 模式）',
+          'Schema 演化是异步的，极端情况下可能有短暂的 Schema 不一致窗口',
+          'cacheMaximumSize 需根据实际表数量调整，避免频繁 LRU 淘汰',
+        ],
+      },
+
+      // ── 5. Dynamic Table 支持（Flink SQL）──
+      dynamicTable: {
+        title: 'Flink SQL Dynamic Table 支持',
+        desc: 'IcebergTableSink 实现 DynamicTableSink + SupportsPartitioning + SupportsOverwrite；IcebergTableSource 实现 4 个 Supports* 能力接口，支持谓词/列/Limit 下推和水位线。',
+        sourceCapabilities: [
+          { name: 'SupportsProjectionPushDown', desc: 'SELECT col1, col2 → 列裁剪下推到 Iceberg scan，减少 I/O', icon: '📐' },
+          { name: 'SupportsFilterPushDown', desc: 'WHERE ts > x → FlinkFilters.convert() 转为 Iceberg Expression，分区裁剪 + 列统计裁剪', icon: '🔍' },
+          { name: 'SupportsLimitPushDown', desc: 'LIMIT N → 下推到 scan，提前终止扫描', icon: '🔢' },
+          { name: 'SupportsSourceWatermark', desc: '事件时间水位线，需配合 FLIP-27 Source（TABLE_EXEC_ICEBERG_USE_FLIP27_SOURCE=true）', icon: '💧' },
+        ],
+        sqlExample: `-- Flink SQL 建表（connector=iceberg 自动注册 FlinkDynamicTableFactory）
+CREATE TABLE events (
+  id      BIGINT,
+  ts      TIMESTAMP(6),
+  payload STRING,
+  PRIMARY KEY (id) NOT ENFORCED
+) WITH (
+  'connector'                    = 'iceberg',
+  'catalog-name'                 = 'rest_catalog',
+  'catalog-type'                 = 'rest',
+  'uri'                          = 'http://iceberg-rest:8181',
+  'warehouse'                    = 's3://bucket/warehouse',
+  'write.upsert.enabled'         = 'true',
+  -- 切换到 V2 Sink（内置 Compaction）
+  'table.exec.iceberg.use-v2-sink' = 'true',
+  -- 切换到 FLIP-27 Source（支持水位线）
+  'table.exec.iceberg.use-flip27-source' = 'true',
+  'watermark-column'             = 'ts'
+);
+
+-- 谓词下推（Flink Planner 自动调用 applyFilters）
+SELECT id, payload FROM events
+WHERE ts > TIMESTAMP '2026-01-01 00:00:00'  -- 自动转为 Iceberg Expression
+  AND id > 1000;                             -- 列统计裁剪
+
+-- 时间旅行（Flink SQL）
+SELECT * FROM events FOR SYSTEM_TIME AS OF TIMESTAMP '2026-04-01 00:00:00';`,
+        sourceSwitch: [
+          { config: 'TABLE_EXEC_ICEBERG_USE_FLIP27_SOURCE = false（默认）', impl: 'FlinkSource（旧版，基于 InputFormat）', note: '稳定，不支持水位线' },
+          { config: 'TABLE_EXEC_ICEBERG_USE_FLIP27_SOURCE = true', impl: 'IcebergSource（FLIP-27，动态 Split 分配）', note: '支持水位线、背压感知、动态 Split 发现' },
+        ],
+      },
+    },
   },
 };
 
