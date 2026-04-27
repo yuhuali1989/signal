@@ -975,58 +975,76 @@ export const DATALAKE_DATA = {
 //       Iceberg 的 Puffin BF 是另一套（Theta Sketch），两者可共存
 
 // ════════════════════════════════════════════════════════════
-// ── PART 2: V3 完整写入流程（Upsert 场景，Spark 实现）──
+// ── PART 2: V3 DV 写入流程（Spark 已 GA，Flink 规划中）──
 // ════════════════════════════════════════════════════════════
 //
-// ⚠️ 注意：以下是 Spark 的 V3 DV 写入流程（已 GA）
-//    Flink 1.10.1 尚未实现 DV 写入，仍使用 EqualityDelete（V2 机制）
-//    Flink V3 DV 写入支持预计 Flink 2.1+（2026 Q2）
-//    Flink 真实实现见下方「Flink 真实实现」章节
+// ── Spark V3 DV 写入（BaseDVFileWriter 源码实证）──
 //
-// 前置条件:
-//   - 表已开启 Bloom Filter（主键列 id）
-//   - 表已有若干 DataFile，每个 DataFile 有对应的 Puffin 文件（含 BF + DV）
+// 核心设计：写入路径完全不查 BF！BF 只在读取时用。
+// BaseDVFileWriter.delete() 是纯内存操作，close() 时才批量写 Puffin
 //
-// 步骤 1: Spark Task 收到一批 Upsert 记录（批次内攒积）
-//   records = [(id=42, score=0.9, op=UPDATE), (id=99, score=0.5, op=INSERT), ...]
+// deletesByPath = Map<dataFilePath, BitmapPositionDeleteIndex>
+//   → 按 DataFile 路径分组，内存中累积 Roaring Bitmap
 //
-// 步骤 2: Lookup 阶段 — 找到每条 UPDATE/DELETE 记录所在的 DataFile
-//   for each record where op != INSERT:
-//     2a. 读取当前 Snapshot 的 ManifestList → 获取所有 ManifestFile 路径
-//     2b. 对每个 ManifestFile，读取 DataFile 的 puffin_path
-//     2c. S3 Range GET Puffin 中的 BF Blob（按 column_id 定位）
-//     2d. 查询 Bloom Filter: bloomFilter.mightContain(id=42)
-//         → false: 跳过该 DataFile（零 I/O）
-//         → true:  读取 DataFile 的行级索引（Parquet RowGroup 统计 / 实际扫描）
-//                  确认 id=42 在第 137 行
-//     2e. 记录: id=42 → DataFile "part-00001.parquet", row=137
+// Spark MERGE INTO 写入流程:
+// 步骤 1: Spark 执行 scan + join，找到被删除行的 (dataFile, rowPos)
+//   → 这是 Spark 的批式 scan，与 DV 无关
+//   → 结果: [(part-001.parquet, row=137), (part-001.parquet, row=209), ...]
 //
-// 步骤 3: 写新 DataFile（Append 新版本数据）
-//   newDataFile = writeParquet([
-//     {id=42, score=0.9, first_row_id=R},    ← 新版本
-//     {id=99, score=0.5, first_row_id=R+1},  ← 新插入
-//   ])
-//   同时为新 DataFile 生成新的 Bloom Filter Blob（写入新 Puffin 文件）
+// 步骤 2: 调用 BaseDVFileWriter.delete(path, pos, spec, partition)
+//   → 纯内存操作：deletesByPath[path].bitmap.delete(pos)
+//   → 同一 DataFile 的所有删除行号都 OR 合并到同一个 Bitmap
+//   → 零 S3 I/O！
 //
-// 步骤 4: 更新旧 DataFile 的 DV（标记旧行已删除）
-//   for each (dataFile, rowPosition) in lookupResults:
-//     4a. S3 Range GET 旧 Puffin 中的 DV Blob
-//     4b. 反序列化 Roaring Bitmap → 设置 bit[137] = 1
-//     4c. 重新序列化 → 写入新 Puffin 文件（旧 Puffin 不可变）
+// 步骤 3: close() 时批量写出（每个 DataFile 只做一次 S3 操作）
+//   for each (dataFile, bitmap) in deletesByPath:
+//     previousDV = loadPreviousDeletes(dataFile)  ← S3 Range GET 旧 DV Blob
+//     if previousDV != null:
+//       bitmap.merge(previousDV)  ← 合并旧删除 + 新删除
+//       rewrittenDeleteFiles.add(previousDV)  ← 标记旧 DV 可废弃
+//     PuffinWriter.write(bitmap.serialize())  ← 写新 Puffin Blob
+//
+// 步骤 4: 所有 DataFile 的 DV Blob 写入同一个 Puffin 文件
+//   → 1 个 Puffin 文件包含 N 个 Blob（每个 DataFile 一个）
+//   → 通过 content_offset + content_length 定位各自的 Blob
 //
 // 步骤 5: 提交 Snapshot
-//   5a. 写新 ManifestFile（Avro）:
-//       - 新 DataFile: puffin_path → 新 Puffin（含 BF + 空 DV）
-//       - 旧 DataFile: puffin_path → 新 Puffin（含旧 BF + 更新后 DV）
-//   5b. 写新 ManifestList（Avro）
-//   5c. CAS 更新 TableMetadata:
-//       - current-snapshot-id → 新 Snapshot
-//       - next-row-id += 写入行数（Row Lineage）
+//   → ManifestFile 中每个 DataFile 条目携带 puffin_path/offset/length
+//   → 旧 DV 通过 rewrittenDeleteFiles 标记废弃（下次 GC 清理）
 //
-// 总 S3 操作:
-//   GET: N_updated_files 次（读旧 Puffin DV Blob）
-//        + M_candidate_files 次（读 BF Blob，大部分被 BF 过滤掉）
-//   PUT: 1 个新 DataFile + K 个新 Puffin 文件 + 1 ManifestFile + 1 ManifestList + 1 metadata.json
+// 总 S3 操作（每批 MERGE INTO，涉及 N 个不同 DataFile）:
+//   GET: N 次（close() 时读旧 DV Blob，每个 DataFile 1 次）
+//   PUT: 1 个 Puffin 文件（含 N 个 Blob）+ 1 ManifestFile + 1 ManifestList + 1 metadata.json
+//
+// ── Flink V3 DV 写入（规划方向，2026 Q2+）──
+//
+// 核心挑战：Flink 流式写入时不知道旧数据在哪个 DataFile 的哪一行
+//   Spark 是批式 scan + join，写 DV 时已知 (dataFile, rowPos)
+//   Flink 是流式逐行处理，每条 UPDATE 到来时无法直接知道旧行位置
+//
+// 社区讨论的两种方案:
+//
+// 方案 A: 维护跨 checkpoint 的主键→位置 State（RocksDB StateBackend）
+//   Map<primaryKey, (dataFilePath, rowPosition)>
+//   每次 UPDATE: 查 State → 得到旧行位置 → 记录到 pendingDVUpdates（内存）
+//   checkpoint 提交时: 按 DataFile 分组 → close() 批量写 DV（同 Spark 流程）
+//   优点：写入时 S3 GET = 0（State 在本地磁盘）
+//   缺点：State 大小 = 全量主键数 × ~100B（10亿行 → ~100GB State）
+//         Compaction 后需要重建 State（全量扫描 DataFile）
+//
+// 方案 B: 写入路径不变（仍用 EqualityDelete），Compaction 时转换为 DV
+//   Flink 写入路径零改动，后台 Compaction 将 EqualityDelete 物化为 DV
+//   优点：写入延迟不变，无 State 开销
+//   缺点：Compaction 窗口内读取仍有 EqualityDelete 开销
+//
+// ── V2 EqualityDelete vs V3 DV 对比 ──
+//
+//                    V2 EqualityDelete    V3 DV（规划）
+//   写入 S3 GET      0                   0（State 方案）/ N 次（无 State 方案）
+//   写入 S3 PUT      P 个 EqDelete 文件  1 个 Puffin（含 N Blob）
+//   读取开销         随时间线性爆炸      恒定（每个DataFile最多1个DV）
+//   Compaction需求   高频（必须）        低频（可选）
+//   State 大小       0                   全量主键 × ~100B（方案A）/ 0（方案B）
 
 // ════════════════════════════════════════════════════════════
 // ── PART 3: V3 完整读取流程（点查 + 范围查询）──
