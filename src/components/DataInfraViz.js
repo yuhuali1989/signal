@@ -1075,6 +1075,22 @@ export function DatalakeTab() {
                         ))}
                       </div>
                     )}
+                    {/* V3 源码深度解析 */}
+                    {sv.sourceDeepDive && (
+                      <div className="mt-3 border-t border-gray-100 pt-3">
+                        <div className="text-[9px] font-semibold text-gray-600 mb-2">🔬 {sv.sourceDeepDive.title}</div>
+                        {sv.sourceDeepDive.sections.map((sec, si) => (
+                          <div key={si} className="mb-3">
+                            <div className="text-[9px] font-bold mb-1" style={{ color: sv.color }}>{sec.name}</div>
+                            <div className="text-[8px] text-gray-500 mb-1.5">{sec.desc}</div>
+                            <pre className="text-[7.5px] font-mono rounded-lg p-2.5 leading-relaxed overflow-x-auto"
+                              style={{ background: sv.color + '08', color: sv.color, border: `1px solid ${sv.color}20` }}>
+                              {sec.code}
+                            </pre>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -1322,6 +1338,53 @@ export function DatalakeTab() {
                   ))}
                 </div>
               </SectionCard>
+              {/* Flink 小文件爆炸问题 */}
+              {icebergSource.compaction.flinkSmallFileProblem && (() => {
+                const fp = icebergSource.compaction.flinkSmallFileProblem;
+                return (
+                  <SectionCard icon="⚡" title={fp.title} desc={fp.problem}>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-[9px] font-semibold text-gray-500 mb-2">🔍 根因分析</div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          {fp.rootCause.map((rc, i) => (
+                            <div key={i} className="rounded-xl border border-red-100 bg-red-50/30 p-2.5">
+                              <div className="text-xs mb-1">{rc.icon} <span className="font-bold text-red-600">{rc.cause}</span></div>
+                              <p className="text-[9px] text-gray-500">{rc.desc}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] font-semibold text-gray-500 mb-2">🛠️ 解决方案对比</div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {fp.solutions.map((sol, si) => (
+                            <div key={si} className="rounded-xl border p-3"
+                              style={{ borderColor: sol.color + '30', background: sol.color + '06' }}>
+                              <div className="text-xs font-bold mb-2" style={{ color: sol.color }}>{sol.name}</div>
+                              <ul className="space-y-1 mb-2">
+                                {sol.items.map((item, ii) => (
+                                  <li key={ii} className="text-[9px] text-gray-500">· {item}</li>
+                                ))}
+                              </ul>
+                              {sol.code && (
+                                <pre className="text-[7.5px] font-mono rounded-lg p-2 leading-relaxed overflow-x-auto mt-2"
+                                  style={{ background: sol.color + '08', color: sol.color, border: `1px solid ${sol.color}20` }}>
+                                  {sol.code}
+                                </pre>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="rounded-xl border border-blue-100 bg-blue-50/30 p-3">
+                        <div className="text-[9px] font-semibold text-blue-600 mb-1">📌 当前建议（2026 Q1）</div>
+                        <p className="text-[9px] text-gray-600">{fp.currentStatus}</p>
+                      </div>
+                    </div>
+                  </SectionCard>
+                );
+              })()}
             </div>
           )}
 
