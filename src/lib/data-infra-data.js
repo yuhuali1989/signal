@@ -1632,81 +1632,160 @@ CREATE TABLE events (...) WITH (
   'connector' = 'iceberg',
   'write.parquet.bloom-filter-enabled.column.id' = 'true'
 );`,
-      writeFlowCode: `// ── 先搞清楚两个结构的本质区别 ──
+      writeFlowCode: `// ════════════════════════════════════════════════════════════
+// PART 1: V2 EqualityDelete 的根本问题（Flink 1.10.1 现状）
+// ════════════════════════════════════════════════════════════
 //
-// ┌─────────────────┬──────────────────────────────────┬──────────────────────────────────┐
-// │                 │  Bloom Filter（BF）               │  Deletion Vector（DV）            │
-// ├─────────────────┼──────────────────────────────────┼──────────────────────────────────┤
-// │ 存储内容        │ 某列所有值的集合摘要              │ 该 DataFile 中已删除行的行号集合  │
-// │ 回答的问题      │ "id=42 在这个 DataFile 里吗？"   │ "第 137 行被删除了吗？"           │
-// │ 作用粒度        │ 文件级（跳过整个 DataFile）       │ 行级（跳过文件内某些行）          │
-// │ 数据结构        │ Theta Sketch（概率型，有误判率）  │ Roaring Bitmap（精确，无误判）    │
-// │ Puffin Blob 类型│ apache-datasketches-theta-v1      │ deletion-vector-v1                │
-// │ 是否必须        │ 可选（Upsert 场景强烈建议）       │ V3 核心特性（替代 Delete File）   │
-// └─────────────────┴──────────────────────────────────┴──────────────────────────────────┘
+// 核心类: BaseDeltaTaskWriter（iceberg-1.10.1 源码实证）
+//   insertedRowMap = StructLikeMap（checkpoint 内内存 HashMap，结束即清空）
 //
-// ── ⚠️ 关键误区：Flink 写入时不是"逐行查 BF" ──
+// ── 真实写入逻辑 ──
 //
-// 错误理解: 每条 UPDATE 记录 → S3 读一次 BF → 查询 → 找到行位置
-//   → 如果 1 分钟 10 万条 UPDATE，就要 10 万次 S3 GET？当然不行！
+// case UPDATE_AFTER (upsert=true):
+//   查 insertedRowMap.get(key=42):
+//     命中（同 checkpoint 内已写过）→ PositionDelete（精确行号）
+//     未命中（跨 checkpoint 旧数据）→ 什么都不做！
+//   写新数据行，put 到 insertedRowMap
 //
-// 正确理解: Flink Iceberg Connector 的 Lookup 依赖【内存 State】，BF 只在冷启动时用一次
+// case UPDATE_BEFORE (upsert=true):
+//   直接 break 丢弃！（源码第 87 行）
 //
-// ── Flink Iceberg Connector 真实架构（基于 iceberg-1.10.1 源码）──
+// case DELETE (upsert=true):
+//   命中 insertedRowMap → PositionDelete
+//   未命中             → EqualityDelete（写整个主键值到 .parquet 文件）
 //
-// ⚠️ 重要纠正（源码实证）：
-//   Flink 1.10.1 不维护 RocksDB State，也不写 DV！
-//   核心类: BaseDeltaTaskWriter → BaseEqualityDeltaWriter（BaseTaskWriter.java）
-//   insertedRowMap = StructLikeMap.create(deleteSchema.asStruct())
-//   → 这是 checkpoint 内的内存 HashMap，checkpoint 结束即清空
-//   → 没有跨 checkpoint 的主键位置 State
+// ── 为什么 EqualityDelete 会爆炸 ──
 //
-// ── V2 Upsert 写入流程（Flink 1.10.1 真实实现，基于 EqualityDelete）──
+// 问题根源：Flink 没有跨 checkpoint 的主键位置 State
+//   → 每个 checkpoint 都可能产生 EqualityDelete 文件
+//   → 读取时必须扫描所有历史 EqualityDelete 文件，逐一 join
 //
-// ═══ 每个 checkpoint 周期（如每 1 分钟）═══
+// 举例：运行 24 小时，checkpoint 间隔 1 分钟，parallelism=32
+//   → 24 * 60 * 32 = 46080 个 EqualityDelete 文件
+//   → 查询时每个 DataFile 都要 join 46080 个 Delete File
+//   → 延迟从 100ms 爆炸到 10s+
 //
-// 步骤 1: 攒积一批 Upsert 记录（checkpoint 内，纯内存操作）
-//   records = [(id=42, score=0.9, RowKind=UPDATE_AFTER), (id=99, RowKind=INSERT), ...]
-//
-// 步骤 2: 逐行处理（BaseDeltaTaskWriter.write()）
-//   case UPDATE_AFTER / INSERT (upsert=true):
-//     先查 insertedRowMap.get(key=42):
-//       命中（同一 checkpoint 内已写过 id=42）:
-//         → writePosDelete(previous.path, previous.rowOffset)  ← PositionDelete
-//       未命中（跨 checkpoint 的旧数据）:
-//         → 不做任何事（旧数据靠 EqualityDelete 文件覆盖）
-//     写新数据行到 DataFile
-//     insertedRowMap.put(key=42, PathOffset(newFile, newRow))
-//   case UPDATE_BEFORE (upsert=true):
-//     直接 break，丢弃！不做任何事
-//   case DELETE (upsert=true):
-//     查 insertedRowMap，命中 → PositionDelete；未命中 → EqualityDelete
-//
-// 步骤 3: checkpoint barrier 触发提交
-//   3a. 关闭 DataFile → S3 PUT（P 个，P=parallelism）
-//   3b. 关闭 EqualityDeleteWriter → S3 PUT（跨 checkpoint 的旧数据删除文件）
-//   3c. 关闭 PositionDeleteWriter → S3 PUT（同 checkpoint 内重复主键的精确删除）
-//   3d. insertedRowMap.clear()  ← 清空，下个 checkpoint 重新开始
-//   3e. 提交 Snapshot（写 ManifestFile + ManifestList + metadata.json）
-//
-// ── 关键结论 ──
-//   同一 checkpoint 内重复主键 → PositionDelete（精确行号，零额外 S3 读）
-//   跨 checkpoint 的旧数据    → EqualityDelete 文件（V2 机制，随时间线性积累）
-//   没有 DV，没有 BF Lookup，没有 RocksDB State
-//   BF 在 Flink 写入路径中完全不参与（BF 是 Spark 写入时生成的 Parquet 列级特性）
+// 你说的"所有数据都写 EqualityDelete"其实是：
+//   ✅ 同 checkpoint 内重复主键 → PositionDelete（有优化）
+//   ❌ 跨 checkpoint 的旧数据  → EqualityDelete（无法避免，这是根本问题）
+//   → 好处：写入时不需要查旧数据在哪，零 S3 读，写入延迟极低
+//   → 坏处：读取时合并开销随时间线性爆炸，Compaction 是唯一出路
 //
 // 总 S3 操作（每个 checkpoint，parallelism=P）:
-//   GET: 0（Flink 写入路径不读 S3！）
-//   PUT: P 个 DataFile
-//        + P 个 EqualityDelete 文件（若有跨 checkpoint 更新）
-//        + P 个 PositionDelete 文件（若有同 checkpoint 内重复主键）
+//   GET: 0（写入路径完全不读 S3）
+//   PUT: P DataFile + P EqualityDelete + P PositionDelete（可能）
 //        + 1 ManifestFile + 1 ManifestList + 1 metadata.json
 //
-// ── V3 DV 写入（Flink 未来规划，预计 Flink 2.1+ / 2026 Q2）──
-//   届时 EqualityDelete 将被 DV 替代，每个 DataFile 最多 1 个 DV Blob
-//   届时每个 checkpoint 的 S3 操作:
-//     GET: N 次 DV Blob（N = 涉及的不同 DataFile 数）
-//     PUT: 1 DataFile + N Puffin + 1 ManifestFile + 1 ManifestList + 1 metadata.json`,
+// ════════════════════════════════════════════════════════════
+// PART 2: Spark V3 DV 写入（已 GA，源码实证）
+// ════════════════════════════════════════════════════════════
+//
+// 触发条件（SparkPositionDeltaWrite.java 源码）:
+//   useDVs() = (deleteFileFormat == FileFormat.PUFFIN)
+//   → V3 表自动使用 PUFFIN 格式 → 自动走 DV 写入路径
+//
+// 核心类: BaseDVFileWriter（iceberg-1.10.1 源码实证）
+//   deletesByPath = Map<String, Deletes>  ← 按 DataFile 路径分组，内存聚合
+//   loadPreviousDeletes = Function<path, PositionDeleteIndex>  ← 读旧 DV
+//
+// ── Spark MERGE INTO / DELETE 的写入流程 ──
+//
+// 步骤 1: Spark 执行 MERGE INTO，先做 join 找到被删除行的 (dataFile, rowPos)
+//   → 这一步是 Spark 的 scan + join，不是 DV 的职责
+//   → 结果: [(part-001.parquet, row=137), (part-001.parquet, row=209), ...]
+//
+// 步骤 2: 调用 BaseDVFileWriter.delete(path, pos, spec, partition)
+//   → 按 path 分组，内存中累积 BitmapPositionDeleteIndex
+//   → 同一 DataFile 的所有删除行号都 OR 合并到同一个 Bitmap
+//
+// 步骤 3: close() 时批量写出（每个 DataFile 只做一次 S3 操作）
+//   for each (dataFile, bitmap) in deletesByPath:
+//     previousDV = loadPreviousDeletes(dataFile)  ← S3 Range GET 旧 DV Blob
+//     if previousDV != null:
+//       bitmap.merge(previousDV)  ← 合并旧删除 + 新删除
+//       rewrittenDeleteFiles.add(previousDV)  ← 标记旧 DV 可废弃
+//     PuffinWriter.write(bitmap.serialize())  ← 写新 Puffin Blob
+//
+// 步骤 4: 所有 DataFile 的 DV Blob 写入同一个 Puffin 文件
+//   → 1 个 Puffin 文件可以包含多个 Blob（每个 DataFile 一个 Blob）
+//   → 通过 content_offset + content_length 定位各自的 Blob
+//
+// 步骤 5: 提交 Snapshot
+//   → ManifestFile 中每个 DataFile 条目携带 puffin_path/offset/length
+//   → 旧 DV 文件通过 rewrittenDeleteFiles 标记废弃（下次 GC 清理）
+//
+// 总 S3 操作（每批 MERGE INTO，涉及 N 个不同 DataFile）:
+//   GET: N 次（读旧 DV Blob，每个 DataFile 1 次）
+//   PUT: 1 个 Puffin 文件（含 N 个 Blob）+ 1 ManifestFile + 1 ManifestList + 1 metadata.json
+//
+// ════════════════════════════════════════════════════════════
+// PART 3: Flink V3 DV 写入（设计方向，基于 Iceberg 社区讨论）
+// ════════════════════════════════════════════════════════════
+//
+// ⚠️ 当前状态（2026-04）：Flink 1.10.1 尚未实现，以下为社区规划方向
+//   参考：Iceberg GitHub Discussions + ICEBERG-10617 等相关 PR
+//
+// ── 核心挑战：流式写入 vs 批式写入的本质差异 ──
+//
+// Spark MERGE INTO 是批式的：
+//   → 先 scan 找到所有被删除行的位置，再写 DV
+//   → 写 DV 时已知 (dataFile, rowPos)，直接写
+//
+// Flink 流式 Upsert 是增量的：
+//   → 每条 UPDATE 记录到来时，不知道旧数据在哪个 DataFile 的哪一行
+//   → 这是 Flink 实现 DV 写入的根本难题
+//
+// ── 社区讨论的两种方案 ──
+//
+// 方案 A: 维护跨 checkpoint 的主键→位置 State（类 RocksDB）
+//   原理：Task 本地维护 Map<primaryKey, (dataFile, rowPos)>
+//         每次 UPDATE 时查 State 找到旧行位置 → 直接写 DV
+//   优点：写入时零 S3 读（State 在本地磁盘）
+//   缺点：State 大小 = 全量主键数量 × 每条约 100 字节
+//         10 亿行 → ~100GB State，Compaction 后需要重建 State
+//         State 重建需要全量扫描 DataFile（冷启动慢）
+//
+// 方案 B: 写入时不查位置，仍用 EqualityDelete，Compaction 时转换为 DV
+//   原理：Flink 写入路径不变（仍产生 EqualityDelete）
+//         后台 Compaction 将 EqualityDelete 物化为 DV
+//   优点：写入路径零改动，延迟不变
+//   缺点：Compaction 窗口内读取仍有 EqualityDelete 开销
+//         这实际上是 V2 → V3 的渐进迁移路径
+//
+// ── 预计架构（方案 A，社区倾向方向）──
+//
+// 新增组件: FlinkDVTaskWriter（继承 BaseDeltaTaskWriter）
+//   primaryKeyState: RocksDB StateBackend（跨 checkpoint 持久化）
+//     key:   主键值（序列化后的 StructLike）
+//     value: (dataFilePath, rowPosition)
+//
+// 写入流程（每条 UPDATE_AFTER）:
+//   1. 查 primaryKeyState.get(key=42)
+//      命中 → 记录 (dataFile, rowPos) 到 pendingDVUpdates
+//      未命中 → 跳过（新插入的行，无旧版本）
+//   2. 写新数据行到 DataFile
+//   3. primaryKeyState.put(key=42, (newDataFile, newRowPos))
+//
+// checkpoint 提交时:
+//   按 DataFile 分组 pendingDVUpdates
+//   for each (dataFile, rowPosList):
+//     GET 旧 Puffin DV Blob（S3 Range GET）
+//     bitmap.merge(旧 DV).OR(新 rowPosList)
+//     写新 Puffin Blob
+//   提交 Snapshot
+//
+// 总 S3 操作（每个 checkpoint，涉及 N 个不同 DataFile）:
+//   GET: N 次 DV Blob（N = 本次涉及的不同 DataFile 数，通常 << 总 DataFile 数）
+//   PUT: P DataFile + 1 Puffin（含 N Blob）+ 1 ManifestFile + 1 ManifestList + 1 metadata.json
+//
+// ── 与 V2 EqualityDelete 的对比 ──
+//
+//                    V2 EqualityDelete    V3 DV（规划）
+//   写入 S3 GET      0                   N 次（N=涉及DataFile数）
+//   写入延迟         极低                略高（多 N 次 S3 GET）
+//   读取开销         随时间爆炸          恒定（每个DataFile最多1个DV）
+//   Compaction需求   高频（必须）        低频（可选）
+//   State 大小       0                   全量主键 × ~100B`,
       readFlowCode: `// ── V3 完整读取流程 ──
 //
 // 场景 A: 点查  SELECT * FROM events WHERE id = 42

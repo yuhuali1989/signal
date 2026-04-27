@@ -1541,7 +1541,7 @@ export function DatalakeTab() {
                   </div>
                 </SectionCard>
                 {/* 写入流程 */}
-                <SectionCard icon="✍️" title="V3 完整 Upsert 写入流程" desc="Flink checkpoint 内的完整 S3 操作链路">
+                <SectionCard icon="✍️" title="Upsert 写入流程全解析" desc="V2 EqualityDelete 根本问题 + Spark V3 DV 写入（源码实证）+ Flink V3 DV 设计方向">
                   <pre className="text-[8px] font-mono rounded-xl p-4 leading-relaxed overflow-x-auto"
                     style={{ background: '#a29bfe08', color: '#6c5ce7', border: '1px solid #a29bfe20' }}>
                     {v3.writeFlowCode}
