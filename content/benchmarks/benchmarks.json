@@ -98,6 +98,18 @@
       },
       {
         "rank": 9,
+        "name": "Hy3 preview",
+        "provider": "腾讯",
+        "score": 85.2,
+        "swebench": 74.4,
+        "humaneval": 94.5,
+        "codecontests": 34.9,
+        "change": "🆕",
+        "badge": "",
+        "note": "295B MoE / 21B active / SWE-bench Verified 74.4 (HF官方) / Terminal-Bench 2.0: 54.4"
+      },
+      {
+        "rank": 10,
         "name": "Llama 4 Maverick",
         "provider": "Meta",
         "score": 84.5,
@@ -108,7 +120,7 @@
         "badge": ""
       },
       {
-        "rank": 10,
+        "rank": 11,
         "name": "Qwen 3.6 Max",
         "provider": "阿里",
         "score": 83.2,
@@ -216,6 +228,18 @@
         "arcagi": 47.8,
         "change": "↓3",
         "badge": ""
+      },
+      {
+        "rank": 9,
+        "name": "Hy3 preview (High)",
+        "provider": "腾讯",
+        "score": 87.8,
+        "gpqa": 87.2,
+        "math500": 95.2,
+        "arcagi": 42.5,
+        "change": "🆕",
+        "badge": "",
+        "note": "GPQA Diamond 87.2 (HF官方) / HLE 30 / 295B MoE 21B active / 2026-04-23发布"
       }
     ]
   },
@@ -320,6 +344,17 @@
       },
       {
         "rank": 10,
+        "name": "Hy3 preview",
+        "provider": "腾讯",
+        "score": 89.5,
+        "arena_elo": 1348,
+        "mmlu_pro": 87.4,
+        "change": "🆕",
+        "badge": "",
+        "note": "MMLU 87.42 / GPQA Diamond 87.2 / SWE-bench Verified 74.4 (HF官方) / 295B MoE 21B active"
+      },
+      {
+        "rank": 11,
         "name": "GLM-5.1",
         "provider": "智谱 AI",
         "score": 89.2,
