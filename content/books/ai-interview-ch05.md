@@ -3,7 +3,7 @@ title: "AI 概念面试题 120 道 - 第5章: Algorithm 算法与系统篇"
 book: "AI 概念面试题 120 道"
 chapter: "5"
 chapterTitle: "Algorithm 算法与系统篇"
-description: "对标 aioffer Algorithm 分类：反向传播、LSH、BM25 搜索、LRU/LFU Cache、流式算法、分布式系统等 AI 工程师必备算法题 10 道，含难度标注"
+description: "对标 aiofferly.com Algorithm 分类：反向传播、LSH、BM25 搜索、LRU/LFU Cache、流式算法、分布式系统等 AI 工程师必备算法题 10 道，含难度标注"
 date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
@@ -18,7 +18,7 @@ type: "book"
 
 # 第 5 章：Algorithm 算法与系统篇
 
-> 选自《AI 概念面试题 120 道》· 对标 aioffer.com Algorithm 分类题库
+> 选自《AI 概念面试题 120 道》· 对标 aiofferly.com Algorithm 分类题库
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 

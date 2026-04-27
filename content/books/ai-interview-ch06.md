@@ -3,7 +3,7 @@ title: "AI 概念面试题 120 道 - 第6章: ML Systems 机器学习系统篇"
 book: "AI 概念面试题 120 道"
 chapter: "6"
 chapterTitle: "ML Systems 机器学习系统篇"
-description: "对标 aioffer Fundamental 高难度题：Offline RL、Dreamer vs MuZero、Token-level PPO、Process Reward Models、SLO-Aware Model Serving、Continuous Batching、MLOps、数据飞轮等 ML 系统设计题 15 道，含难度标注"
+description: "对标 aiofferly.com Fundamental 高难度题：Offline RL、Dreamer vs MuZero、Token-level PPO、Process Reward Models、SLO-Aware Model Serving、Continuous Batching、MLOps、数据飞轮等 ML 系统设计题 15 道，含难度标注"
 date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
@@ -18,7 +18,7 @@ type: "book"
 
 # 第 6 章：ML Systems 机器学习系统篇
 
-> 选自《AI 概念面试题 120 道》· 对标 aioffer.com 高难度 Fundamental 题库
+> 选自《AI 概念面试题 120 道》· 对标 aiofferly.com 高难度 Fundamental 题库
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 

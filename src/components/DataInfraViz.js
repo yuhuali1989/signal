@@ -1083,6 +1083,62 @@ export function DatalakeTab() {
                           <div key={si} className="mb-3">
                             <div className="text-[9px] font-bold mb-1" style={{ color: sv.color }}>{sec.name}</div>
                             <div className="text-[8px] text-gray-500 mb-1.5">{sec.desc}</div>
+                            {/* 写入延迟分析专属渲染 */}
+                            {sec.writeLatencyAnalysis && (() => {
+                              const wl = sec.writeLatencyAnalysis;
+                              return (
+                                <div className="space-y-2 mb-2">
+                                  <div className="rounded-lg border border-orange-100 bg-orange-50/40 p-2.5">
+                                    <div className="text-[9px] font-semibold text-orange-700 mb-1">📊 总体结论</div>
+                                    <p className="text-[8px] text-gray-600">{wl.summary}</p>
+                                  </div>
+                                  <div className="text-[9px] font-semibold text-gray-500 mb-1">⚙️ 额外开销来源</div>
+                                  {wl.overheadItems.map((item, ii) => (
+                                    <div key={ii} className="rounded-lg border p-2"
+                                      style={{ borderColor: item.color + '30', background: item.color + '08' }}>
+                                      <div className="flex items-center gap-1.5 mb-1">
+                                        <span className="text-[9px] font-bold" style={{ color: item.color }}>{item.name}</span>
+                                        <span className="text-[8px] px-1.5 py-0.5 rounded-full"
+                                          style={{ background: item.color + '18', color: item.color }}>严重度：{item.severity}</span>
+                                      </div>
+                                      <p className="text-[8px] text-gray-500 mb-1">{item.desc}</p>
+                                      <p className="text-[8px] text-green-600">✅ 缓解：{item.mitigation}</p>
+                                    </div>
+                                  ))}
+                                  <div className="text-[9px] font-semibold text-gray-500 mt-2 mb-1">📈 Append vs Upsert 写入延迟对比</div>
+                                  <div className="overflow-x-auto">
+                                    <table className="w-full text-[8px]">
+                                      <thead>
+                                        <tr className="border-b border-gray-100">
+                                          <th className="text-left py-1 px-1.5 text-gray-400">场景</th>
+                                          <th className="text-left py-1 px-1.5 text-gray-400">V2</th>
+                                          <th className="text-left py-1 px-1.5 text-gray-400">V3</th>
+                                          <th className="text-left py-1 px-1.5 text-gray-400">结论</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {[
+                                          { label: '纯 Append', ...wl.appendVsUpsert.append },
+                                          { label: '低频 Upsert', ...wl.appendVsUpsert.upsert_low },
+                                          { label: '高频 Upsert', ...wl.appendVsUpsert.upsert_high },
+                                        ].map((row, ri) => (
+                                          <tr key={ri} className={`border-b border-gray-50 ${ri%2===0?'bg-gray-50/20':''}`}>
+                                            <td className="py-1 px-1.5 font-semibold text-gray-600">{row.label}</td>
+                                            <td className="py-1 px-1.5 text-gray-500">{row.v2}</td>
+                                            <td className="py-1 px-1.5 text-gray-500">{row.v3}</td>
+                                            <td className="py-1 px-1.5 text-blue-600 font-medium">{row.verdict}</td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <div className="rounded-lg border border-blue-100 bg-blue-50/40 p-2.5 mt-1">
+                                    <div className="text-[9px] font-semibold text-blue-700 mb-1">💡 核心洞察</div>
+                                    <p className="text-[8px] text-gray-600">{wl.keyInsight}</p>
+                                  </div>
+                                </div>
+                              );
+                            })()}
                             <pre className="text-[7.5px] font-mono rounded-lg p-2.5 leading-relaxed overflow-x-auto"
                               style={{ background: sv.color + '08', color: sv.color, border: `1px solid ${sv.color}20` }}>
                               {sec.code}

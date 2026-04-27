@@ -18,7 +18,7 @@ type: "book"
 
 # 第 7 章：综合系统设计与前沿专题
 
-> 选自《AI 概念面试题 120 道》· 综合 aioffer.com 高频系统设计题
+> 选自《AI 概念面试题 120 道》· 综合 aiofferly.com 高频系统设计题
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 

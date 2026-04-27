@@ -3,7 +3,7 @@ title: "AI 概念面试题 120 道 - 第4章: Audio 音频与语音篇"
 book: "AI 概念面试题 120 道"
 chapter: "4"
 chapterTitle: "Audio 音频与语音篇"
-description: "对标 aioffer Audio 分类：音频去噪、Audio Tokenizer、Voice Activity Detection、ASR（Whisper）、TTS（Neural Codec）、Speaker Diarization、Real-Time Voice Chat、Audio LLM 等 10 道高频题，含难度标注"
+description: "对标 aiofferly.com Audio 分类：音频去噪、Audio Tokenizer、Voice Activity Detection、ASR（Whisper）、TTS（Neural Codec）、Speaker Diarization、Real-Time Voice Chat、Audio LLM 等 10 道高频题，含难度标注"
 date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
@@ -19,7 +19,7 @@ type: "book"
 
 # 第 4 章：Audio 音频与语音篇
 
-> 选自《AI 概念面试题 120 道》· 对标 aioffer.com Audio 分类题库
+> 选自《AI 概念面试题 120 道》· 对标 aiofferly.com Audio 分类题库
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 

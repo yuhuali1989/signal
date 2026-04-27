@@ -3,7 +3,7 @@ title: "AI 概念面试题 120 道 - 第2章: NLP 与大语言模型篇"
 book: "AI 概念面试题 120 道"
 chapter: "2"
 chapterTitle: "NLP 与大语言模型篇"
-description: "对标 aioffer NLP 分类：Prompt Engineering、Tokenization（BPE）、Beam Search 解码、LLM 评测（Perplexity）、SFT、DPO/RLHF、RAG、幻觉、MoE、LoRA、Flash Attention、Long Context、Speculative Decoding 等 30 道高频题，含难度标注"
+description: "对标 aiofferly.com NLP 分类：Prompt Engineering、Tokenization（BPE）、Beam Search 解码、LLM 评测（Perplexity）、SFT、DPO/RLHF、RAG、幻觉、MoE、LoRA、Flash Attention、Long Context、Speculative Decoding 等 30 道高频题，含难度标注"
 date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
@@ -19,7 +19,7 @@ type: "book"
 
 # 第 2 章：NLP 与大语言模型篇
 
-> 选自《AI 概念面试题 120 道》· 对标 aioffer.com NLP 分类题库
+> 选自《AI 概念面试题 120 道》· 对标 aiofferly.com NLP 分类题库
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 
