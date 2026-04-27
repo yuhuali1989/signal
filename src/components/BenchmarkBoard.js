@@ -8,6 +8,9 @@ const categoryColors = {
   overall: 'bg-green-50 text-green-700 border-green-200',
   agent: 'bg-orange-50 text-orange-700 border-orange-200',
   cost: 'bg-amber-50 text-amber-700 border-amber-200',
+  'autonomous-driving': 'bg-slate-50 text-slate-700 border-slate-200',
+  video: 'bg-pink-50 text-pink-700 border-pink-200',
+  '3d': 'bg-cyan-50 text-cyan-700 border-cyan-200',
 };
 
 export default function BenchmarkBoard({ benchmarks }) {
@@ -64,6 +67,19 @@ export default function BenchmarkBoard({ benchmarks }) {
                       <th className="text-right px-4 py-3 font-medium">输出 $/M</th>
                     </>
                   )}
+                  {current.category === 'video' && (
+                    <>
+                      <th className="text-right px-4 py-3 font-medium">文本对齐</th>
+                      <th className="text-right px-4 py-3 font-medium">运动质量</th>
+                      <th className="text-right px-4 py-3 font-medium">视觉质量</th>
+                    </>
+                  )}
+                  {current.category === '3d' && (
+                    <>
+                      <th className="text-right px-4 py-3 font-medium">CMMD↓</th>
+                      <th className="text-right px-4 py-3 font-medium">CLIP-score↑</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -111,6 +127,19 @@ export default function BenchmarkBoard({ benchmarks }) {
                         <td className="px-4 py-3.5 text-right text-xs text-gray-500">
                           ${m.output_price}
                         </td>
+                      </>
+                    )}
+                    {current.category === 'video' && (
+                      <>
+                        <td className="px-4 py-3.5 text-right text-xs text-gray-500">{m.text_align != null ? `${m.text_align}%` : '—'}</td>
+                        <td className="px-4 py-3.5 text-right text-xs text-gray-500">{m.motion_quality != null ? `${m.motion_quality}%` : '—'}</td>
+                        <td className="px-4 py-3.5 text-right text-xs text-gray-500">{m.visual_quality != null ? `${m.visual_quality}%` : '—'}</td>
+                      </>
+                    )}
+                    {current.category === '3d' && (
+                      <>
+                        <td className="px-4 py-3.5 text-right text-xs text-gray-500">{m.cmmd != null ? m.cmmd : '—'}</td>
+                        <td className="px-4 py-3.5 text-right text-xs text-gray-500">{m.clip_score != null ? m.clip_score : '—'}</td>
                       </>
                     )}
                   </tr>
