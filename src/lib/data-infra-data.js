@@ -732,6 +732,84 @@ export const DATALAKE_DATA = {
           '升级后新写入的 Snapshot 必须设置 first-row-id 并为数据文件分配行 ID',
           'Variant/geometry/geography 列必须设置 null 默认值',
         ],
+        sourceDeepDive: {
+          title: 'V3 核心设计源码解析',
+          sections: [
+            {
+              name: 'Binary Deletion Vector（DV）— Puffin 文件结构',
+              color: '#a29bfe',
+              desc: 'V3 用 Roaring Bitmap 替代 V2 的 Position Delete File，彻底解决 Flink 流式写入后 Delete File 数量爆炸问题。',
+              code: `// Puffin 文件格式 (iceberg-core/.../puffin/)
+// 文件结构: [Magic(4B)][Blob1]...[BlobN][Footer JSON][FooterSize(4B)][Magic(4B)]
+// 每个 Blob 对应一个 DataFile 的删除位图:
+//   blob.type       = "deletion-vector-v1"
+//   blob.fields     = [data_file_content_id]
+//   blob.properties = {"cardinality": "42"}  // 被删除行数
+//   blob.data       = <Roaring Bitmap 序列化字节>
+
+// DV 读取路径:
+// 1. 扫描 ManifestFile，发现 DataFile 有关联的 puffin_path
+// 2. 加载 Puffin 文件，按 content_id 找到对应 Blob
+// 3. 反序列化 Roaring Bitmap -> deletedRows
+// 4. 读取 DataFile 时，按行号跳过 deletedRows 中标记的行
+
+// V2 vs V3 删除文件对比 (Flink 1min checkpoint, parallelism=32):
+// V2: 每次 checkpoint 生成 32 个 .parquet 删除文件
+//   -> 1 小时后: 1920 个删除文件，查询需 Join 1920 个文件
+//   -> 24 小时后: 46080 个删除文件 -> 查询性能崩溃
+// V3 DV: 每个 DataFile 最多 1 个 DV Blob，多次 Upsert 做 Bitmap OR
+//   -> 24 小时后: 删除文件数 <= DataFile 数量 (通常 < 1000 个)`,
+            },
+            {
+              name: 'Row Lineage — _row_id 分配机制',
+              color: '#a29bfe',
+              desc: 'V3 为每行分配全局唯一 _row_id，精确追踪行变更历史，是 CDC 和审计合规的基础。',
+              code: `// Row Lineage 核心字段 (TableMetadata.java):
+// "next-row-id": 64 位全局递增计数器，每次写入后更新
+// DataFile 新增字段:
+//   "first-row-id": 该文件第一行的 _row_id
+//   行 N 的 _row_id = first-row-id + N (行内偏移)
+
+// 写入流程 (简化):
+// 1. 开始写入前，从 TableMetadata 读取 next-row-id = R
+// 2. 写入 M 行数据，DataFile.first_row_id = R
+// 3. 提交时 next-row-id 更新为 R + M
+// 4. 查询时 SELECT _row_id 返回 first_row_id + row_position
+
+// 升级注意:
+// - 历史 V1/V2 文件的 _row_id 读为 null (向后兼容)
+// - 从 V2 升级: ALTER TABLE SET ('format-version'='3')
+//   Iceberg 自动初始化 next-row-id=0，新写入文件才有 _row_id`,
+            },
+            {
+              name: 'Variant 类型 — Parquet VariantEncoding',
+              color: '#a29bfe',
+              desc: 'V3 新增 Variant 类型，基于 Parquet VariantEncoding 存储半结构化 JSON 数据，无需预定义 Schema。',
+              code: `// Variant 在 Parquet 中的物理存储:
+// 每个 Variant 列拆分为两个 Parquet 列:
+//   value  BINARY  -- 序列化的值字节
+//   metadata BINARY -- 字段名字典 (共享，节省空间)
+
+// Iceberg Schema 定义:
+// { "id": 10, "name": "payload", "type": "variant" }
+
+// 写入示例 (PyIceberg 0.9+):
+// from pyiceberg.types import VariantType
+// schema = Schema(
+//   NestedField(1, "id", LongType()),
+//   NestedField(2, "payload", VariantType()),
+// )
+// table.append(pa.table({
+//   "id": [1, 2],
+//   "payload": ['{"score": 0.9, "tags": ["car"]}',
+//               '{"score": 0.7, "bbox": [10,20,100,200]}'],
+// }))
+
+// 查询时支持 JSON 路径提取 (Spark 4.0+):
+// SELECT payload:score, payload:tags[0] FROM table WHERE payload:score > 0.8`,
+            },
+          ],
+        },
       },
     ],
   },
@@ -1004,6 +1082,83 @@ table.expireSnapshots()
         { name: 'Sort', desc: '合并同时按指定列排序，提升范围查询性能', color: '#6c5ce7' },
         { name: 'Z-Order', desc: '多列 Z-Order 排序，提升多维过滤性能（适合点云/BEV 数据）', color: '#fd79a8' },
       ],
+      flinkSmallFileProblem: {
+        title: 'Flink 写入后合并爆炸问题',
+        problem: 'Flink 流式写入 Iceberg 时，每个 checkpoint 周期（默认 1~5 分钟）会提交一批小文件。高并发场景下，每天可产生数万个小文件，导致：① 查询时 Manifest 扫描开销爆炸；② V2 Delete File 随 Upsert 线性堆积；③ S3 LIST 请求费用激增。',
+        rootCause: [
+          { cause: 'Checkpoint 粒度 = 文件粒度', desc: 'Flink 每次 checkpoint 必须 commit，每个并行度（parallelism）产生 1 个文件，parallelism=32 + 1min checkpoint = 每小时 1920 个文件', icon: '⏱️' },
+          { cause: 'V2 Delete File 线性堆积', desc: 'Upsert 模式下，每次 checkpoint 生成 1 个 Position Delete File。运行 24 小时后，每次查询需 Join 1440 个删除文件，读放大严重', icon: '📂' },
+          { cause: 'Manifest File 碎片化', desc: '每次 commit 生成新 ManifestFile，长期运行后 ManifestList 包含数千个 ManifestFile，Planner 规划时间从毫秒级退化到秒级', icon: '📋' },
+        ],
+        solutions: [
+          {
+            name: 'V2 时代缓解方案（治标）',
+            color: '#ffa657',
+            items: [
+              '调大 checkpoint 间隔（5~10 分钟），减少文件提交频率，代价是数据延迟增加',
+              '定期 rewriteDataFiles（Binpack）合并小文件，建议每小时一次增量 Compaction',
+              '定期 rewriteManifests 合并碎片化 ManifestFile，建议每天一次',
+              '开启 write.merge.mode=merge-on-read（MoR），写入只追加 Delete File，延迟物化合并',
+              '设置 write.target-file-size-bytes=134217728（128MB），减少过小文件产生',
+            ],
+            code: `-- Flink SQL 推荐配置（V2 缓解方案）
+CREATE TABLE iceberg_sink (
+  id BIGINT,
+  ...
+) WITH (
+  'connector' = 'iceberg',
+  'catalog-name' = 'rest',
+  'write.upsert.enabled' = 'true',
+  'write.merge.mode' = 'merge-on-read',          -- MoR 模式，写入快
+  'write.target-file-size-bytes' = '134217728',  -- 目标 128MB
+  'write.metadata.delete-after-commit.enabled' = 'true',
+  'write.metadata.previous-versions-max' = '10'
+);
+
+-- 配套 Spark Compaction Job（每小时调度）
+SparkActions.get(spark)
+  .rewriteDataFiles(table)
+  .option("rewrite-all", "false")  -- 只处理小文件
+  .option("min-file-size-bytes", String.valueOf(50 * 1024 * 1024))  -- <50MB 才合并
+  .option("target-file-size-bytes", String.valueOf(256 * 1024 * 1024))
+  .execute();`,
+          },
+          {
+            name: 'V3 DV 根本缓解（治本）',
+            color: '#a29bfe',
+            items: [
+              'DV（Deletion Vector）用 Roaring Bitmap 替代 Position Delete File：每个 DataFile 最多 1 个 DV Blob，无论 Upsert 多少次，删除文件数量不再线性增长',
+              '位图 OR 合并：多次 Upsert 对同一 DataFile 的删除，直接做 Bitmap OR 操作更新同一个 DV，无需生成新文件',
+              'Puffin 文件复用：DV 存储在 Puffin 文件中，多个 DataFile 的 DV 可共享一个 Puffin 文件，进一步减少文件数量',
+              '查询性能稳定：读取时只需加载 1 个 Puffin 文件 + 位图过滤，不再随运行时间退化',
+              '注意：V3 DV 需要 Flink 2.1+（2026 Q2）才支持写入，当前 Flink 版本仍需 V2 方案兜底',
+            ],
+            code: `// V3 DV 写入流程（源码层面）
+// 文件：iceberg-core/.../puffin/PuffinWriter.java
+//
+// Flink checkpoint 触发 commit 时：
+// 1. 对于新增行：正常写入 DataFile，分配 first_row_id
+// 2. 对于删除/更新行：
+//    a. 找到目标 DataFile 对应的现有 DV Blob（若存在）
+//    b. 反序列化 Roaring Bitmap
+//    c. 将新删除的行号 OR 进位图：bitmap.add(row_position)
+//    d. 重新序列化，写入新 Puffin 文件
+//    e. 旧 Puffin 文件进入 orphan 状态
+// 3. 提交新 Snapshot，ManifestFile 中 DataFile 记录 puffin_path
+//
+// 效果对比（parallelism=32，1min checkpoint，运行 24h）：
+//   V2 Delete Files：32 × 60 × 24 = 46,080 个删除文件
+//   V3 DV Blobs：  ≤ DataFile 数量（通常 < 1000 个）
+//
+// 升级到 V3 的 Flink 配置：
+// 'format-version' = '3',
+// 'write.delete.mode' = 'merge-on-read',  -- 触发 DV 路径
+// 'write.update.mode' = 'merge-on-read',
+// 'write.merge.mode'  = 'merge-on-read'`,
+          },
+        ],
+        currentStatus: 'V3 DV 对 Flink 写入小文件爆炸问题有根本性缓解，但 Flink 2.1 的 DV 写入支持预计 2026 Q2 才 GA。当前（2026 Q1）生产环境建议：Flink 写入用 V2 MoR 模式 + 定期 Spark Compaction，待 Flink 2.1 稳定后迁移到 V3 DV。',
+      },
     },
 
     rowLevelOps: {
