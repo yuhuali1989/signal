@@ -1627,7 +1627,7 @@ CREATE TABLE events (...) WITH (
   'connector' = 'iceberg',
   'write.parquet.bloom-filter-enabled.column.id' = 'true'
 );`,
-      writeFlowCode: `// ── 先搞清楚两个 Bitmap 的本质区别 ──
+      writeFlowCode: `// ── 先搞清楚两个结构的本质区别 ──
 //
 // ┌─────────────────┬──────────────────────────────────┬──────────────────────────────────┐
 // │                 │  Bloom Filter（BF）               │  Deletion Vector（DV）            │
@@ -1635,61 +1635,77 @@ CREATE TABLE events (...) WITH (
 // │ 存储内容        │ 某列所有值的集合摘要              │ 该 DataFile 中已删除行的行号集合  │
 // │ 回答的问题      │ "id=42 在这个 DataFile 里吗？"   │ "第 137 行被删除了吗？"           │
 // │ 作用粒度        │ 文件级（跳过整个 DataFile）       │ 行级（跳过文件内某些行）          │
-// │ 使用时机        │ 写入时生成，Lookup 时读取         │ 每次 UPDATE/DELETE 后更新         │
 // │ 数据结构        │ Theta Sketch（概率型，有误判率）  │ Roaring Bitmap（精确，无误判）    │
 // │ Puffin Blob 类型│ apache-datasketches-theta-v1      │ deletion-vector-v1                │
 // │ 是否必须        │ 可选（Upsert 场景强烈建议）       │ V3 核心特性（替代 Delete File）   │
 // └─────────────────┴──────────────────────────────────┴──────────────────────────────────┘
 //
-// 关键：同一个 Puffin 文件里可以同时存 BF Blob 和 DV Blob，但它们完全独立，互不干扰
-//   Puffin 文件 = [BF-Blob(col=id)] + [DV-Blob(deleted rows)] + Footer
+// ── ⚠️ 关键误区：Flink 写入时不是"逐行查 BF" ──
 //
-// ── V3 完整 Upsert 写入流程（Flink 为例）──
+// 错误理解: 每条 UPDATE 记录 → S3 读一次 BF → 查询 → 找到行位置
+//   → 如果 1 分钟 10 万条 UPDATE，就要 10 万次 S3 GET？当然不行！
 //
-// 步骤 1: Flink checkpoint 内攒积一批 Upsert 记录
+// 正确理解: Flink Iceberg Connector 的 Lookup 依赖【内存 State】，BF 只在冷启动时用一次
+//
+// ── Flink Iceberg Connector 真实架构（EqualityDeleteWriter）──
+//
+// Flink Task 内部维护一个 RocksDB State（或内存 HashMap）:
+//   key:   主键值（如 id=42）
+//   value: (dataFile路径, rowPosition)  ← 该主键当前所在位置
+//
+// 这个 State 在 Task 生命周期内持续存在，不需要每条记录都去 S3 查
+//
+// ── V3 完整 Upsert 写入流程（Flink 真实实现）──
+//
+// ═══ 阶段 0：Task 启动 / Compaction 后重建 State（只做一次）═══
+//   场景：Task 冷启动，或 Compaction 后 DataFile 重组，State 需要重建
+//   0a. 读取 ManifestList → 获取所有 DataFile 列表
+//   0b. 对每个 DataFile，S3 Range GET 其 Puffin BF Blob（批量，并行）
+//       → 将所有 BF 加载到内存（Task 本地，不是 S3）
+//   0c. 扫描 DataFile，将 (主键 → dataFile + rowPos) 写入 RocksDB State
+//       → BF 在这里加速：先查内存 BF，false 则跳过整个 DataFile 的扫描
+//   结果：State 建好后，BF 的使命基本完成（留在内存备用）
+//   耗时：一次性开销，通常 10~60 秒（取决于 DataFile 数量）
+//
+// ═══ 阶段 1：正常流式处理（每个 checkpoint 周期，如每 1 分钟）═══
+//
+// 步骤 1: 攒积一批 Upsert 记录（checkpoint 内，纯内存操作）
 //   records = [(id=42, score=0.9, op=UPDATE), (id=99, op=INSERT), ...]
 //
-// 步骤 2: Lookup 阶段 ← 这里用的是 BF（文件级过滤）
-//   目标：找到 id=42 在哪个 DataFile 的第几行
-//   for each DataFile in ManifestFile:
-//     ① S3 Range GET Puffin 中的 BF Blob（Theta Sketch，按 column_id 定位）
-//        BF.mightContain(id=42) = false → 100% 不在，跳过整个 DataFile（零 I/O）
-//        BF.mightContain(id=42) = true  → 可能在（1% 误判率），进入下一步
-//     ② 读 Parquet RowGroup 统计（min/max），进一步裁剪
-//     ③ 实际扫描 Parquet，确认 id=42 在 "part-00001.parquet" 的第 137 行
+// 步骤 2: Lookup 阶段 ← 查的是内存 RocksDB State，不是 S3！
+//   for each record where op != INSERT:
+//     state.get(id=42) → ("part-00001.parquet", row=137)  ← 纯内存，微秒级
+//     如果 State 未命中（极少数情况，如 State 被清理）:
+//       → 才会回退到查内存 BF（已在阶段 0 加载），仍是内存操作
+//       → BF false → 跳过；BF true → 读 Parquet 确认（这才是 S3 I/O）
 //   结果: lookupResults = {("part-00001.parquet", row=137)}
-//   注意: 此时完全没有碰 DV，BF 只负责"找文件"
 //
 // 步骤 3: 写新 DataFile（Append 新版本数据）
 //   newDataFile = writeParquet([{id=42, score=0.9, first_row_id=R}, ...])
-//   同时为新 DataFile 生成新的 BF Blob（写入新 Puffin 文件）
-//   → 新文件的 DV 此时为空（没有行被删除）
+//   同时为新 DataFile 生成新的 BF（内存计算，写入时一并序列化到 Puffin）
+//   更新 State: state.put(id=42, (newDataFile, newRowPos))
 //
-// 步骤 4: 更新旧 DataFile 的 DV ← 这里用的是 DV Bitmap（行级标记）
-//   目标：把旧 DataFile 里 id=42 的那行标记为"已删除"
-//   for each (dataFile, rowPos) in lookupResults:
-//     ① S3 Range GET 旧 Puffin 中的 DV Blob（Roaring Bitmap，精确无误判）
-//     ② 反序列化 Roaring Bitmap → 设置 bit[137] = 1（标记第 137 行已删除）
-//     ③ 重新序列化 → 写新 Puffin 文件（旧 Puffin 不可变，生成新版本）
-//   注意: 此时完全没有碰 BF，DV 只负责"标记行"
+// 步骤 4: 更新旧 DataFile 的 DV（checkpoint 提交时，按 DataFile 分组批量处理）
+//   按 DataFile 分组: {"part-00001.parquet": [row=137, row=209, ...], ...}
+//   for each (dataFile, rowPosList) in grouped:
+//     ① S3 Range GET 旧 Puffin DV Blob（每个 DataFile 只读一次，不是每行一次！）
+//     ② 反序列化 Roaring Bitmap → 批量 OR 合并所有 rowPos → 重新序列化
+//     ③ 写新 Puffin 文件
+//   关键：1 分钟内 10 万条 UPDATE 涉及 N 个 DataFile → 只有 N 次 S3 GET（N 通常 < 100）
 //
-// 步骤 5: 提交 Snapshot
-//   写新 ManifestFile:
-//     新 DataFile → puffin_path 指向含新 BF 的 Puffin（DV 为空）
-//     旧 DataFile → puffin_path 指向含旧 BF + 更新后 DV 的新 Puffin
-//   写新 ManifestList
+// 步骤 5: 提交 Snapshot（checkpoint barrier 触发）
+//   写新 ManifestFile / ManifestList
 //   CAS 更新 TableMetadata（next-row-id += 写入行数）
 //
-// ── 读取时两者如何配合 ──
-//   SELECT * FROM events WHERE id = 42
-//   1. BF 过滤（文件级）: 99% DataFile 被跳过
-//   2. 找到候选 DataFile，读 Parquet，定位 row=137
-//   3. DV 检查（行级）: bitmap.contains(137) = true → 旧行已删除，跳过
-//   4. 在新 DataFile 里找到新版本 id=42 → 返回
+// ── 性能小结 ──
+//   逐行操作（微秒级）: State Lookup（RocksDB，内存/本地磁盘）
+//   按 DataFile 批量（毫秒级）: DV Bitmap 更新（每个 DataFile 1 次 S3 GET）
+//   一次性开销（秒级）: 冷启动时 BF 辅助重建 State
+//   BF 的真正价值: 不是"每行查一次"，而是"冷启动时批量过滤，避免扫描所有 DataFile"
 //
-// 总 S3 操作:
-//   GET: M 次 BF Blob（Lookup 过滤）+ N 次 DV Blob（更新删除标记）
-//   PUT: 1 DataFile + K Puffin（含新 BF 和更新后 DV）+ ManifestFile + ManifestList + metadata.json`,
+// 总 S3 操作（每个 checkpoint）:
+//   GET: N 次 DV Blob（N = 本次涉及的不同 DataFile 数，通常 < 100）
+//   PUT: 1 DataFile + N Puffin + 1 ManifestFile + 1 ManifestList + 1 metadata.json`,
       readFlowCode: `// ── V3 完整读取流程 ──
 //
 // 场景 A: 点查  SELECT * FROM events WHERE id = 42
