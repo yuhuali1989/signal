@@ -1008,6 +1008,77 @@ export function DatalakeTab() {
                 ))}
               </div>
             </SectionCard>
+            {/* Iceberg Spec 版本演进 */}
+            <SectionCard icon="📜" title="Iceberg Spec 版本演进：V1 → V2 → V3" desc="格式规范版本对比与引擎支持进度">
+              <div className="space-y-4">
+                {tableFormat.icebergSpecVersions.map(sv => (
+                  <div key={sv.version} className="rounded-2xl border p-4"
+                    style={{ borderColor: sv.color + '40', background: sv.color + '06' }}>
+                    {/* 版本标题行 */}
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="text-base font-black" style={{ color: sv.color }}>{sv.version}</span>
+                      <span className="text-xs font-bold text-gray-700">{sv.title}</span>
+                      <span className="text-[9px] px-2 py-0.5 rounded-full font-semibold ml-auto"
+                        style={{ background: sv.color + '18', color: sv.color }}>{sv.status}</span>
+                    </div>
+                    <div className="text-[9px] text-gray-400 mb-2">发布：{sv.released}</div>
+                    <div className="text-[10px] text-gray-600 rounded-lg border border-gray-100 bg-white/80 p-2 mb-3">
+                      {sv.coreTheme}
+                    </div>
+                    {/* 新特性 */}
+                    <div className="mb-3">
+                      <div className="text-[9px] font-semibold text-gray-500 mb-1.5">🆕 新增特性</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                        {sv.newFeatures.map(f => (
+                          <div key={f.name} className="rounded-lg border border-gray-100 bg-white/80 p-2">
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                              <span className="text-sm">{f.icon}</span>
+                              <span className="text-[9px] font-semibold text-gray-700">{f.name}</span>
+                            </div>
+                            <p className="text-[8px] text-gray-500">{f.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {/* 引擎支持 */}
+                    <div className="mb-2">
+                      <div className="text-[9px] font-semibold text-gray-500 mb-1.5">🔧 引擎支持进度</div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-[8px]">
+                          <thead>
+                            <tr className="border-b border-gray-100">
+                              <th className="text-left py-1 px-1.5 text-gray-400 font-medium">引擎</th>
+                              <th className="text-left py-1 px-1.5 text-gray-400 font-medium">支持状态</th>
+                              <th className="text-left py-1 px-1.5 text-gray-400 font-medium">版本/预计时间</th>
+                              <th className="text-left py-1 px-1.5 text-gray-400 font-medium">备注</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sv.engineSupport.map((e, i) => (
+                              <tr key={e.engine} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/30':''}`}>
+                                <td className="py-1 px-1.5 font-semibold text-gray-600">{e.engine}</td>
+                                <td className="py-1 px-1.5">{e.support}</td>
+                                <td className="py-1 px-1.5 text-gray-500">{e.version}</td>
+                                <td className="py-1 px-1.5 text-gray-400">{e.note}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    {/* V3 升级注意事项 */}
+                    {sv.upgradeNotes && (
+                      <div className="mt-2">
+                        <div className="text-[9px] font-semibold text-gray-500 mb-1">⚠️ 升级注意事项</div>
+                        {sv.upgradeNotes.map((n, i) => (
+                          <div key={i} className="text-[8px] text-gray-500 mb-0.5">· {n}</div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
           </div>
         </div>
       )}
