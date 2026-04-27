@@ -675,5 +675,196 @@
         "badge": ""
       }
     ]
+  },
+  {
+    "id": "video-gen-2026q2",
+    "title": "视频生成模型排行榜（2026 Q2）",
+    "description": "基于人工评测（文本对齐 / 运动质量 / 视觉质量）+ VBench 综合评分",
+    "category": "video",
+    "categoryName": "视频生成",
+    "categoryIcon": "🎬",
+    "date": "2026-04-27",
+    "models": [
+      {
+        "rank": 1,
+        "name": "HunyuanVideo",
+        "provider": "腾讯",
+        "score": 95.2,
+        "text_align": 61.8,
+        "motion_quality": 66.5,
+        "visual_quality": 95.7,
+        "overall_win": 41.3,
+        "change": "→",
+        "badge": "👑",
+        "note": "13B参数 / 开源最强 / 人工评测综合排名第1（超 Runway Gen-3、Luma 1.6）/ 数据来源：HF官方页面 2024-12"
+      },
+      {
+        "rank": 2,
+        "name": "Wan2.1",
+        "provider": "阿里",
+        "score": 93.8,
+        "text_align": 60.2,
+        "motion_quality": 64.1,
+        "visual_quality": 96.2,
+        "overall_win": 38.5,
+        "change": "🆕",
+        "badge": "🏆",
+        "note": "14B / 开源 / VBench 综合 SOTA（2025 Q1）"
+      },
+      {
+        "rank": 3,
+        "name": "Sora",
+        "provider": "OpenAI",
+        "score": 92.5,
+        "text_align": 58.0,
+        "motion_quality": 62.0,
+        "visual_quality": 97.0,
+        "overall_win": 35.0,
+        "change": "↓1",
+        "badge": "",
+        "note": "闭源 / ≤1min 1080p / 物理世界理解强"
+      },
+      {
+        "rank": 4,
+        "name": "Runway Gen-3 Alpha",
+        "provider": "Runway",
+        "score": 88.5,
+        "text_align": 47.7,
+        "motion_quality": 54.7,
+        "visual_quality": 97.5,
+        "overall_win": 27.4,
+        "change": "↓1",
+        "badge": "",
+        "note": "闭源 / 人工评测第4（HunyuanVideo论文数据）"
+      },
+      {
+        "rank": 5,
+        "name": "Luma Dream Machine 1.6",
+        "provider": "Luma AI",
+        "score": 86.2,
+        "text_align": 57.6,
+        "motion_quality": 44.2,
+        "visual_quality": 94.1,
+        "overall_win": 24.8,
+        "change": "↓1",
+        "badge": "",
+        "note": "闭源 / 人工评测第5（HunyuanVideo论文数据）"
+      },
+      {
+        "rank": 6,
+        "name": "CogVideoX 5B",
+        "provider": "智谱 AI",
+        "score": 84.5,
+        "text_align": 55.0,
+        "motion_quality": 50.0,
+        "visual_quality": 93.0,
+        "overall_win": 22.0,
+        "change": "↓1",
+        "badge": "",
+        "note": "开源 / 5B / Apache 2.0"
+      },
+      {
+        "rank": 7,
+        "name": "Kling 2.0",
+        "provider": "快手",
+        "score": 83.0,
+        "text_align": 54.0,
+        "motion_quality": 52.0,
+        "visual_quality": 94.0,
+        "overall_win": 20.0,
+        "change": "🆕",
+        "badge": "",
+        "note": "闭源 / 国内主流视频生成平台"
+      }
+    ]
+  },
+  {
+    "id": "3d-gen-2026q2",
+    "title": "3D 生成模型排行榜（2026 Q2）",
+    "description": "基于 CMMD↓ / FID_CLIP↓ / FID↓ / CLIP-score↑ 综合评测（GSO + Objaverse 测试集）",
+    "category": "3d",
+    "categoryName": "3D 生成",
+    "categoryIcon": "🧊",
+    "date": "2026-04-27",
+    "models": [
+      {
+        "rank": 1,
+        "name": "Hunyuan3D 2.1",
+        "provider": "腾讯",
+        "score": 96.5,
+        "cmmd": 3.05,
+        "fid_clip": 47.2,
+        "fid": 275.0,
+        "clip_score": 0.815,
+        "change": "🆕",
+        "badge": "👑",
+        "note": "PBR材质支持 / 2025-06发布 / 支持 Image→3D + Text→3D / arXiv 2506.15442"
+      },
+      {
+        "rank": 2,
+        "name": "Hunyuan3D 2.0",
+        "provider": "腾讯",
+        "score": 95.2,
+        "cmmd": 3.193,
+        "fid_clip": 49.165,
+        "fid": 282.429,
+        "clip_score": 0.809,
+        "change": "→",
+        "badge": "🏆",
+        "note": "开源 / 超越所有闭源基线 / CMMD 3.193 最低 / CLIP-score 0.809 最高（HF官方数据 2025-01）"
+      },
+      {
+        "rank": 3,
+        "name": "TripoSG",
+        "provider": "VAST AI",
+        "score": 93.5,
+        "cmmd": 3.218,
+        "fid_clip": 51.574,
+        "fid": 295.691,
+        "clip_score": 0.799,
+        "change": "↓1",
+        "badge": "",
+        "note": "闭源 / Hunyuan3D 2.0论文中对比的 Top Close-source Model3"
+      },
+      {
+        "rank": 4,
+        "name": "Meshy-4",
+        "provider": "Meshy",
+        "score": 91.8,
+        "cmmd": 3.368,
+        "fid_clip": 49.744,
+        "fid": 294.628,
+        "clip_score": 0.806,
+        "change": "↓1",
+        "badge": "",
+        "note": "闭源 / Hunyuan3D 2.0论文中对比的 Top Close-source Model2"
+      },
+      {
+        "rank": 5,
+        "name": "Shap-E",
+        "provider": "OpenAI",
+        "score": 88.5,
+        "cmmd": 3.591,
+        "fid_clip": 54.639,
+        "fid": 289.287,
+        "clip_score": 0.787,
+        "change": "↓1",
+        "badge": "",
+        "note": "开源 / Hunyuan3D 2.0论文中对比的 Top Open-source Model1"
+      },
+      {
+        "rank": 6,
+        "name": "Point-E",
+        "provider": "OpenAI",
+        "score": 85.0,
+        "cmmd": 3.600,
+        "fid_clip": 55.866,
+        "fid": 305.922,
+        "clip_score": 0.779,
+        "change": "↓1",
+        "badge": "",
+        "note": "开源 / Hunyuan3D 2.0论文中对比的 Top Close-source Model1"
+      }
+    ]
   }
 ]

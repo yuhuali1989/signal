@@ -1495,5 +1495,108 @@
       "inference": "支持 256K 长上下文，可处理 10+ 小时音频",
       "benchmarks": "全模态理解 SOTA，向原生 AGI 迈进"
     }
+  },
+  {
+    "id": "hunyuanvideo",
+    "name": "HunyuanVideo",
+    "org": "腾讯",
+    "type": "video",
+    "status": "open",
+    "params": "13B",
+    "date": "2024-12",
+    "context": "5s 720p / 129帧",
+    "attention": "Dual-stream → Single-stream Full Attention",
+    "description": "开源最强视频生成模型，13B 参数，人工评测综合排名第 1，超越 Runway Gen-3 和 Luma 1.6",
+    "keyInnovation": "Dual-stream→Single-stream 混合架构 + MLLM 文本编码器 + Causal 3D VAE，开源视频生成 SOTA",
+    "highlights": [
+      "人工评测综合第1（超 Runway Gen-3、Luma 1.6、3个国内闭源模型）",
+      "Motion Quality 66.5%（最高），Visual Quality 95.7%",
+      "13B 参数，开源最大视频生成模型",
+      "Dual-stream→Single-stream 混合 Transformer 架构",
+      "MLLM 文本编码器（Decoder-Only）替代 T5，语义理解更强",
+      "Causal 3D VAE（4×8×8 压缩），支持图像+视频联合训练",
+      "支持 Image-to-Video（I2V）扩展版本"
+    ],
+    "tags": ["视频生成", "DiT", "开源", "腾讯", "MLLM", "3D VAE", "世界模型"],
+    "paperUrl": "https://arxiv.org/abs/2412.03603",
+    "blogUrl": "https://huggingface.co/tencent/HunyuanVideo",
+    "factSheet": {
+      "params": "13B",
+      "architecture": "Dual-stream → Single-stream Transformer",
+      "textEncoder": "MLLM（Decoder-Only）+ Bidirectional Token Refiner",
+      "vae": "Causal 3D VAE（4×8×8 压缩）",
+      "attention": "Full Attention（时空联合）",
+      "resolution": "720p（1280×720×129f）",
+      "license": "Tencent Hunyuan Community",
+      "eval": "人工评测综合第1 / Text Align 61.8% / Motion 66.5% / Visual 95.7%"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ HunyuanVideo — 13B 开源视频生成 SOTA  │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ MLLM Text Encoder（Decoder-Only）│  │\n│ │ + Bidirectional Token Refiner    │  │\n│ │ （比 T5 更强的语义理解）          │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ Text Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ Causal 3D VAE Encoder            │  │\n│ │ 视频帧 → 潜在空间（4×8×8 压缩）  │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ + Gaussian Noise     │\n│ ╔══════════════════════════════════╗  │\n│ ║ Dual-stream Phase（多层）        ║  │\n│ ║ ┌──────────────────────────────┐║  │\n│ ║ │ Video Tokens（独立处理）      │║  │\n│ ║ │ Text Tokens（独立处理）       │║  │\n│ ║ │ 各自学习模态内调制机制        │║  │\n│ ║ └──────────────────────────────┘║  │\n│ ║ ↓ Concat                        ║  │\n│ ║ Single-stream Phase（多层）      ║  │\n│ ║ ┌──────────────────────────────┐║  │\n│ ║ │ [Video + Text] 联合 Tokens   │║  │\n│ ║ │ Full Self-Attention（时空）   │║  │\n│ ║ │ 多模态信息深度融合            │║  │\n│ ║ └──────────────────────────────┘║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ┌──────────────────────────────────┐  │\n│ │ Causal 3D VAE Decoder            │  │\n│ │ → 720p 视频（129帧 / 5s）        │  │\n│ └──────────────────────────────────┘  │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "hunyuan3d-2",
+    "name": "Hunyuan3D 2.0",
+    "org": "腾讯",
+    "type": "video",
+    "status": "open",
+    "params": "未公开",
+    "date": "2025-01",
+    "context": "Image/Text → 3D Mesh + Texture",
+    "attention": "Flow-based Diffusion Transformer",
+    "description": "高分辨率纹理 3D 资产生成，两阶段流程（形状生成 + 纹理合成），超越所有开源和闭源基线",
+    "keyInnovation": "Hunyuan3D-DiT（形状）+ Hunyuan3D-Paint（纹理）两阶段解耦，CMMD/FID/CLIP-score 全面 SOTA",
+    "highlights": [
+      "CMMD 3.193（最低）/ CLIP-score 0.809（最高），超越所有开源+闭源基线",
+      "两阶段解耦：Hunyuan3D-DiT（形状）+ Hunyuan3D-Paint（纹理）",
+      "Flow-based Diffusion Transformer，支持 Image→3D 和 Text→3D",
+      "Hunyuan3D-Studio：专业级 3D 资产生产平台",
+      "支持 ComfyUI / Diffusers API",
+      "HuggingFace 月下载量 75,121+"
+    ],
+    "tags": ["3D生成", "扩散模型", "开源", "腾讯", "DiT", "纹理合成"],
+    "paperUrl": "https://arxiv.org/abs/2501.12202",
+    "blogUrl": "https://huggingface.co/tencent/Hunyuan3D-2",
+    "factSheet": {
+      "architecture": "Hunyuan3D-DiT（Flow Matching）+ Hunyuan3D-Paint",
+      "input": "单张图片 或 文本描述",
+      "output": "高分辨率纹理 3D Mesh（GLB/OBJ）",
+      "cmmd": "3.193（↓ 越低越好，超越所有基线）",
+      "fid_clip": "49.165（↓ 越低越好）",
+      "clip_score": "0.809（↑ 越高越好，最高）",
+      "license": "Tencent Hunyuan Community",
+      "release": "2025-01-21"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.0 — 两阶段 3D 生成        │\n├──────────────────────────────────────┤\n│ 输入：单张图片 / 文本描述              │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: Hunyuan3D-DiT           ║  │\n│ ║ （形状生成）                      ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ DINOv2 Image Encoder         │ ║  │\n│ ║ │ → 条件特征                   │ ║  │\n│ ║ └──────────────┬───────────────┘ ║  │\n│ ║                ↓                 ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Flow-based DiT               │ ║  │\n│ ║ │ 3D 隐式表示 → 显式 Mesh      │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ 裸 Mesh             │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: Hunyuan3D-Paint         ║  │\n│ ║ （纹理合成）                      ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ 多视角渲染 + 扩散先验         │ ║  │\n│ ║ │ → 高分辨率纹理贴图            │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：高分辨率纹理 3D 资产（GLB）      │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "hunyuan3d-21",
+    "name": "Hunyuan3D 2.1",
+    "org": "腾讯",
+    "type": "video",
+    "status": "open",
+    "params": "未公开",
+    "date": "2025-06",
+    "context": "Image → 3D + PBR Material",
+    "attention": "Flow-based Diffusion Transformer",
+    "description": "Hunyuan3D 2.0 升级版，新增 Production-Ready PBR 材质支持，适合游戏/影视工业级 3D 资产生产",
+    "keyInnovation": "在 2.0 基础上新增 PBR（Physically-Based Rendering）材质生成，支持工业级 3D 资产直接用于游戏引擎",
+    "highlights": [
+      "新增 PBR 材质支持（Albedo / Roughness / Metallic / Normal Map）",
+      "工业级 3D 资产生产，可直接导入 Unity/Unreal Engine",
+      "继承 2.0 的 CMMD/FID/CLIP-score SOTA 性能",
+      "HuggingFace 月下载量 40,507+",
+      "支持 TripoSG 等社区扩展"
+    ],
+    "tags": ["3D生成", "PBR材质", "开源", "腾讯", "DiT", "游戏资产"],
+    "paperUrl": "https://arxiv.org/abs/2506.15442",
+    "blogUrl": "https://huggingface.co/tencent/Hunyuan3D-2.1",
+    "factSheet": {
+      "architecture": "Hunyuan3D-DiT + Hunyuan3D-Paint（PBR 扩展）",
+      "input": "单张图片",
+      "output": "3D Mesh + PBR 材质贴图（Albedo/Roughness/Metallic/Normal）",
+      "newFeature": "Production-Ready PBR Material（工业级物理渲染材质）",
+      "license": "Tencent Hunyuan Community",
+      "release": "2025-06-18"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.1 — PBR 材质 3D 生成      │\n├──────────────────────────────────────┤\n│ 输入：单张图片                         │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: 形状生成（同 2.0）       ║  │\n│ ║ Flow-based DiT → 裸 Mesh         ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: PBR 材质合成（新增）     ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Albedo Map（基础色）          │ ║  │\n│ ║ │ Roughness Map（粗糙度）       │ ║  │\n│ ║ │ Metallic Map（金属度）        │ ║  │\n│ ║ │ Normal Map（法线贴图）        │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：3D Mesh + PBR 材质              │\n│ （可直接导入 Unity / Unreal Engine）   │\n└──────────────────────────────────────┘"
   }
 ]
