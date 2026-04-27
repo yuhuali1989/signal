@@ -808,6 +808,75 @@ export const DATALAKE_DATA = {
 // 查询时支持 JSON 路径提取 (Spark 4.0+):
 // SELECT payload:score, payload:tags[0] FROM table WHERE payload:score > 0.8`,
             },
+            {
+              name: 'V3 写入延迟分析 — 更新多时会变慢吗？',
+              color: '#e17055',
+              desc: 'V3 写入路径比 V2 多了 DV 位图更新和 Row Lineage 分配两个步骤，高更新场景下有额外开销，但整体影响可控。',
+              writeLatencyAnalysis: {
+                summary: 'V3 写入延迟整体比 V2 增加约 5~15%（纯 Append 场景几乎无差异），高频 Upsert 场景下 DV 位图更新是主要额外开销，但远低于 V2 Delete File 堆积导致的读放大代价。',
+                overheadItems: [
+                  {
+                    name: 'DV 位图更新开销（Upsert 场景）',
+                    severity: '中等',
+                    color: '#ffa657',
+                    desc: '每次 Upsert 需要：① 读取现有 Puffin 文件中的 DV Blob；② 反序列化 Roaring Bitmap；③ OR 合并新删除行号；④ 重新序列化写入新 Puffin 文件。单次操作约 1~5ms（取决于 Bitmap 大小），但可批量合并。',
+                    mitigation: '引擎侧批量攒积多次 Upsert 后一次性更新 DV，而非每行触发一次。Flink checkpoint 粒度天然批量化，实际开销可忽略。',
+                  },
+                  {
+                    name: 'Row Lineage next-row-id 竞争（高并发写入）',
+                    severity: '低（单写入者）/ 中等（多并发写入者）',
+                    color: '#fdcb6e',
+                    desc: 'next-row-id 是 TableMetadata 中的全局计数器，每次 commit 需要 CAS 更新。单写入者无竞争；多写入者并发时，CAS 冲突导致重试，每次重试需重新读取 metadata.json（S3 延迟约 10~50ms）。',
+                    mitigation: '使用 Flink 单并发写入 + 多 Task 本地攒批，或通过 Catalog 端的乐观锁批量分配 row-id 段（Iceberg 1.9+ 优化方向）。',
+                  },
+                  {
+                    name: 'Puffin 文件额外 S3 PUT（DV 写入）',
+                    severity: '低',
+                    color: '#55efc4',
+                    desc: '每次 commit 需额外写入 1 个 Puffin 文件（存储 DV Blobs）。S3 PUT 延迟约 20~100ms，但 Puffin 文件通常很小（KB 级），不是瓶颈。',
+                    mitigation: '多个 DataFile 的 DV 可共享一个 Puffin 文件，减少 PUT 次数。',
+                  },
+                ],
+                appendVsUpsert: {
+                  append: { v2: '基准', v3: '+2~5%（仅多写 Puffin 文件 + Row Lineage 分配）', verdict: '几乎无差异' },
+                  upsert_low: { v2: '基准（Delete File 堆积但初期影响小）', v3: '+5~10%（DV 更新 + Puffin PUT）', verdict: 'V3 略慢但可接受' },
+                  upsert_high: { v2: '写入快，但读放大严重（Delete File 数千个）', v3: '+10~15%（DV 位图变大后序列化开销增加）', verdict: 'V3 写入略慢，但读性能远优于 V2' },
+                },
+                keyInsight: '核心结论：V3 的写入延迟增加是"一次性"的（每次 commit 固定开销），而 V2 的读放大是"累积性"的（随运行时间线性恶化）。高更新场景下，V3 写慢 10% 换来读快 10x+，是值得的权衡。',
+              },
+              code: `// V3 写入路径对比 V2（以 Flink Upsert 为例）
+//
+// ── V2 写入路径 ──
+// 1. 写 DataFile（Parquet）
+// 2. 写 Position Delete File（Parquet，记录被删除行的位置）
+// 3. 写 ManifestFile（Avro，记录 DataFile + DeleteFile）
+// 4. 写 ManifestList（Avro）
+// 5. CAS 更新 TableMetadata（metadata.json）
+// 额外 S3 PUT: 2 个文件（DataFile + DeleteFile）
+//
+// ── V3 写入路径 ──
+// 1. 写 DataFile（Parquet，新增 first_row_id 字段）
+// 2. 读取现有 Puffin 文件（若存在）
+//    反序列化 Roaring Bitmap
+//    OR 合并新删除行号
+//    重新序列化
+// 3. 写 Puffin 文件（存储 DV Blobs）
+// 4. 写 ManifestFile（Avro，DataFile 记录 puffin_path）
+// 5. 写 ManifestList（Avro）
+// 6. CAS 更新 TableMetadata（next-row-id 递增）
+// 额外 S3 PUT: 2 个文件（DataFile + Puffin）
+//
+// ── 高更新场景下的 DV 位图增长 ──
+// 假设 DataFile 有 1M 行，累计删除 100K 行:
+// Roaring Bitmap 大小 ≈ 100K * 2 bytes ≈ 200KB（稀疏时更小）
+// 序列化/反序列化耗时 ≈ 1~3ms（可接受）
+//
+// 当 DataFile 被删除率超过 50% 时，建议触发 Compaction:
+// SparkActions.get(spark).rewriteDataFiles(table)
+//   .option("delete-file-threshold", "2")  // 有 2+ DV 时触发合并
+//   .execute();
+// Compaction 后 DV 消失，DataFile 变为干净文件，写入延迟恢复基准`,
+            },
           ],
         },
       },

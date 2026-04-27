@@ -3,7 +3,7 @@ title: "AI 概念面试题 120 道 - 第1章: Fundamental 基础篇"
 book: "AI 概念面试题 120 道"
 chapter: "1"
 chapterTitle: "Fundamental 基础篇"
-description: "对标 aioffer Fundamental 分类：梯度下降、优化器（SGD/Adam/AdamW）、激活函数、正则化、偏差-方差、PCA、Transformer 架构、注意力机制、MQA/GQA、混合精度训练等 25 道核心基础题，含难度标注"
+description: "对标 aiofferly.com Fundamental 分类：梯度下降、优化器（SGD/Adam/AdamW）、激活函数、正则化、偏差-方差、PCA、Transformer 架构、注意力机制、MQA/GQA、混合精度训练等 25 道核心基础题，含难度标注"
 date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
@@ -18,7 +18,7 @@ type: "book"
 
 # 第 1 章：Fundamental 基础篇
 
-> 选自《AI 概念面试题 120 道》· 对标 aioffer.com Fundamental 分类题库
+> 选自《AI 概念面试题 120 道》· 对标 aiofferly.com Fundamental 分类题库
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 

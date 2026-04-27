@@ -3,7 +3,7 @@ title: "AI 概念面试题 120 道 - 第3章: CV 计算机视觉篇"
 book: "AI 概念面试题 120 道"
 chapter: "3"
 chapterTitle: "CV 计算机视觉篇"
-description: "对标 aioffer CV 分类：CNN 感受野、NMS、图像去重、目标检测、ViT、CLIP/DINOv2、Diffusion 模型、SAM、BEV 感知、NeRF vs 3D Gaussian Splatting、Contrastive SSL 等 20 道高频题，含难度标注"
+description: "对标 aiofferly.com CV 分类：CNN 感受野、NMS、图像去重、目标检测、ViT、CLIP/DINOv2、Diffusion 模型、SAM、BEV 感知、NeRF vs 3D Gaussian Splatting、Contrastive SSL 等 20 道高频题，含难度标注"
 date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
@@ -19,7 +19,7 @@ type: "book"
 
 # 第 3 章：CV 计算机视觉篇
 
-> 选自《AI 概念面试题 120 道》· 对标 aioffer.com CV 分类题库
+> 选自《AI 概念面试题 120 道》· 对标 aiofferly.com CV 分类题库
 
 每题标注难度：🟢 Easy · 🟡 Medium · 🔴 Hard
 
