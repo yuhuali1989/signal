@@ -1627,35 +1627,69 @@ CREATE TABLE events (...) WITH (
   'connector' = 'iceberg',
   'write.parquet.bloom-filter-enabled.column.id' = 'true'
 );`,
-      writeFlowCode: `// ── V3 完整 Upsert 写入流程（Flink 为例）──
+      writeFlowCode: `// ── 先搞清楚两个 Bitmap 的本质区别 ──
+//
+// ┌─────────────────┬──────────────────────────────────┬──────────────────────────────────┐
+// │                 │  Bloom Filter（BF）               │  Deletion Vector（DV）            │
+// ├─────────────────┼──────────────────────────────────┼──────────────────────────────────┤
+// │ 存储内容        │ 某列所有值的集合摘要              │ 该 DataFile 中已删除行的行号集合  │
+// │ 回答的问题      │ "id=42 在这个 DataFile 里吗？"   │ "第 137 行被删除了吗？"           │
+// │ 作用粒度        │ 文件级（跳过整个 DataFile）       │ 行级（跳过文件内某些行）          │
+// │ 使用时机        │ 写入时生成，Lookup 时读取         │ 每次 UPDATE/DELETE 后更新         │
+// │ 数据结构        │ Theta Sketch（概率型，有误判率）  │ Roaring Bitmap（精确，无误判）    │
+// │ Puffin Blob 类型│ apache-datasketches-theta-v1      │ deletion-vector-v1                │
+// │ 是否必须        │ 可选（Upsert 场景强烈建议）       │ V3 核心特性（替代 Delete File）   │
+// └─────────────────┴──────────────────────────────────┴──────────────────────────────────┘
+//
+// 关键：同一个 Puffin 文件里可以同时存 BF Blob 和 DV Blob，但它们完全独立，互不干扰
+//   Puffin 文件 = [BF-Blob(col=id)] + [DV-Blob(deleted rows)] + Footer
+//
+// ── V3 完整 Upsert 写入流程（Flink 为例）──
 //
 // 步骤 1: Flink checkpoint 内攒积一批 Upsert 记录
 //   records = [(id=42, score=0.9, op=UPDATE), (id=99, op=INSERT), ...]
 //
-// 步骤 2: Lookup 阶段（找到每条 UPDATE/DELETE 所在 DataFile）
-//   for each record where op != INSERT:
-//     读 ManifestList → ManifestFile → DataFile 的 puffin_path
-//     S3 Range GET Puffin BF Blob（按 column_id 定位）
-//     BF.mightContain(id=42) = false → 跳过（零 I/O）
-//     BF.mightContain(id=42) = true  → 读 Parquet 确认行位置（row=137）
+// 步骤 2: Lookup 阶段 ← 这里用的是 BF（文件级过滤）
+//   目标：找到 id=42 在哪个 DataFile 的第几行
+//   for each DataFile in ManifestFile:
+//     ① S3 Range GET Puffin 中的 BF Blob（Theta Sketch，按 column_id 定位）
+//        BF.mightContain(id=42) = false → 100% 不在，跳过整个 DataFile（零 I/O）
+//        BF.mightContain(id=42) = true  → 可能在（1% 误判率），进入下一步
+//     ② 读 Parquet RowGroup 统计（min/max），进一步裁剪
+//     ③ 实际扫描 Parquet，确认 id=42 在 "part-00001.parquet" 的第 137 行
+//   结果: lookupResults = {("part-00001.parquet", row=137)}
+//   注意: 此时完全没有碰 DV，BF 只负责"找文件"
 //
-// 步骤 3: 写新 DataFile（Append 新版本数据 + 生成新 BF）
+// 步骤 3: 写新 DataFile（Append 新版本数据）
 //   newDataFile = writeParquet([{id=42, score=0.9, first_row_id=R}, ...])
+//   同时为新 DataFile 生成新的 BF Blob（写入新 Puffin 文件）
+//   → 新文件的 DV 此时为空（没有行被删除）
 //
-// 步骤 4: 更新旧 DataFile 的 DV
+// 步骤 4: 更新旧 DataFile 的 DV ← 这里用的是 DV Bitmap（行级标记）
+//   目标：把旧 DataFile 里 id=42 的那行标记为"已删除"
 //   for each (dataFile, rowPos) in lookupResults:
-//     S3 Range GET 旧 Puffin DV Blob（puffin_offset + puffin_length）
-//     反序列化 Roaring Bitmap → 设置 bit[rowPos]=1 → 重新序列化
-//     写新 Puffin 文件（旧 Puffin 不可变）
+//     ① S3 Range GET 旧 Puffin 中的 DV Blob（Roaring Bitmap，精确无误判）
+//     ② 反序列化 Roaring Bitmap → 设置 bit[137] = 1（标记第 137 行已删除）
+//     ③ 重新序列化 → 写新 Puffin 文件（旧 Puffin 不可变，生成新版本）
+//   注意: 此时完全没有碰 BF，DV 只负责"标记行"
 //
 // 步骤 5: 提交 Snapshot
-//   写新 ManifestFile（新/旧 DataFile 各自的新 puffin_path）
+//   写新 ManifestFile:
+//     新 DataFile → puffin_path 指向含新 BF 的 Puffin（DV 为空）
+//     旧 DataFile → puffin_path 指向含旧 BF + 更新后 DV 的新 Puffin
 //   写新 ManifestList
 //   CAS 更新 TableMetadata（next-row-id += 写入行数）
 //
+// ── 读取时两者如何配合 ──
+//   SELECT * FROM events WHERE id = 42
+//   1. BF 过滤（文件级）: 99% DataFile 被跳过
+//   2. 找到候选 DataFile，读 Parquet，定位 row=137
+//   3. DV 检查（行级）: bitmap.contains(137) = true → 旧行已删除，跳过
+//   4. 在新 DataFile 里找到新版本 id=42 → 返回
+//
 // 总 S3 操作:
-//   GET: N_updated_files 次（读旧 DV Blob）+ M_candidate_files 次（读 BF Blob）
-//   PUT: 1 DataFile + K Puffin + 1 ManifestFile + 1 ManifestList + 1 metadata.json`,
+//   GET: M 次 BF Blob（Lookup 过滤）+ N 次 DV Blob（更新删除标记）
+//   PUT: 1 DataFile + K Puffin（含新 BF 和更新后 DV）+ ManifestFile + ManifestList + metadata.json`,
       readFlowCode: `// ── V3 完整读取流程 ──
 //
 // 场景 A: 点查  SELECT * FROM events WHERE id = 42
