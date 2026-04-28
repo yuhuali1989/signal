@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, Suspense } from 'react';
+import { useCallback, Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Footer from '@/components/Footer';
@@ -10,7 +10,7 @@ const ArchViz = dynamic(() => import('@/components/VlaArchViz'), { ssr: false, l
 const Notebook = dynamic(() => import('@/components/VlaNotebook'), { ssr: false, loading: () => <LoadingBlock /> });
 
 const DataLoop = dynamic(() => import('@/components/DataLoopArch'), { ssr: false, loading: () => <LoadingBlock /> });
-const DatalakeTab = dynamic(() => import('@/components/DataInfraViz').then(m => ({ default: m.DatalakeTab })), { ssr: false, loading: () => <LoadingBlock /> });
+// DatalakeTab 已替换为自动驾驶业务全流程存储格式组件（AdStorageTab）
 
 // Seed-AD 子模块（70B · 三阶段 想象→反思→行动）
 const SeedAdArchViz  = dynamic(() => import('@/components/SeedAdArchViz'),  { ssr: false, loading: () => <LoadingBlock /> });
@@ -23,6 +23,239 @@ function LoadingBlock() {
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-[#00cec9] border-t-transparent rounded-full animate-spin" />
         <span className="text-sm text-[#4a5568]">加载可视化组件...</span>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// 自动驾驶业务全流程存储格式（替代通用数据湖仓）
+// ─────────────────────────────────────────────────────────────
+const AD_STORAGE_STAGES = [
+  {
+    id: 'collect',
+    icon: '🚗',
+    label: '车端采集',
+    color: '#6c5ce7',
+    formats: [
+      { name: 'MCAP', role: '主格式', desc: '多模态原始数据容器，单文件封装 6路相机 + 5路LiDAR + 5路Radar + IMU/GPS，支持时间戳索引与随机访问', tags: ['foxglove/mcap', '替代 rosbag2', '压缩 LZ4/ZSTD'] },
+      { name: 'rosbag2', role: '兼容格式', desc: 'ROS2 原生录制格式，部分车型仍在使用，可通过 mcap-ros2 工具链转换', tags: ['ROS2', '逐步迁移至 MCAP'] },
+    ],
+    note: '单次 Session 约 50-200 GB，触发式录制（corner case 优先），车端 NVMe 缓存后上传 S3',
+  },
+  {
+    id: 'raw',
+    icon: '☁️',
+    label: '原始存储',
+    color: '#00cec9',
+    formats: [
+      { name: 'MCAP on S3/OSS', role: '原始归档', desc: '原始 MCAP 文件直接上传对象存储，按 vehicle_id/date/session_id 分层目录，保留完整原始数据用于回溯', tags: ['S3 Standard-IA', '生命周期 → Glacier', '不可变存储'] },
+      { name: 'Session 元数据 JSON', role: '索引', desc: '每个 Session 对应一条 JSON 元数据（时长/里程/触发原因/传感器状态/GPS轨迹摘要），写入 Iceberg 元数据表', tags: ['Iceberg 元数据表', '快速检索'] },
+    ],
+    note: '原始数据永久保留（合规要求），通过 Iceberg 时间旅行支持历史版本回溯',
+  },
+  {
+    id: 'process',
+    icon: '🔧',
+    label: '解码 & 处理',
+    color: '#fdcb6e',
+    formats: [
+      { name: 'JPEG / PNG', role: '图像帧', desc: '从 MCAP 解码的相机帧，JPEG 用于训练（压缩比高），PNG 用于标注（无损）。按 camera_id/timestamp 命名，存 S3', tags: ['6路相机', '10Hz', 'JPEG q=85'] },
+      { name: 'PCD / NPY', role: '点云帧', desc: 'LiDAR 点云解码为 PCD（可视化）或 NPY（训练），每帧约 100K 点，10Hz 采样', tags: ['5路LiDAR', 'NPY float32', '10Hz'] },
+      { name: 'Parquet', role: '结构化特征', desc: 'IMU/GPS/车速/转向角等时序传感器数据，按 session 分区存 Parquet，支持 Spark/DuckDB 直接查询', tags: ['列式存储', 'ZSTD压缩', 'Iceberg管理'] },
+    ],
+    note: '解码任务由 Spark/Ray 分布式执行，处理后数据写入 Iceberg 表，支持增量更新',
+  },
+  {
+    id: 'annotate',
+    icon: '🏷️',
+    label: '标注数据',
+    color: '#e17055',
+    formats: [
+      { name: 'JSON / JSONL', role: '标注结果', desc: '3D 框标注（BEV）、语义分割 mask、车道线、可行驶区域，每帧一个 JSON，JSONL 用于流式写入', tags: ['BEVFusion自动标注', 'SAM2分割', '人工复核'] },
+      { name: 'Parquet on Iceberg', role: '标注元数据', desc: '标注任务状态、标注员 ID、质检分数、版本号等元数据，写入 Iceberg 表，支持 Schema 演化和时间旅行', tags: ['Iceberg v2', '版本化', 'MERGE INTO'] },
+      { name: 'DriveLM 格式', role: '语言标注', desc: '视觉问答三元组 <图像, 问题, 答案>，用于 VLA 语言理解训练，460K 条，存 Parquet', tags: ['VQA三元组', '460K条', 'DriveLM兼容'] },
+    ],
+    note: '标注数据通过 Iceberg MERGE INTO 实现增量更新，支持多版本并存（不同标注策略对比）',
+  },
+  {
+    id: 'train',
+    icon: '🧠',
+    label: '训练数据集',
+    color: '#a29bfe',
+    formats: [
+      { name: 'HDF5', role: '多模态训练包', desc: '将多模态数据（图像+点云+标注+语言）打包为 HDF5，支持随机访问和内存映射，适合 PyTorch DataLoader', tags: ['h5py', '内存映射', 'PyTorch兼容'] },
+      { name: 'Parquet + Arrow', role: '大规模训练', desc: '超大规模训练集（>1M 样本）使用 Parquet + Apache Arrow 格式，支持 Ray Data 流式读取，避免内存溢出', tags: ['Ray Data', 'Arrow IPC', '流式读取'] },
+      { name: 'WebDataset (tar)', role: '分布式训练', desc: '将训练样本打包为 WebDataset tar 格式，支持 S3 流式读取，适合多机多卡分布式训练场景', tags: ['WebDataset', 'S3流式', '多机训练'] },
+    ],
+    note: '训练集通过 Iceberg 快照管理版本，支持 AS OF TIMESTAMP 回溯到任意历史版本的训练集',
+  },
+  {
+    id: 'meta',
+    icon: '📊',
+    label: '元数据管理',
+    color: '#00b894',
+    formats: [
+      { name: 'Apache Iceberg', role: '统一元数据层', desc: '所有结构化数据（Session元数据/标注/训练集版本/模型评测结果）统一用 Iceberg 管理，支持 ACID、时间旅行、Schema 演化', tags: ['Iceberg v2/v3', 'REST Catalog', 'Unity Catalog'] },
+      { name: 'MLflow', role: '实验追踪', desc: '训练实验参数、指标、模型 artifact 版本管理，与 Iceberg 训练集版本双向绑定（训练集 snapshot_id → MLflow run_id）', tags: ['MLflow 3.x', 'Artifact Store', 'Model Registry'] },
+    ],
+    note: 'Iceberg + MLflow 双向绑定：每个 MLflow Run 记录对应的 Iceberg 训练集 snapshot_id，确保实验可复现',
+  },
+  {
+    id: 'deploy',
+    icon: '🚀',
+    label: '模型部署',
+    color: '#fd79a8',
+    formats: [
+      { name: 'ONNX', role: '跨平台中间格式', desc: '训练完成后导出 ONNX，作为跨框架部署的中间格式，支持 TensorRT / OpenVINO / ONNX Runtime 多后端', tags: ['PyTorch → ONNX', '跨框架', '量化友好'] },
+      { name: 'TensorRT Engine', role: '车端推理', desc: 'ONNX → TensorRT 编译，针对 NVIDIA Orin 平台优化，INT8/FP16 量化，延迟 <45ms（Seed-AD 13B 蒸馏版）', tags: ['TensorRT 10.x', 'INT8量化', 'Orin X'] },
+      { name: 'SafeTensors', role: '模型权重', desc: 'HuggingFace SafeTensors 格式存储模型权重，替代 pickle，支持安全加载和内存映射，存 S3 Model Registry', tags: ['SafeTensors', '安全加载', 'S3 Model Registry'] },
+    ],
+    note: '部署模型通过 MLflow Model Registry 版本化管理，支持 A/B 测试和灰度发布',
+  },
+];
+
+function AdStorageTab() {
+  const [activeStage, setActiveStage] = useState(null);
+
+  return (
+    <div className="space-y-4">
+      {/* 标题 */}
+      <div className="rounded-2xl border border-[#00cec9]/20 bg-[#00cec9]/[0.03] p-4">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">🗄️</span>
+          <div>
+            <div className="text-sm font-bold text-gray-800 mb-1">自动驾驶业务全流程存储格式</div>
+            <div className="text-[10px] text-gray-500 leading-relaxed">
+              从车端采集到模型部署，各阶段数据的存储格式选型与最佳实践
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {['MCAP', 'Parquet', 'HDF5', 'WebDataset', 'Iceberg', 'ONNX', 'TensorRT'].map(t => (
+                <span key={t} className="text-[9px] px-2 py-0.5 rounded-full font-mono"
+                  style={{ background: '#00cec915', color: '#00cec9', border: '1px solid #00cec930' }}>
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 流程时间轴 */}
+      <div className="relative">
+        {/* 连接线 */}
+        <div className="absolute left-5 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#6c5ce7] via-[#00cec9] to-[#fd79a8] opacity-20 hidden sm:block" />
+
+        <div className="space-y-3">
+          {AD_STORAGE_STAGES.map((stage, idx) => (
+            <div key={stage.id} className="relative">
+              {/* 阶段卡片 */}
+              <button
+                onClick={() => setActiveStage(activeStage === stage.id ? null : stage.id)}
+                className="w-full text-left rounded-2xl border transition-all hover:shadow-sm"
+                style={{
+                  borderColor: activeStage === stage.id ? stage.color + '50' : '#e2e8f0',
+                  background: activeStage === stage.id ? stage.color + '06' : '#fff',
+                }}>
+                <div className="flex items-center gap-3 px-4 py-3">
+                  {/* 序号圆点 */}
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xs font-bold"
+                    style={{ background: stage.color }}>
+                    {idx + 1}
+                  </div>
+                  <span className="text-base">{stage.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-gray-800">{stage.label}</div>
+                    <div className="flex flex-wrap gap-1 mt-0.5">
+                      {stage.formats.map(f => (
+                        <span key={f.name} className="text-[9px] px-1.5 py-0.5 rounded font-mono"
+                          style={{ background: stage.color + '15', color: stage.color }}>
+                          {f.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-gray-400 flex-shrink-0">
+                    {activeStage === stage.id ? '▲' : '▼'}
+                  </span>
+                </div>
+              </button>
+
+              {/* 展开详情 */}
+              {activeStage === stage.id && (
+                <div className="mt-1 rounded-2xl border p-4 space-y-3"
+                  style={{ borderColor: stage.color + '30', background: stage.color + '04' }}>
+                  {/* 格式列表 */}
+                  <div className="space-y-2">
+                    {stage.formats.map(f => (
+                      <div key={f.name} className="rounded-xl border border-gray-100 bg-white p-3">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded"
+                            style={{ background: stage.color + '15', color: stage.color }}>
+                            {f.name}
+                          </span>
+                          <span className="text-[9px] text-gray-400 border border-gray-100 px-1.5 py-0.5 rounded">
+                            {f.role}
+                          </span>
+                        </div>
+                        <div className="text-[10px] text-gray-600 leading-relaxed mb-2">{f.desc}</div>
+                        <div className="flex flex-wrap gap-1">
+                          {f.tags.map(tag => (
+                            <span key={tag} className="text-[8px] px-1.5 py-0.5 rounded-full bg-gray-50 text-gray-500 border border-gray-100">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* 阶段备注 */}
+                  <div className="rounded-xl border p-2.5 text-[10px] text-gray-500 leading-relaxed"
+                    style={{ borderColor: stage.color + '20', background: stage.color + '05' }}>
+                    💡 {stage.note}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 全流程格式总览表 */}
+      <div className="rounded-2xl border border-gray-100 bg-white p-4">
+        <div className="text-xs font-bold text-gray-700 mb-3">📋 全流程存储格式速查</div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-[9px]">
+            <thead>
+              <tr className="border-b border-gray-100">
+                <th className="text-left py-1.5 px-2 text-gray-400 font-medium">阶段</th>
+                <th className="text-left py-1.5 px-2 text-gray-400 font-medium">主格式</th>
+                <th className="text-left py-1.5 px-2 text-gray-400 font-medium">辅助格式</th>
+                <th className="text-left py-1.5 px-2 text-gray-400 font-medium">存储位置</th>
+                <th className="text-left py-1.5 px-2 text-gray-400 font-medium">管理工具</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { stage: '🚗 车端采集', main: 'MCAP', aux: 'rosbag2（兼容）', storage: 'NVMe → S3', tool: '车端录制 Agent' },
+                { stage: '☁️ 原始存储', main: 'MCAP on S3', aux: 'Session JSON', storage: 'S3 Standard-IA', tool: 'Iceberg 元数据表' },
+                { stage: '🔧 解码处理', main: 'JPEG/PNG + NPY', aux: 'Parquet（时序）', storage: 'S3 + Iceberg', tool: 'Spark / Ray' },
+                { stage: '🏷️ 标注数据', main: 'JSON/JSONL', aux: 'Parquet on Iceberg', storage: 'S3 + Iceberg', tool: 'Iceberg MERGE INTO' },
+                { stage: '🧠 训练集', main: 'HDF5 / Parquet', aux: 'WebDataset (tar)', storage: 'S3 + Iceberg 快照', tool: 'Ray Data / MLflow' },
+                { stage: '📊 元数据', main: 'Apache Iceberg', aux: 'MLflow Tracking', storage: 'S3 + Catalog', tool: 'Unity Catalog' },
+                { stage: '🚀 模型部署', main: 'TensorRT Engine', aux: 'ONNX / SafeTensors', storage: 'S3 Model Registry', tool: 'MLflow Registry' },
+              ].map((row, i) => (
+                <tr key={row.stage} className={`border-b border-gray-50 ${i % 2 === 0 ? 'bg-gray-50/30' : ''}`}>
+                  <td className="py-1.5 px-2 font-medium text-gray-700">{row.stage}</td>
+                  <td className="py-1.5 px-2 font-mono text-[#6c5ce7]">{row.main}</td>
+                  <td className="py-1.5 px-2 text-gray-500">{row.aux}</td>
+                  <td className="py-1.5 px-2 text-gray-500">{row.storage}</td>
+                  <td className="py-1.5 px-2 text-gray-500">{row.tool}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -564,7 +797,7 @@ function VlaPageContent() {
             </div>
 
             {dataloopTab === 'arch' && <DataLoop />}
-            {dataloopTab === 'storage' && <DatalakeTab />}
+            {dataloopTab === 'storage' && <AdStorageTab />}
           </div>
         )}
 
