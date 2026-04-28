@@ -86,16 +86,17 @@ function groupByTime(items) {
 
 // ─── 分类 & 地区定义 ──────────────────────────────────────────────────────────
 
-// 分类定义：聚焦各行业受 AI 冲击的产业格局变化（≠ AI 技术本身）
+// 分类定义：各大厂商公司级动态（产品发布/财报/战略/并购）
 const CATEGORIES = [
-  { key: 'all',      label: '全部',    icon: '📡', color: '#6c5ce7' },
-  { key: 'industry', label: '行业影响', icon: '🏭', color: '#a29bfe' },  // AI 对各行业的结构性冲击（软件/游戏/硬件/知识工作）
-  { key: 'data',     label: '数据平台', icon: '🗄️', color: '#326ce5' },  // Databricks/Snowflake/dbt/Fivetran
-  { key: 'cloud',    label: '云服务',  icon: '☁️', color: '#00cec9' },  // AWS/Azure/GCP
-  { key: 'software', label: '企业软件', icon: '💼', color: '#6c5ce7' },  // Salesforce/ServiceNow/SAP/Oracle
-  { key: 'security', label: '安全',    icon: '🔐', color: '#e17055' },  // CrowdStrike/Palo Alto/Okta
-  { key: 'startup',  label: '融资动态', icon: '🚀', color: '#ffa657' },  // 创业公司融资/IPO
-  { key: 'market',   label: '市场财报', icon: '📊', color: '#3fb950' },  // 季报/市值/并购
+  { key: 'all',        label: '全部',    icon: '📡', color: '#6c5ce7' },
+  { key: 'cloud',      label: '云服务',  icon: '☁️', color: '#00cec9' },  // AWS/Azure/GCP/阿里云/华为云/腾讯云
+  { key: 'data',       label: '数据平台', icon: '🗄️', color: '#326ce5' },  // Databricks/Snowflake/Confluent/dbt
+  { key: 'software',   label: '企业软件', icon: '💼', color: '#6c5ce7' },  // Salesforce/ServiceNow/SAP/Oracle/Adobe
+  { key: 'hardware',   label: '芯片硬件', icon: '💻', color: '#a29bfe' },  // NVIDIA/AMD/Intel/Apple/华为/国产GPU
+  { key: 'automotive', label: '自动驾驶', icon: '🚗', color: '#00b894' },  // Tesla/Waymo/小鹏/理想/华为智选/Mobileye
+  { key: 'security',   label: '安全',    icon: '🔐', color: '#e17055' },  // CrowdStrike/Palo Alto/Okta
+  { key: 'startup',    label: '融资动态', icon: '🚀', color: '#ffa657' },  // $1B+ 融资/IPO/独角兽估值
+  { key: 'market',     label: '市场财报', icon: '📊', color: '#3fb950' },  // 季报/市值/并购
 ];
 const CAT_MAP = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
 
@@ -105,9 +106,12 @@ const REGIONS = [
   { key: 'china',  label: '国内' },
 ];
 
-// ─── 新闻数据：以软件行业公司动态为主线 ──────────────────────────────────────
-// 重点关注：Databricks / Snowflake / AWS / Palantir / Salesforce /
-//           ServiceNow / Confluent / dbt Labs / Fivetran / CrowdStrike 等
+// ─── 新闻数据：各大厂商公司级动态（产品发布/财报/战略/并购）─────────────────
+// 重点追踪：AWS / GCP / Azure / 阿里云 / 华为云 / 腾讯云 /
+//           Databricks / Snowflake / Salesforce / ServiceNow /
+//           NVIDIA / AMD / Intel / Apple / 华为 / 国产GPU /
+//           Tesla / Waymo / 小鹏 / 理想 / 华为智选 / Mobileye /
+//           CrowdStrike / Palo Alto / Okta
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════

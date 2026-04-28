@@ -1041,47 +1041,124 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 
 ### 任务 2：写入全行业动态 src/components/IndustryNewsFeed.js
 
-> **⚠️ 定位说明（必读，严禁与声浪内容重复）**
+> **⚠️ 定位说明（必读，这是与声浪的根本区别）**
 >
-> **全行业动态 ≠ AI 技术新闻**。两者的本质区别：
-> - **声浪（news-feed.json）**：AI 技术信号，关注模型发布/架构创新/开源进展，面向 AI 工程师
-> - **全行业动态（IndustryNewsFeed.js）**：AI 对各行业的冲击与产业格局变化，面向更广泛的商业/产业读者
+> **全行业动态 = 各大厂商的公司级动态**（产品发布、财报、战略、并购、定价调整、新服务上线）
+> **声浪 = AI 技术信号**（模型发布、架构创新、开源进展、论文突破）
 >
-> **全行业动态的正确视角**：同一件事，要从「行业影响」角度写，而非「技术本身」角度。
-> - ❌ 错误：「OpenAI 发布 GPT-5，推理能力大幅提升」（这是声浪的内容）
-> - ✅ 正确：「GPT-5 发布冲击知识工作市场：咨询/法律/教育行业面临结构性变革」（这是全行业动态）
-> - ❌ 错误：「GitHub Copilot 新增 AI Credits 计费功能」（这是声浪的内容）
-> - ✅ 正确：「GitHub Copilot 转向按量计费：AI 编程工具商业模式迎来拐点，企业 ROI 评估压力上升」（这是全行业动态）
-> - ❌ 错误：「摩尔线程 S5000 完成大模型适配」（这是声浪的内容）
-> - ✅ 正确：「国产 GPU 量产替代加速：央企大模型采购转向国产算力，英伟达出口管制倒逼产业链重构」（这是全行业动态）
+> **判断标准（一句话）**：这条新闻的主角是「某家公司做了什么」，还是「某个 AI 技术有什么进展」？
+> - 主角是公司 → 全行业动态
+> - 主角是技术/模型 → 声浪
+>
+> **正确示例**（全行业动态应该写的内容）：
+> - ✅ 「AWS re:Invent 2026：发布 Bedrock Agents 企业版，定价 $0.003/千 token，直接对标 Azure AI Studio」
+> - ✅ 「阿里云 2026 Q1 财报：AI 相关收入同比增长 120%，国际云业务首次盈利」
+> - ✅ 「Snowflake 收购 Neeva：AI 搜索能力整合进 Cortex，数据平台向 AI 应用层延伸」
+> - ✅ 「特斯拉 FSD v13 正式推送：城市 NOA 覆盖 50 城，Robotaxi 商业化时间表提前」
+> - ✅ 「英伟达 Blackwell B300 发货：H100 价格下跌 30%，云厂商 GPU 采购策略转向」
+> - ✅ 「Salesforce Agentforce 2.0 发布：企业 AI Agent 平台月活突破 100 万，ServiceNow 股价应声下跌」
+>
+> **错误示例**（这些应该写进声浪，不要写进全行业动态）：
+> - ❌ 「OpenAI 发布 GPT-5，推理能力大幅提升」→ 这是模型发布，写声浪
+> - ❌ 「DeepSeek-V4 技术报告公开，核心骨干离职」→ 这是 AI 公司内部动态，写声浪
+> - ❌ 「GitHub Copilot 转向按量计费」→ 这是 AI 工具功能更新，写声浪
+> - ❌ 「摩尔线程完成大模型适配」→ 这是 AI 技术验证，写声浪
 >
 > **去重铁律（每次写入前必须执行）**：
 > 1. 读取 news-feed.json 近 30 天条目，提取所有 title 关键词
-> 2. 全行业动态的 title 不得与声浪 title 使用相同的主语+事件描述（即使角度不同，标题也要明显区分）
-> 3. 同一事件在声浪已有技术角度报道时，全行业动态必须从「行业影响/商业格局/职业变革」角度重新立意，不得复述技术细节
+> 2. 全行业动态的条目主角必须是「具体公司名」，而非「AI 技术/模型名」
+> 3. 如果一条新闻在声浪里已有，全行业动态里不得再写同一事件（即使换角度也不行）
 
-**覆盖范围（每次至少覆盖 3 个不同行业方向）**：
-- 🖥️ **软件行业**：SaaS 格局变化、AI 原生软件崛起、传统软件公司 AI 转型、开发工具生态
-- 🎮 **游戏行业**：AI 生成内容（AIGC）对游戏制作的冲击、游戏公司 AI 战略、3D/音频/剧情生成
-- 💻 **硬件行业**：GPU/NPU 竞争格局、AI 手机/PC 军备竞赛、芯片供应链、边缘计算硬件
-- ☁️ **云计算/Infra**：云厂商 AI 战略对比、AI 工作负载迁移、开源 Infra 生态（K8s/Iceberg/Airflow/MLflow/Spark/Ray）对产业的影响
-- 🏢 **企业软件**：AI Agent 在企业的落地、CRM/ERP/HR 系统 AI 化、企业采购决策变化
-- 🔒 **安全行业**：AI 驱动的新型攻击、AI 安全工具、合规与监管动态
-- 💰 **投融资/创业**：AI 赛道融资动态、独角兽估值变化、创业公司商业化进展
-- 🌏 **国际/国内产业**：国内外 AI 产业政策、出海动态、产业竞争格局
+---
+
+**必须追踪的厂商清单（每轮至少覆盖 4 个不同厂商）**：
+
+☁️ **云计算（国际）**：
+- **AWS**：新服务发布（Bedrock/SageMaker/EC2 GPU 实例）、re:Invent/re:Inforce 发布会、财报、定价调整
+  信息源：`aws.amazon.com/blogs/aws/` · `aws.amazon.com/about-aws/whats-new/`
+- **Google Cloud / GCP**：Vertex AI 更新、TPU 新代际、Cloud Next 发布会、财报
+  信息源：`cloud.google.com/blog/` · `blog.google/products/google-cloud/`
+- **Microsoft Azure**：Azure AI Studio、Copilot 企业版、财报、与 OpenAI 合作进展
+  信息源：`azure.microsoft.com/en-us/blog/` · `blogs.microsoft.com/`
+
+☁️ **云计算（国内）**：
+- **阿里云**：通义系列更新、百炼平台、财报、国际化进展
+  信息源：`developer.aliyun.com/article/` · `www.aliyun.com/product/news`
+- **华为云**：盘古大模型、昇腾算力、政企市场、财报
+  信息源：`www.huaweicloud.com/news/`
+- **腾讯云**：混元模型商业化、云服务财报、出海
+  信息源：`cloud.tencent.com/developer/news`
+- **百度智能云**：文心大模型商业化、文心一言用户数、财报
+  信息源：`cloud.baidu.com/`
+
+🗄️ **数据平台**：
+- **Databricks**：产品发布（Unity Catalog/DBRX/Mosaic AI）、融资、财报、并购
+  信息源：`www.databricks.com/blog/`
+- **Snowflake**：Cortex AI、Arctic 模型、财报、CEO 变动
+  信息源：`www.snowflake.com/blog/`
+- **Confluent**：Kafka 云服务、Flink 托管、财报
+  信息源：`www.confluent.io/blog/`
+- **dbt Labs**：dbt Cloud 更新、融资
+  信息源：`www.getdbt.com/blog/`
+
+💼 **企业软件**：
+- **Salesforce**：Agentforce 进展、Einstein AI、财报
+  信息源：`www.salesforce.com/news/`
+- **ServiceNow**：Now Assist AI、财报
+  信息源：`www.servicenow.com/company/media/press-room/`
+- **SAP / Oracle**：AI 功能集成、财报
+- **Adobe**：Creative Cloud AI 化、Firefly 商业化、财报
+  信息源：`blog.adobe.com/`
+
+💻 **硬件 & 芯片**：
+- **NVIDIA**：新 GPU 发布（Blackwell/Rubin）、财报、出口管制影响、定价
+  信息源：`nvidianews.nvidia.com/news/`
+- **AMD**：MI300X/MI400 进展、财报、与 NVIDIA 竞争
+  信息源：`www.amd.com/en/newsroom`
+- **Intel**：Gaudi AI 加速器、财报、裁员/重组
+  信息源：`newsroom.intel.com`
+- **Apple**：Apple Silicon 新代际、Apple Intelligence 商业化、财报
+  信息源：`www.apple.com/newsroom/`
+- **华为**：昇腾 910C/D 进展、麒麟芯片、出口管制应对
+- **国产 GPU**：寒武纪/摩尔线程/海光 财报与量产进展
+
+🚗 **自动驾驶**：
+- **Tesla**：FSD 版本发布与里程碑、Robotaxi 商业化进展、财报、Optimus 机器人
+  信息源：`www.tesla.com/blog`
+- **Waymo**：商业化城市扩张、融资、事故/监管
+  信息源：`waymo.com/research/`
+- **小鹏 / 理想 / 蔚来**：智驾 OTA 更新、销量、NOA 覆盖城市
+- **华为智选 / 问界**：ADS 版本、市场份额
+- **Mobileye / 英伟达 DRIVE**：芯片平台新合作、量产车型
+
+🔐 **安全**：
+- **CrowdStrike**：财报、新产品、事故复盘
+  信息源：`www.crowdstrike.com/blog/`
+- **Palo Alto Networks**：财报、AI 安全产品
+- **Okta**：身份安全、财报
+
+🚀 **融资 & 市场**：
+- AI 独角兽最新估值轮次（$1B+ 融资）
+- 科技公司 IPO 动态
+- 并购事件（$500M+）
+- 季报财报中的 AI 收入拆分数据
+
+---
 
 **写入规范**：
 - 将通过验链的全行业动态条目写入 NEWS_DATA 数组头部
-- category 字段只能使用：`industry | software | game | hardware | cloud | infra | enterprise | security | startup | market | policy`
-  - `industry`：AI 对各行业的结构性冲击（软件/游戏/硬件/知识工作/创意产业等，跨行业影响）
-  - `software`：企业软件公司动态（Salesforce/ServiceNow/SAP/Oracle/Adobe 等）
-  - `cloud`：云服务商 AI 战略（AWS/Azure/GCP）
-  - `data`：数据平台（Databricks/Snowflake/dbt/Fivetran/Confluent）
-  - `security`：安全行业（CrowdStrike/Palo Alto/Okta）
-  - `startup`：融资动态（创业公司融资/IPO/估值变化）
-  - `market`：市场财报（季报/市值/并购/商业化目标）
-- 每条 summary 必须体现「行业影响」视角，而非技术描述（参考上方示例）
-- 国内外各半，每次 8-12 条
+- category 字段只能使用：`cloud | data | software | hardware | automotive | security | startup | market`
+  - `cloud`：云服务商动态（AWS/Azure/GCP/阿里云/华为云/腾讯云/百度云）
+  - `data`：数据平台（Databricks/Snowflake/Confluent/dbt）
+  - `software`：企业软件（Salesforce/ServiceNow/SAP/Oracle/Adobe）
+  - `hardware`：芯片/硬件（NVIDIA/AMD/Intel/Apple/华为/国产GPU）
+  - `automotive`：自动驾驶（Tesla/Waymo/小鹏/理想/华为智选/Mobileye）
+  - `security`：安全（CrowdStrike/Palo Alto/Okta）
+  - `startup`：融资/IPO（$1B+ 轮次、独角兽估值变化）
+  - `market`：财报/并购/市值（季报数据、$500M+ 并购）
+- 每条 title 必须包含「公司名 + 具体动作」，例如：「AWS 发布 XXX」「Snowflake Q1 财报：XXX」「特斯拉 FSD v13 推送 XXX」
+- 每条 summary 聚焦「公司做了什么 + 对竞争格局的影响」，不超过 150 字
+- 国内外各半，每次 8-12 条，每轮至少覆盖 4 个不同厂商
 - 对超过 90 天的旧条目进行合并归档，保持活跃列表 ≤60 条
 
 ### 任务 3：更新本模块 Roadmap
