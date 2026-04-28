@@ -1598,5 +1598,144 @@
       "release": "2025-06-18"
     },
     "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.1 — PBR 材质 3D 生成      │\n├──────────────────────────────────────┤\n│ 输入：单张图片                         │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: 形状生成（同 2.0）       ║  │\n│ ║ Flow-based DiT → 裸 Mesh         ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: PBR 材质合成（新增）     ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Albedo Map（基础色）          │ ║  │\n│ ║ │ Roughness Map（粗糙度）       │ ║  │\n│ ║ │ Metallic Map（金属度）        │ ║  │\n│ ║ │ Normal Map（法线贴图）        │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：3D Mesh + PBR 材质              │\n│ （可直接导入 Unity / Unreal Engine）   │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "kling-2",
+    "name": "Kling 2.0",
+    "org": "快手",
+    "type": "video",
+    "status": "closed",
+    "params": "未公开（估计 10B+）",
+    "date": "2025-06",
+    "context": "180s 4K / 多镜头",
+    "attention": "3D Full Attention + Temporal Causal",
+    "description": "快手视频生成旗舰，运动流畅度行业最优，支持 180s 4K 长视频，多镜头一致性强",
+    "keyInnovation": "运动流畅度行业最优 + 多镜头一致性 + 180s 超长视频 + 物理合理性增强",
+    "highlights": [
+      "运动流畅度行业最优（EvalCrafter 运动质量 SOTA）",
+      "支持 180s 4K 超长视频生成",
+      "多镜头一致性：同一场景不同角度保持一致",
+      "物理合理性增强：液体/布料/碰撞更真实",
+      "支持 Image-to-Video 和 Video-to-Video",
+      "Kling API 开放商业化"
+    ],
+    "tags": ["视频生成", "DiT", "闭源", "快手", "长视频", "4K"],
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Video DiT（3D 时空 Transformer）",
+      "attention": "3D Full Attention + Temporal Causal Mask",
+      "vae": "3D Causal VAE（时序压缩）",
+      "textEncoder": "T5-XXL + CLIP",
+      "scheduler": "Flow Matching",
+      "resolution": "最高 4K（3840×2160）",
+      "duration": "最长 180s",
+      "license": "闭源 API"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ Kling 2.0 — 运动流畅度 SOTA 视频生成  │\n├──────────────────────────────────────┤\n│ Text / Image 输入                     │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 文本编码器                        │  │\n│ │ T5-XXL（语义）+ CLIP（视觉对齐）  │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 条件向量             │\n│ ┌──────────────────────────────────┐  │\n│ │ 3D Causal VAE Encoder            │  │\n│ │ 视频帧 → 时空潜在表示             │  │\n│ │ 时序因果卷积保持帧间一致性        │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ + Flow Noise (t)     │\n│ ╔══════════════════════════════════╗  │\n│ ║ Video DiT Block × N              ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ AdaLN-Zero（时间步 t 调制）   │ ║  │\n│ ║ │ 3D Self-Attention             │ ║  │\n│ ║ │  空间维度：patch 间互相关注   │ ║  │\n│ ║ │  时间维度：帧间因果注意力     │ ║  │\n│ ║ │  → 运动流畅度核心机制         │ ║  │\n│ ║ │ Cross-Attention（文本条件）   │ ║  │\n│ ║ │ FFN（SwiGLU）                 │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 3D Causal VAE Decoder            │  │\n│ │ → 最高 4K 180s 视频              │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 运动流畅度：Temporal Causal Mask    │\n│   保证帧间运动连贯，无抖动            │\n│ ★ 多镜头一致：共享场景潜在表示        │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "wan21",
+    "name": "Wan2.1",
+    "org": "阿里巴巴",
+    "type": "video",
+    "status": "open",
+    "params": "14B（T2V-14B）/ 1.3B（T2V-1.3B）",
+    "date": "2025-02",
+    "context": "81帧 720p（T2V）/ 97帧（I2V）",
+    "attention": "3D Full Attention（时空联合）",
+    "description": "阿里开源视频生成旗舰，中文理解最强，T2V-14B 开源视频生成 SOTA，支持文生视频和图生视频",
+    "keyInnovation": "Wan-VAE（时空压缩 4×8×8）+ 3D Full Attention DiT + 中英双语 T5 文本编码器，开源视频生成 SOTA",
+    "highlights": [
+      "开源视频生成 SOTA（VBench 综合评分最高）",
+      "中文理解最强（中英双语 T5 编码器）",
+      "Wan-VAE：4×8×8 时空压缩，支持任意时长",
+      "T2V-14B / T2V-1.3B 两档，覆盖高性能和轻量场景",
+      "支持 Image-to-Video（I2V-14B）",
+      "Apache 2.0 完全开源，支持商业使用",
+      "HuggingFace 月下载量 100K+"
+    ],
+    "tags": ["视频生成", "DiT", "开源", "阿里", "中文", "Flow Matching"],
+    "paperUrl": "https://arxiv.org/abs/2503.20314",
+    "blogUrl": "https://huggingface.co/Wan-AI/Wan2.1-T2V-14B",
+    "factSheet": {
+      "params": "14B（T2V-14B）/ 1.3B（T2V-1.3B）",
+      "architecture": "Video DiT（3D Full Attention）",
+      "vae": "Wan-VAE（4×8×8 时空压缩，因果卷积）",
+      "textEncoder": "umt5-xxl（中英双语，4096 维）",
+      "scheduler": "Flow Matching（RF-Solver）",
+      "resolution": "最高 720p（1280×720×81f）",
+      "license": "Apache 2.0",
+      "vbench": "开源视频生成 VBench 综合 SOTA"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ Wan2.1 — 开源视频生成 VBench SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt（中英双语）               │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ umt5-xxl 文本编码器               │  │\n│ │ 中英双语，4096 维语义向量         │  │\n│ │ → 中文理解能力行业最强            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本条件             │\n│ ┌──────────────────────────────────┐  │\n│ │ Wan-VAE Encoder                  │  │\n│ │ 时空压缩：4×（时间）× 8×8（空间）│  │\n│ │ 因果卷积：保证时序因果性          │  │\n│ │ 支持任意时长视频编解码            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 潜在 + Flow Noise    │\n│ ╔══════════════════════════════════╗  │\n│ ║ Video DiT Block × N（14B）       ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ RMSNorm + AdaLN（t 调制）    │ ║  │\n│ ║ │ 3D Full Self-Attention        │ ║  │\n│ ║ │  时间 + 空间联合注意力        │ ║  │\n│ ║ │  RoPE 3D 位置编码             │ ║  │\n│ ║ │ Cross-Attention（文本条件）   │ ║  │\n│ ║ │ FFN（SwiGLU）                 │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ RF-Solver 去噪       │\n│ ┌──────────────────────────────────┐  │\n│ │ Wan-VAE Decoder                  │  │\n│ │ → 720p 81帧视频（~5s）           │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 开源 Apache 2.0，支持商业使用       │\n│ ★ VBench 综合评分开源最高             │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "veo3",
+    "name": "Veo 3",
+    "org": "Google DeepMind",
+    "type": "video",
+    "status": "closed",
+    "params": "未公开",
+    "date": "2025-05",
+    "context": "120s 4K + 原生音频",
+    "attention": "3D Full Attention（时空+音频联合）",
+    "description": "Google 视频生成旗舰，全球首个原生音视频同步生成模型，支持 120s 4K，物理一致性最强",
+    "keyInnovation": "全球首个原生音视频同步生成（视频+背景音+对话+音效同步）+ 物理世界理解最强",
+    "highlights": [
+      "全球首个原生音视频同步生成（无需后期配音）",
+      "支持 120s 4K 超长视频",
+      "物理一致性最强（流体/刚体/布料仿真级别）",
+      "VideoFX 集成 Google Photos/Workspace",
+      "Gemini API 开放商业化",
+      "EvalCrafter 物理合理性评分最高"
+    ],
+    "tags": ["视频生成", "DiT", "闭源", "Google", "音视频同步", "物理仿真"],
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Video DiT + Audio DiT（联合训练）",
+      "attention": "3D Full Attention（视频）+ Cross-Modal Attention（音视频对齐）",
+      "textEncoder": "Gemini 文本编码器（语义最强）",
+      "scheduler": "Flow Matching",
+      "resolution": "最高 4K",
+      "duration": "最长 120s",
+      "audio": "原生音频生成（背景音/对话/音效）",
+      "license": "闭源 API（VideoFX / Gemini API）"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ Veo 3 — 原生音视频同步生成 SOTA       │\n├──────────────────────────────────────┤\n│ Text Prompt（语义最强）               │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ Gemini 文本编码器                 │  │\n│ │ 深度语义理解（物理/因果/时序）    │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 条件向量             │\n│ ╔══════════════════════════════════╗  │\n│ ║ 双流联合生成架构                  ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ Video DiT Stream            │  ║  │\n│ ║ │ 3D Full Attention           │  ║  │\n│ ║ │ 时空 Patch → 视频帧序列     │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Cross-Modal Attn ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ Audio DiT Stream            │  ║  │\n│ ║ │ 音频 Spectrogram Patch      │  ║  │\n│ ║ │ 与视频帧时间戳对齐          │  ║  │\n│ ║ │ → 背景音 / 对话 / 音效      │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 视频解码器 → 4K 120s 视频        │  │\n│ │ 音频解码器 → 同步音频轨道        │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 音视频同步：Cross-Modal Attention   │\n│   视频帧与音频帧时间戳精确对齐        │\n│ ★ 物理一致性：Gemini 物理世界理解     │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "flux1",
+    "name": "FLUX.1",
+    "org": "Black Forest Labs",
+    "type": "image",
+    "status": "open",
+    "params": "12B（FLUX.1-dev）",
+    "date": "2024-08",
+    "context": "任意分辨率（最高 2K）",
+    "attention": "MM-DiT 双流 Transformer",
+    "description": "当前开源图像生成质量最强，MM-DiT 双流架构 + Flow Matching，全面超越 SDXL 和 SD3",
+    "keyInnovation": "MM-DiT 双流 Transformer（图像流和文本流独立处理，交叉注意力交互）+ Flow Matching 替代 DDPM",
+    "highlights": [
+      "开源图像生成质量 SOTA（全面超越 SDXL/SD3）",
+      "MM-DiT 双流架构：图像和文本 token 各自独立处理",
+      "Flow Matching 替代 DDPM：4步即可生成高质量图像",
+      "T5-XXL + CLIP 双文本编码器，文本理解最强",
+      "三种变体：dev（开源研究）/ schnell（4步快速）/ pro（商业最强）",
+      "HuggingFace 月下载量 500K+，社区生态最活跃"
+    ],
+    "tags": ["图像生成", "DiT", "开源", "Flow Matching", "MM-DiT", "Black Forest Labs"],
+    "paperUrl": "https://arxiv.org/abs/2408.06072",
+    "blogUrl": "https://huggingface.co/black-forest-labs/FLUX.1-dev",
+    "factSheet": {
+      "params": "12B（FLUX.1-dev）",
+      "architecture": "MM-DiT（双流 Transformer）",
+      "attention": "Joint Attention（图像+文本联合）",
+      "textEncoder": "T5-XXL（4096维）+ CLIP ViT-L（768维）",
+      "vae": "16-channel VAE（比 SD 的 4-channel 更高质量）",
+      "scheduler": "Flow Matching（RF-Solver，4-50步可调）",
+      "resolution": "任意分辨率，最高 2K",
+      "license": "FLUX.1-dev: FLUX Non-Commercial / FLUX.1-schnell: Apache 2.0"
+    },
+    "textArch": "┌──────────────────────────────────────┐\n│ FLUX.1 — MM-DiT 开源图像生成 SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 双文本编码器                      │  │\n│ │ T5-XXL（4096维，深度语义理解）    │  │\n│ │ CLIP ViT-L（768维，视觉对齐）     │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本 Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Encoder           │  │\n│ │ 图像 → 高质量潜在表示             │  │\n│ │ + Flow Noise（t 时刻）            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 图像 Tokens          │\n│ ╔══════════════════════════════════╗  │\n│ ║ MM-DiT Block × N（双流架构）     ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ 图像流（Image Stream）       │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ │ AdaLN（t 时间步调制）        │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Joint Attention  ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ 文本流（Text Stream）        │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ║                                   ║  │\n│ ║ 图像和文本 token 各自独立处理     ║  │\n│ ║ 通过 Joint Attention 交互         ║  │\n│ ║ → 文本理解比 SD3 更深             ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Decoder           │  │\n│ │ → 任意分辨率高质量图像（最高 2K）│  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ MM-DiT vs UNet：纯 Transformer 架构 │\n│   文本理解更深，细节更精准            │\n│ ★ Flow Matching：4步快速推理          │\n│   vs DDPM 的 50步，速度 12x           │\n└──────────────────────────────────────┘"
   }
 ]
