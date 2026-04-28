@@ -920,6 +920,105 @@ export function DatalakeTab() {
             <div className="text-[10px] text-gray-600 rounded-xl border border-[#00cec9]/15 bg-white/80 p-3 mb-4">
               {tableFormat.intro}
             </div>
+
+            {/* ── 文件格式对比（新增）── */}
+            <SectionCard icon="📁" title="存储文件格式对比" desc="Parquet / ORC / Avro / Arrow / JSON / CSV — 按场景选择最合适的格式">
+              {/* 文件格式卡片 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                {tableFormat.fileFormats.map(fmt => (
+                  <div key={fmt.name} className="rounded-xl border p-3"
+                    style={{ borderColor: fmt.color + '30', background: fmt.color + '05' }}>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-lg">{fmt.icon}</span>
+                      <span className="text-xs font-bold text-gray-800">{fmt.name}</span>
+                      <span className="text-[8px] px-1.5 py-0.5 rounded-full font-mono ml-auto"
+                        style={{ background: fmt.color + '15', color: fmt.color, border: `1px solid ${fmt.color}30` }}>
+                        {fmt.type}
+                      </span>
+                    </div>
+                    <div className="text-[8px] text-gray-400 mb-1.5 flex flex-wrap gap-2">
+                      <span>压缩：{fmt.compression}</span>
+                      <span>·</span>
+                      <span>读取：{fmt.readPattern}</span>
+                    </div>
+                    <div className="mb-1.5">
+                      <div className="text-[8px] font-semibold text-[#3fb950] mb-0.5">✅ 优势</div>
+                      {fmt.pros.slice(0, 3).map((p, i) => (
+                        <div key={i} className="text-[8px] text-gray-500">· {p}</div>
+                      ))}
+                    </div>
+                    <div className="mb-1.5">
+                      <div className="text-[8px] font-semibold text-[#e17055] mb-0.5">⚠️ 劣势</div>
+                      {fmt.cons.slice(0, 2).map((c, i) => (
+                        <div key={i} className="text-[8px] text-gray-500">· {c}</div>
+                      ))}
+                    </div>
+                    <div className="text-[8px] rounded-lg px-2 py-1 inline-block"
+                      style={{ background: fmt.color + '12', color: fmt.color }}>
+                      💡 {fmt.bestFor}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 文件格式对比矩阵 */}
+              <div className="overflow-x-auto mb-4">
+                <table className="w-full text-[8px]">
+                  <thead>
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">维度</th>
+                      <th className="text-center py-1.5 px-2 font-semibold text-[#00cec9] whitespace-nowrap">Parquet</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">ORC</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">Avro</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">Arrow</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">JSON</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">CSV</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableFormat.fileFormatMatrix.map((row, i) => (
+                      <tr key={row.dim} className={`border-b border-gray-50 ${i%2===0?'bg-gray-50/20':''}`}>
+                        <td className="py-1.5 px-2 font-semibold text-gray-600 whitespace-nowrap">{row.dim}</td>
+                        <td className="py-1.5 px-2 text-center text-[#00cec9]">{row.parquet}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.orc}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.avro}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.arrow}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.json}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.csv}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* 选型决策树 */}
+              <div className="mb-2">
+                <div className="text-[10px] font-bold text-gray-700 mb-2">🎯 {tableFormat.selectionGuide.title}</div>
+                <div className="text-[9px] text-gray-400 mb-3">{tableFormat.selectionGuide.subtitle}</div>
+                <div className="space-y-2">
+                  {tableFormat.selectionGuide.scenarios.map(sc => (
+                    <div key={sc.title} className="rounded-xl border p-3"
+                      style={{ borderColor: sc.color + '30', background: sc.color + '05' }}>
+                      <div className="flex items-start gap-2">
+                        <span className="text-base flex-shrink-0">{sc.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <span className="text-[9px] font-semibold text-gray-700">{sc.title}</span>
+                            <span className="text-[8px] px-2 py-0.5 rounded-full font-bold"
+                              style={{ background: sc.color + '18', color: sc.color }}>
+                              → {sc.answer}
+                            </span>
+                          </div>
+                          <div className="text-[8px] text-gray-500 mb-1.5">{sc.reason}</div>
+                          <pre className="text-[7.5px] font-mono text-gray-500 bg-gray-50 rounded-lg p-2 overflow-x-auto whitespace-pre-wrap">{sc.config}</pre>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </SectionCard>
+
             {/* 格式卡片 */}
             <div className="space-y-4 mb-4">
               {tableFormat.formats.map(fmt => (
