@@ -86,9 +86,10 @@ function groupByTime(items) {
 
 // ─── 分类 & 地区定义 ──────────────────────────────────────────────────────────
 
-// 分类定义：聚焦软件行业公司动态（Databricks/Snowflake/AWS/Palantir 等）
+// 分类定义：聚焦各行业受 AI 冲击的产业格局变化（≠ AI 技术本身）
 const CATEGORIES = [
   { key: 'all',      label: '全部',    icon: '📡', color: '#6c5ce7' },
+  { key: 'industry', label: '行业影响', icon: '🏭', color: '#a29bfe' },  // AI 对各行业的结构性冲击（软件/游戏/硬件/知识工作）
   { key: 'data',     label: '数据平台', icon: '🗄️', color: '#326ce5' },  // Databricks/Snowflake/dbt/Fivetran
   { key: 'cloud',    label: '云服务',  icon: '☁️', color: '#00cec9' },  // AWS/Azure/GCP
   { key: 'software', label: '企业软件', icon: '💼', color: '#6c5ce7' },  // Salesforce/ServiceNow/SAP/Oracle
@@ -110,8 +111,92 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
-  // 2026-04-27（第35轮更新 — DeepSeek融资冲击 / 国产AI出海 / AI设计工具商业化 / 评测体系危机 / AI搜索格局）
+  // 2026-04-28（第36轮更新 — OpenAI IPO目标落空 / GitHub Copilot按量计费 / 欧盟AI监管 / 国产GPU突破 / 谷歌韩国AI园区 / Adobe Firefly商业化）
   // ══════════════════════════════════════════════════════
+  {
+    id: 2736,
+    category: 'market',
+    region: 'global',
+    title: 'OpenAI 未达 2025 年 IPO 关键目标：营收与周活用户双双落空，商业化压力凸显',
+    summary: '据市场消息，OpenAI 在冲刺 IPO 的关键阶段未能实现核心营收目标，周活用户也未达到 10 亿的预设里程碑。这一消息引发市场对 OpenAI 高估值（$3000 亿）可持续性的质疑。分析师指出，ChatGPT 的用户增长正在放缓，而 API 商业化收入虽快速增长，但与高昂的算力成本相比仍存在较大缺口。这对整个 AI 行业的估值逻辑构成挑战——"增长故事"能否支撑"基础设施公司"的估值倍数？',
+    source: 'IT之家',
+    date: '2026-04-28',
+    tags: ['OpenAI', 'IPO', '估值', '商业化'],
+    hot: true,
+    link: 'https://www.ithome.com/0/944/247.htm',
+  },
+  {
+    id: 2737,
+    category: 'software',
+    region: 'global',
+    title: 'GitHub Copilot 宣布转向按量计费：AI Credits 模式重塑开发工具商业逻辑',
+    summary: '微软 GitHub Copilot 宣布自 6 月 1 日起改用 AI Credits 按量计费模式，基础订阅价格不变但高级功能将消耗 Credits。这一转变标志着 AI 编程工具从"订阅制"向"用量制"的商业模式迁移，与 AWS/Azure 的云计算计费逻辑趋同。对企业用户而言，这意味着 AI 工具成本将与实际使用深度挂钩，倒逼企业评估 AI 编程工具的真实 ROI。Cursor、Windsurf 等竞品正在密切观察这一定价实验。',
+    source: 'IT之家',
+    date: '2026-04-28',
+    tags: ['GitHub Copilot', '微软', '按量计费', 'AI编程工具'],
+    hot: true,
+    link: 'https://www.ithome.com/0/944/205.htm',
+  },
+  {
+    id: 2738,
+    category: 'industry',
+    region: 'global',
+    title: '欧盟要求安卓开放 AI 功能：谷歌面临最高 10% 全球年收入罚款，AI 监管进入执法阶段',
+    summary: '欧盟正式要求谷歌在安卓系统中开放 AI 功能接口，允许第三方 AI 助手与系统深度集成，否则将面临最高 10% 全球年收入的罚款。这是欧盟《数字市场法》（DMA）首次将 AI 功能纳入强制开放范围，标志着 AI 监管从"立法"进入"执法"阶段。对苹果 Apple Intelligence 和三星 Galaxy AI 同样构成压力——封闭的 AI 生态模式在欧洲市场将面临系统性挑战。',
+    source: 'IT之家',
+    date: '2026-04-28',
+    tags: ['欧盟', '监管', '谷歌', 'DMA', 'AI开放'],
+    hot: true,
+    link: 'https://www.ithome.com/0/944/248.htm',
+  },
+  {
+    id: 2739,
+    category: 'industry',
+    region: 'china',
+    title: '摩尔线程 × 中国移动：国产 GPU 完成央企大模型适配，国产算力替代进入量产阶段',
+    summary: '摩尔线程 S5000 GPU 完成与中国移动九天 35B 大模型的适配，标志着国产 GPU 在央企大模型训练场景的商业化落地。在英伟达出口管制持续收紧的背景下，国产算力替代正从"技术验证"进入"量产部署"阶段。摩尔线程、寒武纪、海光等国产 GPU 厂商正在加速填补 H100/A100 的市场空缺，央企和国有银行成为首批规模化采购客户。',
+    source: 'IT之家',
+    date: '2026-04-28',
+    tags: ['摩尔线程', '国产GPU', '中国移动', '算力替代'],
+    hot: true,
+    link: 'https://www.ithome.com/0/944/223.htm',
+  },
+  {
+    id: 2740,
+    category: 'cloud',
+    region: 'global',
+    title: '谷歌在韩国新建 AI 园区：DeepMind CEO 亲赴首尔，科技巨头加速亚太 AI 基础设施布局',
+    summary: '谷歌与韩国政府签署合作备忘录，将在首尔共建 AI 园区，DeepMind CEO 德米斯·哈萨比斯亲赴首尔出席签约仪式。这是谷歌继日本、印度之后在亚太地区的第三个 AI 战略合作，也是科技巨头争夺亚太 AI 人才和市场的缩影。微软、亚马逊、Meta 均已在亚太地区宣布大规模 AI 基础设施投资，亚太正成为全球 AI 竞争的第二战场。',
+    source: '36氪',
+    date: '2026-04-28',
+    tags: ['谷歌', 'DeepMind', '韩国', 'AI园区', '亚太战略'],
+    hot: false,
+    link: 'https://36kr.com/p/3784957482523648',
+  },
+  {
+    id: 2741,
+    category: 'software',
+    region: 'global',
+    title: 'Adobe Firefly AI 助手公测：编排 Photoshop 等应用，创意软件进入 AI Agent 时代',
+    summary: 'Adobe 正式公测 Firefly AI 助手，支持跨 Photoshop、Illustrator、Premiere 等应用的 AI 编排能力，用户可通过自然语言指令完成跨工具的复杂创意工作流。这标志着创意软件从"AI 功能嵌入"升级为"AI Agent 驱动"——Adobe 正在将其 Creative Cloud 生态转型为 AI 原生平台。对 Canva、Figma 等新兴竞品构成压力，同时也对传统设计师的工作方式提出新要求。',
+    source: 'IT之家',
+    date: '2026-04-28',
+    tags: ['Adobe', 'Firefly', 'AI助手', '创意软件', 'Agent'],
+    hot: false,
+    link: 'https://www.ithome.com/0/944/215.htm',
+  },
+  {
+    id: 2742,
+    category: 'startup',
+    region: 'china',
+    title: 'DeepSeek-V4 核心骨干离职引关注：AI 人才流动加速，大厂与创业公司争夺战升温',
+    summary: 'DeepSeek-V4 技术报告公开作者名单后，多位核心骨干已离职加入大厂。这一现象折射出中国 AI 人才市场的深层矛盾：顶尖 AI 研究员在创业公司完成技术突破后，往往被大厂以数倍薪酬挖走。对 DeepSeek 而言，人才流失是商业化加速后必须面对的挑战；对整个行业而言，人才流动正在加速 AI 能力向大厂集中，创业公司的技术护城河面临持续侵蚀。',
+    source: 'IT之家',
+    date: '2026-04-28',
+    tags: ['DeepSeek', 'AI人才', '人才流动', '大厂竞争'],
+    hot: false,
+    link: 'https://www.ithome.com/0/944/264.htm',
+  },
   {
     id: 2728,
     category: 'startup',

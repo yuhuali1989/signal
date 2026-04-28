@@ -1,5 +1,77 @@
 [
   {
+    "id": "news-20260428-01",
+    "title": "OpenAI 未达 2025 年 IPO 核心目标：周活用户未破 10 亿，商业化压力凸显",
+    "summary": "据市场消息，OpenAI 在冲刺 IPO 的关键阶段未能实现核心营收目标，周活用户也未达到 10 亿的预设里程碑。ChatGPT 用户增长放缓，API 商业化收入虽快速增长但与算力成本相比仍有较大缺口，引发市场对 $3000 亿估值可持续性的质疑。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/0/944/247.htm",
+    "date": "2026-04-28",
+    "category": "llm",
+    "tags": ["OpenAI", "IPO", "商业化", "估值"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260428-02",
+    "title": "GitHub Copilot 6 月起转向 AI Credits 按量计费，AI 编程工具商业模式迎来拐点",
+    "summary": "微软 GitHub Copilot 宣布自 2026 年 6 月 1 日起改用 AI Credits 按量计费模式，基础订阅价格不变但高级功能将消耗 Credits。这是 AI 编程工具从订阅制向用量制迁移的重要信号，Cursor、Windsurf 等竞品正在密切观察这一定价实验。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/0/944/205.htm",
+    "date": "2026-04-28",
+    "category": "agent",
+    "tags": ["GitHub Copilot", "微软", "AI编程", "按量计费"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260428-03",
+    "title": "欧盟要求安卓开放 AI 功能，谷歌面临最高 10% 全球年收入罚款",
+    "summary": "欧盟正式要求谷歌在安卓系统中开放 AI 功能接口，允许第三方 AI 助手深度集成，否则将面临最高 10% 全球年收入的罚款。这是《数字市场法》（DMA）首次将 AI 功能纳入强制开放范围，标志着 AI 监管从立法进入执法阶段，对苹果 Apple Intelligence 和三星 Galaxy AI 的封闭生态同样构成压力。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/0/944/248.htm",
+    "date": "2026-04-28",
+    "category": "infra",
+    "tags": ["欧盟", "监管", "DMA", "谷歌", "AI开放"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260428-04",
+    "title": "摩尔线程 S5000 完成中国移动九天 35B 大模型适配，国产 GPU 量产替代加速",
+    "summary": "摩尔线程 S5000 GPU 完成与中国移动九天 35B 大模型的适配，标志着国产 GPU 在央企大模型训练场景的商业化落地。在英伟达出口管制持续收紧背景下，国产算力替代正从技术验证进入量产部署阶段，央企和国有银行成为首批规模化采购客户。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/0/944/223.htm",
+    "date": "2026-04-28",
+    "category": "infra",
+    "tags": ["摩尔线程", "国产GPU", "算力替代", "中国移动"],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260428-05",
+    "title": "Adobe Firefly AI 助手公测：跨应用 AI 编排，创意软件进入 Agent 时代",
+    "summary": "Adobe 正式公测 Firefly AI 助手，支持跨 Photoshop、Illustrator、Premiere 等应用的 AI 编排能力，用户可通过自然语言完成跨工具复杂创意工作流。这标志着创意软件从 AI 功能嵌入升级为 AI Agent 驱动，Adobe Creative Cloud 正在转型为 AI 原生平台。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/0/944/215.htm",
+    "date": "2026-04-28",
+    "category": "agent",
+    "tags": ["Adobe", "Firefly", "AI助手", "创意工具", "Agent"],
+    "hot": false,
+    "region": "global"
+  },
+  {
+    "id": "news-20260428-06",
+    "title": "DeepSeek-V4 技术报告公开，多位核心骨干已离职加入大厂",
+    "summary": "DeepSeek-V4 技术报告公开作者名单后，多位核心骨干已离职加入大厂。这折射出中国 AI 人才市场的深层矛盾：顶尖研究员在创业公司完成技术突破后往往被大厂以数倍薪酬挖走，AI 能力向大厂集中的趋势加剧，创业公司技术护城河面临持续侵蚀。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/0/944/264.htm",
+    "date": "2026-04-28",
+    "category": "llm",
+    "tags": ["DeepSeek", "AI人才", "人才流动"],
+    "hot": false,
+    "region": "china"
+  },
+  {
     "id": "news-20260427-01",
     "title": "Kimi K2.6 发布：月之暗面最新旗舰，长文本推理能力大幅提升",
     "summary": "月之暗面（Moonshot AI）正式发布 Kimi K2.6，在长文本理解和多步骤推理方面取得重大突破，支持超长上下文窗口。K2.6 在数学推理、代码生成和复杂问答任务上均有显著提升，是继 K2 之后的重要版本迭代。Kimi 持续在长上下文赛道深耕，与 Claude 和 GPT 系列形成差异化竞争。",
