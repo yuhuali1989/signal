@@ -973,6 +973,11 @@ export function DatalakeTab() {
                       <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">Arrow</th>
                       <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">JSON</th>
                       <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">CSV</th>
+                      <th className="text-center py-1.5 px-2 font-semibold text-[#6c5ce7] whitespace-nowrap">MCAP 🚗</th>
+                      <th className="text-center py-1.5 px-2 font-semibold text-[#00b894] whitespace-nowrap">WebDataset</th>
+                      <th className="text-center py-1.5 px-2 font-semibold text-[#e17055] whitespace-nowrap">Lance</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">TFRecord</th>
+                      <th className="text-center py-1.5 px-2 text-gray-400 font-medium whitespace-nowrap">HDF5</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -985,6 +990,11 @@ export function DatalakeTab() {
                         <td className="py-1.5 px-2 text-center text-gray-400">{row.arrow}</td>
                         <td className="py-1.5 px-2 text-center text-gray-400">{row.json}</td>
                         <td className="py-1.5 px-2 text-center text-gray-400">{row.csv}</td>
+                        <td className="py-1.5 px-2 text-center text-[#6c5ce7]">{row.mcap}</td>
+                        <td className="py-1.5 px-2 text-center text-[#00b894]">{row.webdataset}</td>
+                        <td className="py-1.5 px-2 text-center text-[#e17055]">{row.lance}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.tfrecord}</td>
+                        <td className="py-1.5 px-2 text-center text-gray-400">{row.hdf5}</td>
                       </tr>
                     ))}
                   </tbody>
