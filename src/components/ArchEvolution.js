@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { EvolutionPathSVG, COLORS } from '@/components/ArchDiagram';
 
 /* ─── 数据 ─── */
 const KEY_LAYERS = [
@@ -231,6 +232,36 @@ export default function ArchEvolution() {
       {activeTab === 'evolution' && (
         <div>
           <p className="text-xs text-gray-400 mb-5">当前主流架构演进呈现 5 条清晰路径，点击展开详情。</p>
+
+          {/* SVG 路线图总览 */}
+          <div className="mb-6 space-y-3">
+            {EVOLUTION_PATHS.map((p) => {
+              const colorMap = { attention: COLORS.blue, ffn: COLORS.purple, depth: COLORS.green, inference: COLORS.orange, quant: COLORS.red };
+              const c = colorMap[p.id] || COLORS.blue;
+              const modelMap = {
+                attention: ['GPT-3/4', 'LLaMA 2/3', 'Gemini', 'DeepSeek V2/V3', 'DeepSeek-R2', 'NSA+FA3'],
+                ffn: ['GPT/LLaMA', 'Mixtral', 'DeepSeek V3', 'Qwen3/Llama4', '动态合并'],
+                depth: ['所有模型', '学术验证', 'Gemma 3', '三维联合稀疏'],
+                inference: ['标准自回归', 'DeepSeek V3', '投机解码', 'Claude/o3', 'TIR 标准化'],
+                quant: ['早期', '主流训练', 'DeepSeek V3', 'llama.cpp', 'Blackwell B200'],
+              };
+              const models = modelMap[p.id] || [];
+              return (
+                <div key={p.id + '-svg'}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-lg">{p.icon}</span>
+                    <span className="text-xs font-bold" style={{ color: c.fill }}>{p.title.split('：')[0]}</span>
+                  </div>
+                  <EvolutionPathSVG
+                    path={p.path.map((name, i) => ({ name, model: models[i] || '' }))}
+                    color={c}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">📋 详细说明（点击展开）</h3>
           <div className="space-y-3">
             {EVOLUTION_PATHS.map((p, i) => {
               const isOpen = expandedPath === p.id;
