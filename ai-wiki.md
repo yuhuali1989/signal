@@ -516,6 +516,7 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
   - `5.1.1 Embedding 入门` 追加"两条路线澄清"——图像/音频都同时存在**连续 Patch（无词表，用于理解）**和**离散 VQ token（有词表，用于生成）**两条路径，解释"要生成必离散"的 Softmax 根源
   - 新增 `5.1.2 统一词表与模态路由`——讲解 Chameleon/GPT-4o 如何用 ID 区间划分（文本 0-65535 / 图像 65536-73727 / 音频 73728-75775 / 控制 token）+ `<BOI>/<EOI>` 分隔符 + Logits Masking 实现 Next Token 的模态区分
   - 新增 `5.1.3 VQ-VAE 深入`——回答"视觉/音频词表是如何训出来的"，包含最近邻量化公式、三项 Loss（重建/Codebook/Commitment）、Straight-Through Estimator、codebook 可视化直觉、Residual VQ 扩展，核心结论"文本词表是数出来的，图像/音频词表是学出来的"
+- 📖 **书籍章节深化（第三轮）**：在 `5.1.3` 新增 `#### 6. 还原度的痛点：为什么早期音频 VQ 不能用？Encodec 怎么解决的？` 小节，回应"音频离散化还原度差"的专业质疑。内容包括：音频比图像更难还原的四维度对比（相位敏感度/信息冗余/失真表现/采样规模）、2017→2024 音频离散编码演进线（VQ-VAE → SoundStream → Encodec → DAC → Mimi）、Encodec 三招组合拳（RVQ 残差分层 + 多判别器对抗 MS-STFT/MP-D/MS-D + 感知损失）、2025 实测 MOS 对比表（Encodec 4.0~4.2、DAC 4.3~4.5 已达"接近透明"）、三个残留问题（低码率情感丢失/音乐难度/长序列误差累积）。核心观点：**"离散化损失音质"这个 2019 年成立的批评，2025 年已过时**，Encodec 级 codec 是 GPT-4o/Moshi 语音 LLM 的前提
 
 ---
 
