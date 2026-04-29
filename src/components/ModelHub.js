@@ -170,19 +170,28 @@ function ModelGallery({ models }) {
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-gray-500 uppercase mb-3">🏗️ 架构图</h4>
-                      {/* 优先展示 SVG 专业架构图 */}
+                      {/* Raschka 风格 SVG 架构图（传入 factSheet 动态渲染） */}
                       {(m.type === 'moe' || (m.factSheet?.architecture || '').includes('MoE')) ? (
-                        <div className="bg-white rounded-lg border border-gray-200 p-4">
-                          <MoEArchSVG />
+                        <div className="bg-white rounded-lg border border-gray-200 p-4 flex justify-center">
+                          <MoEArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         </div>
                       ) : (
-                        <div className="bg-white rounded-lg border border-gray-200 p-4">
-                          <TransformerBlockSVG />
+                        <div className="bg-white rounded-lg border border-gray-200 p-4 flex justify-center">
+                          <TransformerBlockSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         </div>
+                      )}
+                      {/* Raschka Gallery 原图（如果有） */}
+                      {m.architectureImage && (
+                        <details className="mt-3">
+                          <summary className="text-[10px] text-gray-400 cursor-pointer hover:text-[#6c5ce7] transition-colors">🖼️ Sebastian Raschka 原始架构图</summary>
+                          <div className="mt-2 bg-white rounded-lg border border-gray-200 p-2">
+                            <img src={m.architectureImage} alt={`${m.name} architecture`} className="w-full rounded" loading="lazy" />
+                          </div>
+                        </details>
                       )}
                       {/* ASCII 字符画作为折叠备选 */}
                       {m.textArch && (
-                        <details className="mt-3">
+                        <details className="mt-2">
                           <summary className="text-[10px] text-gray-400 cursor-pointer hover:text-[#6c5ce7] transition-colors">📝 查看 ASCII 架构图（原始）</summary>
                           <pre className="mt-2 text-[10px] sm:text-[11px] leading-[1.4] text-gray-700 bg-gray-50 border border-gray-200 p-3 sm:p-4 rounded-lg overflow-x-auto font-mono whitespace-pre">
 {m.textArch}
