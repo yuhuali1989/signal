@@ -102,7 +102,12 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
   const norm = f.normalization || 'RMSNorm';
   const pos = f.positionalEncoding || 'RoPE';
   const emb = f.embeddingDim || hidden || '';
-  const ffn = f.ffnDim || (hidden ? `${Math.round(parseInt(hidden) * 3.5).toLocaleString()}` : '');
+  const ffn = f.ffnDim || (hidden ? `${Math.round(parseInt(hidden.replace(/,/g, '')) * 3.5)}` : '');
+
+  // 去掉逗号的纯数字版本，用于 shape 标注
+  const d = emb ? emb.replace(/,/g, '') : '';
+  const dFFN = ffn ? ffn.replace(/,/g, '') : '';
+  const V = vocab !== '?' ? vocab.replace(/,/g, '') : '';
 
   // 布局常量
   const W = 680;
@@ -111,10 +116,10 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
   const bx = cx - bw / 2;  // 层左边
   const skipX = bx + bw + 25; // 残差跳线 x（右侧）
 
-  // shape 文字
-  const shEmb = emb ? `(batch, seq, ${emb})` : '';
-  const shHid = hidden && ffn ? `(batch, seq, ${ffn})` : '';
-  const shOut = vocab !== '?' ? `(batch, seq, ${vocab})` : '';
+  // shape 文字 — 每层之间都标注
+  const shEmb = d ? `(B, T, ${d})` : '';
+  const shFFN = dFFN ? `(B, T, ${dFFN})` : '';
+  const shOut = V ? `(B, T, ${V})` : '';
 
   return (
     <svg viewBox={`0 0 ${W} 720`} className="w-full max-w-[680px]" style={{ fontFamily: FONT }}>
@@ -131,14 +136,18 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
       <text x={cx} y="30" textAnchor="middle" fill="#111" fontSize="15" fontWeight="800">{name}</text>
 
       {/* ── 顶部 ── */}
+      {/* Output shape */}
+      <Shape x={cx} y={44} text={shOut} />
       {/* Linear output */}
       <Box x={bx} y={52} w={bw} h={28} label="Linear output layer" />
-      <Shape x={cx} y={48} text={shOut} />
+      {/* shape: emb → vocab */}
+      <Shape x={cx} y={88} text={shEmb} />
       <Arr x1={cx} y1={80} x2={cx} y2={95} id="arr" />
 
       {/* Final Norm */}
       <Box x={bx} y={95} w={bw} h={28} label={`Final ${norm}`} />
-      <Shape x={cx} y={91} text={shEmb} />
+      {/* shape: emb (不变) */}
+      <Shape x={cx} y={138} text={shEmb} />
       <Arr x1={cx} y1={123} x2={cx} y2={150} id="arr" />
 
       {/* ══ Transformer Block 外框（灰色） ══ */}
@@ -151,15 +160,22 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
       <Plus cx={cx} cy={178} />
       {/* U 形残差跳线 2：从 Norm2 输出右侧绕到 ⊕ */}
       <path d={`M${skipX},${310} L${skipX},${178} L${cx + 11},${178}`} fill="none" stroke="#555" strokeWidth="1.2" />
+      {/* shape: ⊕ 输出 → FFN 输入 */}
+      <Shape x={cx} y={202} text={shEmb} />
       <Arr x1={cx} y1={189} x2={cx} y2={210} id="arr" />
 
       {/* Feed forward */}
       <Box x={bx + 10} y={210} w={bw - 20} h={32} label="Feed forward" />
-      <Shape x={cx} y={206} text={shHid ? `→ ${shHid}` : ''} />
+      {/* shape: FFN 中间维度 */}
+      {shFFN && <Shape x={cx + 115} y={230} text={`mid: ${shFFN}`} />}
+      {/* shape: FFN 输出 → Norm2 */}
+      <Shape x={cx} y={254} text={shEmb} />
       <Arr x1={cx} y1={242} x2={cx} y2={265} id="arr" />
 
       {/* Norm 2 */}
       <Box x={bx + 10} y={265} w={bw - 20} h={28} label={`${norm} 2`} />
+      {/* shape: Norm2 输出 */}
+      <Shape x={cx} y={308} text={shEmb} />
       {/* 分叉点：主线 + 跳线起点 */}
       <Arr x1={cx} y1={293} x2={cx} y2={320} id="arr" />
       {/* 跳线起点标记 */}
@@ -170,17 +186,22 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
       <Plus cx={cx} cy={330} />
       {/* U 形残差跳线 1：从 Norm1 输出右侧绕到 ⊕ */}
       <path d={`M${skipX},${460} L${skipX},${330} L${cx + 11},${330}`} fill="none" stroke="#555" strokeWidth="1.2" />
+      {/* shape: ⊕ 输出 → Attention 输入 */}
+      <Shape x={cx} y={357} text={shEmb} />
       <Arr x1={cx} y1={341} x2={cx} y2={365} id="arr" />
 
       {/* Attention */}
       <Box x={bx + 15} y={365} w={bw - 30} h={42} label={`Masked ${attn}`}
         fill={ATTN_BG} stroke="#444" color="#fff"
         fs={attn.length > 22 ? 8.5 : attn.length > 16 ? 9.5 : 10.5} />
-      <Shape x={cx} y={361} text={shEmb} />
+      {/* shape: Attention 输出 → Norm1 */}
+      <Shape x={cx} y={418} text={shEmb} />
       <Arr x1={cx} y1={407} x2={cx} y2={430} id="arr" />
 
       {/* Norm 1 */}
       <Box x={bx + 10} y={430} w={bw - 20} h={28} label={`${norm} 1`} />
+      {/* shape: Norm1 输出 → Block 输入 */}
+      <Shape x={cx} y={480} text={shEmb} />
       {/* 分叉点：主线 + 跳线起点 */}
       <Arr x1={cx} y1={458} x2={cx} y2={490} id="arr" />
       <circle cx={cx} cy={468} r="2" fill="#555" />
@@ -195,18 +216,23 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
 
       {/* Block → Embedding */}
       <Arr x1={cx} y1={510} x2={cx} y2={555} id="arr" />
+      {/* shape: Block 输出 → Embedding */}
       <Shape x={cx} y={540} text={shEmb} />
 
       {/* Embedding */}
       <Box x={bx - 15} y={555} w={bw + 30} h={32} label="Token + positional embedding layer" fs={10} />
+      {/* shape: Embedding 输出 */}
+      <Shape x={cx} y={604} text={shEmb} />
       <Arr x1={cx} y1={587} x2={cx} y2={620} id="arr" />
 
       {/* Tokenized text */}
       <Box x={bx + 5} y={620} w={bw - 10} h={28} label="Tokenized text" />
+      {/* shape: token ids */}
+      {V && <Shape x={cx} y={660} text={`(B, T) → token IDs ∈ [0, ${V})`} />}
 
       {/* Input label */}
-      <text x={cx} y={668} textAnchor="middle" fill="#666" fontSize="10" fontStyle="italic">Sample input text</text>
-      <Arr x1={cx} y1={672} x2={cx} y2={648} id="arr" />
+      <text x={cx} y={680} textAnchor="middle" fill="#666" fontSize="10" fontStyle="italic">Sample input text</text>
+      <Arr x1={cx} y1={684} x2={cx} y2={648} id="arr" />
 
       {/* ══════════ 右侧参数标注 ══════════ */}
       {/* Vocabulary size */}
@@ -239,8 +265,8 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
 
       {/* Context length */}
       {ctx && (
-        <Note x1={bx - 30} y1={400} x2={15} y2={510}
-          label="Supported context length of" value={ctx} side="left" />
+        <Note x1={bx - 30} y1={400} x2={bx - 120} y2={430}
+          label="Context length" value={ctx} side="left" />
       )}
 
       {/* ══════════ 右侧 FFN 展开 ══════════ */}
@@ -293,32 +319,40 @@ function MoEArchSVG({ factSheet = {}, modelName = '' }) {
   const ctx = f.context || '';
   const emb = f.embeddingDim || hidden || '';
 
+  // 去掉逗号的纯数字版本，用于 shape 标注
+  const d = emb ? emb.replace(/,/g, '') : '';
+  const V = vocab !== '?' ? vocab.replace(/,/g, '') : '';
+  const dFFN = f.ffnDim ? f.ffnDim.replace(/,/g, '') : '';
+
   const W = 700;
   const cx = 270;
   const bw = 210;
   const bx = cx - bw / 2;
   const skipX = bx + bw + 30;
 
-  const shEmb = emb ? `(batch, seq, ${emb})` : '';
+  const shEmb = d ? `(B, T, ${d})` : '';
+  const shOut = V ? `(B, T, ${V})` : '';
 
   return (
-    <svg viewBox={`0 0 ${W} 800`} className="w-full max-w-[700px]" style={{ fontFamily: FONT }}>
+    <svg viewBox={`0 0 ${W} 820`} className="w-full max-w-[700px]" style={{ fontFamily: FONT }}>
       <defs>
         <marker id="arr-moe" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" fill="#666" />
         </marker>
       </defs>
 
-      <rect x="5" y="5" width={W - 10} height="790" rx="16" fill={BG} stroke={BD} strokeWidth="1" />
+      <rect x="5" y="5" width={W - 10} height="810" rx="16" fill={BG} stroke={BD} strokeWidth="1" />
 
       {/* 标题 */}
       <text x={cx} y="30" textAnchor="middle" fill="#111" fontSize="15" fontWeight="800">{name}</text>
 
       {/* ── 顶部 ── */}
+      <Shape x={cx} y={44} text={shOut} />
       <Box x={bx} y={52} w={bw} h={28} label="Linear output layer" />
+      <Shape x={cx} y={88} text={shEmb} />
       <Arr x1={cx} y1={80} x2={cx} y2={100} id="arr-moe" />
       <Box x={bx} y={100} w={bw} h={28} label={`Final ${norm}`} />
-      <Shape x={cx} y={96} text={shEmb} />
+      <Shape x={cx} y={142} text={shEmb} />
       <Arr x1={cx} y1={128} x2={cx} y2={155} id="arr-moe" />
 
       {/* ══ MoE Block 外框 ══ */}
@@ -328,6 +362,7 @@ function MoEArchSVG({ factSheet = {}, modelName = '' }) {
       {/* ── ⊕ Residual 2 ── */}
       <Plus cx={cx} cy={185} />
       <path d={`M${skipX},${340} L${skipX},${185} L${cx + 11},${185}`} fill="none" stroke="#555" strokeWidth="1.2" />
+      <Shape x={cx} y={207} text={shEmb} />
       <Arr x1={cx} y1={196} x2={cx} y2={215} id="arr-moe" />
 
       {/* MoE 区域 */}
@@ -364,10 +399,14 @@ function MoEArchSVG({ factSheet = {}, modelName = '' }) {
         <line key={i} x1={ex} y1={305} x2={cx} y2={318} stroke="#E57373" strokeWidth="0.8" opacity="0.5" />
       ))}
 
+      {/* shape: MoE 输出 */}
+      <Shape x={cx} y={358} text={shEmb} />
       <Arr x1={cx} y1={370} x2={cx} y2={395} id="arr-moe" />
 
       {/* Norm 2 */}
       <Box x={bx + 10} y={395} w={bw - 20} h={26} label={`${norm} 2`} />
+      {/* shape: Norm2 输出 */}
+      <Shape x={cx} y={432} text={shEmb} />
       <Arr x1={cx} y1={421} x2={cx} y2={448} id="arr-moe" />
       <circle cx={cx} cy={435} r="2" fill="#555" />
       <line x1={cx} y1={435} x2={skipX} y2={435} stroke="#555" strokeWidth="1.2" />
@@ -375,17 +414,22 @@ function MoEArchSVG({ factSheet = {}, modelName = '' }) {
       {/* ── ⊕ Residual 1 ── */}
       <Plus cx={cx} cy={458} />
       <path d={`M${skipX},${570} L${skipX},${458} L${cx + 11},${458}`} fill="none" stroke="#555" strokeWidth="1.2" />
+      {/* shape: ⊕ 输出 → Attention 输入 */}
+      <Shape x={cx} y={484} text={shEmb} />
       <Arr x1={cx} y1={469} x2={cx} y2={492} id="arr-moe" />
 
       {/* Attention */}
       <Box x={bx + 15} y={492} w={bw - 30} h={40} label={attn}
         fill={ATTN_BG} stroke="#444" color="#fff"
         fs={attn.length > 20 ? 8.5 : attn.length > 14 ? 9.5 : 11} />
-      <Shape x={cx} y={488} text={shEmb} />
+      {/* shape: Attention 输出 */}
+      <Shape x={cx} y={543} text={shEmb} />
       <Arr x1={cx} y1={532} x2={cx} y2={555} id="arr-moe" />
 
       {/* Norm 1 */}
       <Box x={bx + 10} y={555} w={bw - 20} h={26} label={`${norm} 1`} />
+      {/* shape: Norm1 输出 */}
+      <Shape x={cx} y={592} text={shEmb} />
       <Arr x1={cx} y1={581} x2={cx} y2={600} id="arr-moe" />
       <circle cx={cx} cy={590} r="2" fill="#555" />
       <line x1={cx} y1={590} x2={skipX} y2={590} stroke="#555" strokeWidth="1.2" />
@@ -399,16 +443,21 @@ function MoEArchSVG({ factSheet = {}, modelName = '' }) {
 
       {/* Block → Embedding */}
       <Arr x1={cx} y1={615} x2={cx} y2={650} id="arr-moe" />
+      {/* shape: Block 输出 → Embedding */}
       <Shape x={cx} y={640} text={shEmb} />
 
       {/* Embedding */}
       <Box x={bx - 15} y={650} w={bw + 30} h={30} label="Token embedding layer" />
+      {/* shape: Embedding 输出 */}
+      <Shape x={cx} y={694} text={shEmb} />
       <Arr x1={cx} y1={680} x2={cx} y2={710} id="arr-moe" />
 
       {/* Tokenized text */}
       <Box x={bx + 5} y={710} w={bw - 10} h={26} label="Tokenized text" />
-      <text x={cx} y={755} textAnchor="middle" fill="#666" fontSize="10" fontStyle="italic">Sample input text</text>
-      <Arr x1={cx} y1={758} x2={cx} y2={736} id="arr-moe" />
+      {/* shape: token ids */}
+      {V && <Shape x={cx} y={748} text={`(B, T) → token IDs ∈ [0, ${V})`} />}
+      <text x={cx} y={762} textAnchor="middle" fill="#666" fontSize="10" fontStyle="italic">Sample input text</text>
+      <Arr x1={cx} y1={766} x2={cx} y2={736} id="arr-moe" />
 
       {/* ══════════ 右侧参数标注 ══════════ */}
       <Note x1={bx + bw + 5} y1={62} x2={W - 195} y2={48} label="Vocabulary size of" value={vocab !== '?' ? vocab : undefined} />
@@ -423,8 +472,8 @@ function MoEArchSVG({ factSheet = {}, modelName = '' }) {
       )}
 
       {ctx && (
-        <Note x1={bx - 35} y1={520} x2={15} y2={615}
-          label="Supported context length of" value={ctx} side="left" />
+        <Note x1={bx - 35} y1={520} x2={bx - 120} y2={540}
+          label="Context length" value={ctx} side="left" />
       )}
 
       {emb && (
