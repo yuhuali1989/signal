@@ -5,6 +5,7 @@ import DatasetExplorer from '@/components/DatasetExplorer';
 import BenchmarkBoard from '@/components/BenchmarkBoard';
 import ArchDiffTool from '@/components/ArchDiffTool';
 import ArchEvolution from '@/components/ArchEvolution';
+import { TransformerBlockSVG, MoEArchSVG } from '@/components/ArchDiagram';
 
 /* ─── 模型类型标签 ─── */
 const categoryLabels = {
@@ -169,9 +170,25 @@ function ModelGallery({ models }) {
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-gray-500 uppercase mb-3">🏗️ 架构图</h4>
-                      <pre className="text-[10px] sm:text-[11px] leading-[1.4] text-gray-700 bg-gray-50 border border-gray-200 p-3 sm:p-4 rounded-lg overflow-x-auto font-mono whitespace-pre">
-{m.textArch || '架构图待补充'}
-                      </pre>
+                      {/* 优先展示 SVG 专业架构图 */}
+                      {(m.type === 'moe' || (m.factSheet?.architecture || '').includes('MoE')) ? (
+                        <div className="bg-white rounded-lg border border-gray-200 p-4">
+                          <MoEArchSVG />
+                        </div>
+                      ) : (
+                        <div className="bg-white rounded-lg border border-gray-200 p-4">
+                          <TransformerBlockSVG />
+                        </div>
+                      )}
+                      {/* ASCII 字符画作为折叠备选 */}
+                      {m.textArch && (
+                        <details className="mt-3">
+                          <summary className="text-[10px] text-gray-400 cursor-pointer hover:text-[#6c5ce7] transition-colors">📝 查看 ASCII 架构图（原始）</summary>
+                          <pre className="mt-2 text-[10px] sm:text-[11px] leading-[1.4] text-gray-700 bg-gray-50 border border-gray-200 p-3 sm:p-4 rounded-lg overflow-x-auto font-mono whitespace-pre">
+{m.textArch}
+                          </pre>
+                        </details>
+                      )}
                       <p className="mt-2 text-[10px] text-gray-400 text-right">
                         参考来源: 各模型论文 ·{' '}
                         <a href="https://sebastianraschka.com/llm-architecture-gallery/" target="_blank" rel="noopener noreferrer" className="text-[#6c5ce7] hover:underline">
