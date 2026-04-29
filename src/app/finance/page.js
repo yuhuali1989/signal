@@ -1050,8 +1050,8 @@ function FintechSection() {
    ⑨  平安银行金融 AI 战略部五年业务规划（新增）
    ═══════════════════════════════════════════════════════════ */
 function PlanSection() {
-  const [expandedCost, setExpandedCost] = React.useState(null);   // 展开的成本明细年份
-  const [expandedRevenue, setExpandedRevenue] = React.useState(null); // 展开的营收明细年份
+  const [expandedCost, setExpandedCost] = useState(null);   // 展开的成本明细年份
+  const [expandedRevenue, setExpandedRevenue] = useState(null); // 展开的营收明细年份
 
   /* —— 部门概览 —— */
   const deptOverview = {
