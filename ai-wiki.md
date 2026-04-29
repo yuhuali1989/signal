@@ -512,6 +512,10 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
   - 📊 **模型库**：+2 个（Qwen3-235B-A22B 细粒度MoE+双模式推理 / Llama 4 Scout 10M上下文开源多模态），共 56 个；benchmarks.json 综合榜+性价比榜各 +1 条；ArchEvolution.js TIMELINE +2 条（更新至 2026-04-29）
   - ✅ **质检结论**：所有 JSON 格式验证通过，前端 HTTP 200 正常
 - 📖 **书籍章节补充**：《大语言模型从入门到前沿》第 5 章（多模态扩展）新增 `5.1.5 Embedding 入门：文本、图像、音频的向量化对比`小节，系统讲解三种模态从原始数据到统一 $d$ 维向量的映射路径（文本查表 / 图像 Patch 线性投影 / 音频 Mel 频谱 + VQ-VAE Codebook 离散化），并给出对比表 + Mermaid 总览图，承接 5.1 架构范式，铺垫 5.2 ViT 细节
+- 📖 **书籍章节深化（第二轮）**：将上述小节**重新编号**为 `5.1.1` 并扩展为完整三节体系：
+  - `5.1.1 Embedding 入门` 追加"两条路线澄清"——图像/音频都同时存在**连续 Patch（无词表，用于理解）**和**离散 VQ token（有词表，用于生成）**两条路径，解释"要生成必离散"的 Softmax 根源
+  - 新增 `5.1.2 统一词表与模态路由`——讲解 Chameleon/GPT-4o 如何用 ID 区间划分（文本 0-65535 / 图像 65536-73727 / 音频 73728-75775 / 控制 token）+ `<BOI>/<EOI>` 分隔符 + Logits Masking 实现 Next Token 的模态区分
+  - 新增 `5.1.3 VQ-VAE 深入`——回答"视觉/音频词表是如何训出来的"，包含最近邻量化公式、三项 Loss（重建/Codebook/Commitment）、Straight-Through Estimator、codebook 可视化直觉、Residual VQ 扩展，核心结论"文本词表是数出来的，图像/音频词表是学出来的"
 
 ---
 
