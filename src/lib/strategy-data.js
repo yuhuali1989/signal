@@ -179,6 +179,7 @@ export const GLOBAL_BREAKOUT = {
         { date: '2025-04', tag: '竞争', level: 'watch', text: 'Microsoft 365 Copilot + Power Platform 形成闭环，传统平台厂商面临降维打击' },
         { date: '2026-04', tag: 'Agent编码', level: 'hot', text: 'Cognition AI（Devin）以 $250B 估值融资，AI 编码 Agent 从辅助工具升级为自主软件工程师，Sierra 收购 Fragment 加速 AI 客服 Agent 整合，平台生态玩家需要重新思考 Agent 层的竞争格局' },
         { date: '2026-04', tag: '深度研究', level: 'hot', text: 'Gemini 3.1 Pro 深度研究代理（2026-04-26）、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技；深度研究 Agent 正在将知识工作者的初级工作（文献综述/市场调研）自动化，平台生态玩家通过 Agent 能力升级实现从工具到同事的跨越' },
+        { date: '2026-04', tag: '开源生态', level: 'hot', text: 'Qwen3 全系列开源（Apache 2.0，2026-04-29）+ Meta Llama 4 Scout 开源（10M 上下文），开源模型能力已接近闭源旗舰。平台生态战略核心变化：开源模型托管（Together AI/Replicate/阿里云 DashScope）正在成为新的平台入口，谁能提供最好的开源模型 API 服务，谁就掌握了 AI 应用层的基础设施' },
       ],
       deepDive: {
         why: '平台战略的本质是"控制 Agent 的行动空间"。当 AI Agent 需要读写数据、触发工作流、调用 API 时，谁控制了这些接口，谁就控制了 Agent 的能力边界。Salesforce 的 Agentforce 本质上是把 CRM 数据变成 Agent 的"行动地图"。',

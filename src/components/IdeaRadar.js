@@ -18,9 +18,9 @@ const IDEAS = [
     id: 1,
     industry: 'ai-tools',
     title: 'AI 驱动的代码审查 & 安全扫描',
-    signal: '🔥 热点',
-    signalDate: '2026-04-22',
-    summary: '4月MCP协议RCE漏洞事件（11个CVE、20万+服务器受影响）进一步验证了AI安全审查的巨大需求。GitHub Copilot覆盖代码补全，但Agent供应链安全审查（MCP Server审计/SAST+AI解释）是空白。企业愿为合规审计付费。',
+    signal: '🔥🔥 爆发',
+    signalDate: '2026-04-29',
+    summary: 'Qwen3 全系列开源（2026-04-29）、Llama 4 Scout 10M 上下文开源、DeepSeek-R1 持续引用——开源模型能力已接近闭源旗舰，自部署成本约为 API 的 1/10。AI 编码工具（Cursor/GitHub Copilot/Devin）正在重塑软件开发流程，Cognition AI（Devin）完成 $2.5 亿 B 轮融资（估值 $25 亿）验证了 AI 工程师赛道的商业价值。', 
     opportunity: '中国金融/政务软件外包市场对合规审查需求强烈，且国内缺乏对标产品。',
     overseas: [
       { name: 'Snyk', url: 'https://snyk.io', desc: '代码安全扫描，估值 $8.5B' },
@@ -337,8 +337,8 @@ const IDEAS = [
     industry: 'enterprise',
     title: 'AI 深度研究工具（知识工作者的 AI 同事）',
     signal: '🔥🔥 爆发',
-    signalDate: '2026-04',
-    summary: 'Gemini 3.1 Pro 深度研究代理（2026-04-26）、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技，验证了深度研究 Agent 的市场需求。咨询顾问、研究员、分析师等职业的初级工作（文献综述、市场调研）将被大幅自动化。',
+    signalDate: '2026-04-29',
+    summary: 'Gemini 3.1 Pro 深度研究代理、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技，验证了深度研究 Agent 的市场需求。Perplexity 完成 $5 亿 D 轮融资（估值 $140 亿，2026-04-26），月活超 1 亿。咨询顾问、研究员、分析师等职业的初级工作（文献综述、市场调研）将被大幅自动化。', 
     opportunity: '国内咨询/投研/法律/医疗等知识密集型行业对深度研究工具需求旺盛，但现有产品均为海外产品，数据合规和中文语料质量是本土玩家的核心壁垒。',
     overseas: [
       { name: 'Perplexity', url: 'https://perplexity.ai', desc: 'AI 搜索+深度研究，估值 $9B' },
@@ -357,8 +357,8 @@ const IDEAS = [
     industry: 'consumer',
     title: '端侧 AI 手机模型（离线智能的下一个战场）',
     signal: '🔥 热点',
-    signalDate: '2026-04',
-    summary: '小米 MiMo-V2.5（2026-04-25）公测，专为手机 NPU 优化的小参数推理模型。苹果 Apple Intelligence、三星 Galaxy AI、华为盘古端侧版均已落地。端侧 AI 模型正在成为高端手机的核心差异化卖点，数据隐私和离线能力是驱动因素。',
+    signalDate: '2026-04-29',
+    summary: 'Qwen3-0.6B/1.7B/4B 系列（2026-04-29 开源）专为端侧优化，Apache 2.0 协议可商业化。苹果 Apple Intelligence、三星 Galaxy AI、华为盘古端侧版均已落地。端侧 AI 模型正在成为高端手机的核心差异化卖点，数据隐私和离线能力是驱动因素。Llama 4 Scout 17B 激活参数单卡 H100 可跑，进一步降低端侧部署门槛。', 
     opportunity: '国内手机厂商（小米/OPPO/vivo）均有端侧 AI 布局，但模型能力参差不齐。专注手机 NPU 优化的小参数模型（1B-7B）是高价值细分赛道，与手机厂商深度合作可获得稳定收入。',
     overseas: [
       { name: 'Apple Intelligence', url: 'https://apple.com/apple-intelligence/', desc: '苹果端侧 AI，深度集成 iOS' },
@@ -369,6 +369,25 @@ const IDEAS = [
     barrier: '高',
     china: '高',
     tags: ['端侧AI', '手机', 'NPU', '离线推理'],
+  },
+  // ── 新增方向：开源大模型 API 商业化平台 ────────────────────────────────
+  {
+    id: 19,
+    industry: 'enterprise',
+    title: '开源大模型 API 商业化平台（自部署 + 托管的中间层）',
+    signal: '🔥🔥 爆发',
+    signalDate: '2026-04-29',
+    summary: 'Qwen3 全系列开源（Apache 2.0）+ Llama 4 Scout 开源，开源模型能力已接近闭源旗舰。但企业自部署门槛高（需要 GPU 集群、运维团队），催生了"开源模型托管 API"这一中间层市场。字节豆包 API 降价 80%、阿里云 DashScope 降价 60%，验证了"开源引流+云端变现"的商业模式可行性。国内中小企业需要低门槛、合规、中文优化的开源模型 API 服务。',
+    opportunity: '国内中小企业（10-500人）有 AI 需求但无法自建 GPU 集群，需要"开箱即用的开源模型 API"。本土玩家可在数据合规（数据不出境）、中文优化、行业微调三个维度建立差异化壁垒。',
+    overseas: [
+      { name: 'Together AI', url: 'https://together.ai', desc: '开源模型托管 API，估值 $1.25B' },
+      { name: 'Replicate', url: 'https://replicate.com', desc: '开源模型一键部署平台' },
+      { name: 'Groq', url: 'https://groq.com', desc: '超低延迟开源模型推理，LPU 芯片' },
+    ],
+    market: '$15B+（AI API 服务市场，2026 预测）',
+    barrier: '中',
+    china: '高',
+    tags: ['开源模型', 'API平台', '云服务', '中间层'],
   },
 ];
 
