@@ -672,6 +672,7 @@ function SeedAdSection({ seedTab, setSeedTab }) {
 const TOP_TABS = [
   { id: 'research', label: '论文实践', icon: '🔬', color: '#6c5ce7', desc: 'VLA · 世界模型 · 推理驾驶 · 深度解读与实验' },
   { id: 'dataloop', label: '数据闭环', icon: '🔄', color: '#00cec9', desc: '采集 → 上传 → 处理 → 存储 → 训练 → 部署 → 监控回采 · 全链路闭环架构 + 多模态存储方案' },
+  { id: 'os-nav',   label: '车载 OS & 导航', icon: '🖥️', color: '#e17055', desc: '自动驾驶操作系统（QNX / Linux / RTOS）· 导航如何深度影响感知-规划-决策 · HD Map vs Mapless' },
 ];
 
 export default function VlaPage() {
@@ -679,6 +680,512 @@ export default function VlaPage() {
     <Suspense fallback={<LoadingBlock />}>
       <VlaPageContent />
     </Suspense>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   车载 OS & 导航（新增 Tab）
+   ═══════════════════════════════════════════════════════════ */
+function OsNavSection() {
+  const [subTab, setSubTab] = useState('os');
+
+  const SUB_TABS = [
+    { id: 'os',       label: '车载 OS',       icon: '🖥️', color: '#e17055' },
+    { id: 'nav',      label: '导航 × 自动驾驶', icon: '🗺️', color: '#6c5ce7' },
+    { id: 'hdmap',    label: 'HD Map vs Mapless', icon: '🛰️', color: '#00cec9' },
+  ];
+
+  return (
+    <div>
+      {/* 页面标题 */}
+      <div className="mb-6">
+        <h1 className="text-xl font-bold text-gray-900 mb-1">🖥️ 车载 OS & 导航</h1>
+        <p className="text-sm text-gray-500">
+          自动驾驶操作系统全景（QNX / Linux / RTOS / Android Automotive）· 导航如何深度影响感知-规划-决策 · HD Map vs Mapless 之争
+        </p>
+      </div>
+
+      {/* 二级 Tab */}
+      <div className="flex gap-2 mb-6 p-1 bg-gray-50 rounded-2xl border border-gray-100 w-fit">
+        {SUB_TABS.map(t => (
+          <button key={t.id} onClick={() => setSubTab(t.id)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all"
+            style={subTab === t.id
+              ? { background: '#fff', color: t.color, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: `1px solid ${t.color}33` }
+              : { color: '#94a3b8' }}>
+            <span>{t.icon}</span>
+            <span>{t.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {subTab === 'os'    && <OsSubSection />}
+      {subTab === 'nav'   && <NavSubSection />}
+      {subTab === 'hdmap' && <HdMapSubSection />}
+    </div>
+  );
+}
+
+/* ── 车载 OS 子板块 ── */
+function OsSubSection() {
+  const osList = [
+    {
+      name: 'QNX Neutrino RTOS',
+      vendor: 'BlackBerry',
+      color: '#e17055',
+      type: '微内核 RTOS',
+      share: '~75% 量产车',
+      cert: 'ISO 26262 ASIL-D · IEC 61508 SIL-3',
+      arch: '微内核架构：内核仅 ~64KB，驱动/文件系统/网络栈全部运行在用户态进程中。单个驱动崩溃不影响内核和其他进程。',
+      strengths: ['确定性实时调度（硬实时 <10μs 中断延迟）', '功能安全认证最完整（ASIL-D）', '量产验证最成熟，OEM 信任度最高', '支持 POSIX API，移植 Linux 应用相对容易'],
+      weaknesses: ['闭源商业授权，License 费用高', '生态不如 Linux 丰富，AI/ML 框架支持有限', '不适合跑大模型推理（缺少 GPU 驱动生态）'],
+      usecase: '安全域控制器（制动/转向/气囊）、ADAS 实时控制层、仪表盘',
+      users: 'BMW · Mercedes · Audi · Toyota · 蔚来（安全域）',
+    },
+    {
+      name: 'Linux（含 AGL / AUTOSAR AP）',
+      vendor: '开源社区 / 各 OEM',
+      color: '#3fb950',
+      type: '宏内核 · 通用 OS',
+      share: '~60% 智能座舱 + ~40% 自动驾驶计算域',
+      cert: 'ELISA 项目推进 ASIL-B 认证 · 尚无 ASIL-D',
+      arch: '宏内核架构：驱动运行在内核态，性能高但隔离性弱。通过 PREEMPT_RT 补丁实现软实时（~100μs 级）。Yocto / Buildroot 定制裁剪。',
+      strengths: ['开源免费，生态最丰富（CUDA / TensorRT / ROS2 全支持）', '适合跑大模型推理（GPU/NPU 驱动完善）', 'PREEMPT_RT 可达软实时', '社区活跃，迭代快'],
+      weaknesses: ['宏内核隔离性差，单驱动崩溃可能导致内核 panic', '功能安全认证困难（代码量 >3000 万行）', '实时性不如 QNX（软实时 vs 硬实时）'],
+      usecase: '自动驾驶计算域（感知/规划/预测）、智能座舱、OTA 服务',
+      users: 'Tesla（自研 Linux）· Waymo · 小鹏 · 理想 · 华为 MDC',
+    },
+    {
+      name: 'Android Automotive OS (AAOS)',
+      vendor: 'Google',
+      color: '#6c5ce7',
+      type: '基于 Linux 的车载 Android',
+      share: '~30% 智能座舱（快速增长）',
+      cert: '无功能安全认证（仅用于座舱域）',
+      arch: '基于 Android 的车载定制版：Vehicle HAL 抽象车辆硬件、Car Service 管理车辆状态、支持 Google Play 车载应用生态。与手机 Android Auto 不同——AAOS 直接运行在车机上。',
+      strengths: ['应用生态最丰富（Google Maps / Spotify / 微信车载版）', '开发者友好（Java/Kotlin + Android SDK）', 'Google 持续投入，OEM 接入成本低', '支持多屏（仪表+中控+后排）'],
+      weaknesses: ['不适合安全关键域（无 ASIL 认证）', '启动慢（冷启动 ~8-15s）', 'Google 依赖（GMS 服务在中国受限）', '内存占用大（>2GB RAM）'],
+      usecase: '智能座舱（导航/娱乐/语音助手/应用商店）',
+      users: 'Volvo/Polestar · GM · Ford · 吉利（Flyme Auto 基于 AAOS）',
+    },
+    {
+      name: '自研 RTOS / 混合 OS',
+      vendor: '各 OEM / Tier-1',
+      color: '#ffa657',
+      type: '定制实时操作系统',
+      share: '新势力 + 华为',
+      cert: '视具体实现',
+      arch: '混合架构：安全域用微内核 RTOS（自研或 QNX），智能域用 Linux，通过 Hypervisor（如 ACRN / Xen / 自研）隔离。典型：华为 HarmonyOS 车机版（鸿蒙微内核 + Linux 容器）。',
+      strengths: ['完全自主可控，不受供应商制约', '可针对自家芯片深度优化', '混合架构兼顾安全性和生态'],
+      weaknesses: ['研发成本极高（需要数百人团队）', '生态从零建设', '功能安全认证周期长（2-3 年）'],
+      usecase: '全栈自研的 OEM（安全域 + 智能域 + 座舱域统一管理）',
+      users: 'Tesla（自研 Linux + 自研 RTOS）· 华为（鸿蒙）· 小鹏（自研 XOS）· 蔚来（自研 SkyOS）',
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 概述 */}
+      <div className="bg-gradient-to-br from-red-50/40 to-amber-50/40 rounded-2xl border border-red-100/50 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-2">🖥️ 自动驾驶操作系统全景</h3>
+        <p className="text-[12px] text-gray-500 leading-relaxed">
+          自动驾驶汽车通常有<span className="text-gray-700 font-medium">3-4 个域控制器</span>，每个域可能运行不同的 OS：
+          <span className="text-gray-700 font-medium">安全域</span>（制动/转向）用 QNX 或自研 RTOS，
+          <span className="text-gray-700 font-medium">智能驾驶域</span>（感知/规划）用 Linux，
+          <span className="text-gray-700 font-medium">座舱域</span>（导航/娱乐）用 AAOS 或鸿蒙。
+          它们通过<span className="text-gray-700 font-medium"> Hypervisor + 以太网 + SOME/IP</span> 协同工作。
+        </p>
+      </div>
+
+      {/* 域控架构图 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">🏗️ 典型域控架构（E/E 架构）</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          {[
+            { domain: '安全域', os: 'QNX / RTOS', chip: 'MCU (TC397)', func: '制动 · 转向 · 气囊 · ESP', color: '#e17055', level: 'ASIL-D' },
+            { domain: '智能驾驶域', os: 'Linux', chip: 'Orin X / MDC 810', func: '感知 · 规划 · 预测 · 控制', color: '#3fb950', level: 'ASIL-B' },
+            { domain: '座舱域', os: 'AAOS / 鸿蒙', chip: '8295P / 8155', func: '导航 · 娱乐 · 语音 · HUD', color: '#6c5ce7', level: 'QM' },
+            { domain: '车身域', os: 'RTOS', chip: 'MCU', func: '车灯 · 车窗 · 空调 · 门锁', color: '#ffa657', level: 'ASIL-A' },
+          ].map(d => (
+            <div key={d.domain} className="rounded-xl border p-3 text-center" style={{ borderColor: d.color + '33', background: d.color + '04' }}>
+              <div className="text-xs font-bold mb-1" style={{ color: d.color }}>{d.domain}</div>
+              <div className="text-[10px] font-mono text-gray-700 mb-1">{d.os}</div>
+              <div className="text-[9px] text-gray-400 mb-1">{d.chip}</div>
+              <div className="text-[10px] text-gray-500 leading-relaxed">{d.func}</div>
+              <div className="mt-1.5 text-[9px] px-1.5 py-0.5 rounded-full inline-block" style={{ background: d.color + '15', color: d.color }}>{d.level}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-3 text-center italic">
+          域间通信：车载以太网（1Gbps / 10Gbps）+ SOME/IP 服务发现 + DDS（自动驾驶域内）
+        </p>
+      </div>
+
+      {/* 四大 OS 详细卡片 */}
+      {osList.map(os => (
+        <div key={os.name} className="bg-white rounded-2xl border p-5" style={{ borderColor: os.color + '33' }}>
+          <div className="flex items-baseline justify-between mb-2">
+            <h4 className="text-sm font-semibold" style={{ color: os.color }}>{os.name}</h4>
+            <span className="text-[10px] text-gray-400">{os.vendor}</span>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-3">
+            <span className="text-[10px] px-2 py-0.5 rounded-full font-mono" style={{ background: os.color + '12', color: os.color }}>{os.type}</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-50 text-gray-600 border border-gray-100">市占：{os.share}</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">{os.cert}</span>
+          </div>
+          <div className="space-y-2 text-[12.5px]">
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-100">
+              <div className="text-[10px] text-gray-400 font-medium mb-0.5">架构</div>
+              <div className="text-gray-700">{os.arch}</div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div className="p-3 rounded-lg border" style={{ borderColor: os.color + '22', background: os.color + '06' }}>
+                <div className="text-[10px] font-medium mb-1" style={{ color: os.color }}>✅ 优势</div>
+                <ul className="space-y-0.5">{os.strengths.map((s, i) => <li key={i} className="text-gray-600 text-[12px]">▸ {s}</li>)}</ul>
+              </div>
+              <div className="p-3 rounded-lg border border-red-100 bg-red-50/40">
+                <div className="text-[10px] font-medium mb-1 text-red-500">⚠️ 局限</div>
+                <ul className="space-y-0.5">{os.weaknesses.map((w, i) => <li key={i} className="text-gray-600 text-[12px]">▸ {w}</li>)}</ul>
+              </div>
+            </div>
+            <div>
+              <span className="text-[11px] text-gray-400 font-medium">🎯 典型场景：</span>
+              <span className="text-gray-600">{os.usecase}</span>
+            </div>
+            <div>
+              <span className="text-[11px] text-gray-400 font-medium">🏭 代表用户：</span>
+              <span className="text-gray-600 font-mono">{os.users}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* OS 对比表 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 overflow-x-auto">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">⚖️ 四大车载 OS 横向对比</h3>
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-3 font-medium">维度</th>
+              <th className="py-2 px-3 font-medium">QNX</th>
+              <th className="py-2 px-3 font-medium">Linux</th>
+              <th className="py-2 px-3 font-medium">AAOS</th>
+              <th className="py-2 px-3 font-medium">自研 RTOS</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600">
+            {[
+              ['内核类型',     '微内核',           '宏内核',           '宏内核（Android）', '微内核 / 混合'],
+              ['实时性',       '硬实时 <10μs',     '软实时 ~100μs',    '非实时',           '硬实时（视实现）'],
+              ['功能安全',     'ASIL-D ✅',        'ASIL-B（推进中）', '无',               '视认证进度'],
+              ['AI/ML 生态',   '弱',               '最强（CUDA/TRT）', '中（Android ML）', '视集成度'],
+              ['应用生态',     '弱',               '中',               '最强（Play Store）', '从零建设'],
+              ['License',     '商业闭源',          '开源免费',         '开源（GMS 收费）',  '自主可控'],
+              ['启动速度',     '<1s',              '~3-5s',            '~8-15s',           '<1s'],
+              ['适用域',       '安全域',           '智驾域',           '座舱域',           '全域（混合）'],
+            ].map((row, i) => (
+              <tr key={i} className="border-b border-gray-50 last:border-0">
+                <td className="py-2 pr-3 font-semibold text-gray-700">{row[0]}</td>
+                {row.slice(1).map((c, j) => <td key={j} className="py-2 px-3">{c}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* OS 与大模型的关系 */}
+      <div className="bg-white rounded-2xl border border-amber-100 p-5">
+        <h3 className="text-base font-semibold text-amber-700 mb-3">🧠 OS 与大模型推理的关系</h3>
+        <p className="text-[12.5px] text-gray-600 leading-relaxed mb-3">
+          VLA 大模型（如 Seed-AD 13B）需要在车端实时推理，这对 OS 提出了特殊要求：
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {[
+            { k: 'GPU/NPU 驱动', v: 'TensorRT / CUDA 只在 Linux 上有完整支持；QNX 上 NVIDIA 提供有限的 DriveOS 驱动，功能受限', color: '#3fb950' },
+            { k: '内存管理', v: '大模型需要 >8GB 显存 + 大页内存（Huge Pages）+ 零拷贝 DMA，Linux 的 mmap / io_uring 生态更成熟', color: '#6c5ce7' },
+            { k: '实时性保障', v: '模型推理 ~45ms 需要确定性调度；Linux PREEMPT_RT + CPU 亲和性 + SCHED_FIFO 可达到要求', color: '#e17055' },
+          ].map(x => (
+            <div key={x.k} className="p-3 rounded-xl border text-[12px]" style={{ borderColor: x.color + '33' }}>
+              <div className="font-semibold text-gray-800 mb-1">{x.k}</div>
+              <div className="text-gray-600 leading-relaxed">{x.v}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-3 italic">
+          结论：大模型推理几乎只能跑在 Linux 上。安全关键的控制指令由 QNX/RTOS 执行，两者通过 Hypervisor 隔离。
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── 导航 × 自动驾驶 子板块 ── */
+function NavSubSection() {
+  const layers = [
+    {
+      title: '🗺️ 导航在自动驾驶中的角色演变',
+      color: '#6c5ce7',
+      content: [
+        { era: '传统导航（~2015）', desc: '纯路径规划：A* / Dijkstra 在道路图上搜索最短/最快路径 → 转弯语音提示。与车辆控制完全解耦，只是"建议"。', impact: '对自动驾驶无直接影响——人类司机是执行者。' },
+        { era: 'ADAS 时代（2015-2020）', desc: '导航开始与 ADAS 耦合：前方弯道 → 自适应巡航提前减速；高速出口 → 提前变道建议。导航提供"前瞻信息"。', impact: '导航成为 ADAS 的"预知眼"——提前 500m-2km 告知路况，辅助纵向控制。' },
+        { era: '高精地图时代（2020-2024）', desc: 'HD Map（厘米级精度）成为自动驾驶的核心依赖：车道线、红绿灯位置、限速、坡度、曲率全部预编码。导航 = 高精地图 + 路径规划。', impact: '导航从"建议"变成"基础设施"——没有 HD Map，L3+ 自动驾驶几乎无法工作。' },
+        { era: 'Mapless / 轻地图时代（2024-）', desc: 'Tesla / 华为 / 小鹏开始探索"去高精地图"：用实时感知（BEV + Transformer）替代预编码地图。导航退回到"粗粒度路径引导"。', impact: '导航的角色被重新定义——不再提供精确车道级信息，而是提供"去哪里"的全局意图。' },
+      ],
+    },
+  ];
+
+  const impacts = [
+    {
+      module: '感知（Perception）',
+      icon: '👁️',
+      color: '#e17055',
+      how: '导航告诉感知模块"前方 200m 有路口"→ 感知提前切换到"路口模式"（增加行人/非机动车检测权重）；HD Map 提供先验车道线，感知只需做"验证"而非"发现"。',
+      example: '特斯拉 FSD v12 去掉 HD Map 后，感知模块需要自己"发现"车道线，计算量增加 ~30%，但泛化性更强。',
+      tradeoff: 'HD Map 降低感知难度但增加维护成本；Mapless 增加感知难度但消除地图依赖。',
+    },
+    {
+      module: '预测（Prediction）',
+      icon: '🔮',
+      color: '#a29bfe',
+      how: '导航提供路口拓扑 → 预测模块知道其他车辆的"可能意图"（直行/左转/右转）→ 大幅缩小预测搜索空间。没有地图信息，预测模块需要从纯视觉推断意图。',
+      example: 'Waymo 的 MultiPath++ 模型：输入包含 HD Map 的车道中心线，预测精度比无地图版本高 40%。',
+      tradeoff: '地图信息是预测的"强先验"，但过度依赖会导致地图错误时预测完全失效（如施工改道）。',
+    },
+    {
+      module: '规划（Planning）',
+      icon: '📐',
+      color: '#3fb950',
+      how: '导航提供全局路径（A→B 的道路序列）→ 规划模块在此基础上做局部规划（车道选择/超车/避障）。全局路径是规划的"骨架"，局部规划是"肌肉"。',
+      example: '没有导航的全局路径，规划模块不知道该在哪个路口转弯——这是最基本的依赖。即使 Mapless 方案，也需要导航级别的路径引导。',
+      tradeoff: '全局规划依赖导航是刚需；但车道级精细规划正在从"地图驱动"转向"感知驱动"。',
+    },
+    {
+      module: '决策（Decision Making）',
+      icon: '🧠',
+      color: '#6c5ce7',
+      how: '导航信息影响高层决策：距离目的地 500m → 开始寻找停车位；高速出口 2km → 开始向右变道。VLA 模型中，导航指令作为"语言 prompt"输入。',
+      example: 'Seed-AD 的"行动头"接收导航指令（"前方 300m 右转"）作为条件输入，生成条件式轨迹。',
+      tradeoff: '导航指令的粒度很关键——太粗（"向东"）无法执行，太细（"在第 3 车道保持 2.3m 偏移"）则过度依赖地图精度。',
+    },
+    {
+      module: '控制（Control）',
+      icon: '🎮',
+      color: '#fd79a8',
+      how: '导航间接影响控制：前方弯道曲率 → 提前降速 + 预转向。HD Map 提供精确曲率，控制器可以做前馈补偿；Mapless 则依赖实时感知估计曲率。',
+      example: '高精地图提供前方 200m 的曲率序列 → MPC 控制器做前馈 → 过弯更平滑、乘客更舒适。',
+      tradeoff: '前馈控制依赖地图精度；地图误差 >10cm 时前馈反而有害，需要回退到纯反馈控制。',
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 角色演变 */}
+      {layers.map(l => (
+        <div key={l.title} className="bg-white rounded-2xl border p-5" style={{ borderColor: l.color + '33' }}>
+          <h3 className="text-base font-semibold mb-3" style={{ color: l.color }}>{l.title}</h3>
+          <div className="space-y-3">
+            {l.content.map(c => (
+              <div key={c.era} className="rounded-xl border border-gray-100 p-3">
+                <div className="text-[12px] font-semibold text-gray-800 mb-1">{c.era}</div>
+                <div className="text-[12px] text-gray-600 leading-relaxed mb-1">{c.desc}</div>
+                <div className="text-[11px] text-gray-500 italic">💡 对自动驾驶的影响：{c.impact}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* 导航对 5 大模块的影响 */}
+      <div className="bg-gradient-to-br from-purple-50/40 to-green-50/40 rounded-2xl border border-purple-100/50 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-2">🔗 导航如何影响自动驾驶的 5 大模块</h3>
+        <p className="text-[12px] text-gray-500 leading-relaxed">
+          导航信息（全局路径 + 地图先验）渗透到自动驾驶的<span className="text-gray-700 font-medium">每一个环节</span>——
+          从感知的注意力分配，到预测的搜索空间，到规划的全局骨架，到决策的意图理解，再到控制的前馈补偿。
+        </p>
+      </div>
+
+      {impacts.map(m => (
+        <div key={m.module} className="bg-white rounded-2xl border p-5" style={{ borderColor: m.color + '33' }}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lg">{m.icon}</span>
+            <h4 className="text-sm font-semibold" style={{ color: m.color }}>{m.module}</h4>
+          </div>
+          <div className="space-y-2 text-[12.5px]">
+            <div>
+              <span className="text-[11px] text-gray-400 font-medium">🔧 导航如何影响：</span>
+              <span className="text-gray-700">{m.how}</span>
+            </div>
+            <div className="px-3 py-2 rounded-lg bg-gray-50 border border-gray-100">
+              <div className="text-[10px] text-gray-400 mb-0.5">📌 实例</div>
+              <div className="text-[12px] text-gray-700">{m.example}</div>
+            </div>
+            <div>
+              <span className="text-[11px] text-gray-400 font-medium">⚖️ 权衡：</span>
+              <span className="text-gray-600 italic">{m.tradeoff}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* 导航数据流图 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">📊 导航信息在自动驾驶 Pipeline 中的数据流</h3>
+        <div className="flex flex-wrap items-center justify-center gap-2 text-[11px]">
+          {[
+            { label: '用户设定目的地', color: '#6c5ce7' },
+            { label: '→', color: '#94a3b8' },
+            { label: '全局路径规划\n(A* on Road Graph)', color: '#6c5ce7' },
+            { label: '→', color: '#94a3b8' },
+            { label: '路径 + 地图先验\n下发给各模块', color: '#00cec9' },
+            { label: '→', color: '#94a3b8' },
+            { label: '感知：注意力引导\n预测：意图约束\n规划：全局骨架\n决策：意图理解\n控制：前馈曲率', color: '#3fb950' },
+            { label: '→', color: '#94a3b8' },
+            { label: '车辆执行\n(转向/油门/制动)', color: '#e17055' },
+          ].map((item, i) => (
+            <div key={i} className={item.label === '→' ? 'text-gray-400 text-lg' : 'px-3 py-2 rounded-xl border text-center whitespace-pre-line'}
+              style={item.label !== '→' ? { borderColor: item.color + '33', background: item.color + '06', color: item.color } : {}}>
+              {item.label}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── HD Map vs Mapless 子板块 ── */
+function HdMapSubSection() {
+  const comparison = [
+    { dim: '地图精度',     hdmap: '厘米级（车道线/红绿灯/限速牌精确位置）', mapless: '无预编码地图，实时感知生成', winner: 'HD Map' },
+    { dim: '维护成本',     hdmap: '极高（需要采集车队持续更新，每公里 ¥1-5 万）', mapless: '几乎为零（不依赖预制地图）', winner: 'Mapless' },
+    { dim: '覆盖范围',     hdmap: '有限（仅覆盖已采集区域，中国 ~30 万公里高速+城市）', mapless: '理论上无限（有摄像头就能跑）', winner: 'Mapless' },
+    { dim: '感知难度',     hdmap: '低（地图提供先验，感知只需验证）', mapless: '高（感知需要从零发现车道线/拓扑）', winner: 'HD Map' },
+    { dim: '泛化能力',     hdmap: '弱（施工/改道/新路段地图失效）', mapless: '强（实时感知适应任何场景）', winner: 'Mapless' },
+    { dim: '规划质量',     hdmap: '高（精确车道级规划）', mapless: '中（依赖感知精度，可能抖动）', winner: 'HD Map' },
+    { dim: '法规要求',     hdmap: '中国：高精地图需甲级测绘资质（仅 ~20 家）', mapless: '无地图资质限制', winner: 'Mapless' },
+    { dim: '量产难度',     hdmap: '高（地图更新延迟 → 安全风险）', mapless: '中（模型泛化性需要大量数据验证）', winner: '平手' },
+    { dim: '代表方案',     hdmap: 'Waymo · Mobileye · 百度 Apollo', mapless: 'Tesla FSD v12 · 华为 ADS 3.0 · 小鹏 XNGP', winner: '—' },
+  ];
+
+  const timeline = [
+    { year: '2018-2020', event: 'HD Map 黄金期', desc: 'Waymo / 百度 / Mobileye 全面依赖高精地图，被视为 L4 的"必需品"', color: '#6c5ce7' },
+    { year: '2021',      event: 'Tesla 去 HD Map', desc: 'Elon Musk 宣布 FSD 不使用高精地图，引发行业争议', color: '#e17055' },
+    { year: '2022',      event: '华为跟进', desc: '华为 ADS 2.0 开始"轻地图"方案，用 BEV + Transformer 替代部分 HD Map 依赖', color: '#ffa657' },
+    { year: '2023',      event: '中国政策收紧', desc: '高精地图测绘资质审查趋严，倒逼国内车企加速"去图化"', color: '#fd79a8' },
+    { year: '2024',      event: '轻地图成主流', desc: '小鹏 XNGP / 理想 AD Max / 蔚来 NOP+ 均转向"轻地图"或"无图"方案', color: '#3fb950' },
+    { year: '2025-2026', event: 'VLA + 导航融合', desc: 'VLA 模型（Seed-AD / DriveWorld）将导航指令作为语言 prompt 输入，地图信息被"内化"到模型中', color: '#00cec9' },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* 概述 */}
+      <div className="bg-gradient-to-br from-cyan-50/40 to-purple-50/40 rounded-2xl border border-cyan-100/50 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-2">🛰️ HD Map vs Mapless：自动驾驶最大的路线之争</h3>
+        <p className="text-[12px] text-gray-500 leading-relaxed">
+          <span className="text-gray-700 font-medium">高精地图派</span>认为厘米级先验是安全的基石；
+          <span className="text-gray-700 font-medium">去图派</span>认为实时感知才是终极方案。
+          2024 年后，行业共识逐渐收敛到<span className="text-gray-700 font-medium">"轻地图"</span>——
+          保留导航级路径引导（SD Map），但不依赖车道级高精地图（HD Map）。
+        </p>
+      </div>
+
+      {/* 对比表 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 overflow-x-auto">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">⚖️ 9 维度对比</h3>
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-3 font-medium">维度</th>
+              <th className="py-2 pr-3 font-medium">HD Map 方案</th>
+              <th className="py-2 pr-3 font-medium">Mapless / 轻地图</th>
+              <th className="py-2 font-medium">优势方</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.map((r, i) => (
+              <tr key={r.dim} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                <td className="py-2 pr-3 text-gray-800 font-medium">{r.dim}</td>
+                <td className="py-2 pr-3 text-gray-600">{r.hdmap}</td>
+                <td className="py-2 pr-3 text-gray-600">{r.mapless}</td>
+                <td className="py-2 text-gray-700 font-semibold">{r.winner}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 时间线 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <h3 className="text-base font-semibold text-gray-800 mb-4">📅 HD Map → Mapless 演进时间线</h3>
+        <div className="relative pl-6">
+          <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#6c5ce7] via-[#e17055] to-[#00cec9]" />
+          <div className="space-y-4">
+            {timeline.map(e => (
+              <div key={e.year} className="relative">
+                <div className="absolute -left-[22px] top-1.5 w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: e.color }} />
+                <div className="flex items-baseline gap-3 mb-0.5">
+                  <span className="text-xs font-mono font-bold" style={{ color: e.color }}>{e.year}</span>
+                  <span className="text-sm font-semibold text-gray-800">{e.event}</span>
+                </div>
+                <div className="text-[12px] text-gray-500 leading-relaxed">{e.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 三层地图体系 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">🗂️ 三层地图体系（当前行业共识）</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { level: 'SD Map（标准地图）', precision: '米级', source: '导航地图（高德/百度/Google Maps）', role: '全局路径规划 + 粗粒度道路拓扑', status: '✅ 所有方案都需要', color: '#3fb950' },
+            { level: 'LD Map（轻量地图）', precision: '分米级', source: '众包采集（量产车回传）', role: '车道级引导 + 限速/坡度/曲率', status: '🟡 轻地图方案使用', color: '#ffa657' },
+            { level: 'HD Map（高精地图）', precision: '厘米级', source: '专业采集车 + 人工标注', role: '精确车道线/红绿灯/路沿/停车位', status: '🔴 逐步被替代', color: '#e17055' },
+          ].map(m => (
+            <div key={m.level} className="rounded-xl border p-4" style={{ borderColor: m.color + '33', background: m.color + '04' }}>
+              <div className="text-xs font-bold mb-1" style={{ color: m.color }}>{m.level}</div>
+              <div className="text-[10px] text-gray-400 mb-2">精度：{m.precision} · 来源：{m.source}</div>
+              <div className="text-[12px] text-gray-600 leading-relaxed mb-2">{m.role}</div>
+              <div className="text-[10px] font-medium" style={{ color: m.color }}>{m.status}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-3 italic">
+          趋势：HD Map → LD Map（众包）→ SD Map + 实时感知。导航（SD Map）是不可替代的底层——即使最激进的 Mapless 方案也需要知道"去哪里"。
+        </p>
+      </div>
+
+      {/* VLA 中导航的新角色 */}
+      <div className="bg-white rounded-2xl border border-cyan-100 p-5">
+        <h3 className="text-base font-semibold text-cyan-700 mb-3">🤖 VLA 时代：导航的新角色</h3>
+        <p className="text-[12.5px] text-gray-600 leading-relaxed mb-3">
+          在 VLA（Vision-Language-Action）模型中，导航信息以<span className="text-gray-800 font-medium">自然语言指令</span>的形式输入模型：
+        </p>
+        <div className="space-y-2">
+          {[
+            { prompt: '"前方 300m 路口右转，进入人民路"', effect: '行动头生成右转轨迹，感知模块增加路口区域注意力权重', model: 'Seed-AD / DriveWorld-VLA' },
+            { prompt: '"沿当前道路直行 2km，注意前方施工"', effect: '预测模块降低前方车辆变道概率，规划模块预留避障空间', model: 'Alpamayo-R1（CoT 推理）' },
+            { prompt: '"目的地在右侧 50m，寻找停车位"', effect: '决策模块切换到"泊车模式"，感知模块激活车位检测', model: '通用 VLA' },
+          ].map(x => (
+            <div key={x.prompt} className="flex gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
+              <div className="w-72 flex-shrink-0">
+                <div className="text-[10px] text-gray-400 mb-0.5">导航指令（语言 prompt）</div>
+                <code className="text-[12px] text-cyan-700 font-mono">{x.prompt}</code>
+              </div>
+              <div className="flex-1">
+                <div className="text-[10px] text-gray-400 mb-0.5">模型响应</div>
+                <div className="text-[12px] text-gray-600">{x.effect}</div>
+                <div className="text-[10px] text-gray-400 mt-0.5">适用：{x.model}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-3 italic">
+          核心洞察：在 VLA 时代，导航从"提供精确坐标"转变为"提供语义意图"——模型自己理解"右转"意味着什么，而不需要地图告诉它车道线在哪里。
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -769,6 +1276,9 @@ function VlaPageContent() {
             {activeProject === 'seedad' && <SeedAdSection seedTab={seedTab} setSeedTab={setSeedTab} />}
           </>
         )}
+
+        {/* ── 车载 OS & 导航 ── */}
+        {topTab === 'os-nav' && <OsNavSection />}
 
         {/* ── 数据闭环 ── */}
         {topTab === 'dataloop' && (
