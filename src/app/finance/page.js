@@ -1080,14 +1080,14 @@ function PlanSection() {
       headcount: {
         total: 85,
         breakdown: [
-          { role: 'ML/算法', hc: 25, avgBase: 55, avgBonus: 14, avgEquity: 5, avgBenefit: 6, avgTotal: 80, note: '含 3 名 P8+ 专家（年包 120-150 万）' },
-          { role: '工程开发', hc: 30, avgBase: 40, avgBonus: 10, avgEquity: 3, avgBenefit: 5, avgTotal: 58, note: '含 AI 平台 12 人 + 数据工程 10 人 + 前端 8 人' },
-          { role: '产品经理', hc: 10, avgBase: 35, avgBonus: 8, avgEquity: 2, avgBenefit: 5, avgTotal: 50, note: '含 2 名高级产品（年包 70 万）' },
-          { role: '数据标注/分析', hc: 12, avgBase: 25, avgBonus: 5, avgEquity: 0, avgBenefit: 4, avgTotal: 34, note: '含外包标注团队 5 人' },
-          { role: '合规/风控', hc: 8, avgBase: 38, avgBonus: 9, avgEquity: 2, avgBenefit: 6, avgTotal: 55, note: '需持有 FRM/CFA 等资质' },
+          { role: 'ML/算法', hc: 25, avgBase: 72, avgBonus: 25, avgEquity: 18, avgBenefit: 15, avgTotal: 130, note: '含 3 名 P8+ 专家（年包 250-350 万），P7 均 180 万，P6 均 100 万' },
+          { role: '工程开发', hc: 30, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: '含 AI 平台 12 人 + 数据工程 10 人 + 前端 8 人，高级 130 万+' },
+          { role: '产品经理', hc: 10, avgBase: 48, avgBonus: 15, avgEquity: 6, avgBenefit: 13, avgTotal: 82, note: '含 2 名高级产品（年包 120 万+），中级 65 万' },
+          { role: '数据标注/分析', hc: 12, avgBase: 32, avgBonus: 8, avgEquity: 0, avgBenefit: 10, avgTotal: 50, note: '含外包标注团队 5 人（外包 25 万/人），数据分析师 70 万' },
+          { role: '合规/风控', hc: 8, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: '需持有 FRM/CFA 等资质，高级合规 150 万+' },
         ],
-        salaryTotal: 4850,
-        salaryNote: '人力总成本 = Σ(各岗位人数 × 人均年包)，年包 = 基本工资 + 绩效奖金 + 股权激励 + 五险一金/福利',
+        salaryTotal: 8280,
+        salaryNote: '人力总成本 = Σ(各岗位人数 × 人均年包)。年包 = 基本工资 + 绩效奖金(0-8个月) + 股权/RSU(按年摊销) + 综合福利(五险一金 + 商业保险 + 工位租金 3-5万/人 + 餐补交通补 2-3万 + 团建差旅 1-2万)',
       },
       /* —— 硬件 & 基础设施明细 —— */
       infra: {
@@ -1144,14 +1144,14 @@ function PlanSection() {
       headcount: {
         total: 130,
         breakdown: [
-          { role: 'ML/算法', hc: 40, avgBase: 58, avgBonus: 15, avgEquity: 7, avgBenefit: 6, avgTotal: 86, note: '新增 NLP/多模态/强化学习方向' },
-          { role: '工程开发', hc: 45, avgBase: 42, avgBonus: 11, avgEquity: 4, avgBenefit: 5, avgTotal: 62, note: '新增 Agent 框架 + 推理优化团队' },
-          { role: '产品经理', hc: 15, avgBase: 38, avgBonus: 9, avgEquity: 3, avgBenefit: 5, avgTotal: 55, note: '各业务线配备专属产品' },
-          { role: '数据标注/分析', hc: 18, avgBase: 26, avgBonus: 5, avgEquity: 0, avgBenefit: 4, avgTotal: 35, note: '扩充金融领域标注专家' },
-          { role: '合规/风控', hc: 12, avgBase: 40, avgBonus: 10, avgEquity: 3, avgBenefit: 6, avgTotal: 59, note: '新增 AI 伦理审查岗' },
+          { role: 'ML/算法', hc: 40, avgBase: 78, avgBonus: 28, avgEquity: 22, avgBenefit: 17, avgTotal: 145, note: '新增 NLP/多模态/强化学习方向，P8+ 5 人（均 280 万），P7 均 190 万' },
+          { role: '工程开发', hc: 45, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '新增 Agent 框架 + 推理优化团队，高级架构师 150 万+' },
+          { role: '产品经理', hc: 15, avgBase: 52, avgBonus: 17, avgEquity: 8, avgBenefit: 13, avgTotal: 90, note: '各业务线配备专属产品，高级产品总监 130 万+' },
+          { role: '数据标注/分析', hc: 18, avgBase: 35, avgBonus: 9, avgEquity: 0, avgBenefit: 11, avgTotal: 55, note: '扩充金融领域标注专家，数据分析师 75 万' },
+          { role: '合规/风控', hc: 12, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '新增 AI 伦理审查岗，高级合规专家 160 万+' },
         ],
-        salaryTotal: 7530,
-        salaryNote: '人均成本较 Y1 上浮 5-8%（市场薪资涨幅 + 高级人才引入）',
+        salaryTotal: 14011,
+        salaryNote: '人均成本较 Y1 上浮 8-12%（市场薪资涨幅 + 高级人才引入 + 办公福利成本上升）',
       },
       infra: {
         total: 5200,
@@ -1207,14 +1207,14 @@ function PlanSection() {
       headcount: {
         total: 180,
         breakdown: [
-          { role: 'ML/算法', hc: 55, avgBase: 62, avgBonus: 18, avgEquity: 10, avgBenefit: 7, avgTotal: 97, note: '新增 Agent/强化学习/世界模型方向' },
-          { role: '工程开发', hc: 60, avgBase: 45, avgBonus: 12, avgEquity: 5, avgBenefit: 6, avgTotal: 68, note: '新增 Agent 编排 + 可观测性团队' },
-          { role: '产品经理', hc: 20, avgBase: 40, avgBonus: 10, avgEquity: 4, avgBenefit: 6, avgTotal: 60, note: '新增 AI 产品运营 + 用户增长' },
-          { role: '数据标注/分析', hc: 25, avgBase: 28, avgBonus: 6, avgEquity: 0, avgBenefit: 4, avgTotal: 38, note: '引入 RLHF 标注专家团队' },
-          { role: '合规/风控', hc: 20, avgBase: 42, avgBonus: 12, avgEquity: 4, avgBenefit: 6, avgTotal: 64, note: '新增 AI 安全红队 + 监管沙盒对接' },
+          { role: 'ML/算法', hc: 55, avgBase: 85, avgBonus: 32, avgEquity: 28, avgBenefit: 18, avgTotal: 163, note: '新增 Agent/强化学习/世界模型方向，P8+ 8 人（均 300 万），P9 首席科学家 400 万' },
+          { role: '工程开发', hc: 60, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 16, avgTotal: 113, note: '新增 Agent 编排 + 可观测性团队，P8 架构师 200 万+' },
+          { role: '产品经理', hc: 20, avgBase: 55, avgBonus: 18, avgEquity: 10, avgBenefit: 14, avgTotal: 97, note: '新增 AI 产品运营 + 用户增长，产品VP 180 万+' },
+          { role: '数据标注/分析', hc: 25, avgBase: 38, avgBonus: 10, avgEquity: 0, avgBenefit: 12, avgTotal: 60, note: '引入 RLHF 标注专家团队，数据科学家 90 万+' },
+          { role: '合规/风控', hc: 20, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 16, avgTotal: 113, note: '新增 AI 安全红队 + 监管沙盒对接，首席合规官 250 万' },
         ],
-        salaryTotal: 12310,
-        salaryNote: '人均成本较 Y2 上浮 8-12%（Agent 方向人才稀缺溢价 + 股权激励加码）',
+        salaryTotal: 21445,
+        salaryNote: '人均成本较 Y2 上浮 10-15%（Agent 方向人才稀缺溢价 + 股权激励加码 + P9 级首席科学家引入）',
       },
       infra: {
         total: 7000,
@@ -1271,14 +1271,14 @@ function PlanSection() {
       headcount: {
         total: 220,
         breakdown: [
-          { role: 'ML/算法', hc: 65, avgBase: 65, avgBonus: 20, avgEquity: 12, avgBenefit: 7, avgTotal: 104, note: '新增模型商业化 + 行业解决方案架构师' },
-          { role: '工程开发', hc: 70, avgBase: 48, avgBonus: 13, avgEquity: 6, avgBenefit: 6, avgTotal: 73, note: '新增 SaaS 平台 + 多租户架构团队' },
-          { role: '产品经理', hc: 25, avgBase: 42, avgBonus: 12, avgEquity: 5, avgBenefit: 6, avgTotal: 65, note: '新增商业化产品 + 行业解决方案 PM' },
-          { role: '数据标注/分析', hc: 30, avgBase: 30, avgBonus: 7, avgEquity: 0, avgBenefit: 5, avgTotal: 42, note: '数据飞轮自动化，标注团队转型为质检' },
-          { role: '合规/风控', hc: 30, avgBase: 45, avgBonus: 13, avgEquity: 5, avgBenefit: 7, avgTotal: 70, note: '新增行业标准制定 + 外部合规咨询' },
+          { role: 'ML/算法', hc: 65, avgBase: 90, avgBonus: 35, avgEquity: 32, avgBenefit: 19, avgTotal: 176, note: '新增模型商业化 + 行业解决方案架构师，P8+ 12 人（均 320 万），P9 2 人（均 450 万）' },
+          { role: '工程开发', hc: 70, avgBase: 65, avgBonus: 24, avgEquity: 15, avgBenefit: 17, avgTotal: 121, note: '新增 SaaS 平台 + 多租户架构团队，P8 架构师 220 万+' },
+          { role: '产品经理', hc: 25, avgBase: 58, avgBonus: 20, avgEquity: 12, avgBenefit: 15, avgTotal: 105, note: '新增商业化产品 + 行业解决方案 PM，产品VP 200 万+' },
+          { role: '数据标注/分析', hc: 30, avgBase: 40, avgBonus: 11, avgEquity: 0, avgBenefit: 13, avgTotal: 64, note: '数据飞轮自动化，标注团队转型为质检，数据科学家 95 万+' },
+          { role: '合规/风控', hc: 30, avgBase: 65, avgBonus: 24, avgEquity: 15, avgBenefit: 17, avgTotal: 121, note: '新增行业标准制定 + 外部合规咨询，首席合规官 280 万' },
         ],
-        salaryTotal: 16310,
-        salaryNote: '人均成本较 Y3 上浮 6-10%（商业化人才溢价 + 行业专家引入）',
+        salaryTotal: 28085,
+        salaryNote: '人均成本较 Y3 上浮 8-12%（商业化人才溢价 + 行业专家引入 + P9 级人才扩编）',
       },
       infra: {
         total: 8500,
@@ -1336,14 +1336,14 @@ function PlanSection() {
       headcount: {
         total: 250,
         breakdown: [
-          { role: 'ML/算法', hc: 75, avgBase: 68, avgBonus: 22, avgEquity: 15, avgBenefit: 8, avgTotal: 113, note: '含 10 名行业顶尖专家（年包 200 万+）' },
-          { role: '工程开发', hc: 80, avgBase: 50, avgBonus: 14, avgEquity: 7, avgBenefit: 6, avgTotal: 77, note: '平台成熟，重心转向运维 + 优化' },
-          { role: '产品经理', hc: 28, avgBase: 45, avgBonus: 13, avgEquity: 6, avgBenefit: 6, avgTotal: 70, note: '商业化产品矩阵完善' },
-          { role: '数据标注/分析', hc: 32, avgBase: 32, avgBonus: 8, avgEquity: 0, avgBenefit: 5, avgTotal: 45, note: '以数据质量治理为主，标注高度自动化' },
-          { role: '合规/风控', hc: 35, avgBase: 48, avgBonus: 15, avgEquity: 6, avgBenefit: 7, avgTotal: 76, note: '行业标准制定 + 外部咨询输出' },
+          { role: 'ML/算法', hc: 75, avgBase: 95, avgBonus: 38, avgEquity: 36, avgBenefit: 20, avgTotal: 189, note: '含 15 名 P8+ 专家（均 350 万），3 名 P9（均 500 万），首席科学家 1 人（600 万）' },
+          { role: '工程开发', hc: 80, avgBase: 68, avgBonus: 25, avgEquity: 16, avgBenefit: 18, avgTotal: 127, note: '平台成熟，重心转向运维 + 优化，P8 架构师 250 万+' },
+          { role: '产品经理', hc: 28, avgBase: 60, avgBonus: 22, avgEquity: 13, avgBenefit: 15, avgTotal: 110, note: '商业化产品矩阵完善，CPO 级 250 万+' },
+          { role: '数据标注/分析', hc: 32, avgBase: 42, avgBonus: 12, avgEquity: 0, avgBenefit: 14, avgTotal: 68, note: '以数据质量治理为主，标注高度自动化，首席数据官 200 万+' },
+          { role: '合规/风控', hc: 35, avgBase: 68, avgBonus: 26, avgEquity: 16, avgBenefit: 18, avgTotal: 128, note: '行业标准制定 + 外部咨询输出，首席合规官 300 万+' },
         ],
-        salaryTotal: 20050,
-        salaryNote: '人均成本较 Y4 上浮 5-8%（行业成熟期，涨幅趋缓）',
+        salaryTotal: 34071,
+        salaryNote: '人均成本较 Y4 上浮 6-10%（行业成熟期涨幅趋缓，但顶尖人才溢价持续走高）',
       },
       infra: {
         total: 9500,
@@ -1490,8 +1490,9 @@ function PlanSection() {
         <h3 className="text-base font-semibold text-gray-800 mb-2">👥 人力成本精细拆解（万元/人/年）</h3>
         <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">
           💡 <strong>人力总成本公式</strong>：年度人力成本 = Σ（各岗位人数 × 人均年包）。
-          人均年包 = 基本工资 + 绩效奖金（0-6 个月） + 股权/期权（按年摊销） + 五险一金及福利（约占基本工资 15-18%）。
-          以下为各年度各岗位的薪资结构明细。
+          人均年包 = 基本工资 + 绩效奖金（0-8 个月） + 股权/RSU（按年摊销） + 综合福利。
+          <strong>综合福利构成</strong>：五险一金（约占基本工资 22-25%）+ 补充商业保险（1.5-2.5 万/人/年）+ 工位租金（一线城市 3-5 万/人/年）+ 餐补交通补（2-3 万/人/年）+ 团建差旅（1-2 万/人/年）+ 年度体检/节日福利（0.5-1 万/人/年）。
+          P8+ 专家年包 250 万起（对标 2026 年北上深头部金融科技市场价），P9 级 400-500 万，首席科学家 600 万+。
         </p>
         {phases.map((p, pi) => (
           <div key={p.year} className="mb-5 last:mb-0">
