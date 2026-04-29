@@ -24,9 +24,11 @@ const NAV_GROUPS = [
     label: '业务',
     color: '#00cec9',
     items: [
-      { name: '自动驾驶', href: '/vla/',  icon: '🚗' },
-      { name: '实验室',   href: '/lab/',  icon: '🧪' },
-      { name: '量化业务', href: '/quant/', icon: '📈' },
+      { name: '自动驾驶', href: '/vla/',     icon: '🚗' },
+      { name: '广告业务', href: '/ads/',     icon: '📣' },
+      { name: '金融业务', href: '/finance/', icon: '🏦' },
+      { name: '实验室',   href: '/lab/',     icon: '🧪' },
+      { name: '量化业务', href: '/quant/',   icon: '📈' },
     ],
   },
   {
