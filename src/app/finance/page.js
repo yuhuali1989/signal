@@ -1,6 +1,5 @@
 'use client';
-
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 
@@ -1050,8 +1049,9 @@ function FintechSection() {
    ⑨  平安银行金融 AI 战略部五年业务规划（新增）
    ═══════════════════════════════════════════════════════════ */
 function PlanSection() {
-  const [expandedCost, setExpandedCost] = useState(null);   // 展开的成本明细年份
+const [expandedCost, setExpandedCost] = useState(null);   // 展开的成本明细年份
   const [expandedRevenue, setExpandedRevenue] = useState(null); // 展开的营收明细年份
+  const [expandedStaff, setExpandedStaff] = useState(null); // 展开的岗位人员明细 'Y1-ML/算法研究'
 
   /* —— 部门概览 —— */
   const deptOverview = {
@@ -1080,14 +1080,57 @@ function PlanSection() {
       headcount: {
         total: 85,
         breakdown: [
-          { role: 'ML/算法研究', hc: 12, avgBase: 85, avgBonus: 30, avgEquity: 25, avgBenefit: 16, avgTotal: 156, note: '含 3 名 P8+ 专家（年包 250-350 万），P7 均 180 万，P6 均 100 万；专注模型研发/微调/评测' },
-          { role: '工程开发', hc: 30, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: 'AI 平台 10 人 + 数据工程 8 人 + 后端 8 人 + 前端 4 人，高级 130 万+' },
-          { role: '产品/业务分析', hc: 12, avgBase: 50, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 85, note: '产品经理 6 人 + 业务分析师 6 人（需懂金融业务），高级 120 万+' },
-          { role: '测试/QA', hc: 8, avgBase: 40, avgBonus: 12, avgEquity: 3, avgBenefit: 12, avgTotal: 67, note: 'AI 模型测试 + 系统集成测试 + 安全测试，高级 90 万+' },
-          { role: '数据标注/分析', hc: 6, avgBase: 32, avgBonus: 8, avgEquity: 0, avgBenefit: 10, avgTotal: 50, note: '含外包标注 3 人（25 万/人），数据分析师 70 万' },
-          { role: '合规/风控', hc: 8, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: '需持有 FRM/CFA 等资质，高级合规 150 万+' },
-          { role: 'PMO/项目管理', hc: 5, avgBase: 45, avgBonus: 14, avgEquity: 4, avgBenefit: 12, avgTotal: 75, note: '跨部门协调 + 项目交付管理，高级 PM 100 万+' },
-          { role: '运维/SRE', hc: 4, avgBase: 48, avgBonus: 15, avgEquity: 5, avgBenefit: 13, avgTotal: 81, note: 'AI 平台运维 + 模型服务 SLA 保障，高级 110 万+' },
+          { role: 'ML/算法研究', hc: 12, avgBase: 85, avgBonus: 30, avgEquity: 25, avgBenefit: 16, avgTotal: 156, note: '含 3 名 P8+ 专家（年包 250-350 万），P7 均 180 万，P6 均 100 万；专注模型研发/微调/评测',
+            staffDetail: [
+              { title: '首席算法专家（P8+）', count: 1, level: 'P8+', annualPkg: 350, duties: ['制定模型技术路线（选型/训练策略/蒸馏方案）', '主导 70B 金融大模型微调架构设计', '对外技术合作（高校/国产模型厂商）评审'], aiLeverage: 'AI 辅助论文调研 + 实验方案自动生成，节省 40% 调研时间' },
+              { title: '高级算法工程师（P8）', count: 2, level: 'P8', annualPkg: 270, duties: ['风控反欺诈模型训练与迭代（LLM + 传统 ML 融合）', '客服 RAG 系统核心算法（检索增强 + 意图识别 + 多轮对话）'], aiLeverage: 'Copilot 辅助代码编写 + AI 自动调参（Optuna/Ray Tune），开发效率提升 50%' },
+              { title: '算法工程师（P7）', count: 5, level: 'P7', annualPkg: 180, duties: ['模型微调实验执行（LoRA/QLoRA/全量）', '评测体系搭建（金融 benchmark + 人工评测流水线）', 'Prompt Engineering + 模型蒸馏（70B→7B）', '向量检索优化（embedding 模型选型 + 索引调优）', 'NER/关系抽取等传统 NLP 任务适配'], aiLeverage: '每人配备 AI 编程助手，实验代码 60% 由 AI 生成后人工审核，重复性调参工作由 AutoML 平台承担' },
+              { title: '初级算法工程师（P6）', count: 4, level: 'P6', annualPkg: 100, duties: ['数据清洗与预处理脚本开发', '模型评测报告撰写与可视化', '开源模型复现与 benchmark 对比', 'AB 实验数据分析与效果跟踪'], aiLeverage: 'AI 生成 80% 的数据处理代码 + 自动生成评测报告模板，专注于结果分析与业务理解' },
+            ] },
+          { role: '工程开发', hc: 30, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: 'AI 平台 10 人 + 数据工程 8 人 + 后端 8 人 + 前端 4 人，高级 130 万+',
+            staffDetail: [
+              { title: 'AI 平台架构师（P8）', count: 1, level: 'P8', annualPkg: 180, duties: ['AI 训练/推理平台整体架构设计（MLflow + Ray + vLLM）', '技术选型决策与性能瓶颈攻关', '制定工程规范与 Code Review 标准'], aiLeverage: 'AI 辅助架构文档生成 + 自动化性能分析报告' },
+              { title: 'AI 平台工程师', count: 9, level: 'P6-P7', annualPkg: 100, duties: ['训练调度系统开发（GPU 资源编排/任务队列）', '模型服务化部署（vLLM/TGI 推理引擎集成）', '模型版本管理与灰度发布流水线', 'Prompt 管理平台 + 评测自动化平台开发', 'GPU 监控与成本优化工具开发'], aiLeverage: 'Copilot 生成 70% 基础代码，工程师专注架构设计与系统调优；YAML/配置文件 90% AI 生成' },
+              { title: '数据工程师', count: 8, level: 'P6-P7', annualPkg: 95, duties: ['金融数据 ETL 管道开发（Spark/Flink）', '实时特征工程平台搭建', '数据质量监控与血缘追踪', '向量数据库运维与索引优化（Milvus）', '数据脱敏与合规处理流水线'], aiLeverage: 'SQL/Spark 代码 80% AI 生成，数据质量规则由 AI 自动推荐，工程师专注数据建模与业务逻辑' },
+              { title: '后端工程师', count: 8, level: 'P6-P7', annualPkg: 90, duties: ['客服系统后端 API 开发（高并发/低延迟）', '风控决策引擎服务化', '投研助手后端（研报解析/基金数据聚合）', '统一鉴权/审计日志/限流熔断等中间件', '与行内核心系统对接（核心银行/信贷/支付）'], aiLeverage: 'CRUD 代码 90% AI 生成，工程师专注业务逻辑、性能优化与系统集成；API 文档自动生成' },
+              { title: '前端工程师', count: 4, level: 'P6-P7', annualPkg: 85, duties: ['客服工作台 UI（对话界面/知识库管理后台）', '风控大屏与告警可视化', '投研助手前端（研报阅读器/图表交互）', '内部 AI 平台管理控制台'], aiLeverage: '组件代码 80% AI 生成，设计稿→代码转换效率提升 3 倍，工程师专注交互体验与复杂状态管理' },
+            ] },
+          { role: '产品/业务分析', hc: 12, avgBase: 50, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 85, note: '产品经理 6 人 + 业务分析师 6 人（需懂金融业务），高级 120 万+',
+            staffDetail: [
+              { title: '高级产品经理', count: 2, level: 'P7-P8', annualPkg: 120, duties: ['AI 产品整体规划与路线图制定', '与算法/工程团队对齐需求优先级', '产品 ROI 测算与汇报（向 VP/CTO）'], aiLeverage: 'AI 辅助竞品分析 + 自动生成 PRD 初稿 + 数据看板自动化' },
+              { title: '产品经理', count: 4, level: 'P6-P7', annualPkg: 75, duties: ['客服产品需求定义与原型设计', '风控产品功能迭代与用户反馈收集', '投研助手产品设计（交互流程/功能规格）', '内部工具产品化（从脚本→可用产品）'], aiLeverage: '原型图 AI 辅助生成，用户调研报告 AI 自动整理，产品文档 70% AI 起草后人工修订' },
+              { title: '业务分析师', count: 6, level: 'P6-P7', annualPkg: 70, duties: ['金融业务流程梳理（信贷/支付/理财/合规）', '数据指标体系设计与 AB 实验分析', '业务需求→技术需求翻译（与算法团队桥接）', '行业调研与监管政策解读', '客户旅程分析与痛点挖掘', '业务效果跟踪报告（周报/月报/季度复盘）'], aiLeverage: 'AI 自动生成数据分析报告 + 监管政策摘要，分析师专注业务洞察与策略建议' },
+            ] },
+          { role: '测试/QA', hc: 8, avgBase: 40, avgBonus: 12, avgEquity: 3, avgBenefit: 12, avgTotal: 67, note: 'AI 模型测试 + 系统集成测试 + 安全测试，高级 90 万+',
+            staffDetail: [
+              { title: '高级测试工程师', count: 1, level: 'P7', annualPkg: 95, duties: ['测试策略制定与质量门禁标准', 'AI 模型评测框架设计（准确率/延迟/幻觉率/安全性）', '自动化测试体系架构'], aiLeverage: 'AI 自动生成测试用例 + 测试报告模板，专注于测试策略与质量标准制定' },
+              { title: 'AI 模型测试工程师', count: 3, level: 'P6', annualPkg: 65, duties: ['大模型输出质量评测（幻觉检测/事实性验证/合规性）', '对抗样本测试与红队攻击模拟', 'RAG 系统端到端评测（检索准确率/回答质量）'], aiLeverage: '测试数据集 70% AI 自动生成，对抗样本由 AI 批量构造，测试工程师专注评测标准定义与边界 case 分析' },
+              { title: '系统集成测试工程师', count: 2, level: 'P6', annualPkg: 60, duties: ['API 接口自动化测试（与核心银行系统联调）', '性能压测与容量规划（JMeter/Locust）', '回归测试自动化流水线维护'], aiLeverage: '测试脚本 80% AI 生成，接口 Mock 数据自动构造，工程师专注场景设计与异常路径覆盖' },
+              { title: '安全测试工程师', count: 2, level: 'P6-P7', annualPkg: 70, duties: ['AI 系统安全渗透测试（Prompt 注入/数据泄露）', '金融合规安全扫描（等保/密码学合规）', '隐私计算组件安全验证'], aiLeverage: 'AI 辅助漏洞扫描 + 自动化安全报告生成，专注于金融特有的安全攻击面分析' },
+            ] },
+          { role: '数据标注/分析', hc: 6, avgBase: 32, avgBonus: 8, avgEquity: 0, avgBenefit: 10, avgTotal: 50, note: '含外包标注 3 人（25 万/人），数据分析师 70 万',
+            staffDetail: [
+              { title: '数据分析师', count: 3, level: 'P6-P7', annualPkg: 70, duties: ['模型效果数据分析与归因（哪些 case 错了/为什么错）', '业务指标监控看板搭建（Grafana/Superset）', '标注质量审核与标注规范制定'], aiLeverage: 'AI 自动生成分析报告初稿 + 异常检测自动告警，分析师专注深度归因与业务建议' },
+              { title: '数据标注专员（外包）', count: 3, level: '外包', annualPkg: 25, duties: ['金融领域语料标注（意图/实体/情感）', '模型输出质量人工评分（1-5 分）', 'SFT 训练数据构造（问答对编写）'], aiLeverage: 'AI 预标注 + 人工校验模式，标注效率提升 3 倍；AI 自动检测标注一致性，减少返工' },
+            ] },
+          { role: '合规/风控', hc: 8, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: '需持有 FRM/CFA 等资质，高级合规 150 万+',
+            staffDetail: [
+              { title: '高级合规专家', count: 2, level: 'P7-P8', annualPkg: 150, duties: ['AI 模型合规审查框架制定（银保监会/人行要求）', '模型可解释性评估与监管报告撰写', '数据隐私合规审计（个保法/数据安全法）'], aiLeverage: 'AI 辅助监管政策变更追踪 + 合规检查清单自动生成，专注于合规策略与监管沟通' },
+              { title: '风控模型审计师', count: 3, level: 'P6-P7', annualPkg: 95, duties: ['模型公平性/偏见检测（性别/年龄/地域）', '模型漂移监控与预警规则配置', '反洗钱（AML）模型合规验证'], aiLeverage: 'AI 自动化偏见检测 + 漂移报告生成，审计师专注于判断标准制定与监管解读' },
+              { title: 'AI 伦理与数据治理专员', count: 3, level: 'P6', annualPkg: 60, duties: ['训练数据合规审查（版权/隐私/敏感信息）', 'AI 输出内容安全过滤规则维护', '数据分类分级与访问权限管理'], aiLeverage: 'AI 自动扫描敏感数据 + 内容安全过滤 90% 自动化，专员专注于规则制定与边界 case 裁决' },
+            ] },
+          { role: 'PMO/项目管理', hc: 5, avgBase: 45, avgBonus: 14, avgEquity: 4, avgBenefit: 12, avgTotal: 75, note: '跨部门协调 + 项目交付管理，高级 PM 100 万+',
+            staffDetail: [
+              { title: '高级项目经理', count: 1, level: 'P7', annualPkg: 110, duties: ['AI 部门整体项目组合管理（10+ 并行项目）', '与业务部门（零售/对公/风险）对齐 OKR', '资源调配与跨部门冲突协调'], aiLeverage: 'AI 自动生成项目周报 + 风险预警 + 资源冲突检测，PM 专注于决策与沟通' },
+              { title: '项目经理', count: 3, level: 'P6', annualPkg: 70, duties: ['各业务线 AI 项目交付管理（客服/风控/投研）', '需求排期与迭代计划制定（Scrum/看板）', '项目文档管理与会议纪要'], aiLeverage: '会议纪要 AI 自动生成，项目计划 AI 辅助排期，甘特图自动更新，PM 专注于风险管理与干系人沟通' },
+              { title: '项目协调员', count: 1, level: 'P5-P6', annualPkg: 50, duties: ['日常项目事务跟进与催办', '项目数据统计与报表制作', '外部供应商对接与合同管理'], aiLeverage: 'AI 自动催办 + 报表生成 + 合同关键条款提取，协调员专注于人际沟通与流程优化' },
+            ] },
+          { role: '运维/SRE', hc: 4, avgBase: 48, avgBonus: 15, avgEquity: 5, avgBenefit: 13, avgTotal: 81, note: 'AI 平台运维 + 模型服务 SLA 保障，高级 110 万+',
+            staffDetail: [
+              { title: '高级 SRE 工程师', count: 1, level: 'P7', annualPkg: 120, duties: ['AI 平台 SLA 体系设计（99.9% 可用性目标）', '容量规划与成本优化（GPU 利用率监控）', '故障应急预案与演练'], aiLeverage: 'AI 自动化根因分析 + 容量预测模型，SRE 专注于架构优化与应急决策' },
+              { title: 'AI 平台运维工程师', count: 2, level: 'P6', annualPkg: 70, duties: ['GPU 集群日常运维（驱动/CUDA/容器）', '模型推理服务监控与告警（延迟/吞吐/错误率）', 'CI/CD 流水线维护（模型部署自动化）'], aiLeverage: '告警降噪 AI 自动处理 80% 低级告警，运维脚本 AI 生成，工程师专注于复杂故障排查与架构优化' },
+              { title: '基础设施运维工程师', count: 1, level: 'P6', annualPkg: 65, duties: ['网络/存储/机房基础设施运维', 'Kubernetes 集群管理与扩缩容', '备份恢复与灾备演练'], aiLeverage: 'K8s 配置 AI 自动生成 + 异常自愈脚本 AI 编写，专注于基础设施架构演进' },
+            ] },
         ],
         salaryTotal: 8037,
         salaryNote: '人力总成本 = Σ(各岗位人数 × 人均年包)。年包 = 基本工资 + 绩效奖金(0-8个月) + 股权/RSU(按年摊销) + 综合福利(五险一金 + 商业保险 + 工位租金 3-5万/人 + 餐补交通补 2-3万 + 团建差旅 1-2万)。算法:工程 ≈ 1:2.5，体现银行重落地的特点',
@@ -1147,14 +1190,60 @@ function PlanSection() {
       headcount: {
         total: 130,
         breakdown: [
-          { role: 'ML/算法研究', hc: 20, avgBase: 82, avgBonus: 30, avgEquity: 25, avgBenefit: 17, avgTotal: 154, note: '新增 NLP/多模态/强化学习方向，P8+ 5 人（均 280 万），P7 均 190 万' },
-          { role: '工程开发', hc: 48, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '新增 Agent 框架 + 推理优化团队，高级架构师 150 万+' },
-          { role: '产品/业务分析', hc: 18, avgBase: 54, avgBonus: 17, avgEquity: 8, avgBenefit: 13, avgTotal: 92, note: '各业务线配备专属产品 + 业务分析师，高级产品总监 130 万+' },
-          { role: '测试/QA', hc: 10, avgBase: 42, avgBonus: 13, avgEquity: 4, avgBenefit: 12, avgTotal: 71, note: '新增 AI 模型评测 + 回归测试自动化，高级 95 万+' },
-          { role: '数据标注/分析', hc: 8, avgBase: 36, avgBonus: 9, avgEquity: 0, avgBenefit: 11, avgTotal: 56, note: '扩充金融领域标注专家，数据分析师 75 万' },
-          { role: '合规/风控', hc: 12, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '新增 AI 伦理审查岗，高级合规专家 160 万+' },
-          { role: 'PMO/项目管理', hc: 7, avgBase: 48, avgBonus: 15, avgEquity: 5, avgBenefit: 12, avgTotal: 80, note: '多项目并行管理 + 跨部门协调，高级 PM 110 万+' },
-          { role: '运维/SRE', hc: 7, avgBase: 50, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 85, note: '模型服务 SLA + 平台运维 + 监控告警，高级 120 万+' },
+          { role: 'ML/算法研究', hc: 20, avgBase: 82, avgBonus: 30, avgEquity: 25, avgBenefit: 17, avgTotal: 154, note: '新增 NLP/多模态/强化学习方向，P8+ 5 人（均 280 万），P7 均 190 万',
+            staffDetail: [
+              { title: '首席算法专家（P8+）', count: 2, level: 'P8+', annualPkg: 300, duties: ['多模态模型架构设计（语音+文字+图片融合）', '联邦学习算法方案设计与跨机构协议制定', '技术委员会核心成员，把控模型质量红线'], aiLeverage: 'AI 辅助论文调研 + 实验方案自动生成 + 代码 Review 自动化' },
+              { title: '高级算法工程师（P8）', count: 3, level: 'P8', annualPkg: 260, duties: ['客服多模态模型训练（语音ASR+NLU+对话管理）', '理财 Agent 1.0 核心算法（个性化推荐+合规话术生成）', '风控图网络+LLM 融合模型研发'], aiLeverage: 'AutoML 平台承担 60% 超参搜索，AI 辅助代码编写效率提升 50%' },
+              { title: '算法工程师（P7）', count: 8, level: 'P7', annualPkg: 190, duties: ['多模态数据预处理与特征工程', '模型蒸馏与量化（70B→7B→1.5B 多版本）', 'Agent 工具调用能力微调（Function Calling）', '联邦学习本地模型训练与聚合', 'RAG 系统升级（多模态检索+重排序）'], aiLeverage: '实验代码 70% AI 生成后人工审核，重复性调参由 AutoML 承担，专注于创新性算法设计' },
+              { title: '初级算法工程师（P6）', count: 7, level: 'P6', annualPkg: 110, duties: ['多模态数据清洗与标注质量校验', '模型评测自动化流水线维护', '开源模型复现与 benchmark 对比', 'AB 实验数据分析与效果跟踪', '技术文档与实验报告撰写'], aiLeverage: 'AI 生成 85% 数据处理代码 + 评测报告自动生成，专注于结果分析与业务理解' },
+            ] },
+          { role: '工程开发', hc: 48, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '新增 Agent 框架 + 推理优化团队，高级架构师 150 万+',
+            staffDetail: [
+              { title: '首席架构师（P8）', count: 2, level: 'P8', annualPkg: 180, duties: ['Agent 框架整体架构设计（工具调用/记忆管理/安全沙箱）', '多模态推理引擎架构（vLLM 多模态扩展）', '技术选型决策与跨团队架构评审'], aiLeverage: 'AI 辅助架构文档生成 + 性能瓶颈自动分析' },
+              { title: 'AI 平台工程师', count: 12, level: 'P6-P7', annualPkg: 105, duties: ['Agent 编排引擎开发（DAG 工作流/状态机）', '推理优化（KV Cache/Continuous Batching/Speculative Decoding）', '多模态模型服务化（语音/图片/文字统一接口）', '模型 A/B 测试平台升级', 'GPU 资源池化与弹性调度'], aiLeverage: 'Copilot 生成 70% 基础代码，工程师专注架构设计与性能调优' },
+              { title: '数据工程师', count: 10, level: 'P6-P7', annualPkg: 100, duties: ['多模态数据管道（语音/图片/文本统一 ETL）', '实时特征平台升级（支撑 Agent 实时决策）', '联邦学习数据通道搭建', '向量数据库集群运维与索引优化', '数据血缘追踪与质量监控升级'], aiLeverage: 'SQL/Spark 代码 85% AI 生成，数据质量规则 AI 自动推荐' },
+              { title: '后端工程师', count: 14, level: 'P6-P7', annualPkg: 95, duties: ['多模态客服后端（语音流/WebSocket/实时转写）', '理财 Agent API 开发（组合推荐/调仓建议/合规校验）', '合规审查 Agent 后端（合同解析/营销审核）', 'SAR 报告自动生成服务', '联邦风控联盟通信服务'], aiLeverage: 'CRUD 代码 90% AI 生成，API 文档自动生成，工程师专注业务逻辑与系统集成' },
+              { title: '前端工程师', count: 6, level: 'P6-P7', annualPkg: 90, duties: ['多模态客服工作台（语音+文字+图片交互）', '理财顾问前端（资产配置可视化/K线图/组合分析）', 'Agent 调试控制台（工具调用链路可视化）', '合规审查工作台（合同标注/审核流程）'], aiLeverage: '组件代码 85% AI 生成，设计稿→代码效率提升 3 倍' },
+              { title: 'Agent 框架工程师', count: 4, level: 'P7', annualPkg: 130, duties: ['Agent 核心框架开发（ReAct/CoT/Tool Use）', 'Agent 安全沙箱（权限隔离/操作审计/回滚机制）', 'Agent 记忆系统（短期/长期/工作记忆）', 'Agent 评测框架（任务完成率/安全性/效率）'], aiLeverage: 'AI 辅助框架设计 + 自动化测试用例生成，专注于核心架构创新' },
+            ] },
+          { role: '产品/业务分析', hc: 18, avgBase: 54, avgBonus: 17, avgEquity: 8, avgBenefit: 13, avgTotal: 92, note: '各业务线配备专属产品 + 业务分析师，高级产品总监 130 万+',
+            staffDetail: [
+              { title: '高级产品总监', count: 2, level: 'P8', annualPkg: 140, duties: ['AI 产品矩阵规划（客服/风控/理财/合规四条线）', '产品商业化路径设计与 ROI 测算', '与 CTO/业务 VP 对齐战略优先级'], aiLeverage: 'AI 辅助竞品分析 + 市场趋势报告自动生成' },
+              { title: '产品经理（各业务线）', count: 8, level: 'P6-P7', annualPkg: 85, duties: ['客服产品：多模态交互设计 + 满意度指标体系', '风控产品：SAR 自动生成流程设计 + 审批工作流', '理财产品：AI 顾问交互设计 + 合规话术模板管理', '合规产品：合同审查流程 + 营销物料审核工作流', '内部工具产品化（从脚本→可用产品）'], aiLeverage: '原型图 AI 辅助生成，用户调研报告 AI 自动整理，产品文档 75% AI 起草' },
+              { title: '业务分析师', count: 8, level: 'P6-P7', annualPkg: 75, duties: ['各业务线数据指标监控与归因分析', '联邦学习业务价值评估', 'Agent 效果跟踪（任务完成率/用户满意度/转化率）', '行业调研与监管政策解读', '季度业务复盘报告撰写'], aiLeverage: 'AI 自动生成数据分析报告 + 异常检测告警，分析师专注深度洞察与策略建议' },
+            ] },
+          { role: '测试/QA', hc: 10, avgBase: 42, avgBonus: 13, avgEquity: 4, avgBenefit: 12, avgTotal: 71, note: '新增 AI 模型评测 + 回归测试自动化，高级 95 万+',
+            staffDetail: [
+              { title: '高级测试架构师', count: 1, level: 'P7', annualPkg: 100, duties: ['多模态 AI 系统测试策略制定', 'Agent 端到端测试框架设计', '测试自动化平台架构（CI/CD 集成）'], aiLeverage: 'AI 自动生成测试策略文档 + 覆盖率分析报告' },
+              { title: 'AI 模型评测工程师', count: 4, level: 'P6', annualPkg: 68, duties: ['多模态模型输出质量评测（语音识别准确率/图片理解/文本生成）', 'Agent 任务完成率评测（工具调用正确性/多步推理）', '联邦模型效果对比评测', '对抗样本测试与红队攻击模拟'], aiLeverage: '测试数据集 75% AI 自动生成，评测报告自动化，专注于评测标准定义与边界分析' },
+              { title: '系统集成测试工程师', count: 3, level: 'P6', annualPkg: 62, duties: ['多模态客服端到端测试（语音→文字→回复→TTS）', 'Agent 工具调用链路测试', '联邦学习跨机构联调测试', '性能压测与容量规划'], aiLeverage: '测试脚本 85% AI 生成，Mock 数据自动构造，专注于场景设计与异常路径覆盖' },
+              { title: '安全测试工程师', count: 2, level: 'P6-P7', annualPkg: 75, duties: ['Agent 安全测试（权限逃逸/数据泄露/操作越权）', '多模态输入安全测试（恶意图片/音频注入）', '联邦学习安全验证（梯度泄露/模型投毒检测）'], aiLeverage: 'AI 辅助漏洞扫描 + 攻击向量自动生成，专注于金融特有安全攻击面' },
+            ] },
+          { role: '数据标注/分析', hc: 8, avgBase: 36, avgBonus: 9, avgEquity: 0, avgBenefit: 11, avgTotal: 56, note: '扩充金融领域标注专家，数据分析师 75 万',
+            staffDetail: [
+              { title: '数据科学家', count: 3, level: 'P6-P7', annualPkg: 80, duties: ['多模态数据质量分析与清洗策略', '标注一致性评估与质量控制', 'Agent 行为数据分析（工具调用模式/失败原因）', '联邦学习数据分布分析'], aiLeverage: 'AI 自动生成分析报告 + 异常检测，科学家专注于数据策略与质量标准' },
+              { title: '金融领域标注专家', count: 2, level: 'P6', annualPkg: 55, duties: ['金融专业语料标注（信贷/理财/合规术语）', 'Agent 工具调用标注（正确工具选择/参数标注）', 'RLHF 偏好数据构造（好/坏回答对比标注）'], aiLeverage: 'AI 预标注 + 人工校验模式，标注效率提升 3 倍' },
+              { title: '数据标注专员（外包）', count: 3, level: '外包', annualPkg: 25, duties: ['多模态数据标注（语音转写校对/图片描述/文本分类）', '模型输出质量人工评分', 'SFT 训练数据构造'], aiLeverage: 'AI 预标注 + 人工校验，标注效率提升 4 倍；AI 自动检测标注一致性' },
+            ] },
+          { role: '合规/风控', hc: 12, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '新增 AI 伦理审查岗，高级合规专家 160 万+',
+            staffDetail: [
+              { title: '首席合规专家', count: 2, level: 'P8', annualPkg: 170, duties: ['AI 治理框架升级（多模态/Agent 合规标准）', '联邦学习合规审查（跨机构数据使用协议）', '监管沟通与政策解读（银保监会/人行）'], aiLeverage: 'AI 辅助监管政策变更追踪 + 合规检查清单自动生成' },
+              { title: '风控模型审计师', count: 4, level: 'P6-P7', annualPkg: 100, duties: ['多模态模型公平性/偏见检测', 'Agent 决策审计（操作合规性/风险评估）', '联邦模型效果审计与公平性验证', 'SAR 报告质量审核'], aiLeverage: 'AI 自动化偏见检测 + 审计报告生成，审计师专注于判断标准与监管解读' },
+              { title: 'AI 伦理审查专员', count: 3, level: 'P6-P7', annualPkg: 85, duties: ['Agent 输出内容安全审查（金融建议合规性）', '多模态内容安全过滤规则维护', '训练数据版权与隐私合规审查', 'AI 伦理委员会日常运营'], aiLeverage: 'AI 自动扫描 90% 内容安全问题，专员专注于边界 case 裁决与规则制定' },
+              { title: '数据治理专员', count: 3, level: 'P6', annualPkg: 65, duties: ['联邦学习数据使用协议管理', '数据分类分级与访问权限管理', '隐私计算合规验证', '数据安全事件响应'], aiLeverage: 'AI 自动扫描敏感数据 + 权限异常检测，专员专注于规则制定与事件处理' },
+            ] },
+          { role: 'PMO/项目管理', hc: 7, avgBase: 48, avgBonus: 15, avgEquity: 5, avgBenefit: 12, avgTotal: 80, note: '多项目并行管理 + 跨部门协调，高级 PM 110 万+',
+            staffDetail: [
+              { title: '高级项目经理', count: 2, level: 'P7', annualPkg: 115, duties: ['多业务线项目组合管理（15+ 并行项目）', '联邦学习跨机构项目协调', '与业务部门 OKR 对齐与资源协调'], aiLeverage: 'AI 自动生成项目周报 + 风险预警 + 资源冲突检测' },
+              { title: '项目经理', count: 4, level: 'P6', annualPkg: 72, duties: ['各业务线 AI 项目交付管理', '需求排期与迭代计划制定', '跨团队联调协调', '项目文档管理与会议纪要'], aiLeverage: '会议纪要 AI 自动生成，项目计划 AI 辅助排期，甘特图自动更新' },
+              { title: '项目协调员', count: 1, level: 'P5-P6', annualPkg: 55, duties: ['日常项目事务跟进与催办', '项目数据统计与报表制作', '外部供应商对接与合同管理'], aiLeverage: 'AI 自动催办 + 报表生成 + 合同关键条款提取' },
+            ] },
+          { role: '运维/SRE', hc: 7, avgBase: 50, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 85, note: '模型服务 SLA + 平台运维 + 监控告警，高级 120 万+',
+            staffDetail: [
+              { title: '高级 SRE 工程师', count: 2, level: 'P7', annualPkg: 125, duties: ['多模态推理服务 SLA 体系（99.95% 可用性）', '双活架构运维与故障切换演练', '容量规划与成本优化（GPU 利用率 >70%）'], aiLeverage: 'AI 自动化根因分析 + 容量预测模型，SRE 专注于架构优化与应急决策' },
+              { title: 'AI 平台运维工程师', count: 3, level: 'P6', annualPkg: 75, duties: ['H100 GPU 集群运维（驱动/CUDA/容器/液冷）', '多模态推理服务监控与告警', '联邦学习平台运维（跨机构网络/证书管理）', 'CI/CD 流水线维护'], aiLeverage: '告警降噪 AI 自动处理 85% 低级告警，运维脚本 AI 生成' },
+              { title: '基础设施运维工程师', count: 2, level: 'P6', annualPkg: 68, duties: ['网络/存储/机房基础设施运维', 'Kubernetes 集群管理与扩缩容', '备份恢复与灾备演练', '液冷系统维护与电力监控'], aiLeverage: 'K8s 配置 AI 自动生成 + 异常自愈脚本 AI 编写' },
+            ] },
         ],
         salaryTotal: 13229,
         salaryNote: '人均成本较 Y1 上浮 8-12%（市场薪资涨幅 + 高级人才引入 + 办公福利成本上升）。算法:工程 ≈ 1:2.4，新增测试/运维保障落地质量',
@@ -1213,14 +1302,68 @@ function PlanSection() {
       headcount: {
         total: 180,
         breakdown: [
-          { role: 'ML/算法研究', hc: 28, avgBase: 90, avgBonus: 34, avgEquity: 30, avgBenefit: 18, avgTotal: 172, note: '新增 Agent/强化学习/世界模型方向，P8+ 8 人（均 300 万），P9 首席科学家 400 万' },
-          { role: '工程开发', hc: 65, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 16, avgTotal: 113, note: '新增 Agent 编排 + 可观测性团队，P8 架构师 200 万+' },
-          { role: '产品/业务分析', hc: 25, avgBase: 57, avgBonus: 19, avgEquity: 10, avgBenefit: 14, avgTotal: 100, note: '新增 AI 产品运营 + 用户增长 + 业务架构师，产品VP 180 万+' },
-          { role: '测试/QA', hc: 12, avgBase: 44, avgBonus: 14, avgEquity: 5, avgBenefit: 12, avgTotal: 75, note: 'Agent 端到端测试 + 安全测试 + 性能压测，高级 100 万+' },
-          { role: '数据标注/分析', hc: 10, avgBase: 38, avgBonus: 10, avgEquity: 0, avgBenefit: 12, avgTotal: 60, note: '引入 RLHF 标注专家团队，数据科学家 90 万+' },
-          { role: '合规/风控', hc: 18, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 16, avgTotal: 113, note: '新增 AI 安全红队 + 监管沙盒对接，首席合规官 250 万' },
-          { role: 'PMO/项目管理', hc: 10, avgBase: 50, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 85, note: 'Agent 项目群管理 + OKR 对齐 + 跨 BU 协调' },
-          { role: '运维/SRE', hc: 12, avgBase: 52, avgBonus: 17, avgEquity: 7, avgBenefit: 13, avgTotal: 89, note: 'Agent 平台 SLA 99.99% + 模型灰度发布 + 故障自愈' },
+          { role: 'ML/算法研究', hc: 28, avgBase: 90, avgBonus: 34, avgEquity: 30, avgBenefit: 18, avgTotal: 172, note: '新增 Agent/强化学习/世界模型方向，P8+ 8 人（均 300 万），P9 首席科学家 400 万',
+            staffDetail: [
+              { title: '首席科学家（P9）', count: 1, level: 'P9', annualPkg: 400, duties: ['AI 技术战略制定与前沿方向探索（世界模型/自主决策）', '多 Agent 协作算法架构设计', '对外学术合作与行业影响力建设'], aiLeverage: 'AI 辅助论文调研 + 实验方案自动生成，专注于战略判断与技术方向把控' },
+              { title: '高级算法专家（P8+）', count: 3, level: 'P8+', annualPkg: 320, duties: ['风控 Agent 核心算法（实时监控+异常预警+自动处置）', '客服 Agent 端到端业务办理算法', '理财 Agent 千人千面推荐算法', '强化学习训练框架搭建（RLHF/RLAIF）'], aiLeverage: 'AutoML 承担 70% 超参搜索，AI 辅助代码编写效率提升 60%' },
+              { title: '高级算法工程师（P8）', count: 4, level: 'P8', annualPkg: 280, duties: ['Agent 工具调用能力训练（多步推理/错误恢复）', '多 Agent 协作协议设计（任务分解/结果聚合）', '模型安全对齐（RLHF/Constitutional AI）', '数据飞轮闭环算法（自动数据采集→标注→训练→评测）'], aiLeverage: 'AI 辅助实验设计 + 自动化 ablation study' },
+              { title: '算法工程师（P7）', count: 12, level: 'P7', annualPkg: 195, duties: ['Agent 各场景微调（风控/客服/理财/合规/Copilot）', '模型蒸馏与量化（多版本适配不同场景）', '向量检索与知识图谱融合', '联邦学习模型聚合算法优化', '模型评测体系维护与迭代'], aiLeverage: '实验代码 75% AI 生成，重复性调参全部 AutoML 化' },
+              { title: '初级算法工程师（P6）', count: 8, level: 'P6', annualPkg: 115, duties: ['数据清洗与预处理自动化', '评测数据集构建与维护', '开源模型复现与对比', 'AB 实验数据分析', '技术文档撰写'], aiLeverage: 'AI 生成 90% 数据处理代码 + 评测报告自动生成' },
+            ] },
+          { role: '工程开发', hc: 65, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 16, avgTotal: 113, note: '新增 Agent 编排 + 可观测性团队，P8 架构师 200 万+',
+            staffDetail: [
+              { title: '首席架构师（P8+）', count: 3, level: 'P8+', annualPkg: 220, duties: ['多 Agent 编排引擎架构（DAG/状态机/事件驱动）', 'Agent 可观测性平台架构（链路追踪/决策审计/回放）', '全行 AI 中台架构设计'], aiLeverage: 'AI 辅助架构文档 + 性能瓶颈自动分析' },
+              { title: 'Agent 框架工程师', count: 8, level: 'P7', annualPkg: 140, duties: ['Agent 编排引擎核心开发', 'Agent 安全沙箱升级（细粒度权限/操作回滚/审计日志）', 'Agent 记忆系统（向量记忆/结构化记忆/工作记忆）', 'Agent 工具注册与发现平台', 'Agent 评测与监控平台'], aiLeverage: 'AI 辅助框架设计 + 自动化测试，专注于核心架构创新' },
+              { title: 'AI 平台工程师', count: 12, level: 'P6-P7', annualPkg: 110, duties: ['推理引擎优化（Speculative Decoding/PagedAttention）', '模型服务网格（多模型路由/灰度/熔断）', '训练平台升级（支撑 RL 训练/多 Agent 训练）', 'GPU 资源池化与智能调度'], aiLeverage: 'Copilot 生成 75% 基础代码' },
+              { title: '数据工程师', count: 10, level: 'P6-P7', annualPkg: 105, duties: ['数据飞轮自动化管道', '实时特征平台（支撑 Agent 实时决策 <50ms）', '全行知识库构建与维护', '数据血缘与质量监控'], aiLeverage: 'SQL/Spark 代码 90% AI 生成' },
+              { title: '后端工程师', count: 18, level: 'P6-P7', annualPkg: 100, duties: ['风控 Agent 后端（实时交易监控/自动处置/人工复核）', '客服 Agent 后端（端到端业务办理/开卡/转账/理赔）', '理财 Agent 后端（组合推荐/自动调仓/市场解读）', '合规 Agent 后端（监管报告/政策影响分析）', '内部 Copilot 后端（研发/运营/财务）'], aiLeverage: 'CRUD 代码 95% AI 生成，API 文档自动生成' },
+              { title: '前端工程师', count: 8, level: 'P6-P7', annualPkg: 95, duties: ['Agent 交互界面（多轮对话/工具调用可视化/审批流）', '风控大屏升级（实时 Agent 决策链路展示）', '内部 Copilot 前端（IDE 插件/Web 工作台）', 'Agent 管理后台（配置/监控/审计）'], aiLeverage: '组件代码 90% AI 生成' },
+              { title: '可观测性工程师', count: 6, level: 'P6-P7', annualPkg: 105, duties: ['Agent 链路追踪系统（每步决策/工具调用/耗时）', 'Agent 决策审计平台（合规性/正确性/可解释性）', '模型漂移检测与自动告警', '全链路性能监控与优化'], aiLeverage: 'AI 自动化根因分析 + 异常模式识别' },
+            ] },
+          { role: '产品/业务分析', hc: 25, avgBase: 57, avgBonus: 19, avgEquity: 10, avgBenefit: 14, avgTotal: 100, note: '新增 AI 产品运营 + 用户增长 + 业务架构师，产品VP 180 万+',
+            staffDetail: [
+              { title: '产品 VP', count: 1, level: 'P9', annualPkg: 200, duties: ['AI 产品战略制定与商业化路径规划', '与 CEO/CTO 对齐 AI 战略优先级', '产品团队管理与人才梯队建设'], aiLeverage: 'AI 辅助市场分析 + 竞品追踪自动化' },
+              { title: '高级产品经理', count: 4, level: 'P7-P8', annualPkg: 130, duties: ['各 Agent 产品线负责人（风控/客服/理财/合规）', 'Agent 产品体验设计（人机协作流程/异常处理/升级机制）', '产品 ROI 测算与效果复盘'], aiLeverage: 'AI 辅助竞品分析 + PRD 自动生成初稿' },
+              { title: '产品经理', count: 6, level: 'P6-P7', annualPkg: 90, duties: ['Agent 功能迭代与用户反馈收集', '内部 Copilot 产品设计', 'Agent 运营数据分析与优化建议', '产品文档与培训材料编写'], aiLeverage: '产品文档 80% AI 起草，用户调研报告 AI 自动整理' },
+              { title: 'AI 产品运营', count: 4, level: 'P6', annualPkg: 75, duties: ['Agent 上线运营（灰度策略/用户引导/FAQ 维护）', '用户增长策略（内部推广/培训/激励）', '运营数据监控与异常处理'], aiLeverage: 'AI 自动生成运营报告 + 用户行为分析' },
+              { title: '业务架构师', count: 4, level: 'P7', annualPkg: 120, duties: ['金融业务流程→Agent 任务分解', '跨业务线 Agent 协作流程设计', '业务指标体系设计与效果归因'], aiLeverage: 'AI 辅助业务流程图生成 + 指标异常归因分析' },
+              { title: '业务分析师', count: 6, level: 'P6', annualPkg: 70, duties: ['Agent 效果数据分析（任务完成率/用户满意度/转化率）', '业务指标监控与异常告警', '季度业务复盘报告'], aiLeverage: 'AI 自动生成分析报告 + 异常检测告警' },
+            ] },
+          { role: '测试/QA', hc: 12, avgBase: 44, avgBonus: 14, avgEquity: 5, avgBenefit: 12, avgTotal: 75, note: 'Agent 端到端测试 + 安全测试 + 性能压测，高级 100 万+',
+            staffDetail: [
+              { title: '测试架构师', count: 1, level: 'P8', annualPkg: 120, duties: ['多 Agent 系统测试策略制定', 'Agent 端到端测试框架设计（任务完成率/安全性/效率）', '测试自动化平台架构升级'], aiLeverage: 'AI 自动生成测试策略 + 覆盖率分析' },
+              { title: 'Agent 测试工程师', count: 5, level: 'P6-P7', annualPkg: 78, duties: ['Agent 端到端测试（多步推理/工具调用/错误恢复）', 'Agent 安全测试（权限逃逸/数据泄露/操作越权）', 'Agent 性能测试（并发/延迟/吞吐量）', '多 Agent 协作测试（任务分解/结果聚合/冲突处理）'], aiLeverage: '测试用例 80% AI 自动生成，专注于边界场景设计' },
+              { title: '系统集成测试工程师', count: 3, level: 'P6', annualPkg: 65, duties: ['Agent 与核心银行系统联调测试', '端到端业务流程测试（开卡/转账/理赔全链路）', '性能压测与容量规划'], aiLeverage: '测试脚本 90% AI 生成，Mock 数据自动构造' },
+              { title: '安全测试工程师', count: 3, level: 'P6-P7', annualPkg: 80, duties: ['Agent 红队攻击测试（Prompt 注入/越狱/社工）', 'Agent 操作安全验证（资金操作/敏感信息访问）', '隐私计算安全测试'], aiLeverage: 'AI 辅助攻击向量生成 + 漏洞扫描自动化' },
+            ] },
+          { role: '数据标注/分析', hc: 10, avgBase: 38, avgBonus: 10, avgEquity: 0, avgBenefit: 12, avgTotal: 60, note: '引入 RLHF 标注专家团队，数据科学家 90 万+',
+            staffDetail: [
+              { title: '数据科学家', count: 4, level: 'P7', annualPkg: 95, duties: ['数据飞轮效果分析与优化', 'Agent 行为数据挖掘（决策模式/失败原因/优化方向）', 'RLHF 数据质量评估与策略优化', '标注一致性评估与质量控制体系'], aiLeverage: 'AI 自动生成分析报告 + 数据质量异常自动检测' },
+              { title: 'RLHF 标注专家', count: 3, level: 'P6-P7', annualPkg: 65, duties: ['Agent 决策质量人工评估（好/坏决策对比标注）', '强化学习奖励模型训练数据构造', '金融专业场景偏好数据标注'], aiLeverage: 'AI 预标注 + 人工校验，标注效率提升 4 倍' },
+              { title: '数据标注专员（外包）', count: 3, level: '外包', annualPkg: 25, duties: ['基础语料标注（意图/实体/情感）', '模型输出质量人工评分', 'SFT 训练数据构造'], aiLeverage: 'AI 预标注 + 人工校验，标注效率提升 5 倍' },
+            ] },
+          { role: '合规/风控', hc: 18, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 16, avgTotal: 113, note: '新增 AI 安全红队 + 监管沙盒对接，首席合规官 250 万',
+            staffDetail: [
+              { title: '首席合规官', count: 1, level: 'P9', annualPkg: 250, duties: ['AI 治理战略制定与监管沙盒申请', '与银保监会/人行直接沟通', 'AI 伦理委员会主席'], aiLeverage: 'AI 辅助监管政策追踪 + 合规报告自动生成' },
+              { title: '高级合规专家', count: 3, level: 'P8', annualPkg: 180, duties: ['Agent 合规框架制定（操作权限/审批流程/回滚机制）', '监管沙盒实验设计与报告', '跨机构联邦学习合规审查'], aiLeverage: 'AI 辅助合规检查清单生成 + 政策变更影响分析' },
+              { title: 'AI 安全红队成员', count: 4, level: 'P7', annualPkg: 130, duties: ['Agent 安全攻防测试（越狱/注入/社工/权限逃逸）', 'Agent 决策安全评估（资金操作/敏感信息/合规性）', '安全漏洞报告与修复建议'], aiLeverage: 'AI 辅助攻击向量生成 + 自动化安全扫描' },
+              { title: '风控模型审计师', count: 5, level: 'P6-P7', annualPkg: 100, duties: ['Agent 决策审计（操作合规性/风险评估/可解释性）', '模型公平性/偏见检测', '联邦模型效果审计'], aiLeverage: 'AI 自动化偏见检测 + 审计报告生成' },
+              { title: 'AI 伦理与数据治理专员', count: 5, level: 'P6', annualPkg: 65, duties: ['Agent 输出内容安全审查', '训练数据合规审查', '数据分类分级与权限管理', '隐私计算合规验证'], aiLeverage: 'AI 自动扫描 95% 内容安全问题' },
+            ] },
+          { role: 'PMO/项目管理', hc: 10, avgBase: 50, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 85, note: 'Agent 项目群管理 + OKR 对齐 + 跨 BU 协调',
+            staffDetail: [
+              { title: '高级项目总监', count: 1, level: 'P8', annualPkg: 140, duties: ['AI 部门项目组合管理（20+ 并行项目）', '与各 BU VP 对齐 OKR 与资源', '项目管理方法论制定与优化'], aiLeverage: 'AI 自动生成项目组合报告 + 资源冲突预警' },
+              { title: '高级项目经理', count: 3, level: 'P7', annualPkg: 110, duties: ['Agent 项目群管理（风控/客服/理财/合规/Copilot）', '跨 BU 协调与冲突解决', '项目风险管理与应急预案'], aiLeverage: 'AI 自动生成周报 + 风险预警 + 排期优化建议' },
+              { title: '项目经理', count: 5, level: 'P6', annualPkg: 72, duties: ['各 Agent 项目交付管理', '需求排期与迭代计划', '跨团队联调协调', '项目文档与会议纪要'], aiLeverage: '会议纪要 AI 自动生成，甘特图自动更新' },
+              { title: '项目协调员', count: 1, level: 'P5-P6', annualPkg: 55, duties: ['日常事务跟进与催办', '项目数据统计与报表', '供应商对接与合同管理'], aiLeverage: 'AI 自动催办 + 报表生成' },
+            ] },
+          { role: '运维/SRE', hc: 12, avgBase: 52, avgBonus: 17, avgEquity: 7, avgBenefit: 13, avgTotal: 89, note: 'Agent 平台 SLA 99.99% + 模型灰度发布 + 故障自愈',
+            staffDetail: [
+              { title: '高级 SRE 架构师', count: 2, level: 'P8', annualPkg: 150, duties: ['Agent 平台 SLA 99.99% 架构设计', '三地两中心灾备架构', '故障自愈系统设计（自动降级/切换/恢复）'], aiLeverage: 'AI 自动化根因分析 + 容量预测 + 故障预测' },
+              { title: 'SRE 工程师', count: 4, level: 'P7', annualPkg: 110, duties: ['Agent 服务 SLA 监控与保障', '模型灰度发布与回滚机制', '容量规划与成本优化', '故障应急响应与复盘'], aiLeverage: 'AI 自动化告警降噪 + 根因分析 + 修复建议' },
+              { title: 'AI 平台运维工程师', count: 4, level: 'P6', annualPkg: 75, duties: ['GPU 集群运维（H100/H200 + 液冷）', 'Agent 运行时平台运维', '联邦学习平台运维', 'CI/CD 流水线维护'], aiLeverage: '运维脚本 90% AI 生成，告警 85% AI 自动处理' },
+              { title: '基础设施运维工程师', count: 2, level: 'P6', annualPkg: 68, duties: ['网络/存储/机房基础设施运维', 'K8s 集群管理与扩缩容', '备份恢复与灾备演练'], aiLeverage: 'K8s 配置 AI 自动生成 + 异常自愈脚本 AI 编写' },
+            ] },
         ],
         salaryTotal: 20113,
         salaryNote: '人均成本较 Y2 上浮 10-15%（Agent 方向人才稀缺溢价 + 股权激励加码 + P9 级首席科学家引入）。算法:工程 ≈ 1:2.3，运维/SRE 扩编保障 Agent 稳定性',
@@ -1280,15 +1423,78 @@ function PlanSection() {
       headcount: {
         total: 220,
         breakdown: [
-          { role: 'ML/算法研究', hc: 32, avgBase: 95, avgBonus: 38, avgEquity: 35, avgBenefit: 19, avgTotal: 187, note: '新增模型商业化 + 行业解决方案架构师，P8+ 12 人（均 320 万），P9 2 人（均 450 万）' },
-          { role: '工程开发', hc: 75, avgBase: 65, avgBonus: 24, avgEquity: 15, avgBenefit: 17, avgTotal: 121, note: '新增 SaaS 平台 + 多租户架构团队，P8 架构师 220 万+' },
-          { role: '产品/业务分析', hc: 28, avgBase: 60, avgBonus: 21, avgEquity: 12, avgBenefit: 15, avgTotal: 108, note: '新增商业化产品 + 行业解决方案 PM + 售前方案，产品VP 200 万+' },
-          { role: '测试/QA', hc: 14, avgBase: 46, avgBonus: 15, avgEquity: 5, avgBenefit: 13, avgTotal: 79, note: 'SaaS 多租户测试 + 安全合规测试 + 自动化回归' },
-          { role: '数据标注/分析', hc: 10, avgBase: 40, avgBonus: 11, avgEquity: 0, avgBenefit: 13, avgTotal: 64, note: '数据飞轮自动化，标注团队转型为质检，数据科学家 95 万+' },
-          { role: '合规/风控', hc: 25, avgBase: 65, avgBonus: 24, avgEquity: 15, avgBenefit: 17, avgTotal: 121, note: '新增行业标准制定 + 外部合规咨询，首席合规官 280 万' },
-          { role: 'PMO/项目管理', hc: 12, avgBase: 52, avgBonus: 17, avgEquity: 7, avgBenefit: 13, avgTotal: 89, note: '商业化项目交付 + 客户成功管理 + SaaS 运营' },
-          { role: '运维/SRE', hc: 14, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: 'SaaS 平台 SLA + 多租户运维 + 7×24 值班' },
-          { role: '解决方案/售前', hc: 10, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '行业解决方案设计 + 客户 POC + 技术售前，高级 150 万+' },
+          { role: 'ML/算法研究', hc: 32, avgBase: 95, avgBonus: 38, avgEquity: 35, avgBenefit: 19, avgTotal: 187, note: '新增模型商业化 + 行业解决方案架构师，P8+ 12 人（均 320 万），P9 2 人（均 450 万）',
+            staffDetail: [
+              { title: '首席科学家（P9）', count: 2, level: 'P9', annualPkg: 450, duties: ['行业大模型技术路线制定', '对外技术品牌建设（论文/专利/行业标准）', '前沿技术探索（世界模型/自主决策/多智能体）'], aiLeverage: 'AI 辅助论文调研 + 专利检索自动化' },
+              { title: '高级算法专家（P8+）', count: 5, level: 'P8+', annualPkg: 330, duties: ['SaaS 化模型适配（多租户/个性化微调/数据隔离）', '行业垂直模型训练（信贷/保险/证券/信托）', '模型商业化方案设计（定价/SLA/交付标准）'], aiLeverage: 'AutoML 承担 80% 超参搜索，AI 辅助方案文档生成' },
+              { title: '高级算法工程师（P8）', count: 5, level: 'P8', annualPkg: 280, duties: ['Agent 自主决策能力升级（复杂推理/多步规划）', '联邦学习算法优化（10+ 机构规模化）', '模型安全对齐持续迭代'], aiLeverage: 'AI 辅助实验设计 + 自动化 ablation study' },
+              { title: '算法工程师（P7）', count: 12, level: 'P7', annualPkg: 200, duties: ['各行业垂直模型微调与评测', '模型蒸馏/量化/部署优化', 'Agent 各场景持续迭代', '数据飞轮闭环优化'], aiLeverage: '实验代码 80% AI 生成，重复性工作全部自动化' },
+              { title: '初级算法工程师（P6）', count: 8, level: 'P6', annualPkg: 120, duties: ['评测数据集构建与维护', '开源模型跟踪与对比', '技术文档与实验报告', 'AB 实验数据分析'], aiLeverage: 'AI 生成 90% 代码 + 报告自动生成' },
+            ] },
+          { role: '工程开发', hc: 75, avgBase: 65, avgBonus: 24, avgEquity: 15, avgBenefit: 17, avgTotal: 121, note: '新增 SaaS 平台 + 多租户架构团队，P8 架构师 220 万+',
+            staffDetail: [
+              { title: '首席架构师（P8+）', count: 3, level: 'P8+', annualPkg: 240, duties: ['SaaS 多租户架构设计（数据隔离/资源隔离/计费）', 'Agent 平台 SaaS 化改造', '全行 AI 中台架构演进'], aiLeverage: 'AI 辅助架构文档 + 性能分析自动化' },
+              { title: 'SaaS 平台工程师', count: 10, level: 'P6-P7', annualPkg: 115, duties: ['多租户管理平台开发（租户管理/配额/计费）', 'API Gateway 与鉴权系统', '租户数据隔离与迁移工具', 'SaaS 运营后台开发'], aiLeverage: 'Copilot 生成 80% 基础代码' },
+              { title: 'Agent 框架工程师', count: 8, level: 'P7', annualPkg: 145, duties: ['Agent 框架 SaaS 化（多租户 Agent 实例管理）', 'Agent 编排引擎持续优化', 'Agent 安全沙箱升级', 'Agent 评测平台商业化'], aiLeverage: 'AI 辅助框架设计 + 自动化测试' },
+              { title: 'AI 平台工程师', count: 12, level: 'P6-P7', annualPkg: 115, duties: ['推理引擎多租户化（资源隔离/弹性扩缩容）', '模型服务网格升级', '训练平台 SaaS 化', 'GPU 资源池化与智能调度'], aiLeverage: 'Copilot 生成 80% 基础代码' },
+              { title: '数据工程师', count: 10, level: 'P6-P7', annualPkg: 110, duties: ['多租户数据管道', '数据资产平台开发', '数据血缘与质量监控', '联邦学习数据通道运维'], aiLeverage: 'SQL/Spark 代码 90% AI 生成' },
+              { title: '后端工程师', count: 18, level: 'P6-P7', annualPkg: 105, duties: ['各 Agent 后端持续迭代', 'SaaS 客户定制化接口开发', '集团子公司 AI 中台对接', '行业解决方案后端开发'], aiLeverage: 'CRUD 代码 95% AI 生成' },
+              { title: '前端工程师', count: 8, level: 'P6-P7', annualPkg: 100, duties: ['SaaS 管理控制台', 'Agent 交互界面 SaaS 化', '客户定制化前端', '数据可视化大屏'], aiLeverage: '组件代码 90% AI 生成' },
+              { title: '可观测性工程师', count: 6, level: 'P6-P7', annualPkg: 110, duties: ['多租户可观测性平台', 'SaaS SLA 监控与报告', 'Agent 决策审计平台升级', '成本分摊与计费系统'], aiLeverage: 'AI 自动化根因分析 + 异常模式识别' },
+            ] },
+          { role: '产品/业务分析', hc: 28, avgBase: 60, avgBonus: 21, avgEquity: 12, avgBenefit: 15, avgTotal: 108, note: '新增商业化产品 + 行业解决方案 PM + 售前方案，产品VP 200 万+',
+            staffDetail: [
+              { title: '产品 VP', count: 1, level: 'P9', annualPkg: 220, duties: ['AI 产品商业化战略', '集团生态输出产品规划', '行业解决方案产品矩阵'], aiLeverage: 'AI 辅助市场分析 + 竞品追踪' },
+              { title: '高级产品经理', count: 5, level: 'P7-P8', annualPkg: 140, duties: ['SaaS 产品线负责人', '行业解决方案产品设计', '商业化定价与 GTM 策略'], aiLeverage: 'AI 辅助竞品分析 + PRD 自动生成' },
+              { title: '产品经理', count: 8, level: 'P6-P7', annualPkg: 95, duties: ['各 Agent 产品持续迭代', 'SaaS 客户需求管理', '产品文档与培训材料'], aiLeverage: '产品文档 85% AI 起草' },
+              { title: 'AI 产品运营', count: 4, level: 'P6', annualPkg: 80, duties: ['SaaS 客户运营', '内部 Agent 推广与培训', '运营数据监控'], aiLeverage: 'AI 自动生成运营报告' },
+              { title: '业务架构师', count: 4, level: 'P7', annualPkg: 130, duties: ['行业解决方案业务架构', '客户业务流程→Agent 方案映射', '跨行业最佳实践沉淀'], aiLeverage: 'AI 辅助业务流程分析' },
+              { title: '业务分析师', count: 6, level: 'P6', annualPkg: 75, duties: ['Agent 效果数据分析', 'SaaS 客户使用数据分析', '季度业务复盘'], aiLeverage: 'AI 自动生成分析报告' },
+            ] },
+          { role: '测试/QA', hc: 14, avgBase: 46, avgBonus: 15, avgEquity: 5, avgBenefit: 13, avgTotal: 79, note: 'SaaS 多租户测试 + 安全合规测试 + 自动化回归',
+            staffDetail: [
+              { title: '测试架构师', count: 1, level: 'P8', annualPkg: 130, duties: ['SaaS 多租户测试策略', '自动化测试平台架构', '测试质量标准制定'], aiLeverage: 'AI 自动生成测试策略 + 覆盖率分析' },
+              { title: 'Agent 测试工程师', count: 5, level: 'P6-P7', annualPkg: 80, duties: ['Agent 端到端测试', 'SaaS 多租户隔离测试', 'Agent 性能与稳定性测试'], aiLeverage: '测试用例 85% AI 自动生成' },
+              { title: '系统集成测试工程师', count: 4, level: 'P6', annualPkg: 68, duties: ['SaaS 客户环境联调', '多租户数据隔离验证', '性能压测与容量规划'], aiLeverage: '测试脚本 90% AI 生成' },
+              { title: '安全合规测试工程师', count: 4, level: 'P6-P7', annualPkg: 82, duties: ['SaaS 安全测试（等保三级/SOC2）', 'Agent 安全红队测试', '隐私计算安全验证', '客户数据隔离安全审计'], aiLeverage: 'AI 辅助漏洞扫描 + 合规检查自动化' },
+            ] },
+          { role: '数据标注/分析', hc: 10, avgBase: 40, avgBonus: 11, avgEquity: 0, avgBenefit: 13, avgTotal: 64, note: '数据飞轮自动化，标注团队转型为质检，数据科学家 95 万+',
+            staffDetail: [
+              { title: '数据科学家', count: 5, level: 'P7', annualPkg: 100, duties: ['数据飞轮效果分析与优化', '多租户数据质量监控', 'Agent 行为数据挖掘', '行业数据资产评估'], aiLeverage: 'AI 自动生成分析报告 + 异常检测' },
+              { title: '数据质检专家', count: 3, level: 'P6', annualPkg: 55, duties: ['标注质量审核（从标注转型为质检）', 'RLHF 数据质量评估', '数据飞轮质量闭环'], aiLeverage: 'AI 自动检测 95% 质量问题，质检专注于边界 case' },
+              { title: '数据标注专员（外包）', count: 2, level: '外包', annualPkg: 25, duties: ['行业垂直语料标注', '模型输出质量评分', '新场景数据构造'], aiLeverage: 'AI 预标注 + 人工校验，标注效率提升 5 倍' },
+            ] },
+          { role: '合规/风控', hc: 25, avgBase: 65, avgBonus: 24, avgEquity: 15, avgBenefit: 17, avgTotal: 121, note: '新增行业标准制定 + 外部合规咨询，首席合规官 280 万',
+            staffDetail: [
+              { title: '首席合规官', count: 1, level: 'P9', annualPkg: 280, duties: ['AI 治理行业标准参与制定', '与银保监会/人行政策沟通', 'AI 伦理委员会主席'], aiLeverage: 'AI 辅助政策追踪 + 标准文档生成' },
+              { title: '高级合规专家', count: 4, level: 'P8', annualPkg: 190, duties: ['SaaS 合规框架（等保/SOC2/ISO27001）', '行业标准制定参与', '外部合规咨询输出'], aiLeverage: 'AI 辅助合规检查 + 标准文档生成' },
+              { title: 'AI 安全红队', count: 4, level: 'P7', annualPkg: 135, duties: ['SaaS 平台安全攻防', 'Agent 安全持续测试', '安全漏洞报告与修复'], aiLeverage: 'AI 辅助攻击向量生成 + 自动化扫描' },
+              { title: '风控模型审计师', count: 6, level: 'P6-P7', annualPkg: 105, duties: ['多租户模型审计', 'Agent 决策合规审计', '联邦模型效果审计'], aiLeverage: 'AI 自动化审计报告生成' },
+              { title: 'AI 伦理与数据治理', count: 5, level: 'P6', annualPkg: 70, duties: ['SaaS 客户数据合规', '内容安全过滤', '数据分类分级', '隐私计算合规'], aiLeverage: 'AI 自动扫描 95% 问题' },
+              { title: '外部合规咨询师', count: 5, level: 'P7', annualPkg: 120, duties: ['为 SaaS 客户提供 AI 合规咨询', '帮助客户通过监管审查', '行业合规最佳实践输出'], aiLeverage: 'AI 辅助合规方案生成 + 政策解读' },
+            ] },
+          { role: 'PMO/项目管理', hc: 12, avgBase: 52, avgBonus: 17, avgEquity: 7, avgBenefit: 13, avgTotal: 89, note: '商业化项目交付 + 客户成功管理 + SaaS 运营',
+            staffDetail: [
+              { title: '高级项目总监', count: 1, level: 'P8', annualPkg: 150, duties: ['商业化项目组合管理', '客户成功体系建设', 'SaaS 运营指标管理'], aiLeverage: 'AI 自动生成项目组合报告' },
+              { title: '高级项目经理', count: 3, level: 'P7', annualPkg: 115, duties: ['SaaS 客户交付项目管理', '集团子公司对接项目管理', '联邦联盟项目协调'], aiLeverage: 'AI 自动生成周报 + 风险预警' },
+              { title: '客户成功经理', count: 3, level: 'P6-P7', annualPkg: 90, duties: ['SaaS 客户 onboarding', '客户健康度监控', '续约与增购推动'], aiLeverage: 'AI 自动生成客户健康报告 + 流失预警' },
+              { title: '项目经理', count: 4, level: 'P6', annualPkg: 72, duties: ['各项目交付管理', '需求排期与迭代计划', '项目文档与会议纪要'], aiLeverage: '会议纪要 AI 自动生成' },
+              { title: '项目协调员', count: 1, level: 'P5-P6', annualPkg: 55, duties: ['日常事务跟进', '报表制作', '供应商对接'], aiLeverage: 'AI 自动催办 + 报表生成' },
+            ] },
+          { role: '运维/SRE', hc: 14, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: 'SaaS 平台 SLA + 多租户运维 + 7×24 值班',
+            staffDetail: [
+              { title: '高级 SRE 架构师', count: 2, level: 'P8', annualPkg: 160, duties: ['SaaS 多租户 SLA 架构', '全球化灾备架构设计', '成本优化与容量规划'], aiLeverage: 'AI 自动化根因分析 + 容量预测' },
+              { title: 'SRE 工程师', count: 4, level: 'P7', annualPkg: 115, duties: ['SaaS 平台 SLA 监控与保障', '多租户资源隔离与调度', '故障应急响应（7×24 轮值）'], aiLeverage: 'AI 自动化告警降噪 + 根因分析' },
+              { title: 'AI 平台运维工程师', count: 5, level: 'P6', annualPkg: 78, duties: ['GPU 集群运维（多租户）', 'SaaS 推理服务运维', '联邦学习平台运维', 'CI/CD 流水线维护'], aiLeverage: '运维脚本 90% AI 生成，告警 90% AI 自动处理' },
+              { title: '基础设施运维工程师', count: 3, level: 'P6', annualPkg: 70, duties: ['混合云基础设施运维', 'K8s 多集群管理', '备份恢复与灾备演练', '电力/液冷系统维护'], aiLeverage: 'K8s 配置 AI 自动生成 + 异常自愈' },
+            ] },
+          { role: '解决方案/售前', hc: 10, avgBase: 58, avgBonus: 20, avgEquity: 10, avgBenefit: 15, avgTotal: 103, note: '行业解决方案设计 + 客户 POC + 技术售前，高级 150 万+',
+            staffDetail: [
+              { title: '解决方案总监', count: 1, level: 'P8', annualPkg: 170, duties: ['行业解决方案体系建设', '大客户方案评审与把关', '解决方案团队管理'], aiLeverage: 'AI 辅助方案模板生成 + 行业案例库自动整理' },
+              { title: '高级解决方案架构师', count: 3, level: 'P7', annualPkg: 130, duties: ['金融行业 AI 解决方案设计（风控/客服/理财/合规）', '客户 POC 方案设计与实施', '技术方案答辩与投标支持'], aiLeverage: 'AI 辅助方案文档生成 + 技术方案自动化排版' },
+              { title: '技术售前工程师', count: 4, level: 'P6-P7', annualPkg: 95, duties: ['客户需求调研与分析', '产品 Demo 演示与定制', '技术方案编写与报价', '竞品分析与差异化定位'], aiLeverage: 'AI 辅助需求分析 + Demo 环境自动搭建 + 方案文档 80% AI 生成' },
+              { title: '售前协调员', count: 2, level: 'P6', annualPkg: 65, duties: ['客户拜访安排与跟进', '投标文档整理与提交', '合同条款协调', '客户关系维护'], aiLeverage: 'AI 辅助投标文档生成 + 合同关键条款提取' },
+            ] },
         ],
         salaryTotal: 26282,
         salaryNote: '人均成本较 Y3 上浮 8-12%（商业化人才溢价 + 行业专家引入 + P9 级人才扩编）。新增解决方案/售前团队支撑商业化输出',
@@ -1349,15 +1555,80 @@ function PlanSection() {
       headcount: {
         total: 250,
         breakdown: [
-          { role: 'ML/算法研究', hc: 35, avgBase: 100, avgBonus: 40, avgEquity: 38, avgBenefit: 20, avgTotal: 198, note: '含 15 名 P8+ 专家（均 350 万），3 名 P9（均 500 万），首席科学家 1 人（600 万）' },
-          { role: '工程开发', hc: 82, avgBase: 68, avgBonus: 25, avgEquity: 16, avgBenefit: 18, avgTotal: 127, note: '平台成熟，重心转向运维 + 优化，P8 架构师 250 万+' },
-          { role: '产品/业务分析', hc: 30, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 15, avgTotal: 112, note: '商业化产品矩阵完善 + 行业咨询输出，CPO 级 250 万+' },
-          { role: '测试/QA', hc: 15, avgBase: 48, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 83, note: '全平台自动化测试 + AI 安全攻防测试 + 合规验证' },
-          { role: '数据标注/分析', hc: 10, avgBase: 42, avgBonus: 12, avgEquity: 0, avgBenefit: 14, avgTotal: 68, note: '以数据质量治理为主，标注高度自动化，首席数据官 200 万+' },
-          { role: '合规/风控', hc: 30, avgBase: 68, avgBonus: 26, avgEquity: 16, avgBenefit: 18, avgTotal: 128, note: '行业标准制定 + 外部咨询输出，首席合规官 300 万+' },
-          { role: 'PMO/项目管理', hc: 14, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: '全球化项目交付 + 行业标准项目管理' },
-          { role: '运维/SRE', hc: 18, avgBase: 58, avgBonus: 20, avgEquity: 9, avgBenefit: 14, avgTotal: 101, note: '全球化 SaaS 运维 + 7×24 NOC + 自动化运维平台' },
-          { role: '解决方案/售前', hc: 16, avgBase: 62, avgBonus: 22, avgEquity: 12, avgBenefit: 15, avgTotal: 111, note: '行业解决方案 + 全球化售前 + 客户成功，高级 160 万+' },
+          { role: 'ML/算法研究', hc: 35, avgBase: 100, avgBonus: 40, avgEquity: 38, avgBenefit: 20, avgTotal: 198, note: '含 15 名 P8+ 专家（均 350 万），3 名 P9（均 500 万），首席科学家 1 人（600 万）',
+            staffDetail: [
+              { title: '首席科学家（P10）', count: 1, level: 'P10', annualPkg: 600, duties: ['AI 原生银行技术愿景制定', '行业标准制定核心参与', '对外技术品牌（顶会/专利/行业白皮书）'], aiLeverage: 'AI 辅助前沿技术追踪 + 专利检索，专注于战略判断' },
+              { title: '首席科学家（P9）', count: 3, level: 'P9', annualPkg: 500, duties: ['各技术方向负责人（Agent/多模态/安全对齐/世界模型）', '行业大模型持续迭代技术路线', '前沿技术探索与产业化'], aiLeverage: 'AI 辅助论文调研 + 实验方案自动生成' },
+              { title: '高级算法专家（P8+）', count: 6, level: 'P8+', annualPkg: 360, duties: ['AI 原生银行核心算法（80% 交互 AI 化）', '全球化模型适配（多语言/多地区合规）', '下一代 Agent 架构（自主决策/世界模型）'], aiLeverage: 'AutoML 承担 85% 超参搜索' },
+              { title: '高级算法工程师（P8）', count: 5, level: 'P8', annualPkg: 290, duties: ['行业垂直模型持续迭代', '模型安全对齐（量子安全试点）', '数据飞轮闭环优化'], aiLeverage: 'AI 辅助实验设计 + 自动化 ablation study' },
+              { title: '算法工程师（P7）', count: 12, level: 'P7', annualPkg: 205, duties: ['各场景 Agent 持续优化', '模型蒸馏/量化/部署优化', '全球化模型适配', '评测体系维护'], aiLeverage: '实验代码 85% AI 生成' },
+              { title: '初级算法工程师（P6）', count: 8, level: 'P6', annualPkg: 125, duties: ['评测数据集维护', '开源模型跟踪', '技术文档', 'AB 实验分析'], aiLeverage: 'AI 生成 95% 代码 + 报告自动生成' },
+            ] },
+          { role: '工程开发', hc: 82, avgBase: 68, avgBonus: 25, avgEquity: 16, avgBenefit: 18, avgTotal: 127, note: '平台成熟，重心转向运维 + 优化，P8 架构师 250 万+',
+            staffDetail: [
+              { title: '首席架构师（P8+）', count: 4, level: 'P8+', annualPkg: 260, duties: ['AI 原生银行技术架构', '全球化多区域部署架构', '下一代 Agent 平台架构'], aiLeverage: 'AI 辅助架构文档 + 性能分析' },
+              { title: 'Agent 框架工程师', count: 8, level: 'P7', annualPkg: 150, duties: ['Agent 框架持续演进', '自主决策引擎开发', 'Agent 安全沙箱升级', 'Agent 评测平台全球化'], aiLeverage: 'AI 辅助框架设计 + 自动化测试' },
+              { title: 'SaaS 平台工程师', count: 10, level: 'P6-P7', annualPkg: 120, duties: ['全球化多区域 SaaS 平台', '多租户管理平台持续优化', '计费与结算系统', '客户自助服务平台'], aiLeverage: 'Copilot 生成 85% 基础代码' },
+              { title: 'AI 平台工程师', count: 12, level: 'P6-P7', annualPkg: 120, duties: ['推理引擎持续优化', '边缘推理节点部署', '模型服务网格全球化', 'GPU 资源智能调度'], aiLeverage: 'Copilot 生成 85% 基础代码' },
+              { title: '数据工程师', count: 10, level: 'P6-P7', annualPkg: 115, duties: ['全行数据资产平台', '多区域数据同步', '数据血缘与质量监控', '联邦学习数据通道'], aiLeverage: 'SQL/Spark 代码 95% AI 生成' },
+              { title: '后端工程师', count: 20, level: 'P6-P7', annualPkg: 110, duties: ['各 Agent 后端持续迭代', '全球化 API 适配', '行业解决方案后端', '集团生态对接'], aiLeverage: 'CRUD 代码 95% AI 生成' },
+              { title: '前端工程师', count: 10, level: 'P6-P7', annualPkg: 105, duties: ['全球化多语言前端', 'Agent 交互界面持续优化', '数据可视化大屏', '客户自助门户'], aiLeverage: '组件代码 95% AI 生成' },
+              { title: '可观测性工程师', count: 8, level: 'P6-P7', annualPkg: 115, duties: ['全球化可观测性平台', '多区域 SLA 监控', 'Agent 决策审计全球化', '成本分摊与优化'], aiLeverage: 'AI 自动化根因分析 + 异常模式识别' },
+            ] },
+          { role: '产品/业务分析', hc: 30, avgBase: 62, avgBonus: 22, avgEquity: 13, avgBenefit: 15, avgTotal: 112, note: '商业化产品矩阵完善 + 行业咨询输出，CPO 级 250 万+',
+            staffDetail: [
+              { title: 'CPO（首席产品官）', count: 1, level: 'P10', annualPkg: 280, duties: ['AI 产品战略与商业化全局', '行业咨询输出', '产品团队管理'], aiLeverage: 'AI 辅助市场分析 + 竞品追踪' },
+              { title: '高级产品经理', count: 5, level: 'P7-P8', annualPkg: 150, duties: ['各产品线负责人', '全球化产品适配', '行业解决方案产品化'], aiLeverage: 'AI 辅助竞品分析 + PRD 自动生成' },
+              { title: '产品经理', count: 8, level: 'P6-P7', annualPkg: 100, duties: ['各 Agent 产品迭代', '客户需求管理', '产品文档与培训'], aiLeverage: '产品文档 90% AI 起草' },
+              { title: 'AI 产品运营', count: 4, level: 'P6', annualPkg: 85, duties: ['全球化产品运营', '客户增长策略', '运营数据监控'], aiLeverage: 'AI 自动生成运营报告' },
+              { title: '业务架构师', count: 6, level: 'P7', annualPkg: 130, duties: ['行业解决方案架构', '全球化业务适配', '最佳实践沉淀与输出'], aiLeverage: 'AI 辅助业务流程分析' },
+              { title: '业务分析师', count: 6, level: 'P6', annualPkg: 75, duties: ['Agent 效果分析', '客户使用数据分析', '业务复盘报告'], aiLeverage: 'AI 自动生成分析报告' },
+            ] },
+          { role: '测试/QA', hc: 15, avgBase: 48, avgBonus: 16, avgEquity: 6, avgBenefit: 13, avgTotal: 83, note: '全平台自动化测试 + AI 安全攻防测试 + 合规验证',
+            staffDetail: [
+              { title: '测试架构师', count: 2, level: 'P8', annualPkg: 135, duties: ['全球化测试策略', '自动化测试平台架构', 'AI 安全测试体系'], aiLeverage: 'AI 自动生成测试策略' },
+              { title: 'Agent 测试工程师', count: 5, level: 'P6-P7', annualPkg: 85, duties: ['Agent 端到端测试', '全球化场景测试', 'Agent 性能测试'], aiLeverage: '测试用例 90% AI 自动生成' },
+              { title: '系统集成测试工程师', count: 4, level: 'P6', annualPkg: 70, duties: ['全球化环境联调', '多区域数据一致性测试', '性能压测'], aiLeverage: '测试脚本 95% AI 生成' },
+              { title: '安全合规测试工程师', count: 4, level: 'P6-P7', annualPkg: 85, duties: ['全球合规测试（各地监管）', 'AI 安全红队测试', '量子安全测试试点'], aiLeverage: 'AI 辅助漏洞扫描 + 合规检查自动化' },
+            ] },
+          { role: '数据标注/分析', hc: 10, avgBase: 42, avgBonus: 12, avgEquity: 0, avgBenefit: 14, avgTotal: 68, note: '以数据质量治理为主，标注高度自动化，首席数据官 200 万+',
+            staffDetail: [
+              { title: '首席数据官', count: 1, level: 'P8', annualPkg: 200, duties: ['全行数据资产战略', '数据质量治理体系', '数据合规与安全'], aiLeverage: 'AI 辅助数据资产评估 + 质量报告自动生成' },
+              { title: '数据科学家', count: 5, level: 'P7', annualPkg: 100, duties: ['数据飞轮效果分析', '全球化数据质量监控', 'Agent 行为数据挖掘', '数据资产价值评估'], aiLeverage: 'AI 自动生成分析报告 + 异常检测' },
+              { title: '数据质检专家', count: 2, level: 'P6', annualPkg: 60, duties: ['标注质量审核', 'RLHF 数据质量评估', '数据飞轮质量闭环'], aiLeverage: 'AI 自动检测 98% 质量问题' },
+              { title: '数据标注专员（外包）', count: 2, level: '外包', annualPkg: 25, duties: ['新场景数据构造', '模型输出质量评分'], aiLeverage: 'AI 预标注 + 人工校验，标注效率提升 6 倍' },
+            ] },
+          { role: '合规/风控', hc: 30, avgBase: 68, avgBonus: 26, avgEquity: 16, avgBenefit: 18, avgTotal: 128, note: '行业标准制定 + 外部咨询输出，首席合规官 300 万+',
+            staffDetail: [
+              { title: '首席合规官', count: 1, level: 'P9', annualPkg: 320, duties: ['AI 治理行业标准主导制定', '银保监会"AI 治理示范银行"认证推动', 'AI 伦理委员会主席'], aiLeverage: 'AI 辅助政策追踪 + 标准文档生成' },
+              { title: '高级合规专家', count: 5, level: 'P8', annualPkg: 200, duties: ['全球合规框架（各地监管适配）', '行业标准制定核心参与', '外部合规咨询品牌建设'], aiLeverage: 'AI 辅助合规检查 + 标准文档生成' },
+              { title: 'AI 安全红队', count: 5, level: 'P7', annualPkg: 140, duties: ['全球化 AI 安全攻防', 'Agent 安全持续测试', '量子安全试点评估'], aiLeverage: 'AI 辅助攻击向量生成 + 自动化扫描' },
+              { title: '风控模型审计师', count: 7, level: 'P6-P7', annualPkg: 110, duties: ['全球化模型审计', 'Agent 决策合规审计', '行业标准合规验证'], aiLeverage: 'AI 自动化审计报告生成' },
+              { title: 'AI 伦理与数据治理', count: 5, level: 'P6', annualPkg: 70, duties: ['全球化数据合规', '内容安全过滤', '数据分类分级'], aiLeverage: 'AI 自动扫描 98% 问题' },
+              { title: '外部合规咨询师', count: 7, level: 'P7', annualPkg: 125, duties: ['全球化 AI 合规咨询输出', '帮助客户通过各地监管审查', '行业合规白皮书编写'], aiLeverage: 'AI 辅助合规方案生成 + 多语言政策解读' },
+            ] },
+          { role: 'PMO/项目管理', hc: 14, avgBase: 55, avgBonus: 18, avgEquity: 8, avgBenefit: 14, avgTotal: 95, note: '全球化项目交付 + 行业标准项目管理',
+            staffDetail: [
+              { title: '高级项目总监', count: 1, level: 'P8', annualPkg: 160, duties: ['全球化项目组合管理', '行业标准项目管理', '客户成功体系全球化'], aiLeverage: 'AI 自动生成项目组合报告' },
+              { title: '高级项目经理', count: 4, level: 'P7', annualPkg: 120, duties: ['全球化客户交付', '行业标准项目协调', '跨区域项目管理'], aiLeverage: 'AI 自动生成周报 + 风险预警' },
+              { title: '客户成功经理', count: 4, level: 'P6-P7', annualPkg: 95, duties: ['全球化客户 onboarding', '客户健康度监控', '续约与增购'], aiLeverage: 'AI 自动生成客户健康报告' },
+              { title: '项目经理', count: 4, level: 'P6', annualPkg: 75, duties: ['各项目交付管理', '需求排期', '项目文档'], aiLeverage: '会议纪要 AI 自动生成' },
+              { title: '项目协调员', count: 1, level: 'P5-P6', annualPkg: 58, duties: ['日常事务跟进', '报表制作', '供应商对接'], aiLeverage: 'AI 自动催办 + 报表生成' },
+            ] },
+          { role: '运维/SRE', hc: 18, avgBase: 58, avgBonus: 20, avgEquity: 9, avgBenefit: 14, avgTotal: 101, note: '全球化 SaaS 运维 + 7×24 NOC + 自动化运维平台',
+            staffDetail: [
+              { title: '高级 SRE 架构师', count: 3, level: 'P8', annualPkg: 170, duties: ['全球化 SLA 架构', '多地域灾备架构', '自动化运维平台架构'], aiLeverage: 'AI 自动化根因分析 + 容量预测' },
+              { title: 'SRE 工程师', count: 5, level: 'P7', annualPkg: 120, duties: ['全球化 SLA 监控与保障', '多区域故障应急（7×24 NOC）', '容量规划与成本优化'], aiLeverage: 'AI 自动化告警降噪 + 根因分析' },
+              { title: 'AI 平台运维工程师', count: 6, level: 'P6', annualPkg: 80, duties: ['全球化 GPU 集群运维', 'SaaS 推理服务运维', '边缘推理节点运维', 'CI/CD 流水线维护'], aiLeverage: '运维脚本 95% AI 生成，告警 95% AI 自动处理' },
+              { title: '基础设施运维工程师', count: 4, level: 'P6', annualPkg: 72, duties: ['全球化基础设施运维', 'K8s 多集群管理', '备份恢复与灾备演练', '绿电与碳中和监控'], aiLeverage: 'K8s 配置 AI 自动生成 + 异常自愈' },
+            ] },
+          { role: '解决方案/售前', hc: 16, avgBase: 62, avgBonus: 22, avgEquity: 12, avgBenefit: 15, avgTotal: 111, note: '行业解决方案 + 全球化售前 + 客户成功，高级 160 万+',
+            staffDetail: [
+              { title: '解决方案总监', count: 2, level: 'P8', annualPkg: 180, duties: ['全球化解决方案体系', '大客户方案评审', '行业白皮书编写'], aiLeverage: 'AI 辅助方案模板 + 案例库自动整理' },
+              { title: '高级解决方案架构师', count: 5, level: 'P7', annualPkg: 140, duties: ['全球化金融 AI 解决方案', '大客户 POC 方案设计', '技术方案答辩与投标'], aiLeverage: 'AI 辅助方案文档生成 + 多语言适配' },
+              { title: '技术售前工程师', count: 5, level: 'P6-P7', annualPkg: 100, duties: ['全球化客户需求调研', '产品 Demo 演示', '技术方案编写与报价', '竞品分析'], aiLeverage: 'AI 辅助需求分析 + Demo 自动搭建 + 方案 85% AI 生成' },
+              { title: '售前协调员', count: 4, level: 'P6', annualPkg: 70, duties: ['全球化客户拜访安排', '投标文档整理', '合同条款协调', '客户关系维护'], aiLeverage: 'AI 辅助投标文档 + 多语言翻译 + 合同条款提取' },
+            ] },
         ],
         salaryTotal: 31393,
         salaryNote: '人均成本较 Y4 上浮 6-10%（行业成熟期涨幅趋缓，但顶尖人才溢价持续走高）。算法:工程 ≈ 1:2.3，解决方案/售前团队扩至 16 人支撑全球化输出',
@@ -1537,9 +1808,17 @@ function PlanSection() {
                     </tr>
                   </thead>
                   <tbody>
-                    {p.headcount.breakdown.map((r, ri) => (
-                      <tr key={r.role} className={ri % 2 === 0 ? 'bg-gray-50/40' : ''}>
-                        <td className="py-1.5 pr-2 font-medium text-gray-700">{r.role}</td>
+                    {p.headcount.breakdown.map((r, ri) => {
+                      const staffKey = `${p.year}-${r.role}`;
+                      const isStaffExpanded = expandedStaff === staffKey;
+                      return (
+                      <React.Fragment key={r.role}>
+                      <tr className={`${ri % 2 === 0 ? 'bg-gray-50/40' : ''} ${r.staffDetail ? 'cursor-pointer hover:bg-blue-50/40 transition-colors' : ''}`}
+                          onClick={() => r.staffDetail && setExpandedStaff(isStaffExpanded ? null : staffKey)}>
+                        <td className="py-1.5 pr-2 font-medium text-gray-700">
+                          {r.staffDetail && <span className="text-[9px] text-blue-400 mr-1">{isStaffExpanded ? '▼' : '▶'}</span>}
+                          {r.role}
+                        </td>
                         <td className="py-1.5 pr-2 text-center text-gray-800 font-semibold">{r.hc}</td>
                         <td className="py-1.5 pr-2 text-right text-gray-600 font-mono">{r.avgBase}</td>
                         <td className="py-1.5 pr-2 text-right text-gray-600 font-mono">{r.avgBonus}</td>
@@ -1549,7 +1828,48 @@ function PlanSection() {
                         <td className="py-1.5 pr-2 text-right text-gray-800 font-mono font-bold">¥{(r.hc * r.avgTotal).toLocaleString()}</td>
                         <td className="py-1.5 text-[10px] text-gray-400 max-w-[200px]">{r.note}</td>
                       </tr>
-                    ))}
+                      {/* 二级展开：人员细分 */}
+                      {isStaffExpanded && r.staffDetail && (
+                        <tr>
+                          <td colSpan={9} className="p-0">
+                            <div className="bg-gradient-to-r from-blue-50/60 to-indigo-50/40 border-l-2 border-blue-300 mx-2 my-1 rounded-lg p-3">
+                              <div className="text-[10px] font-semibold text-blue-600 mb-2">👤 {r.role} · 人员细分（{r.hc} 人）· AI 时代工作方式</div>
+                              <div className="space-y-2.5">
+                                {r.staffDetail.map((s, si) => (
+                                  <div key={si} className="bg-white/80 rounded-lg p-2.5 border border-blue-100/60">
+                                    <div className="flex items-center gap-2 mb-1.5">
+                                      <span className="text-[11px] font-bold text-gray-800">{s.title}</span>
+                                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-mono">{s.level}</span>
+                                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 font-mono">×{s.count}人</span>
+                                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 font-mono">¥{s.annualPkg}万/人</span>
+                                    </div>
+                                    <div className="flex gap-3">
+                                      <div className="flex-1 min-w-0">
+                                        <div className="text-[9px] text-gray-400 font-medium mb-0.5">📋 核心职责</div>
+                                        <ul className="text-[10px] text-gray-600 space-y-0.5">
+                                          {s.duties.map((d, di) => (
+                                            <li key={di} className="flex items-start gap-1">
+                                              <span className="text-gray-300 mt-0.5 shrink-0">•</span>
+                                              <span>{d}</span>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                      <div className="w-[280px] shrink-0">
+                                        <div className="text-[9px] text-purple-400 font-medium mb-0.5">🤖 AI 赋能方式</div>
+                                        <div className="text-[10px] text-purple-600 bg-purple-50/60 rounded px-2 py-1 leading-relaxed">{s.aiLeverage}</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                      </React.Fragment>
+                      );
+                    })}
                     <tr className="border-t border-gray-200 bg-gray-50">
                       <td className="py-1.5 pr-2 font-bold text-gray-800">合计</td>
                       <td className="py-1.5 pr-2 text-center font-bold text-gray-800">{p.headcount.total}</td>
