@@ -13,6 +13,7 @@ const TABS = [
   { id: 'reg',      name: '监管与合规',   icon: '📜', desc: '巴塞尔协议 · 数据出境 · 模型可解释性 · AI 治理' },
   { id: 'case',     name: '标杆案例',     icon: '🔭', desc: '蚂蚁 / 微众 / 摩根士丹利 / 高盛 + 国内银行横评' },
   { id: 'fintech',  name: '金融科技演进', icon: '💹', desc: '电子化 → 互联网金融 → AI 原生金融 · 开放银行 · 嵌入式金融' },
+  { id: 'plan',     name: 'AI战略规划',  icon: '🗺️', desc: '平安银行金融 AI 战略部五年业务规划 · 人力 · 成本 · 目标 · ROI' },
 ];
 
 export default function FinancePage() {
@@ -89,6 +90,7 @@ export default function FinancePage() {
         {tab === 'reg'      && <RegSection />}
         {tab === 'case'     && <CaseSection />}
         {tab === 'fintech'  && <FintechSection />}
+        {tab === 'plan'     && <PlanSection />}
 
         <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">
           <span className="font-medium text-gray-500">📌 说明：</span>
@@ -1038,6 +1040,451 @@ function FintechSection() {
         </table>
         <p className="text-[11px] text-gray-400 mt-3 italic">
           中国在移动支付和隐私计算落地上领先，美国在大模型应用和数字资产合规化上领先。两者正在趋同。
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ⑨  平安银行金融 AI 战略部五年业务规划（新增）
+   ═══════════════════════════════════════════════════════════ */
+function PlanSection() {
+  /* —— 部门概览 —— */
+  const deptOverview = {
+    name: '平安银行 · 金融科技部 · AI 战略中心',
+    mission: '以大模型 + Agent 为核心驱动力，五年内实现风控、客服、理财、合规四大业务线的 AI 原生化转型，将人效比提升 3 倍，AI 贡献营收占比从 5% 提升至 35%',
+    vision: '2030 年成为国内银行业 AI 能力标杆，输出金融 AI 解决方案至平安集团生态',
+  };
+
+  /* —— 五年阶段 —— */
+  const phases = [
+    {
+      year: 'Y1（2026）',
+      title: '筑基',
+      color: '#6c5ce7',
+      focus: '大模型平台搭建 + 数据治理 + 首批场景 PoC',
+      goals: [
+        '完成金融大模型私有化部署（70B 基座 + 7B 蒸馏版）',
+        '建设统一 AI 中台（模型管理 / Prompt 工程 / RAG 知识库 / 评测体系）',
+        '风控：图网络反欺诈模型上线（覆盖信用卡 + 消费贷）',
+        '客服：智能客服 RAG 系统覆盖 Top 200 高频问题，替代 20% 人工坐席',
+        '理财：投研助手 PoC（研报摘要 + 基金对比），内部试用',
+      ],
+      headcount: { total: 85, ml: 25, eng: 30, product: 10, data: 12, compliance: 8 },
+      cost: { infra: 3500, salary: 4250, vendor: 800, total: 8550 },
+      kpi: 'AI 替代人工坐席 20% · 反欺诈识别率提升 15% · 平台 SLA 99.9%',
+    },
+    {
+      year: 'Y2（2027）',
+      title: '场景突破',
+      color: '#00cec9',
+      focus: '核心场景规模化落地 + Agent 1.0 + 隐私计算联邦',
+      goals: [
+        '风控：LLM + 图网络融合模型覆盖全行信贷产品线，SAR 报告自动生成',
+        '客服：多模态客服（语音 + 文字 + 图片）上线，替代 45% 人工坐席',
+        '理财：AI 理财顾问 1.0 上线（个性化资产配置建议 + 合规话术生成）',
+        '合规：合规审查 Agent（合同 / 营销物料 / 研报自动审核）',
+        '联邦学习：与 3 家银行建立联邦风控联盟（基于 FATE/SecretFlow）',
+      ],
+      headcount: { total: 130, ml: 40, eng: 45, product: 15, data: 18, compliance: 12 },
+      cost: { infra: 5200, salary: 6500, vendor: 1200, total: 12900 },
+      kpi: 'AI 客服替代率 45% · 理财 AUM 转化率提升 8% · 合规审查效率提升 60%',
+    },
+    {
+      year: 'Y3（2028）',
+      title: 'Agent 驱动',
+      color: '#3fb950',
+      focus: '多 Agent 协作体系 + 全链路自动化 + 数据飞轮',
+      goals: [
+        '风控 Agent：实时交易监控 + 异常预警 + 自动处置（人工复核率 <10%）',
+        '客服 Agent：端到端业务办理（开卡 / 转账 / 理赔），替代 65% 人工',
+        '理财 Agent：千人千面投资组合推荐 + 自动调仓建议 + 市场解读',
+        '合规 Agent：监管报告自动生成 + 政策变更影响分析',
+        '内部 Copilot：覆盖研发 / 运营 / 财务，全行 AI 渗透率 >50%',
+      ],
+      headcount: { total: 180, ml: 55, eng: 60, product: 20, data: 25, compliance: 20 },
+      cost: { infra: 7000, salary: 9000, vendor: 1500, total: 17500 },
+      kpi: 'Agent 自主处理率 >60% · 全行 AI 渗透率 >50% · 年化节省人力成本 ¥1.2 亿',
+    },
+    {
+      year: 'Y4（2029）',
+      title: '生态输出',
+      color: '#e17055',
+      focus: 'AI 能力平台化 + 集团生态输出 + 行业标准参与',
+      goals: [
+        '金融 AI 平台 SaaS 化，向平安集团（保险 / 证券 / 信托）输出',
+        '联邦学习联盟扩展至 10+ 家金融机构',
+        '参与制定银行业 AI 治理标准（与银保监会 / 人行合作）',
+        '风控模型市场化输出（中小银行 / 消金公司 / 互联网金融）',
+        'AI 原生产品线贡献营收占比 >25%',
+      ],
+      headcount: { total: 220, ml: 65, eng: 70, product: 25, data: 30, compliance: 30 },
+      cost: { infra: 8500, salary: 11000, vendor: 2000, total: 21500 },
+      kpi: '平台输出 5+ 集团子公司 · 联邦联盟 10+ 机构 · AI 营收占比 >25%',
+    },
+    {
+      year: 'Y5（2030）',
+      title: 'AI 原生银行',
+      color: '#ffa657',
+      focus: '全面 AI 原生化 + 自主决策 + 行业标杆',
+      goals: [
+        '80% 的客户交互由 AI 完成（人工仅处理复杂 / 高价值 / 投诉场景）',
+        '风控全链路 AI 化：从准入 → 授信 → 贷中监控 → 贷后催收',
+        '理财 Agent 管理 AUM >¥500 亿（AI 辅助决策）',
+        'AI 贡献营收占比 >35%，年化节省成本 >¥5 亿',
+        '成为银保监会认定的"AI 治理示范银行"',
+      ],
+      headcount: { total: 250, ml: 75, eng: 80, product: 28, data: 32, compliance: 35 },
+      cost: { infra: 9500, salary: 12500, vendor: 2500, total: 24500 },
+      kpi: 'AI 交互占比 80% · AI 营收占比 35% · 年化节省 ¥5 亿 · 行业标杆认证',
+    },
+  ];
+
+  /* —— 四大业务线目标拆解 —— */
+  const bizLines = [
+    {
+      name: '🛡️ 智能风控',
+      color: '#e17055',
+      y1: '图网络反欺诈上线（信用卡+消费贷）',
+      y2: 'LLM+图网络融合，SAR 自动生成',
+      y3: '风控 Agent 自主处置（复核率<10%）',
+      y4: '风控模型市场化输出',
+      y5: '全链路 AI 风控（准入→催收）',
+      metric: '欺诈损失率',
+      baseline: '0.15%',
+      target: '0.03%',
+    },
+    {
+      name: '💬 智能客服',
+      color: '#00cec9',
+      y1: 'RAG 客服覆盖 Top200 问题',
+      y2: '多模态客服，替代 45% 人工',
+      y3: '端到端业务办理 Agent',
+      y4: '情感识别 + 主动服务',
+      y5: '80% 交互 AI 完成',
+      metric: '人工坐席替代率',
+      baseline: '5%',
+      target: '80%',
+    },
+    {
+      name: '💰 智能理财',
+      color: '#6c5ce7',
+      y1: '投研助手 PoC（内部试用）',
+      y2: 'AI 理财顾问 1.0 上线',
+      y3: '千人千面组合推荐 + 自动调仓',
+      y4: 'AI 管理 AUM ¥200 亿',
+      y5: 'AI 管理 AUM ¥500 亿',
+      metric: 'AI 辅助 AUM',
+      baseline: '¥0',
+      target: '¥500 亿',
+    },
+    {
+      name: '📜 智能合规',
+      color: '#ffa657',
+      y1: '合规知识库 + 政策检索',
+      y2: '合规审查 Agent（合同/营销）',
+      y3: '监管报告自动生成',
+      y4: '参与行业标准制定',
+      y5: 'AI 治理示范银行',
+      metric: '合规审查效率',
+      baseline: '人工 2 天/份',
+      target: 'AI 10 分钟/份',
+    },
+  ];
+
+  /* —— ROI 测算 —— */
+  const roiData = [
+    { year: 'Y1', invest: 8550, save: 1200, revenue: 500,  roi: '-80%',  cumInvest: 8550,   cumReturn: 1700,   note: '基建投入期，ROI 为负' },
+    { year: 'Y2', invest: 12900, save: 4500, revenue: 2000, roi: '-49%',  cumInvest: 21450,  cumReturn: 8200,   note: '场景落地初见成效' },
+    { year: 'Y3', invest: 17500, save: 12000, revenue: 5000, roi: '-3%',  cumInvest: 38950,  cumReturn: 25200,  note: 'Agent 驱动，接近盈亏平衡' },
+    { year: 'Y4', invest: 21500, save: 22000, revenue: 12000, roi: '+58%', cumInvest: 60450,  cumReturn: 59200,  note: '生态输出带来增量营收' },
+    { year: 'Y5', invest: 24500, save: 35000, revenue: 25000, roi: '+145%', cumInvest: 84950, cumReturn: 119200, note: '全面收获期，累计 ROI 转正' },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* —— 部门概览 —— */}
+      <div className="bg-gradient-to-br from-orange-50/50 to-red-50/30 rounded-2xl border border-orange-100/60 p-6">
+        <div className="flex items-center gap-2 mb-2">
+          <h3 className="text-base font-bold text-gray-900">🗺️ {deptOverview.name}</h3>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 font-medium">五年规划 2026-2030</span>
+        </div>
+        <div className="space-y-2 text-[13px] text-gray-600 leading-relaxed">
+          <div><span className="text-gray-400 font-medium">🎯 使命：</span>{deptOverview.mission}</div>
+          <div><span className="text-gray-400 font-medium">🌟 愿景：</span>{deptOverview.vision}</div>
+        </div>
+      </div>
+
+      {/* —— 五年阶段总览时间线 —— */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <h3 className="text-base font-semibold text-gray-800 mb-4">📅 五年演进路线</h3>
+        <div className="relative pl-6">
+          <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#6c5ce7] via-[#3fb950] to-[#ffa657]" />
+          <div className="space-y-5">
+            {phases.map(p => (
+              <div key={p.year} className="relative">
+                <div className="absolute -left-[22px] top-1.5 w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                  style={{ background: p.color }} />
+                <div className="flex items-baseline gap-3 mb-1">
+                  <span className="text-xs font-mono font-bold" style={{ color: p.color }}>{p.year}</span>
+                  <span className="text-sm font-semibold text-gray-800">{p.title}</span>
+                </div>
+                <div className="text-[12px] text-gray-500 mb-2 italic">{p.focus}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {p.goals.map((g, i) => (
+                    <div key={i} className="flex gap-2 text-[12px] text-gray-600">
+                      <span style={{ color: p.color }}>▸</span>
+                      <span>{g}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 text-[11px] font-mono px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                  <span className="text-gray-400">KPI：</span>
+                  <span className="text-gray-700">{p.kpi}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* —— 人力组成 —— */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 overflow-x-auto">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">👥 人力组成（五年演进）</h3>
+        <table className="w-full text-[12.5px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-3 font-medium">阶段</th>
+              <th className="py-2 pr-3 font-medium">总人数</th>
+              <th className="py-2 pr-3 font-medium">🧠 ML/算法</th>
+              <th className="py-2 pr-3 font-medium">⚙️ 工程</th>
+              <th className="py-2 pr-3 font-medium">📋 产品</th>
+              <th className="py-2 pr-3 font-medium">📊 数据</th>
+              <th className="py-2 font-medium">📜 合规</th>
+            </tr>
+          </thead>
+          <tbody>
+            {phases.map((p, i) => (
+              <tr key={p.year} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                <td className="py-2 pr-3 font-semibold" style={{ color: p.color }}>{p.year} {p.title}</td>
+                <td className="py-2 pr-3 text-gray-800 font-bold">{p.headcount.total}</td>
+                <td className="py-2 pr-3 text-gray-600">{p.headcount.ml}</td>
+                <td className="py-2 pr-3 text-gray-600">{p.headcount.eng}</td>
+                <td className="py-2 pr-3 text-gray-600">{p.headcount.product}</td>
+                <td className="py-2 pr-3 text-gray-600">{p.headcount.data}</td>
+                <td className="py-2 text-gray-600">{p.headcount.compliance}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="mt-3 grid grid-cols-2 md:grid-cols-5 gap-2">
+          {[
+            { label: '🧠 ML/算法', desc: '大模型训练/微调、风控建模、NLP、推荐', color: '#6c5ce7' },
+            { label: '⚙️ 工程', desc: 'AI 平台、模型服务、数据 Pipeline、前端', color: '#00cec9' },
+            { label: '📋 产品', desc: '场景规划、需求管理、用户研究、项目管理', color: '#3fb950' },
+            { label: '📊 数据', desc: '数据治理、特征工程、标注、数据分析', color: '#e17055' },
+            { label: '📜 合规', desc: '模型审计、可解释性、监管对接、隐私保护', color: '#ffa657' },
+          ].map(r => (
+            <div key={r.label} className="p-2 rounded-lg border text-[11px]" style={{ borderColor: r.color + '33' }}>
+              <div className="font-semibold text-gray-800">{r.label}</div>
+              <div className="text-gray-500 mt-0.5">{r.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* —— 人力成本 —— */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 overflow-x-auto">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">💰 年度投入预算（万元）</h3>
+        <table className="w-full text-[12.5px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-3 font-medium">阶段</th>
+              <th className="py-2 pr-3 font-medium">🖥️ 基础设施</th>
+              <th className="py-2 pr-3 font-medium">👥 人力成本</th>
+              <th className="py-2 pr-3 font-medium">🤝 外部采购</th>
+              <th className="py-2 font-medium">📊 年度总投入</th>
+            </tr>
+          </thead>
+          <tbody>
+            {phases.map((p, i) => (
+              <tr key={p.year} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                <td className="py-2 pr-3 font-semibold" style={{ color: p.color }}>{p.year}</td>
+                <td className="py-2 pr-3 text-gray-600">¥{p.cost.infra.toLocaleString()}</td>
+                <td className="py-2 pr-3 text-gray-600">¥{p.cost.salary.toLocaleString()}</td>
+                <td className="py-2 pr-3 text-gray-600">¥{p.cost.vendor.toLocaleString()}</td>
+                <td className="py-2 text-gray-800 font-bold">¥{p.cost.total.toLocaleString()}</td>
+              </tr>
+            ))}
+            <tr className="border-t-2 border-gray-200 bg-gray-50">
+              <td className="py-2 pr-3 font-bold text-gray-800">五年合计</td>
+              <td className="py-2 pr-3 text-gray-700 font-semibold">¥{phases.reduce((s, p) => s + p.cost.infra, 0).toLocaleString()}</td>
+              <td className="py-2 pr-3 text-gray-700 font-semibold">¥{phases.reduce((s, p) => s + p.cost.salary, 0).toLocaleString()}</td>
+              <td className="py-2 pr-3 text-gray-700 font-semibold">¥{phases.reduce((s, p) => s + p.cost.vendor, 0).toLocaleString()}</td>
+              <td className="py-2 text-gray-900 font-bold">¥{phases.reduce((s, p) => s + p.cost.total, 0).toLocaleString()}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2 text-[11px]">
+          <div className="p-2 rounded-lg bg-purple-50/50 border border-purple-100">
+            <div className="font-semibold text-purple-700">🖥️ 基础设施</div>
+            <div className="text-gray-500">GPU 集群（A100/H100）、AI 平台、数据湖、隐私计算节点、网络安全</div>
+          </div>
+          <div className="p-2 rounded-lg bg-cyan-50/50 border border-cyan-100">
+            <div className="font-semibold text-cyan-700">👥 人力成本</div>
+            <div className="text-gray-500">ML 算法 ~80 万/人/年、工程 ~60 万、产品 ~50 万、数据 ~45 万、合规 ~55 万（含社保公积金）</div>
+          </div>
+          <div className="p-2 rounded-lg bg-amber-50/50 border border-amber-100">
+            <div className="font-semibold text-amber-700">🤝 外部采购</div>
+            <div className="text-gray-500">商业模型 API、隐私计算平台授权、外部数据源、咨询审计、培训</div>
+          </div>
+        </div>
+      </div>
+
+      {/* —— 四大业务线目标拆解 —— */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 overflow-x-auto">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">🎯 四大业务线 · 五年目标拆解</h3>
+        <table className="w-full text-[12px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-2 font-medium">业务线</th>
+              <th className="py-2 pr-2 font-medium">Y1 筑基</th>
+              <th className="py-2 pr-2 font-medium">Y2 突破</th>
+              <th className="py-2 pr-2 font-medium">Y3 Agent</th>
+              <th className="py-2 pr-2 font-medium">Y4 输出</th>
+              <th className="py-2 pr-2 font-medium">Y5 原生</th>
+              <th className="py-2 pr-2 font-medium">核心指标</th>
+              <th className="py-2 font-medium">目标值</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bizLines.map((b, i) => (
+              <tr key={b.name} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                <td className="py-2 pr-2 font-semibold whitespace-nowrap" style={{ color: b.color }}>{b.name}</td>
+                <td className="py-2 pr-2 text-gray-600">{b.y1}</td>
+                <td className="py-2 pr-2 text-gray-600">{b.y2}</td>
+                <td className="py-2 pr-2 text-gray-600">{b.y3}</td>
+                <td className="py-2 pr-2 text-gray-600">{b.y4}</td>
+                <td className="py-2 pr-2 text-gray-600">{b.y5}</td>
+                <td className="py-2 pr-2 text-gray-700 font-mono whitespace-nowrap">{b.metric}</td>
+                <td className="py-2 text-gray-800 font-semibold whitespace-nowrap">{b.baseline} → {b.target}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* —— ROI 测算 —— */}
+      <div className="bg-white rounded-2xl border border-amber-100 p-5 overflow-x-auto">
+        <h3 className="text-base font-semibold text-amber-700 mb-3">📈 ROI 测算（万元）</h3>
+        <table className="w-full text-[12.5px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-3 font-medium">年度</th>
+              <th className="py-2 pr-3 font-medium">年度投入</th>
+              <th className="py-2 pr-3 font-medium">节省成本</th>
+              <th className="py-2 pr-3 font-medium">增量营收</th>
+              <th className="py-2 pr-3 font-medium">年度 ROI</th>
+              <th className="py-2 pr-3 font-medium">累计投入</th>
+              <th className="py-2 pr-3 font-medium">累计回报</th>
+              <th className="py-2 font-medium">说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            {roiData.map((r, i) => (
+              <tr key={r.year} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                <td className="py-2 pr-3 font-semibold" style={{ color: phases[i].color }}>{r.year}</td>
+                <td className="py-2 pr-3 text-gray-600 font-mono">¥{r.invest.toLocaleString()}</td>
+                <td className="py-2 pr-3 text-green-600 font-mono">+¥{r.save.toLocaleString()}</td>
+                <td className="py-2 pr-3 text-blue-600 font-mono">+¥{r.revenue.toLocaleString()}</td>
+                <td className={`py-2 pr-3 font-bold font-mono ${r.roi.startsWith('+') ? 'text-green-600' : 'text-red-500'}`}>{r.roi}</td>
+                <td className="py-2 pr-3 text-gray-600 font-mono">¥{r.cumInvest.toLocaleString()}</td>
+                <td className="py-2 pr-3 text-gray-700 font-mono">¥{r.cumReturn.toLocaleString()}</td>
+                <td className="py-2 text-gray-500 italic text-[11px]">{r.note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* ROI 可视化条形图 */}
+        <div className="mt-4 space-y-2">
+          <div className="text-[11px] text-gray-400 font-medium">累计投入 vs 累计回报</div>
+          {roiData.map((r, i) => (
+            <div key={r.year} className="flex items-center gap-3">
+              <span className="w-8 text-[11px] font-mono font-semibold" style={{ color: phases[i].color }}>{r.year}</span>
+              <div className="flex-1 flex gap-1 items-center">
+                <div className="h-4 rounded-sm bg-red-200" style={{ width: `${(r.cumInvest / 120000) * 100}%`, minWidth: '2px' }} />
+                <div className="h-4 rounded-sm bg-green-300" style={{ width: `${(r.cumReturn / 120000) * 100}%`, minWidth: '2px' }} />
+              </div>
+              <span className="text-[10px] text-gray-400 w-32 text-right">
+                投 ¥{(r.cumInvest / 10000).toFixed(1)}亿 / 回 ¥{(r.cumReturn / 10000).toFixed(1)}亿
+              </span>
+            </div>
+          ))}
+          <div className="flex gap-4 text-[10px] text-gray-400 mt-1">
+            <span className="flex items-center gap-1"><span className="w-3 h-2 rounded-sm bg-red-200 inline-block" /> 累计投入</span>
+            <span className="flex items-center gap-1"><span className="w-3 h-2 rounded-sm bg-green-300 inline-block" /> 累计回报</span>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 rounded-xl bg-green-50/60 border border-green-100 text-[12px] text-gray-600 leading-relaxed">
+          <span className="font-semibold text-green-700">💡 关键结论：</span>
+          五年累计投入约 <span className="font-bold text-gray-800">¥8.5 亿</span>，
+          累计回报（节省成本 + 增量营收）约 <span className="font-bold text-green-700">¥11.9 亿</span>，
+          <span className="font-bold text-green-700">累计 ROI ≈ +40%</span>。
+          Y3 年底接近盈亏平衡，Y4 起进入正向回报期。
+          核心收益来源：客服人力替代（¥3.5 亿/年）、风控损失降低（¥1.5 亿/年）、理财 AUM 增量佣金（¥2.5 亿/年）。
+        </div>
+      </div>
+
+      {/* —— 风险与应对 —— */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">⚠️ 关键风险与应对策略</h3>
+        <div className="space-y-2">
+          {[
+            { risk: '监管政策变化', level: '🔴 高', impact: '生成式 AI 监管收紧可能限制 Agent 自主决策范围', mitigation: '提前参与标准制定；保持"人在回路"架构；合规团队持续跟踪政策动态' },
+            { risk: '人才竞争激烈', level: '🟠 中高', impact: 'ML 算法人才被互联网大厂高薪挖角', mitigation: '股权激励 + 内部培养体系 + 与高校联合实验室；核心岗位 T+1 备份' },
+            { risk: '技术路线风险', level: '🟡 中', impact: '大模型技术快速迭代，当前投入可能被新范式颠覆', mitigation: '平台化架构（模型可插拔）；保持 20% 预算用于前沿探索；与头部 AI 公司保持合作' },
+            { risk: 'ROI 不及预期', level: '🟡 中', impact: '场景落地效果低于预期，投入回收期延长', mitigation: '每季度 OKR 复盘 + 止损机制；优先投入 ROI 确定性高的场景（客服 > 风控 > 理财）' },
+            { risk: '数据质量不足', level: '🟠 中高', impact: '银行数据孤岛严重，模型训练数据质量差', mitigation: 'Y1 优先投入数据治理；建立数据质量评分体系；联邦学习补充外部数据' },
+          ].map(r => (
+            <div key={r.risk} className="p-3 rounded-lg bg-gray-50 border border-gray-100">
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-[12px] font-semibold text-gray-800">{r.risk}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white border border-gray-200">{r.level}</span>
+              </div>
+              <div className="text-[12px] text-gray-500 mb-1"><span className="text-gray-400">影响：</span>{r.impact}</div>
+              <div className="text-[12px] text-gray-600"><span className="text-gray-400">应对：</span><span className="font-medium">{r.mitigation}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* —— 组织架构 —— */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-3">🏢 组织架构（Y3 成熟态）</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            { name: 'AI 平台组', head: '技术总监', hc: '35 人', duty: 'AI 中台、模型服务、MLOps、评测体系', color: '#6c5ce7' },
+            { name: '风控 AI 组', head: '高级算法专家', hc: '30 人', duty: '反欺诈模型、信用评分、实时风控引擎', color: '#e17055' },
+            { name: '客服 AI 组', head: '高级算法专家', hc: '25 人', duty: '对话系统、RAG、多模态、TTS/ASR', color: '#00cec9' },
+            { name: '理财 AI 组', head: '高级算法专家', hc: '25 人', duty: '投研 NLP、组合推荐、市场预测、Agent', color: '#3fb950' },
+            { name: '数据工程组', head: '数据架构师', hc: '25 人', duty: '数据湖、特征平台、数据质量、ETL', color: '#ffa657' },
+            { name: '合规治理组', head: '合规总监', hc: '20 人', duty: '模型审计、可解释性、隐私保护、监管对接', color: '#fd79a8' },
+            { name: '产品 & 运营', head: '产品总监', hc: '20 人', duty: '场景规划、用户研究、运营分析、项目管理', color: '#a29bfe' },
+          ].map(g => (
+            <div key={g.name} className="p-3 rounded-xl border" style={{ borderColor: g.color + '33', background: g.color + '04' }}>
+              <div className="text-sm font-semibold" style={{ color: g.color }}>{g.name}</div>
+              <div className="text-[11px] text-gray-500 mt-1">
+                <span className="font-medium text-gray-700">{g.head}</span> · {g.hc}
+              </div>
+              <div className="text-[11px] text-gray-400 mt-0.5">{g.duty}</div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-3 italic">
+          Y3 成熟态总编制 180 人。部门负责人向 CTO 汇报，合规治理组双线汇报（CTO + 首席合规官）。
         </p>
       </div>
     </div>
