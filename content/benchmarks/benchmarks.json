@@ -250,7 +250,7 @@
     "category": "overall",
     "categoryName": "综合能力",
     "categoryIcon": "📊",
-    "date": "2026-04-27",
+    "date": "2026-04-29",
     "models": [
       {
         "rank": 1,
@@ -372,6 +372,17 @@
         "mmlu_pro": 84.2,
         "change": "↓2",
         "badge": ""
+      },
+      {
+        "rank": 12,
+        "name": "Llama 4 Scout",
+        "provider": "Meta",
+        "score": 85.2,
+        "arena_elo": 1318,
+        "mmlu_pro": 82.5,
+        "change": "🆕",
+        "badge": "",
+        "note": "109B MoE / 17B active / 10M context / 开源多模态 / Apache 2.0"
       }
     ]
   },
@@ -481,7 +492,7 @@
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-04-27",
+    "date": "2026-04-29",
     "models": [
       {
         "rank": 1,
@@ -592,6 +603,18 @@
         "value_score": 65.2,
         "change": "→",
         "badge": ""
+      },
+      {
+        "rank": 11,
+        "name": "Qwen3-235B-A22B (Self-hosted)",
+        "provider": "阿里（开源）",
+        "input_price": 0.0,
+        "output_price": 0.0,
+        "score": 91.8,
+        "value_score": 99.5,
+        "change": "🆕",
+        "badge": "🌟开源",
+        "note": "Apache 2.0 / 4×A100 80G 可运行 / 思考/非思考双模式"
       }
     ]
   },
@@ -857,7 +880,7 @@
         "name": "Point-E",
         "provider": "OpenAI",
         "score": 85.0,
-        "cmmd": 3.600,
+        "cmmd": 3.6,
         "fid_clip": 55.866,
         "fid": 305.922,
         "clip_score": 0.779,
