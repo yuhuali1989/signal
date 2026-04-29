@@ -15,6 +15,8 @@ const NAV_ITEMS = [
   { name: '工具箱',   href: '/tools/',      group: 'knowledge' },
   // 业务类
   { name: '自动驾驶', href: '/vla/',        group: 'business' },
+  { name: '广告',     href: '/ads/',        group: 'business' },
+  { name: '金融',     href: '/finance/',    group: 'business' },
   { name: '实验室',   href: '/lab/',        group: 'business' },
   // 洞察类
   { name: '业务原生', href: '/strategy/',   group: 'strategy' },

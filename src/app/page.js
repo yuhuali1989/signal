@@ -241,6 +241,20 @@ export default function Home() {
                     <p className="text-[11px] text-gray-400">NeRF · 扩散模型</p>
                   </div>
                 </Link>
+                <Link href="/ads/" className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-cyan-50/60 transition-colors group">
+                  <span className="text-base">📣</span>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 group-hover:text-[#00cec9]">广告业务</p>
+                    <p className="text-[11px] text-gray-400">架构演进 · AIGC 创意 · LLM</p>
+                  </div>
+                </Link>
+                <Link href="/finance/" className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-cyan-50/60 transition-colors group">
+                  <span className="text-base">🏦</span>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 group-hover:text-[#00cec9]">金融业务</p>
+                    <p className="text-[11px] text-gray-400">大模型 · 隐私计算</p>
+                  </div>
+                </Link>
                 <Link href="/quant/" className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-cyan-50/60 transition-colors group col-span-2">
                   <span className="text-base">📈</span>
                   <div>
