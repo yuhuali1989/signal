@@ -1,11 +1,12 @@
 'use client';
 
 /**
- * ArchDiagram — 专业的 SVG 模型架构图组件
- * 替代 ASCII 字符画（textArch），提供可交互的专业架构可视化
+ * ArchDiagram — Sebastian Raschka 风格的 LLM 架构图组件
+ * 白底 + 灰色嵌套框 + 粉色 Attention Block + ⊕ 残差 + 右侧参数标注
+ * 接受 factSheet 参数动态渲染每个模型的具体架构
  */
 
-/* ── 颜色方案（Apple 风格） ── */
+/* ── 颜色方案（Raschka 风格） ── */
 const COLORS = {
   blue:    { fill: '#007AFF', stroke: '#0056B3', text: '#ffffff', light: '#EBF5FB' },
   green:   { fill: '#34C759', stroke: '#248A3D', text: '#ffffff', light: '#E8F5E9' },
@@ -16,242 +17,404 @@ const COLORS = {
   cyan:    { fill: '#00C7BE', stroke: '#009E97', text: '#ffffff', light: '#E0F7FA' },
 };
 
-/* ── 通用 Transformer Block SVG ── */
-function TransformerBlockSVG({ width = 500, compact = false }) {
-  const h = compact ? 380 : 520;
-  const cx = width / 2;
-  const bw = 180; // block width
-  const bx = cx - bw / 2;
+const MAGENTA = '#C2185B';  // 参数标注高亮色（品红）
+const PINK_BG = '#F3D9E0';  // Attention Block 背景
+const DARK_ATTN = '#555555'; // Attention 层深灰
+const LIGHT_GRAY = '#F5F5F5'; // 外层背景
+const BORDER_GRAY = '#BDBDBD'; // 边框灰
+const BLOCK_BG = '#E8E8E8';   // Block 外框背景
 
-  const layers = [
-    { y: 30,  h: 36, label: 'Input Tokens',           color: COLORS.gray,   sub: '' },
-    { y: 80,  h: 40, label: 'Embedding',               color: COLORS.blue,   sub: 'vocab × d_model' },
-    { y: 134, h: 36, label: '+ RoPE',                  color: COLORS.purple, sub: '旋转位置编码' },
-    // Block start
-    { y: 195, h: 36, label: 'RMSNorm',                 color: COLORS.green,  sub: '' },
-    { y: 245, h: 42, label: 'Multi-Head Attention',    color: COLORS.orange, sub: 'MHA / GQA / MQA / MLA' },
-    { y: 300, h: 30, label: '+ Residual',              color: COLORS.gray,   sub: '' },
-    { y: 344, h: 36, label: 'RMSNorm',                 color: COLORS.green,  sub: '' },
-    { y: 394, h: 42, label: 'FFN (SwiGLU) / MoE',     color: COLORS.purple, sub: 'd → 4d → d / Top-K Experts' },
-    { y: 450, h: 30, label: '+ Residual',              color: COLORS.gray,   sub: '' },
-  ];
+/* ── 通用圆角矩形 Layer ── */
+function LayerBox({ x, y, w, h, label, fill = '#fff', stroke = BORDER_GRAY, textColor = '#333', fontSize = 11, rx = 8 }) {
+  return (
+    <g>
+      <rect x={x} y={y} width={w} height={h} rx={rx} fill={fill} stroke={stroke} strokeWidth="1.5" />
+      <text x={x + w / 2} y={y + h / 2} textAnchor="middle" dominantBaseline="central" fill={textColor} fontSize={fontSize} fontWeight="500">{label}</text>
+    </g>
+  );
+}
 
-  const bottom = [
-    { y: compact ? 310 : 500, h: 36, label: 'RMSNorm (Final)',  color: COLORS.green, sub: '' },
-    { y: compact ? 358 : 548, h: 40, label: 'LM Head',          color: COLORS.blue,  sub: 'd_model → vocab' },
-    { y: compact ? 412 : 602, h: 36, label: 'Output Logits',    color: COLORS.gray,  sub: 'Next Token' },
-  ];
+/* ── ⊕ 残差连接符号 ── */
+function ResidualPlus({ cx, cy, r = 10 }) {
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={r} fill="#fff" stroke={BORDER_GRAY} strokeWidth="1.5" />
+      <line x1={cx - 5} y1={cy} x2={cx + 5} y2={cy} stroke="#333" strokeWidth="1.5" />
+      <line x1={cx} y1={cy - 5} x2={cx} y2={cy + 5} stroke="#333" strokeWidth="1.5" />
+    </g>
+  );
+}
 
-  const totalH = compact ? 460 : 650;
+/* ── × 乘法符号 ── */
+function MultiplyCross({ cx, cy, r = 10 }) {
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={r} fill="#fff" stroke={BORDER_GRAY} strokeWidth="1.5" />
+      <line x1={cx - 4} y1={cy - 4} x2={cx + 4} y2={cy + 4} stroke="#333" strokeWidth="1.5" />
+      <line x1={cx + 4} y1={cy - 4} x2={cx - 4} y2={cy + 4} stroke="#333" strokeWidth="1.5" />
+    </g>
+  );
+}
+
+/* ── 虚线标注（右侧引出参数） ── */
+function Annotation({ x1, y1, x2, y2, label, value, align = 'left' }) {
+  return (
+    <g>
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#999" strokeWidth="1" strokeDasharray="4 3" />
+      <circle cx={x1} cy={y1} r="2" fill="#999" />
+      <text x={x2 + (align === 'left' ? 6 : -6)} y={y2 - 4} textAnchor={align === 'left' ? 'start' : 'end'} fill="#333" fontSize="10" fontWeight="600">{label}</text>
+      {value && <text x={x2 + (align === 'left' ? 6 : -6)} y={y2 + 10} textAnchor={align === 'left' ? 'start' : 'end'} fill={MAGENTA} fontSize="11" fontWeight="700">{value}</text>}
+    </g>
+  );
+}
+
+/* ── 箭头线 ── */
+function Arrow({ x1, y1, x2, y2, color = '#666' }) {
+  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.5" markerEnd="url(#raschka-arrow)" />;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TransformerBlockSVG — Raschka 风格 Decoder-Only 架构图
+   自下而上：Tokenized text → Embedding → Block × N → LM Head
+   ══════════════════════════════════════════════════════════════ */
+function TransformerBlockSVG({ factSheet = {}, modelName = '', width = 620 }) {
+  const fs = factSheet;
+  const name = modelName || 'Decoder-Only Transformer';
+  const layers = fs.layers || 'N';
+  const hiddenSize = fs.hiddenSize || 'd';
+  const heads = fs.heads || 'H';
+  const vocab = fs.vocab || 'V';
+  const context = fs.context || fs.ctx || '';
+  const activation = fs.activation || 'SwiGLU';
+  const attnType = fs.attention || 'Grouped-query attention';
+  const norm = fs.normalization || 'RMSNorm';
+  const pos = fs.positionalEncoding || 'RoPE';
+
+  // 计算 FFN 中间维度（约 4× hidden）
+  const ffnDim = fs.ffnDim || (hiddenSize !== 'd' ? `${Math.round(parseInt(hiddenSize) * 3.5).toLocaleString()}` : '4d');
+
+  const totalH = 780;
+  const cx = 260;  // 主轴中心 x
+  const bw = 200;  // layer 宽度
+  const bx = cx - bw / 2; // layer 左边 x
+
+  // 自下而上的 y 坐标
+  const Y = {
+    title: 22,
+    output: 60,
+    lmHead: 95,
+    finalNorm: 145,
+    // Block 区域
+    blockTop: 185,
+    plus2: 210,
+    ffn: 240,
+    norm2: 290,
+    plus1: 330,
+    attn: 360,
+    norm1: 420,
+    blockBot: 460,
+    // Block 下方
+    embed: 510,
+    tokenized: 570,
+    inputLabel: 610,
+  };
 
   return (
-    <svg viewBox={`0 0 ${width} ${totalH}`} className="w-full max-w-[500px]" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif' }}>
-      {/* 背景 */}
-      <rect x="0" y="0" width={width} height={totalH} rx="12" fill="#FAFAFA" />
+    <svg viewBox={`0 0 ${width} 640`} className="w-full max-w-[620px]" style={{ fontFamily: "'Helvetica Neue', Arial, 'PingFang SC', sans-serif" }}>
+      {/* 外层圆角背景 */}
+      <rect x="5" y="5" width={width - 10} height="630" rx="16" fill={LIGHT_GRAY} stroke={BORDER_GRAY} strokeWidth="1" />
 
-      {/* 上半部分：Embedding */}
-      {layers.slice(0, 3).map((l, i) => (
-        <g key={i}>
-          <rect x={bx} y={l.y} width={bw} height={l.h} rx="8" fill={l.color.fill} stroke={l.color.stroke} strokeWidth="1.5" />
-          <text x={cx} y={l.y + l.h / 2 - (l.sub ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" fill={l.color.text} fontSize="11" fontWeight="600">{l.label}</text>
-          {l.sub && <text x={cx} y={l.y + l.h / 2 + 10} textAnchor="middle" dominantBaseline="middle" fill={l.color.text} fontSize="8" opacity="0.7">{l.sub}</text>}
-          {i < 2 && <line x1={cx} y1={l.y + l.h} x2={cx} y2={layers[i + 1].y} stroke="#C7C7CC" strokeWidth="1.5" markerEnd="url(#arrow)" />}
-        </g>
-      ))}
+      {/* 标题 */}
+      <text x={cx} y={Y.title} textAnchor="middle" dominantBaseline="central" fill="#111" fontSize="16" fontWeight="800">{name}</text>
 
-      {/* 连接线到 Block */}
-      <line x1={cx} y1={170} x2={cx} y2={185} stroke="#C7C7CC" strokeWidth="1.5" markerEnd="url(#arrow)" />
+      {/* ── 顶部：Linear output layer ── */}
+      <LayerBox x={bx} y={Y.output} w={bw} h={30} label="Linear output layer" />
+      <Arrow x1={cx} y1={Y.output + 30} x2={cx} y2={Y.lmHead} />
 
-      {/* Transformer Block 虚线框 */}
-      <rect x={bx - 30} y={185} width={bw + 60} height={305} rx="10" fill="none" stroke="#007AFF" strokeWidth="2" strokeDasharray="6 4" />
-      <rect x={cx - 70} y={182} width={140} height={18} rx="4" fill="#007AFF" />
-      <text x={cx} y={192} textAnchor="middle" dominantBaseline="middle" fill="#ffffff" fontSize="9" fontWeight="700">× N Transformer Blocks</text>
+      {/* Final RMSNorm */}
+      <LayerBox x={bx} y={Y.lmHead} w={bw} h={30} label={`Final ${norm}`} />
+      <Arrow x1={cx} y1={Y.lmHead + 30} x2={cx} y2={Y.blockTop} />
 
-      {/* Block 内部层 */}
-      {layers.slice(3).map((l, i) => {
-        const idx = i + 3;
-        return (
-          <g key={idx}>
-            <rect x={bx} y={l.y} width={bw} height={l.h} rx="8" fill={l.color.fill} stroke={l.color.stroke} strokeWidth="1.5" />
-            <text x={cx} y={l.y + l.h / 2 - (l.sub ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" fill={l.color.text} fontSize="10" fontWeight="600">{l.label}</text>
-            {l.sub && <text x={cx} y={l.y + l.h / 2 + 10} textAnchor="middle" dominantBaseline="middle" fill={l.color.text} fontSize="7.5" opacity="0.7">{l.sub}</text>}
-            {idx < layers.length - 1 && <line x1={cx} y1={l.y + l.h} x2={cx} y2={layers[idx + 1].y} stroke="#C7C7CC" strokeWidth="1" markerEnd="url(#arrow)" />}
-          </g>
-        );
-      })}
+      {/* ── Transformer Block 外框（灰色） ── */}
+      <rect x={bx - 30} y={Y.blockTop} width={bw + 60} height={Y.blockBot - Y.blockTop} rx="12" fill={BLOCK_BG} stroke={BORDER_GRAY} strokeWidth="1.5" />
 
-      {/* KV Cache 标注 */}
-      <rect x={bx + bw + 15} y={252} width={70} height={28} rx="6" fill="#FF9500" stroke="#C45500" strokeWidth="1" opacity="0.7" />
-      <text x={bx + bw + 50} y={267} textAnchor="middle" dominantBaseline="middle" fill="#ffffff" fontSize="8" fontWeight="600">KV Cache</text>
-      <line x1={bx + bw} y1={266} x2={bx + bw + 15} y2={266} stroke="#FF9500" strokeWidth="1" strokeDasharray="3 2" />
+      {/* Attention 粉色背景区域 */}
+      <rect x={bx - 20} y={Y.norm1 - 10} width={bw + 40} height={Y.plus1 - Y.norm1 + 40} rx="10" fill={PINK_BG} stroke="none" />
 
-      {/* Block 到 Final */}
-      <line x1={cx} y1={490} x2={cx} y2={bottom[0].y} stroke="#C7C7CC" strokeWidth="1.5" markerEnd="url(#arrow)" />
+      {/* ⊕ Residual 2 (FFN 后) */}
+      <ResidualPlus cx={cx + 30} cy={Y.plus2} />
+      {/* 残差跳线 2 */}
+      <path d={`M${cx + 30},${Y.norm2 + 30} L${cx + 30},${Y.plus2 + 10}`} fill="none" stroke="#666" strokeWidth="1" />
+      <path d={`M${bx + bw + 30},${Y.norm2 + 15} L${cx + 40},${Y.plus2}`} fill="none" stroke="#666" strokeWidth="1" strokeDasharray="none" />
+      {/* 右侧跳线 */}
+      <path d={`M${bx + bw + 30},${Y.plus2} L${bx + bw + 30},${Y.norm2 + 15}`} fill="none" stroke="#666" strokeWidth="1" />
 
-      {/* 底部层 */}
-      {bottom.map((l, i) => (
-        <g key={`b${i}`}>
-          <rect x={bx} y={l.y} width={bw} height={l.h} rx="8" fill={l.color.fill} stroke={l.color.stroke} strokeWidth="1.5" />
-          <text x={cx} y={l.y + l.h / 2 - (l.sub ? 4 : 0)} textAnchor="middle" dominantBaseline="middle" fill={l.color.text} fontSize="11" fontWeight="600">{l.label}</text>
-          {l.sub && <text x={cx} y={l.y + l.h / 2 + 10} textAnchor="middle" dominantBaseline="middle" fill={l.color.text} fontSize="8" opacity="0.7">{l.sub}</text>}
-          {i < bottom.length - 1 && <line x1={cx} y1={l.y + l.h} x2={cx} y2={bottom[i + 1].y} stroke="#C7C7CC" strokeWidth="1.5" markerEnd="url(#arrow)" />}
-        </g>
-      ))}
+      {/* Feed forward */}
+      <LayerBox x={bx} y={Y.ffn} w={bw} h={32} label="Feed forward" />
+      <Arrow x1={cx} y1={Y.ffn + 32} x2={cx} y2={Y.norm2} />
+
+      {/* RMSNorm 2 */}
+      <LayerBox x={bx} y={Y.norm2} w={bw} h={28} label={`${norm} 2`} />
+      <Arrow x1={cx} y1={Y.norm2 + 28} x2={cx} y2={Y.plus1 - 10} />
+
+      {/* ⊕ Residual 1 (Attention 后) */}
+      <ResidualPlus cx={cx + 30} cy={Y.plus1} />
+      {/* 残差跳线 1 */}
+      <path d={`M${bx + bw + 30},${Y.plus1} L${bx + bw + 30},${Y.norm1 + 14}`} fill="none" stroke="#666" strokeWidth="1" />
+
+      {/* Masked grouped-query attention */}
+      <LayerBox x={bx + 10} y={Y.attn} w={bw - 20} h={40} label={attnType.length > 20 ? attnType.slice(0, 20) : attnType} fill={DARK_ATTN} stroke="#444" textColor="#fff" fontSize={attnType.length > 18 ? 9 : 10} />
+
+      {/* RMSNorm 1 */}
+      <LayerBox x={bx} y={Y.norm1} w={bw} h={28} label={`${norm} 1`} />
+
+      {/* Block 内连线 */}
+      <Arrow x1={cx} y1={Y.plus2 + 10} x2={cx} y2={Y.ffn} />
+      <Arrow x1={cx} y1={Y.attn + 40} x2={cx} y2={Y.plus1 - 10} />
+      <Arrow x1={cx} y1={Y.norm1 + 28} x2={cx} y2={Y.attn} />
+
+      {/* Block 重复次数标注（左下角，品红色） */}
+      <text x={bx - 25} y={Y.blockBot - 5} textAnchor="end" fill={MAGENTA} fontSize="14" fontWeight="800">{layers} ×</text>
+
+      {/* ── RoPE 外挂（左侧） ── */}
+      <LayerBox x={bx - 120} y={Y.attn + 5} w={70} h={28} label={pos} fontSize={10} />
+      <line x1={bx - 50} y1={Y.attn + 19} x2={bx + 10} y2={Y.attn + 19} stroke="#666" strokeWidth="1" markerEnd="url(#raschka-arrow)" />
+
+      {/* Block → Embedding 连线 */}
+      <Arrow x1={cx} y1={Y.blockBot} x2={cx} y2={Y.embed} />
+
+      {/* ── Token embedding layer ── */}
+      <LayerBox x={bx - 10} y={Y.embed} w={bw + 20} h={32} label="Token embedding layer" />
+      <Arrow x1={cx} y1={Y.embed + 32} x2={cx} y2={Y.tokenized} />
+
+      {/* Tokenized text */}
+      <LayerBox x={bx + 10} y={Y.tokenized} w={bw - 20} h={28} label="Tokenized text" fill="#fff" stroke={BORDER_GRAY} />
+
+      {/* Sample input text 标签 */}
+      <text x={cx} y={Y.inputLabel} textAnchor="middle" fill="#666" fontSize="10" fontStyle="italic">Sample input text</text>
+      <Arrow x1={cx} y1={Y.inputLabel + 6} x2={cx} y2={Y.tokenized + 28} />
+
+      {/* ══════════ 右侧参数标注 ══════════ */}
+      {/* Vocabulary size */}
+      <Annotation x1={cx + 20} y1={Y.output - 5} x2={width - 150} y2={Y.output - 10} label="Vocabulary size of" value={vocab} />
+
+      {/* Heads */}
+      {heads !== 'H' && (
+        <Annotation x1={bx + bw + 5} y1={Y.attn + 15} x2={width - 150} y2={Y.attn} label="" value={`${heads} heads`} />
+      )}
+
+      {/* Hidden layer dimension */}
+      {hiddenSize !== 'd' && (
+        <Annotation x1={bx + bw + 5} y1={Y.ffn + 16} x2={width - 150} y2={Y.ffn + 5} label="Hidden layer dimension of" value={hiddenSize} />
+      )}
+
+      {/* Embedding dimension */}
+      {hiddenSize !== 'd' && (
+        <Annotation x1={bx + bw + 15} y1={Y.embed + 16} x2={width - 150} y2={Y.embed + 10} label="Embedding dimension of" value={hiddenSize} />
+      )}
+
+      {/* Context length */}
+      {context && (
+        <Annotation x1={bx - 25} y1={Y.attn + 35} x2={20} y2={Y.blockBot + 5} label="Supported context length of" value={context} align="left" />
+      )}
+
+      {/* ══════════ 右侧 FFN 展开细节 ══════════ */}
+      <g transform={`translate(${width - 175}, ${Y.norm2 - 60})`}>
+        <rect x="0" y="0" width="155" height="110" rx="10" fill="#fff" stroke={BORDER_GRAY} strokeWidth="1" />
+        {/* FFN 内部结构 */}
+        <LayerBox x={10} y={10} w={60} h={22} label="Linear" fontSize={8} />
+        <LayerBox x={85} y={10} w={60} h={22} label="Linear" fontSize={8} />
+        <LayerBox x={10} y={75} w={60} h={22} label="Linear" fontSize={8} />
+        {/* SiLU / SwiGLU */}
+        <LayerBox x={25} y={42} w={55} h={22} label={activation.includes('SwiGLU') ? 'SiLU activation' : activation} fontSize={7.5} />
+        {/* × 符号 */}
+        <MultiplyCross cx={105} cy={53} r={8} />
+        {/* 连线 */}
+        <line x1="40" y1="32" x2="40" y2="42" stroke="#666" strokeWidth="1" />
+        <line x1="52" y1="64" x2="52" y2="75" stroke="#666" strokeWidth="1" />
+        <line x1="115" y1="32" x2="115" y2="45" stroke="#666" strokeWidth="1" />
+        <line x1="105" y1="61" x2="70" y2="86" stroke="#666" strokeWidth="1" />
+        <line x1="70" y1="86" x2="70" y2="75" stroke="#666" strokeWidth="1" markerEnd="url(#raschka-arrow)" />
+        {/* 标注 */}
+        <text x="78" y="105" textAnchor="middle" fill="#999" fontSize="7">Feed Forward Detail ({activation})</text>
+      </g>
+      {/* FFN 展开连线 */}
+      <line x1={bx + bw} y1={Y.ffn + 16} x2={width - 175} y2={Y.norm2 - 5} stroke="#999" strokeWidth="0.8" strokeDasharray="3 3" />
 
       {/* 箭头定义 */}
       <defs>
-        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <path d="M0,0 L8,3 L0,6 Z" fill="#C7C7CC" />
+        <marker id="raschka-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#666" />
         </marker>
       </defs>
-
-      {/* 图例 */}
-      <g transform="translate(15, 510)">
-        <text x="0" y="0" fontSize="9" fontWeight="700" fill="#1a1a2e">图例</text>
-        {[
-          { color: COLORS.blue, label: 'Embedding / LM Head' },
-          { color: COLORS.orange, label: 'Attention' },
-          { color: COLORS.purple, label: 'FFN / Position' },
-          { color: COLORS.green, label: 'Normalization' },
-          { color: COLORS.red, label: 'MoE / MTP (可选)' },
-        ].map((item, i) => (
-          <g key={i} transform={`translate(0, ${14 + i * 18})`}>
-            <rect x="0" y="0" width="14" height="10" rx="3" fill={item.color.fill} />
-            <text x="20" y="8" fontSize="8" fill="#8E8E93">{item.label}</text>
-          </g>
-        ))}
-      </g>
     </svg>
   );
 }
 
-/* ── MoE 架构 SVG ── */
-function MoEArchSVG({ width = 560 }) {
-  const cx = width / 2;
-  const totalH = 480;
+/* ══════════════════════════════════════════════════════════════
+   MoEArchSVG — Raschka 风格 MoE 架构图
+   DeepSeek V3 / Qwen3 MoE 风格
+   ══════════════════════════════════════════════════════════════ */
+function MoEArchSVG({ factSheet = {}, modelName = '', width = 660 }) {
+  const fs = factSheet;
+  const name = modelName || 'MoE Transformer';
+  const layers = fs.layers || 'N';
+  const vocab = fs.vocab || '128K';
+  const attnType = fs.attention || 'MLA';
+  const experts = fs.experts || '256 experts + 1 shared, Top-8';
+  const norm = fs.normalization || 'RMSNorm';
+  const pos = fs.positionalEncoding || 'RoPE';
+  const activation = fs.activation || 'SwiGLU';
+  const precision = fs.precision || '';
+  const context = fs.context || '';
+
+  const cx = 280;
+  const bw = 210;
+  const bx = cx - bw / 2;
 
   return (
-    <svg viewBox={`0 0 ${width} ${totalH}`} className="w-full max-w-[560px]" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif' }}>
-      <rect x="0" y="0" width={width} height={totalH} rx="12" fill="#FAFAFA" />
+    <svg viewBox={`0 0 ${width} 750`} className="w-full max-w-[660px]" style={{ fontFamily: "'Helvetica Neue', Arial, 'PingFang SC', sans-serif" }}>
+      {/* 外层背景 */}
+      <rect x="5" y="5" width={width - 10} height="740" rx="16" fill={LIGHT_GRAY} stroke={BORDER_GRAY} strokeWidth="1" />
 
-      {/* MLA 区域 */}
-      <rect x="30" y="10" width={width - 60} height="180" rx="10" fill="#FFF8E1" stroke="#FF9500" strokeWidth="2" />
-      <rect x={cx - 100} y="6" width="200" height="20" rx="4" fill="#FF9500" />
-      <text x={cx} y="18" textAnchor="middle" dominantBaseline="middle" fill="#ffffff" fontSize="10" fontWeight="700">Multi-head Latent Attention (MLA)</text>
+      {/* 标题 */}
+      <text x={cx} y="28" textAnchor="middle" fill="#111" fontSize="16" fontWeight="800">{name}</text>
 
-      {/* MLA 内部 */}
-      <rect x="50" y="40" width="120" height="35" rx="6" fill="#FF9500" stroke="#C45500" strokeWidth="1" />
-      <text x="110" y="58" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="9" fontWeight="600">Q Projection</text>
+      {/* ── 顶部 ── */}
+      <LayerBox x={bx} y={50} w={bw} h={28} label="Linear output layer" />
+      <Arrow x1={cx} y1={78} x2={cx} y2={95} />
+      <LayerBox x={bx} y={95} w={bw} h={28} label={`Final ${norm}`} />
+      <Arrow x1={cx} y1={123} x2={cx} y2={140} />
 
-      <rect x={cx - 60} y="40" width="130" height="35" rx="6" fill="#FF3B30" stroke="#D70015" strokeWidth="1" />
-      <text x={cx + 5} y="53" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="9" fontWeight="600">KV 低秩压缩</text>
-      <text x={cx + 5} y="65" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="7" opacity="0.8">d → d_c (64× 压缩)</text>
+      {/* ── MoE Block 外框 ── */}
+      <rect x={bx - 35} y={140} width={bw + 70} height={420} rx="12" fill={BLOCK_BG} stroke={BORDER_GRAY} strokeWidth="1.5" />
 
-      <rect x={width - 180} y="40" width="120" height="35" rx="6" fill="#AF52DE" stroke="#8944AB" strokeWidth="1" />
-      <text x={width - 120} y="58" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="9" fontWeight="600">RoPE 解耦</text>
+      {/* ── MoE 部分（上半）── */}
+      {/* ⊕ Residual 2 */}
+      <ResidualPlus cx={cx + 35} cy={165} />
+      <path d={`M${bx + bw + 35},${165} L${bx + bw + 35},${230}`} fill="none" stroke="#666" strokeWidth="1" />
 
-      {/* KV Cache */}
-      <rect x="50" y="95" width="90" height="30" rx="6" fill="#FF3B30" stroke="#D70015" strokeWidth="1" opacity="0.8" />
-      <text x="95" y="111" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="8" fontWeight="600">KV Cache</text>
-      <text x="95" y="138" textAnchor="middle" dominantBaseline="middle" fill="#FF3B30" fontSize="7">仅存 d_c 向量</text>
-
-      {/* Attention Compute */}
-      <rect x={cx - 100} y="100" width="200" height="35" rx="6" fill="#FF9500" stroke="#C45500" strokeWidth="1.5" />
-      <text x={cx} y="113" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="10" fontWeight="600">Attention Compute</text>
-      <text x={cx} y="127" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="7" opacity="0.8">softmax(QK^T/√d)V</text>
-
-      {/* 连线 Q → Attn */}
-      <line x1="110" y1="75" x2="110" y2="85" stroke="#FF9500" strokeWidth="1" />
-      <line x1="110" y1="85" x2={cx - 60} y2="85" stroke="#FF9500" strokeWidth="1" />
-      <line x1={cx - 60} y1="85" x2={cx - 60} y2="100" stroke="#FF9500" strokeWidth="1" markerEnd="url(#arrowO)" />
-      {/* KV → Attn */}
-      <line x1={cx + 5} y1="75" x2={cx + 5} y2="100" stroke="#FF3B30" strokeWidth="1" markerEnd="url(#arrowR)" />
-      {/* RoPE → Attn */}
-      <line x1={width - 120} y1="75" x2={width - 120} y2="85" stroke="#AF52DE" strokeWidth="1" />
-      <line x1={width - 120} y1="85" x2={cx + 60} y2="85" stroke="#AF52DE" strokeWidth="1" />
-      <line x1={cx + 60} y1="85" x2={cx + 60} y2="100" stroke="#AF52DE" strokeWidth="1" markerEnd="url(#arrowP)" />
-
-      {/* Residual */}
-      <rect x={cx - 60} y="150" width="120" height="28" rx="6" fill="#F2F2F7" stroke="#8E8E93" strokeWidth="1" />
-      <text x={cx} y="165" textAnchor="middle" dominantBaseline="middle" fill="#1a1a2e" fontSize="9" fontWeight="600">+ Residual</text>
-      <line x1={cx} y1="135" x2={cx} y2="150" stroke="#C7C7CC" strokeWidth="1" markerEnd="url(#arrowG)" />
-
-      {/* MoE 区域 */}
-      <rect x="30" y="200" width={width - 60} height="230" rx="10" fill="#FFEBEE" stroke="#FF3B30" strokeWidth="2" />
-      <rect x={cx - 90} y="196" width="180" height="20" rx="4" fill="#FF3B30" />
-      <text x={cx} y="208" textAnchor="middle" dominantBaseline="middle" fill="#ffffff" fontSize="10" fontWeight="700">DeepSeekMoE (细粒度)</text>
+      {/* DeepSeekMoE / MoE Router */}
+      <rect x={bx - 15} y={190} width={bw + 30} height={140} rx="10" fill="#FFF0F0" stroke="#E57373" strokeWidth="1.5" />
+      <text x={cx} y={205} textAnchor="middle" fill="#C62828" fontSize="9" fontWeight="700">DeepSeekMoE</text>
 
       {/* Router */}
-      <rect x={cx - 80} y="228" width="160" height="35" rx="6" fill="#FF3B30" stroke="#D70015" strokeWidth="1.5" />
-      <text x={cx} y="241" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="10" fontWeight="600">Router (Sigmoid)</text>
-      <text x={cx} y="255" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="7" opacity="0.8">无辅助损失负载均衡</text>
+      <LayerBox x={bx + 15} y={215} w={bw - 30} h={26} label="Router (Sigmoid → Top-K)" fill="#E57373" stroke="#C62828" textColor="#fff" fontSize={9} />
 
-      <line x1={cx} y1="178" x2={cx} y2="228" stroke="#C7C7CC" strokeWidth="1.5" markerEnd="url(#arrowG)" />
-
-      {/* Experts */}
+      {/* Experts 可视化 */}
       {[
-        { x: 50,  label: '共享专家', sub: '始终激活', color: COLORS.green },
-        { x: 160, label: 'Expert 1', sub: 'SwiGLU', color: COLORS.purple },
-        { x: 260, label: 'Expert 2', sub: 'SwiGLU', color: COLORS.purple },
-        { x: 400, label: 'Expert 8', sub: 'SwiGLU', color: COLORS.purple },
+        { x: bx - 5, label: 'Shared', sub: '始终激活', fill: '#A5D6A7', stroke: '#66BB6A' },
+        { x: bx + 50, label: 'Expert 1', sub: activation, fill: '#CE93D8', stroke: '#AB47BC' },
+        { x: bx + 105, label: 'Expert 2', sub: activation, fill: '#CE93D8', stroke: '#AB47BC' },
+        { x: bx + 160, label: '···', sub: '', fill: 'none', stroke: 'none' },
       ].map((e, i) => (
         <g key={i}>
-          <rect x={e.x} y="285" width="90" height="38" rx="6" fill={e.color.fill} stroke={e.color.stroke} strokeWidth="1" />
-          <text x={e.x + 45} y="299" textAnchor="middle" dominantBaseline="middle" fill={e.color.text} fontSize="9" fontWeight="600">{e.label}</text>
-          <text x={e.x + 45} y="314" textAnchor="middle" dominantBaseline="middle" fill={e.color.text} fontSize="7" opacity="0.8">{e.sub}</text>
-          <line x1={cx} y1="263" x2={e.x + 45} y2="285" stroke={e.color.stroke} strokeWidth="1" opacity="0.6" />
+          {e.fill !== 'none' ? (
+            <>
+              <rect x={e.x} y={252} width={48} height={35} rx="5" fill={e.fill} stroke={e.stroke} strokeWidth="1" />
+              <text x={e.x + 24} y={265} textAnchor="middle" fill="#333" fontSize="7" fontWeight="600">{e.label}</text>
+              <text x={e.x + 24} y={278} textAnchor="middle" fill="#666" fontSize="6">{e.sub}</text>
+            </>
+          ) : (
+            <text x={e.x + 24} y={272} textAnchor="middle" fill="#AB47BC" fontSize="14" fontWeight="700">···</text>
+          )}
+          {e.fill !== 'none' && <line x1={cx} y1={241} x2={e.x + 24} y2={252} stroke="#999" strokeWidth="0.8" />}
         </g>
       ))}
 
-      {/* 省略号 */}
-      <text x="355" y="305" textAnchor="middle" dominantBaseline="middle" fill="#8944AB" fontSize="14" fontWeight="700">···</text>
-
-      {/* 专家说明 */}
-      <text x={cx} y="340" textAnchor="middle" dominantBaseline="middle" fill="#8944AB" fontSize="8" fontStyle="italic">256 个细粒度专家 · Top-8 激活 · d_ff=2048</text>
-
       {/* 加权合并 */}
-      <rect x={cx - 80} y="355" width="160" height="30" rx="6" fill="#FF3B30" stroke="#D70015" strokeWidth="1" />
-      <text x={cx} y="371" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="9" fontWeight="600">加权合并</text>
-
-      {/* Experts → Merge */}
-      {[95, 205, 305, 445].map((ex, i) => (
-        <line key={i} x1={ex} y1="323" x2={cx} y2="355" stroke="#8944AB" strokeWidth="1" opacity="0.4" />
+      <LayerBox x={bx + 15} y={298} w={bw - 30} h={22} label="加权合并" fill="#FFCDD2" stroke="#E57373" textColor="#C62828" fontSize={9} />
+      {/* Experts → Merge 连线 */}
+      {[bx + 19, bx + 74, bx + 129].map((ex, i) => (
+        <line key={i} x1={ex} y1={287} x2={cx} y2={298} stroke="#E57373" strokeWidth="0.8" opacity="0.5" />
       ))}
 
-      {/* Residual */}
-      <rect x={cx - 60} y="400" width="120" height="28" rx="6" fill="#F2F2F7" stroke="#8E8E93" strokeWidth="1" />
-      <text x={cx} y="415" textAnchor="middle" dominantBaseline="middle" fill="#1a1a2e" fontSize="9" fontWeight="600">+ Residual</text>
-      <line x1={cx} y1="385" x2={cx} y2="400" stroke="#C7C7CC" strokeWidth="1" markerEnd="url(#arrowG)" />
+      <Arrow x1={cx} y1={320} x2={cx} y2={340} />
 
-      {/* LM Head + MTP */}
-      <rect x={cx - 60} y="442" width="120" height="28" rx="6" fill="#007AFF" stroke="#0056B3" strokeWidth="1.5" />
-      <text x={cx} y="457" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="10" fontWeight="600">LM Head</text>
-      <line x1={cx} y1="428" x2={cx} y2="442" stroke="#C7C7CC" strokeWidth="1.5" markerEnd="url(#arrowG)" />
+      {/* RMSNorm 2 */}
+      <LayerBox x={bx} y={340} w={bw} h={26} label={`${norm} 2`} />
+      <Arrow x1={cx} y1={366} x2={cx} y2={385} />
 
-      <rect x={width - 150} y="442" width="100" height="28" rx="6" fill="#FF3B30" stroke="#D70015" strokeWidth="1" strokeDasharray="3 2" />
-      <text x={width - 100} y="457" textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="8" fontWeight="600">MTP Module</text>
-      <line x1={cx + 60} y1="456" x2={width - 150} y2="456" stroke="#FF3B30" strokeWidth="1" strokeDasharray="3 2" />
+      {/* ⊕ Residual 1 */}
+      <ResidualPlus cx={cx + 35} cy={390} />
+      <path d={`M${bx + bw + 35},${390} L${bx + bw + 35},${450}`} fill="none" stroke="#666" strokeWidth="1" />
+
+      {/* Attention 粉色背景 */}
+      <rect x={bx - 15} y={410} width={bw + 30} height={70} rx="8" fill={PINK_BG} stroke="none" />
+
+      {/* Attention */}
+      <LayerBox x={bx + 10} y={420} w={bw - 20} h={36} label={attnType} fill={DARK_ATTN} stroke="#444" textColor="#fff" fontSize={attnType.length > 15 ? 9 : 10} />
+
+      {/* RMSNorm 1 */}
+      <LayerBox x={bx} y={500} w={bw} h={26} label={`${norm} 1`} />
+      <Arrow x1={cx} y1={456} x2={cx} y2={500} />
+
+      {/* Block 内连线 */}
+      <Arrow x1={cx} y1={165 + 10} x2={cx} y2={190} />
+
+      {/* RoPE 外挂 */}
+      <LayerBox x={bx - 120} y={430} w={65} h={24} label={pos} fontSize={9} />
+      <line x1={bx - 55} y1={442} x2={bx + 10} y2={442} stroke="#666" strokeWidth="1" markerEnd="url(#raschka-arrow-moe)" />
+
+      {/* Block 重复次数 */}
+      <text x={bx - 30} y={555} textAnchor="end" fill={MAGENTA} fontSize="14" fontWeight="800">{layers} ×</text>
+
+      {/* Block → Embedding */}
+      <Arrow x1={cx} y1={560} x2={cx} y2={585} />
+
+      {/* Embedding */}
+      <LayerBox x={bx - 10} y={585} w={bw + 20} h={30} label="Token embedding layer" />
+      <Arrow x1={cx} y1={615} x2={cx} y2={640} />
+
+      {/* Tokenized text */}
+      <LayerBox x={bx + 10} y={640} w={bw - 20} h={26} label="Tokenized text" />
+
+      <text x={cx} y={685} textAnchor="middle" fill="#666" fontSize="10" fontStyle="italic">Sample input text</text>
+
+      {/* ══════════ 右侧参数标注 ══════════ */}
+      <Annotation x1={cx + 30} y1={50} x2={width - 170} y2={42} label="Vocabulary size of" value={vocab} />
+
+      <Annotation x1={bx + bw + 10} y1={440} x2={width - 170} y2={420} label="" value={attnType} />
+
+      {context && (
+        <Annotation x1={bx - 30} y1={500} x2={15} y2={560} label="Supported context length of" value={context} align="left" />
+      )}
+
+      <Annotation x1={bx + bw + 10} y1={260} x2={width - 170} y2={250} label="Experts:" value={experts.length > 30 ? experts.slice(0, 30) + '…' : experts} />
+
+      {precision && (
+        <Annotation x1={bx + bw + 10} y1={310} x2={width - 170} y2={305} label="Training precision:" value={precision} />
+      )}
+
+      <Annotation x1={bx + bw + 15} y1={595} x2={width - 170} y2={590} label="Embedding dimension of" value={fs.hiddenSize || 'd'} />
+
+      {/* MTP 模块（可选，虚线） */}
+      <rect x={width - 175} y={55} width={120} height={35} rx="8" fill="none" stroke={MAGENTA} strokeWidth="1" strokeDasharray="4 3" />
+      <text x={width - 115} y={68} textAnchor="middle" fill={MAGENTA} fontSize="8" fontWeight="600">MTP Module</text>
+      <text x={width - 115} y={80} textAnchor="middle" fill="#999" fontSize="7">Multi-Token Prediction</text>
+      <line x1={bx + bw} y1={64} x2={width - 175} y2={72} stroke={MAGENTA} strokeWidth="0.8" strokeDasharray="3 3" />
 
       {/* 箭头定义 */}
       <defs>
-        <marker id="arrowO" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5 Z" fill="#FF9500" /></marker>
-        <marker id="arrowR" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5 Z" fill="#FF3B30" /></marker>
-        <marker id="arrowP" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5 Z" fill="#AF52DE" /></marker>
-        <marker id="arrowG" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5 Z" fill="#C7C7CC" /></marker>
+        <marker id="raschka-arrow-moe" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#666" />
+        </marker>
       </defs>
     </svg>
   );
 }
 
-/* ── 架构演进路线 SVG ── */
-function EvolutionPathSVG({ path, color, icon, title, benefit }) {
+/* ══════════════════════════════════════════════════════════════
+   EvolutionPathSVG — 演进路线图（保持不变）
+   ══════════════════════════════════════════════════════════════ */
+function EvolutionPathSVG({ path, color }) {
   const w = 700;
   const h = 70;
   const nodeW = 100;
   const gap = (w - 40 - path.length * nodeW) / (path.length - 1);
 
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif' }}>
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full" style={{ fontFamily: "'Helvetica Neue', Arial, 'PingFang SC', sans-serif" }}>
       <rect x="0" y="0" width={w} height={h} rx="10" fill={color.light} stroke={color.fill} strokeWidth="1.5" />
       {path.map((node, i) => {
         const x = 20 + i * (nodeW + gap);
@@ -299,5 +462,5 @@ function EvolutionPathSVG({ path, color, icon, title, benefit }) {
   );
 }
 
-/* ── 导出主组件 ── */
+/* ── 导出 ── */
 export { TransformerBlockSVG, MoEArchSVG, EvolutionPathSVG, COLORS };
