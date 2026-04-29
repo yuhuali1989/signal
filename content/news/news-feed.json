@@ -2994,5 +2994,77 @@
     ],
     "hot": false,
     "region": "global"
+  },
+  {
+    "id": "news-20260429-01",
+    "title": "Qwen3 全系列开源：235B MoE 旗舰登顶开源榜，思考/非思考双模式成新标配",
+    "summary": "阿里云正式开源 Qwen3 全系列模型，包括 235B-A22B MoE 旗舰、32B/14B/8B/4B/1.7B/0.6B 密集版本。旗舰版在 AIME 2025、LiveCodeBench、BFCL 等多项基准上超越 DeepSeek-R1 和 GPT-4.1，成为开源最强。最大亮点是「思考/非思考双模式」——同一模型通过 enable_thinking 参数切换深度推理与快速响应，无需部署两套模型。Apache 2.0 协议，HuggingFace 同步发布。",
+    "source": "阿里云官博",
+    "url": "https://qwenlm.github.io/blog/qwen3/",
+    "date": "2026-04-29",
+    "category": "llm",
+    "tags": ["Qwen3", "阿里云", "MoE", "开源", "思考模式"],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260429-02",
+    "title": "微软 Build 2026 预告：Copilot+ PC 全面接入 GPT-5.5，端侧 AI 进入旗舰时代",
+    "summary": "微软宣布将在 Build 2026 大会（5 月）发布 Copilot+ PC 新一代能力，核心是将 GPT-5.5 的推理能力下沉到端侧，通过 NPU + 云端混合推理实现「离线可用、联网增强」。Windows AI Studio 同步升级，支持本地微调 Phi-4 和 Qwen3 系列。这是微软将 AI 能力从云端向端侧全面延伸的关键一步，PC 厂商将迎来新一轮 AI 硬件升级周期。",
+    "source": "微软官博",
+    "url": "https://blogs.microsoft.com/blog/",
+    "date": "2026-04-29",
+    "category": "infra",
+    "tags": ["微软", "Copilot+", "端侧AI", "Build 2026", "GPT-5.5"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260429-03",
+    "title": "Anthropic 发布 Claude 4 系列技术报告：Sonnet 4 编码能力超越 Opus 3.7，定价下调 40%",
+    "summary": "Anthropic 发布 Claude 4 系列技术报告，Sonnet 4 在 SWE-bench Verified 上达到 72.7%，超越上一代旗舰 Opus 3.7（72.3%），同时 API 定价下调 40%。Claude 4 系列引入「扩展思考 v2」——支持在推理过程中调用工具、搜索网络，形成「思考-行动-再思考」的 Agent 循环。Haiku 4 则主打超低延迟，适合实时对话场景。",
+    "source": "Anthropic 官博",
+    "url": "https://www.anthropic.com/news",
+    "date": "2026-04-29",
+    "category": "llm",
+    "tags": ["Anthropic", "Claude 4", "Sonnet 4", "编码", "扩展思考"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260429-04",
+    "title": "字节跳动豆包大模型 API 全线降价 80%，国内大模型价格战进入「分厘时代」",
+    "summary": "字节跳动宣布豆包系列大模型 API 全线降价，主力模型 Doubao-pro-32k 从 0.8 元/百万 token 降至 0.16 元，降幅 80%。这是继阿里、腾讯之后又一大厂跟进价格战，国内主流模型 API 价格已普遍低于 0.2 元/百万 token。分析人士指出，价格战加速了 AI 应用层的爆发，但也压缩了中小模型厂商的生存空间，行业整合预期增强。",
+    "source": "IT之家",
+    "url": "https://www.ithome.com/",
+    "date": "2026-04-29",
+    "category": "llm",
+    "tags": ["字节跳动", "豆包", "降价", "价格战", "API"],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260429-05",
+    "title": "Meta 开源 Llama 4 Scout 17B：MoE 架构 + 10M 上下文，单卡可跑的多模态旗舰",
+    "summary": "Meta 正式开源 Llama 4 Scout 17B（17B 激活参数，109B 总参数），采用 MoE 架构，支持 10M token 超长上下文，是目前开源模型中上下文窗口最长的。Scout 原生支持文本+图像多模态输入，在 DocVQA、InfoVQA 等文档理解任务上超越 GPT-4V。单张 H100 可完整运行，大幅降低部署门槛。Llama 4 系列同步发布 Maverick 400B MoE 版本，专为数据中心优化。",
+    "source": "Meta AI 官博",
+    "url": "https://ai.meta.com/blog/",
+    "date": "2026-04-29",
+    "category": "llm",
+    "tags": ["Meta", "Llama 4", "Scout", "MoE", "开源", "多模态"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260429-06",
+    "title": "国家数据局发布《AI 数据要素流通指引》，数据资产入表迎来政策加速",
+    "summary": "国家数据局正式发布《人工智能数据要素流通指引（2026 版）》，明确 AI 训练数据的确权、定价、流通和收益分配规则，首次将「AI 训练数据集」纳入数据资产入表范畴。指引要求大型 AI 企业建立数据来源可追溯机制，并对合成数据的使用比例作出限制（不超过训练数据总量的 40%）。这是中国 AI 数据治理从监管框架走向可操作规则的重要一步。",
+    "source": "国家数据局官网",
+    "url": "https://www.nda.gov.cn/",
+    "date": "2026-04-29",
+    "category": "infra",
+    "tags": ["数据要素", "AI监管", "数据资产", "国家数据局", "合规"],
+    "hot": false,
+    "region": "china"
   }
 ]

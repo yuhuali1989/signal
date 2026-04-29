@@ -47,6 +47,8 @@ const TIMELINE = [
   { date: '2026-04', model: 'Claude Opus 4.7', innovation: '编码专项强化 + 多步骤代码重构能力', contribution: 'SWE-bench Pro 87.6%（超越所有已知模型）；跨文件依赖分析与复杂重构能力大幅提升；同步修复 Claude Code 质量回退问题', tag: '编码增强', color: 'bg-purple-100 text-purple-700' },
   { date: '2026-04', model: 'Qwen3.6-35B-A3B（开源）', innovation: '轻量 MoE 专家池扩展：同等激活参数（3B）下增加专家数量', contribution: '总参数 35B / 激活 3B，知识密集型任务（MMLU-Pro 75.8%）相比 27B 版本提升 3.3pp；验证了"增加专家池 > 增加激活参数"对知识覆盖的边际收益规律', tag: 'MoE扩展', color: 'bg-amber-100 text-amber-700' },
   { date: '2026-04', model: 'Gemini 3.1 Pro 深度研究代理', innovation: '多源并行检索 + 研究规划 + 迭代深化的 Agent 架构', contribution: '首个深度集成 Google Scholar/YouTube/Books 的多模态研究 Agent；支持数小时自主研究任务；研究规划→并行检索→可信度评估→迭代深化的四层 Agent 架构', tag: 'Agent架构', color: 'bg-green-100 text-green-700' },
+  { date: '2026-04', model: 'Qwen3 全系列开源（235B-A22B 旗舰）', innovation: '细粒度 128 专家 MoE + 思考/非思考双模式（enable_thinking 参数切换）+ YaRN 长上下文', contribution: 'AIME 2025 85.7% 超越 DeepSeek-R1；同一模型通过参数切换深度推理与快速响应，无需部署两套模型；Apache 2.0 全系列开源（235B/32B/14B/8B/4B/1.7B/0.6B）', tag: 'MoE+双模式', color: 'bg-amber-100 text-amber-700' },
+  { date: '2026-04', model: 'Llama 4 Scout（109B MoE）', innovation: '10M token 超长上下文（开源最长）+ MoE 单卡可跑 + 原生多模态', contribution: '10M token 上下文是开源模型最长记录（GPT-4.1 为 1M）；109B 总参数 / 17B 激活，单张 H100 可完整运行；原生文本+图像多模态，DocVQA 超越 GPT-4V；Apache 2.0', tag: '长上下文', color: 'bg-blue-100 text-blue-700' },
 ];
 
 const EVOLUTION_PATHS = [
@@ -138,7 +140,7 @@ export default function ArchEvolution() {
       {/* 页头 */}
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-1">模型架构演进</h2>
-      <p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-27（含 Qwen3.6-35B-A3B / Gemini 3.1 Pro 深度研究代理）</p>
+<p className="text-sm text-gray-500">从关键 Layer 到演进路径，追踪 2024→2026 大模型架构创新脉络 · 更新至 2026-04-29（含 Qwen3 全系列开源 / Llama 4 Scout 10M 上下文）</p>
       </div>
 
       {/* 子 Tab */}
@@ -194,7 +196,7 @@ export default function ArchEvolution() {
       {/* ── 创新时间线 ── */}
       {activeTab === 'timeline' && (
         <div>
-          <p className="text-xs text-gray-400 mb-6">2024-05 至今，每次新模型发布时若有关键 Layer 创新，在此追踪记录。共 {TIMELINE.length} 条记录，最新更新至 2026-04-24（Qwen3.6-27B + Claude Opus 4.7）。</p>
+<p className="text-xs text-gray-400 mb-6">2024-05 至今，每次新模型发布时若有关键 Layer 创新，在此追踪记录。共 {TIMELINE.length} 条记录，最新更新至 2026-04-29（Qwen3 全系列开源 + Llama 4 Scout）。</p>
           <div className="relative">
             {/* 竖线 */}
             <div className="absolute left-[88px] top-0 bottom-0 w-px bg-gray-200" />

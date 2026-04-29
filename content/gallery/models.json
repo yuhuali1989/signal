@@ -1517,7 +1517,15 @@
       "Causal 3D VAE（4×8×8 压缩），支持图像+视频联合训练",
       "支持 Image-to-Video（I2V）扩展版本"
     ],
-    "tags": ["视频生成", "DiT", "开源", "腾讯", "MLLM", "3D VAE", "世界模型"],
+    "tags": [
+      "视频生成",
+      "DiT",
+      "开源",
+      "腾讯",
+      "MLLM",
+      "3D VAE",
+      "世界模型"
+    ],
     "paperUrl": "https://arxiv.org/abs/2412.03603",
     "blogUrl": "https://huggingface.co/tencent/HunyuanVideo",
     "factSheet": {
@@ -1552,7 +1560,14 @@
       "支持 ComfyUI / Diffusers API",
       "HuggingFace 月下载量 75,121+"
     ],
-    "tags": ["3D生成", "扩散模型", "开源", "腾讯", "DiT", "纹理合成"],
+    "tags": [
+      "3D生成",
+      "扩散模型",
+      "开源",
+      "腾讯",
+      "DiT",
+      "纹理合成"
+    ],
     "paperUrl": "https://arxiv.org/abs/2501.12202",
     "blogUrl": "https://huggingface.co/tencent/Hunyuan3D-2",
     "factSheet": {
@@ -1586,7 +1601,14 @@
       "HuggingFace 月下载量 40,507+",
       "支持 TripoSG 等社区扩展"
     ],
-    "tags": ["3D生成", "PBR材质", "开源", "腾讯", "DiT", "游戏资产"],
+    "tags": [
+      "3D生成",
+      "PBR材质",
+      "开源",
+      "腾讯",
+      "DiT",
+      "游戏资产"
+    ],
     "paperUrl": "https://arxiv.org/abs/2506.15442",
     "blogUrl": "https://huggingface.co/tencent/Hunyuan3D-2.1",
     "factSheet": {
@@ -1619,7 +1641,14 @@
       "支持 Image-to-Video 和 Video-to-Video",
       "Kling API 开放商业化"
     ],
-    "tags": ["视频生成", "DiT", "闭源", "快手", "长视频", "4K"],
+    "tags": [
+      "视频生成",
+      "DiT",
+      "闭源",
+      "快手",
+      "长视频",
+      "4K"
+    ],
     "factSheet": {
       "params": "未公开",
       "architecture": "Video DiT（3D 时空 Transformer）",
@@ -1654,7 +1683,14 @@
       "Apache 2.0 完全开源，支持商业使用",
       "HuggingFace 月下载量 100K+"
     ],
-    "tags": ["视频生成", "DiT", "开源", "阿里", "中文", "Flow Matching"],
+    "tags": [
+      "视频生成",
+      "DiT",
+      "开源",
+      "阿里",
+      "中文",
+      "Flow Matching"
+    ],
     "paperUrl": "https://arxiv.org/abs/2503.20314",
     "blogUrl": "https://huggingface.co/Wan-AI/Wan2.1-T2V-14B",
     "factSheet": {
@@ -1689,7 +1725,14 @@
       "Gemini API 开放商业化",
       "EvalCrafter 物理合理性评分最高"
     ],
-    "tags": ["视频生成", "DiT", "闭源", "Google", "音视频同步", "物理仿真"],
+    "tags": [
+      "视频生成",
+      "DiT",
+      "闭源",
+      "Google",
+      "音视频同步",
+      "物理仿真"
+    ],
     "factSheet": {
       "params": "未公开",
       "architecture": "Video DiT + Audio DiT（联合训练）",
@@ -1723,7 +1766,14 @@
       "三种变体：dev（开源研究）/ schnell（4步快速）/ pro（商业最强）",
       "HuggingFace 月下载量 500K+，社区生态最活跃"
     ],
-    "tags": ["图像生成", "DiT", "开源", "Flow Matching", "MM-DiT", "Black Forest Labs"],
+    "tags": [
+      "图像生成",
+      "DiT",
+      "开源",
+      "Flow Matching",
+      "MM-DiT",
+      "Black Forest Labs"
+    ],
     "paperUrl": "https://arxiv.org/abs/2408.06072",
     "blogUrl": "https://huggingface.co/black-forest-labs/FLUX.1-dev",
     "factSheet": {
@@ -1737,5 +1787,91 @@
       "license": "FLUX.1-dev: FLUX Non-Commercial / FLUX.1-schnell: Apache 2.0"
     },
     "textArch": "┌──────────────────────────────────────┐\n│ FLUX.1 — MM-DiT 开源图像生成 SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 双文本编码器                      │  │\n│ │ T5-XXL（4096维，深度语义理解）    │  │\n│ │ CLIP ViT-L（768维，视觉对齐）     │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本 Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Encoder           │  │\n│ │ 图像 → 高质量潜在表示             │  │\n│ │ + Flow Noise（t 时刻）            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 图像 Tokens          │\n│ ╔══════════════════════════════════╗  │\n│ ║ MM-DiT Block × N（双流架构）     ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ 图像流（Image Stream）       │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ │ AdaLN（t 时间步调制）        │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Joint Attention  ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ 文本流（Text Stream）        │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ║                                   ║  │\n│ ║ 图像和文本 token 各自独立处理     ║  │\n│ ║ 通过 Joint Attention 交互         ║  │\n│ ║ → 文本理解比 SD3 更深             ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Decoder           │  │\n│ │ → 任意分辨率高质量图像（最高 2K）│  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ MM-DiT vs UNet：纯 Transformer 架构 │\n│   文本理解更深，细节更精准            │\n│ ★ Flow Matching：4步快速推理          │\n│   vs DDPM 的 50步，速度 12x           │\n└──────────────────────────────────────┘"
+  },
+  {
+    "id": "qwen3-235b",
+    "name": "Qwen3-235B-A22B",
+    "org": "阿里云",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": true,
+    "params": "235B（激活 22B）",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "description": "阿里云 Qwen3 旗舰开源模型，细粒度 MoE + 双模式推理，在 AIME 2025 等多项基准上超越 DeepSeek-R1，Apache 2.0 协议",
+    "keyInnovation": "思考/非思考双模式（enable_thinking 参数切换）+ 细粒度 128 专家 MoE + YaRN 长上下文扩展",
+    "highlights": [
+      "AIME 2025 达 85.7，超越 DeepSeek-R1（79.8）",
+      "思考/非思考双模式：同一模型切换深度推理与快速响应",
+      "128 路由专家 + 8 共享专家，激活参数仅 22B",
+      "Apache 2.0 协议，可商业化",
+      "全系列 7 个尺寸（235B/32B/14B/8B/4B/1.7B/0.6B）",
+      "HuggingFace 同步发布，社区生态完整"
+    ],
+    "tags": [
+      "LLM",
+      "MoE",
+      "开源",
+      "推理",
+      "阿里云",
+      "双模式"
+    ],
+    "factSheet": {
+      "params": "235B 总参数，22B 激活参数",
+      "architecture": "细粒度 MoE Transformer，Decoder-only",
+      "attention": "GQA（分组查询注意力）",
+      "ffn": "128 路由专家 + 8 共享专家，Top-8 激活",
+      "norm": "RMSNorm",
+      "posEncoding": "RoPE + YaRN 长上下文扩展",
+      "context": "128K tokens",
+      "license": "Apache 2.0",
+      "thinkingMode": "enable_thinking=True/False 参数切换"
+    },
+    "textArch": "Text Input\n     │\n Embedding + RoPE（YaRN 扩展）\n     │\n┌────▼──────────────────────────────┐\n│   Qwen3 MoE Block × N             │\n│  ┌────────────────────────────┐   │\n│  │  GQA（分组查询注意力）      │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  Router → Top-8 Gate       │   │\n│  │  128 路由专家（稀疏激活）   │   │\n│  │  + 8 共享专家（全量激活）   │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n  ┌─────────────▼──────────────┐\n  │  思考模式（enable_thinking）│\n  │  Chain-of-Thought 推理链    │\n  │  或直接输出（非思考模式）   │\n  └─────────────┬──────────────┘\n                │\n            LM Head\n                │\n          Output Tokens"
+  },
+  {
+    "id": "llama4-scout",
+    "name": "Llama 4 Scout",
+    "org": "Meta",
+    "type": "multimodal",
+    "typeLabel": "多模态",
+    "typeIcon": "🌐",
+    "open": true,
+    "params": "109B（激活 17B）",
+    "date": "2026-04",
+    "context": "10M tokens",
+    "attention": "GQA",
+    "description": "Meta 开源多模态旗舰，MoE 架构支持 10M token 超长上下文，单卡 H100 可运行，原生文本+图像多模态",
+    "keyInnovation": "10M token 超长上下文（开源最长）+ MoE 架构单卡可跑 + 原生多模态（文本+图像）",
+    "highlights": [
+      "10M token 上下文，开源模型最长",
+      "单张 H100 可完整运行（17B 激活参数）",
+      "原生多模态：文本 + 图像输入",
+      "DocVQA、InfoVQA 文档理解超越 GPT-4V",
+      "Apache 2.0 协议，可商业化",
+      "同系列 Maverick 400B MoE 版本专为数据中心优化"
+    ],
+    "tags": [
+      "LLM",
+      "MoE",
+      "开源",
+      "多模态",
+      "Meta",
+      "长上下文"
+    ],
+    "factSheet": {
+      "params": "109B 总参数，17B 激活参数",
+      "architecture": "MoE Transformer，Decoder-only",
+      "attention": "GQA",
+      "ffn": "MoE（128 专家，Top-1 激活）",
+      "norm": "RMSNorm",
+      "posEncoding": "RoPE",
+      "context": "10M tokens",
+      "multimodal": "文本 + 图像（原生多模态）",
+      "license": "Llama 4 Community License"
+    },
+    "textArch": "Text + Image Input\n     │\n┌────▼──────────────────────────────┐\n│  Multimodal Encoder               │\n│  图像 → Vision Tokens             │\n│  文本 → Text Tokens               │\n└────────────┬──────────────────────┘\n             │\n Embedding + RoPE（10M 上下文）\n             │\n┌────────────▼──────────────────────┐\n│   Llama 4 MoE Block × N           │\n│  ┌────────────────────────────┐   │\n│  │  GQA（分组查询注意力）      │   │\n│  │  支持 10M token 超长序列   │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  Router → Top-1 Gate       │   │\n│  │  128 专家（稀疏激活）       │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n            LM Head\n                │\n          Output Tokens"
   }
 ]
