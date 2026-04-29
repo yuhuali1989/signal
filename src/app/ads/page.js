@@ -13,6 +13,7 @@ const TABS = [
   { id: 'exp',     name: '实验与归因', icon: '🧪', desc: 'A/B 分层 · Uplift · MMM · Geo-Lift' },
   { id: 'case',    name: '标杆案例', icon: '🔭', desc: 'Meta Advantage+ · PMax · Seed-Ad · 国内横评' },
   { id: 'eco',     name: '生态与挑战', icon: '🌐', desc: '隐私 · 品牌安全 · 反作弊 · 监管 · 博弈' },
+  { id: 'tida',    name: '钛动科技', icon: '🚀', desc: '三年大模型转型规划 · 人力物力 · ROI 测算' },
 ];
 
 export default function AdsPage() {
@@ -92,6 +93,7 @@ export default function AdsPage() {
         {tab === 'exp'     && <ExpSection />}
         {tab === 'case'    && <CaseSection />}
         {tab === 'eco'     && <EcoSection />}
+        {tab === 'tida'    && <TidaSection />}
 
         {/* 底部说明 */}
         <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400 leading-relaxed">
@@ -857,6 +859,157 @@ function CaseSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   ⑨  钛动科技 · 三年大模型转型规划
+   ═══════════════════════════════════════════════════════════ */
+function TidaSection() {
+  const [planTab, setPlanTab] = useState('overview');
+  const planTabs = [
+    { id: 'overview', label: '公司现状 & 痛点' },
+    { id: 'roadmap',  label: '三年转型路线图' },
+    { id: 'resource', label: '人力 & 物力规划' },
+    { id: 'roi',      label: 'ROI 测算' },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* 公司简介 Banner */}
+      <div className="rounded-2xl p-5 border border-[#6c5ce7]/20 bg-gradient-to-br from-[#6c5ce7]/5 to-[#00cec9]/5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xl">🚀</span>
+              <h3 className="text-base font-bold text-gray-900">钛动科技（TiDeal）</h3>
+              <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#6c5ce7]/10 text-[#6c5ce7] border border-[#6c5ce7]/20 font-medium">出海广告 SaaS</span>
+            </div>
+            <p className="text-[13px] text-gray-600 leading-relaxed max-w-2xl">
+              成立于 2015 年，总部上海，专注<span className="font-medium text-gray-800">跨境电商广告投放 SaaS</span>，
+              覆盖 Meta / Google / TikTok 等主流海外平台。2023 年营收约 <span className="font-medium text-gray-800">10 亿元</span>，
+              服务 <span className="font-medium text-gray-800">3000+</span> 出海品牌客户，员工约 <span className="font-medium text-gray-800">1200 人</span>。
+              当前 PE 约 <span className="font-medium text-[#e17055]">12×</span>，目标对标 AI 原生广告科技公司 <span className="font-medium text-[#6c5ce7]">30× PE</span>。
+            </p>
+          </div>
+          <div className="flex-shrink-0 text-right">
+            <div className="text-[11px] text-gray-400">当前估值锚</div>
+            <div className="text-2xl font-bold text-[#e17055]">12×</div>
+            <div className="text-[10px] text-gray-400">目标</div>
+            <div className="text-2xl font-bold text-[#6c5ce7]">30×</div>
+            <div className="text-[10px] text-gray-400">PE</div>
+          </div>
+        </div>
+      </div>
+
+      {/* 子 Tab 导航 */}
+      <div className="flex gap-1 border-b border-gray-100">
+        {planTabs.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setPlanTab(t.id)}
+            className={`px-4 py-2 text-[13px] font-medium whitespace-nowrap border-b-2 transition-all ${
+              planTab === t.id
+                ? 'border-[#6c5ce7] text-[#6c5ce7]'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 子 Tab 内容 */}
+      {planTab === 'overview'  && <TidaOverview />}
+      {planTab === 'roadmap'   && <TidaRoadmap />}
+      {planTab === 'resource'  && <TidaResource />}
+      {planTab === 'roi'       && <TidaROI />}
+    </div>
+  );
+}
+
+/* ── 子面板 1：公司现状 & 痛点 ── */
+function TidaOverview() {
+  const strengths = [
+    { icon: '🌍', title: '出海流量资源', desc: '深度对接 Meta / Google / TikTok API，拥有 Tier-1 代理资质，年管理广告预算超 50 亿元' },
+    { icon: '🏭', title: '客户规模', desc: '3000+ 活跃出海品牌，覆盖服装、3C、家居、美妆等主流品类，续费率约 75%' },
+    { icon: '📊', title: '数据积累', desc: '7 年跨境广告投放数据，含 CTR / CVR / ROAS 等多维归因数据，是训练垂直模型的核心资产' },
+    { icon: '🔧', title: 'SaaS 产品矩阵', desc: '投放管理、素材库、数据看板、受众洞察四大模块，已形成基础工作流闭环' },
+  ];
+
+  const pains = [
+    {
+      level: '🔴 核心痛点',
+      color: '#e17055',
+      items: [
+        { title: '素材生产瓶颈', desc: '出海广告素材需本地化（语言 + 文化），人工制作成本高、迭代慢，平均每套素材制作周期 3-5 天，而 Meta 算法要求每周迭代 10+ 套' },
+        { title: '投放决策黑盒', desc: '广告主依赖人工经验出价，缺乏智能出价建议；oCPX 模型依赖平台黑盒，客户 ROAS 波动大、不可解释' },
+        { title: '数据孤岛严重', desc: '各平台数据分散，跨平台归因靠人工 Excel 汇总，无法实时感知预算分配效率' },
+      ],
+    },
+    {
+      level: '🟡 中度痛点',
+      color: '#ffa657',
+      items: [
+        { title: '人效天花板', desc: '1 个投手平均管理 5-8 个账户，人力成本随客户规模线性增长，无法规模化' },
+        { title: '产品同质化', desc: '竞品（Mintegral、Moloco、Smartly.io）功能趋同，缺乏 AI 差异化壁垒，客户粘性依赖关系而非产品' },
+        { title: '国际化能力弱', desc: '多语言 LLM 能力缺失，无法自动生成高质量本地化文案，依赖外包翻译' },
+      ],
+    },
+    {
+      level: '🟢 机会窗口',
+      color: '#3fb950',
+      items: [
+        { title: 'AIGC 素材红利', desc: '2024-2026 年是出海 AIGC 素材渗透率从 5% 到 50% 的窗口期，先发者可建立数据飞轮' },
+        { title: 'Agent 投放趋势', desc: 'Meta Advantage+ / Google PMax 验证了 AI 自动化投放的可行性，出海 SaaS 有机会做"垂直 Agent 投放员"' },
+      ],
+    },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* 优势 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">💪 核心优势（转型基础）</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {strengths.map(s => (
+            <div key={s.title} className="flex gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+              <span className="text-xl flex-shrink-0">{s.icon}</span>
+              <div>
+                <div className="text-[13px] font-semibold text-gray-800 mb-0.5">{s.title}</div>
+                <div className="text-[12px] text-gray-600 leading-relaxed">{s.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 痛点 */}
+      {pains.map(p => (
+        <div key={p.level} className="bg-white rounded-2xl border p-5" style={{ borderColor: p.color + '33' }}>
+          <h3 className="text-sm font-semibold mb-3" style={{ color: p.color }}>{p.level}</h3>
+          <div className="space-y-2">
+            {p.items.map(item => (
+              <div key={item.title} className="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                <div className="text-[13px] font-semibold text-gray-800 mb-0.5">{item.title}</div>
+                <div className="text-[12px] text-gray-600 leading-relaxed">{item.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* 核心命题 */}
+      <div className="rounded-2xl p-4 border border-[#6c5ce7]/20 bg-[#6c5ce7]/5">
+        <p className="text-[13px] text-gray-700 leading-relaxed">
+          <span className="font-bold text-[#6c5ce7]">核心命题：</span>
+          钛动科技从"广告投放工具"升级为<span className="font-medium">"AI 驱动的出海增长操作系统"</span>——
+          用大模型重构素材生产、投放决策、归因分析三大核心链路，
+          将人效从"1 投手管 8 账户"提升至"1 投手管 50 账户"，
+          实现从 <span className="font-bold text-[#e17055]">12× PE</span> 向 <span className="font-bold text-[#6c5ce7]">30× PE</span> 的估值跃迁。
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
    ⑧  生态与挑战（新增）
    ═══════════════════════════════════════════════════════════ */
 function EcoSection() {
@@ -953,6 +1106,480 @@ function EcoSection() {
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── 子面板 2：三年转型路线图 ── */
+function TidaRoadmap() {
+  const phases = [
+    {
+      phase: 'Phase 1',
+      year: '2025（Year 1）',
+      title: '夯基础 · AI 素材工厂上线',
+      color: '#00cec9',
+      goal: '将 AIGC 素材渗透率从 5% 提升至 40%，素材制作周期从 3-5 天压缩至 4 小时',
+      initiatives: [
+        { name: '多语言文案 LLM', desc: '基于 Llama-3 / Qwen2.5 微调，支持英/西/葡/阿/日 5 语种高质量本地化文案生成' },
+        { name: 'AIGC 图像素材', desc: '接入 Flux / SDXL，结合品牌 LoRA 微调，实现"商品图 → 场景化广告图"一键生成' },
+        { name: '素材效果预测', desc: '训练 CTR 预估模型（基于历史 7 年数据），上线前预测素材 CTR，过滤低效素材' },
+        { name: '素材数据飞轮', desc: '每次投放结果回流训练集，模型每月迭代一次，形成"生成→投放→反馈→优化"闭环' },
+      ],
+      kpi: ['AIGC 素材占比 ≥ 40%', '素材制作成本降低 60%', '客户素材 A/B 测试频次 ×3'],
+    },
+    {
+      phase: 'Phase 2',
+      year: '2026（Year 2）',
+      title: '提智能 · AI 投放决策引擎',
+      color: '#6c5ce7',
+      goal: '推出"AI 投手"产品，实现出价建议自动化，1 个投手可管理账户数从 8 提升至 30',
+      initiatives: [
+        { name: '智能出价建议', desc: '基于历史 ROAS 数据训练出价模型，实时给出 CPA/ROAS 目标下的最优出价区间' },
+        { name: '跨平台预算分配', desc: '多臂老虎机算法动态分配 Meta / Google / TikTok 预算，最大化整体 ROAS' },
+        { name: '受众智能扩展', desc: 'LLM 分析高转化用户画像，自动生成 Lookalike 受众描述，辅助平台定向' },
+        { name: 'AI 投手 Copilot', desc: '投手工作台嵌入 AI 助手，自然语言查询数据、获取优化建议、一键执行调整' },
+      ],
+      kpi: ['人均管理账户数 ≥ 30', '客户平均 ROAS 提升 15%', 'AI 投手产品 NPS ≥ 50'],
+    },
+    {
+      phase: 'Phase 3',
+      year: '2027（Year 3）',
+      title: '全闭环 · AI 原生增长操作系统',
+      color: '#ffa657',
+      goal: '推出"AI 增长 Agent"，实现从目标输入到全链路自动化，人效达到 1 投手管 50 账户',
+      initiatives: [
+        { name: 'AI 增长 Agent', desc: '广告主输入"目标 + 预算 + 品牌调性"，Agent 自动完成定向-创意-出价-落地页全链路' },
+        { name: '多模态素材生成', desc: '支持 AI 视频广告生成（15s/30s），覆盖 TikTok / Reels / YouTube Shorts 主流格式' },
+        { name: '因果归因平台', desc: '内置 MMM + Geo-Lift 归因框架，为客户提供跨平台真实增量归因报告' },
+        { name: 'SaaS → PaaS 升级', desc: '开放 API 生态，允许第三方开发者基于钛动 AI 能力构建垂直行业解决方案' },
+      ],
+      kpi: ['人均管理账户数 ≥ 50', '营收突破 30 亿元', 'AI 功能贡献营收占比 ≥ 40%'],
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <div className="bg-gradient-to-br from-[#6c5ce7]/5 to-[#00cec9]/5 rounded-2xl border border-[#6c5ce7]/15 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-1">🗺️ 三年转型总纲</h3>
+        <p className="text-[12px] text-gray-500 leading-relaxed">
+          以<span className="font-medium text-gray-700">「素材工厂 → 投放智能 → 全链路 Agent」</span>为三步走路径，
+          每年聚焦一个核心突破，避免多线并进导致资源分散。
+          对标 <span className="font-medium text-gray-700">Smartly.io（2023 年估值 12 亿美元）</span> 和
+          <span className="font-medium text-gray-700"> Skai（AI-first 广告平台）</span>，
+          以 AI 能力密度作为核心差异化壁垒。
+        </p>
+      </div>
+
+      {phases.map((p, idx) => (
+        <div key={p.phase} className="bg-white rounded-2xl border p-5" style={{ borderColor: p.color + '33' }}>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+              style={{ background: p.color }}>
+              {idx + 1}
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-gray-900">{p.title}</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full text-white" style={{ background: p.color }}>{p.year}</span>
+              </div>
+              <p className="text-[12px] text-gray-500 mt-0.5">{p.goal}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+            {p.initiatives.map(init => (
+              <div key={init.name} className="p-3 rounded-lg bg-gray-50 border border-gray-100">
+                <div className="text-[12px] font-semibold text-gray-800 mb-0.5" style={{ color: p.color }}>▸ {init.name}</div>
+                <div className="text-[11.5px] text-gray-600 leading-relaxed">{init.desc}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {p.kpi.map(k => (
+              <span key={k} className="text-[11px] px-2.5 py-1 rounded-full border font-medium"
+                style={{ borderColor: p.color + '40', color: p.color, background: p.color + '08' }}>
+                ✓ {k}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── 子面板 3：人力 & 物力规划 ── */
+function TidaResource() {
+  const headcount = [
+    {
+      dept: 'AI 研究院（新建）',
+      color: '#6c5ce7',
+      y1: 15, y2: 30, y3: 45,
+      roles: [
+        { role: '大模型算法工程师', y1: 5, y2: 10, y3: 15, note: '负责 LLM 微调、AIGC 模型训练' },
+        { role: '多模态 / CV 工程师', y1: 4, y2: 8, y3: 12, note: '图像/视频生成模型研发' },
+        { role: 'MLOps / 平台工程师', y1: 3, y2: 6, y3: 9, note: '模型训练、推理、部署基础设施' },
+        { role: 'AI 产品经理', y1: 2, y2: 4, y3: 6, note: '定义 AI 功能需求，对接业务' },
+        { role: '数据工程师', y1: 1, y2: 2, y3: 3, note: '数据清洗、标注、飞轮建设' },
+      ],
+    },
+    {
+      dept: '产品 & 工程（扩编）',
+      color: '#00cec9',
+      y1: 20, y2: 35, y3: 50,
+      roles: [
+        { role: '前端工程师', y1: 5, y2: 8, y3: 12, note: 'AI 功能 UI/UX 开发' },
+        { role: '后端工程师', y1: 8, y2: 15, y3: 20, note: 'API 集成、Agent 框架开发' },
+        { role: '产品经理', y1: 4, y2: 7, y3: 10, note: 'SaaS 产品迭代' },
+        { role: '测试工程师', y1: 3, y2: 5, y3: 8, note: 'AI 功能质量保障' },
+      ],
+    },
+    {
+      dept: '商业化（扩编）',
+      color: '#ffa657',
+      y1: 10, y2: 20, y3: 30,
+      roles: [
+        { role: 'AI 解决方案顾问', y1: 5, y2: 10, y3: 15, note: '向客户销售 AI 升级套餐' },
+        { role: '客户成功经理', y1: 3, y2: 6, y3: 10, note: '帮助客户落地 AI 功能' },
+        { role: '市场 & 品牌', y1: 2, y2: 4, y3: 5, note: 'AI 品牌建设，行业影响力' },
+      ],
+    },
+  ];
+
+  const infra = [
+    {
+      category: '算力投入',
+      color: '#6c5ce7',
+      items: [
+        { item: 'GPU 训练集群（Year 1）', cost: '800 万元/年', detail: '租用 A100×64 卡，用于 LLM 微调 + Diffusion 训练' },
+        { item: 'GPU 训练集群（Year 2-3）', cost: '1500 万元/年', detail: '扩容至 A100×128 卡，支持更大规模模型训练' },
+        { item: '推理服务器（Year 1）', cost: '300 万元/年', detail: '部署 7B 蒸馏模型，支持实时文案生成' },
+        { item: '推理服务器（Year 2-3）', cost: '600 万元/年', detail: '扩容支持图像/视频生成推理' },
+      ],
+    },
+    {
+      category: '数据 & 工具',
+      color: '#00cec9',
+      items: [
+        { item: '数据标注平台', cost: '200 万元/年', detail: '素材质量标注、RLHF 人工反馈' },
+        { item: '第三方 API 费用', cost: '150 万元/年', detail: 'OpenAI / Anthropic API（过渡期使用）' },
+        { item: 'MLOps 工具链', cost: '100 万元/年', detail: 'Weights & Biases / Ray / Kubeflow' },
+        { item: '云存储 & CDN', cost: '200 万元/年', detail: '素材存储、全球分发加速' },
+      ],
+    },
+    {
+      category: '外部合作',
+      color: '#ffa657',
+      items: [
+        { item: '高校联合实验室', cost: '300 万元/3年', detail: '与上海交大/复旦合作，获取前沿研究资源' },
+        { item: '开源模型商业授权', cost: '50 万元/年', detail: 'Llama / Stable Diffusion 商业使用授权' },
+        { item: '行业数据采购', cost: '100 万元/年', detail: '补充训练数据，提升模型泛化能力' },
+      ],
+    },
+  ];
+
+  const totalCost = [
+    { year: 'Year 1（2025）', hc: '45 人新增', hcCost: '~3600 万元', infraCost: '~1750 万元', total: '~5350 万元' },
+    { year: 'Year 2（2026）', hc: '85 人新增', hcCost: '~6800 万元', infraCost: '~2750 万元', total: '~9550 万元' },
+    { year: 'Year 3（2027）', hc: '125 人新增', hcCost: '~1.0 亿元', infraCost: '~3500 万元', total: '~1.35 亿元' },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* 人力规划 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-4">👥 人力规划（新增编制）</h3>
+        <div className="space-y-4">
+          {headcount.map(dept => (
+            <div key={dept.dept} className="rounded-xl border p-4" style={{ borderColor: dept.color + '33' }}>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-[13px] font-semibold" style={{ color: dept.color }}>{dept.dept}</h4>
+                <div className="flex gap-3 text-[11px] text-gray-500">
+                  <span>Y1: <strong style={{ color: dept.color }}>{dept.y1}人</strong></span>
+                  <span>Y2: <strong style={{ color: dept.color }}>{dept.y2}人</strong></span>
+                  <span>Y3: <strong style={{ color: dept.color }}>{dept.y3}人</strong></span>
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                {dept.roles.map(r => (
+                  <div key={r.role} className="flex items-center gap-2 text-[12px]">
+                    <div className="w-32 flex-shrink-0 text-gray-700 font-medium">{r.role}</div>
+                    <div className="flex gap-2 text-gray-400 text-[11px] w-28 flex-shrink-0">
+                      <span>{r.y1}→{r.y2}→{r.y3}人</span>
+                    </div>
+                    <div className="text-gray-500 flex-1">{r.note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 物力规划 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-4">🖥️ 物力规划（基础设施投入）</h3>
+        <div className="space-y-4">
+          {infra.map(cat => (
+            <div key={cat.category} className="rounded-xl border p-4" style={{ borderColor: cat.color + '33' }}>
+              <h4 className="text-[13px] font-semibold mb-2" style={{ color: cat.color }}>{cat.category}</h4>
+              <div className="space-y-2">
+                {cat.items.map(item => (
+                  <div key={item.item} className="flex gap-3 text-[12px]">
+                    <div className="w-44 flex-shrink-0 text-gray-700 font-medium">{item.item}</div>
+                    <div className="w-28 flex-shrink-0 font-semibold" style={{ color: cat.color }}>{item.cost}</div>
+                    <div className="text-gray-500 flex-1">{item.detail}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 三年总投入汇总 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 overflow-x-auto">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">📋 三年总投入汇总</h3>
+        <table className="w-full text-[13px]">
+          <thead>
+            <tr className="text-left text-gray-400 border-b border-gray-100">
+              <th className="py-2 pr-4 font-medium">年份</th>
+              <th className="py-2 pr-4 font-medium">新增人员</th>
+              <th className="py-2 pr-4 font-medium">人力成本</th>
+              <th className="py-2 pr-4 font-medium">基础设施</th>
+              <th className="py-2 font-medium text-[#6c5ce7]">年度总投入</th>
+            </tr>
+          </thead>
+          <tbody>
+            {totalCost.map((r, i) => (
+              <tr key={r.year} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                <td className="py-2 pr-4 font-semibold text-gray-800">{r.year}</td>
+                <td className="py-2 pr-4 text-gray-600">{r.hc}</td>
+                <td className="py-2 pr-4 text-gray-600">{r.hcCost}</td>
+                <td className="py-2 pr-4 text-gray-600">{r.infraCost}</td>
+                <td className="py-2 font-bold text-[#6c5ce7]">{r.total}</td>
+              </tr>
+            ))}
+            <tr className="border-t border-gray-200 bg-[#6c5ce7]/5">
+              <td className="py-2 pr-4 font-bold text-gray-900">三年合计</td>
+              <td className="py-2 pr-4 text-gray-600">125 人新增</td>
+              <td className="py-2 pr-4 text-gray-600">~2.04 亿元</td>
+              <td className="py-2 pr-4 text-gray-600">~0.8 亿元</td>
+              <td className="py-2 font-bold text-[#6c5ce7] text-base">~2.84 亿元</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="text-[11px] text-gray-400 mt-2 italic">
+          * 人力成本按平均薪资 AI 岗 80 万/年、产品工程 60 万/年、商业化 50 万/年估算（含社保公积金）
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── 子面板 4：ROI 测算 ── */
+function TidaROI() {
+  const scenarios = [
+    {
+      name: '保守情景',
+      color: '#e17055',
+      assumption: 'AI 功能渗透慢，客户升级意愿低，竞争加剧',
+      revenue: [
+        { year: '2025', base: 10, aiIncrement: 0.5, total: 10.5, aiRatio: '5%' },
+        { year: '2026', base: 12, aiIncrement: 2.0, total: 14, aiRatio: '14%' },
+        { year: '2027', base: 14, aiIncrement: 4.0, total: 18, aiRatio: '22%' },
+      ],
+      pe: '18×',
+      valuation: '~32 亿元',
+    },
+    {
+      name: '基准情景',
+      color: '#6c5ce7',
+      assumption: 'AI 功能按计划落地，客户 ARPU 提升，新客加速',
+      revenue: [
+        { year: '2025', base: 10, aiIncrement: 1.5, total: 11.5, aiRatio: '13%' },
+        { year: '2026', base: 13, aiIncrement: 5.0, total: 18, aiRatio: '28%' },
+        { year: '2027', base: 16, aiIncrement: 14, total: 30, aiRatio: '47%' },
+      ],
+      pe: '25×',
+      valuation: '~75 亿元',
+    },
+    {
+      name: '乐观情景',
+      color: '#3fb950',
+      assumption: 'AI Agent 爆发，出海市场高增，平台效应显现',
+      revenue: [
+        { year: '2025', base: 10, aiIncrement: 3.0, total: 13, aiRatio: '23%' },
+        { year: '2026', base: 15, aiIncrement: 10, total: 25, aiRatio: '40%' },
+        { year: '2027', base: 20, aiIncrement: 25, total: 45, aiRatio: '56%' },
+      ],
+      pe: '30×',
+      valuation: '~135 亿元',
+    },
+  ];
+
+  const roiDrivers = [
+    {
+      driver: '① AIGC 素材溢价',
+      color: '#a29bfe',
+      mechanism: '客户使用 AI 素材功能，ARPU 从 3.3 万元/年提升至 5 万元/年（+50%）',
+      math: '3000 客户 × 1.7 万元增量 = 5100 万元/年增量营收',
+      confidence: '高',
+    },
+    {
+      driver: '② AI 投手人效提升',
+      color: '#00cec9',
+      mechanism: '人均管理账户从 8 提升至 30，同等人力可服务 3.75× 客户，或降低 60% 人力成本',
+      math: '节省 200 名投手 × 30 万元/年 = 6000 万元/年成本节约',
+      confidence: '中高',
+    },
+    {
+      driver: '③ 新客获取加速',
+      color: '#6c5ce7',
+      mechanism: 'AI 差异化壁垒吸引中大型出海品牌，客户数从 3000 增至 5000+',
+      math: '2000 新客 × 5 万元 ARPU = 1 亿元/年新增营收',
+      confidence: '中',
+    },
+    {
+      driver: '④ 续费率提升',
+      color: '#ffa657',
+      mechanism: 'AI 功能深度绑定工作流，续费率从 75% 提升至 85%',
+      math: '3000 客户 × 10% 续费提升 × 5 万元 ARPU = 1500 万元/年',
+      confidence: '高',
+    },
+    {
+      driver: '⑤ PE 估值重估',
+      color: '#3fb950',
+      mechanism: '从"广告工具 SaaS"（12× PE）重新定位为"AI 原生增长平台"（30× PE）',
+      math: '30 亿营收 × 30× PE = 90 亿元估值（vs 当前 10 亿 × 12× = 120 亿元）',
+      confidence: '取决于 AI 收入占比',
+    },
+  ];
+
+  const investReturn = [
+    { item: '三年总投入', value: '~2.84 亿元', note: '人力 + 基础设施' },
+    { item: '三年累计 AI 增量营收（基准）', value: '~20.5 亿元', note: '1.5+5+14 亿元' },
+    { item: '三年累计 AI 增量毛利（60% 毛利率）', value: '~12.3 亿元', note: '' },
+    { item: '净 ROI（基准情景）', value: '~4.3×', note: '12.3 / 2.84' },
+    { item: '估值增量（基准情景）', value: '~+45 亿元', note: '75 亿 - 当前 ~30 亿' },
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* ROI 驱动因子 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">🔑 ROI 的 5 个驱动因子</h3>
+        <div className="space-y-3">
+          {roiDrivers.map(d => (
+            <div key={d.driver} className="rounded-xl border p-4" style={{ borderColor: d.color + '33' }}>
+              <div className="flex items-center justify-between mb-1">
+                <h4 className="text-[13px] font-semibold" style={{ color: d.color }}>{d.driver}</h4>
+                <span className="text-[10px] px-2 py-0.5 rounded-full border font-medium"
+                  style={{ borderColor: d.color + '40', color: d.color }}>
+                  置信度：{d.confidence}
+                </span>
+              </div>
+              <p className="text-[12px] text-gray-600 leading-relaxed mb-1">{d.mechanism}</p>
+              <div className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                <span className="text-[11px] text-gray-400">测算：</span>
+                <span className="text-[12px] font-mono text-gray-700">{d.math}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 三情景营收预测 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">📊 三情景营收预测（亿元）</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {scenarios.map(s => (
+            <div key={s.name} className="rounded-xl border p-4" style={{ borderColor: s.color + '33' }}>
+              <div className="text-sm font-bold mb-1" style={{ color: s.color }}>{s.name}</div>
+              <p className="text-[11px] text-gray-500 mb-3 leading-relaxed">{s.assumption}</p>
+              <div className="space-y-2">
+                {s.revenue.map(r => (
+                  <div key={r.year} className="flex items-center justify-between text-[12px]">
+                    <span className="font-mono text-gray-500">{r.year}</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-gray-400">{r.base}+</span>
+                      <span style={{ color: s.color }} className="font-semibold">{r.aiIncrement}</span>
+                      <span className="text-gray-400">=</span>
+                      <span className="font-bold text-gray-800">{r.total} 亿</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full ml-1"
+                        style={{ background: s.color + '15', color: s.color }}>
+                        AI {r.aiRatio}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 pt-3 border-t border-gray-100 flex justify-between items-center">
+                <div>
+                  <div className="text-[10px] text-gray-400">目标 PE</div>
+                  <div className="text-lg font-bold" style={{ color: s.color }}>{s.pe}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[10px] text-gray-400">2027 年估值</div>
+                  <div className="text-base font-bold text-gray-800">{s.valuation}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-gray-400 mt-2 italic">
+          * 基础营收按年增长 15-20% 估算（出海市场自然增长）；AI 增量为 AI 功能带来的额外营收
+        </p>
+      </div>
+
+      {/* 投入产出汇总 */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">💰 投入产出汇总（基准情景）</h3>
+        <div className="space-y-2">
+          {investReturn.map((r, i) => (
+            <div key={r.item} className={`flex items-center justify-between p-3 rounded-lg ${i === investReturn.length - 1 ? 'bg-[#6c5ce7]/8 border border-[#6c5ce7]/20' : 'bg-gray-50 border border-gray-100'}`}>
+              <div className="text-[13px] text-gray-700">{r.item}</div>
+              <div className="flex items-center gap-2">
+                <span className={`font-bold text-[14px] ${i === investReturn.length - 1 ? 'text-[#6c5ce7]' : 'text-gray-800'}`}>{r.value}</span>
+                {r.note && <span className="text-[11px] text-gray-400">（{r.note}）</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 关键风险 */}
+      <div className="bg-white rounded-2xl border border-red-100/50 p-5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-3">⚠️ 关键风险与对冲策略</h3>
+        <div className="space-y-2 text-[12.5px]">
+          {[
+            { risk: '平台 API 政策收紧', mitigation: 'Meta/Google 限制第三方 API 访问 → 加深官方合作伙伴关系，争取 Tier-0 资质' },
+            { risk: 'AI 人才竞争激烈', mitigation: '大厂抢人导致薪资通胀 → 股权激励 + 高校联合培养 + 远程团队' },
+            { risk: '大模型成本居高不下', mitigation: '推理成本过高侵蚀毛利 → 自研蒸馏小模型 + 边缘推理优化' },
+            { risk: '竞品快速跟进', mitigation: 'Smartly.io / Mintegral 推出类似功能 → 以数据飞轮建立先发壁垒，加速迭代' },
+            { risk: '客户 AI 接受度低', mitigation: '中小客户不愿为 AI 付费 → 先免费内嵌，再通过效果数据证明价值后升级收费' },
+          ].map(x => (
+            <div key={x.risk} className="flex gap-3 p-3 rounded-lg bg-red-50/30 border border-red-100/50">
+              <div className="w-36 flex-shrink-0 font-semibold text-red-700">{x.risk}</div>
+              <div className="flex-1 text-gray-600 leading-relaxed">{x.mitigation}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 结论 */}
+      <div className="rounded-2xl p-5 border border-[#6c5ce7]/20 bg-gradient-to-br from-[#6c5ce7]/5 to-[#3fb950]/5">
+        <h3 className="text-sm font-semibold text-gray-800 mb-2">🎯 结论：转型可行性判断</h3>
+        <p className="text-[13px] text-gray-700 leading-relaxed">
+          钛动科技具备转型的<span className="font-medium">数据资产（7 年投放数据）、客户基础（3000+ 品牌）、平台资质（Tier-1 代理）</span>三大核心要素。
+          三年 <span className="font-bold text-[#6c5ce7]">2.84 亿元</span>的转型投入，在基准情景下可带来
+          <span className="font-bold text-[#6c5ce7]"> 4.3× 净 ROI</span> 和
+          <span className="font-bold text-[#6c5ce7]"> +45 亿元估值增量</span>，
+          实现从 <span className="font-bold text-[#e17055]">12× PE</span> 向 <span className="font-bold text-[#6c5ce7]">25-30× PE</span> 的跃迁。
+          关键成功要素在于：<span className="font-medium">Year 1 素材工厂必须跑通数据飞轮</span>，这是后续一切 AI 能力的基础。
+        </p>
       </div>
     </div>
   );
