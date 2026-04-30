@@ -519,7 +519,7 @@ Gemma 4 E2B (2B 参数) 在不同设备上的推理性能：
 | 设备 | 芯片 | 量化 | 首 Token 延迟 | 吞吐 | 内存占用 |
 |------|------|------|-------------|------|---------|
 | Pixel 10 Pro | Tensor G5 + TPU | INT4 | 180ms | 52 tok/s | 1.2 GB |
-| Samsung S27 Ultra | Snapdragon 8 Gen 5 | INT4 | 210ms | 45 tok/s | 1.3 GB |
+| Samsung Galaxy S25 Ultra | Snapdragon 8 Gen 5 | INT4 | 210ms | 45 tok/s | 1.3 GB |
 | NVIDIA Orin NX | Orin (边缘) | INT8 | 85ms | 120 tok/s | 2.1 GB |
 | Raspberry Pi 6 | ARM Cortex-A78 | INT4 | 1200ms | 8 tok/s | 1.4 GB |
 
@@ -542,7 +542,7 @@ Gemma 4 E2B (2B 参数) 在不同设备上的推理性能：
 
 ### 3.8.1 从"纸面竞争"到"供应链选项"
 
-AMD MI450 于 2026 年 4 月正式量产（CDNA 5 架构，HBM4 768GB，FP4 4.8 PetaFLOPS），标志着 GPU 推理不再是 NVIDIA 独占：
+AMD MI450 于 2026 年 4 月正式量产（注：此信息待核实，截至本文 AMD MI300X 为最新量产型号；CDNA 5 架构，HBM4 768GB，FP4 4.8 PetaFLOPS），标志着 GPU 推理不再是 NVIDIA 独占：
 
 ```
 2024 年: AMD MI300X 发布 → 性能好但 ROCm 兼容性差 → "能用但不好用"
@@ -572,7 +572,7 @@ NVIDIA H200/B200:
   ❌ 供应紧张，价格高
   推荐: 追求极致性能和生态完整性
 
-AMD MI450:
+AMD MI450（注：此信息待核实，参见上方说明）:
   ✅ 显存更大 (768GB vs 192GB)
   ✅ FP4 推理性能优异
   ✅ 价格竞争力强

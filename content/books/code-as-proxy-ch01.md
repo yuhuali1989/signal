@@ -145,7 +145,7 @@ Code as Proxy 并非凭空出现。它的思想根源可以追溯到多个领域
 
 ### 1.7.1 Palantir 的 AIP 架构
 
-Palantir 是这一理念最成功的商业实践者。其 AIP（AI Platform）的核心设计就是：LLM 操作 Ontology（业务本体），而非原始数据。这使得 Palantir AIP 成为**唯一能在 IL6（最高机密）环境中运行 LLM 的商业产品**。
+Palantir 是这一理念最成功的商业实践者。其 AIP（AI Platform）的核心设计就是：LLM 操作 Ontology（业务本体），而非原始数据。这使得 Palantir AIP 成为**率先获得 IL6（机密级，SECRET）部署资质的商业产品**。
 
 ### 1.7.2 联邦学习的启示
 

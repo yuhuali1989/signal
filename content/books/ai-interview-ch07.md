@@ -24,7 +24,7 @@ type: "book"
 
 ---
 
-## Q109. 什么是 Multi-Agent System Design？OpenClaw 架构是什么？ 🔴 Hard
+## Q109. 什么是 Multi-Agent System Design？如何设计多智能体代码生成系统？ 🔴 Hard
 
 **多智能体系统设计原则**：
 
@@ -49,7 +49,7 @@ Reviewer（审查员）：质量检查、安全审核
 
 **3. 状态管理**：用共享状态存储（如 Redis）或消息队列（Kafka）管理 Agent 间的状态同步。
 
-**OpenClaw 架构（Multi-Agent 代码生成）**：
+**基于 Transformer 的混合专家多智能体代码生成架构**：
 - **Planner**：将需求分解为子任务
 - **Coder**：实现每个子任务
 - **Tester**：编写和运行测试
@@ -362,55 +362,35 @@ response = client.beta.chat.completions.parse(
 
 ---
 
-## Q119. 什么是 Implement Efficient cd in Unix with Symlinks？ 🔴 Hard
+## Q119. 什么是 Retrieval-Augmented Generation (RAG)？如何优化 RAG 系统？ 🔴 Hard
 
-**问题**：实现一个支持符号链接（Symlink）的高效 `cd` 命令，需要正确处理 `..` 路径。
+**RAG 基本流程**：
 
-**核心挑战**：
-- 符号链接可能形成循环（A → B → A）
-- `..` 在符号链接目录中的行为（逻辑路径 vs 物理路径）
-- 需要高效地解析路径
-
-**实现思路**：
-```python
-import os
-
-class EfficientCD:
-    def __init__(self):
-        self.current_path = "/"
-        self.path_stack = ["/"]  # 维护逻辑路径栈
-    
-    def cd(self, path):
-        if path == "..":
-            if len(self.path_stack) > 1:
-                self.path_stack.pop()
-                self.current_path = self.path_stack[-1]
-        elif path.startswith("/"):
-            # 绝对路径
-            resolved = self._resolve(path)
-            self.path_stack = [resolved]
-            self.current_path = resolved
-        else:
-            # 相对路径
-            new_path = os.path.join(self.current_path, path)
-            resolved = self._resolve(new_path)
-            self.path_stack.append(resolved)
-            self.current_path = resolved
-    
-    def _resolve(self, path, visited=None):
-        if visited is None:
-            visited = set()
-        
-        real_path = os.path.realpath(path)  # 解析符号链接
-        
-        # 检测循环
-        if real_path in visited:
-            raise RuntimeError(f"Circular symlink detected: {path}")
-        
-        return real_path
+```
+用户提问 → 向量检索（embedding 相似度） → 找到相关文档块
+         → 将文档块注入 Prompt → LLM 生成答案
 ```
 
-**面试考点**：路径规范化（去除 `.` 和 `..`）；符号链接循环检测；逻辑路径 vs 物理路径的区别。
+**核心组件**：
+1. **文档预处理**：分块（Chunking）→ 向量化（Embedding）→ 存入向量数据库
+2. **检索**：将用户问题向量化，在向量库中查找 Top-K 相似文档块
+3. **生成**：将检索结果和问题拼接为 Prompt，由 LLM 生成最终回答
+
+**优化技巧**：
+
+| 优化方向 | 具体方法 |
+|---------|---------|
+| 分块策略 | 固定大小 + 滑动窗口 / 递归字符分割 / 语义分割 |
+| 检索质量 | HyDE（假设文档嵌入）/ 重排序（Reranker）/ 混合检索 |
+| 上下文质量 | 父文档检索 / 句子窗口检索 / 图谱增强（GraphRAG） |
+| Prompt 设计 | 指令明确引用来源；告知 LLM 信息不足时应如何回应 |
+
+**常见问题及解决**：
+- **检索不准**：改进 embedding 模型；增加 Reranker；使用混合检索（BM25 + 向量）
+- **幻觉**：在 Prompt 中要求 LLM 只引用检索结果中的内容
+- **延迟高**：向量库索引优化（HNSW）；异步检索；缓存高频查询
+
+**面试考点**：RAG vs Fine-tuning 的选择；Chunk Size 对检索精度的影响；如何评估 RAG 质量（RAGAS 框架）。
 
 ---
 

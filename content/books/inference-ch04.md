@@ -154,7 +154,7 @@ MX-FP4 (NVIDIA 2026):
   但 block-level 共享指数保证了动态范围
   实测 perplexity 损失 < 2% (配合校准)
   
-  存储: 4.5 bit/element (4 bit + 0.25 bit 共享指数摊分)
+  存储: 4.25 bit/element（4比特尾数 + 共享8比特缩放因子，等效约4.25比特/元素）
 ```
 
 ## 4.6 完整部署示例

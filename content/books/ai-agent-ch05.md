@@ -447,7 +447,7 @@ class ResearchAssistant:
 
 ### MCP 协议安全危机对 Agent 记忆与状态管理的影响
 
-2026 年 4 月，OX Security 披露 MCP 协议 STDIO 传输接口存在架构级 RCE 漏洞，影响超 20 万台 AI 服务器。该漏洞对 Agent 的记忆与状态管理系统提出了新的安全要求：
+2026 年 4 月，OX Security 披露 MCP 协议 STDIO 传输接口存在架构级 RCE 漏洞，影响超 20 万台 AI 服务器（事件细节待核实，数据来源：OX Security报告）。该漏洞对 Agent 的记忆与状态管理系统提出了新的安全要求：
 
 1. **状态持久化需要加密**：Agent 的状态文件（包括记忆数据库、上下文缓存）可能通过 MCP 漏洞被远程读取。建议对所有持久化状态数据启用 AES-256 加密。
 
@@ -457,7 +457,7 @@ class ResearchAssistant:
 
 ### Agent 记忆系统新趋势
 
-- **结构化记忆图谱**：从纯向量检索演进到 Knowledge Graph + 向量混合检索，LangChain v0.3 和 LlamaIndex v0.12 均引入了 GraphRAG 作为长期记忆后端。
+- **结构化记忆图谱**：从纯向量检索演进到 Knowledge Graph + 向量混合检索，LangChain v0.3 和 LlamaIndex（llama-index）均引入了 GraphRAG 作为长期记忆后端。
 - **分布式状态同步**：多 Agent 协作场景下，Agent 间的状态同步成为新课题。MIT TR 2026 趋势报告将「Agent Orchestration」列为十大趋势之一。
 - **反思记忆的 RL 优化**：DeepMind 最新研究表明，用 RL 训练 Agent 的反思策略（何时反思、反思什么），可使任务成功率提升 23%。
 

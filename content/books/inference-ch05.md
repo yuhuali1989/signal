@@ -126,7 +126,7 @@ def gptq_quantize_layer(W, H_inv, bits=4, group_size=128):
     return Q
 ```
 
-GPTQ 的优势是**一次性量化**（单次 forward pass），速度比逐权重量化（OBQ）快数百倍。
+GPTQ 的优势是**利用少量校准数据，逐层最小化量化误差**，速度比逐权重量化（OBQ）快数百倍。
 
 ### 5.1.4 AWQ：激活值感知量化
 
@@ -287,9 +287,9 @@ def speculative_speedup(alpha, K, c):
     return expected_accepted / cost
 
 # 典型场景
-print(f"Llama 8B→70B: {speculative_speedup(0.75, 5, 0.15):.2f}x")   # ~2.3x
+print(f"Llama 8B→70B: {speculative_speedup(0.75, 5, 0.15):.2f}x")   # 实际加速比依赖接受率，理论约1.9×，优化实现可达2.3×
 print(f"Medusa heads:  {speculative_speedup(0.80, 4, 0.05):.2f}x")   # ~2.8x
-print(f"EAGLE-2:       {speculative_speedup(0.82, 5, 0.08):.2f}x")   # ~3.1x
+print(f"EAGLE-2:       {speculative_speedup(0.82, 5, 0.08):.2f}x")   # ~3.1x（论文报告值，取决于实现和模型）
 ```
 
 ### 5.2.3 Draft 模型方案对比
@@ -330,7 +330,7 @@ class EAGLE2DraftModel(nn.Module):
         return next_hidden  # 用大模型的 LM Head 解码为 token
 ```
 
-EAGLE-2 构建**候选 token 树**而非线性链，一次验证多个分支，MT-Bench 上实现 3.1× 无损加速。
+EAGLE-2 构建**候选 token 树**而非线性链，一次验证多个分支，MT-Bench 上实现 3.1× 无损加速（论文报告值，取决于实现和模型）。
 
 ### 5.2.5 与 Continuous Batching 的结合
 
@@ -450,7 +450,7 @@ class KVCacheQuantizer:
 
 ### 5.3.4 TurboQuant：零精度损失的 3-bit KV Cache 量化 🆕
 
-> **2026 年 4 月最新突破**：Google DeepMind 的 TurboQuant 首次实现零精度损失的 3-bit KV Cache 在线量化。
+> **2026 年 4 月最新突破**（注：此方法信息待核实）：Google DeepMind 的 TurboQuant 首次实现零精度损失的 3-bit KV Cache 在线量化。
 
 传统 KV Cache 量化的核心矛盾：Key/Value 张量中的异常值（outlier）分布不均匀，直接低比特量化会丢失信息。
 
@@ -496,7 +496,7 @@ class TurboQuantKVCache:
 
 ### 5.3.5 Unweight：无损模型压缩（非量化）🆕
 
-> **Cloudflare 2026 年 4 月发布**：与量化不同，Unweight 通过信息论方法实现 **15-22% 模型体积压缩，输出位级完全一致**。
+> **Cloudflare 2026 年 4 月发布**（注：此方法信息待核实）：与量化不同，Unweight 通过信息论方法实现 **15-22% 模型体积压缩，输出位级完全一致**。
 
 - 不改变模型权重数值（非量化），而是对权重文件进行无损信息压缩
 - Llama-3.1-8B 测试：MLP 权重压缩 ~30%，每模型节省 ~3GB 显存

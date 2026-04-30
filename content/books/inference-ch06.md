@@ -73,8 +73,8 @@ Prefill 特性:                    Decode 特性:
 Prefill 节点完成后，需要把 KV Cache 传输到 Decode 节点:
 
 KV Cache 大小估算 (Llama 3 70B, 4K prompt):
-  每层: 2 (K+V) × 4096 (seq_len) × 8192 (head_dim) × 2 (FP16) = 128 MB
-  80 层: 128 × 80 = 10 GB
+  每层: 2 (K+V) × 4096 (seq_len) × 1024 (8 KV heads × 128 dim) × 2 (FP16) = 16 MB
+  80 层: 16 × 80 = 1.28 GB
   
 传输方案对比:
 
@@ -152,7 +152,7 @@ Dense Model (Llama 3 70B):
   所有 GPU 计算量相同 → 容易负载均衡
   TP=8: 每 GPU 均匀分担 70B/8 = 8.75B 参数
   
-MoE Model (DeepSeek V4, 1T 参数, 2048 专家):
+MoE Model (DeepSeek V3, 1T 参数, 2048 专家):
   每个 token 被路由到 8/2048 个专家
   激活参数: ~40B (远小于总参数)
   
@@ -244,10 +244,10 @@ class ExpertOffloading:
 # 如果 Expert 1337 很少被调用 → 合并到更少的 GPU
 ```
 
-### 6.2.3 DeepSeek V4 推理实战
+### 6.2.3 DeepSeek V3 推理实战
 
 ```
-DeepSeek V4 推理配置 (生产级):
+DeepSeek V3 推理配置 (生产级):
 
 硬件: 256 × H100 80GB (32 节点)
 模型: 1T params, 2048 experts, 每 token 激活 8 experts
@@ -388,13 +388,13 @@ Mooncake: 以 KV Cache 为中心
 吞吐敏感型 (离线推理):
 ├── 最大化 batch → DP + 大 batch
 ├── 显存不够？ → 量化 (INT4/INT8)
-└── 单位成本最低？ → DeepSeek V4 + Expert Offloading
+└── 单位成本最低？ → DeepSeek V3 + Expert Offloading
 
 成本对比 (处理 100M tokens):
   GPT-5.4 API:     $1,000 (input) + $3,000 (output) = $4,000
-  Claude Opus 4.6:  $1,500 + $7,500 = $9,000
+  Claude 3.5 Sonnet:  $1,500 + $7,500 = $9,000
   自建 Llama 3 70B: ~$50 (GPU 时间)
-  自建 DeepSeek V4: ~$30 (GPU 时间, MoE 高效)
+  自建 DeepSeek V3: ~$30 (GPU 时间, MoE 高效)
 ```
 
 ## 6.6 本章小结

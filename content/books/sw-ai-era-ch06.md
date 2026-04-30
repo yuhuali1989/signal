@@ -253,7 +253,7 @@ AI Agent 编排的核心需求：
 └── 成本管理和优化
 ```
 
-**代表公司**：LangChain（$25M）、CrewAI（开源）、Vertex AI Agent Builder（Google）
+**代表公司**：LangChain（融资额 $2500万（估值 $2亿+））、CrewAI（开源）、Vertex AI Agent Builder（Google）
 
 ### 机会 12：行业专用 AI 模型
 

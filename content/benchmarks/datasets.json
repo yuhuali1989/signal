@@ -45,7 +45,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "minimal",
       "score": 5,
       "note": "几乎所有模型训练数据均包含 MMLU 题目。Yang et al. 2023 证实严重数据泄露"
@@ -92,7 +92,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 55,
       "note": "基于真实 GitHub Issue，部分数据可能在预训练语料中"
@@ -114,7 +114,7 @@
     "metrics": "准确率 (Accuracy)",
     "scale": "448 题 (Main) / 198 题 (Diamond)",
     "construction": "领域 PhD 专家手写，其他领域专家验证无法通过搜索引擎回答",
-    "source": "NYU / ICLR 2024",
+    "source": "NYU / NeurIPS 2023 Workshop",
     "url": "https://github.com/idavidrein/gpqa",
     "paperUrl": "https://arxiv.org/abs/2311.12022",
     "topModels": [
@@ -140,7 +140,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 80,
       "note": "2024 年发布的专家级博士题目，但部分题目可能已被纳入训练数据"
@@ -182,7 +182,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "low",
       "score": 20,
       "note": "代码评测集被广泛用于训练，HumanEval+ 试图缓解"
@@ -234,7 +234,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "excellent",
       "score": 95,
       "note": "在线人工盲评，无法被训练数据泄露影响，最可靠的评测"
@@ -276,7 +276,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "low",
       "score": 25,
       "note": "自 2021 年公开，被大量用于数学推理训练"
@@ -318,7 +318,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "high",
       "score": 85,
       "note": "交互式评测环境，较难被静态训练数据泄露影响"
@@ -367,7 +367,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 60,
       "note": "经典公开数据集，相关论文和代码广泛传播"
@@ -411,7 +411,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "high",
       "score": 75,
       "note": "需申请获取，直接泄露风险低"
@@ -449,7 +449,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "low",
       "score": 30,
       "note": "2012 年发布的经典基准，几乎所有 CV 论文都用过"
@@ -487,7 +487,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "high",
       "score": 85,
       "note": "半监督设定，使用面较窄"
@@ -530,7 +530,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 60,
       "note": "经典公开数据集，相关论文和代码广泛传播"
@@ -573,7 +573,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "excellent",
       "score": 95,
       "note": "仿真环境动态生成场景，无法被预训练数据泄露影响"
@@ -612,7 +612,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 60,
       "note": "经典公开数据集，相关论文和代码广泛传播"
@@ -621,7 +621,7 @@
   {
     "id": "openscene",
     "name": "OpenScene",
-    "fullName": "OpenScene: 3D Open-Vocabulary Scene Understanding",
+    "fullName": "OpenScene: Occupancy Prediction for Autonomous Driving",
     "category": "自动驾驶",
     "tags": [
       "自动驾驶",
@@ -634,9 +634,9 @@
     "metrics": "mAP / mIoU (3D Segmentation)",
     "scale": "120K 帧, 1000+ 场景",
     "construction": "基于 nuScenes 扩展，自动化流水线 + 人工校验",
-    "source": "NVIDIA / CVPR 2024",
+    "source": "OpenDriveLab / CVPR 2024",
     "url": "https://github.com/OpenDriveLab/OpenScene",
-    "paperUrl": "https://arxiv.org/abs/2211.15654",
+    "paperUrl": "https://arxiv.org/abs/2312.03774",
     "topModels": [
       {
         "name": "OpenScene-Sparse",
@@ -645,7 +645,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "high",
       "score": 85,
       "note": "大规模 3D 场景，数据量大"
@@ -689,7 +689,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "excellent",
       "score": 90,
       "note": "Corner Case 和 OOD 专用评测，极度垂直"
@@ -731,7 +731,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 50,
       "note": "评测 Prompt 已公开，模型可通过类似数据间接优化"
@@ -774,7 +774,7 @@
       }
     ],
     "updatedAt": "2026-04-11",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "excellent",
       "score": 90,
       "note": "动态更新的代码编辑任务，数据重叠风险低"
@@ -823,7 +823,7 @@
       }
     ],
     "updatedAt": "2026-04-13",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "excellent",
       "score": 92,
       "note": "非反应式仿真动态生成，VLA 评测专用，泄露风险极低"
@@ -862,7 +862,7 @@
       }
     ],
     "updatedAt": "2026-04-13",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "high",
       "score": 80,
       "note": "无精细标注，仅用于预训练，评测基准独立"
@@ -906,7 +906,7 @@
       }
     ],
     "updatedAt": "2026-04-13",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "medium",
       "score": 55,
       "note": "基于 nuScenes 自动生成，模板固定，存在一定泄露风险"
@@ -956,7 +956,7 @@
       }
     ],
     "updatedAt": "2026-04-13",
-    "contamination": {
+    "dataLeakageRisk": {
       "level": "excellent",
       "score": 95,
       "note": "仿真环境动态生成，220 个场景组合多样，无法被预训练数据泄露"

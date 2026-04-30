@@ -393,15 +393,15 @@ Signal 平台运行 48 小时统计:
 
 ### Agent 安全新挑战
 
-- **Anthropic Mythos 泄露事件**（2026-04-21）：Anthropic 的独家网络安全工具 Mythos 遭未授权访问，暴露了 AI 安全工具自身的安全性问题
-- **SpaceX-Cursor $600 亿收购选项**：AI 编程工具赛道进入巨头整合阶段，Agent 安全和代码审计需求激增
+- **Anthropic Mythos 泄露事件**（2026-04-21，注：此事件待核实）：Anthropic 的独家网络安全工具 Mythos 遭未授权访问，暴露了 AI 安全工具自身的安全性问题
+- **SpaceX-Cursor $600 亿收购选项**（注：此消息来源待核实）：AI 编程工具赛道进入巨头整合阶段，Agent 安全和代码审计需求激增
 - **Meta 采集员工操作数据训练 AI**：引发关于 Agent 训练数据边界和隐私保护的广泛讨论
 
 ### Agent 经济学新数据
 
 - Anthropic 获 Amazon $50 亿投资，承诺 $1000 亿 AWS 云支出，Agent 推理成本持续下降
-- NeoCognition 获 $4000 万种子轮，认知科学路线的 Agent 创业获资本认可
-- 蚂蚁集团百灵 Ling-2.6-flash 日均 100B tokens 调用，证明 Agent 规模化落地可行
+- NeoCognition 获 $4000 万种子轮（待核实），认知科学路线的 Agent 创业获资本认可
+- 蚂蚁集团百灵 Ling-2.6-flash 日均 100B tokens 调用（待核实），证明 Agent 规模化落地可行
 
 ---
 
