@@ -338,7 +338,7 @@ Diffusion 生成（SD + ControlNet + IP-Adapter）
 
 **关键设计**：
 - **图像编码器只运行一次**：对同一图像的多次提示，图像嵌入可以复用
-- **轻量 Mask Decoder**：只有 4 层 Transformer，推理极快
+- **轻量 Mask Decoder**：只有 2 层 Transformer，推理极快
 - **多义性处理**：输出 3 个候选掩码（整体/部分/子部分），让用户选择
 
 **SAM 2**（2024）：扩展到视频分割，支持跨帧追踪目标。

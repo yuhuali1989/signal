@@ -103,7 +103,7 @@ ServiceNow 的 AI 转型被业界认为是最成功的案例之一。
 ```
 ServiceNow AI 演进：
 2019：Now Intelligence（预测性分析）
-2022：Now Assist（生成式 AI 集成）
+2023：Now Assist（生成式 AI 集成）
 2024：AI Agents（自主工作流执行）
 
 关键差异化：
@@ -116,7 +116,7 @@ ServiceNow AI 演进：
 **财务表现**：
 
 ServiceNow 是传统企业软件中 AI 转型最成功的公司之一：
-- 2025 年营收：$12.4B（+22% YoY）
+- 2025 年营收：$12.4B（+13% YoY）（数据待核实）
 - 订阅收入占比：>95%
 - 净收入留存率（NRR）：>125%
 - AI 功能采用率：>60% 的客户使用 Now Assist
@@ -156,7 +156,7 @@ SAP 的 AI 转型路径：
 | Glean | 企业搜索 | 语义搜索 + 知识图谱 | $4.6B |
 | Harvey | 法律 AI | 法律文件分析/起草 | $3B |
 | Cognition (Devin) | AI 工程师 | 自主软件开发 | $2B |
-| Lexi | 财务 AI | 财务分析自动化 | $500M |
+| Lexi | 财务 AI | 财务分析自动化 | $500M（待核实）|
 | Ema | HR AI | 员工服务自动化 | $1.3B |
 | Writer | 企业内容 AI | 品牌一致性内容生成 | $1.9B |
 

@@ -348,7 +348,7 @@ Chunked Prefill：
 
 ## 2.6 vLLM v0.8：PD 分离架构
 
-vLLM v0.8（2026 年 4 月）引入了 Prefill-Decode 分离架构，H100 上吞吐较 v0.6 提升 40%。
+vLLM v0.8（2025 年初，待核实）引入了 Prefill-Decode 分离架构，H100 上吞吐较 v0.6 提升 40%。
 
 ### 2.6.1 架构设计
 

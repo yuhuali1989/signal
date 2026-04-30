@@ -300,7 +300,7 @@ torch.cuda.empty_cache()
 # 内存碎片问题的典型场景：
 # 训练时 activation 大小变化导致碎片 → OOM
 # 解决：使用 torch.cuda.memory.CUDACachingAllocator
-# 的 expandable_segments 特性（PyTorch 2.4+）
+# 的 expandable_segments 特性（PyTorch 2.0+）
 import os
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 ```
