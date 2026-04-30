@@ -1,5 +1,33 @@
 [
   {
+    "id": 224,
+    "date": "2026-04-30",
+    "type": "news",
+    "title": "声浪 +6 条：Gemma 4 VLA 边缘部署/Ray 2.55.1/MLflow RC/DenseOn-LateOn/KV Cache 全景/OpenRA-RL",
+    "detail": "第38轮迭代 B1 新闻编辑员：新增 6 条声浪（NVIDIA Gemma 4 VLA Jetson Demo、Ray 2.55.1 发布、MLflow v3.12.0 RC、LightOn DenseOn-LateOn 检索融合、KV Cache 优化工程实践、OpenRA-RL 机器人 RL 框架），所有链接已验证可用"
+  },
+  {
+    "id": 225,
+    "date": "2026-04-30",
+    "type": "news",
+    "title": "全行业动态 +6 条：边缘 AI/分布式框架/MLOps/检索技术/推理优化/机器人 RL",
+    "detail": "第38轮迭代 B1 新闻编辑员：全行业动态新增 6 条，覆盖 NVIDIA 边缘 AI 部署、Ray/MLflow 开源生态更新、LightOn 检索创新、KV Cache 工程实践、OpenRA-RL 具身智能框架"
+  },
+  {
+    "id": 226,
+    "date": "2026-04-30",
+    "type": "article",
+    "title": "文章 +1 篇：KV Cache 优化工程实践全景——从 PagedAttention 到 MLA 的部署指南",
+    "detail": "第38轮迭代 B2 内容编辑员：新增深度技术文章，系统梳理 KV Cache 显存瓶颈、架构层面压缩（GQA/MQA/MLA）、工程层面优化（PagedAttention/Prefix Caching/Chunked Prefill/FP8 量化/Speculative Decoding）、前沿方向（NSA/StreamingLLM/Offloading）及选型决策矩阵"
+  },
+  {
+    "id": 227,
+    "date": "2026-04-30",
+    "type": "system",
+    "title": "第38轮 ABCDE 流水线完整执行（B1→B2→B3→B5→C→D）",
+    "detail": "2026-04-30 完整迭代：B1 声浪+6/全行业动态+6 · B2 文章+1 · B3 模型库确认无新增 · B5 进化日志更新 · C 质检 · D 发布推送"
+  },
+  {
     "id": "log-0220",
     "date": "2026-04-29 11:16",
     "type": "system",
