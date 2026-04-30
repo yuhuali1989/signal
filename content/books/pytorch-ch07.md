@@ -347,7 +347,7 @@ print(torch.cuda.memory_summary(device='cuda:0'))
 # 碎片治理方案
 import os
 os.environ['PYTORCH_CUDA_ALLOC_CONF'] = ','.join([
-    'expandable_segments:True',          # PyTorch 2.2+ 可扩展段
+    'expandable_segments:True',          # PyTorch 2.1+ 可扩展段
     'garbage_collection_threshold:0.6',   # 更积极的 GC
     'max_split_size_mb:512',             # 限制分裂大小
     'roundup_power2_divisions:16'        # 更细粒度的 2 的幂对齐

@@ -88,7 +88,7 @@ class DroneNavigationPolicy:
 ```
 
 **关键工作**：
-- **Learning to Fly**（[arXiv:2311.01378](https://arxiv.org/abs/2311.01378)）：用 RL 在仿真中训练无人机穿越复杂环境，成功迁移到真实世界
+- **Learning to Fly**（[arXiv:2311.01378](https://arxiv.org/abs/2311.01378)）：用 RL 在仿真中训练无人机穿越复杂环境，成功迁移到真实世界（待核实：该 arXiv 号对应论文为"Computational Controller Design for Hybrid UAVs"，与此处描述是否完全吻合需进一步确认）
 - **Agile Autonomy**（[arXiv:2205.06175](https://arxiv.org/abs/2205.06175)）：端到端学习高速避障飞行，速度达 40km/h+
 
 ## 7.3 强化学习在无人机中的应用
@@ -116,7 +116,7 @@ class DroneNavigationPolicy:
 
 ### 自主探索
 
-**Learning to Explore**（[arXiv:2403.04729](https://arxiv.org/abs/2403.04729)）：用 RL 训练无人机在未知环境中自主探索，最大化地图覆盖率。
+**Learning to Explore**（[arXiv:2403.04729](https://arxiv.org/abs/2403.04729)）：用 RL 训练无人机在未知环境中自主探索，最大化地图覆盖率。（待核实：arXiv:2403.04729 的作者归属需确认）
 
 ```
 训练环境: 随机生成的 3D 室内/室外场景
@@ -268,8 +268,8 @@ class DroneNavigationPolicy:
 1. Kaufmann et al., "Champion-level drone racing using deep reinforcement learning", Nature, 2023, [arXiv:2310.16828](https://arxiv.org/abs/2310.16828)
 2. Loquercio et al., "Learning High-Speed Flight in the Wild (Agile Autonomy)", arXiv:2205.06175, 2022
 3. Teed & Deng, "DROID-SLAM: Deep Visual SLAM for Monocular, Stereo, and RGB-D Cameras", arXiv:2108.10869, 2021
-4. Song et al., "Learning to Fly: Computational Controller Design for Hybrid UAVs", arXiv:2311.01378, 2023
-5. Schrittwieser et al., "Learning to Explore with Meta-Policy Gradient", arXiv:2403.04729, 2024
+4. Song et al., "Learning to Fly: Computational Controller Design for Hybrid UAVs", arXiv:2311.01378, 2023（待核实：正文描述与论文实际内容是否匹配）
+5. Schrittwieser et al., "Learning to Explore with Meta-Policy Gradient", arXiv:2403.04729, 2024（待核实：作者归属及论文内容）
 6. Wing (Alphabet), [wing.com](https://wing.com/)
 7. NVIDIA, "Cosmos World Foundation Model Platform for Physical AI", arXiv:2501.12399, 2025
 8. Black et al., "π₀: A Vision-Language-Action Flow Model for General Robot Control", arXiv:2410.24164, 2024

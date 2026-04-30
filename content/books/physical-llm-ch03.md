@@ -230,7 +230,7 @@ class DreamerV3:
 
 1. Ha & Schmidhuber, "World Models", arXiv:1803.10122, 2018
 2. Hafner et al., "Mastering Diverse Domains through World Models (DreamerV3)", arXiv:2301.04104, 2023
-3. Hafner et al., "DayDreamer: World Models for Physical Robot Learning", arXiv:2206.01121, 2022
+3. Wu et al., "DayDreamer: World Models for Physical Robot Learning", arXiv:2206.01121, 2022
 4. Hu et al., "GAIA-1: A Generative World Model for Autonomous Driving", arXiv:2309.17080, 2023
 5. NVIDIA, "Cosmos World Foundation Model Platform for Physical AI", arXiv:2501.12399, 2025
 6. Yang et al., "UniSim: Learning Interactive Real-World Simulators", arXiv:2310.06114, 2023
