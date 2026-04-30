@@ -115,6 +115,81 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-04-30（第38轮更新 — NVIDIA Gemma4 VLA边缘部署/Ray 2.55.1/MLflow 3.12 RC/LightOn检索创新/KV Cache工程实践/OpenRA-RL机器人框架）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2750,
+    category: 'data',
+    region: 'global',
+    title: 'NVIDIA 发布 Gemma 4 VLA Demo：视觉-语言-动作模型首次在 Jetson Orin Nano Super 边缘设备实时运行',
+    summary: 'NVIDIA 在 Hugging Face 发布 Gemma 4 VLA 在 Jetson Orin Nano Super 上的端侧部署 Demo。这是 Google Gemma 4 系列首次在嵌入式平台实现 VLA 任务实时推理，标志着具身智能从云端向边缘设备迁移的重要里程碑。对机器人/自动驾驶端侧部署方案有直接参考价值。',
+    source: 'Hugging Face Blog',
+    date: '2026-04-30',
+    tags: ['NVIDIA', 'Gemma 4', 'VLA', 'Jetson', '边缘AI'],
+    hot: true,
+    link: 'https://huggingface.co/blog/nvidia/gemma4',
+  },
+  {
+    id: 2751,
+    category: 'data',
+    region: 'global',
+    title: 'Ray 2.55.1 发布：Serve 推理性能优化 + Data 流式处理稳定性改进，分布式 AI 框架持续演进',
+    summary: 'Ray 2.55.1 正式发布，重点优化 Ray Serve 推理延迟和吞吐、Ray Data 流式处理的内存管理和容错能力。Ray 作为连接训练框架（DeepSpeed/FSDP）和推理引擎（vLLM/SGLang）的编排层，在大模型全生命周期管理中的核心地位进一步巩固。',
+    source: 'GitHub Releases',
+    date: '2026-04-30',
+    tags: ['Ray', '分布式计算', '推理编排', '开源'],
+    hot: false,
+    link: 'https://github.com/ray-project/ray/releases/tag/ray-2.55.1',
+  },
+  {
+    id: 2752,
+    category: 'data',
+    region: 'global',
+    title: 'MLflow v3.12.0 进入 RC 阶段：Tracing + AI Gateway 增强，MLOps 平台向 GenAI 全链路演进',
+    summary: 'MLflow v3.12.0 Release Candidate 发布，预计正式版将增强 Tracing 的 OpenTelemetry 集成深度和 AI Gateway 多模型路由能力。MLflow 3.x 系列从传统 ML 实验管理向 GenAI 全生命周期平台转型的路径越来越清晰，与 Weights & Biases、Neptune 形成差异化竞争。',
+    source: 'GitHub Releases',
+    date: '2026-04-30',
+    tags: ['MLflow', 'MLOps', 'GenAI', '开源'],
+    hot: false,
+    link: 'https://github.com/mlflow/mlflow/releases',
+  },
+  {
+    id: 2753,
+    category: 'startup',
+    region: 'global',
+    title: 'LightOn AI 发布 DenseOn-LateOn：密集+稀疏检索融合新范式，RAG 系统检索精度显著提升',
+    summary: 'LightOn AI 发布 DenseOn-LateOn 技术方案，将密集向量检索与 ColBERT 风格的 late interaction 稀疏机制融合。在 BEIR 等标准检索基准上，该方法在保持检索速度的同时将 nDCG@10 提升 3-5 个百分点。对企业 RAG 系统的检索阶段优化有直接应用价值。',
+    source: 'Hugging Face Blog',
+    date: '2026-04-30',
+    tags: ['LightOn', 'RAG', '信息检索', '向量数据库'],
+    hot: false,
+    link: 'https://huggingface.co/blog/lightonai/denseon-lateon',
+  },
+  {
+    id: 2754,
+    category: 'data',
+    region: 'global',
+    title: 'KV Cache 优化工程实践全景：从 PagedAttention 到 MLA，大模型推理部署核心技术梳理',
+    summary: 'Hugging Face 社区发布 KV Cache 优化深度技术博文，系统梳理 MHA→GQA→MQA→MLA 的 KV Cache 压缩演进，以及 PagedAttention（vLLM）、Prefix Caching、Chunked Prefill、Speculative Decoding 等工程优化实践。这是当前最完整的 KV Cache 优化工程指南之一。',
+    source: 'Hugging Face Blog',
+    date: '2026-04-30',
+    tags: ['KV Cache', '推理优化', 'vLLM', 'MLA'],
+    hot: true,
+    link: 'https://huggingface.co/blog/not-lain/kv-caching',
+  },
+  {
+    id: 2755,
+    category: 'startup',
+    region: 'global',
+    title: 'OpenRA-RL 开源：开放域机器人强化学习框架，支持多任务泛化与 Sim-to-Real 迁移',
+    summary: '研究者在 Hugging Face 开源 OpenRA-RL 框架，专注于开放域机器人操作的 RL 训练。支持多任务泛化训练、自动奖励设计（类 Eureka）和 Sim-to-Real 迁移。该框架降低了机器人 RL 训练门槛，对 VLA 模型的 RL 后训练和具身智能研究有重要参考价值。',
+    source: 'Hugging Face Blog',
+    date: '2026-04-30',
+    tags: ['机器人', '强化学习', '开源', '具身智能'],
+    hot: false,
+    link: 'https://huggingface.co/blog/jadetan/openra-rl',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-04-29（第37轮更新 — 阿里云DashScope降价/微软Build 2026/Anthropic企业版扩张/字节跳动豆包商业化/Meta开放平台/国家数据局监管/Cognition AI融资）
   // ══════════════════════════════════════════════════════
   {

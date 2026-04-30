@@ -5,7 +5,7 @@ import DatasetExplorer from '@/components/DatasetExplorer';
 import BenchmarkBoard from '@/components/BenchmarkBoard';
 import ArchDiffTool from '@/components/ArchDiffTool';
 import ArchEvolution from '@/components/ArchEvolution';
-import { TransformerBlockSVG, MoEArchSVG } from '@/components/ArchDiagram';
+import { TransformerBlockSVG, MoEArchSVG, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG } from '@/components/ArchDiagram';
 
 /* ─── 模型类型标签 ─── */
 const categoryLabels = {
@@ -170,16 +170,22 @@ function ModelGallery({ models }) {
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-gray-500 uppercase mb-3">🏗️ 架构图</h4>
-                      {/* Raschka 风格 SVG 架构图（传入 factSheet 动态渲染） */}
-                      {(m.type === 'moe' || (m.factSheet?.architecture || '').includes('MoE')) ? (
-                        <div className="bg-white rounded-lg border border-gray-200 p-4 flex justify-center">
+                      {/* 按模型类型渲染专属架构图 */}
+                      <div className="bg-white rounded-lg border border-gray-200 p-4 flex justify-center">
+                        {(m.type === 'moe' || (m.factSheet?.architecture || '').includes('MoE')) ? (
                           <MoEArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
-                        </div>
-                      ) : (
-                        <div className="bg-white rounded-lg border border-gray-200 p-4 flex justify-center">
+                        ) : (m.type === 'autonomous' || m.type === 'vla') ? (
+                          <AutonomousArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
+                        ) : (m.type === 'multimodal') ? (
+                          <MultimodalArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
+                        ) : (m.type === 'ssm') ? (
+                          <SSMArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
+                        ) : (m.type === 'video' || m.type === 'image') ? (
+                          <VideoGenArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
+                        ) : (
                           <TransformerBlockSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
-                        </div>
-                      )}
+                        )}
+                      </div>
                       {/* Raschka Gallery 原图（如果有） */}
                       {m.architectureImage && (
                         <details className="mt-3">
