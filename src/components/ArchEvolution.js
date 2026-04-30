@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import useHashState from '@/hooks/useHashState';
 import { EvolutionPathSVG, COLORS } from '@/components/ArchDiagram';
 
 /* ─── 数据 ─── */
@@ -133,7 +134,7 @@ const SUB_TABS = [
 ];
 
 export default function ArchEvolution() {
-  const [activeTab, setActiveTab] = useState('layers');
+  const [activeTab, setActiveTab] = useHashState('tab', 'layers');
   const [expandedPath, setExpandedPath] = useState(null);
 
   return (

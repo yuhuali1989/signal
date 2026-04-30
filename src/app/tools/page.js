@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import useHashState from '@/hooks/useHashState';
 import Footer from '@/components/Footer';
 
 // ═══════════════════════════════════════════════════════════════
@@ -716,7 +717,7 @@ const TABS = [
 ];
 
 export default function ToolsPage() {
-  const [activeTab, setActiveTab] = useState('simulators');
+  const [activeTab, setActiveTab] = useHashState('tab', 'simulators');
   const active = TABS.find(t => t.id === activeTab);
 
   return (

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import useHashState from '@/hooks/useHashState';
 import { INDUSTRY_CRISIS, GLOBAL_BREAKOUT, PALANTIR_DEEP_DIVE, RESPONSE_FRAMEWORK, SAAS_DELIVERY, FDE_BP_FLYWHEEL, EXTERNAL_MODEL_SECURITY, BENCHMARKS } from '@/lib/strategy-data';
 
 // ═══════════════════════════════════════════════════════════════
@@ -2099,7 +2100,7 @@ const TABS = [
 ];
 
 export default function StrategyViz() {
-  const [activeTab, setActiveTab] = useState('crisis');
+  const [activeTab, setActiveTab] = useHashState('tab', 'crisis');
 
   const tabContent = {
     crisis: <CrisisTab />,

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import useHashState from '@/hooks/useHashState';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 
@@ -17,7 +18,7 @@ const TABS = [
 ];
 
 export default function AdsPage() {
-  const [tab, setTab] = useState('arch');
+  const [tab, setTab] = useHashState('tab', 'arch');
 
   return (
     <>

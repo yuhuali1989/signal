@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import useHashState from '@/hooks/useHashState';
 import DatasetExplorer from '@/components/DatasetExplorer';
 import BenchmarkBoard from '@/components/BenchmarkBoard';
 import ArchDiffTool from '@/components/ArchDiffTool';
 import ArchEvolution from '@/components/ArchEvolution';
-import { TransformerBlockSVG, MoEArchSVG, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG } from '@/components/ArchDiagram';
+import { TransformerBlockSVG, MoEArchSVG, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG, ThreeDGenArchSVG } from '@/components/ArchDiagram';
 
 /* ─── 模型类型标签 ─── */
 const categoryLabels = {
@@ -17,6 +18,7 @@ const categoryLabels = {
   small:      { label: '小模型',   icon: '🔬' },
   multimodal: { label: '多模态',   icon: '👁️' },
   video:      { label: '视频生成', icon: '🎬' },
+  '3d':       { label: '3D生成',   icon: '🧊' },
   autonomous: { label: '自动驾驶', icon: '🚗' },
 };
 
@@ -180,6 +182,8 @@ function ModelGallery({ models }) {
                           <MultimodalArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         ) : (m.type === 'ssm') ? (
                           <SSMArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
+                        ) : (m.type === '3d') ? (
+                          <ThreeDGenArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         ) : (m.type === 'video' || m.type === 'image') ? (
                           <VideoGenArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         ) : (
@@ -238,7 +242,7 @@ const TABS = [
 ];
 
 export default function ModelHub({ models, benchmarks, datasets }) {
-  const [activeTab, setActiveTab] = useState('gallery');
+  const [activeTab, setActiveTab] = useHashState('tab', 'gallery');
 
   return (
     <div>

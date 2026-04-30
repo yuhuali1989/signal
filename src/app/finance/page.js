@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import useHashState from '@/hooks/useHashState';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 
@@ -16,7 +17,7 @@ const TABS = [
 ];
 
 export default function FinancePage() {
-  const [tab, setTab] = useState('llm');
+  const [tab, setTab] = useHashState('tab', 'llm');
 
   return (
     <>
