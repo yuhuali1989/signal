@@ -157,8 +157,7 @@ GEMM 在 GPU 上的执行：
 5. 结果写回 Shared Memory → L2 → HBM
 
 H100 Tensor Core (BF16):
-  每个 SM: 512 FLOPS/cycle × 1.98 GHz = 1013 GFLOPS
-  全芯片: 132 SMs × 1013 = 133,727 GFLOPS ≈ 990 TFLOPS
+  官方规格: 989 TFLOPS（FP16，含稀疏加速）/ 494 TFLOPS（FP16，不含稀疏）
 
 性能关键: Tile Size 选择
   太小 → Tensor Core 利用率低

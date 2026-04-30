@@ -39,7 +39,7 @@ type: "book"
 
 ### 第一次跃迁：从手工特征到端到端学习（2015-2020）
 
-传统机器人控制依赖手工设计的感知-规划-控制流水线。2016 年，Levine et al. 在 Google Brain 的工作 [*Learning Hand-Eye Coordination for Robotic Grasping*](https://arxiv.org/abs/2304.02643) 开创了端到端视觉运动策略学习的先河，直接从图像像素映射到机器人抓取动作。
+传统机器人控制依赖手工设计的感知-规划-控制流水线。2016 年，Levine et al. 在 Google Brain 的工作 [*Learning Hand-Eye Coordination for Robotic Grasping*](https://arxiv.org/abs/1504.00702) 开创了端到端视觉运动策略学习的先河，直接从图像像素映射到机器人抓取动作。
 
 ```
 传统流水线:  感知 → 建图 → 规划 → 控制 → 执行
@@ -97,7 +97,7 @@ VLA 模型将视觉-语言理解能力与机器人动作生成统一在一个模
 
 **关键论文**：
 - RT-2: [arXiv:2307.15818](https://arxiv.org/abs/2307.15818) — Google DeepMind
-- OpenVLA: [arXiv:2406.09246](https://arxiv.org/abs/2406.10165) — Stanford / UC Berkeley（[GitHub](https://github.com/openvla/openvla)）
+- OpenVLA: [arXiv:2406.09246](https://arxiv.org/abs/2406.09246) — Stanford / UC Berkeley（[GitHub](https://github.com/openvla/openvla)）
 - Octo: [arXiv:2405.12213](https://arxiv.org/abs/2405.12213) — UC Berkeley
 
 ### 支柱二：世界模型（World Model）
@@ -147,7 +147,7 @@ VLA 模型将视觉-语言理解能力与机器人动作生成统一在一个模
 **参考文献**
 
 1. Brohan et al., "RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control", arXiv:2307.15818, 2023
-2. Kim et al., "OpenVLA: An Open-Source Vision-Language-Action Model", arXiv:2406.10165, 2024
+2. Kim et al., "OpenVLA: An Open-Source Vision-Language-Action Model", arXiv:2406.09246, 2024
 3. Hu et al., "GAIA-1: A Generative World Model for Autonomous Driving", arXiv:2309.17080, 2023
 4. NVIDIA, "Cosmos World Foundation Model Platform for Physical AI", arXiv:2501.12399, 2025
 5. Open X-Embodiment Collaboration, "Open X-Embodiment: Robotic Learning Datasets and RT-X Models", 2023, [GitHub](https://github.com/google-deepmind/open_x_embodiment)

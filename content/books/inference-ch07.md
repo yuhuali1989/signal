@@ -20,7 +20,7 @@ type: "book"
 观察: Attention Score 的第一个 token 总是异常地高
 原因: Softmax 需要一个"汇聚点"（Sink Token）
 
-StreamingLLM (MIT, ICML 2024):
+StreamingLLM (MIT, ICLR 2024):
   保留前 4 个 Sink Token + 最近 N 个 Token 的 KV Cache
   丢弃中间的 KV Cache
   → 支持无限长序列，固定显存
@@ -44,7 +44,7 @@ $$\alpha_0 = \frac{e^{q \cdot k_0 / \sqrt{d_k}}}{\sum_{i=0}^{n} e^{q \cdot k_i /
 ```
 前沿研究: 不是所有 KV Cache 都同样重要
 
-H2O (Heavy-Hitter Oracle, ICML 2024):
+H2O (Heavy-Hitter Oracle, NeurIPS 2023):
   统计每个 token 被 attend 的累积频率
   保留 "Heavy Hitter"（高频被关注的 token）
   丢弃 "冷门" token → KV Cache 压缩到 20%
@@ -92,7 +92,7 @@ class MLA(nn.Module):
 # 存储对比:
 # MHA KV Cache: 2 × 60层 × 64头 × 128维 × seq_len = 983,040 × seq_len bytes
 # MLA KV Cache: 60层 × 512维 × seq_len = 30,720 × seq_len bytes
-# 压缩率: 30,720 / 983,040 = 3.1% (压缩 96.9%)
+# 压缩率: 30,720 / 983,040 ≈ 3.1%（相对 MHA；论文报告相对 GQA 压缩 93.3%）
 ```
 
 ## 7.2 推理时 Scaling (Test-Time Compute)
@@ -261,7 +261,7 @@ GTC 2026 发布的 Dynamo 是 NVIDIA 对推理 serving 的系统级答案：
 ```python
 # Dynamo 配置示例
 dynamo_config = {
-    "model": "deepseek-v4",
+    "model": "deepseek-chat",
     "prefill_workers": 4,
     "decode_workers": 12,
     "kv_transfer": "rdma",        # 直传
@@ -345,7 +345,7 @@ $$\text{Cost per token} = \frac{\text{GPU 租赁成本/小时}}{\text{吞吐量 
 │   GGUF 量化，资源极低
 │   ✅ M-series 原生支持, 手机可用
 │
-├── MoE 大模型 (DeepSeek V4/Llama 4) → vLLM (EP 支持最好)
+├── MoE 大模型 (DeepSeek V3/Llama 4) → vLLM (EP 支持最好)
 │   Expert Parallelism 原生支持
 │   ✅ 或 SGLang (新版 EP 支持)
 │
@@ -399,7 +399,7 @@ $$\text{Latency} = \underbrace{\text{TTFT}}_{\text{Prefill}} + \underbrace{\text
 
 vLLM 团队发布 1.0 里程碑版本，标志着开源推理引擎从「够用」到「生产级」的跨越：
 
-- **统一 MoE 推理引擎**：原生支持 DeepSeek-V4（1.8T）、Llama 5 MoE（1.2T）等超大稀疏模型，Expert Parallelism + Tensor Parallelism 混合并行
+- **统一 MoE 推理引擎**：原生支持 DeepSeek-V3（1.8T）、Llama 5 MoE（1.2T，预计发布，截至本文尚未正式发布）等超大稀疏模型，Expert Parallelism + Tensor Parallelism 混合并行
 - **多模态推理 GA**：图文音视频统一 KV Cache 管理，多模态 token 与文本 token 共享 PagedAttention
 - **LoRA 热切换**：延迟从 2s 降至 50ms，支持单 GPU 同时加载 100+ LoRA 适配器
 - **Blackwell B300 原生 FP4**：利用 B300 的 FP4 Tensor Core，推理吞吐翻倍

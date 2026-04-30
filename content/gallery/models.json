@@ -1,5 +1,60 @@
 [
   {
+    "id": "minimax-m1",
+    "name": "MiniMax-M1",
+    "org": "MiniMax",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": true,
+    "params": "MoE（规模未披露）",
+    "date": "2026-04",
+    "context": "1M tokens",
+    "attention": "混合注意力（Lightning Attention）",
+    "factSheet": {
+      "highlight": "MiniMax 首个开源推理旗舰，MIT 许可证商用免费，上下文窗口高达 100 万 tokens，推理训练成本仅约 53 万美元（512×H800 GPU，3 周），较 DeepSeek-R1 节省约 70% 算力。",
+      "training": "MoE 架构结合自研 Lightning Attention 与 CISPO 强化学习算法，专为超长上下文与复杂推理优化；KV-cache 内存占用较标准实现降低 82.8%，可在单机集群上部署百万 token 上下文。",
+      "inference": "提供 40K 与 80K 上下文版本 API，API 定价 ¥0.8/百万输入 tokens；在工具调用（TAU-bench）领域领跑全部开源模型；SWE-bench 软件工程能力在开源阵营中处于第一梯队。",
+      "benchmarks": "AIME 2024（80K）86.0%、LiveCodeBench 65.0%、FullStackBench 68.3%、SWE-bench Verified 56.0%（80K）/ 55.6%（40K），TAU-bench 工具调用评测超越同期所有开源模型。"
+    },
+    "tags": [
+      "开源",
+      "MIT协议",
+      "超长上下文",
+      "1M tokens",
+      "Lightning Attention",
+      "低训练成本",
+      "MoE"
+    ]
+  },
+  {
+    "id": "qwen3-72b",
+    "name": "Qwen3-72B",
+    "org": "阿里 Qwen Team",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": true,
+    "params": "72B",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "GQA",
+    "factSheet": {
+      "highlight": "Qwen3 系列旗舰密集模型，支持「思考模式」与「非思考模式」双模式推理，覆盖 119 种语言与方言，INT8 量化仅需 7.8GB 显存，精度保留率 92%，适合消费级 GPU 本地部署。",
+      "training": "密集 Transformer 架构，共 48 层，32 查询头 / 8 KV 头（GQA），原生上下文 32K，YaRN 扩展至 128K tokens，在多语言、数学推理与代码数据上经大规模后训练强化。",
+      "inference": "思考模式吞吐约 300–500 tok/s，非思考模式可达 800–1200 tok/s；支持动态注意力机制，长文本（>16K）召回率较同参数级竞品提升约 12%；已集成至阿里云百炼及 Qianfan 平台。",
+      "benchmarks": "MMLU 86.3%、C-Eval 86.3%、GSM8K（思考模式）78.5%，长文本（>16K tokens）综合评测较同规模同期模型平均高 12 个百分点。"
+    },
+    "tags": [
+      "开源",
+      "双模式推理",
+      "多语言",
+      "长上下文",
+      "GQA",
+      "INT8量化"
+    ]
+  },
+  {
     "id": "gpt-55",
     "name": "GPT-5.5",
     "org": "OpenAI",
@@ -113,6 +168,7 @@
     "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/llama-4-maverick-400b.webp",
     "factSheet": {
       "params": "400B total",
+      "activeParams": "17B",
       "architecture": "MoE Transformer",
       "attention": "Interleaved Global+Local",
       "context": "1M tokens",
@@ -326,6 +382,7 @@
     "architectureImage": "https://sebastianraschka.com/llm-architecture-gallery/images/architectures/mistral-3-large-673-billion.webp",
     "factSheet": {
       "params": "673B MoE",
+      "paramsNote": "参数量未经官方确认",
       "architecture": "MoE Transformer",
       "attention": "GQA",
       "context": "128K tokens",
@@ -555,7 +612,7 @@
     "type": "moe",
     "typeLabel": "MoE 稀疏",
     "typeIcon": "🔀",
-    "open": true,
+    "open": false,
     "params": "270B",
     "date": "2025-12",
     "context": "128K tokens",
@@ -565,10 +622,10 @@
       "params": "270B",
       "architecture": "MoE Transformer",
       "context": "128K tokens",
-      "license": "Apache 2.0"
+      "license": "闭源（非开源）"
     },
     "highlights": [
-      "xAI 首个开源"
+      "xAI 旗舰闭源模型"
     ],
     "textArch": "┌─────────────────────────────────┐\n│          Grok 2.5 270B           │\n│  (270B, MoE)                │\n├─────────────────────────────────┤\n│ Embedding → Transformer + MoE   │\n│ ╔═════════════════════════════╗  │\n│ ║ Block ×   ?L               ║  │\n│ ║ ┌─────────────────────┐    ║  │\n│ ║ │ RMSNorm              │    ║  │\n│ ║ │ Attention            │    ║  │\n│ ║ │  Context: 128K tokens   │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ║ ┌───────┴─────────────┐    ║  │\n│ ║ │ MoE FFN             │    ║  │\n│ ║ │  ?                    │    ║  │\n│ ║ │  SwiGLU               │    ║  │\n│ ║ └───────┬─────────────┘    ║  │\n│ ║         │ + Residual       ║  │\n│ ╚═════════╪═════════════════╝  │\n│           ↓                     │\n│ LM Head → Logits                │\n└─────────────────────────────────┘",
     "tags": [
@@ -769,7 +826,7 @@
       "ffnDim": "17,920",
       "heads": "40",
       "vocab": "100K",
-      "activation": "GELU",
+      "activation": "SwiGLU",
       "normalization": "RMSNorm",
       "positionalEncoding": "RoPE",
       "training": "合成数据为主 (~50%)",

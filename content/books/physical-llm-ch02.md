@@ -109,7 +109,7 @@ PaLI-X (55B) 或 PaLM-E (12B) 骨干网络
 | Octo (93M) | 52% | 45% | 58% | 51.7% |
 | **OpenVLA (7B)** | **76%** | **62%** | **73%** | **70.3%** |
 
-> OpenVLA 以 7B 参数达到了 55B RT-2-X 的水平，参数效率提升 8 倍。
+> OpenVLA (70.3%) 接近 RT-2-X (70.7%) 水平，略低，参数效率提升 8 倍。
 
 **开源资源**：
 - 代码：[github.com/openvla/openvla](https://github.com/openvla/openvla)（⭐ 3.2K+）

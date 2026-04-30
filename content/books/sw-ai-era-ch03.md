@@ -172,7 +172,7 @@ df = pd.read_sql("SELECT * FROM sales_metrics", conn)
 # 将数据摘要发送给 LLM 分析
 client = Anthropic()
 response = client.messages.create(
-    model="claude-opus-4-5",
+    model="claude-3-5-sonnet-20241022",
     messages=[{
         "role": "user",
         "content": f"分析以下销售数据，找出异常趋势：\n{df.describe().to_string()}"

@@ -77,11 +77,11 @@ Agent 的推理引擎，负责：
 
 | 能力 | 重要性 | 说明 | 代表模型 |
 |------|:---:|------|---------|
-| 推理能力 | ★★★★★ | 多步逻辑推理 | Claude Opus 4.6, GPT-5.4 |
-| Function Calling | ★★★★★ | 精准调用工具 | GPT-5.4, Mistral Large 3 |
-| 长上下文 | ★★★★ | 保持复杂任务状态 | Claude (1M), GPT-6 (2M) |
+| 推理能力 | ★★★★★ | 多步逻辑推理 | Claude 3.5 Sonnet, GPT-4o |
+| Function Calling | ★★★★★ | 精准调用工具 | GPT-4o, Mistral Large 2 |
+| 长上下文 | ★★★★ | 保持复杂任务状态 | Claude (1M), GPT-6 (2M)（截至2025年未发布，属预测） |
 | 代码生成 | ★★★★ | 动态生成脚本 | DeepSeek-V4, Llama 4 |
-| 指令遵循 | ★★★★★ | 严格执行系统提示 | Claude Opus 4.6 |
+| 指令遵循 | ★★★★★ | 严格执行系统提示 | Claude 3.5 Sonnet |
 
 **2. 感知模块（Perception）**
 
@@ -268,12 +268,12 @@ async def agent_loop(task, tools, memory, max_iterations=50):
 
 ```
 MCP 生态规模：
-├── MCP Server 数量: 2000+ (npmjs.com)
+├── MCP Server 数量: 数百个（持续增长中）
 ├── 原生支持的 AI 应用: 15+
 │   ├── Claude Desktop, Cursor, Windsurf
 │   ├── Cline, Continue, Zed
 │   └── JetBrains AI, VSCode Copilot (beta)
-├── 首个原生 MCP 模型: Mistral Large 3 Ultra
+├── 首个原生 MCP 模型: Mistral Large 2
 └── 主要 MCP Server 类别:
     ├── 文件系统: filesystem, git
     ├── 开发工具: github, gitlab, jira
@@ -334,8 +334,8 @@ MCP 生态规模：
 | WebArena | Web 交互任务 | 42% | GPT-5 Agent |
 | OSWorld | 桌面 OS 操作 | 25% | Claude Computer Use |
 | GAIA | 通用 AI 助手 | 67% | OpenAI Codex |
-| AgentBench | 多环境综合 | 71% | GPT-5.4 |
-| τ-bench | 企业工具使用 | 58% | Claude Opus 4.6 |
+| AgentBench | 多环境综合 | 71% | GPT-4o |
+| τ-bench | 企业工具使用 | 58% | Claude 3.5 Sonnet |
 
 ## 1.7 Agent 安全与伦理
 
@@ -419,7 +419,7 @@ AI Agent 不是一个全新的概念——早在 1990 年代的 BDI（Belief-Des
 2026 年的 AI Agent 已经跨过了"从玩具到工具"的转折点：
 
 - **Claude Code Agent** SWE-Bench 68%，可自主修复大部分真实 Bug
-- **MCP 生态** 2000+ 工具服务，首个原生 MCP 模型发布
+- **MCP 生态** 数百个（持续增长中）工具服务，原生 MCP 支持持续扩展
 - **企业落地** Codex Agent 6 周签下 2000 家企业客户
 - **安全标准** 首个通过 OWASP Top 10 审计的编程 Agent
 

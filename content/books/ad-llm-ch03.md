@@ -30,7 +30,7 @@ type: "book"
 
 | 平台 | GPU 规模 | 网络互联 | 存储架构 | 典型训练任务 |
 |------|---------|---------|---------|-------------|
-| Tesla Dojo v2 | 10,000+ H100 | InfiniBand NDR 400G | Lustre + 本地 NVMe | 端到端模型、Occupancy Network |
+| Tesla Dojo v2 | 10,000+ D1芯片 | InfiniBand NDR 400G | Lustre + 本地 NVMe | 端到端模型、Occupancy Network |
 | Waymo TPU Pod | 4,096 TPUv5e | 专用 ICI 互联 | GCS + 本地 SSD | MultiFrame Fusion、VLA |
 | 百度 Apollo Cloud | 2,048 A100 | RoCE v2 200G | CephFS + RDMA | BEV 感知、规划模型 |
 | 华为 MDC Train | 1,024 昇腾 910B | HCCS 互联 | OBS + SFS | GOD 网络、ADS 3.0 |
@@ -97,7 +97,7 @@ distributed_config = {
 
 自动驾驶模型的显存需求极高（BEV 特征图通常占用数 GB），关键优化技术：
 
-1. **FP8 训练**：NVIDIA H100/B100 支持 FP8 格式，相比 FP16 节省 50% 显存，训练速度提升 30%
+1. **FP8 训练**：NVIDIA H100/B200 支持 FP8 格式，相比 FP16 节省 50% 显存，训练速度提升 30%
 2. **梯度检查点**：以计算换显存，对 BEV Encoder 的中间激活按需重算
 3. **选择性激活重计算**：仅对显存密集的注意力层启用检查点
 
@@ -136,7 +136,7 @@ distributed_config = {
 |------|-----------|---------|--------|---------|
 | NVIDIA Orin-X | 254 | 60 | 4.2 | 蔚来 ET9、理想 L9 |
 | NVIDIA Thor | 2000 | 100 | 20.0 | Tesla 下一代 |
-| 高通 Ride Elite | 1000 | 80 | 12.5 | 宝马、通用 |
+| 高通 Snapdragon Ride | 1000 | 80 | 12.5 | 宝马、通用 |
 | 华为 MDC 810 | 400 | 85 | 4.7 | 问界 M9 |
 | 地平线 J6P | 560 | 45 | 12.4 | 比亚迪、大众 |
 

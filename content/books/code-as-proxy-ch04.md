@@ -245,7 +245,7 @@ def analyze_sales_decline(df_orders, df_products, df_order_items):
     return {
         'total_declining': len(declining),
         'avg_decline': declining['change_pct'].mean(),
-        'top_declining': declining.nlargest(5, 'change_pct', keep='first')['product_name'].tolist()
+        'top_declining': declining.nsmallest(5, 'change_pct', keep='first')['product_name'].tolist()
     }
 """
 ```

@@ -38,7 +38,7 @@ type: "book"
 
 | 指标 | 数值 | 来源 |
 |------|------|------|
-| Waymo 无人车累计里程 | 5000 万+ 英里 (2026) | Waymo Safety Report |
+| Waymo 无人车累计里程 | 超过2000万英里（公开数据截至2023年） | Waymo Safety Report |
 | 平均接管间隔 (L4) | ~17,000 英里/次 | CA DMV 2025 |
 | 长尾场景占事故比 | 95%+ | NHTSA Analysis |
 | 人类驾驶员事故率 | 1.3 次/百万英里 | NHTSA 2025 |
@@ -399,9 +399,9 @@ class MultiSequencePlanner:
 
 ## 6.7 AI 辅助安全测试与漏洞发现
 
-### 6.7.1 Project Glasswing 对自动驾驶安全的启示
+### 6.7.1 Project Glasswing 对自动驾驶安全的启示（注：此项目信息待核实）
 
-2026 年 4 月，Anthropic 联合 11 家巨头发起的 Project Glasswing 揭示了一个惊人事实：前沿 AI 模型可以自主发现存在数十年的零日漏洞（OpenBSD 27 年远程崩溃漏洞、FFmpeg 16 年漏洞）。这对自动驾驶安全验证有深远影响：
+2026 年 4 月，Anthropic 联合 11 家巨头发起的 Project Glasswing 揭示了一个惊人事实：前沿 AI 模型可以自主发现存在数十年的零日漏洞（OpenBSD 27 年远程崩溃漏洞、FFmpeg 16 年漏洞）（注：此项目信息待核实）。这对自动驾驶安全验证有深远影响：
 
 ```
 传统安全测试:

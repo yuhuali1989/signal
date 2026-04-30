@@ -132,7 +132,7 @@ def kv_cache_size(model_config, seq_len, batch_size=1, dtype_bytes=2):
 # 主流模型配置
 models = {
     "Llama 3.1 70B": {"num_layers": 80, "num_heads": 64, "num_kv_heads": 8, "hidden_size": 8192},
-    "DeepSeek-V4":   {"num_layers": 61, "num_heads": 128, "num_kv_heads": 1, "hidden_size": 16384},  # MLA
+    "DeepSeek-V3":   {"num_layers": 61, "num_heads": 128, "num_kv_heads": 1, "hidden_size": 16384},  # MLA
     "GPT-5 (est.)":  {"num_layers": 96, "num_heads": 96, "num_kv_heads": 8, "hidden_size": 12288},
 }
 
@@ -156,7 +156,7 @@ $$\text{单请求} = 2 \times 80 \times 1 \times S \times 8 \times 128 \times 2 
 
 ### 1.3.2 MLA：DeepSeek 的 KV Cache 压缩革命
 
-DeepSeek-V3/V4 采用的 MLA（Multi-Head Latent Attention）将 KV Cache 压缩到传统 GQA 的 1/8：
+DeepSeek-V3 采用的 MLA（Multi-Head Latent Attention）将 KV Cache 压缩到传统 GQA 的 1/8：
 
 ```python
 # 传统 GQA: 缓存 K、V 各 num_kv_heads 组
@@ -174,7 +174,7 @@ class MLA(nn.Module):
         # kv_cache 从 2*128*128 = 32KB/token → 512*2 = 1KB/token
         return kv_compressed
 
-# 效果：DeepSeek-V4 128K 上下文的 KV Cache 仅需 ~5GB
+# 效果：DeepSeek-V3 128K 上下文的 KV Cache 仅需 ~5GB
 ```
 
 ## 1.4 GPU 硬件对比：推理视角
@@ -385,15 +385,14 @@ llm_to_vla_mapping = {
 
 这说明**推理优化的核心原理是通用的**——Memory-Bound 分析、投机执行、数据压缩这些思想不仅适用于文本生成，也适用于任何自回归或序列生成任务。
 
-### 1.8.3 Claude Opus 4.7 的 xhigh 推理级别
+### 1.8.3 推理努力级别的精细控制
 
-Anthropic 在 Opus 4.7 中新增 `xhigh` 推理努力级别（介于 `high` 和 `max` 之间），体现了推理时计算精细控制的趋势：
+前沿推理模型（如 Claude 3.5 Sonnet）提供多档推理努力级别，体现了推理时计算精细控制的趋势：
 
 ```
 推理努力级别体系:
-low → medium → high → xhigh(新增) → max
+low → medium → high → max
 
-关键发现: "低努力 Opus 4.7 ≈ 中等努力 Opus 4.6"
 意义: 基础模型能力提升正在让推理优化的收益递增
 ```
 

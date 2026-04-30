@@ -345,7 +345,7 @@ def wsd_schedule(step, warmup_steps, stable_steps, decay_steps, max_lr, min_lr):
 # WSD 的优势: 
 # - Stable 阶段可以在任意时刻停止训练，loss 仍然是好的
 # - 方便增量训练（继续训练只需要再加一段 Stable）
-# - DeepSeek V3 实际使用: Warmup 2K steps → Stable ~95% → Decay 最后 5%
+# - DeepSeek V3 实际使用: Warmup 2K steps → Stable ~95%（各实现有差异，常见区间 80%-95%） → Decay 最后 5%
 
 # === 4. Inverse Square Root (经典 Transformer 论文) ===
 # lr = d^{-0.5} * min(step^{-0.5}, step * warmup^{-1.5})

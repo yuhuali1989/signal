@@ -123,9 +123,9 @@ tools = [
 现代 LLM 支持在一次响应中发起**多个并行函数调用**：
 
 ```python
-# GPT-5.4 / Claude Opus 4.6 并行调用示例
+# GPT-4o / Claude 3.5 Sonnet 并行调用示例
 response = client.chat.completions.create(
-    model="gpt-5.4",
+    model="gpt-4o",
     messages=[{"role": "user", "content": "对比北京和上海今天的天气"}],
     tools=tools,
     parallel_tool_calls=True  # 启用并行
@@ -269,11 +269,11 @@ Streamable HTTP 的关键优势：
 3. **断点续传**：长时间工具调用中断后可恢复，不需重新执行
 4. **会话可选**：需要上下文时启用 session，无状态场景则跳过
 
-## 3.5 A2A 协议：Agent-to-Agent 通信
+## 3.4 A2A 协议：Agent-to-Agent 通信
 
 ### Google A2A 协议
 
-2026 年 Google 发布 A2A（Agent-to-Agent Protocol），解决多 Agent 系统间的通信标准化问题：
+2025 年 Google 发布 A2A（Agent-to-Agent Protocol），解决多 Agent 系统间的通信标准化问题：
 
 ```
 MCP vs A2A 定位对比:
@@ -315,7 +315,7 @@ MCP vs A2A 定位对比:
 }
 ```
 
-## 3.6 工具选择策略
+## 3.5 工具选择策略
 
 当 Agent 拥有大量工具时，如何选择正确的工具变得至关重要：
 
@@ -399,7 +399,7 @@ plan = [
 ]
 ```
 
-## 3.7 工具调用的安全性
+## 3.6 工具调用的安全性
 
 ### 权限控制
 
