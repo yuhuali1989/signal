@@ -1168,17 +1168,16 @@ function PlanSection() {
     {
       line: '🛡️ 风控', color: '#e17055',
       bars: [
-        // Y1 前半（7-12月）：数据治理+模型选型+PoC
-        { start: 0, end: 1, label: '数据治理+反欺诈特征工程', milestone: '7-8月：历史数据清洗完成' },
-        { start: 2, end: 3, label: '图网络模型选型+训练', milestone: '9-10月：GAT模型训练完成' },
-        { start: 4, end: 5, label: '反欺诈PoC上线（信用卡）', milestone: '11-12月：识别率+10%' },
-        // Y1 后半+Y2 前半（2027全年）：扩展+LLM融合
-        { start: 6, end: 8, label: '消费贷+对公贷款覆盖', milestone: '27Q1：全产品线覆盖' },
-        { start: 9, end: 11, label: 'LLM+图网络融合模型', milestone: '27Q2：SAR自动生成' },
-        { start: 12, end: 14, label: '实时风控引擎（Flink）', milestone: '27Q3：毫秒级响应' },
-        { start: 15, end: 17, label: '全行信贷AI风控覆盖', milestone: '27Q4：损失率降30%' },
-        // Y2 后半（2028.1-6）：Agent化
-        { start: 18, end: 23, label: '风控Agent 1.0（自主研判+预警）', milestone: '28H1：自主处置率>60%' },
+        // 7月无人→8月骨干到位开始规划→9月起正式启动
+        { start: 1, end: 2, label: '需求梳理+数据资产盘点', milestone: '8-9月：骨干到位，梳理数据现状' },
+        { start: 3, end: 4, label: '数据治理+反欺诈特征工程', milestone: '10-11月：历史数据清洗完成' },
+        { start: 5, end: 7, label: '图网络模型选型+训练+验证', milestone: '12-2月：GAT模型训练完成' },
+        { start: 8, end: 10, label: '反欺诈PoC上线（信用卡）', milestone: '27Q1：识别率+10%' },
+        // 2027 Q2-Q4：扩展+LLM融合
+        { start: 11, end: 13, label: '消费贷+对公贷款覆盖', milestone: '27Q2-Q3：全产品线覆盖' },
+        { start: 14, end: 17, label: 'LLM+图网络融合+SAR自动生成', milestone: '27Q4：SAR自动生成' },
+        // 2028.1-6：Agent化
+        { start: 18, end: 23, label: '实时风控引擎+风控Agent 1.0', milestone: '28H1：自主处置率>60%' },
         // Y3-Y5
         { start: 24, end: 24, label: '风控Agent 2.0', milestone: '处置率>90%' },
         { start: 25, end: 26, label: '风控SaaS+联邦联盟8家', milestone: '服务费¥2000万/半年' },
@@ -1188,19 +1187,18 @@ function PlanSection() {
     {
       line: '💬 客服', color: '#00cec9',
       bars: [
-        // Y1 前半（7-12月）
-        { start: 0, end: 1, label: '知识库构建+RAG系统搭建', milestone: '7-8月：Top200问题入库' },
-        { start: 2, end: 3, label: 'RAG客服内测+迭代', milestone: '9-10月：准确率>85%' },
-        { start: 4, end: 5, label: '智能客服上线（替代10%）', milestone: '11-12月：节省¥150万' },
-        // 2027全年
-        { start: 6, end: 8, label: '替代率提升至20%+语音接入', milestone: '27Q1：语音识别>95%' },
-        { start: 9, end: 11, label: '多模态客服（图片+视频）', milestone: '27Q2：替代率30%' },
-        { start: 12, end: 14, label: '复杂业务场景覆盖', milestone: '27Q3：替代率38%' },
-        { start: 15, end: 17, label: '替代率45%+满意度优化', milestone: '27Q4：满意度>4.3' },
+        // 8月产品总监到位开始规划→9月起正式启动
+        { start: 1, end: 2, label: '需求调研+知识库规划', milestone: '8-9月：Top200问题梳理' },
+        { start: 3, end: 5, label: '知识库构建+RAG系统搭建', milestone: '10-12月：RAG系统内测' },
+        { start: 6, end: 8, label: 'RAG客服迭代+准确率优化', milestone: '27Q1：准确率>85%' },
+        // 2027 Q2-Q4
+        { start: 9, end: 11, label: '智能客服上线（替代10%）+语音接入', milestone: '27Q2：替代10%' },
+        { start: 12, end: 14, label: '多模态客服（图片+视频）', milestone: '27Q3：替代率25%' },
+        { start: 15, end: 17, label: '替代率35%+满意度优化', milestone: '27Q4：满意度>4.3' },
         // 2028.1-6
-        { start: 18, end: 23, label: '业务办理Agent（开卡/转账/理赔）', milestone: '28H1：替代率55%' },
+        { start: 18, end: 23, label: '业务办理Agent（开卡/转账/理赔）', milestone: '28H1：替代率50%' },
         // Y3-Y5
-        { start: 24, end: 24, label: 'Agent替代65%', milestone: '满意度>4.5' },
+        { start: 24, end: 24, label: 'Agent替代60%', milestone: '满意度>4.5' },
         { start: 25, end: 26, label: '情感识别+全渠道70%', milestone: '节省¥4000万/半年' },
         { start: 27, end: 28, label: '80%AI完成+SaaS输出', milestone: '节省¥6000万/半年' },
       ],
@@ -1208,17 +1206,15 @@ function PlanSection() {
     {
       line: '💰 理财', color: '#6c5ce7',
       bars: [
-        // Y1 前半（7-12月）
-        { start: 0, end: 2, label: '投研助手PoC（研报摘要+基金对比）', milestone: '7-9月：内部试用' },
-        { start: 3, end: 5, label: '投研助手迭代+内部推广', milestone: '10-12月：效率+30%' },
-        // 2027全年
-        { start: 6, end: 9, label: 'AI理财顾问PoC+用户画像', milestone: '27Q1-Q2：画像覆盖80%客户' },
-        { start: 10, end: 13, label: 'AI理财顾问1.0上线', milestone: '27Q2-Q3：AUM转化率+5%' },
-        { start: 14, end: 17, label: '千人千面推荐+AUM增长', milestone: '27Q3-Q4：AUM转化率+8%' },
+        // 理财方向人到位更晚（需要算法+产品+数据），10月起才能启动
+        { start: 3, end: 5, label: '投研助手需求定义+数据对接', milestone: '10-12月：研报数据打通' },
+        { start: 6, end: 9, label: '投研助手PoC（研报摘要+基金对比）', milestone: '27Q1-Q2：内部试用' },
+        { start: 10, end: 13, label: '投研助手迭代+AI理财顾问PoC', milestone: '27Q2-Q3：效率+30%' },
+        { start: 14, end: 17, label: 'AI理财顾问1.0上线+用户画像', milestone: '27Q3-Q4：AUM转化率+5%' },
         // 2028.1-6
-        { start: 18, end: 23, label: '自动调仓Agent+AUM¥80亿', milestone: '28H1：AUM¥80亿' },
+        { start: 18, end: 23, label: '千人千面推荐+自动调仓Agent', milestone: '28H1：AUM转化率+8%' },
         // Y3-Y5
-        { start: 24, end: 24, label: 'AUM¥150亿', milestone: '千人千面成熟' },
+        { start: 24, end: 24, label: 'AUM¥80亿', milestone: '千人千面成熟' },
         { start: 25, end: 26, label: 'AUM¥250→400亿', milestone: '佣金¥2500万/半年' },
         { start: 27, end: 28, label: 'AUM¥500亿+平台输出', milestone: '佣金¥3250万/半年' },
       ],
@@ -1226,13 +1222,13 @@ function PlanSection() {
     {
       line: '📜 合规', color: '#ffa657',
       bars: [
-        // Y1 前半（7-12月）
-        { start: 0, end: 2, label: '合规知识库构建（法规/制度入库）', milestone: '7-9月：10万+条目' },
-        { start: 3, end: 5, label: '基础合规审查辅助上线', milestone: '10-12月：效率+30%' },
-        // 2027全年
-        { start: 6, end: 9, label: '合同审查Agent开发+测试', milestone: '27Q1-Q2：合同审查准确率>90%' },
-        { start: 10, end: 13, label: '合规审查全流程上线', milestone: '27Q2-Q3：效率+60%' },
-        { start: 14, end: 17, label: '监管报告辅助生成', milestone: '27Q3-Q4：报告时间-50%' },
+        // 合规专家8月到位→9月起启动知识库
+        { start: 1, end: 3, label: '合规需求梳理+知识库规划', milestone: '8-10月：法规制度盘点' },
+        { start: 4, end: 7, label: '合规知识库构建（法规/制度入库）', milestone: '11-2月：10万+条目' },
+        { start: 8, end: 11, label: '基础合规审查辅助上线', milestone: '27Q1-Q2：效率+30%' },
+        // 2027 Q3-Q4
+        { start: 12, end: 14, label: '合同审查Agent开发+测试', milestone: '27Q3：准确率>90%' },
+        { start: 15, end: 17, label: '合规审查全流程上线', milestone: '27Q4：效率+60%' },
         // 2028.1-6
         { start: 18, end: 23, label: '监管报告自动生成→全链路Agent', milestone: '28H1：30分钟/份' },
         // Y3-Y5
@@ -1244,16 +1240,15 @@ function PlanSection() {
     {
       line: '🏗️ AI平台', color: '#3fb950',
       bars: [
-        // Y1 前半（7-12月）
-        { start: 0, end: 1, label: 'GPU集群采购+部署', milestone: '7-8月：H100×8卡到位' },
-        { start: 1, end: 3, label: '大模型私有化部署（70B基座）', milestone: '8-10月：推理可用' },
-        { start: 3, end: 4, label: 'AI中台MVP（模型管理+Prompt）', milestone: '10-11月：内部可用' },
-        { start: 4, end: 5, label: 'RAG知识库+评测体系', milestone: '11-12月：SLA 99.5%' },
-        // 2027全年
-        { start: 6, end: 8, label: '7B蒸馏版+推理优化（vLLM）', milestone: '27Q1：QPS 200' },
-        { start: 9, end: 11, label: 'Agent框架搭建+工具链', milestone: '27Q2：Agent SDK发布' },
-        { start: 12, end: 14, label: '联邦学习平台+隐私计算', milestone: '27Q3：跨机构可用' },
-        { start: 15, end: 17, label: '平台成熟化+SLA 99.9%', milestone: '27Q4：QPS 500' },
+        // AI平台：7月可启动采购（不需要人），8月架构师到位后开始部署
+        { start: 0, end: 1, label: 'GPU集群采购流程（无需人到位）', milestone: '7-8月：采购审批+下单' },
+        { start: 2, end: 3, label: 'GPU到货+架构师部署', milestone: '9-10月：H100×8卡部署完成' },
+        { start: 3, end: 5, label: '大模型私有化部署（70B基座）', milestone: '10-12月：推理可用' },
+        { start: 6, end: 8, label: 'AI中台MVP+RAG知识库+评测体系', milestone: '27Q1：SLA 99.5%' },
+        // 2027 Q2-Q4
+        { start: 9, end: 11, label: '7B蒸馏版+推理优化（vLLM）', milestone: '27Q2：QPS 200' },
+        { start: 12, end: 14, label: 'Agent框架搭建+工具链', milestone: '27Q3：Agent SDK发布' },
+        { start: 15, end: 17, label: '联邦学习平台+平台成熟化', milestone: '27Q4：QPS 500, SLA 99.9%' },
         // 2028.1-6
         { start: 18, end: 23, label: 'Agent平台成熟+内部Copilot', milestone: '28H1：GPU利用率>70%' },
         // Y3-Y5
@@ -1438,12 +1433,12 @@ function PlanSection() {
   const phases = [
     {
       year: 'Y1（2026.7-2027.6）', title: '筑基', color: '#6c5ce7',
-      focus: '7月启动Pipeline：8月首批骨干到位 → Q4平台搭建+数据治理 → 2027H1首批PoC上线',
+      focus: '7月启动Pipeline+采购：8月首批骨干到位 → 10月起业务项目正式启动 → 2027H1首批PoC上线',
       goals: [
-        '7月：启动猎头Pipeline + GPU集群采购（0人到位，纯筹备期）',
-        '8-9月：首批核心骨干到位（~10人），启动大模型私有化部署+数据治理',
-        '10-12月：执行层补齐至~34人，AI中台MVP上线，风控数据清洗完成',
-        '2027.1-3月：风控反欺诈PoC上线（信用卡），智能客服RAG覆盖Top200问题',
+        '7月：启动猎头Pipeline + GPU集群采购审批（0人到位，纯筹备期）',
+        '8-9月：首批核心骨干到位（~10人），需求梳理+数据资产盘点+知识库规划',
+        '10-12月：执行层补齐至~34人，数据治理完成，RAG系统内测，大模型私有化部署完成',
+        '2027.1-3月：风控反欺诈PoC上线（信用卡），RAG客服准确率>85%',
         '2027.4-6月：客服替代率达10%，投研助手内部试用，平台SLA 99.5%',
       ],
       kpi: '年末在岗 ~34 人 · AI 客服替代 10% · 反欺诈PoC上线 · 平台 SLA 99.5%',
@@ -1496,15 +1491,14 @@ function PlanSection() {
     },
     {
       year: 'Y2（2027.7-2028.6）', title: '场景突破', color: '#00cec9',
-      focus: '核心场景规模化落地 + Agent 1.0 + 隐私计算联邦',
+      focus: '核心场景规模化落地 + Agent 1.0 + 联邦学习平台',
       goals: [
-        '2027.7-9月：LLM+图网络融合模型覆盖全行信贷，实时风控引擎上线',
-        '2027.10-12月：多模态客服上线（语音+文字+图片），替代率达38%',
-        '2028.1-3月：AI理财顾问1.0上线，AUM转化率+8%',
-        '2028.4-6月：合规审查Agent上线，替代率45%，联邦风控联盟3家',
-        '联邦学习：与 3 家银行建立联邦风控联盟（基于 FATE/SecretFlow）',
+        '2027.7-9月：风控全产品线覆盖+LLM融合，客服替代率提升至25%',
+        '2027.10-12月：客服替代率35%，AI理财顾问1.0上线，合规审查效率+60%',
+        '2028.1-3月：风控Agent 1.0上线，客服业务办理Agent，AUM转化率+8%',
+        '2028.4-6月：全链路合规Agent，联邦风控联盟3家，平台GPU利用率>70%',
       ],
-      kpi: '年末在岗 ~110 人 · AI 客服替代率 45% · 理财 AUM 转化率+8% · 合规效率+60%',
+      kpi: '年末在岗 ~90 人 · AI 客服替代率 35% · 理财 AUM 转化率+8% · 合规效率+60%',
       headcount: {
         total: 90,
         salaryTotal: 9500,
