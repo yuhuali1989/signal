@@ -2618,17 +2618,18 @@ function PlanSection() {
               bgColor: '#6c5ce710',
               desc: '数据采集、流批一体、特征工程、数据治理',
               components: [
-                { name: 'Apache Kafka 3.7', role: '实时事件流主干：风控事件 / 交易流 / 用户行为，KRaft 模式（无 ZooKeeper）', tag: '消息队列', tagColor: '#6c5ce7' },
+                { name: 'Apache Kafka 4.0', role: '实时事件流主干：风控事件 / 交易流 / 用户行为；4.0 正式移除 ZooKeeper，KRaft 成为唯一架构，彻底消除 ZK 单点与运维负担', tag: '消息队列', tagColor: '#6c5ce7' },
                 { name: 'Apache Flink 2.0', role: '实时特征计算、CEP 复杂事件处理、毫秒级风控特征；支持流批统一 API', tag: '流计算', tagColor: '#6c5ce7' },
                 { name: 'Apache Spark 3.5 + Hive Metastore', role: '离线批量特征工程、大规模数据预处理（T+1 训练集制备）', tag: '批处理', tagColor: '#a29bfe' },
-                { name: 'Apache Iceberg 1.6', role: '数据湖表格式：ACID 事务 + 时间旅行 + Schema evolution，替代 Hive 分区表', tag: '数据湖', tagColor: '#a29bfe' },
+                { name: 'Apache Iceberg 1.8+', role: '数据湖表格式：ACID 事务 + 时间旅行 + Schema evolution；V3 表格式引入 Deletion Vectors（列级删除加速 10×）+ Variant 类型支持半结构化 JSON', tag: '数据湖', tagColor: '#a29bfe' },
+                { name: 'dbt（data build tool）1.8+', role: 'ELT 数据转换框架：SQL 化数据建模 + 自动血缘生成 + 内置单元测试（unit test）；与 DataHub 集成构建数据契约，AI 训练集可追溯', tag: 'ELT 建模', tagColor: '#a29bfe' },
                 { name: 'Apache Doris 2.x', role: '实时 OLAP 分析引擎，支持万亿行秒级查询，国内银行标配替代 ClickHouse', tag: 'OLAP', tagColor: '#e17055' },
                 { name: 'Feast（特征平台）0.40+', role: '在线/离线特征统一管理，特征 Point-in-time 正确性保证，防止数据泄露', tag: '特征平台', tagColor: '#fd79a8' },
                 { name: 'MinIO（S3 兼容对象存储）', role: 'PB 级对象存储：模型权重 / 训练数据集 / checkpoint / 评估报告', tag: '对象存储', tagColor: '#a29bfe' },
                 { name: 'DataHub（数据血缘）', role: '元数据管理、数据血缘追踪、特征来源可追溯（监管审计必备）', tag: '数据治理', tagColor: '#00b894' },
                 { name: 'Great Expectations / Soda', role: '数据质量检测：自动 profiling + 数据契约验证 + 异常告警', tag: '数据质量', tagColor: '#00b894' },
               ],
-              bankChoice: 'Kafka 3.7（KRaft）+ Flink 2.0 实时链路（风控核心）+ Iceberg 数据湖 + Doris OLAP + Feast 特征平台（Y2 建设）+ DataHub 数据血缘',
+              bankChoice: 'Kafka 4.0（KRaft，无 ZK）+ Flink 2.0 实时链路（风控核心）+ Iceberg 1.8+ 数据湖 + Doris OLAP + dbt 数据建模 + Feast 特征平台（Y2）+ DataHub 数据血缘',
             },
             {
               layer: '② 训练 & 调度层',
@@ -2676,10 +2677,11 @@ function PlanSection() {
                 { name: 'LMDeploy（上海 AI Lab）', role: '国内模型推理专属：TurboMind 引擎针对 Qwen/InternLM 深度优化，量化 + 连续批处理', tag: '国产推理', tagColor: '#55efc4' },
                 { name: '昇腾 MindIE Serving', role: '昇腾 910C/D 专属推理服务，CANN 算子库深度优化，国产 GPU 算力利用率最大化', tag: '国产 GPU', tagColor: '#e17055' },
                 { name: 'TensorRT-LLM + Triton（NVIDIA）', role: 'NVIDIA GPU 极致优化：FP8 量化 + Inflight Batching；Triton 多框架托管（ONNX/TRT），动态批处理', tag: 'NVIDIA 优化', tagColor: '#fdcb6e' },
+                { name: 'LiteLLM（AI 网关）', role: '统一 AI API 网关：100+ LLM Provider 统一 OpenAI 格式、负载均衡、Fallback 策略、Token 成本追踪；行内多模型路由中枢', tag: 'AI 网关', tagColor: '#fd79a8' },
                 { name: 'Ray Serve 2.x', role: '多模型服务编排：A/B 测试、金丝雀发布、流量路由、模型集成（Ensemble）', tag: '服务编排', tagColor: '#ff7675' },
                 { name: 'OpenAI 兼容 API（统一接口层）', role: '/v1/chat/completions 标准接口，所有引擎统一对外，应用层零感知切换模型', tag: '接口标准', tagColor: '#00cec9' },
               ],
-              bankChoice: 'vLLM + SGLang 双引擎（NVIDIA GPU）+ LMDeploy/MindIE（国产 GPU）+ Ray Serve 路由，统一 OpenAI API 对上层透明',
+              bankChoice: 'vLLM + SGLang 双引擎（NVIDIA GPU）+ LMDeploy/MindIE（国产 GPU）+ LiteLLM AI 网关统一路由 + Ray Serve 编排，统一 OpenAI API 对上层透明',
             },
             {
               layer: '⑤ 向量 & 知识库层',
@@ -2692,7 +2694,7 @@ function PlanSection() {
                 { name: 'Elasticsearch 8.x（BM25 + kNN）', role: '补充关键词检索：金融法规/产品条款 BM25 精确召回 + kNN 向量搜索，混合 RRF 融合排序', tag: '混合检索', tagColor: '#a29bfe' },
                 { name: 'BGE-M3 / BGE-large-zh（BAAI）', role: '主流中文嵌入模型：BGE-M3 支持稠密+稀疏+多粒度三合一，原生支持中文金融文本', tag: 'Embedding', tagColor: '#6c5ce7' },
                 { name: 'BGE-Reranker-v2-m3（精排）', role: '检索后精排：Cross-Encoder 打分，Top-K 重排提升召回精度，优化幻觉问题', tag: '重排序', tagColor: '#a29bfe' },
-                { name: 'Neo4j 5.x / TuGraph（百度）', role: '知识图谱：客户关系图谱（GraphRAG）、关联欺诈检测子图、企业实体关联（对公业务）', tag: '图数据库', tagColor: '#fd79a8' },
+                { name: 'Neo4j 5.x / TuGraph（蚂蚁+清华）', role: '知识图谱：客户关系图谱（GraphRAG）、关联欺诈检测子图、企业实体关联（对公业务）；TuGraph 为蚂蚁集团联合清华大学开源，支持图分析+图计算双模式', tag: '图数据库', tagColor: '#fd79a8' },
                 { name: 'Redis 7.x / Valkey', role: '会话上下文存储（客服对话历史）+ 热点 Embedding 缓存，P99 延迟 <5ms', tag: '上下文缓存', tagColor: '#00b894' },
               ],
               bankChoice: 'Milvus 2.5+ 主力 + ES 混合召回 + BGE-M3 嵌入 + BGE-Reranker-v2 精排 + Neo4j GraphRAG（反欺诈）',
@@ -2725,12 +2727,13 @@ function PlanSection() {
                 { name: 'OpenTelemetry（OTel）+ Jaeger', role: '分布式全链路追踪：模型调用链 → Agent 执行路径 → 工具调用树，统一可观测标准', tag: '链路追踪', tagColor: '#636e72' },
                 { name: 'Langfuse 3.x（LLM 专属监控）', role: 'LLM 全生命周期追踪：Prompt 版本 / Token 成本 / 幻觉率 / 用户反馈 / 延迟分布，私有化部署', tag: 'LLM 监控', tagColor: '#b2bec3' },
                 { name: 'Evidently AI（数据漂移检测）', role: '特征分布漂移 + 模型预测分布漂移检测，自动触发 Retraining Pipeline，防止模型腐烂', tag: '模型监控', tagColor: '#00b894' },
+                { name: 'Llama Guard 3 / NeMo Guardrails', role: 'AI 输入/输出安全护栏：Llama Guard 3（Meta）8 语言有害内容分类；NeMo Guardrails（NVIDIA）防幻觉 + 政策合规过滤，金融合规问答必备', tag: 'AI 护栏', tagColor: '#d63031' },
                 { name: 'FATE（微众银行/FedAI）/ SecretFlow（蚂蚁）', role: 'FATE：横向/纵向联邦学习工业级框架（微众银行出品）；SecretFlow：隐私计算 + TEE（蚂蚁出品）', tag: '联邦学习', tagColor: '#e17055' },
                 { name: 'Kubeflow Pipelines / Prefect 3.x', role: 'MLOps 流水线编排：数据处理→训练→评估→注册→发布，支持定时调度 + 失败重试 + 依赖管理', tag: 'ML Pipeline', tagColor: '#636e72' },
                 { name: 'SHAP / LIME + 行内审计系统', role: '模型可解释性（SHAP TreeExplainer 支持实时推理解释）+ 公平性检测 + 监管报告自动生成', tag: '合规审计', tagColor: '#fd79a8' },
                 { name: 'Vault（HashiCorp）+ 国密 KMS', role: '模型权重加密 + API 密钥轮转 + 国密算法（SM4/SM2）满足金融信息安全等级保护要求', tag: '密钥安全', tagColor: '#636e72' },
               ],
-              bankChoice: 'Prometheus+Grafana+OTel 全栈监控 + Langfuse LLM 追踪 + Evidently 漂移检测 + FATE 联邦学习 + 国密 KMS',
+              bankChoice: 'Prometheus+Grafana+OTel 全栈监控 + Langfuse LLM 追踪 + Llama Guard 3 AI 护栏 + Evidently 漂移检测 + FATE 联邦学习 + 国密 KMS',
             },
             {
               layer: '⑧ 研发效能 & 工程平台层',
@@ -2793,7 +2796,7 @@ function PlanSection() {
               </thead>
               <tbody className="text-gray-600">
                 {[
-                  { layer: '🗄️ 数据层', y1: 'Kafka + Spark + Hive（现有迁移）', y2: 'Kafka + Flink 2.0 + Iceberg（实时升级）', y3: 'Feast 特征平台上线 + Doris 替换传统 OLAP', y45: 'DataHub 数据血缘 + 数据资产 API 化对外' },
+                  { layer: '🗄️ 数据层', y1: 'Kafka 4.0（KRaft）+ Spark + Hive → Iceberg 迁移', y2: 'Flink 2.0 + Iceberg 1.8+ + dbt 数据建模 + Doris OLAP', y3: 'Feast 特征平台上线 + DataHub 数据血缘全覆盖', y45: '数据资产 API 化对外 + 数据契约驱动开发' },
                   { layer: '🔧 训练层', y1: '昇腾910C × 64卡 + K8s+KubeRay + LoRA', y2: '910D × 128卡 + DeepSpeed ZeRO-3 全量 SFT', y3: '910D × 256卡 + 联邦 LoRA（FATE）多机构', y45: '512卡+ 行业大模型预训练（700B+）自研' },
                   { layer: '📦 模型层', y1: 'Qwen3-72B + DeepSeek 双轨评测', y2: '行内微调模型 v1（风控/客服/合规）', y3: '微调模型 v2 + 7B 蒸馏推理节点', y45: '自研行业大模型 + 盘古国产备线 + 对外开源' },
                   { layer: '⚡ 推理层', y1: 'vLLM 单机（2–4 场景）+ LMDeploy', y2: 'vLLM+SGLang 集群 + Ray Serve 路由', y3: 'MindIE（国产GPU）+ vLLM 混合，全行 35+ 场景', y45: 'TensorRT-LLM FP8 + 边缘推理节点（移动端）' },
@@ -2818,10 +2821,11 @@ function PlanSection() {
         {/* 关键架构决策 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
           {[
-            { title: '🇨🇳 国产化路线', desc: '训练芯片：昇腾910C/D（华为）为主，兼容 CUDA 生态。推理服务双轨并行：MindIE（国产 GPU）+ vLLM（NVIDIA GPU），统一 OpenAI 兼容 API 对上层透明。', color: '#e17055' },
-            { title: '🔒 数据不出行', desc: '所有模型推理和训练在行内私有化部署，无需调用外部 API。向量数据库 Milvus + 特征平台 Feast 全部行内部署，客户数据全程不出境，满足人民银行/银保监数据本地化要求。', color: '#0984e3' },
-            { title: '🔄 模型可插拔', desc: 'Agent 编排层与模型层解耦：LangGraph/LangChain 通过统一 OpenAI 兼容 API 调用，可无缝切换 Qwen/DeepSeek/商用模型，避免框架层代码改动。', color: '#6c5ce7' },
-            { title: '📊 全链路可观测', desc: '从数据特征漂移（Evidently）→ 模型训练指标（MLflow）→ 推理服务性能（Prometheus）→ LLM 调用质量（Langfuse）→ Agent 执行路径（OTel），形成完整 AI 全链路可观测闭环。', color: '#00cec9' },
+            { title: '🇨🇳 国产化路线', desc: '训练芯片：昇腾910C/D 为主，CANN 8.0 软件栈；推理双轨：MindIE（昇腾 GPU）+ vLLM/SGLang（NVIDIA GPU）；调度层 K8s+KubeRay+Volcano 统一管理；模型层 Qwen3/DeepSeek 国产开源为主，盘古5.0 作信创商用备线。', color: '#e17055' },
+            { title: '🔒 数据不出行', desc: '所有模型推理和训练在行内私有化部署，无需调用外部 API。Milvus 向量库、Feast 特征平台、DataHub 数据血缘全部行内部署；Kafka 4.0 KRaft 架构消除 ZK 单点；Iceberg 1.8+ 数据湖 + 国密 KMS 确保客户数据全程合规，满足人民银行/银保监数据本地化要求。', color: '#0984e3' },
+            { title: '🔄 模型可插拔', desc: 'Agent 编排层（LangGraph/LangChain）通过 LiteLLM AI 网关访问推理层，100+ 模型统一 OpenAI 兼容 API；可无缝切换 Qwen3/DeepSeek-V3/盘古，A/B 测试由 Ray Serve 路由，应用层代码零修改。', color: '#6c5ce7' },
+            { title: '📊 全链路可观测', desc: '数据特征漂移（Evidently）→ 训练实验（MLflow）→ 推理服务（Prometheus + Grafana）→ LLM 质量（Langfuse）→ Agent 路径（OTel + Jaeger）→ 成本追踪（LiteLLM）→ 安全护栏（Llama Guard 3），形成 AI 全链路闭环可观测。', color: '#00cec9' },
+            { title: '🛡️ AI 安全护栏', desc: '输入过滤：Llama Guard 3（Meta）检测有害提示词（8 语言覆盖）；输出过滤：NeMo Guardrails 防幻觉 + 金融合规政策校验；合规审计：SHAP 实时推理解释 + 行内审计系统自动生成监管报告，满足银保监 AI 应用可解释要求。', color: '#d63031' },
           ].map(d => (
             <div key={d.title} className="p-3 rounded-xl border" style={{ borderColor: d.color + '30', background: d.color + '06' }}>
               <div className="font-semibold mb-1" style={{ color: d.color }}>{d.title}</div>
