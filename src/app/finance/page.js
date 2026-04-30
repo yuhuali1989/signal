@@ -1466,7 +1466,7 @@ function PlanSection() {
       vendor: {
         total: 800,
         breakdown: [
-          { item: '国产大模型私有化部署', cost: 200, note: '文心一言/通义千问/GLM 企业版私有化部署授权（银行数据不可出境，禁止调用境外 API）' },
+          { item: '商用模型私有化部署（过渡）', cost: 200, note: 'Y1 快速启动：通义千问/GLM-4 企业版私有化部署（数据不出境）。同步评估 Qwen2.5/DeepSeek 开源方案' },
           { item: '隐私计算平台授权', cost: 150, note: 'SecretFlow 企业版 / FATE 商业支持' },
           { item: '外部数据源', cost: 200, note: '征信数据、工商数据、舆情数据年度订阅' },
           { item: '咨询 & 审计', cost: 150, note: 'AI 治理咨询（德勤/普华）+ 模型审计' },
@@ -1518,9 +1518,10 @@ function PlanSection() {
         ],
       },
       vendor: {
-        total: 1200,
+        total: 1150,
         breakdown: [
-          { item: '国产大模型授权 & 升级', cost: 300, note: '私有化部署模型版本升级 + 多模态能力扩展（合规要求：数据不出行内网络）' },
+          { item: '商用模型授权（降级续约）', cost: 150, note: 'Y2 开源微调逐步替代商用基座，商用模型降为备选/对比基线，授权费大幅缩减' },
+          { item: '开源模型生态支持', cost: 100, note: 'Qwen/DeepSeek 社区企业支持 + 微调工具链授权（ModelScope/vLLM 企业版）' },
           { item: '隐私计算平台', cost: 250, note: '联邦学习平台升级 + 跨机构部署' },
           { item: '外部数据源', cost: 300, note: '新增社交舆情 + 卫星图像 + 供应链数据' },
           { item: '咨询 & 审计', cost: 200, note: 'AI 治理成熟度评估 + 年度模型审计' },
@@ -1574,9 +1575,10 @@ function PlanSection() {
         ],
       },
       vendor: {
-        total: 1500,
+        total: 1450,
         breakdown: [
-          { item: '国产大模型 & Agent 框架授权', cost: 350, note: '私有化 Agent 框架 + 模型持续升级（行内全链路闭环，零数据外泄）' },
+          { item: '商用模型（特定能力补充）', cost: 100, note: 'Y3 开源为主力，商用仅保留多模态/代码生成等特定能力补充，大幅缩减授权费' },
+          { item: '开源生态 & Agent 框架', cost: 200, note: '自研 Agent 框架 + 开源社区企业支持 + 模型安全评测工具' },
           { item: '隐私计算平台', cost: 300, note: '同态加密加速库 + 联盟管理平台' },
           { item: '外部数据源', cost: 350, note: '实时行情 + 另类数据 + 全球舆情' },
           { item: '安全 & 红队测试', cost: 250, note: 'AI 安全攻防测试 + 渗透测试' },
@@ -1631,9 +1633,10 @@ function PlanSection() {
         ],
       },
       vendor: {
-        total: 2000,
+        total: 1930,
         breakdown: [
-          { item: '国产大模型企业版 & 行业适配', cost: 400, note: '私有化部署持续升级 + 行业垂直模型授权（客户 demo 环境独立隔离）' },
+          { item: '开源模型生态 & 垂直微调', cost: 250, note: 'Y4 开源为绝对主力，投入在微调工具链/评测平台/社区企业支持上' },
+          { item: '商用模型（能力补充）', cost: 80, note: '仅保留多模态/代码生成等开源暂未追平的特定能力，授权费大幅缩减' },
           { item: '隐私计算 & 安全', cost: 400, note: '联盟管理 + 密码学加速 + 安全审计' },
           { item: '外部数据源', cost: 400, note: '全球金融数据 + ESG 数据 + 另类数据' },
           { item: '合规 & 认证', cost: 400, note: '等保认证 + SOC2 + ISO27001 + 年度审计' },
@@ -1689,9 +1692,10 @@ function PlanSection() {
         ],
       },
       vendor: {
-        total: 2500,
+        total: 2430,
         breakdown: [
-          { item: '国产大模型 & 工具链生态', cost: 500, note: '私有化模型持续迭代 + Agent 工具链 + 行业垂直模型（全链路国产化，满足信创要求）' },
+          { item: '开源模型生态 & 行业大模型', cost: 350, note: 'Y5 完全自主：自研行业大模型 + 开源社区贡献 + 工具链生态建设（信创全链路闭环）' },
+          { item: '商用模型（前沿能力试点）', cost: 80, note: '仅用于前沿能力评估/对比基线，不作为生产依赖' },
           { item: '隐私计算 & 安全', cost: 500, note: '联盟运营 + 密码学前沿 + 量子安全试点' },
           { item: '外部数据源', cost: 500, note: '全球金融数据全覆盖' },
           { item: '合规 & 认证', cost: 500, note: '全球合规认证 + 行业标准维护' },
@@ -2197,11 +2201,154 @@ function PlanSection() {
         </div>
       </div>
 
+      {/* ═══════════ 4.5 模型策略选型分析 ═══════════ */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-2">🧠 大模型策略选型：开源微调 vs 商用本地部署 vs RAG 增强</h3>
+        <p className="text-[11px] text-gray-400 mb-4">
+          银行场景下大模型落地不是单选题——不同业务场景适用不同技术路线，需要组合使用。以下从成本、效果、合规、可控性四个维度对比三条主路线。
+        </p>
+
+        {/* 三条路线对比表 */}
+        <div className="overflow-x-auto mb-4">
+          <table className="w-full text-[11px] border-collapse">
+            <thead>
+              <tr className="bg-gray-50 text-left text-gray-500">
+                <th className="py-2 px-2 font-medium border-b border-gray-100">维度</th>
+                <th className="py-2 px-2 font-medium border-b border-gray-100">🔓 开源模型 + 行内微调</th>
+                <th className="py-2 px-2 font-medium border-b border-gray-100">🏢 商用模型本地私有化部署</th>
+                <th className="py-2 px-2 font-medium border-b border-gray-100">📚 RAG 增强（检索增强生成）</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-700">
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">代表方案</td>
+                <td className="py-2 px-2">Qwen2.5-72B / DeepSeek-V3 / Llama3.1-70B<br/>+ LoRA/QLoRA 行业微调</td>
+                <td className="py-2 px-2">文心一言企业版 / 通义千问私有化 / GLM-4 企业版<br/>+ 厂商驻场支持</td>
+                <td className="py-2 px-2">任意基座模型 + 向量数据库（Milvus/ES）<br/>+ 知识库检索 + Prompt 工程</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">首年成本</td>
+                <td className="py-2 px-2"><span className="text-green-600 font-semibold">¥0 授权费</span><br/>但需 GPU 算力 + 算法团队（人力成本高）</td>
+                <td className="py-2 px-2"><span className="text-orange-600 font-semibold">¥200-500 万/年</span><br/>授权费 + 部署费 + 年度升级费</td>
+                <td className="py-2 px-2"><span className="text-green-600 font-semibold">¥50-100 万</span><br/>向量数据库 + 知识库工程（可复用基座）</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">效果上限</td>
+                <td className="py-2 px-2"><span className="font-semibold text-blue-600">最高</span>：可针对银行数据深度优化<br/>风控/合规等垂直场景效果最好</td>
+                <td className="py-2 px-2"><span className="font-semibold text-blue-600">较高</span>：通用能力强，开箱即用<br/>但行业深度不如自研微调</td>
+                <td className="py-2 px-2"><span className="font-semibold text-yellow-600">中等</span>：解决幻觉问题，保证事实准确<br/>但推理/决策能力受限于基座</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">数据安全</td>
+                <td className="py-2 px-2"><span className="text-green-600">✅ 最优</span>：数据全程不出行内<br/>模型权重完全自主可控</td>
+                <td className="py-2 px-2"><span className="text-green-600">✅ 可控</span>：私有化部署数据不出境<br/>⚠️ 但模型权重归厂商，升级依赖厂商</td>
+                <td className="py-2 px-2"><span className="text-green-600">✅ 可控</span>：知识库在行内<br/>基座模型可选开源/商用</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">团队要求</td>
+                <td className="py-2 px-2"><span className="text-red-500">高</span>：需要 P7+ 算法专家<br/>具备预训练/微调/对齐全栈能力</td>
+                <td className="py-2 px-2"><span className="text-green-600">低</span>：厂商提供技术支持<br/>行内只需应用层开发</td>
+                <td className="py-2 px-2"><span className="text-yellow-600">中</span>：需要工程能力<br/>Prompt 工程 + 检索优化 + 评测</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">迭代速度</td>
+                <td className="py-2 px-2"><span className="text-yellow-600">慢</span>：微调一轮 2-4 周<br/>数据标注 + 训练 + 评测 + 上线</td>
+                <td className="py-2 px-2"><span className="text-green-600">快</span>：厂商季度升级<br/>但定制化需求响应慢</td>
+                <td className="py-2 px-2"><span className="text-green-600">最快</span>：知识库更新即时生效<br/>无需重新训练模型</td>
+              </tr>
+              <tr className="border-b border-gray-50">
+                <td className="py-2 px-2 font-medium text-gray-600">长期风险</td>
+                <td className="py-2 px-2">开源社区方向变化 / 许可证变更<br/>但核心能力在自己手里</td>
+                <td className="py-2 px-2"><span className="text-red-500">厂商锁定</span>：升级节奏受制于人<br/>商务谈判筹码逐年减弱</td>
+                <td className="py-2 px-2">基座模型可随时切换<br/>知识库资产长期有效</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* 推荐策略 */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-4">
+          <h4 className="text-sm font-semibold text-gray-800 mb-2">📋 推荐策略：分场景组合，渐进式演进</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+            <div className="bg-white/70 rounded-lg p-3">
+              <div className="font-semibold text-gray-700 mb-1">🚀 Y1 快速启动期（2026.7-2027.6）</div>
+              <ul className="space-y-1 text-gray-600">
+                <li>• <span className="font-medium text-blue-700">商用私有化</span>作为基座（快速可用，团队还没完全到位）</li>
+                <li>• <span className="font-medium text-green-700">RAG 优先</span>落地客服/合规（最快见效，不依赖微调）</li>
+                <li>• <span className="font-medium text-purple-700">开源模型评估</span>同步进行（Qwen2.5/DeepSeek 对比测试）</li>
+                <li>• 风控场景用<span className="font-medium">传统 ML + 图网络</span>，暂不依赖 LLM</li>
+              </ul>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3">
+              <div className="font-semibold text-gray-700 mb-1">⚡ Y2 自主可控期（2027.7-2028.6）</div>
+              <ul className="space-y-1 text-gray-600">
+                <li>• <span className="font-medium text-purple-700">开源微调</span>逐步替代商用基座（团队成熟，数据积累够）</li>
+                <li>• 风控/理财等高价值场景<span className="font-medium">LoRA 垂直微调</span></li>
+                <li>• 商用模型降级为<span className="font-medium">备选/对比基线</span>（不续高价授权）</li>
+                <li>• RAG 升级为<span className="font-medium">多模态 RAG + Agent 工具调用</span></li>
+              </ul>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3">
+              <div className="font-semibold text-gray-700 mb-1">🏛️ Y3+ 完全自主期（2028+）</div>
+              <ul className="space-y-1 text-gray-600">
+                <li>• <span className="font-medium text-purple-700">开源微调模型</span>为主力（70B 全量 + 7B 蒸馏推理）</li>
+                <li>• 商用模型仅保留<span className="font-medium">特定能力补充</span>（如多模态/代码生成）</li>
+                <li>• 自研 Agent 框架 + 自研评测体系</li>
+                <li>• 联邦 LoRA 实现跨机构能力共享</li>
+              </ul>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3">
+              <div className="font-semibold text-gray-700 mb-1">💡 核心原则</div>
+              <ul className="space-y-1 text-gray-600">
+                <li>• <span className="font-medium text-red-600">绝不把核心能力绑定在单一厂商</span></li>
+                <li>• 商用模型是<span className="font-medium">过渡手段</span>，不是终局方案</li>
+                <li>• RAG 是<span className="font-medium">所有场景的标配底座</span>（解决幻觉+时效性）</li>
+                <li>• 微调是<span className="font-medium">高价值场景的护城河</span>（风控/理财）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* 各场景适用路线 */}
+        <div className="mb-3">
+          <h4 className="text-xs font-semibold text-gray-700 mb-2">🎯 各业务场景推荐技术路线</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
+            {[
+              { scene: '💬 智能客服', y1: '商用基座 + RAG（快速上线）', y2: '开源微调 + 多模态 RAG', reason: '客服对时效性要求高，RAG 可即时更新知识库；Y2 团队成熟后切换开源降低成本' },
+              { scene: '🛡️ 风控反欺诈', y1: '传统 ML + 图网络（不依赖 LLM）', y2: '开源 LLM 微调 + 图网络融合', reason: '风控对准确率要求极高，Y1 用成熟的 ML 方案；Y2 数据积累够后再引入 LLM 增强' },
+              { scene: '💰 理财投研', y1: '商用基座 + RAG（研报摘要）', y2: '开源微调（金融语料）+ Agent', reason: '投研需要强推理能力，Y1 用商用模型快速验证；Y2 用金融语料微调提升专业度' },
+              { scene: '📜 合规审查', y1: 'RAG 为主（法规知识库检索）', y2: '开源微调（合规语料）+ RAG', reason: '合规场景事实准确性第一，RAG 天然适合；Y2 微调提升法律推理能力' },
+              { scene: '🏗️ AI 平台', y1: '商用 + 开源双轨部署', y2: '开源为主 + 商用备选', reason: '平台层需要支持多模型切换，Y1 验证两条路线，Y2 根据效果收敛' },
+            ].map(s => (
+              <div key={s.scene} className="bg-gray-50 rounded-lg p-2.5 border border-gray-100">
+                <div className="font-semibold text-gray-700 mb-1">{s.scene}</div>
+                <div className="text-gray-600">
+                  <span className="text-blue-600 font-medium">Y1：</span>{s.y1}<br/>
+                  <span className="text-green-600 font-medium">Y2+：</span>{s.y2}
+                </div>
+                <div className="text-[10px] text-gray-400 mt-1 italic">💡 {s.reason}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 成本演进 */}
+        <div className="bg-amber-50 rounded-xl p-3 text-[11px]">
+          <span className="font-semibold text-amber-800">💰 模型成本演进逻辑：</span>
+          <span className="text-amber-700 ml-1">
+            Y1 商用授权 ¥200 万（快速启动）→ Y2 降至 ¥150 万（开源替代部分场景）→ Y3+ 降至 ¥100 万（仅保留特定能力补充）。
+            五年商用模型总投入约 ¥750 万，但换来的是：① Y1 不等人，快速出成果；② 为开源微调提供对比基线；③ 避免厂商锁定风险。
+            真正的长期投入在 GPU 算力（支撑开源微调）和人才（算法团队）上。
+          </span>
+        </div>
+      </div>
+
       {/* ═══════════ 5. 外部采购明细 ═══════════ */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="text-base font-semibold text-gray-800 mb-2">🤝 外部采购明细（万元）</h3>
         <p className="text-[11px] text-gray-400 mb-4">
-          外部采购 = 商业模型 API + 隐私计算平台授权 + 外部数据源订阅 + 咨询审计 + 培训认证 + 市场BD。
+          外部采购 = 商用模型私有化授权（过渡期）+ 隐私计算平台 + 外部数据源 + 咨询审计 + 培训认证。
+          注：商用模型为 Y1 快速启动的过渡手段，Y2 起逐步被开源微调替代（详见上方选型分析）。
         </p>
         {phases.map((p, pi) => (
           <div key={p.year} className="mb-3 last:mb-0">
