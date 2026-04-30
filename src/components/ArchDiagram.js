@@ -949,4 +949,111 @@ function VideoGenArchSVG({ factSheet = {}, modelName = '' }) {
   );
 }
 
-export { TransformerBlockSVG, MoEArchSVG, EvolutionPathSVG, COLORS, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG };
+/* ── 3D 生成架构图（两阶段：形状 + 纹理/材质） ── */
+function ThreeDGenArchSVG({ factSheet = {}, modelName = '' }) {
+  const f = factSheet;
+  const name = modelName || '3D Generation Model';
+  const arch = f.architecture || 'DiT + Paint';
+  const hasPBR = (f.newFeature || '').includes('PBR') || arch.includes('PBR');
+
+  const W = 680, H = 620;
+  const cx = 260;
+  const bw = 220, bx = cx - bw / 2;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full max-w-[680px]" style={{ fontFamily: FONT }}>
+      <defs>
+        <marker id="arr-3d" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#666" />
+        </marker>
+      </defs>
+      <rect x="5" y="5" width={W-10} height={H-10} rx="16" fill={BG} stroke={BD} strokeWidth="0.8" />
+
+      <text x={cx} y="30" textAnchor="middle" fill="#111" fontSize="14" fontWeight="800">{name}</text>
+      <text x={cx} y="46" textAnchor="middle" fill="#8896A6" fontSize="9">{arch}</text>
+
+      {/* 输入 */}
+      <rect x={bx} y={60} width={bw} height={36} rx="8" fill="#f3f0ff" stroke="#a29bfe" strokeWidth="1.2" />
+      <text x={cx} y={76} textAnchor="middle" fill="#6c5ce7" fontSize="10" fontWeight="600">📷 输入</text>
+      <text x={cx} y={90} textAnchor="middle" fill="#a29bfe" fontSize="8">{f.input || '单张图片 / 文本描述'}</text>
+
+      <line x1={cx} y1={96} x2={cx} y2={120} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-3d)" />
+
+      {/* Stage 1: 形状生成 */}
+      <rect x={bx-20} y={120} width={bw+40} height={180} rx="12" fill="#e8fdf5" stroke="#00cec9" strokeWidth="1.5" />
+      <text x={cx} y={140} textAnchor="middle" fill="#00b894" fontSize="11" fontWeight="700">Stage 1: 形状生成</text>
+      <text x={cx} y={155} textAnchor="middle" fill="#00cec9" fontSize="8">Hunyuan3D-DiT (Flow Matching)</text>
+
+      {/* DINOv2 */}
+      <rect x={bx} y={168} width={bw} height={28} rx="6" fill="#fff" stroke={BD} strokeWidth="1" />
+      <text x={cx} y={185} textAnchor="middle" fill="#333" fontSize="9" fontWeight="500">DINOv2 Image Encoder → 条件特征</text>
+
+      <line x1={cx} y1={196} x2={cx} y2={212} stroke="#666" strokeWidth="1.2" markerEnd="url(#arr-3d)" />
+
+      {/* Flow DiT */}
+      <rect x={bx} y={212} width={bw} height={32} rx="6" fill={ATTN_BG} stroke="#37474F" strokeWidth="1.2" />
+      <text x={cx} y={228} textAnchor="middle" fill="#fff" fontSize="9.5" fontWeight="600">Flow-based DiT</text>
+      <text x={cx} y={240} textAnchor="middle" fill="#ccc" fontSize="7.5">3D 隐式表示 → 显式 Mesh</text>
+
+      <line x1={cx} y1={244} x2={cx} y2={262} stroke="#666" strokeWidth="1.2" markerEnd="url(#arr-3d)" />
+
+      {/* Mesh 输出 */}
+      <rect x={bx+20} y={262} width={bw-40} height={24} rx="6" fill="#fff5f7" stroke="#fd79a8" strokeWidth="1" />
+      <text x={cx} y={277} textAnchor="middle" fill="#e84393" fontSize="9" fontWeight="500">裸 Mesh 输出</text>
+
+      <line x1={cx} y1={300} x2={cx} y2={320} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-3d)" />
+
+      {/* Stage 2: 纹理/材质 */}
+      <rect x={bx-20} y={320} width={bw+40} height={hasPBR ? 200 : 140} rx="12" fill={hasPBR ? '#fff8e1' : '#f3f0ff'} stroke={hasPBR ? '#fdcb6e' : '#a29bfe'} strokeWidth="1.5" />
+      <text x={cx} y={340} textAnchor="middle" fill={hasPBR ? '#e17055' : '#6c5ce7'} fontSize="11" fontWeight="700">
+        {hasPBR ? 'Stage 2: PBR 材质合成（新增）' : 'Stage 2: 纹理合成'}
+      </text>
+      <text x={cx} y={355} textAnchor="middle" fill={hasPBR ? '#fdcb6e' : '#a29bfe'} fontSize="8">
+        {hasPBR ? 'Hunyuan3D-Paint（PBR 扩展）' : 'Hunyuan3D-Paint'}
+      </text>
+
+      {hasPBR ? (
+        <g>
+          {/* PBR 材质贴图列表 */}
+          {['Albedo Map（基础色）', 'Roughness Map（粗糙度）', 'Metallic Map（金属度）', 'Normal Map（法线贴图）'].map((label, i) => (
+            <g key={i}>
+              <rect x={bx+10} y={368 + i * 30} width={bw-20} height={24} rx="5" fill="#fff" stroke={BD} strokeWidth="0.8" />
+              <text x={cx} y={383 + i * 30} textAnchor="middle" fill="#333" fontSize="9" fontWeight="500">{label}</text>
+            </g>
+          ))}
+        </g>
+      ) : (
+        <g>
+          <rect x={bx+10} y={368} width={bw-20} height={28} rx="6" fill="#fff" stroke={BD} strokeWidth="1" />
+          <text x={cx} y={385} textAnchor="middle" fill="#333" fontSize="9" fontWeight="500">多视角渲染 + 扩散先验</text>
+
+          <line x1={cx} y1={396} x2={cx} y2={412} stroke="#666" strokeWidth="1.2" markerEnd="url(#arr-3d)" />
+
+          <rect x={bx+10} y={412} width={bw-20} height={28} rx="6" fill="#fff" stroke={BD} strokeWidth="1" />
+          <text x={cx} y={429} textAnchor="middle" fill="#333" fontSize="9" fontWeight="500">→ 高分辨率纹理贴图</text>
+        </g>
+      )}
+
+      {/* 最终输出 */}
+      <line x1={cx} y1={hasPBR ? 520 : 460} x2={cx} y2={hasPBR ? 545 : 485} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-3d)" />
+
+      <rect x={bx-10} y={hasPBR ? 545 : 485} width={bw+20} height={40} rx="8" fill="#dfe6e9" stroke="#636e72" strokeWidth="1.2" />
+      <text x={cx} y={hasPBR ? 563 : 503} textAnchor="middle" fill="#2d3436" fontSize="10" fontWeight="700">
+        {f.output || (hasPBR ? '3D Mesh + PBR 材质' : '高分辨率纹理 3D 资产')}
+      </text>
+      <text x={cx} y={hasPBR ? 578 : 518} textAnchor="middle" fill="#636e72" fontSize="8">
+        {hasPBR ? '可直接导入 Unity / Unreal Engine' : 'GLB / OBJ 格式'}
+      </text>
+
+      {/* 右侧标注 */}
+      <text x={W-20} y={140} textAnchor="end" fill="#8896A6" fontSize="8.5">形状生成</text>
+      <text x={W-20} y={340} textAnchor="end" fill="#8896A6" fontSize="8.5">{hasPBR ? 'PBR 材质' : '纹理合成'}</text>
+
+      <text x={cx} y={H-20} textAnchor="middle" fill="#b0bec5" fontSize="8" fontStyle="italic">
+        Two-Stage 3D Generation Architecture
+      </text>
+    </svg>
+  );
+}
+
+export { TransformerBlockSVG, MoEArchSVG, EvolutionPathSVG, COLORS, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG, ThreeDGenArchSVG };

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import useHashState from '@/hooks/useHashState';
 import {
   INFRA_TABS,
   OVERVIEW_DATA,
@@ -4240,7 +4241,7 @@ TableService.createTable()     # 业务逻辑入口
 // 主组件
 // ═══════════════════════════════════════════════════════════
 export default function DataInfraViz() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useHashState('tab', 'overview');
 
   const tabComponents = useMemo(() => ({
     overview:      <OverviewTab />,

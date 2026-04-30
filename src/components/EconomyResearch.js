@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import useHashState from '@/hooks/useHashState';
 
 // ─── 核心数据 ────────────────────────────────────────────────────────────────
 
@@ -902,7 +903,7 @@ function RiskTab() {
 // ─── 主组件 ──────────────────────────────────────────────────────────────────
 
 export default function EconomyResearch() {
-  const [activeTab, setActiveTab] = useState('forecast');
+  const [activeTab, setActiveTab] = useHashState('tab', 'forecast');
 
   const renderTab = () => {
     switch (activeTab) {
