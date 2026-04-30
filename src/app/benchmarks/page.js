@@ -1,5 +1,10 @@
-import { redirect } from 'next/navigation';
+'use client';
+import { useEffect } from 'react';
 
 export default function BenchmarksRedirect() {
-  redirect('/models/');
+  useEffect(() => {
+    sessionStorage.setItem('modelInitTab', 'leaderboard');
+    window.location.replace('/models/');
+  }, []);
+  return null;
 }

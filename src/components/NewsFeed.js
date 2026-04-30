@@ -149,48 +149,54 @@ export default function NewsFeed({ news, categories }) {
 
   return (
     <div>
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        <button
-          onClick={() => setActiveCategory('all')}
-          className={`px-3.5 py-1.5 text-sm font-medium rounded-full border transition-all ${
-            activeCategory === 'all'
-              ? 'bg-maxwell-500 text-white border-maxwell-500'
-              : 'bg-white text-gray-600 border-gray-200 hover:border-maxwell-300'
-          }`}
-        >
-          全部 ({news.length})
-        </button>
-        {categories.filter(c => c.count > 0).map(cat => (
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-6 pb-4 border-b border-gray-100">
+        {/* Category */}
+        <div className="flex flex-wrap gap-1.5">
           <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
-            className={`px-3.5 py-1.5 text-sm font-medium rounded-full border transition-all ${
-              activeCategory === cat.id
+            onClick={() => setActiveCategory('all')}
+            className={`px-3 py-1 text-xs font-medium rounded-full border transition-all ${
+              activeCategory === 'all'
                 ? 'bg-maxwell-500 text-white border-maxwell-500'
                 : 'bg-white text-gray-600 border-gray-200 hover:border-maxwell-300'
             }`}
           >
-            {cat.icon} {cat.name}
+            全部 ({news.length})
           </button>
-        ))}
-      </div>
+          {categories.filter(c => c.count > 0).map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`px-3 py-1 text-xs font-medium rounded-full border transition-all ${
+                activeCategory === cat.id
+                  ? 'bg-maxwell-500 text-white border-maxwell-500'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-maxwell-300'
+              }`}
+            >
+              {cat.icon} {cat.name}
+            </button>
+          ))}
+        </div>
 
-      {/* Platform Filter */}
-      <div className="flex flex-wrap gap-1.5 mb-6">
-        {platforms.map(p => (
-          <button
-            key={p.id}
-            onClick={() => setActivePlatform(p.id === activePlatform ? 'all' : p.id)}
-            className={`px-3 py-1 text-xs font-medium rounded-full border transition-all ${
-              activePlatform === p.id
-                ? 'bg-gray-800 text-white border-gray-800'
-                : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'
-            }`}
-          >
-            {p.icon} {p.label} ({p.count})
-          </button>
-        ))}
+        {/* Divider */}
+        <div className="hidden sm:block w-px h-5 bg-gray-200 flex-shrink-0" />
+
+        {/* Platform */}
+        <div className="flex flex-wrap gap-1.5">
+          {platforms.filter(p => p.id !== 'all').map(p => (
+            <button
+              key={p.id}
+              onClick={() => setActivePlatform(p.id === activePlatform ? 'all' : p.id)}
+              className={`px-3 py-1 text-xs font-medium rounded-full border transition-all ${
+                activePlatform === p.id
+                  ? 'bg-gray-800 text-white border-gray-800'
+                  : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'
+              }`}
+            >
+              {p.icon} {p.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Main Layout: Sidebar Timeline + Content */}

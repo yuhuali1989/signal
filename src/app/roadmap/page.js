@@ -8,7 +8,7 @@ function SectionCard({ icon, title, desc, children, accent = '#6c5ce7' }) {
       <div className="flex items-center gap-2 mb-3 pb-2 border-b" style={{ borderColor: accent + '22' }}>
         <span className="text-lg">{icon}</span>
         <div>
-          <p className="text-sm font-semibold text-gray-800">{title}</p>
+          <h2 className="text-sm font-semibold text-gray-800">{title}</h2>
           {desc && <p className="text-[10px] text-gray-400">{desc}</p>}
         </div>
       </div>
@@ -35,7 +35,7 @@ export default function RoadmapPage() {
       <div className="rounded-2xl border border-[#6c5ce7]/20 bg-[#6c5ce7]/[0.04] p-4 flex items-start gap-3">
         <span className="text-2xl flex-shrink-0">🗺️</span>
         <div>
-          <p className="text-sm font-semibold text-gray-800 mb-1">Signal Roadmap 中心</p>
+          <h1 className="text-sm font-semibold text-gray-800 mb-1">Signal Roadmap 中心</h1>
           <p className="text-xs text-gray-500 leading-relaxed mb-2">
             汇总 <span className="font-medium text-gray-700">🔧 平台技术债</span>、
             <span className="font-medium text-gray-700">🚀 产品迭代规划</span>（开发者人工维护）和
@@ -67,7 +67,7 @@ export default function RoadmapPage() {
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                    <span className="text-xs font-semibold text-gray-800">{t.title}</span>
+                    <h3 className="text-xs font-semibold text-gray-800">{t.title}</h3>
                     <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 ml-auto flex-shrink-0">{t.status}</span>
                   </div>
                   <p className="text-[10px] text-gray-500 leading-relaxed">{t.desc}</p>
@@ -100,7 +100,7 @@ export default function RoadmapPage() {
               <div key={cat.id} className="rounded-xl border border-gray-100 p-3">
                 <div className="flex items-center gap-2 mb-2 pb-2 border-b border-gray-100">
                   <span className="text-base">{cat.icon}</span>
-                  <span className="text-xs font-semibold text-gray-800">{cat.name}</span>
+                  <h3 className="text-xs font-semibold text-gray-800">{cat.name}</h3>
                   <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 ml-auto">{cat.cadence}</span>
                 </div>
                 <div className="space-y-1.5">
@@ -137,7 +137,7 @@ export default function RoadmapPage() {
                 <span className="text-xs font-bold px-2 py-0.5 rounded-full text-white"
                   style={{ background: priorityColor[op.priority] }}>{op.priority}</span>
                 <span className="text-xs font-bold text-gray-400">#{i + 1}</span>
-                <span className="text-sm font-semibold text-gray-800">{op.title}</span>
+                <h3 className="text-sm font-semibold text-gray-800">{op.title}</h3>
                 <span className="ml-auto text-[10px] text-gray-400">价值 {op.value} · 投入 {op.effort}</span>
               </div>
               <p className="text-xs text-gray-600 leading-relaxed mb-2">{op.desc}</p>
