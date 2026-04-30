@@ -1051,7 +1051,6 @@ function FintechSection() {
 function PlanSection() {
   const [expandedRevenue, setExpandedRevenue] = useState(null); // 展开的营收明细年份
   const [expandedMilestone, setExpandedMilestone] = useState(null); // 展开的半年产出节点
-  const [expandedWorkload, setExpandedWorkload] = useState(null); // 展开的工作量拆解
 
   /* —— 部门概览 —— */
   const deptOverview = {
@@ -1126,416 +1125,6 @@ function PlanSection() {
         { id: 'H1-Y5', half: 'Y5 上半年', deliverable: 'AI 治理示范银行认证', bizOutcome: '行业标杆', revenue: '品牌溢价 + 咨询 ¥500 万' },
         { id: 'H2-Y5', half: 'Y5 下半年', deliverable: '合规 SaaS 平台', bizOutcome: '审查时间 10 分钟/份', revenue: '平台收入 ¥800 万/半年' },
       ],
-    },
-  ];
-
-  /* —— 工作量拆解：从半年产出反推所需工作量（人月） —— */
-  const workloadByPhase = [
-    {
-      year: 'Y1（2026）', title: '筑基', color: '#6c5ce7',
-      totalManMonths: 1020,
-      streams: [
-        {
-          name: '🛡️ 风控线', manMonths: 216, deliverables: ['图网络反欺诈模型 PoC → 上线'],
-          tasks: [
-            { task: '数据治理 & 特征工程', mm: 48, skill: '数据工程', note: '信用卡/消费贷交易数据清洗、图谱构建、特征提取' },
-            { task: '图网络模型研发 & 训练', mm: 60, skill: '算法', note: 'GNN 模型选型、训练、调优、评测' },
-            { task: '模型服务化 & 上线', mm: 36, skill: '工程开发', note: '推理服务部署、AB 实验、灰度发布' },
-            { task: '业务对接 & 效果验证', mm: 24, skill: '产品/业务', note: '与风控部门联调、效果指标跟踪' },
-            { task: '合规审查 & 模型审计', mm: 24, skill: '合规', note: '模型可解释性报告、公平性检测' },
-            { task: '测试 & 质量保障', mm: 24, skill: '测试', note: '对抗样本测试、性能压测、回归测试' },
-          ],
-        },
-        {
-          name: '💬 客服线', manMonths: 264, deliverables: ['RAG 知识库 → 客服上线（替代 20% 坐席）'],
-          tasks: [
-            { task: '知识库构建 & RAG 系统', mm: 72, skill: '算法+工程', note: '知识抽取、向量化、检索增强生成系统搭建' },
-            { task: '对话管理 & 意图识别', mm: 48, skill: '算法', note: '多轮对话状态管理、意图分类、槽位填充' },
-            { task: '客服后端 & 集成', mm: 48, skill: '工程开发', note: '与核心银行系统对接、工单系统集成' },
-            { task: '客服前端工作台', mm: 24, skill: '前端', note: '坐席工作台、知识库管理后台' },
-            { task: '数据标注 & 评测', mm: 36, skill: '标注/分析', note: 'Top200 问题标注、回答质量评测' },
-            { task: '产品设计 & 用户体验', mm: 18, skill: '产品', note: '交互设计、满意度指标体系' },
-            { task: '测试 & 上线保障', mm: 18, skill: '测试', note: '端到端测试、性能压测' },
-          ],
-        },
-        {
-          name: '💰 理财线', manMonths: 120, deliverables: ['投研助手 PoC → 内部上线'],
-          tasks: [
-            { task: '研报解析 & NLP 模型', mm: 36, skill: '算法', note: '研报摘要、实体抽取、观点提取' },
-            { task: '基金数据聚合 & 对比引擎', mm: 30, skill: '工程开发', note: '基金数据 API、对比算法、排序模型' },
-            { task: '投研助手前端', mm: 18, skill: '前端', note: '研报阅读器、基金对比界面' },
-            { task: '产品设计 & 内部试用', mm: 18, skill: '产品', note: '需求调研、原型设计、内部反馈收集' },
-            { task: '数据合规 & 信息隔离', mm: 18, skill: '合规', note: '投研信息隔离墙、数据使用合规' },
-          ],
-        },
-        {
-          name: '📜 合规线', manMonths: 96, deliverables: ['合规知识库 → 基础审查辅助'],
-          tasks: [
-            { task: '合规知识库构建', mm: 36, skill: '算法+工程', note: '法规/政策文档结构化、向量化检索' },
-            { task: '政策检索系统开发', mm: 24, skill: '工程开发', note: '全文检索、语义检索、政策变更追踪' },
-            { task: '基础审查辅助功能', mm: 18, skill: '算法', note: '合同关键条款提取、风险点标注' },
-            { task: '产品设计 & 合规团队对接', mm: 18, skill: '产品/合规', note: '工作流设计、合规团队培训' },
-          ],
-        },
-        {
-          name: '🏗️ AI 平台（公共基础设施）', manMonths: 324, deliverables: ['AI 中台 + 大模型私有化部署'],
-          tasks: [
-            { task: '大模型私有化部署', mm: 60, skill: '工程开发', note: '70B 基座部署、推理优化、7B 蒸馏版' },
-            { task: 'AI 中台搭建（模型管理/Prompt/评测）', mm: 72, skill: '工程开发', note: 'MLflow + 自研适配、Prompt 管理、评测流水线' },
-            { task: 'RAG 基础设施（向量库/检索）', mm: 48, skill: '工程开发', note: 'Milvus 部署、Embedding 模型、检索链路' },
-            { task: '数据湖 & ETL 扩容', mm: 36, skill: '数据工程', note: 'Spark/Flink 管道、数据质量监控' },
-            { task: 'GPU 集群搭建 & 运维', mm: 36, skill: '运维/SRE', note: 'A100 集群部署、监控、调度系统' },
-            { task: '安全 & 隐私计算基础', mm: 36, skill: '安全/合规', note: 'TEE 节点、FATE 平台、数据脱敏' },
-            { task: '项目管理 & 跨部门协调', mm: 36, skill: 'PMO', note: '10+ 并行项目管理、资源协调' },
-          ],
-        },
-      ],
-    },
-    {
-      year: 'Y2（2027）', title: '场景突破', color: '#00cec9',
-      totalManMonths: 1560,
-      streams: [
-        {
-          name: '🛡️ 风控线', manMonths: 312, deliverables: ['LLM+图网络融合 → SAR 自动生成 → 联邦风控'],
-          tasks: [
-            { task: 'LLM+图网络融合模型研发', mm: 72, skill: '算法', note: '多模态融合架构、联合训练' },
-            { task: 'SAR 报告自动生成系统', mm: 48, skill: '算法+工程', note: 'NLG 模型、模板引擎、合规校验' },
-            { task: '联邦学习风控联盟搭建', mm: 60, skill: '算法+工程', note: '跨机构模型训练、安全聚合协议' },
-            { task: '全行信贷产品线覆盖', mm: 48, skill: '工程开发', note: '房贷/车贷/经营贷适配、规则引擎' },
-            { task: '合规审计 & 模型公平性', mm: 36, skill: '合规', note: '偏见检测、可解释性报告升级' },
-            { task: '测试 & 联调', mm: 48, skill: '测试', note: '联邦学习联调、SAR 质量评测' },
-          ],
-        },
-        {
-          name: '💬 客服线', manMonths: 360, deliverables: ['多模态客服 → 替代 45% 坐席'],
-          tasks: [
-            { task: '多模态模型训练（语音+文字+图片）', mm: 84, skill: '算法', note: 'ASR/NLU/TTS 模型、多模态融合' },
-            { task: '多模态客服后端', mm: 60, skill: '工程开发', note: '语音流处理、WebSocket、实时转写' },
-            { task: '多模态客服前端', mm: 36, skill: '前端', note: '语音交互界面、图片上传识别' },
-            { task: '对话管理升级（多轮+上下文）', mm: 48, skill: '算法', note: '长对话记忆、上下文理解增强' },
-            { task: '坐席替代方案 & 培训', mm: 36, skill: '产品/业务', note: '坐席转岗方案、AI+人工协作流程' },
-            { task: '数据标注 & 多模态评测', mm: 48, skill: '标注/分析', note: '语音转写校对、多模态质量评测' },
-            { task: '性能优化 & 高并发保障', mm: 48, skill: '工程/SRE', note: '推理延迟优化、弹性扩缩容' },
-          ],
-        },
-        {
-          name: '💰 理财线', manMonths: 240, deliverables: ['AI 理财顾问 PoC → 1.0 上线'],
-          tasks: [
-            { task: '个性化推荐算法', mm: 60, skill: '算法', note: '用户画像、风险偏好建模、组合推荐' },
-            { task: '合规话术生成模型', mm: 36, skill: '算法', note: '金融合规约束下的 NLG' },
-            { task: '理财 Agent 后端', mm: 48, skill: '工程开发', note: '组合推荐 API、调仓建议、合规校验' },
-            { task: '理财顾问前端', mm: 30, skill: '前端', note: '资产配置可视化、K 线图、组合分析' },
-            { task: '高净值客户试用 & 反馈', mm: 30, skill: '产品/业务', note: '1000 名客户试用、NPS 跟踪' },
-            { task: '合规审查 & 适当性管理', mm: 36, skill: '合规', note: '投资建议合规性、适当性匹配' },
-          ],
-        },
-        {
-          name: '📜 合规线', manMonths: 168, deliverables: ['合同审查 Agent → 合规审查 Agent 上线'],
-          tasks: [
-            { task: '合同审查 Agent 研发', mm: 48, skill: '算法', note: '合同条款理解、风险点识别、修改建议' },
-            { task: '营销物料审核系统', mm: 36, skill: '算法+工程', note: '营销合规检查、敏感词过滤、合规建议' },
-            { task: '审查工作流后端', mm: 30, skill: '工程开发', note: '审批流程、版本管理、审计日志' },
-            { task: '审查工作台前端', mm: 24, skill: '前端', note: '合同标注界面、审核流程可视化' },
-            { task: '合规团队协作 & 规则维护', mm: 30, skill: '合规/产品', note: '规则库维护、合规团队培训' },
-          ],
-        },
-        {
-          name: '🏗️ AI 平台（公共基础设施）', manMonths: 480, deliverables: ['Agent 框架 + 推理优化 + 联邦学习平台'],
-          tasks: [
-            { task: 'Agent 框架开发（ReAct/CoT/Tool Use）', mm: 96, skill: '工程开发', note: '编排引擎、安全沙箱、记忆系统' },
-            { task: '推理优化（KV Cache/Batching/Speculative）', mm: 60, skill: '工程开发', note: 'vLLM 优化、多模态推理引擎' },
-            { task: '联邦学习平台搭建', mm: 48, skill: '工程开发', note: '跨机构通信、安全聚合、模型管理' },
-            { task: '多模态数据管道', mm: 48, skill: '数据工程', note: '语音/图片/文本统一 ETL' },
-            { task: 'H100 集群扩容 & 运维', mm: 48, skill: '运维/SRE', note: '新集群部署、液冷系统、双活架构' },
-            { task: 'AI 平台升级（AB 测试/模型版本）', mm: 48, skill: '工程开发', note: '模型 AB 测试、灰度发布升级' },
-            { task: '安全 & 隐私计算升级', mm: 48, skill: '安全/合规', note: '联邦学习安全验证、Agent 安全测试' },
-            { task: '项目管理 & 跨部门协调', mm: 84, skill: 'PMO', note: '15+ 并行项目、联邦学习跨机构协调' },
-          ],
-        },
-      ],
-    },
-    {
-      year: 'Y3（2028）', title: 'Agent 化', color: '#3fb950',
-      totalManMonths: 2160,
-      streams: [
-        {
-          name: '🛡️ 风控线', manMonths: 396, deliverables: ['风控 Agent 1.0 → 2.0（自主处置率 >90%）'],
-          tasks: [
-            { task: '风控 Agent 核心算法', mm: 96, skill: '算法', note: '自主决策模型、风险评估 Agent、多步推理' },
-            { task: '实时风控引擎升级', mm: 72, skill: '工程开发', note: '毫秒级决策、流式处理、规则+模型融合' },
-            { task: '人工复核系统 & 反馈闭环', mm: 48, skill: '工程/产品', note: '复核工作台、反馈标注、模型迭代' },
-            { task: '联邦风控联盟运营', mm: 60, skill: '算法+合规', note: '联盟扩至 5 家、模型效果对齐' },
-            { task: '合规 & 模型治理', mm: 48, skill: '合规', note: 'Agent 决策审计、自主处置合规框架' },
-            { task: '测试 & 红队攻防', mm: 72, skill: '测试', note: 'Agent 安全测试、对抗攻击、压力测试' },
-          ],
-        },
-        {
-          name: '💬 客服线', manMonths: 432, deliverables: ['业务办理 Agent → 替代 65% 坐席'],
-          tasks: [
-            { task: '业务办理 Agent 研发', mm: 108, skill: '算法', note: '转账/查询/挂失等端到端 Agent' },
-            { task: '客服 Agent 后端集成', mm: 72, skill: '工程开发', note: '与核心银行系统深度集成、事务处理' },
-            { task: '全渠道统一接入', mm: 48, skill: '工程开发', note: 'APP/微信/电话/网银统一 Agent 入口' },
-            { task: '客服前端升级', mm: 36, skill: '前端', note: 'Agent 交互界面、业务办理可视化' },
-            { task: '满意度优化 & 体验迭代', mm: 48, skill: '产品/业务', note: '满意度 >4.5/5.0 目标达成' },
-            { task: '数据分析 & 效果归因', mm: 48, skill: '分析', note: '替代率跟踪、失败 case 分析' },
-            { task: '高并发保障 & SLA', mm: 72, skill: '工程/SRE', note: '99.95% SLA、弹性扩缩容' },
-          ],
-        },
-        {
-          name: '💰 理财线', manMonths: 360, deliverables: ['千人千面推荐 → 自动调仓 Agent → AUM ¥150 亿'],
-          tasks: [
-            { task: '千人千面推荐算法', mm: 84, skill: '算法', note: '深度用户画像、实时偏好学习' },
-            { task: '自动调仓 Agent', mm: 72, skill: '算法', note: '市场信号感知、调仓决策、风险控制' },
-            { task: '理财 Agent 后端', mm: 60, skill: '工程开发', note: '调仓执行、合规校验、交易对接' },
-            { task: '理财前端升级', mm: 36, skill: '前端', note: '组合分析、调仓建议可视化' },
-            { task: '客户运营 & AUM 增长', mm: 48, skill: '产品/业务', note: '客户分层运营、AUM 增长策略' },
-            { task: '合规 & 适当性升级', mm: 36, skill: '合规', note: '自动调仓合规框架、适当性动态评估' },
-            { task: '测试 & 回测验证', mm: 24, skill: '测试', note: '策略回测、极端行情测试' },
-          ],
-        },
-        {
-          name: '📜 合规线', manMonths: 252, deliverables: ['监管报告自动生成 → 全链路合规 Agent'],
-          tasks: [
-            { task: '监管报告自动生成', mm: 72, skill: '算法+工程', note: 'SAR/CTR/大额交易报告 90% 自动化' },
-            { task: '全链路合规 Agent', mm: 60, skill: '算法', note: '端到端合规审查、多文档交叉验证' },
-            { task: '合规工作流升级', mm: 36, skill: '工程开发', note: '审批自动化、异常升级机制' },
-            { task: '行业标准参与', mm: 36, skill: '合规', note: '银保监会 AI 治理标准起草参与' },
-            { task: '合规 Agent 评测', mm: 24, skill: '测试', note: '准确率/召回率/误报率评测' },
-            { task: '产品化 & 用户培训', mm: 24, skill: '产品', note: '合规团队全面使用、培训体系' },
-          ],
-        },
-        {
-          name: '🏗️ AI 平台（公共基础设施）', manMonths: 720, deliverables: ['Agent 平台成熟 + 多模态推理优化 + 内部 Copilot'],
-          tasks: [
-            { task: 'Agent 平台成熟化', mm: 120, skill: '工程开发', note: '多 Agent 协作、工具市场、评测体系' },
-            { task: '内部 Copilot 全行推广', mm: 96, skill: '工程/产品', note: '代码/文档/数据分析 Copilot' },
-            { task: '推理引擎持续优化', mm: 72, skill: '工程开发', note: 'MLA/NSA 支持、FP8 KV Cache' },
-            { task: '数据平台升级', mm: 72, skill: '数据工程', note: '实时特征平台、数据资产目录' },
-            { task: '多集群运维 & 成本优化', mm: 72, skill: '运维/SRE', note: 'GPU 利用率 >70%、成本优化 20%' },
-            { task: '安全体系升级', mm: 72, skill: '安全/合规', note: 'Agent 安全框架、红队常态化' },
-            { task: '项目管理 & 组织建设', mm: 108, skill: 'PMO', note: '20+ 并行项目、人才梯队建设' },
-            { task: '前沿探索（20% 预算）', mm: 108, skill: '算法', note: '世界模型、自主决策、新架构预研' },
-          ],
-        },
-      ],
-    },
-    {
-      year: 'Y4（2029）', title: '商业化输出', color: '#ffa657',
-      totalManMonths: 2640,
-      streams: [
-        {
-          name: '🛡️ 风控线', manMonths: 432, deliverables: ['风控模型市场化 → 联邦联盟 8 家'],
-          tasks: [
-            { task: '风控 SaaS 产品化', mm: 96, skill: '工程/产品', note: '多租户架构、配置化部署、客户管理' },
-            { task: '联邦风控联盟运营（8 家）', mm: 72, skill: '算法+合规', note: '联盟扩展、效果对齐、收费模式' },
-            { task: '风控模型持续迭代', mm: 84, skill: '算法', note: '新场景适配、模型升级、效果提升' },
-            { task: '客户交付 & 技术支持', mm: 72, skill: '解决方案', note: '5 家中小银行交付、技术支持' },
-            { task: '合规 & 行业标准', mm: 48, skill: '合规', note: '行业标准参与、合规认证' },
-            { task: '测试 & 质量保障', mm: 60, skill: '测试', note: '多租户测试、安全测试、性能测试' },
-          ],
-        },
-        {
-          name: '💬 客服线', manMonths: 480, deliverables: ['情感识别 → 全渠道 AI → 替代 70%'],
-          tasks: [
-            { task: '情感识别 & 主动服务', mm: 96, skill: '算法', note: '情感分析、流失预警、主动触达' },
-            { task: '全渠道统一 Agent 升级', mm: 84, skill: '工程开发', note: '视频客服、智能外呼、全渠道一致性' },
-            { task: '客服 SaaS 产品化', mm: 72, skill: '工程/产品', note: '多租户、配置化、客户自助' },
-            { task: '客户成功 & 运营', mm: 60, skill: '产品/业务', note: '替代率 70% 达成、坐席转型' },
-            { task: '性能 & 可靠性', mm: 72, skill: '工程/SRE', note: '99.99% SLA、全球化部署准备' },
-            { task: '数据分析 & 优化', mm: 48, skill: '分析', note: '满意度优化、失败 case 持续改进' },
-            { task: '测试 & 安全', mm: 48, skill: '测试', note: '情感识别准确率、隐私保护测试' },
-          ],
-        },
-        {
-          name: '💰 理财线', manMonths: 420, deliverables: ['AUM ¥200→400 亿 → 理财 AI 品牌'],
-          tasks: [
-            { task: '推荐算法持续优化', mm: 84, skill: '算法', note: '深度强化学习、市场适应性' },
-            { task: '自动调仓 Agent 升级', mm: 72, skill: '算法', note: '多策略组合、极端行情应对' },
-            { task: '理财平台工程', mm: 72, skill: '工程开发', note: '高频交易对接、实时风控' },
-            { task: '客户运营 & AUM 增长', mm: 72, skill: '产品/业务', note: 'AUM ¥400 亿目标达成' },
-            { task: '合规 & 监管', mm: 48, skill: '合规', note: '自动调仓监管报备、适当性升级' },
-            { task: '理财前端 & 体验', mm: 36, skill: '前端', note: '投资者教育、收益归因可视化' },
-            { task: '测试 & 回测', mm: 36, skill: '测试', note: '策略回测、压力测试、合规测试' },
-          ],
-        },
-        {
-          name: '📜 合规线', manMonths: 288, deliverables: ['行业标准制定 → 合规 AI 咨询输出'],
-          tasks: [
-            { task: '行业标准制定参与', mm: 72, skill: '合规', note: '银保监会 AI 治理标准核心参与' },
-            { task: '合规 AI 咨询服务', mm: 60, skill: '合规/解决方案', note: '向 3 家机构输出合规方案' },
-            { task: '合规 Agent 持续优化', mm: 60, skill: '算法', note: '准确率提升、新场景覆盖' },
-            { task: '合规平台产品化', mm: 48, skill: '工程/产品', note: '多租户、配置化、自助服务' },
-            { task: '测试 & 认证', mm: 48, skill: '测试/合规', note: '合规认证测试、第三方审计' },
-          ],
-        },
-        {
-          name: '🏗️ AI 平台 & 商业化', manMonths: 1020, deliverables: ['SaaS 平台 + 集团输出 + 全球化准备'],
-          tasks: [
-            { task: 'SaaS 平台架构', mm: 180, skill: '工程开发', note: '多租户、多区域、配置化部署' },
-            { task: '集团生态输出', mm: 120, skill: '解决方案', note: '8 家子公司技术输出、定制化' },
-            { task: 'Agent 平台持续演进', mm: 120, skill: '工程开发', note: '多 Agent 协作升级、工具生态' },
-            { task: '推理引擎 & 成本优化', mm: 96, skill: '工程开发', note: '推理成本降低 50%、边缘推理' },
-            { task: '数据资产化运营', mm: 72, skill: '数据工程', note: '数据产品、行业报告、指数产品' },
-            { task: '全球化基础设施', mm: 96, skill: '运维/SRE', note: '多区域部署、合规适配' },
-            { task: '安全 & 合规体系', mm: 96, skill: '安全/合规', note: '全球化合规、量子安全试点' },
-            { task: '项目管理 & 客户成功', mm: 120, skill: 'PMO/售前', note: '客户交付、续约、增购' },
-            { task: '前沿探索', mm: 120, skill: '算法', note: '世界模型、自主 Agent、新架构' },
-          ],
-        },
-      ],
-    },
-    {
-      year: 'Y5（2030）', title: 'AI 原生银行', color: '#f97316',
-      totalManMonths: 3120,
-      streams: [
-        {
-          name: '🛡️ 风控线', manMonths: 480, deliverables: ['全链路 AI 风控 → 风控 SaaS → 15 家联盟'],
-          tasks: [
-            { task: '全链路 AI 风控（准入→催收）', mm: 120, skill: '算法+工程', note: '端到端自动化，损失率 0.03%' },
-            { task: '风控 SaaS 全球化', mm: 96, skill: '工程/产品', note: '多区域部署、多语言适配' },
-            { task: '联邦联盟运营（15 家）', mm: 72, skill: '算法+合规', note: '联盟标准化运营、效果持续提升' },
-            { task: '行业标准主导', mm: 48, skill: '合规', note: '行业标准制定主导权' },
-            { task: '客户交付 & 支持', mm: 72, skill: '解决方案', note: '20 家客户交付、技术支持' },
-            { task: '测试 & 安全', mm: 72, skill: '测试', note: '全球化测试、安全红队' },
-          ],
-        },
-        {
-          name: '💬 客服线', manMonths: 540, deliverables: ['80% AI 完成 → 客服 SaaS 输出'],
-          tasks: [
-            { task: '80% 交互 AI 完成', mm: 120, skill: '算法+工程', note: '复杂场景覆盖、7×24 全时段' },
-            { task: '客服 SaaS 全球化', mm: 108, skill: '工程/产品', note: '多语言、多区域、多渠道' },
-            { task: '集团输出 & 客户交付', mm: 96, skill: '解决方案', note: '向集团子公司 + 外部客户输出' },
-            { task: '持续优化 & 创新', mm: 84, skill: '算法', note: '新交互模式、视频 Agent' },
-            { task: '运维 & SLA', mm: 72, skill: '运维/SRE', note: '99.99% SLA、全球化运维' },
-            { task: '测试 & 安全', mm: 60, skill: '测试', note: '多语言测试、安全合规' },
-          ],
-        },
-        {
-          name: '💰 理财线', manMonths: 480, deliverables: ['AUM ¥500 亿 → 理财 AI 平台输出'],
-          tasks: [
-            { task: 'AUM ¥500 亿目标达成', mm: 120, skill: '算法+产品', note: '策略优化、客户扩展' },
-            { task: '理财 AI 平台输出', mm: 96, skill: '工程/产品', note: '向集团子公司输出' },
-            { task: '自动调仓 Agent 成熟', mm: 84, skill: '算法', note: '全天候自动化、极端行情应对' },
-            { task: '客户运营 & 品牌', mm: 72, skill: '产品/业务', note: '行业领先品牌、客户留存' },
-            { task: '合规 & 监管', mm: 48, skill: '合规', note: '全球化合规、跨境理财' },
-            { task: '测试 & 风控', mm: 60, skill: '测试', note: '策略风控、极端行情测试' },
-          ],
-        },
-        {
-          name: '📜 合规线', manMonths: 360, deliverables: ['AI 治理示范银行 → 合规 SaaS'],
-          tasks: [
-            { task: 'AI 治理示范银行认证', mm: 72, skill: '合规', note: '银保监会认证、行业标杆' },
-            { task: '合规 SaaS 平台', mm: 84, skill: '工程/产品', note: '多租户、全球化、自助服务' },
-            { task: '行业标准运营', mm: 60, skill: '合规', note: '标准维护、认证服务' },
-            { task: '合规 Agent 持续优化', mm: 60, skill: '算法', note: '10 分钟/份目标达成' },
-            { task: '客户交付 & 咨询', mm: 48, skill: '解决方案', note: '合规咨询输出' },
-            { task: '测试 & 认证', mm: 36, skill: '测试', note: '合规认证测试' },
-          ],
-        },
-        {
-          name: '🏗️ AI 平台 & 全球化', manMonths: 1260, deliverables: ['AI 原生银行 + 全球化 SaaS + 行业标杆'],
-          tasks: [
-            { task: 'AI 原生银行架构', mm: 180, skill: '工程开发', note: '全行 AI 化、流程自动化' },
-            { task: 'SaaS 全球化运营', mm: 180, skill: '工程/产品', note: '多区域、多语言、合规适配' },
-            { task: 'Agent 平台生态', mm: 120, skill: '工程开发', note: '开放平台、第三方 Agent 接入' },
-            { task: '推理引擎 & 边缘 AI', mm: 96, skill: '工程开发', note: '边缘推理、端侧部署' },
-            { task: '数据资产变现', mm: 96, skill: '数据工程/产品', note: '数据产品、行业报告' },
-            { task: '全球化运维', mm: 120, skill: '运维/SRE', note: '7×24 NOC、多区域灾备' },
-            { task: '安全 & 合规', mm: 120, skill: '安全/合规', note: '全球化合规、量子安全' },
-            { task: '项目管理 & 客户成功', mm: 168, skill: 'PMO/售前', note: '全球化交付、客户成功体系' },
-            { task: '前沿探索 & 行业引领', mm: 180, skill: '算法', note: '下一代 AI 技术预研' },
-          ],
-        },
-      ],
-    },
-  ];
-
-  /* —— 从工作量反推人力需求 —— */
-  const headcountDerivation = [
-    {
-      year: 'Y1（2026）', color: '#6c5ce7',
-      totalManMonths: 1020, monthsPerYear: 12, utilizationRate: 0.85,
-      note: '有效工作月 = 12 × 0.85 = 10.2 月/人/年（扣除假期/培训/会议/管理开销）',
-      derivation: [
-        { skill: '算法研究', manMonths: 204, headcount: 12, calc: '204 ÷ 10.2 ≈ 20 → AI 时代效率提升 40%（Copilot+AutoML）→ 实际需 12 人' },
-        { skill: '工程开发', manMonths: 396, headcount: 30, calc: '396 ÷ 10.2 ≈ 39 → AI 辅助编码效率提升 25%（CRUD/配置 AI 生成）→ 实际需 30 人' },
-        { skill: '产品/业务', manMonths: 108, headcount: 12, calc: '108 ÷ 10.2 ≈ 11 → AI 辅助文档/调研提效 10% → 实际需 12 人（含业务分析师）' },
-        { skill: '测试/QA', manMonths: 84, headcount: 8, calc: '84 ÷ 10.2 ≈ 8 → AI 自动生成测试用例，但金融场景需人工把关 → 实际需 8 人' },
-        { skill: '数据标注/分析', manMonths: 60, headcount: 6, calc: '60 ÷ 10.2 ≈ 6 → AI 预标注提效 3 倍，但需人工校验 → 实际需 6 人' },
-        { skill: '合规/风控', manMonths: 96, headcount: 8, calc: '96 ÷ 10.2 ≈ 9 → 合规判断不可完全 AI 化 → 实际需 8 人' },
-        { skill: 'PMO/项目管理', manMonths: 36, headcount: 5, calc: '36 ÷ 10.2 ≈ 4 → 跨部门协调需人际沟通 → 实际需 5 人' },
-        { skill: '运维/SRE', manMonths: 36, headcount: 4, calc: '36 ÷ 10.2 ≈ 4 → AI 自动化运维 80% 告警 → 实际需 4 人' },
-      ],
-      totalHeadcount: 85,
-    },
-    {
-      year: 'Y2（2027）', color: '#00cec9',
-      totalManMonths: 1560, monthsPerYear: 12, utilizationRate: 0.85,
-      note: '场景突破期，多模态+Agent+联邦学习三线并进，工作量大幅增长',
-      derivation: [
-        { skill: '算法研究', manMonths: 348, headcount: 20, calc: '348 ÷ 10.2 ≈ 34 → AI 效率提升 45%（AutoML+实验自动化）→ 实际需 20 人' },
-        { skill: '工程开发', manMonths: 636, headcount: 48, calc: '636 ÷ 10.2 ≈ 62 → AI 辅助编码效率提升 30% → 实际需 48 人' },
-        { skill: '产品/业务', manMonths: 168, headcount: 18, calc: '168 ÷ 10.2 ≈ 16 → 各业务线需专属产品+分析 → 实际需 18 人' },
-        { skill: '测试/QA', manMonths: 120, headcount: 10, calc: '120 ÷ 10.2 ≈ 12 → AI 自动化测试覆盖率提升 → 实际需 10 人' },
-        { skill: '数据标注/分析', manMonths: 84, headcount: 8, calc: '84 ÷ 10.2 ≈ 8 → 多模态标注需求增加 → 实际需 8 人' },
-        { skill: '合规/风控', manMonths: 132, headcount: 12, calc: '132 ÷ 10.2 ≈ 13 → Agent+联邦学习合规需求增加 → 实际需 12 人' },
-        { skill: 'PMO/项目管理', manMonths: 84, headcount: 7, calc: '84 ÷ 10.2 ≈ 8 → 15+ 并行项目 → 实际需 7 人' },
-        { skill: '运维/SRE', manMonths: 48, headcount: 7, calc: '48 ÷ 10.2 ≈ 5 → H100 集群+联邦平台运维 → 实际需 7 人' },
-      ],
-      totalHeadcount: 130,
-    },
-    {
-      year: 'Y3（2028）', color: '#3fb950',
-      totalManMonths: 2160, monthsPerYear: 12, utilizationRate: 0.85,
-      note: 'Agent 化阶段，四大业务线全面 Agent 化，内部 Copilot 全行推广',
-      derivation: [
-        { skill: '算法研究', manMonths: 540, headcount: 30, calc: '540 ÷ 10.2 ≈ 53 → AI 效率提升 50%（Agent 辅助实验）→ 实际需 30 人' },
-        { skill: '工程开发', manMonths: 876, headcount: 60, calc: '876 ÷ 10.2 ≈ 86 → AI 辅助编码效率提升 35% → 实际需 60 人' },
-        { skill: '产品/业务', manMonths: 216, headcount: 22, calc: '216 ÷ 10.2 ≈ 21 → Agent 产品复杂度增加 → 实际需 22 人' },
-        { skill: '测试/QA', manMonths: 168, headcount: 14, calc: '168 ÷ 10.2 ≈ 16 → Agent 测试复杂度高 → 实际需 14 人' },
-        { skill: '数据标注/分析', manMonths: 96, headcount: 8, calc: '96 ÷ 10.2 ≈ 9 → AI 预标注成熟 → 实际需 8 人' },
-        { skill: '合规/风控', manMonths: 180, headcount: 16, calc: '180 ÷ 10.2 ≈ 18 → Agent 合规框架建设 → 实际需 16 人' },
-        { skill: 'PMO/项目管理', manMonths: 108, headcount: 10, calc: '108 ÷ 10.2 ≈ 11 → 20+ 并行项目 → 实际需 10 人' },
-        { skill: '运维/SRE', manMonths: 72, headcount: 10, calc: '72 ÷ 10.2 ≈ 7 → 多集群+高 SLA → 实际需 10 人' },
-        { skill: '前沿探索', manMonths: 108, headcount: 10, calc: '108 ÷ 10.2 ≈ 11 → 20% 预算用于前沿 → 实际需 10 人' },
-      ],
-      totalHeadcount: 180,
-    },
-    {
-      year: 'Y4（2029）', color: '#ffa657',
-      totalManMonths: 2640, monthsPerYear: 12, utilizationRate: 0.85,
-      note: '商业化输出期，新增解决方案/售前团队，SaaS 平台建设',
-      derivation: [
-        { skill: '算法研究', manMonths: 600, headcount: 35, calc: '600 ÷ 10.2 ≈ 59 → AI 效率提升 50% → 实际需 35 人' },
-        { skill: '工程开发', manMonths: 1020, headcount: 70, calc: '1020 ÷ 10.2 ≈ 100 → AI 效率提升 35% → 实际需 70 人' },
-        { skill: '产品/业务', manMonths: 252, headcount: 24, calc: '252 ÷ 10.2 ≈ 25 → 商业化产品复杂度 → 实际需 24 人' },
-        { skill: '测试/QA', manMonths: 192, headcount: 16, calc: '192 ÷ 10.2 ≈ 19 → 多租户+安全测试 → 实际需 16 人' },
-        { skill: '数据标注/分析', manMonths: 72, headcount: 6, calc: '72 ÷ 10.2 ≈ 7 → AI 标注成熟 → 实际需 6 人' },
-        { skill: '合规/风控', manMonths: 216, headcount: 20, calc: '216 ÷ 10.2 ≈ 21 → 行业标准+全球化合规 → 实际需 20 人' },
-        { skill: 'PMO/项目管理', manMonths: 120, headcount: 12, calc: '120 ÷ 10.2 ≈ 12 → 客户交付管理 → 实际需 12 人' },
-        { skill: '运维/SRE', manMonths: 96, headcount: 12, calc: '96 ÷ 10.2 ≈ 9 → 全球化运维 → 实际需 12 人' },
-        { skill: '解决方案/售前', manMonths: 192, headcount: 15, calc: '192 ÷ 10.2 ≈ 19 → AI 辅助方案生成 → 实际需 15 人' },
-        { skill: '前沿探索', manMonths: 120, headcount: 10, calc: '120 ÷ 10.2 ≈ 12 → 20% 预算 → 实际需 10 人' },
-      ],
-      totalHeadcount: 220,
-    },
-    {
-      year: 'Y5（2030）', color: '#f97316',
-      totalManMonths: 3120, monthsPerYear: 12, utilizationRate: 0.85,
-      note: 'AI 原生银行阶段，全球化运营，行业标杆输出',
-      derivation: [
-        { skill: '算法研究', manMonths: 684, headcount: 38, calc: '684 ÷ 10.2 ≈ 67 → AI 效率提升 55% → 实际需 38 人' },
-        { skill: '工程开发', manMonths: 1200, headcount: 78, calc: '1200 ÷ 10.2 ≈ 118 → AI 效率提升 40% → 实际需 78 人' },
-        { skill: '产品/业务', manMonths: 264, headcount: 24, calc: '264 ÷ 10.2 ≈ 26 → 全球化产品 → 实际需 24 人' },
-        { skill: '测试/QA', manMonths: 228, headcount: 18, calc: '228 ÷ 10.2 ≈ 22 → 全球化测试 → 实际需 18 人' },
-        { skill: '数据标注/分析', manMonths: 96, headcount: 8, calc: '96 ÷ 10.2 ≈ 9 → AI 标注成熟 → 实际需 8 人' },
-        { skill: '合规/风控', manMonths: 300, headcount: 30, calc: '300 ÷ 10.2 ≈ 29 → 全球化合规 → 实际需 30 人' },
-        { skill: 'PMO/项目管理', manMonths: 168, headcount: 14, calc: '168 ÷ 10.2 ≈ 16 → 全球化交付 → 实际需 14 人' },
-        { skill: '运维/SRE', manMonths: 120, headcount: 18, calc: '120 ÷ 10.2 ≈ 12 → 7×24 NOC → 实际需 18 人' },
-        { skill: '解决方案/售前', manMonths: 168, headcount: 16, calc: '168 ÷ 10.2 ≈ 16 → 全球化售前 → 实际需 16 人' },
-        { skill: '前沿探索', manMonths: 180, headcount: 16, calc: '180 ÷ 10.2 ≈ 18 → 行业引领 → 实际需 16 人' },
-      ],
-      totalHeadcount: 260,
     },
   ];
 
@@ -1678,14 +1267,18 @@ function PlanSection() {
   // 招聘甘特图（前两年按月，后三年按半年）
   // 数值表示该时间槽新增招聘人数（净增），负数表示缩编/转岗
   // 索引：0-5=2026.7-12, 6-17=2027.1-12, 18-23=2028.1-6, 24=28H2, 25=29H1, 26=29H2, 27=30H1, 28=30H2
+  // 招聘甘特图（前两年按月，后三年按半年）
+  // ⚠️ 现实节奏：7月启动猎头Pipeline+发JD → 8月首批核心骨干到位 → 9月起猎头出结果 → Q4批量到位
+  // 银行体系招聘流程：猎头推荐→简历筛选→3轮面试→背调→审批→入职，最快6-8周
+  // 所以7月启动，最快8月底才有第一批人到位
   const ganttHiringTracks = [
     {
       dept: '🧠 ML/算法研究', color: '#6c5ce7',
-      // Y1(7月启动):12人, Y2:20(+8), Y3:30(+10), Y4:35(+5), Y5:38(+3)
-      hires: [3,1,1,1,1,0, 1,1,1,0,1,0,1,1,0,1,0,0, 1,1,1,1,1,0, 5,3,2,2,1],
-      cumulative: [3,4,5,6,7,7, 8,9,10,10,11,11,12,13,13,14,14,14, 15,16,17,18,19,19, 24,27,29,31,32],
+      // 7月0人→8月首席到位→9月起逐步补齐→年末(12月)~8人→Y2末~16人
+      hires: [0,1,1,1,2,1, 1,1,1,0,1,0,1,1,0,1,0,0, 1,1,1,1,1,0, 5,3,2,2,1],
+      cumulative: [0,1,2,3,5,6, 7,8,9,9,10,10,11,12,12,13,13,13, 14,15,16,17,18,18, 23,26,28,30,31],
       notes: [
-        '首席算法专家P8+×1+高级P8×2','P7算法×1','P7算法×1','P6初级×1','P6初级×1','—',
+        '猎头Pipeline启动，0到位','首席算法专家P8+×1（提前锁定）','P8高级算法×1','P7算法×1','P7×1+P6×1','P6初级×1',
         'P7多模态×1','P7NLP×1','P6×1','—','P7强化学习×1','—','P7Agent×1','P6×1','—','P7联邦×1','—','—',
         'P7×1','P7×1','P6×1','P7×1','P6×1','—',
         '世界模型方向+5','商业化算法+3','行业垂直+2','前沿探索+2','稳态+1'
@@ -1693,11 +1286,11 @@ function PlanSection() {
     },
     {
       dept: '⚙️ 工程开发', color: '#00cec9',
-      // Y1:30人, Y2:48(+18), Y3:60(+12), Y4:70(+10), Y5:78(+8)
-      hires: [5,4,3,3,2,1, 2,2,2,1,2,1,2,2,1,2,1,0, 2,1,1,1,1,0, 6,5,5,4,4],
-      cumulative: [5,9,12,15,17,18, 20,22,24,25,27,28,30,32,33,35,36,36, 38,39,40,41,42,42, 48,53,58,62,66],
+      // 7月0人→8月架构师到位→9月起批量→年末~15人→Y2末~35人
+      hires: [0,2,2,3,4,3, 2,2,2,1,2,1,2,2,1,2,1,0, 2,1,1,1,1,0, 6,5,5,4,4],
+      cumulative: [0,2,4,7,11,14, 16,18,20,21,23,24,26,28,29,31,32,32, 34,35,36,37,38,38, 44,49,54,58,62],
       notes: [
-        'AI平台架构师P8×1+平台工程×4','数据工程×4','后端×3','前端×2+后端×1','后端×1+运维×1','—',
+        '猎头Pipeline启动，0到位','AI平台架构师P8×1+数据工程×1','后端×1+数据工程×1','前端×1+后端×1+数据×1','后端×2+平台×1+运维×1','后端×1+前端×1+数据×1',
         'Agent框架×2','数据工程×2','后端×2','前端×1','推理优化×2','—','Agent编排×2','可观测×2','前端×1','联邦工程×2','—','—',
         '平台×2','后端×1','前端×1','SRE×1','数据×1','—',
         'Agent平台+6','SaaS团队+5','多租户+5','全球化+4','边缘+4'
@@ -1705,11 +1298,11 @@ function PlanSection() {
     },
     {
       dept: '📋 产品/业务分析', color: '#3fb950',
-      // Y1:12人, Y2:18(+6), Y3:22(+4), Y4:24(+2), Y5:24(0)
-      hires: [2,2,1,1,1,0, 1,0,1,0,1,0,1,0,1,0,0,0, 1,0,1,0,0,0, 2,1,1,0,0],
-      cumulative: [2,4,5,6,7,7, 8,8,9,9,10,10,11,11,12,12,12,12, 13,13,14,14,14,14, 16,17,18,18,18],
+      // 7月0人→8月产品总监到位→9月起补齐→年末~5人
+      hires: [0,1,1,1,1,1, 1,0,1,0,1,0,1,0,1,0,0,0, 1,0,1,0,0,0, 2,1,1,0,0],
+      cumulative: [0,1,2,3,4,5, 6,6,7,7,8,8,9,9,10,10,10,10, 11,11,12,12,12,12, 14,15,16,16,16],
       notes: [
-        '产品总监×1+高级PM×1','风控产品×1+客服产品×1','理财产品×1','合规产品×1','业务分析×1','—',
+        '猎头Pipeline启动，0到位','产品总监×1（提前锁定）','风控产品×1','客服产品×1','理财产品×1','业务分析×1',
         'AI产品运营×1','—','业务架构师×1','—','数据产品×1','—','Agent产品×1','—','产品VP×1','—','—','—',
         '商业化产品×1','—','行业方案PM×1','—','—','—',
         '解决方案+2','行业PM+1','稳态+1','—','—'
@@ -1717,11 +1310,11 @@ function PlanSection() {
     },
     {
       dept: '🧪 测试/QA', color: '#e17055',
-      // Y1:8人, Y2:10(+2), Y3:14(+4), Y4:16(+2), Y5:18(+2)
-      hires: [2,1,1,1,0,0, 0,1,0,0,0,0,1,0,0,0,0,0, 0,1,0,0,1,0, 2,1,1,1,1],
-      cumulative: [2,3,4,5,5,5, 5,6,6,6,6,6,7,7,7,7,7,7, 7,8,8,8,9,9, 11,12,13,14,15],
+      // 7月0人→9月首批到位→年末~3人（测试岗不急，先有代码才需要测试）
+      hires: [0,0,1,1,1,0, 0,1,0,0,0,0,1,0,0,0,0,0, 0,1,0,0,1,0, 2,1,1,1,1],
+      cumulative: [0,0,1,2,3,3, 3,4,4,4,4,4,5,5,5,5,5,5, 5,6,6,6,7,7, 9,10,11,12,13],
       notes: [
-        'AI模型测试×1+安全测试×1','系统测试×1','集成测试×1','自动化测试×1','—','—',
+        '—','—','AI模型测试×1（首批代码出来后）','安全测试×1','自动化测试×1','—',
         '—','Agent评测×1','—','—','—','—','多模态测试×1','—','—','—','—','—',
         '—','端到端测试×1','—','—','安全红队×1','—',
         'SaaS测试+2','合规测试+1','全球化+1','量子安全+1','稳态+1'
@@ -1729,11 +1322,11 @@ function PlanSection() {
     },
     {
       dept: '📜 合规/风控', color: '#ffa657',
-      // Y1:8人, Y2:12(+4), Y3:16(+4), Y4:20(+4), Y5:30(+10)
-      hires: [2,1,1,0,1,0, 0,1,0,0,1,0,0,1,0,0,1,0, 0,1,0,0,1,0, 2,2,2,5,5],
-      cumulative: [2,3,4,4,5,5, 5,6,6,6,7,7,7,8,8,8,9,9, 9,10,10,10,11,11, 13,15,17,22,27],
+      // 7月0人→8月首席合规到位→10月起补齐→年末~4人
+      hires: [0,1,0,1,1,0, 0,1,0,0,1,0,0,1,0,0,1,0, 0,1,0,0,1,0, 2,2,2,5,5],
+      cumulative: [0,1,1,2,3,3, 3,4,4,4,5,5,5,6,6,6,7,7, 7,8,8,8,9,9, 11,13,15,20,25],
       notes: [
-        '首席合规专家×1+AI伦理×1','风控审计×1','数据合规×1','—','监管对接×1','—',
+        '—','首席合规专家×1（提前锁定）','—','AI伦理×1','监管对接×1','—',
         '—','联邦合规×1','—','—','Agent合规×1','—','—','安全红队×1','—','—','监管沙盒×1','—',
         '—','行业标准×1','—','—','外部咨询×1','—',
         '全球化合规+2','合规架构+2','量子安全+2','全球化NOC+5','稳态+5'
@@ -1741,11 +1334,11 @@ function PlanSection() {
     },
     {
       dept: '🔧 PMO/项目管理', color: '#a29bfe',
-      // Y1:5人, Y2:7(+2), Y3:10(+3), Y4:12(+2), Y5:16(+4)
-      hires: [1,1,0,1,0,0, 0,0,1,0,0,0,0,0,1,0,0,0, 0,0,0,1,0,0, 1,1,1,2,2],
-      cumulative: [1,2,2,3,3,3, 3,3,4,4,4,4,4,4,5,5,5,5, 5,5,5,6,6,6, 7,8,9,11,13],
+      // 7月0人→8月高级PM到位→10月协调员→年末~2人
+      hires: [0,1,0,1,0,0, 0,0,1,0,0,0,0,0,1,0,0,0, 0,0,0,1,0,0, 1,1,1,2,2],
+      cumulative: [0,1,1,2,2,2, 2,2,3,3,3,3,3,3,4,4,4,4, 4,4,4,5,5,5, 6,7,8,10,12],
       notes: [
-        '高级PM×1','项目经理×1','—','协调员×1','—','—',
+        '—','高级PM×1（提前锁定）','—','协调员×1','—','—',
         '—','—','联邦项目PM×1','—','—','—','—','—','多项目PM×1','—','—','—',
         '—','—','—','Agent项目群PM×1','—','—',
         '项目总监+1','客户成功+1','SaaS运营+1','全球化交付+2','行业标准+2'
@@ -1753,11 +1346,11 @@ function PlanSection() {
     },
     {
       dept: '🖥️ 运维/SRE', color: '#fd79a8',
-      // Y1:4人, Y2:7(+3), Y3:10(+3), Y4:12(+2), Y5:18(+6)
-      hires: [1,1,0,0,1,0, 0,1,0,0,1,0,0,0,1,0,0,0, 0,0,1,0,0,0, 1,1,1,3,3],
-      cumulative: [1,2,2,2,3,3, 3,4,4,4,5,5,5,5,6,6,6,6, 6,6,7,7,7,7, 8,9,10,13,16],
+      // 7月0人→9月GPU运维到位→年末~2人（先有集群才需要运维）
+      hires: [0,0,1,0,1,0, 0,1,0,0,1,0,0,0,1,0,0,0, 0,0,1,0,0,0, 1,1,1,3,3],
+      cumulative: [0,0,1,1,2,2, 2,3,3,3,4,4,4,4,5,5,5,5, 5,5,6,6,6,6, 7,8,9,12,15],
       notes: [
-        'GPU集群运维×1','基础设施×1','—','—','监控×1','—',
+        '—','—','GPU集群运维×1（集群到货后）','—','基础设施×1','—',
         '—','H100集群×1','—','—','联邦平台×1','—','—','—','Agent SLA×1','—','—','—',
         '—','—','三地两中心×1','—','—','—',
         'SaaS运维+1','7×24值班+1','全球化NOC+1','边缘运维+3','稳态+3'
@@ -1765,11 +1358,11 @@ function PlanSection() {
     },
     {
       dept: '📊 数据标注/分析', color: '#636e72',
-      // Y1:6人, Y2:8(+2), Y3:8(0), Y4:6(-2转岗), Y5:8(+2)
-      hires: [2,1,0,1,0,0, 0,0,1,0,0,0,0,1,0,0,0,0, 0,0,0,0,0,0, 0,-1,-1,1,1],
-      cumulative: [2,3,3,4,4,4, 4,4,5,5,5,5,5,6,6,6,6,6, 6,6,6,6,6,6, 6,5,4,5,6],
+      // 7月0人→9月数据分析师到位→年末~3人（先有数据需求才招标注）
+      hires: [0,0,1,1,0,1, 0,0,1,0,0,0,0,1,0,0,0,0, 0,0,0,0,0,0, 0,-1,-1,1,1],
+      cumulative: [0,0,1,2,2,3, 3,3,4,4,4,4,4,5,5,5,5,5, 5,5,5,5,5,5, 5,4,3,4,5],
       notes: [
-        '数据分析师×1+外包标注×1','金融标注×1','—','RLHF标注×1','—','—',
+        '—','—','数据分析师×1','外包标注×1','—','金融标注×1',
         '—','—','多模态标注×1','—','—','—','—','数据科学家×1','—','—','—','—',
         '—','—','—','—','—','—',
         '自动化替代','转岗质检-1','自动化成熟-1','数据资产+1','稳态+1'
@@ -1777,7 +1370,7 @@ function PlanSection() {
     },
     {
       dept: '🤝 解决方案/售前', color: '#00b894',
-      // Y1:0, Y2:0, Y3:0, Y4:12(+12), Y5:18(+6)
+      // Y1-Y3:0人, Y4:12(+12), Y5:18(+6)
       hires: [0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0, 0,6,6,4,2],
       cumulative: [0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0, 0,6,12,16,18],
       notes: [
@@ -1799,10 +1392,10 @@ function PlanSection() {
     categories: [
       {
         name: '🏹 猎头费', color: '#e17055',
-        desc: 'P7+岗位走猎头，费率=年薪×20-25%；P6及以下自招',
-        // 前两年月度（7月启动大量猎头，逐步收敛）
-        monthly: [120,80,60,50,40,20, 30,25,25,15,25,10,25,20,15,20,10,5, 15,15,10,10,10,5, 60,50,40,50,30],
-        yearTotal: [370, 260, 65, 110, 80], // Y1/Y2/Y3前半/Y3后半+Y4/Y5
+        desc: 'P7+岗位走猎头，费率=年薪×20-25%；7月为Pipeline启动预付',
+        // 7月启动预付→8月首批入职付款→9-10月批量→11-12月收敛
+        monthly: [80,60,50,50,40,30, 25,25,20,15,20,10,20,15,15,15,10,5, 15,10,10,10,10,5, 50,40,35,45,25],
+        yearTotal: [310, 215, 60, 90, 70],
       },
       {
         name: '💻 招聘平台', color: '#00cec9',
@@ -1832,9 +1425,9 @@ function PlanSection() {
     // 汇总
     summary: {
       monthlyTotal: [], // 将在渲染时计算
-      yearTotals: [482, 354, 106, 163, 123], // Y1/Y2/Y2后半(28H1)/Y3-Y4/Y5
-      grandTotal: 1228, // 五年招聘总投入（万元）
-      notes: '💡 Y1招聘投入最高（482万），因启动期需大量猎头寻找P8+核心骨干；Y2起逐步收敛，更多依赖内推和自招渠道（内推奖金另计入人力成本）。',
+      yearTotals: [418, 310, 95, 135, 95], // Y1/Y2/Y2后半(28H1)/Y3-Y4/Y5
+      grandTotal: 1053, // 五年招聘总投入（万元）
+      notes: '💡 Y1招聘投入¥418万（7月为Pipeline启动预付，8月起才有入职成功付款）；Y2起逐步收敛，更多依赖内推和自招渠道（内推奖金另计入人力成本）。',
     },
   };
 
@@ -1845,20 +1438,20 @@ function PlanSection() {
   const phases = [
     {
       year: 'Y1（2026.7-2027.6）', title: '筑基', color: '#6c5ce7',
-      focus: '7月启动：大模型平台搭建 + 数据治理 + 首批场景 PoC（实际工期12个月）',
+      focus: '7月启动Pipeline：8月首批骨干到位 → Q4平台搭建+数据治理 → 2027H1首批PoC上线',
       goals: [
-        '7-8月：GPU集群采购部署 + 核心骨干到位（P8+算法专家、架构师）',
-        '9-10月：金融大模型私有化部署（70B基座），AI中台MVP上线',
-        '11-12月：风控反欺诈PoC上线（信用卡），智能客服RAG覆盖Top200问题',
-        '2027.1-3月：客服替代率达10%，投研助手内部试用',
-        '2027.4-6月：风控全产品线覆盖，客服替代率达20%，平台SLA 99.5%',
+        '7月：启动猎头Pipeline + GPU集群采购（0人到位，纯筹备期）',
+        '8-9月：首批核心骨干到位（~10人），启动大模型私有化部署+数据治理',
+        '10-12月：执行层补齐至~34人，AI中台MVP上线，风控数据清洗完成',
+        '2027.1-3月：风控反欺诈PoC上线（信用卡），智能客服RAG覆盖Top200问题',
+        '2027.4-6月：客服替代率达10%，投研助手内部试用，平台SLA 99.5%',
       ],
-      kpi: '年末在岗 ~52 人 · AI 客服替代 20% · 反欺诈识别率+10% · 平台 SLA 99.5%',
+      kpi: '年末在岗 ~34 人 · AI 客服替代 10% · 反欺诈PoC上线 · 平台 SLA 99.5%',
       /* —— 人力成本（基于甘特图招聘节奏推导，非满编全年计算） —— */
       headcount: {
-        total: 52,
-        salaryTotal: 4200,
-        salaryNote: '7月启动→首批骨干8-9月到位→年末52人。按实际在岗月数计算（非85人满编全年），人均在岗仅6-8个月，故总成本¥4200万（远低于满编¥8037万）',
+        total: 34,
+        salaryTotal: 2800,
+        salaryNote: '7月启动Pipeline（0人到位）→8月首批骨干5人→年底34人。按实际在岗月数计算，人均在岗仅3-5个月，故总成本¥2800万',
       },
       /* —— 硬件 & 基础设施明细 —— */
       infra: {
@@ -1913,9 +1506,9 @@ function PlanSection() {
       ],
       kpi: '年末在岗 ~110 人 · AI 客服替代率 45% · 理财 AUM 转化率+8% · 合规效率+60%',
       headcount: {
-        total: 110,
-        salaryTotal: 11500,
-        salaryNote: '年初75人→年末110人，全年平均在岗~93人。人均成本较Y1上浮8-12%（市场薪资涨幅+高级人才引入）',
+        total: 90,
+        salaryTotal: 9500,
+        salaryNote: '年初34人→年末90人，全年平均在岗~62人。Y2是主力扩编期，人均成本较Y1上浮8-12%',
       },
       infra: {
         total: 5200,
@@ -1969,9 +1562,9 @@ function PlanSection() {
       ],
       kpi: 'Agent 自主处理率 >60% · 全行 AI 渗透率 >50% · 年化节省人力成本 ¥1.2 亿',
       headcount: {
-        total: 150,
-        salaryTotal: 18500,
-        salaryNote: '年初110人→年末150人，Agent方向人才稀缺溢价+股权激励加码。人均成本较Y2上浮10-15%',
+        total: 130,
+        salaryTotal: 16000,
+        salaryNote: '年初90人→年末130人，Agent方向人才稀缺溢价+股权激励加码。人均成本较Y2上浮10-15%',
       },
       infra: {
         total: 7000,
@@ -2026,9 +1619,9 @@ function PlanSection() {
       ],
       kpi: '平台输出 5+ 集团子公司 · 联邦联盟 10+ 机构 · AI 营收占比 >25%',
       headcount: {
-        total: 200,
-        salaryTotal: 24000,
-        salaryNote: '年初150人→年末200人，新增解决方案/售前团队支撑商业化输出。人均成本较Y3上浮8-12%',
+        total: 180,
+        salaryTotal: 22000,
+        salaryNote: '年初130人→年末180人，新增解决方案/售前团队支撑商业化输出。人均成本较Y3上浮8-12%',
       },
       infra: {
         total: 8500,
@@ -2084,9 +1677,9 @@ function PlanSection() {
       ],
       kpi: 'AI 交互占比 80% · AI 营收占比 35% · 年化节省 ¥5 亿 · 行业标杆认证',
       headcount: {
-        total: 248,
-        salaryTotal: 30000,
-        salaryNote: '年初200人→年末248人（满编），全球化+SaaS输出阶段。人均成本较Y4上浮6-10%',
+        total: 230,
+        salaryTotal: 28000,
+        salaryNote: '年初180人→年末230人，全球化+SaaS输出阶段。人均成本较Y4上浮6-10%（另预留buffer至满编260）',
       },
       infra: {
         total: 9500,
@@ -2250,140 +1843,13 @@ function PlanSection() {
         ))}
       </div>
 
-      {/* ═══════════ 3. 工作量拆解（从产出反推人月） ═══════════ */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-5">
-        <h3 className="text-base font-semibold text-gray-800 mb-2">📐 工作量拆解：从产出反推人月</h3>
-        <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">
-          💡 <strong>拆解逻辑</strong>：每个半年产出 → 拆解为具体任务 → 估算每个任务所需人月 → 汇总为年度总工作量。
-          人月估算基于：任务复杂度 × 行业经验系数 × AI 提效折扣。
-          <strong>注意</strong>：AI 时代写代码确实简单了，但金融场景的合规审查、模型审计、安全测试不可省略。
-        </p>
-        {workloadByPhase.map((phase, pi) => (
-          <div key={phase.year} className="mb-5 last:mb-0">
-            <div className="flex items-center gap-2 mb-2 cursor-pointer" onClick={() => setExpandedWorkload(expandedWorkload === pi ? null : pi)}>
-              <span className="text-xs font-mono font-bold" style={{ color: phase.color }}>{phase.year} {phase.title}</span>
-              <span className="text-[11px] text-gray-500">| 总工作量 <span className="font-semibold text-gray-700">{phase.totalManMonths} 人月</span></span>
-              <span className="text-[10px] text-gray-400 ml-auto">{expandedWorkload === pi ? '▼ 收起' : '▶ 展开任务明细'}</span>
-            </div>
-            {expandedWorkload === pi && (
-              <div className="space-y-3">
-                {phase.streams.map(stream => (
-                  <div key={stream.name} className="bg-gray-50/60 rounded-xl p-3 border border-gray-100">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[12px] font-semibold text-gray-800">{stream.name}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 font-mono">{stream.manMonths} 人月</span>
-                      <span className="text-[10px] text-gray-400">→ {stream.deliverables.join(' → ')}</span>
-                    </div>
-                    <table className="w-full text-[10.5px]">
-                      <thead>
-                        <tr className="text-left text-gray-400 border-b border-gray-200/60">
-                          <th className="py-1 pr-2 font-medium">任务</th>
-                          <th className="py-1 pr-2 font-medium text-center w-16">人月</th>
-                          <th className="py-1 pr-2 font-medium w-20">技能域</th>
-                          <th className="py-1 font-medium">说明</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {stream.tasks.map((t, ti) => (
-                          <tr key={t.task} className={ti % 2 === 0 ? '' : 'bg-white/60'}>
-                            <td className="py-1 pr-2 font-medium text-gray-700">{t.task}</td>
-                            <td className="py-1 pr-2 text-center font-mono font-semibold text-blue-600">{t.mm}</td>
-                            <td className="py-1 pr-2 text-gray-500">{t.skill}</td>
-                            <td className="py-1 text-gray-400">{t.note}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-              </div>
-            )}
-            {expandedWorkload !== pi && (
-              <div className="flex gap-2 flex-wrap text-[10px]">
-                {phase.streams.map(s => (
-                  <span key={s.name} className="px-2 py-1 rounded-lg bg-gray-50 border border-gray-100">
-                    {s.name} <span className="font-mono font-semibold text-blue-600">{s.manMonths}人月</span>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-        {/* 五年工作量汇总 */}
-        <div className="mt-4 p-3 rounded-xl bg-blue-50/40 border border-blue-100 text-[12px]">
-          <span className="font-semibold text-blue-700">📊 五年工作量汇总：</span>
-          <span className="text-gray-600 ml-1">
-            {workloadByPhase.map(p => p.totalManMonths).join(' → ')} 人月，
-            五年合计 <span className="font-bold text-gray-800">{workloadByPhase.reduce((s, p) => s + p.totalManMonths, 0).toLocaleString()} 人月</span>
-            （约 {(workloadByPhase.reduce((s, p) => s + p.totalManMonths, 0) / 12).toFixed(0)} 人年）
-          </span>
-        </div>
-      </div>
-
-      {/* ═══════════ 4. 人力需求推导（工作量 → 人力） ═══════════ */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-5">
-        <h3 className="text-base font-semibold text-gray-800 mb-2">👥 人力需求推导：工作量 → 人力</h3>
-        <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">
-          💡 <strong>推导公式</strong>：所需人数 = 工作量（人月）÷ 有效工作月（10.2 月/人/年）÷ AI 提效系数。
-          有效工作月 = 12 × 85%（扣除假期/培训/会议/管理开销）= 10.2 月。
-          <strong>AI 提效系数</strong>：算法岗 40-55%（AutoML+Copilot）、工程岗 25-40%（AI 生成 CRUD/配置）、产品岗 10-15%（AI 辅助文档）、合规岗 0-10%（判断不可 AI 化）。
-          <strong>这就是为什么 AI 时代人力比传统估算少 30-50% 的原因。</strong>
-        </p>
-        {headcountDerivation.map((hd, hi) => (
-          <div key={hd.year} className="mb-4 last:mb-0">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-mono font-bold" style={{ color: hd.color }}>{hd.year}</span>
-              <span className="text-[11px] text-gray-500">| 总工作量 {hd.totalManMonths} 人月 → 实际需 <span className="font-semibold text-gray-700">{hd.totalHeadcount} 人</span></span>
-              <span className="text-[10px] text-gray-400 ml-auto italic">{hd.note}</span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-[11px]">
-                <thead>
-                  <tr className="text-left text-gray-400 border-b border-gray-100">
-                    <th className="py-1.5 pr-2 font-medium">技能域</th>
-                    <th className="py-1.5 pr-2 font-medium text-center">工作量</th>
-                    <th className="py-1.5 pr-2 font-medium text-center">→ 人数</th>
-                    <th className="py-1.5 font-medium">推导逻辑（含 AI 提效）</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {hd.derivation.map((d, di) => (
-                    <tr key={d.skill} className={di % 2 === 0 ? 'bg-gray-50/40' : ''}>
-                      <td className="py-1.5 pr-2 font-medium text-gray-700">{d.skill}</td>
-                      <td className="py-1.5 pr-2 text-center font-mono text-blue-600">{d.manMonths} 人月</td>
-                      <td className="py-1.5 pr-2 text-center font-mono font-bold text-gray-800">{d.headcount} 人</td>
-                      <td className="py-1.5 text-[10px] text-gray-500">{d.calc}</td>
-                    </tr>
-                  ))}
-                  <tr className="border-t border-gray-200 bg-gray-50">
-                    <td className="py-1.5 pr-2 font-bold text-gray-800">合计</td>
-                    <td className="py-1.5 pr-2 text-center font-mono font-bold text-blue-700">{hd.totalManMonths}</td>
-                    <td className="py-1.5 pr-2 text-center font-mono font-bold text-gray-900">{hd.totalHeadcount} 人</td>
-                    <td className="py-1.5 text-[10px] text-gray-400 italic">利用率 {(hd.utilizationRate * 100).toFixed(0)}% × AI 提效 30-55%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ))}
-        {/* 五年人力增长曲线 */}
-        <div className="mt-4 p-3 rounded-xl bg-purple-50/40 border border-purple-100 text-[12px]">
-          <span className="font-semibold text-purple-700">📊 五年人力增长：</span>
-          <span className="text-gray-600 ml-1">
-            {headcountDerivation.map(h => h.totalHeadcount).join(' → ')} 人，
-            从 85 人起步，Y5 达到 260 人。
-            <strong>如果没有 AI 提效，同等工作量需要 400+ 人</strong>——这就是 AI 时代的人力红利。
-          </span>
-        </div>
-      </div>
-
       {/* ═══════════ 4.5 甘特图：业务成果 + 招聘节奏 ═══════════ */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="text-base font-semibold text-gray-800 mb-2">📊 甘特图：业务成果 × 招聘节奏 × 招聘投入（三轨并行）</h3>
         <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">
-          💡 <strong>核心逻辑</strong>：报告 5 月编制 → 6 月审批 → <strong className="text-red-500">7 月正式启动</strong>。前两年（2026.7~2028.6）按<strong>月度</strong>细化，后三年按半年。
+          💡 <strong>核心逻辑</strong>：报告 5 月编制 → 6 月审批 → <strong className="text-red-500">7 月正式启动（Pipeline启动，0人到位）</strong>。前两年（2026.7~2028.6）按<strong>月度</strong>细化，后三年按半年。
           <strong>上半部分</strong>是业务成果时间线（5 条业务线的月度可交付产出），<strong>中间</strong>是招聘计划（9 个部门的月度招聘人数），<strong>下半部分</strong>是招聘投入成本。
-          三条线必须对齐：<strong>先投入招聘 → 人到位 → 交付成果</strong>。
+          三条线必须对齐：<strong>先启动Pipeline → 人逐步到位 → 交付成果</strong>。银行招聘流程最快6-8周。
         </p>
 
         {/* 时间轴表头 */}
@@ -2568,25 +2034,27 @@ function PlanSection() {
 
         {/* 招聘节奏说明 */}
         <div className="mt-4 p-3 rounded-xl bg-orange-50/40 border border-orange-100 text-[11px] text-gray-600 leading-relaxed">
-          <span className="font-semibold text-orange-700">📋 招聘节奏策略（7月启动，按月推进）：</span>
+          <span className="font-semibold text-orange-700">📋 招聘节奏策略（7月启动Pipeline，8月起到位）：</span>
           <div className="mt-1 space-y-1">
-            <div>• <strong>2026.7-8（启动月）</strong>：核心骨干紧急到位——P8+ 算法专家 3 人、AI 平台架构师 1 人、产品总监 1 人、合规专家 2 人，首批 ~18 人到岗。<em className="text-red-500">（猎头全力出击，预算 ¥120万/月）</em></div>
-            <div>• <strong>2026.9-12（Q3-Q4）</strong>：补齐执行层——P7 算法/工程师逐月到位，月均新增 5-8 人，年底达 ~52 人</div>
-            <div>• <strong>2027.1-6（Y1后半）</strong>：方向扩展——Agent 框架、多模态、联邦学习方向专项招聘，月均 3-5 人，达 ~75 人</div>
-            <div>• <strong>2027.7-12（Y2前半）</strong>：场景深化——推理优化、Agent 编排、可观测团队，月均 2-4 人，达 ~95 人</div>
-            <div>• <strong>2028.1-6（Y2后半）</strong>：平台成熟——SRE、安全红队、数据科学家补充，月均 1-3 人，达 ~110 人</div>
-            <div>• <strong>2028H2-2030（Y3-Y5）</strong>：商业化+全球化——解决方案/售前团队组建，最终达 248 人（另预留 12 人 buffer 至满编 260）</div>
+            <div>• <strong>2026.7（M1）</strong>：<em className="text-red-500">启动月，0人到位</em>——猎头全面启动 Pipeline、发布 JD、内部调岗审批。银行招聘流程：猎头推荐→简历筛选→3轮面试→背调→审批→入职，<strong>最快6-8周</strong></div>
+            <div>• <strong>2026.8（M2）</strong>：首批核心骨干到位——提前锁定的 P8+ 算法专家 ×1、架构师 ×1、产品总监 ×1、合规专家 ×1、高级PM ×1，共 ~5 人</div>
+            <div>• <strong>2026.9-10（M3-M4）</strong>：猎头 Pipeline 出结果——P7/P8 算法、工程师逐步到位，月均 5-8 人，累计 ~20 人</div>
+            <div>• <strong>2026.11-12（M5-M6）</strong>：批量到位——P6 执行层补齐，月均 6-8 人，年底累计 ~34 人</div>
+            <div>• <strong>2027.1-6（M7-M12）</strong>：方向扩展——Agent 框架、多模态、联邦学习方向专项招聘，月均 3-5 人，达 ~55 人</div>
+            <div>• <strong>2027.7-12（M13-M18）</strong>：场景深化——推理优化、Agent 编排、可观测团队，月均 2-4 人，达 ~75 人</div>
+            <div>• <strong>2028.1-6（M19-M24）</strong>：平台成熟——SRE、安全红队、数据科学家补充，月均 1-3 人，达 ~90 人</div>
+            <div>• <strong>2028H2-2030（Y3-Y5）</strong>：商业化+全球化——解决方案/售前团队组建，最终达 ~230 人（另预留 buffer 至满编 260）</div>
           </div>
         </div>
 
         {/* 关键招聘里程碑 */}
         <div className="mt-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {[
-            { time: '2026.7（M1）', action: '🔴 紧急启动', detail: 'P8+ 算法专家 ×3、AI 平台架构师 ×1、产品总监 ×1、首席合规 ×1', reason: '核心骨干 7 月必须到位，猎头 5-6 月已启动 Pipeline', cost: '猎头费 ¥120万' },
-            { time: '2026.8-9（M2-M3）', action: '🟠 快速补齐', detail: 'P7 算法 ×2、数据工程 ×4、后端 ×3、前端 ×2、测试 ×2', reason: '执行层到位，支撑 Q4 首批 PoC 交付', cost: '猎头费 ¥80-60万/月' },
-            { time: '2026.10-12（M4-M6）', action: '🟡 稳步扩充', detail: 'P6 算法 ×3、后端 ×2、产品 ×2、合规 ×1、运维 ×1', reason: '年底前 Y1 团队满编 52 人', cost: '猎头费收敛至 ¥40-20万/月' },
-            { time: '2027.1-6（M7-M12）', action: '🟢 方向扩展', detail: 'Agent 框架 ×4、多模态算法 ×2、联邦工程 ×2、业务分析 ×3', reason: '新方向需要专业人才，提前半年招聘', cost: '月均 ¥25万（内推为主）' },
-            { time: '2027.7-12（M13-M18）', action: '🔵 深度补强', detail: '推理优化 ×2、Agent 编排 ×2、可观测 ×2、安全红队 ×1', reason: 'Agent 化阶段需要高级工程人才', cost: '月均 ¥15万（内推+自招）' },
+            { time: '2026.7（M1）', action: '🔴 Pipeline 启动', detail: '猎头全面启动、JD 发布、内部调岗审批', reason: '银行招聘流程最快6-8周，7月启动→8月底首批到位', cost: '猎头费 ¥80万（预付+简历费）' },
+            { time: '2026.8（M2）', action: '🟠 首批骨干到位', detail: 'P8+ 算法专家 ×1、架构师 ×1、产品总监 ×1、合规专家 ×1、PM ×1', reason: '提前锁定的核心骨干，5-6月已完成面试+背调', cost: '猎头费 ¥60万（成功入职付款）' },
+            { time: '2026.9-10（M3-M4）', action: '🟡 Pipeline 出结果', detail: 'P7/P8 算法 ×3、工程师 ×5、产品 ×2、合规 ×2', reason: '猎头推荐→面试→offer 周期完成，批量入职', cost: '猎头费 ¥50-40万/月' },
+            { time: '2026.11-12（M5-M6）', action: '🟢 批量补齐', detail: 'P6 算法 ×3、后端 ×4、前端 ×2、测试 ×1、标注 ×2', reason: '执行层到位，支撑 2027Q1 首批 PoC 交付', cost: '猎头费收敛至 ¥30-20万/月' },
+            { time: '2027.1-6（M7-M12）', action: '🔵 方向扩展', detail: 'Agent 框架 ×4、多模态算法 ×2、联邦工程 ×2、业务分析 ×3', reason: '新方向需要专业人才，提前半年招聘', cost: '月均 ¥20万（内推为主）' },
             { time: '2029H1', action: '🟣 商业化团队', detail: '解决方案总监 ×1、架构师 ×3、技术售前 ×4、客户成功 ×3', reason: 'Y4 商业化输出需要售前+交付团队', cost: '猎头费 ¥50万（高端岗位）' },
           ].map(m => (
             <div key={m.time} className="p-2.5 rounded-lg bg-gray-50 border border-gray-100">
@@ -2636,8 +2104,8 @@ function PlanSection() {
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="text-base font-semibold text-gray-800 mb-2">👥 人力成本汇总（基于甘特图招聘节奏推导）</h3>
         <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">
-          💡 <strong>数据来源</strong>：人力成本直接由上方甘特图「招聘节奏」推导——<strong>先有招聘到位时间，再算人力成本</strong>，避免"7月启动7月来人"的乐观假设。
-          实际节奏：7月启动猎头 Pipeline → 首批核心骨干 8-9 月到位 → 执行层 Q4 逐步补齐 → Y2 方向扩展。
+          💡 <strong>数据来源</strong>：人力成本直接由上方甘特图「招聘节奏」推导——<strong>先有招聘到位时间，再算人力成本</strong>。
+          实际节奏：7月启动猎头 Pipeline（0人到位）→ 8月首批核心骨干到位（~5人）→ 9-10月 Pipeline 出结果 → Q4 批量到位 → 年底 ~34 人。
           <strong>人均年包参考</strong>：P8+ 专家 250-350 万、P7 算法/工程 150-200 万、P6 初级 80-120 万、外包 25 万。
           <strong>年度人力成本 = Σ（各月实际在岗人数 × 人均月薪）</strong>，非全年满编计算。
         </p>
@@ -2663,7 +2131,7 @@ function PlanSection() {
               ))}
               <tr className="border-t-2 border-gray-300 bg-gray-50">
                 <td className="py-2 pr-3 font-bold text-gray-800">五年合计</td>
-                <td className="py-2 pr-3 text-center font-mono font-bold text-gray-800">248 人（满编）</td>
+                <td className="py-2 pr-3 text-center font-mono font-bold text-gray-800">230 人（另预留 buffer 至 260）</td>
                 <td className="py-2 pr-3 text-right font-mono font-bold text-red-700">¥{phases.reduce((s, p) => s + p.headcount.salaryTotal, 0).toLocaleString()}</td>
                 <td className="py-2 pr-3 text-[10px] text-gray-500">约 ¥{(phases.reduce((s, p) => s + p.headcount.salaryTotal, 0) / 10000).toFixed(1)} 亿</td>
               </tr>
