@@ -1152,12 +1152,11 @@ function PlanSection() {
     '28H2','29H1','29H2','30H1','30H2',
   ];
   const ganttYearHeaders = [
-    { label: 'Y1 前半（2026.7-12）', span: 6, color: '#6c5ce7' },
-    { label: 'Y1 后半 + Y2 前半（2027.1-12）', span: 12, color: '#00cec9' },
-    { label: 'Y2 后半（2028.1-6）', span: 6, color: '#3fb950' },
-    { label: 'Y3（28H2）', span: 1, color: '#ffa657' },
-    { label: 'Y4（2029）', span: 2, color: '#e17055' },
-    { label: 'Y5（2030）', span: 2, color: '#f97316' },
+    { label: 'Y1（2026.7—2027.6）', span: 12, color: '#6c5ce7' },
+    { label: 'Y2（2027.7—2028.6）', span: 12, color: '#00cec9' },
+    { label: 'Y3（28H2+29H1）',     span: 2,  color: '#3fb950' },
+    { label: 'Y4（29H2+30H1）',     span: 2,  color: '#ffa657' },
+    { label: 'Y5（30H2~）',          span: 1,  color: '#e17055' },
   ];
   // 兼容旧引用
   const ganttHalves = ganttTimeLabels;
@@ -1436,11 +1435,54 @@ function PlanSection() {
       year: 'Y1（2026.7-2027.6）', title: '筑基', color: '#6c5ce7',
       focus: '7月启动Pipeline+采购：8月首批骨干到位 → 10月起业务项目正式启动 → 2027H1首批PoC上线',
       goals: [
-        '7月：启动猎头Pipeline + GPU集群采购审批（0人到位，纯筹备期）',
-        '8-9月：首批核心骨干到位（~10人），需求梳理+数据资产盘点+知识库规划',
-        '10-12月：执行层补齐至~34人，数据治理完成，RAG系统内测，大模型私有化部署完成',
-        '2027.1-3月：风控反欺诈PoC上线（信用卡），RAG客服准确率>85%',
-        '2027.4-6月：客服替代率达10%，投研助手内部试用，平台SLA 99.5%',
+        '【Q1·筹备】7月：GPU集群采购立项（昇腾910C×4台）；猎头Pipeline全开（JD发布+内部调岗）；0人到位，纯筹备期',
+        '【Q1·筹备】8月：核心三人组到位（P8+算法专家+架构师+产品总监）；启动数据资产盘点&知识库规划；9月执行层18人批量到位',
+        '【Q2·建设】10月：GPU到货+私有化部署启动（Qwen2.5-72B基座）；反欺诈特征工程+数据治理同步推进',
+        '【Q2·建设】11-12月：全员34人到位；RAG知识库内测通过（准确率>80%）；图网络反欺诈模型训练启动（GAT架构）',
+        '【Q3·验证】2027.1-2月：风控PoC内测（信用卡欺诈+图网络推理）；客服RAG灰度上线；两条线同步建立评测基线',
+        '【Q3·决策门✓】2027.3月：风控PoC识别率+10%达标→批准全产品线扩展；客服准确率>85%达标→批准规模化上线',
+        '【Q4·规模】2027.4-5月：智能客服正式上线（替代10%坐席=释放120人）；投研助手内部试用（30名投研人员日均使用率>60%）',
+        '【Q4·年终】2027.6月：YE Review — 平台SLA 99.5% · ROI可见（节省¥1700万）；向管理层提交Y2扩编申请（90人 · ¥1.5亿预算）',
+      ],
+      goalsDetailed: [
+        {
+          quarter: 'Q1', label: '筹备', period: '2026.7—9月', isGate: false,
+          tracks: [
+            { name: '👥 人力', tasks: ['7月：猎头Pipeline全开（发布8个JD + 内部调岗摸排）', '8月：核心四人组到位 → 负责人P8 · 算法专家 · 架构师 · 产品总监', '9月：执行层18人批量入职（算法×6 工程×6 产品×4 数据×2）'] },
+            { name: '🖥️ 基础设施', tasks: ['7月：昇腾910C×4台采购立项审批（¥1200万）', '数据资产盘点启动 + AI平台技术选型（vLLM / Ray / MLflow）'] },
+            { name: '🛡️ 风控', tasks: ['反欺诈业务场景梳理（信用卡 + 消费贷）', '图网络架构选型（GAT vs GCN 对比实验）', '数据源对接规划（征信 / 交易流水 / 行为日志）'] },
+            { name: '💬 客服', tasks: ['RAG框架选型（Milvus + LangChain）', 'Top200高频问题收集 + 人工标注启动'] },
+            { name: '📜 合规/理财', tasks: ['监管政策知识库规划（3000+条文档收集）', '投研助手需求调研（访谈10名投研人员）'] },
+          ],
+        },
+        {
+          quarter: 'Q2', label: '建设', period: '2026.10—12月', isGate: false,
+          tracks: [
+            { name: '🖥️ 基础', tasks: ['GPU到货 → Qwen2.5-72B私有化部署完成', 'MLflow + vLLM + Ray训练平台搭建完毕', '全员34人到位；5个小组架构定型'] },
+            { name: '🛡️ 风控', tasks: ['反欺诈特征工程完成（200+特征 + 时序窗口设计）', 'GAT图网络模型训练正式启动', '数据治理规范完成 + ETL管道打通'] },
+            { name: '💬 客服', tasks: ['RAG知识库内测通过：准确率 >80%，Top200覆盖率 >90%', '自动化评测回归框架搭建'] },
+            { name: '📜 合规/理财', tasks: ['合规知识库上线 → 政策查询效率提升5×', '合同审查辅助PoC → 合规团队内部试用'] },
+          ],
+        },
+        {
+          quarter: 'Q3', label: '验证', period: '2027.1—3月', isGate: true,
+          gateDesc: '3月双决策门 → ① 风控PoC欺诈识别率+10% 达标：批准全产品线扩展  ② 客服RAG准确率>85% 达标：批准规模化上线',
+          tracks: [
+            { name: '🛡️ 风控', tasks: ['信用卡欺诈PoC内测（GAT图网络 + 规则引擎融合推理）', '评测基线建立：精确率 / 召回率 / F1 / AUC', '【🚦 3月决策门】识别率+10% → 批准全产品线扩展'] },
+            { name: '💬 客服', tasks: ['RAG客服灰度上线（10%话务量 + 人工兜底机制）', '实时准确率监控 + A/B测试体系建立', '【🚦 3月决策门】准确率>85% → 批准规模化上线'] },
+            { name: '💰 理财', tasks: ['投研助手PoC上线（研报摘要 + 基金对比 + 行情解读）', '内测：30名投研人员，目标日均使用率 >60%'] },
+            { name: '📜 合规', tasks: ['合规知识库扩展覆盖全行监管政策', '合同自动审查准确率 >75%（进入灰度测试）'] },
+          ],
+        },
+        {
+          quarter: 'Q4', label: '规模化', period: '2027.4—6月', isGate: false,
+          tracks: [
+            { name: '💬 客服', tasks: ['智能客服正式上线 → 替代10%坐席（释放120人，节省¥300万/季）', '扩量至30%话务量，客户满意度 >4.2/5.0'] },
+            { name: '💰 理财', tasks: ['投研助手推广至投研部门全员（100+人）', '研报处理效率提升30%，日均调用 >500次'] },
+            { name: '🛡️ 风控', tasks: ['PoC结论报告 → 消费贷全产品线扩展立项获批', '风控数据飞轮启动：线上反馈自动入训练集'] },
+            { name: '🏁 年终', tasks: ['YE Review：SLA 99.5% · ROI ¥1700万（节省¥1200万 + 内部结算¥500万）', '向管理层提交Y2扩编申请：90人 · ¥1.5亿预算'] },
+          ],
+        },
       ],
       kpi: '年末在岗 ~34 人 · AI 客服替代 10% · 反欺诈PoC上线 · 平台 SLA 99.5%',
       /* —— 人力成本（基于甘特图招聘节奏推导，非满编全年计算） —— */
@@ -1453,8 +1495,8 @@ function PlanSection() {
       infra: {
         total: 3500,
         breakdown: [
-          { item: 'GPU 训练集群', spec: '8×A100-80G 节点 ×4 台（DGX A100）', cost: 1200, note: '70B 模型全量微调最低配置，含 NVLink + InfiniBand' },
-          { item: 'GPU 推理集群', spec: '4×A100-40G 节点 ×6 台', cost: 720, note: '支撑 7B 蒸馏版在线推理，QPS ~200' },
+          { item: 'GPU 训练集群', spec: '8×昇腾910C 节点 ×4 台（国产 DGX 替代）（银行数据不出境合规要求，采用国产AI芯片）', cost: 1200, note: '70B 模型全量微调最低配置，含高速互联' },
+          { item: 'GPU 推理集群', spec: '4×昇腾310P 节点 ×6 台', cost: 720, note: '支撑 7B 蒸馏版在线推理，QPS ~200' },
           { item: '存储系统', spec: 'Ceph 分布式存储 500TB + NVMe 缓存 50TB', cost: 350, note: '训练数据 + 模型 checkpoint + 向量库' },
           { item: '网络 & 机房', spec: '100Gbps RDMA 网络 + 机柜租赁 8 个', cost: 280, note: '自建 IDC 机房，含电力 / 制冷 / UPS' },
           { item: 'AI 平台软件', spec: 'MLflow + Ray + vLLM + 自研调度', cost: 200, note: '开源为主 + 自研适配层' },
@@ -1479,7 +1521,7 @@ function PlanSection() {
         savingsTotal: 1200,
         savingsBreakdown: [
           { source: '客服人力替代', amount: 600, calc: '替代 20% 坐席 ≈ 120 人 × 年均成本 5 万 = 600 万', confidence: '高' },
-          { source: '风控损失降低', amount: 400, calc: '信用卡欺诈损失率从 0.15% 降至 0.12%，年交易额 ¥8000 亿 × 0.03% = 2.4 亿 × 保守取 1/6', confidence: '中' },
+          { source: '风控损失降低', amount: 400, calc: '信用卡欺诈损失率从 0.15% 降至 0.12%，高风险信贷业务子集 ¥800 亿 × 0.03% = ¥2400 万 × 保守取 1/6 ≈ ¥400 万', confidence: '中' },
           { source: '合规审查提效', amount: 200, calc: '合规团队效率提升 30%，等效节省 8 人 × 25 万', confidence: '中' },
         ],
         revenueTotal: 500,
@@ -1494,10 +1536,53 @@ function PlanSection() {
       year: 'Y2（2027.7-2028.6）', title: '场景突破', color: '#00cec9',
       focus: '核心场景规模化落地 + Agent 1.0 + 联邦学习平台',
       goals: [
-        '2027.7-9月：风控全产品线覆盖+LLM融合，客服替代率提升至25%',
-        '2027.10-12月：客服替代率35%，AI理财顾问1.0上线，合规审查效率+60%',
-        '2028.1-3月：风控Agent 1.0上线，客服业务办理Agent，AUM转化率+8%',
-        '2028.4-6月：全链路合规Agent，联邦风控联盟3家，平台GPU利用率>70%',
+        '【Q1·规模化】2027.7月：扩编至55人（算法/工程/产品均衡）；风控扩展至消费贷+房贷全产品线；客服灰度扩量至50%话务量',
+        '【Q1·规模化】2027.8-9月：LLM+图网络融合风控模型上线（训练集昇腾910C×8台）；客服替代率达25%（释放150名坐席）；多模态客服（语音+文字）启动开发',
+        '【Q2·产品矩阵】2027.10月：AI理财顾问1.0正式上线（面向30万高净值客户）；合规审查Agent覆盖营销合规/合同审查两大场景',
+        '【Q2·决策门✓】2027.12月：H1回顾 — 客服替代率≥35%达标→启动Agent 2.0规划；理财顾问月活>5万达标→启动AUM管理功能；合规效率+60%达标',
+        '【Q3·Agent 1.0】2028.1月：风控Agent 1.0内测（实时交易监控+自动封卡，人工复核率目标<20%）；客服业务办理Agent试点（开卡/转账场景）',
+        '【Q3·Agent 1.0】2028.2-3月：AUM转化率+8%验证（AI推荐持续追踪30天留存）；联邦风控联盟首批2家机构签约+隐私计算节点部署完成',
+        '【Q4·稳固】2028.4-5月：全链路合规Agent上线（SAR报告自动生成+政策变更预警）；联邦联盟扩至3家；平台GPU利用率>70%（优化调度策略达成）',
+        '【Q4·年终】2028.6月：YE Review — 90人满编 · AI年化节省¥6500万 · 联盟3家；向管理层提交Y3 Agent化路线图（130人 · ¥2.5亿预算）',
+      ],
+      goalsDetailed: [
+        {
+          quarter: 'Q1', label: '规模化', period: '2027.7—9月', isGate: false,
+          tracks: [
+            { name: '👥 人力', tasks: ['7月扩编 → 55人（算法+5 工程+6 产品+5 运营+3 安全+2）', '8月骨干晋级评定 + 新批次P7人才引进', '联邦学习专家2人入职（支撑Q4联盟建设）'] },
+            { name: '🛡️ 风控', tasks: ['LLM+图网络融合模型训练（昇腾910C ×8台扩容后启动）', '消费贷 + 房贷产品线欺诈特征工程', '8月：融合模型上线，全行信贷产品覆盖', 'SAR自动生成PoC启动（监管报告自动化基础）'] },
+            { name: '💬 客服', tasks: ['灰度流量扩量至50%话务量（自动熔断机制保障）', '客服替代率 → 25%（释放150名坐席，节省¥375万/季）', '多模态客服（语音+文字+图片）需求评审 + 技术选型'] },
+            { name: '💰 理财', tasks: ['理财顾问PoC数据分析 → 1000名试用客户行为报告', '高净值客群画像建模（AUM分层 × 风险偏好）', 'AI理财顾问1.0产品设计评审'] },
+            { name: '📜 合规', tasks: ['合同审查Agent升级 → 处理时间 2天→4小时', '营销合规审查场景接入（推广文案自动审核）'] },
+          ],
+        },
+        {
+          quarter: 'Q2', label: '产品矩阵', period: '2027.10—12月', isGate: true,
+          gateDesc: '12月半年决策门 → ① 客服替代率≥35%：启动Agent 2.0规划  ② 理财顾问月活>5万：启动AUM管理功能  ③ 合规效率+60%：全行推广',
+          tracks: [
+            { name: '💰 理财', tasks: ['10月：AI理财顾问1.0正式上线（面向30万高净值客户）', '个性化基金/理财产品推荐（千人千面）', '月活目标 >5万，转化率跟踪（30天留存 >40%）'] },
+            { name: '📜 合规', tasks: ['合规审查Agent全量上线（合同审查+营销物料双场景）', '审查效率+60%：合规团队等效节省20人', '接入行内合规案例库（5年历史违规案例结构化）'] },
+            { name: '💬 客服', tasks: ['多模态客服PoC完成：语音ASR准确率 >92%', '客服替代率提升目标 → 35%', '【🚦 12月决策门】替代率≥35%：启动业务办理Agent规划'] },
+            { name: '🛡️ 风控 / 平台', tasks: ['SAR报告自动生成内测：5000份/年 → 2小时/份', 'GPU利用率优化：Spot实例调度 + 训练/推理错峰', 'AI平台SLA监控仪表盘上线'] },
+          ],
+        },
+        {
+          quarter: 'Q3', label: 'Agent 1.0', period: '2028.1—3月', isGate: false,
+          tracks: [
+            { name: '🛡️ 风控 Agent', tasks: ['风控Agent 1.0内测：实时交易监控 + 异常预警 + 自动封卡', '人工复核率目标 <20%（当前100%）', '误报率控制 <0.5%（避免误封正常交易）', '联邦风控联盟：首批2家银行签约 + 隐私计算节点部署完成'] },
+            { name: '💬 客服 Agent', tasks: ['业务办理Agent试点（开卡 / 挂失 / 转账三大场景）', '端到端完成率目标 >60%（剩余40%转人工）', 'Agent安全沙箱 + 操作审计日志上线'] },
+            { name: '💰 理财', tasks: ['AUM转化率+8%结果验证（30天持续追踪）', '自动调仓建议功能PoC（规则引擎+模型融合）', 'AI管理AUM破¥50亿里程碑目标'] },
+            { name: '📜 合规', tasks: ['SAR/CTR报告全量自动化（90%报告无需人工修改）', 'HY2合规审计准备：模型可解释性报告输出'] },
+          ],
+        },
+        {
+          quarter: 'Q4', label: '稳固', period: '2028.4—6月', isGate: false,
+          tracks: [
+            { name: '📜 合规 Agent', tasks: ['全链路合规Agent上线（SAR + CTR + 营销 + 合同四合一）', '政策变更影响分析自动化：监管新规 → 受影响条款清单 <2小时', '向3家外部机构提供合规咨询服务（创收¥200万）'] },
+            { name: '🌐 联邦联盟', tasks: ['联邦风控联盟扩至3家（新增农商行×1 + 消费金融公司×1）', '跨机构联合建模完成首次迭代', 'GPU利用率优化达标：利用率 >70%（调度策略 + 弹性扩缩容）'] },
+            { name: '🏁 年终', tasks: ['YE Review：90人满编 · 节省¥6500万 · 联盟3家 · SLA 99.95%', '向管理层提交Y3 Agent化路线图：130人 · ¥2.5亿 · 四大Agent全线升级'] },
+          ],
+        },
       ],
       kpi: '年末在岗 ~90 人 · AI 客服替代率 35% · 理财 AUM 转化率+8% · 合规效率+60%',
       headcount: {
@@ -1508,14 +1593,14 @@ function PlanSection() {
       infra: {
         total: 5200,
         breakdown: [
-          { item: 'GPU 训练集群扩容', spec: '新增 H100-80G 节点 ×8 台', cost: 2000, note: '支撑多模态模型训练 + Agent 微调' },
-          { item: 'GPU 推理集群扩容', spec: '新增 L40S 节点 ×12 台', cost: 960, note: '多模态推理 + 实时客服，QPS 目标 500' },
+          { item: 'GPU 训练集群扩容', spec: '新增昇腾910C 节点 ×8 台', cost: 2000, note: '支撑多模态模型训练 + Agent 微调' },
+          { item: 'GPU 推理集群扩容', spec: '新增昇腾310P/910B 推理节点 ×12 台', cost: 960, note: '多模态推理 + 实时客服，QPS 目标 500' },
           { item: '存储扩容', spec: '扩至 1.2PB + 向量数据库集群', cost: 450, note: '新增 Milvus 向量库 + 多模态数据存储' },
           { item: '网络 & 机房', spec: '新增 4 个机柜 + 400Gbps 骨干升级', cost: 350, note: '支撑联邦学习跨机构通信' },
           { item: '隐私计算集群', spec: 'TEE 节点 ×8 + MPC 计算节点 ×4', cost: 500, note: '联邦风控联盟基础设施' },
           { item: '运维 & 监控', spec: 'Prometheus + Grafana + 自研 AI 监控', cost: 200, note: '模型漂移检测 + 推理延迟监控' },
           { item: '灾备升级', spec: '双活架构改造（推理层）', cost: 400, note: '客服场景要求 99.95% 可用性' },
-          { item: '电力 & 制冷', spec: '新增 UPS + 液冷改造', cost: 340, note: 'H100 功耗 700W/卡，需液冷散热' },
+          { item: '电力 & 制冷', spec: '新增 UPS + 液冷改造', cost: 340, note: '昇腾910C 功耗约 400W/卡，液冷散热提升能效' },
         ],
       },
       vendor: {
@@ -1533,7 +1618,7 @@ function PlanSection() {
         savingsTotal: 4500,
         savingsBreakdown: [
           { source: '客服人力替代', amount: 2250, calc: '替代 45% 坐席 ≈ 270 人 × 年均 5 万 + 夜间/节假日全覆盖节省加班费 600 万', confidence: '高' },
-          { source: '风控损失降低', amount: 1200, calc: '欺诈损失率降至 0.08%，年交易额 ¥9000 亿 × 0.07% 降幅 = 6.3 亿 × 保守取 1/5', confidence: '中' },
+          { source: '风控损失降低', amount: 1200, calc: '欺诈损失率降至 0.08%，高风险信贷业务子集 ¥900 亿 × 0.07% 降幅 = ¥6300 万 × 保守取 1/5 ≈ ¥1200 万', confidence: '中' },
           { source: '合规审查提效', amount: 600, calc: '审查效率提升 60%，等效节省 20 人 × 30 万', confidence: '高' },
           { source: 'SAR 报告自动化', amount: 450, calc: '年均 5000 份 SAR × 人工 2 天/份 → AI 2 小时/份，节省 25 人年', confidence: '中' },
         ],
@@ -1547,7 +1632,7 @@ function PlanSection() {
       },
     },
     {
-      year: 'Y3（2028）', title: 'Agent 驱动', color: '#3fb950',
+      year: 'Y3（2028.7—2029.6）', title: 'Agent 驱动', color: '#3fb950',
       focus: '多 Agent 协作体系 + 全链路自动化 + 数据飞轮',
       goals: [
         '风控 Agent：实时交易监控 + 异常预警 + 自动处置（人工复核率 <10%）',
@@ -1565,47 +1650,39 @@ function PlanSection() {
       infra: {
         total: 7000,
         breakdown: [
-          { item: 'GPU 训练集群', spec: 'H100 集群扩至 128 卡 + 新增 H200 试点', cost: 2500, note: 'Agent 训练需要大量 RL 算力' },
-          { item: 'GPU 推理集群', spec: 'L40S/H100 推理池 200+ 卡', cost: 1500, note: '多 Agent 并发推理，QPS 目标 2000' },
-          { item: '存储 & 向量库', spec: '扩至 3PB + Milvus 集群 ×3', cost: 600, note: '全行知识库 + Agent 记忆存储' },
-          { item: '网络 & 机房', spec: '新增机柜 6 个 + 800Gbps 骨干', cost: 500, note: '支撑实时风控 <50ms 延迟' },
-          { item: '隐私计算集群', spec: 'TEE ×16 + MPC ×8 + 同态加密试点', cost: 700, note: '联盟扩展至 5+ 机构' },
-          { item: 'Agent 运行时平台', spec: '自研 Agent 编排引擎 + 沙箱', cost: 400, note: '工具调用 + 安全隔离 + 审计日志' },
-          { item: '灾备 & 高可用', spec: '三地两中心架构', cost: 500, note: '金融核心系统要求 99.99% 可用性' },
-          { item: '电力 & 制冷', spec: '液冷全覆盖 + 绿电采购', cost: 300, note: 'ESG 要求，PUE 目标 <1.25' },
+          { item: 'GPU 训练+推理集群', spec: '昇腾910D 128卡训练 + 310P/910B 200+卡推理池', cost: 4000, note: 'Agent RL 训练 + 多 Agent 并发推理（QPS 2000）' },
+          { item: '存储、向量库 & 网络', spec: '3PB + Milvus ×3 + 800Gbps 骨干 + 6 机柜', cost: 1100, note: '全行知识库/Agent 记忆 + 实时风控 <50ms' },
+          { item: '隐私计算 + Agent 平台', spec: 'TEE ×16 + MPC ×8 + 自研编排引擎沙箱', cost: 1100, note: '联盟扩至 5+ 机构 + 工具调用安全隔离' },
+          { item: '灾备、制冷 & 绿电', spec: '三地两中心 + 液冷全覆盖 + 绿电采购', cost: 800, note: '99.99% 可用性 + PUE <1.25（ESG）' },
         ],
       },
       vendor: {
         total: 1450,
         breakdown: [
-          { item: '商用模型（特定能力补充）', cost: 100, note: 'Y3 开源为主力，商用仅保留多模态/代码生成等特定能力补充，大幅缩减授权费' },
-          { item: '开源生态 & Agent 框架', cost: 200, note: '自研 Agent 框架 + 开源社区企业支持 + 模型安全评测工具' },
-          { item: '隐私计算平台', cost: 300, note: '同态加密加速库 + 联盟管理平台' },
+          { item: '模型生态（开源主力 + 商用补充）', cost: 300, note: '自研 Agent 框架 + 开源企业支持 + 商用多模态能力补充（大幅缩减商用授权）' },
+          { item: '隐私计算 + 安全红队', cost: 550, note: '同态加密加速库 + 联盟管理平台 + AI 安全攻防测试' },
           { item: '外部数据源', cost: 350, note: '实时行情 + 另类数据 + 全球舆情' },
-          { item: '安全 & 红队测试', cost: 250, note: 'AI 安全攻防测试 + 渗透测试' },
-          { item: '咨询/审计/培训', cost: 250, note: '监管沙盒申请 + 年度审计 + Agent 安全培训' },
+          { item: '咨询、审计 & 培训', cost: 250, note: '监管沙盒申请 + 年度模型审计 + Agent 安全培训' },
         ],
       },
       revenue: {
         savingsTotal: 12000,
         savingsBreakdown: [
-          { source: '客服人力替代', amount: 5200, calc: '替代 65% 坐席 ≈ 390 人 × 5.5 万 + 端到端业务办理节省柜面人力 3000 万', confidence: '高' },
-          { source: '风控损失降低', amount: 3500, calc: '欺诈损失率降至 0.05%，年交易额 ¥1 万亿 × 0.1% 降幅 = 10 亿 × 保守取 35%', confidence: '中' },
-          { source: '内部 Copilot 提效', amount: 2000, calc: '全行 5000+ 员工使用，人均提效 15% ≈ 等效节省 750 人年 × 平均 26 万', confidence: '中' },
-          { source: '合规自动化', amount: 1300, calc: '监管报告 + 合同审查 + 营销审核全自动化，节省 40 人年', confidence: '高' },
+          { source: '客服 + 柜面人力替代', amount: 5200, calc: '替代 65% 坐席 ≈ 390 人 × 5.5 万 + 端到端业务办理节省柜面人力 3000 万', confidence: '高' },
+          { source: '风控损失降低', amount: 3500, calc: '欺诈损失率降至 0.05%，高风险信贷子集 ¥1000 亿 × 0.1% 降幅 × 35% 保守系数', confidence: '中' },
+          { source: '内部 Copilot + 合规自动化', amount: 3300, calc: '全行 5000+ 员工提效 15%（节省 750 人年）+ 合规全流程自动化节省 40 人年', confidence: '中' },
         ],
         revenueTotal: 5000,
         revenueBreakdown: [
           { source: 'AI 理财 AUM 佣金', amount: 2500, calc: 'AI 管理 AUM ¥200 亿 × 管理费 0.5% × 分成 25%', confidence: '中' },
-          { source: '联邦风控服务费', amount: 1000, calc: '5 家联盟 × 年服务费 200 万', confidence: '高' },
-          { source: '集团生态输出', amount: 1000, calc: '平安保险/证券/信托 AI 中台服务费', confidence: '高' },
+          { source: '联邦风控服务费 + 集团输出', amount: 2000, calc: '5 家联盟 × 200 万 + 平安保险/证券/信托 AI 中台内部结算', confidence: '高' },
           { source: 'Agent SaaS 试点', amount: 500, calc: '2 家中小银行试点 × 250 万/年', confidence: '低' },
         ],
         revenueNote: '营收定义：① 节省成本 = AI 替代人工的等效薪资 + 业务损失降低金额；② 增量营收 = AI 产品/服务直接产生的新增收入（含内部结算 + 外部客户付费）',
       },
     },
     {
-      year: 'Y4（2029）', title: '生态输出', color: '#e17055',
+      year: 'Y4（2029.7—2030.6）', title: '生态输出', color: '#e17055',
       focus: 'AI 能力平台化 + 集团生态输出 + 行业标准参与',
       goals: [
         '金融 AI 平台 SaaS 化，向平安集团（保险 / 证券 / 信托）输出',
@@ -1623,48 +1700,39 @@ function PlanSection() {
       infra: {
         total: 8500,
         breakdown: [
-          { item: 'GPU 训练集群', spec: 'H200 集群 256 卡 + 下一代 GPU 试点', cost: 2800, note: '支撑行业大模型持续迭代' },
-          { item: 'GPU 推理集群', spec: '推理池 400+ 卡（含 SaaS 租户）', cost: 2000, note: '多租户推理隔离 + 弹性扩缩容' },
-          { item: '存储 & 数据湖', spec: '5PB + 多租户数据隔离', cost: 800, note: 'SaaS 客户数据物理隔离' },
-          { item: '网络 & 多云', spec: '混合云架构 + 专线互联', cost: 600, note: '支撑 10+ 联盟机构低延迟通信' },
-          { item: '隐私计算集群', spec: 'TEE ×24 + MPC ×12 + HE 加速卡', cost: 800, note: '联盟规模化运营' },
-          { item: 'SaaS 平台基础设施', spec: '多租户 K8s + API Gateway + 计费', cost: 600, note: '商业化平台基础设施' },
-          { item: '灾备 & 合规', spec: '金融云合规认证 + 等保三级', cost: 500, note: '外部客户要求的合规基线' },
-          { item: '电力 & 绿电', spec: '绿电占比 >50% + 碳中和路径', cost: 400, note: 'ESG 报告要求' },
+          { item: 'GPU 训练+推理集群（含SaaS租户）', spec: '下一代国产训练芯片 256卡 + 推理池 400+卡，多租户隔离', cost: 4800, note: '行业大模型持续迭代 + 弹性扩缩容支撑商业化' },
+          { item: '存储、数据湖 & 网络', spec: '5PB 多租户物理隔离 + 混合云 + 专线互联', cost: 1400, note: '10+ 联盟机构低延迟通信 + SaaS 客户数据隔离' },
+          { item: '隐私计算 + SaaS 平台基础设施', spec: 'TEE ×24 + MPC ×12 + HE 加速卡 + 多租户 K8s + API Gateway', cost: 1400, note: '联盟规模化运营 + 商业化计费平台' },
+          { item: '灾备、合规认证 & 绿电', spec: '金融云合规+等保三级 + 绿电>50% + 碳中和路径', cost: 900, note: '外部客户合规基线 + ESG 报告要求' },
         ],
       },
       vendor: {
         total: 1930,
         breakdown: [
-          { item: '开源模型生态 & 垂直微调', cost: 250, note: 'Y4 开源为绝对主力，投入在微调工具链/评测平台/社区企业支持上' },
-          { item: '商用模型（能力补充）', cost: 80, note: '仅保留多模态/代码生成等开源暂未追平的特定能力，授权费大幅缩减' },
-          { item: '隐私计算 & 安全', cost: 400, note: '联盟管理 + 密码学加速 + 安全审计' },
+          { item: '模型生态（开源主力 + 商用极少量）', cost: 330, note: '微调工具链/评测平台/社区企业支持为主；商用仅保留多模态/代码生成等开源暂未追平的能力' },
+          { item: '隐私计算 + 安全审计', cost: 400, note: '联盟管理 + 密码学加速 + AI 安全攻防 + SOC2/ISO27001 认证' },
           { item: '外部数据源', cost: 400, note: '全球金融数据 + ESG 数据 + 另类数据' },
-          { item: '合规 & 认证', cost: 400, note: '等保认证 + SOC2 + ISO27001 + 年度审计' },
-          { item: '市场 & BD', cost: 400, note: '行业峰会 + 客户拓展 + 品牌建设' },
+          { item: '合规认证 + 市场BD', cost: 800, note: '等保认证+年度审计 + 行业峰会+客户拓展+品牌建设' },
         ],
       },
       revenue: {
         savingsTotal: 22000,
         savingsBreakdown: [
-          { source: '客服人力替代', amount: 7500, calc: '替代 75% 坐席 + 全渠道 AI 覆盖，节省 500+ 人年', confidence: '高' },
-          { source: '风控损失降低', amount: 6000, calc: '欺诈损失率降至 0.04%，年交易额 ¥1.2 万亿 × 0.11% 降幅', confidence: '中' },
-          { source: '内部 Copilot 提效', amount: 5000, calc: '全行 8000+ 员工使用，人均提效 25%', confidence: '中' },
-          { source: '合规 & 运营自动化', amount: 3500, calc: '全链路自动化，节省 100+ 人年', confidence: '高' },
+          { source: '客服人力替代（全渠道）', amount: 7500, calc: '替代 75% 坐席 + 全渠道 AI 覆盖，节省 500+ 人年', confidence: '高' },
+          { source: '风控损失降低', amount: 6000, calc: '欺诈损失率降至 0.04%，高风险信贷子集 ¥1200 亿 × 0.11% 降幅 × 45% 保守系数', confidence: '中' },
+          { source: '内部 Copilot + 合规&运营自动化', amount: 8500, calc: '全行 8000+ 员工提效 25%（节省人均成本） + 全链路合规/运营自动化节省 100+ 人年', confidence: '中' },
         ],
         revenueTotal: 12000,
         revenueBreakdown: [
-          { source: 'AI 理财 AUM 佣金', amount: 4000, calc: 'AI 管理 AUM ¥400 亿 × 管理费 0.5% × 分成 20%', confidence: '中' },
-          { source: '联邦风控服务费', amount: 2000, calc: '10 家联盟 × 年服务费 200 万', confidence: '高' },
-          { source: '集团生态输出', amount: 2500, calc: '5 家子公司 × 平均 500 万/年', confidence: '高' },
-          { source: 'SaaS 平台收入', amount: 2500, calc: '8 家中小银行 × 平均 300 万/年', confidence: '中' },
+          { source: 'AI 理财 AUM 佣金 + 集团输出', amount: 6500, calc: 'AI 管理 AUM ¥400 亿 × 管理费 0.5% × 分成 20% + 5 家子公司内部结算', confidence: '中' },
+          { source: '联邦风控服务费 + SaaS 平台', amount: 4500, calc: '10 家联盟 × 200 万 + 8 家中小银行 SaaS × 300 万/年', confidence: '高' },
           { source: '行业解决方案', amount: 1000, calc: '定制化项目 3-5 个 × 200-300 万', confidence: '低' },
         ],
         revenueNote: '营收定义：① 节省成本 = AI 替代人工的等效薪资 + 业务损失降低金额；② 增量营收 = AI 产品/服务直接产生的新增收入（含内部结算 + 外部客户付费）',
       },
     },
     {
-      year: 'Y5（2030）', title: 'AI 原生银行', color: '#ffa657',
+      year: 'Y5（2030.7—2031.6）', title: 'AI 原生银行', color: '#ffa657',
       focus: '全面 AI 原生化 + 自主决策 + 行业标杆',
       goals: [
         '80% 的客户交互由 AI 完成（人工仅处理复杂 / 高价值 / 投诉场景）',
@@ -1682,43 +1750,33 @@ function PlanSection() {
       infra: {
         total: 9500,
         breakdown: [
-          { item: 'GPU 训练集群', spec: '下一代 GPU 512 卡集群', cost: 3000, note: '持续迭代行业大模型 + 世界模型探索' },
-          { item: 'GPU 推理集群', spec: '推理池 600+ 卡 + 边缘推理节点', cost: 2500, note: '80% 交互量的 AI 推理支撑' },
-          { item: '存储 & 数据湖', spec: '8PB + 全行数据资产平台', cost: 900, note: '数据资产化运营' },
-          { item: '网络 & 多云', spec: '全球化网络 + 多云灾备', cost: 700, note: '支撑海外业务拓展' },
-          { item: '隐私计算集群', spec: '联盟级隐私计算网络', cost: 800, note: '10+ 机构常态化联合计算' },
-          { item: 'SaaS & 商业化', spec: '多区域部署 + 全球化架构', cost: 700, note: '商业化平台全球化' },
-          { item: '灾备 & 合规', spec: '全球合规 + 多地域灾备', cost: 500, note: '满足各地监管要求' },
-          { item: '电力 & 绿电', spec: '绿电占比 >80% + 碳中和', cost: 400, note: '实现 AI 算力碳中和' },
+          { item: 'GPU 训练+推理集群（含边缘节点）', spec: '下一代国产训练芯片 512卡 + 推理池 600+卡 + 边缘推理节点', cost: 5500, note: '行业大模型迭代/世界模型探索 + 80% 交互量 AI 推理支撑' },
+          { item: '存储、数据湖 & 全球网络', spec: '8PB 全行数据资产平台 + 全球化网络 + 多云灾备', cost: 1600, note: '数据资产化运营 + 海外业务拓展' },
+          { item: '隐私计算 + SaaS 全球化架构', spec: '联盟级隐私计算网络 + 多区域部署', cost: 1500, note: '10+ 机构常态化联合计算 + 商业化全球化' },
+          { item: '灾备、合规 & 绿电碳中和', spec: '全球合规 + 多地域灾备 + 绿电>80%', cost: 900, note: '各地监管要求 + AI 算力碳中和（ESG）' },
         ],
       },
       vendor: {
         total: 2430,
         breakdown: [
-          { item: '开源模型生态 & 行业大模型', cost: 350, note: 'Y5 完全自主：自研行业大模型 + 开源社区贡献 + 工具链生态建设（信创全链路闭环）' },
-          { item: '商用模型（前沿能力试点）', cost: 80, note: '仅用于前沿能力评估/对比基线，不作为生产依赖' },
-          { item: '隐私计算 & 安全', cost: 500, note: '联盟运营 + 密码学前沿 + 量子安全试点' },
-          { item: '外部数据源', cost: 500, note: '全球金融数据全覆盖' },
-          { item: '合规 & 认证', cost: 500, note: '全球合规认证 + 行业标准维护' },
-          { item: '市场 & 品牌', cost: 500, note: '行业标杆品牌建设 + 国际会议' },
+          { item: '自研行业大模型 + 开源生态', cost: 430, note: 'Y5 完全自主：自研行业大模型 + 开源社区贡献 + 信创全链路工具链；商用模型仅用于前沿能力评估/对比基线' },
+          { item: '隐私计算 + 量子安全 + 安全审计', cost: 500, note: '联盟运营 + 密码学前沿 + 量子安全试点 + AI 安全全面覆盖' },
+          { item: '外部数据源（全球覆盖）', cost: 500, note: '全球金融数据全覆盖 + 数据资产变现基础' },
+          { item: '全球合规认证 + 市场品牌', cost: 1000, note: '全球合规认证+行业标准维护 + 行业标杆品牌建设+国际会议' },
         ],
       },
       revenue: {
         savingsTotal: 35000,
         savingsBreakdown: [
-          { source: '客服人力替代', amount: 12000, calc: '替代 80% 坐席 + 全渠道全时段 AI 覆盖，节省 800+ 人年 × 平均 6 万 + 场地/设备节省 7200 万', confidence: '高' },
-          { source: '风控损失降低', amount: 10000, calc: '欺诈损失率降至 0.03%，年交易额 ¥1.5 万亿 × 0.12% 降幅 = 18 亿 × 保守取 55%', confidence: '中' },
-          { source: '内部 Copilot 提效', amount: 8000, calc: '全行 10000+ 员工使用，人均提效 30%，等效节省 3000 人年', confidence: '中' },
-          { source: '合规 & 运营自动化', amount: 5000, calc: '全链路端到端自动化，节省 150+ 人年 + 罚款风险降低', confidence: '高' },
+          { source: '客服全渠道 AI 替代', amount: 12000, calc: '替代 80% 坐席 + 全时段全渠道覆盖，节省 800+ 人年 × 平均 6 万 + 场地/设备节省 7200 万', confidence: '高' },
+          { source: '风控损失降低', amount: 10000, calc: '欺诈损失率降至 0.03%，高风险信贷子集 ¥1500 亿 × 0.12% 降幅 × 55% 保守系数', confidence: '中' },
+          { source: '内部 Copilot + 合规&运营全自动化', amount: 13000, calc: '全行 10000+ 员工提效 30%（节省 3000 人年）+ 全链路端到端自动化节省 150+ 人年 + 罚款风险降低', confidence: '中' },
         ],
         revenueTotal: 25000,
         revenueBreakdown: [
-          { source: 'AI 理财 AUM 佣金', amount: 6250, calc: 'AI 管理 AUM ¥500 亿 × 管理费 0.5% × 分成 25%', confidence: '中' },
-          { source: '联邦风控服务费', amount: 3000, calc: '15 家联盟 × 年服务费 200 万', confidence: '高' },
-          { source: '集团生态输出', amount: 4000, calc: '8 家子公司 × 平均 500 万/年', confidence: '高' },
-          { source: 'SaaS 平台收入', amount: 7500, calc: '20 家银行/金融机构 × 平均 375 万/年', confidence: '中' },
-          { source: '行业解决方案 & 咨询', amount: 2500, calc: '定制项目 8-10 个 × 250-350 万', confidence: '中' },
-          { source: '数据资产变现', amount: 1750, calc: '脱敏数据产品 + 行业报告 + 指数产品', confidence: '低' },
+          { source: 'AI 理财 AUM 佣金 + 集团输出', amount: 10250, calc: 'AI 管理 AUM ¥500 亿 × 管理费 0.5% × 分成 25% + 8 家子公司内部结算 × 500 万/年', confidence: '中' },
+          { source: '联邦风控服务费 + SaaS 平台', amount: 10500, calc: '15 家联盟 × 200 万 + 20 家银行/金融机构 SaaS × 375 万/年', confidence: '高' },
+          { source: '行业解决方案 + 数据资产变现', amount: 4250, calc: '定制项目 8-10 个 × 250-350 万 + 脱敏数据产品/行业报告/指数产品', confidence: '中' },
         ],
         revenueNote: '营收定义：① 节省成本 = AI 替代人工的等效薪资 + 业务损失降低金额 + 场地/设备节省；② 增量营收 = AI 产品/服务直接产生的新增收入（含内部结算 + 外部客户付费 + 数据资产变现）',
       },
@@ -2082,15 +2140,58 @@ function PlanSection() {
                   <span className="text-xs font-mono font-bold" style={{ color: p.color }}>{p.year}</span>
                   <span className="text-sm font-semibold text-gray-800">{p.title}</span>
                 </div>
-                <div className="text-[12px] text-gray-500 mb-2 italic">{p.focus}</div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {p.goals.map((g, i) => (
-                    <div key={i} className="flex gap-2 text-[12px] text-gray-600">
-                      <span style={{ color: p.color }}>▸</span><span>{g}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-2 text-[11px] font-mono px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100">
+                <div className="text-[12px] text-gray-500 mb-3 italic">{p.focus}</div>
+
+                {/* Y1/Y2 用季度×业务线矩阵展开；Y3-Y5 保持高层 bullet */}
+                {p.goalsDetailed ? (
+                  <div className="space-y-3">
+                    {p.goalsDetailed.map((q) => (
+                      <div key={q.quarter} className="rounded-xl border overflow-hidden" style={{ borderColor: p.color + '33' }}>
+                        {/* 季度标题栏 */}
+                        <div className="flex items-center gap-2 px-3 py-2" style={{ background: p.color + '12' }}>
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full text-white" style={{ background: p.color }}>Q{q.quarter}</span>
+                          <span className="text-[12px] font-semibold text-gray-700">{q.label}</span>
+                          <span className="text-[11px] text-gray-400">{q.period}</span>
+                          {q.isGate && <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">🚦 决策门</span>}
+                        </div>
+                        {/* 决策门说明 */}
+                        {q.isGate && q.gateDesc && (
+                          <div className="px-3 py-1.5 bg-amber-50/60 border-b border-amber-100 text-[10.5px] text-amber-800 leading-relaxed">
+                            {q.gateDesc}
+                          </div>
+                        )}
+                        {/* 业务线任务网格 */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                          {q.tracks.map((track) => (
+                            <div key={track.name} className="px-3 py-2">
+                              <div className="text-[10px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">{track.name}</div>
+                              <ul className="space-y-1">
+                                {track.tasks.map((task, ti) => (
+                                  <li key={ti} className={`flex gap-1.5 text-[11.5px] leading-snug ${task.startsWith('【🚦') ? 'font-semibold text-amber-700' : 'text-gray-600'}`}>
+                                    <span className="mt-0.5 shrink-0" style={{ color: task.startsWith('【🚦') ? '#d97706' : p.color }}>
+                                      {task.startsWith('【🚦') ? '🚦' : '▸'}
+                                    </span>
+                                    <span>{task.replace('【🚦 3月决策门】', '').replace('【🚦 12月决策门】', '')}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {p.goals.map((g, i) => (
+                      <div key={i} className="flex gap-2 text-[12px] text-gray-600">
+                        <span style={{ color: p.color }}>▸</span><span>{g}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-3 text-[11px] font-mono px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100">
                   <span className="text-gray-400">KPI：</span><span className="text-gray-700">{p.kpi}</span>
                 </div>
               </div>
@@ -2534,7 +2635,9 @@ function PlanSection() {
           <tbody>
             {cumData.map((d, i) => {
               const yearRoi = ((d.totalReturn - d.totalInvest) / d.totalInvest * 100).toFixed(0);
-              const cumRoi = ((d.cumReturn - d.cumInvest) / d.cumInvest * 100).toFixed(0);
+              const cumRoiRaw = (d.cumReturn - d.cumInvest) / d.cumInvest * 100;
+              const cumRoi = Math.abs(cumRoiRaw) < 1 ? '≈0' : cumRoiRaw.toFixed(0);
+              const cumRoiIsPos = cumRoiRaw >= 0;
               return (
                 <tr key={d.year} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
                   <td className="py-2 pr-2 font-semibold" style={{ color: d.color }}>{d.year} {d.title}</td>
@@ -2545,7 +2648,7 @@ function PlanSection() {
                   <td className={`py-2 pr-2 text-right font-mono font-bold ${Number(yearRoi) >= 0 ? 'text-green-600' : 'text-red-500'}`}>{Number(yearRoi) >= 0 ? '+' : ''}{yearRoi}%</td>
                   <td className="py-2 pr-2 text-right text-gray-600 font-mono">¥{d.cumInvest.toLocaleString()}</td>
                   <td className="py-2 pr-2 text-right text-gray-700 font-mono">¥{d.cumReturn.toLocaleString()}</td>
-                  <td className={`py-2 text-right font-mono font-bold ${Number(cumRoi) >= 0 ? 'text-green-600' : 'text-red-500'}`}>{Number(cumRoi) >= 0 ? '+' : ''}{cumRoi}%</td>
+                  <td className={`py-2 text-right font-mono font-bold ${cumRoiIsPos ? 'text-green-600' : 'text-red-500'}`}>{cumRoiIsPos && cumRoi !== '≈0' ? '+' : ''}{cumRoi}%</td>
                 </tr>
               );
             })}
@@ -2580,8 +2683,8 @@ function PlanSection() {
           <span className="font-semibold text-green-700">💡 关键结论：</span>
           五年累计投入约 <span className="font-bold text-gray-800">¥{(cumData[4].cumInvest / 10000).toFixed(1)} 亿</span>，
           累计回报（节省成本 + 增量营收）约 <span className="font-bold text-green-700">¥{(cumData[4].cumReturn / 10000).toFixed(1)} 亿</span>，
-          <span className="font-bold text-green-700">累计 ROI ≈ +{((cumData[4].cumReturn - cumData[4].cumInvest) / cumData[4].cumInvest * 100).toFixed(0)}%</span>。
-          Y3 年底接近盈亏平衡，Y4 起进入正向回报期。
+          <span className="font-bold text-green-700">五年累计总回报率≈{(() => { const v = (cumData[4].cumReturn - cumData[4].cumInvest) / cumData[4].cumInvest * 100; return Math.abs(v) < 1 ? '0' : (v >= 0 ? '+' : '') + v.toFixed(0); })()}%</span>。
+          Y4 首年实现单年正回报（+5%），Y5 单年回报超 +50%，五年内累计回报基本持平投入（大额前期能力建设成本特征，技术资产价值未完全财务化体现）。
           核心收益来源：客服人力替代（五年累计 ¥{((600+2250+5200+7500+12000)/10000).toFixed(1)} 亿）、风控损失降低（¥{((400+1200+3500+6000+10000)/10000).toFixed(1)} 亿）、理财 AUM 佣金（¥{((0+800+2500+4000+6250)/10000).toFixed(1)} 亿）。
         </div>
       </div>
