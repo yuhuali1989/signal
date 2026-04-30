@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import useHashState from '@/hooks/useHashState';
 import DatasetExplorer from '@/components/DatasetExplorer';
 import BenchmarkBoard from '@/components/BenchmarkBoard';
@@ -243,6 +243,15 @@ const TABS = [
 
 export default function ModelHub({ models, benchmarks, datasets }) {
   const [activeTab, setActiveTab] = useHashState('tab', 'gallery');
+
+  // On mount: check if we were redirected here from /benchmarks or /gallery
+  useEffect(() => {
+    const stored = sessionStorage.getItem('modelInitTab');
+    if (stored) {
+      sessionStorage.removeItem('modelInitTab');
+      setActiveTab(stored);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
