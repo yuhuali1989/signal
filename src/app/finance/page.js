@@ -2600,6 +2600,218 @@ function PlanSection() {
         </div>
       </div>
 
+      {/* ═══════════ 4.8 AI Infra 技术栈全景 ═══════════ */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-base font-semibold text-gray-800 mb-1">🏗️ AI Infra 技术栈全景（七层架构）</h3>
+        <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">
+          金融 AI 基础设施按"<strong>数据 → 训练 → 模型 → 推理 → 编排 → 应用 → 治理</strong>"七层架构设计，各层技术选型遵循<strong>国产优先 + 开源可控 + 云原生</strong>原则。
+          下方展示各层当前主流工具链及平安银行选型推荐，括号内为版本/规格参考（2026年现状）。
+        </p>
+
+        {/* 七层架构全景表 */}
+        <div className="space-y-2 mb-5">
+          {[
+            {
+              layer: '① 数据层',
+              icon: '🗄️',
+              color: '#6c5ce7',
+              bgColor: '#6c5ce710',
+              desc: '数据采集、存储、治理、特征工程',
+              components: [
+                { name: 'Apache Kafka 3.x', role: '实时数据流（风控事件、交易流、用户行为）', tag: '流处理', tagColor: '#6c5ce7' },
+                { name: 'Apache Flink 1.19', role: '实时特征计算、CEP（复杂事件处理）、毫秒级风控', tag: '流计算', tagColor: '#6c5ce7' },
+                { name: 'Apache Spark 3.5 + Hive', role: '离线批量特征工程、大规模数据预处理（T+1）', tag: '批处理', tagColor: '#a29bfe' },
+                { name: 'Apache Iceberg / Delta Lake', role: '数据湖表格式（ACID + 时间旅行 + Schema evolution）', tag: '数据湖', tagColor: '#a29bfe' },
+                { name: 'Feast（特征平台）', role: '在线/离线特征统一管理，特征复用率↑60%', tag: '特征平台', tagColor: '#fd79a8' },
+                { name: 'MinIO / Ceph', role: '对象存储（模型权重 + 训练数据集 + checkpoint），PB 级', tag: '对象存储', tagColor: '#a29bfe' },
+                { name: 'Great Expectations', role: '数据质量检测，自动 profiling + 数据契约验证', tag: '数据质量', tagColor: '#00b894' },
+              ],
+              bankChoice: 'Kafka + Flink 实时链路（风控核心）+ Iceberg 数据湖（替代 Hive）+ Feast 特征平台（Y2 建设）',
+            },
+            {
+              layer: '② 训练平台层',
+              icon: '🔧',
+              color: '#e17055',
+              bgColor: '#e1705510',
+              desc: '分布式训练、超参调优、实验管理',
+              components: [
+                { name: '昇腾 910C / 910D（华为）', role: '主力训练卡：910C = A100 同级别，910D = H100 同级别（2026 H2 量产）', tag: '国产 GPU', tagColor: '#e17055' },
+                { name: 'NVIDIA A100 / H100（过渡）', role: '过渡期用于基线对比，Y2 后逐步替换为国产', tag: '备选 GPU', tagColor: '#fdcb6e' },
+                { name: 'DeepSpeed ZeRO-3 / Megatron-LM', role: '千亿参数全量训练，TP/PP/DP 三维并行，支持 Qwen2.5-72B 微调', tag: '分布式训练', tagColor: '#e17055' },
+                { name: 'Ray 2.x + Ray Train', role: '分布式训练任务调度、超参搜索（Ray Tune）、资源弹性伸缩', tag: '调度框架', tagColor: '#ff7675' },
+                { name: 'Hugging Face Transformers 4.x', role: '模型加载/微调标准库，LoRA / QLoRA / DoRA 低参数量微调', tag: 'PEFT', tagColor: '#e17055' },
+                { name: 'MLflow 2.x', role: '实验追踪（参数/指标/artifact）、模型版本管理、注册中心', tag: 'MLOps', tagColor: '#d63031' },
+                { name: 'DVC（Data Version Control）', role: '训练数据版本控制，数据 + 代码 + 模型三位一体版本管理', tag: '数据版本', tagColor: '#fdcb6e' },
+                { name: 'SWIFT / LLaMA-Factory', role: '国内主流 LLM 微调框架，支持 Qwen/DeepSeek 全系列，内置 RLHF', tag: '微调框架', tagColor: '#e17055' },
+              ],
+              bankChoice: '昇腾910C/910D 主力（国产信创合规）+ DeepSpeed 全量 SFT + LoRA/QLoRA 快速迭代 + MLflow 实验管理',
+            },
+            {
+              layer: '③ 模型仓库层',
+              icon: '📦',
+              color: '#0984e3',
+              bgColor: '#0984e310',
+              desc: '模型注册、版本管理、基座模型库',
+              components: [
+                { name: 'Qwen2.5-72B / Qwen3-72B', role: '主力基座：强推理+工具调用，支持金融语料微调（通义千问系列）', tag: '开源基座', tagColor: '#0984e3' },
+                { name: 'DeepSeek-V3 / DeepSeek-R1', role: '备选基座：V3 代码强，R1 推理链路强（671B MoE 架构，成本低）', tag: '开源基座', tagColor: '#0984e3' },
+                { name: 'Llama 3.3-70B（Meta）', role: '英文基座备选，多语言场景 + 全球化阶段（Y4+）', tag: '英文基座', tagColor: '#74b9ff' },
+                { name: '昇腾 MindIE / MindFormers', role: '华为昇腾原生推理引擎（配套 910C/D，国产 GPU 最佳适配）', tag: '国产推理', tagColor: '#e17055' },
+                { name: 'MLflow Model Registry', role: '模型版本 + Stage 管理（Staging → Production → Archived）', tag: '注册中心', tagColor: '#0984e3' },
+                { name: '行内金融 Finetune 模型库', role: '风控 SFT 模型、客服对话模型、合规审查模型、投研 NLP 模型，统一版本管理', tag: '行内资产', tagColor: '#fd79a8' },
+              ],
+              bankChoice: 'Qwen2.5-72B 主力 + DeepSeek-V3 代码辅助 + 行内微调模型分场景覆盖 + MLflow Registry 版本控制',
+            },
+            {
+              layer: '④ 推理服务层',
+              icon: '⚡',
+              color: '#00cec9',
+              bgColor: '#00cec910',
+              desc: '高性能模型推理、在线服务、弹性扩缩',
+              components: [
+                { name: 'vLLM 0.6+（PagedAttention v2）', role: '主力推理引擎：PagedAttention + Continuous Batching，吞吐量提升 24x vs HuggingFace', tag: '主力推理', tagColor: '#00cec9' },
+                { name: 'TGI（Text Generation Inference）', role: 'HuggingFace 官方推理服务，备选方案，兼容性好', tag: '备选推理', tagColor: '#55efc4' },
+                { name: 'TensorRT-LLM（NVIDIA）', role: 'NVIDIA GPU 专属优化，FP8 量化，吞吐量再提升 2-3x（A100/H100 场景）', tag: 'GPU 优化', tagColor: '#fdcb6e' },
+                { name: '昇腾 MindIE Serving', role: '昇腾 910C/D 专属推理服务，配合 Atlas 800T A2 实现国产算力最优利用', tag: '国产优化', tagColor: '#e17055' },
+                { name: 'Ray Serve 2.x', role: '多模型服务编排、A/B 测试、金丝雀发布、模型集成路由', tag: '服务编排', tagColor: '#ff7675' },
+                { name: 'Triton Inference Server（NVIDIA）', role: '多框架模型托管（TensorFlow/PyTorch/ONNX/TensorRT），动态批处理', tag: '多框架', tagColor: '#fdcb6e' },
+                { name: 'OpenAI 兼容 API（统一接口）', role: '/v1/chat/completions 标准接口，应用层透明切换模型，降低迁移成本', tag: '接口标准', tagColor: '#00cec9' },
+              ],
+              bankChoice: 'vLLM 主力（PagedAttention 高并发）+ 昇腾 MindIE（国产 GPU）+ Ray Serve 多模型路由，统一 OpenAI 兼容 API',
+            },
+            {
+              layer: '⑤ 向量 & 知识库层',
+              icon: '🧲',
+              color: '#6c5ce7',
+              bgColor: '#6c5ce710',
+              desc: 'RAG 检索、语义搜索、知识图谱',
+              components: [
+                { name: 'Milvus 2.4（向量数据库）', role: '主力向量库：支持 10 亿+ 向量，Hybrid Search（稠密+稀疏），HNSW/IVF 索引', tag: '向量数据库', tagColor: '#6c5ce7' },
+                { name: 'Elasticsearch 8.x（BM25 + kNN）', role: '混合检索（BM25 关键词 + kNN 向量），金融法规/产品文档搜索', tag: '混合检索', tagColor: '#a29bfe' },
+                { name: 'BGE-M3 / BCE 嵌入模型', role: 'BAAI 开源中英文双语嵌入，金融领域 MTEB 排行榜 Top3', tag: 'Embedding', tagColor: '#6c5ce7' },
+                { name: 'Reranker（BGE-Reranker-v2）', role: '检索后精排，Cross-Encoder 架构，召回准确率+15%', tag: '重排序', tagColor: '#a29bfe' },
+                { name: 'Neo4j / TuGraph（知识图谱）', role: '客户关系图谱、关联欺诈检测、公司实体关联（对公业务）', tag: '图数据库', tagColor: '#fd79a8' },
+                { name: 'Redis / Valkey（缓存）', role: '热点向量缓存、会话上下文存储（客服对话历史），延迟 < 5ms', tag: '缓存', tagColor: '#00b894' },
+              ],
+              bankChoice: 'Milvus 主力向量库 + ES 混合检索 + BGE-M3 嵌入 + Neo4j 知识图谱（风控反欺诈）',
+            },
+            {
+              layer: '⑥ Agent 编排层',
+              icon: '🤖',
+              color: '#fd79a8',
+              bgColor: '#fd79a810',
+              desc: '多智能体编排、工具调用、任务规划',
+              components: [
+                { name: 'LangGraph 0.2+', role: '有状态多 Agent 工作流（图结构，支持循环推理、人工介入节点）', tag: '主力 Agent', tagColor: '#fd79a8' },
+                { name: 'LangChain 0.3+（LCEL）', role: '工具调用链、Prompt 管理、RAG Pipeline 快速构建', tag: '开发框架', tagColor: '#fd79a8' },
+                { name: 'AutoGen 0.4（微软）', role: '多 Agent 对话编排（代码 Agent + 评审 Agent + 执行 Agent），适合复杂任务分解', tag: '多 Agent', tagColor: '#e84393' },
+                { name: '百炼 / ModelScope（阿里云）', role: '国产 Agent 开发平台，工具市场 + 模型市场 + 部署服务（行内私有化版）', tag: '国产平台', tagColor: '#ffeaa7' },
+                { name: 'Dify（私有化部署）', role: '可视化 LLM 应用开发，非技术人员可用，快速业务 PoC', tag: '低代码', tagColor: '#a29bfe' },
+                { name: 'MCP（Model Context Protocol）', role: '标准化工具接入协议（Anthropic 提出），Agent 与外部系统解耦', tag: '工具协议', tagColor: '#fd79a8' },
+                { name: 'Function Calling / Tool Use', role: '数据库查询、API 调用、代码执行等结构化工具调用（所有主力模型支持）', tag: '工具调用', tagColor: '#e84393' },
+              ],
+              bankChoice: 'LangGraph 复杂工作流 + LangChain RAG/工具链 + AutoGen 多 Agent + Dify 业务 PoC（降低开发门槛）',
+            },
+            {
+              layer: '⑦ 可观测 & 安全层',
+              icon: '🔭',
+              color: '#636e72',
+              bgColor: '#636e7210',
+              desc: 'MLOps、模型监控、隐私计算、合规审计',
+              components: [
+                { name: 'Prometheus + Grafana', role: 'GPU 利用率/显存/温度、推理 QPS/P99 延迟、模型准确率在线监控', tag: '基础监控', tagColor: '#636e72' },
+                { name: 'OpenTelemetry（OTel）', role: '分布式追踪（模型调用链、Agent 执行路径）+ 统一可观测性标准', tag: '链路追踪', tagColor: '#636e72' },
+                { name: 'Langfuse（LLM 可观测）', role: 'LLM 专属可观测平台：Prompt 版本 / Token 成本 / 幻觉率 / 用户反馈追踪', tag: 'LLM 监控', tagColor: '#b2bec3' },
+                { name: 'Evidently AI（数据漂移）', role: '特征分布漂移检测 + 模型性能衰减预警，自动触发重训练 Pipeline', tag: '模型监控', tagColor: '#00b894' },
+                { name: 'FATE / SecretFlow（蚂蚁）', role: '横向/纵向联邦学习，隐私保护机器学习，多机构风控联合建模（合规核心）', tag: '联邦学习', tagColor: '#e17055' },
+                { name: 'Prefect / Airflow 2.x', role: 'MLOps 流水线编排（数据处理 → 训练 → 评估 → 发布），定时调度 + 依赖管理', tag: 'Pipeline', tagColor: '#636e72' },
+                { name: 'AI 模型审计系统（行内自研）', role: '可解释性（SHAP/LIME）、公平性检测（人群偏差）、监管报告自动生成', tag: '合规审计', tagColor: '#fd79a8' },
+                { name: 'Vault（HashiCorp）+ KMS', role: '模型权重加密、API 密钥管理、敏感参数 Secret 管理', tag: '密钥管理', tagColor: '#636e72' },
+              ],
+              bankChoice: 'Prometheus+Grafana 基础监控 + Langfuse LLM 追踪 + Evidently 漂移检测 + FATE/SecretFlow 联邦学习（监管合规底座）',
+            },
+          ].map((layer) => (
+            <div key={layer.layer} className="rounded-xl border overflow-hidden" style={{ borderColor: layer.color + '30' }}>
+              {/* 层标题 */}
+              <div className="flex items-center gap-2 px-4 py-2.5" style={{ background: layer.bgColor }}>
+                <span className="text-base">{layer.icon}</span>
+                <span className="text-sm font-bold" style={{ color: layer.color }}>{layer.layer}</span>
+                <span className="text-[11px] text-gray-500 ml-1">— {layer.desc}</span>
+              </div>
+              {/* 组件列表 */}
+              <div className="px-3 py-2 grid grid-cols-1 md:grid-cols-2 gap-1.5">
+                {layer.components.map(c => (
+                  <div key={c.name} className="flex items-start gap-2 text-[11px]">
+                    <span className="shrink-0 mt-0.5 px-1.5 py-0.5 rounded text-[9px] font-semibold" style={{ background: c.tagColor + '15', color: c.tagColor }}>{c.tag}</span>
+                    <div>
+                      <span className="font-semibold text-gray-800">{c.name}</span>
+                      <span className="text-gray-500 ml-1">— {c.role}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {/* 平安银行选型推荐 */}
+              <div className="px-4 py-2 border-t text-[10.5px] leading-relaxed" style={{ borderColor: layer.color + '20', background: layer.color + '06' }}>
+                <span className="font-semibold" style={{ color: layer.color }}>🏦 行内选型：</span>
+                <span className="text-gray-600">{layer.bankChoice}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Y1→Y5 技术栈演进路线 */}
+        <div className="mt-2 mb-4">
+          <h4 className="text-xs font-semibold text-gray-700 mb-2">📈 技术栈演进路线（Y1 → Y5）</h4>
+          <div className="overflow-x-auto">
+            <table className="w-full text-[11px] border-collapse">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="py-2 px-2 text-left font-medium text-gray-500 border-b border-gray-100 whitespace-nowrap">层次</th>
+                  <th className="py-2 px-2 text-left font-medium text-gray-500 border-b border-gray-100">Y1 筑基 (2026–27)</th>
+                  <th className="py-2 px-2 text-left font-medium text-gray-500 border-b border-gray-100">Y2 突破 (2027–28)</th>
+                  <th className="py-2 px-2 text-left font-medium text-gray-500 border-b border-gray-100">Y3 规模化 (2028–29)</th>
+                  <th className="py-2 px-2 text-left font-medium text-gray-500 border-b border-gray-100">Y4–Y5 原生化 (2029–31)</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600">
+                {[
+                  { layer: '🗄️ 数据层', y1: 'Kafka + Spark + Hive（现有系统）', y2: 'Kafka + Flink + Iceberg（实时升级）', y3: 'Feast 特征平台上线，统一特征管理', y45: '数据资产化，Iceberg+Feast 对外 SaaS' },
+                  { layer: '🔧 训练层', y1: '昇腾910C × 64卡 + DeepSpeed LoRA', y2: '910D × 128卡 + Megatron 全量 SFT', y3: '910D × 256卡 + 联邦 LoRA（FATE）', y45: '512卡+ 行业大模型预训练（700B+）' },
+                  { layer: '📦 模型层', y1: 'Qwen2.5-72B 商用 + 开源双轨', y2: '行内微调模型 v1（风控/客服/合规）', y3: '行内微调模型 v2 + 7B 蒸馏推理', y45: '自研行业大模型 + 对外开源' },
+                  { layer: '⚡ 推理层', y1: 'vLLM 单机部署（2–4 个场景）', y2: 'vLLM 集群 + Ray Serve 多模型路由', y3: '昇腾 MindIE + vLLM 混合，全行覆盖', y45: 'TensorRT-LLM 极致优化，边缘推理节点' },
+                  { layer: '🧲 向量层', y1: 'Milvus 单机 + ES 混合检索', y2: 'Milvus 集群 + BGE-M3 嵌入', y3: 'Milvus + Neo4j 图谱融合（反欺诈）', y45: '多模态向量（文本+图像+时序），全行统一' },
+                  { layer: '🤖 Agent 层', y1: 'LangChain RAG Pipeline（无 Agent）', y2: 'LangGraph 单 Agent（客服/合规）', y3: '多 Agent 协作（风控+合规+客服联动）', y45: 'AI 原生应用，Agent 自主处置 >40% 任务' },
+                  { layer: '🔭 监控层', y1: 'Prometheus + Grafana 基础监控', y2: 'Langfuse LLM 追踪 + Evidently 漂移', y3: 'OTel 全链路追踪 + AI 模型审计上线', y45: 'AIOps 平台（智能根因 + 自愈），覆盖全行' },
+                ].map((r, i) => (
+                  <tr key={r.layer} className={i % 2 === 0 ? 'bg-gray-50/40' : ''}>
+                    <td className="py-1.5 px-2 font-semibold whitespace-nowrap text-gray-700">{r.layer}</td>
+                    <td className="py-1.5 px-2">{r.y1}</td>
+                    <td className="py-1.5 px-2">{r.y2}</td>
+                    <td className="py-1.5 px-2">{r.y3}</td>
+                    <td className="py-1.5 px-2">{r.y45}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* 关键架构决策 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+          {[
+            { title: '🇨🇳 国产化路线', desc: '训练芯片：昇腾910C/D（华为）为主，兼容 CUDA 生态。推理服务双轨并行：MindIE（国产 GPU）+ vLLM（NVIDIA GPU），统一 OpenAI 兼容 API 对上层透明。', color: '#e17055' },
+            { title: '🔒 数据不出行', desc: '所有模型推理和训练在行内私有化部署，无需调用外部 API。向量数据库 Milvus + 特征平台 Feast 全部行内部署，客户数据全程不出境，满足人民银行/银保监数据本地化要求。', color: '#0984e3' },
+            { title: '🔄 模型可插拔', desc: 'Agent 编排层与模型层解耦：LangGraph/LangChain 通过统一 OpenAI 兼容 API 调用，可无缝切换 Qwen/DeepSeek/商用模型，避免框架层代码改动。', color: '#6c5ce7' },
+            { title: '📊 全链路可观测', desc: '从数据特征漂移（Evidently）→ 模型训练指标（MLflow）→ 推理服务性能（Prometheus）→ LLM 调用质量（Langfuse）→ Agent 执行路径（OTel），形成完整 AI 全链路可观测闭环。', color: '#00cec9' },
+          ].map(d => (
+            <div key={d.title} className="p-3 rounded-xl border" style={{ borderColor: d.color + '30', background: d.color + '06' }}>
+              <div className="font-semibold mb-1" style={{ color: d.color }}>{d.title}</div>
+              <div className="text-gray-600 leading-relaxed">{d.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ═══════════ 5. 外部采购明细 ═══════════ */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="text-base font-semibold text-gray-800 mb-2">🤝 外部采购明细（万元）</h3>
