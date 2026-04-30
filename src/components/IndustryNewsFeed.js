@@ -52,8 +52,8 @@ function groupByTime(items) {
       const sm = sundayD.getMonth() + 1;
       const sd = sundayD.getDate();
       key = `2026-W-${mondayStr}`;
-      label = `4 月 ${wd} 日 ~ ${sm !== wm ? sm + '月' : ''}${sd} 日`;
-      shortLabel = `4/${wd}-${sd}`;
+      label = `${wm} 月 ${wd} 日 ~ ${sm !== wm ? sm + '月' : ''}${sd} 日`;
+      shortLabel = `${wm}/${wd}-${sd}`;
       sortKey = year * 100000000 + month * 1000000 + wd * 10000;
     } else if (year === 2026 && month <= 3) {
       // ③ 2026 年 1-3 月：按月
