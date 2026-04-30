@@ -937,7 +937,7 @@ function VideoGenArchSVG({ factSheet = {}, modelName = '' }) {
       {/* 去噪步骤说明 */}
       <rect x={W-185} y={200} width={160} height={80} rx="8" fill="#FAFBFC" stroke={BD} strokeWidth="0.8" />
       <text x={W-105} y={214} textAnchor="middle" fill="#8896A6" fontSize="7.5" fontWeight="600">去噪过程</text>
-      <text x={W-185+8} y={230} fill="#546E7A" fontSize="7">z_T → z_{T-1} → ... → z_0</text>
+      <text x={W-185+8} y={230} fill="#546E7A" fontSize="7">{'z_T → z_{T-1} → ... → z_0'}</text>
       <text x={W-185+8} y={244} fill="#546E7A" fontSize="7">调度器: {scheduler.slice(0,20)}</text>
       <text x={W-185+8} y={258} fill="#546E7A" fontSize="7">条件注入: AdaLN-Zero</text>
       <text x={W-185+8} y={272} fill="#546E7A" fontSize="7">CFG: 无分类器引导</text>
