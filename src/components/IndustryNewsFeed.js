@@ -20,10 +20,8 @@ function groupByTime(items) {
   const pad = n => String(n).padStart(2, '0');
   const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 
-  // 最近一周起点：今天往前推 6 天（共 7 天含今天）
-  const sevenAgo = new Date(now);
-  sevenAgo.setDate(sevenAgo.getDate() - 6);
-  const sevenAgoStr = `${sevenAgo.getFullYear()}-${pad(sevenAgo.getMonth() + 1)}-${pad(sevenAgo.getDate())}`;
+  // 本周周一（按天显示的起点）
+  const thisWeekMondayStr = getMondayStr(todayStr);
 
   const monthNames = ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
@@ -35,14 +33,14 @@ function groupByTime(items) {
     const day = d.getDate();
     let key, label, shortLabel, sortKey;
 
-    if (dateStr >= sevenAgoStr && dateStr <= todayStr) {
-      // ① 最近 7 天（含今天）：按天
+    if (dateStr >= thisWeekMondayStr && dateStr <= todayStr) {
+      // ① 本周（本周周一~今天）：按天
       key = dateStr;
       label = `${month} 月 ${day} 日`;
       shortLabel = `${month}/${day}`;
       sortKey = year * 100000000 + month * 1000000 + day * 10000 + 9999;
-    } else if (year === 2026 && month === 4) {
-      // ② 2026 年 4 月（非最近7天）：按周（周一~周日）
+    } else if (year === 2026) {
+      // ② 2026 年历史数据（非本周）：按周（周一~周日）
       const mondayStr = getMondayStr(dateStr);
       const md = new Date(mondayStr + 'T00:00:00');
       const wm = md.getMonth() + 1;
@@ -54,21 +52,15 @@ function groupByTime(items) {
       key = `2026-W-${mondayStr}`;
       label = `${wm} 月 ${wd} 日 ~ ${sm !== wm ? sm + '月' : ''}${sd} 日`;
       shortLabel = `${wm}/${wd}-${sd}`;
-      sortKey = year * 100000000 + month * 1000000 + wd * 10000;
-    } else if (year === 2026 && month <= 3) {
-      // ③ 2026 年 1-3 月：按月
-      key = `${year}-${pad(month)}`;
-      label = `${year} 年 ${monthNames[month]}`;
-      shortLabel = `26年${monthNames[month]}`;
-      sortKey = year * 100000000 + month * 1000000;
+      sortKey = year * 100000000 + (md.getMonth() + 1) * 1000000 + wd * 10000;
     } else if (year === 2025) {
-      // ④ 2025 年：按月
+      // ③ 2025 年：按月
       key = `${year}-${pad(month)}`;
       label = `${year} 年 ${monthNames[month]}`;
       shortLabel = `25年${monthNames[month]}`;
       sortKey = year * 100000000 + month * 1000000;
     } else {
-      // ⑤ 2024 及更早：按年
+      // ④ 2024 及更早：按年
       key = `${year}`;
       label = `${year} 年`;
       shortLabel = `${year}`;
