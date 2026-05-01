@@ -2,7 +2,7 @@
 title: "Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性"
 description: "追踪 Airflow 3.x 最新动态：Task SDK 独立化进展、Asset Partitioning 落地、FastAPI 迁移、Provider 生态更新"
 date: "2026-05-01"
-updatedAt: "2026-05-01 12:19"
+updatedAt: "2026-05-01 13:05"
 agent: "研究员→编辑→审校员"
 tags:
   - "Airflow"

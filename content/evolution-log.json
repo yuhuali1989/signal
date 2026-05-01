@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-05-01 14:15",
+    "type": "daily",
+    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
+    "message": "每日进化: 文章 +2 篇"
+  },
+  {
+    "date": "2026-05-01 13:15",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成",
+    "slug": "unity-catalog-ai"
+  },
+  {
+    "date": "2026-05-01 13:05",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性",
+    "slug": "apache-airflow-3x-task-sdkasset-partitioning"
+  },
+  {
     "date": "2026-05-01 12:19",
     "type": "article",
     "agent": "研究员→编辑→审校员",
