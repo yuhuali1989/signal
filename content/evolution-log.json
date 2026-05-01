@@ -1,5 +1,92 @@
 [
   {
+    "date": "2026-05-01 12:19",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性",
+    "slug": "apache-airflow-3x-task-sdkasset-partitioning"
+  },
+  {
+    "date": "2026-04-30 22:36",
+    "type": "daily",
+    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
+    "message": "每日进化: 声浪 +3 条，文章 +2 篇，模型 +2 个，实验室: 实验室课题: GaussianLSS：高斯深度不确定性BEV感知；实验室课题: DualDiff：双分支扩散驾驶场景生成；量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监"
+  },
+  {
+    "date": "2026-04-30 22:36",
+    "type": "quant-update",
+    "agent": "B9",
+    "message": "量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监会深化程序化交易监管，A股高频量化成交占比已从30%压缩至20%。"
+  },
+  {
+    "date": "2026-04-30 22:23",
+    "type": "infra-check",
+    "agent": "B6",
+    "message": "B6 Infra 版本检查完成（原始响应解析失败）"
+  },
+  {
+    "date": "2026-04-30 21:55",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: RAG 2.0：从朴素检索到自适应知识增强",
+    "slug": "rag-20"
+  },
+  {
+    "date": "2026-04-30 21:53",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: MoE 架构革命：DeepSeek-V3 如何用 1/10 成本击败 GPT-4",
+    "slug": "moe-deepseek-v3-110-gpt-4"
+  },
+  {
+    "date": "2026-04-30 20:21",
+    "type": "daily",
+    "agent": "B1→B2→B5",
+    "message": "每日进化: 声浪 +3 条，文章 +1 篇"
+  },
+  {
+    "date": "2026-04-30 20:21",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM",
+    "slug": "llm-vllm-vs-sglang-vs-tensorrt-llm"
+  },
+  {
+    "date": "2026-04-30 20:19",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性",
+    "slug": "mlflow-3x-tracingai-gateway-genai"
+  },
+  {
+    "date": "2026-04-30 20:12",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Apache Iceberg 社区进展：新版本特性、性能优化与生态集成",
+    "slug": "apache-iceberg"
+  },
+  {
+    "date": "2026-04-30 19:53",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性",
+    "slug": "kubernetes-ai-infra-gpu-ai"
+  },
+  {
+    "date": "2026-04-30 19:46",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性",
+    "slug": "mlflow-3x-tracingai-gateway-genai"
+  },
+  {
+    "date": "2026-04-30 19:40",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM",
+    "slug": "llm-vllm-vs-sglang-vs-tensorrt-llm"
+  },
+  {
     "id": 224,
     "date": "2026-04-30",
     "type": "news",

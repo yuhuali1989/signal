@@ -539,17 +539,48 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 │       ├── content.js           # 内容读取工具函数
 │       └── strategy-data.js     # 业务原生数据定义
 ├── content/                     # 内容数据目录（Markdown + JSON）
+├── agents/
+│   └── run_crew.py              # 多智能体内容生产引擎（已启用 claude_code 后端）
 ├── ai-wiki.md                   # 本文件（项目核心文档，每次变更需同步更新）
 ├── next.config.js               # Next.js 配置（basePath 等）
 └── package.json
 ```
 
+### agents/run_crew.py 快速入门
+
+```bash
+cd signal/
+
+# 每日全量运行（默认模式）：B1新闻 + B2文章 + B5汇聚 + C质检
+python agents/run_crew.py --mode daily
+
+# 只生成文章（指定篇数）
+python agents/run_crew.py --mode article --count 2
+
+# 仅运行 C QA 静态检查
+python agents/run_crew.py --mode qa
+
+# 每日全量 + 自动 git commit 内容变更
+python agents/run_crew.py --mode daily --publish
+```
+
+**后端优先级（自动检测）**：
+1. `claude_code` — 检测到 `claude` CLI 时使用，**无需 API Key**，用 `claude -p` subprocess 调用
+2. `crewai` — 安装了 `crewai` 包时使用
+3. `openai` — 设置了 `OPENAI_API_KEY` 时使用
+4. `template` — 以上均不可用时，生成占位符模板
+
+**claude_code 后端说明**：
+- 自动搜索 `claude` 二进制（PATH + `~/.nvm` 已知路径）
+- 调用时 `cwd='/tmp'` 避免加载项目 workspace 上下文（否则会超时）
+- 文章/书籍生成使用单次合并调用（研究员+编辑+审校员三合一），避免 3× subprocess 超时累积
 
 ---
 
 *最后更新：2026-04-30*
 
 **本次主要更新内容**：
+- 🤖 **run_crew.py 全面启用**：新增 `claude_code` 后端（优先级最高），B1/B5/C/D 角色全部实现，`--mode daily` 作为新默认入口，B2文章生成改为单次合并调用避免超时；修复 `evolution-log` 的 `logs[:50]` 截断 bug（改为 `logs[:500]`）
 - 📋 **第38轮 B1→B2→B3→B5→C→D 流水线完整执行**：
   - 📰 **内容更新**：声浪 +6 条（NVIDIA Gemma 4 VLA Jetson Demo/Ray 2.55.1/MLflow v3.12.0 RC/LightOn DenseOn-LateOn/KV Cache 优化全景/OpenRA-RL）、全行业动态 +6 条（2026-04-30，边缘AI/分布式框架/MLOps/检索/推理优化/机器人RL）
   - 📝 **文章**：+1 篇（KV Cache 优化工程实践全景：从 PagedAttention 到 MLA 的部署指南），文章总计 89 篇

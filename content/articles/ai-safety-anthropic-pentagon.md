@@ -107,7 +107,7 @@ Claude 安全架构（简化）:
 | 开源/基金会 | Linux 基金会、Apache 基金会 |
 | 政府机构 | (未公开) |
 
-定价：输入 $25/M tokens，输出 $125/M tokens —— 是 Claude Opus 4.6 的 **8-10 倍**。
+定价：输入 $25/M tokens，输出 $125/M tokens —— 是 Claude Opus 4 的 **8-10 倍**。
 
 ### 三种解读
 

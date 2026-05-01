@@ -431,6 +431,40 @@ export const LAB_PROJECTS = [
     codeRef: 'https://github.com/NVlabs/CTG',
     color: '#e17055',
   },
+
+  {
+    id: 'gaussianlss-bev-perception',
+    title: 'GaussianLSS：高斯深度不确定性BEV感知',
+    category: 'nerf',
+    difficulty: '⭐⭐⭐',
+    computeReq: '1×RTX 4090 (24GB) 或 1×RTX 3090 (24GB，需降 batch)',
+    dataReq: 'nuScenes mini / nuScenes full',
+    trainTime: '~45 min/epoch（单卡 3090，batch=2）',
+    status: 'ready',
+    tags: ["3DGS", "BEV感知", "深度估计", "CVPR2025", "nuScenes"],
+    desc: 'GaussianLSS 将 3D Gaussian Splatting 引入 BEV 感知管线，以深度均值+方差对每个像素进行不确定性建模，替代传统 Lift-Splat-Shoot 中的硬深度投影。通过在 nuScenes 上的实验证明，即使输入稀疏视角图像，也能实现鲁棒的 BEV 特征聚合与 3D 目标检测。代码基于 PyTorch 2.0 + CUDA 11.8，官方仓库已开源训练/推理脚本，支持单卡复现。',
+    whyLightweight: 'Gaussian 概率投影避免密集 3D 网格卷积，单卡训练显存峰值约 18GB，ResNet-50 骨干网络轻量高效。',
+    papers: ["Toward Real-world BEV Perception: Depth Uncertainty Estimation via Gaussian Splatting (CVPR 2025)"],
+    codeRef: 'https://github.com/Tshino118/GaussianLSS',
+    color: '#4F8EF7',
+  },
+
+  {
+    id: 'dualdiff-driving-scene-gen',
+    title: 'DualDiff：双分支扩散驾驶场景生成',
+    category: 'diffusion',
+    difficulty: '⭐⭐⭐',
+    computeReq: '1×RTX 3090 (24GB)，LoRA 微调模式',
+    dataReq: 'nuScenes（含标注 BEV box + 语义地图）',
+    trainTime: '~50 min（LoRA 微调阶段，batch=1，20 epochs）',
+    status: 'ready',
+    tags: ["扩散模型", "多视角生成", "数据增强", "ICRA2025", "ControlNet"],
+    desc: 'DualDiff 提出前景/背景双分支条件扩散架构，通过占用射线采样（ORS）编码 3D 空间几何先验，配合语义融合注意力（SFA）实现多摄像头环视视频一致性生成。在 nuScenes 上相比 MagicDrive 等基线提升 4.09% FID，并显著改善自动驾驶感知模型在稀有场景下的泛化性。代码已在 GitHub 开源，支持 LoRA 微调以适配单卡环境。',
+    whyLightweight: '冻结 Stable Diffusion 主干仅训练 ControlNet 分支，LoRA 模式下显存需求降至 ~18GB，适合单卡 3090 复现。',
+    papers: ["DualDiff: Enhancing Mode Capture in Low-Dimensional Diffusion Models via Dual-Denoising (ICRA 2025)"],
+    codeRef: 'https://github.com/yangzhaojason/DualDiff',
+    color: '#E8673A',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════

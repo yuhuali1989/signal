@@ -40,14 +40,14 @@ researcher = Agent(
     goal="深入研究 {topic} 的最新技术进展",
     backstory="你是一位资深 AI 研究员，擅长从论文和技术博客中提炼核心观点",
     tools=[web_search, arxiv_search],
-    llm="claude-opus-4.6"
+    llm="claude-opus-4-5"
 )
 
 editor = Agent(
     role="技术编辑",
     goal="将研究内容整理为结构化的技术文章",
     backstory="你是一位经验丰富的技术编辑，擅长将复杂概念用简洁语言表达",
-    llm="gpt-5.4"
+    llm="gpt-4o"
 )
 
 research_task = Task(
@@ -161,13 +161,13 @@ from autogen import ConversableAgent, GroupChat, GroupChatManager
 coder = ConversableAgent(
     name="Coder",
     system_message="你是一个 Python 专家，负责编写代码解决问题",
-    llm_config={"model": "gpt-5.4"}
+    llm_config={"model": "gpt-4o"}
 )
 
 reviewer = ConversableAgent(
     name="Reviewer",
     system_message="你是代码审查专家，检查代码质量和安全性",
-    llm_config={"model": "claude-opus-4.6"}
+    llm_config={"model": "claude-opus-4-5"}
 )
 
 executor = ConversableAgent(

@@ -31,7 +31,7 @@ category: "工具与生态"
 - **Agent Mode**：支持多步推理，自动读取项目结构、修改多个文件、运行命令并根据结果迭代
 - **Tab 补全**：业界最精准的上下文感知补全，支持跨文件引用预测
 - **Composer**：多文件编辑器，一个 prompt 同时修改 5-10 个文件
-- **自定义模型**：支持切换 GPT-5.4、Claude Opus 4.6、DeepSeek、GLM-5.1 等
+- **自定义模型**：支持切换 GPT-5、Claude Opus 4、DeepSeek、GLM-5.1 等
 - **@符号系统**：@file、@web、@docs、@codebase 灵活引用上下文
 
 **定价**：$20/月 Pro，$40/月 Business（估值 $100 亿，2026 年 DAU 超 300 万）
@@ -39,8 +39,8 @@ category: "工具与生态"
 **实测表现**：
 ```
 SWE-bench Lite 解决率：
-  Cursor Agent (Claude Opus 4.6): 62.3%
-  Cursor Agent (GPT-5.4):         58.7%
+  Cursor Agent (Claude Opus 4): 62.3%
+  Cursor Agent (GPT-5):         58.7%
   人类开发者中位数:                45.2%
 ```
 
@@ -65,7 +65,7 @@ SWE-bench Lite 解决率：
 - **GitHub 生态深度集成**：PR Review、Issue 自动修复、Actions 工作流生成
 - **Copilot Agent**：2026 年新增 Agent 模式，支持跨仓库代码理解和自动 PR
 - **企业合规**：SOC 2 Type II、GDPR 合规，代码不用于训练
-- **多模型可选**：GPT-5.4、Claude Opus 4.6、Gemini 2.5 Pro
+- **多模型可选**：GPT-5、Claude Opus 4、Gemini 2.5 Pro
 
 **定价**：$10/月个人，$19/月 Business，$39/月 Enterprise
 
@@ -79,7 +79,7 @@ SWE-bench Lite 解决率：
 **核心优势**：
 - **终端原生**：纯 CLI 工具，不依赖 IDE，适合 DevOps 和后端场景
 - **无限上下文**：直接利用 Claude 200K 上下文窗口，整个项目作为上下文
-- **深度推理**：利用 Claude Opus 4.6 的强推理能力，擅长复杂架构重构
+- **深度推理**：利用 Claude Opus 4 的强推理能力，擅长复杂架构重构
 
 **定价**：按 API 用量计费（约 $0.3-1.5/次编码任务）
 

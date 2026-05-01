@@ -1056,4 +1056,141 @@ function ThreeDGenArchSVG({ factSheet = {}, modelName = '' }) {
   );
 }
 
-export { TransformerBlockSVG, MoEArchSVG, EvolutionPathSVG, COLORS, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG, ThreeDGenArchSVG };
+/* ══════════════════════════════════════════════════════════════
+   ReasoningArchSVG — 推理增强模型架构图
+   Base LLM + Reasoning Chain (CoT / GRPO / Budget Tokens)
+   ══════════════════════════════════════════════════════════════ */
+function ReasoningArchSVG({ factSheet = {}, modelName = '' }) {
+  const f = factSheet;
+  const name = modelName || 'Reasoning Model';
+  const arch = f.architecture || 'Transformer + RL';
+  const attn = f.attention || 'GQA';
+  const ctx  = f.context || '128K tokens';
+  const layers = f.layers || 'N';
+  const experts = f.experts || '';
+  const thinking = f.thinkingMode || '扩展思考 (Extended Thinking)';
+  const training = f.training || 'GRPO / RLHF';
+
+  const isMoE = arch.toLowerCase().includes('moe') || !!experts;
+
+  const W = 700, H = 760;
+  const cx = 270;
+  const bw = 210, bx = cx - bw / 2;
+  const skipX = bx + bw + 30;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full max-w-[700px]" style={{ fontFamily: 'ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace' }}>
+      <defs>
+        <marker id="arr-rsn" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#666" />
+        </marker>
+      </defs>
+      <rect x="5" y="5" width={W-10} height={H-10} rx="16" fill={BG} stroke={BD} strokeWidth="0.8" />
+
+      {/* 标题 */}
+      <text x={cx} y="30" textAnchor="middle" fill="#111" fontSize="14" fontWeight="800">{name}</text>
+      <text x={cx} y="46" textAnchor="middle" fill="#8896A6" fontSize="9">{arch}</text>
+
+      {/* ── 顶部：最终输出 ── */}
+      <rect x={bx} y={60} width={bw} height={26} rx="6" fill="#e8f5e9" stroke="#55efc4" strokeWidth="1.2" />
+      <text x={cx} y={77} textAnchor="middle" fill="#00b894" fontSize="10" fontWeight="600">Final Answer Output</text>
+      <line x1={cx} y1={86} x2={cx} y2={106} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+
+      {/* ── Thinking Box ── */}
+      <rect x={bx-30} y={106} width={bw+60} height={80} rx="10" fill="#fff8e1" stroke="#fdcb6e" strokeWidth="1.5" />
+      <text x={cx} y={124} textAnchor="middle" fill="#e17055" fontSize="10" fontWeight="700">🧠 Reasoning Chain</text>
+      <text x={cx} y={139} textAnchor="middle" fill="#636e72" fontSize="8.5">{'<think> ... </think>'}</text>
+      <rect x={bx-15} y={145} width={bw+30} height={22} rx="5" fill="#fff" stroke="#fdcb6e" strokeWidth="0.8" />
+      <text x={cx} y={159} textAnchor="middle" fill="#e17055" fontSize="8">{thinking}</text>
+      <line x1={cx} y1={186} x2={cx} y2={208} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+
+      {/* ── Base LLM Block ── */}
+      <rect x={bx-35} y={208} width={bw+70} height={370} rx="12" fill={OUTER} stroke={BD} strokeWidth="1" />
+      <rect x={bx-25} y={218} width={bw+50} height={350} rx="10" fill={BLOCK_BG} stroke="none" />
+      <text x={cx} y={234} textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">
+        {isMoE ? 'MoE Decoder Block' : 'Transformer Decoder Block'} × {layers}
+      </text>
+
+      {/* Residual 2 */}
+      <Plus cx={cx} cy={252} />
+      <path d={`M${skipX},${400} L${skipX},${252} L${cx+11},${252}`} fill="none" stroke="#78909C" strokeWidth="1" />
+      <line x1={cx} y1={263} x2={cx} y2={282} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+
+      {/* FFN / MoE area */}
+      {isMoE ? (
+        <>
+          <rect x={bx-10} y={282} width={bw+20} height={100} rx="8" fill={MOE_BG} stroke={MOE_BD} strokeWidth="1" />
+          <text x={cx} y={298} textAnchor="middle" fill={ACCENT} fontSize="8.5" fontWeight="700">MoE FFN</text>
+          <rect x={bx+15} y={305} width={bw-30} height={22} rx="5" fill="#90A4AE" stroke="#607D8B">
+          </rect>
+          <text x={cx} y={319} textAnchor="middle" fill="#fff" fontSize="8">Router → Top-K Experts</text>
+          <text x={cx} y={338} textAnchor="middle" fill="#546E7A" fontSize="8">{experts}</text>
+          <rect x={bx+15} y={348} width={bw-30} height={22} rx="5" fill={EXPERT_FILL} stroke={EXPERT_BD} />
+          <text x={cx} y={362} textAnchor="middle" fill="#37474F" fontSize="8">SwiGLU × K → Weighted Merge</text>
+          <line x1={cx} y1={382} x2={cx} y2={405} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+        </>
+      ) : (
+        <>
+          <rect x={bx+10} y={282} width={bw-20} height={30} rx="6" fill="#fff" stroke={BD} strokeWidth="1" />
+          <text x={cx} y={301} textAnchor="middle" fill={ACCENT} fontSize="9">Feed Forward (SwiGLU)</text>
+          <line x1={cx} y1={312} x2={cx} y2={405} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+        </>
+      )}
+
+      {/* Norm 2 */}
+      <rect x={bx+10} y={405} width={bw-20} height={24} rx="5" fill="#fff" stroke={BD} strokeWidth="1" />
+      <text x={cx} y={420} textAnchor="middle" fill="#546E7A" fontSize="9">RMSNorm 2</text>
+      <line x1={cx} y1={429} x2={cx} y2={456} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+      <circle cx={cx} cy={443} r="2" fill="#78909C" />
+      <line x1={cx} y1={443} x2={skipX} y2={443} stroke="#78909C" strokeWidth="1" />
+
+      {/* Residual 1 */}
+      <Plus cx={cx} cy={466} />
+      <path d={`M${skipX},${555} L${skipX},${466} L${cx+11},${466}`} fill="none" stroke="#78909C" strokeWidth="1" />
+      <line x1={cx} y1={477} x2={cx} y2={494} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+
+      {/* Attention */}
+      <rect x={bx+10} y={494} width={bw-20} height={36} rx="6" fill={ATTN_BG} stroke="#37474F" strokeWidth="1.2" />
+      <text x={cx} y={514} textAnchor="middle" fill="#fff" fontSize="10" fontWeight="600">{attn}</text>
+      <text x={cx} y={525} textAnchor="middle" fill="#a0aec0" fontSize="8">Causal Self-Attention + RoPE</text>
+      <line x1={cx} y1={530} x2={cx} y2={550} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+
+      {/* Norm 1 */}
+      <rect x={bx+10} y={550} width={bw-20} height={24} rx="5" fill="#fff" stroke={BD} strokeWidth="1" />
+      <text x={cx} y={565} textAnchor="middle" fill="#546E7A" fontSize="9">RMSNorm 1</text>
+      <line x1={cx} y1={574} x2={cx} y2={595} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+      <circle cx={cx} cy={584} r="2" fill="#78909C" />
+      <line x1={cx} y1={584} x2={skipX} y2={584} stroke="#78909C" strokeWidth="1" />
+
+      {/* Block 重复次数 */}
+      <text x={bx-30} y={608} textAnchor="end" fill={ACCENT} fontSize="14" fontWeight="700">{layers} ×</text>
+
+      {/* Embedding */}
+      <line x1={cx} y1={595} x2={cx} y2={632} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+      <rect x={bx-15} y={632} width={bw+30} height={28} rx="6" fill="#fff" stroke={BD} strokeWidth="1" />
+      <text x={cx} y={650} textAnchor="middle" fill={ACCENT} fontSize="9.5">Token Embedding Layer</text>
+      <line x1={cx} y1={660} x2={cx} y2={685} stroke="#666" strokeWidth="1.5" markerEnd="url(#arr-rsn)" />
+      <rect x={bx+10} y={685} width={bw-20} height={24} rx="5" fill="#f3f0ff" stroke="#a29bfe" strokeWidth="1" />
+      <text x={cx} y={701} textAnchor="middle" fill="#6c5ce7" fontSize="9">Input Tokens</text>
+
+      {/* 右侧参数标注 */}
+      {ctx && <text x={W-20} y={520} textAnchor="end" fill="#546E7A" fontSize="8.5" fontWeight="600">ctx = {ctx}</text>}
+      <text x={W-20} y={300} textAnchor="end" fill="#8896A6" fontSize="8.5">推理主干</text>
+      <text x={W-20} y={130} textAnchor="end" fill="#fdcb6e" fontSize="8.5" fontWeight="700">思维链</text>
+
+      {/* 右侧 RL 训练说明 */}
+      <rect x={W-185} y={480} width={160} height={80} rx="8" fill="#FAFBFC" stroke={BD} strokeWidth="0.8" />
+      <text x={W-105} y={494} textAnchor="middle" fill="#8896A6" fontSize="7.5" fontWeight="600">训练方式</text>
+      <text x={W-185+8} y={510} fill="#546E7A" fontSize="7">{training}</text>
+      <text x={W-185+8} y={524} fill="#546E7A" fontSize="7">奖励: 结果正确性验证</text>
+      <text x={W-185+8} y={538} fill="#00b894" fontSize="7">• 无需人工标注推理步骤</text>
+      <text x={W-185+8} y={552} fill="#00b894" fontSize="7">• 模型自主涌现 CoT 能力</text>
+
+      <text x={cx} y={H-16} textAnchor="middle" fill="#b0bec5" fontSize="8" fontStyle="italic">
+        Reasoning-Enhanced LLM Architecture
+      </text>
+    </svg>
+  );
+}
+
+export { TransformerBlockSVG, MoEArchSVG, ReasoningArchSVG, EvolutionPathSVG, COLORS, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG, ThreeDGenArchSVG };

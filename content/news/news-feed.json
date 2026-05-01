@@ -1,24 +1,5 @@
 [
   {
-    "id": "news-20260430-01",
-    "title": "NVIDIA 发布 Gemma 4 VLA Demo：在 Jetson Orin Nano Super 上运行视觉-语言-动作模型",
-    "summary": "NVIDIA 在 Hugging Face 发布 Gemma 4 VLA 在 Jetson Orin Nano Super 上的端侧部署 Demo，展示了视觉-语言-动作模型在边缘设备上的实时推理能力。这是 Google Gemma 4 系列首次在 NVIDIA 嵌入式平台上实现 VLA 任务，标志着具身智能从云端向边缘设备迁移的重要里程碑。",
-    "source": "Hugging Face Blog",
-    "url": "https://huggingface.co/blog/nvidia/gemma4",
-    "date": "2026-04-30",
-    "category": "infra",
-    "tags": [
-      "NVIDIA",
-      "Gemma 4",
-      "VLA",
-      "Jetson",
-      "边缘部署",
-      "具身智能"
-    ],
-    "hot": true,
-    "region": "global"
-  },
-  {
     "id": "news-20260430-02",
     "title": "Ray 2.55.1 发布：分布式 AI 框架持续优化 Serve 推理和 Data 流式处理",
     "summary": "Ray 2.55.1 正式发布，包含 Ray Serve 推理性能优化、Ray Data 流式处理稳定性改进以及 KubeRay Operator 兼容性更新。作为分布式 AI 计算的核心框架，Ray 在大模型训练和推理编排领域持续巩固其生态地位，与 vLLM/SGLang 等推理引擎的集成进一步深化。",
@@ -30,75 +11,6 @@
       "Ray",
       "分布式计算",
       "推理优化",
-      "开源"
-    ],
-    "hot": false,
-    "region": "global"
-  },
-  {
-    "id": "news-20260430-03",
-    "title": "LightOn AI 发布 DenseOn-LateOn：稀疏与密集检索融合的新范式",
-    "summary": "LightOn AI 在 Hugging Face 发布 DenseOn-LateOn 技术方案，将密集向量检索与稀疏 late interaction 机制融合，在信息检索任务上实现了更好的精度-效率平衡。该方法对 RAG 系统的检索阶段有直接应用价值，可显著提升长文档检索的召回率。",
-    "source": "Hugging Face Blog",
-    "url": "https://huggingface.co/blog/lightonai/denseon-lateon",
-    "date": "2026-04-30",
-    "category": "llm",
-    "tags": [
-      "RAG",
-      "信息检索",
-      "LightOn",
-      "向量检索"
-    ],
-    "hot": false,
-    "region": "global"
-  },
-  {
-    "id": "news-20260430-04",
-    "title": "OpenRA-RL：开放域机器人强化学习框架，支持多任务泛化训练",
-    "summary": "研究者在 Hugging Face 发布 OpenRA-RL 框架，专注于开放域机器人操作的强化学习训练。该框架支持多任务泛化、Sim-to-Real 迁移和奖励函数自动设计，降低了机器人 RL 训练的门槛。对 VLA 模型的 RL 后训练阶段有重要参考价值。",
-    "source": "Hugging Face Blog",
-    "url": "https://huggingface.co/blog/jadetan/openra-rl",
-    "date": "2026-04-30",
-    "category": "agent",
-    "tags": [
-      "机器人",
-      "强化学习",
-      "Sim-to-Real",
-      "具身智能"
-    ],
-    "hot": false,
-    "region": "global"
-  },
-  {
-    "id": "news-20260430-05",
-    "title": "KV Cache 优化技术全景：从 GQA 到 MLA 的工程实践指南",
-    "summary": "Hugging Face 社区发布 KV Cache 优化技术深度解析博文，系统梳理了从 MHA 到 GQA/MQA 再到 MLA 的 KV Cache 压缩演进路径，包含 PagedAttention、Prefix Caching、Speculative Decoding 等工程优化实践。对大模型推理部署工程师有重要参考价值。",
-    "source": "Hugging Face Blog",
-    "url": "https://huggingface.co/blog/not-lain/kv-caching",
-    "date": "2026-04-30",
-    "category": "llm",
-    "tags": [
-      "KV Cache",
-      "推理优化",
-      "MLA",
-      "GQA",
-      "大模型部署"
-    ],
-    "hot": true,
-    "region": "global"
-  },
-  {
-    "id": "news-20260430-06",
-    "title": "MLflow v3.12.0 进入 RC 阶段：新版本预计增强 Tracing 和 AI Gateway 能力",
-    "summary": "MLflow v3.12.0 Release Candidate 已发布至 GitHub，预计正式版将进一步增强 MLflow Tracing 的 OpenTelemetry 集成和 AI Gateway 多模型路由能力。作为 MLOps 领域最广泛使用的开源平台，MLflow 3.x 系列持续向 GenAI 全生命周期管理演进。",
-    "source": "GitHub Releases",
-    "url": "https://github.com/mlflow/mlflow/releases",
-    "date": "2026-04-30",
-    "category": "infra",
-    "tags": [
-      "MLflow",
-      "MLOps",
-      "Tracing",
       "开源"
     ],
     "hot": false,

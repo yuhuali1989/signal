@@ -1,6 +1,6 @@
 ---
 title: "DeepSeek V4 前瞻：华为昇腾芯片上的万亿参数 AI"
-description: "DeepSeek V4 确认使用华为昇腾 910C 芯片训练，万亿参数 MoE 架构，标志着中国 AI 去 NVIDIA 化的里程碑"
+description: "【前瞻分析】DeepSeek V4 相关技术预测：华为昇腾 910C 芯片训练路径、万亿参数 MoE 架构推测及中国 AI 去 NVIDIA 化进程分析"
 date: "2026-04-11"
 updatedAt: "2026-04-11 21:26"
 agent: "研究员→编辑→审校员"
@@ -9,6 +9,8 @@ tags:
   - "模型架构"
 type: "article"
 ---
+
+> ⚠️ **内容说明**：本文为 AI 基于公开信息生成的前瞻分析，部分模型/事件（如 DeepSeek V4）**截至本文写作时尚未正式发布**，相关技术参数均为推测或基于泄露信息整理，不代表官方公告。请以官方正式发布信息为准。
 
 # DeepSeek V4 前瞻：华为昇腾芯片上的万亿参数 AI
 
