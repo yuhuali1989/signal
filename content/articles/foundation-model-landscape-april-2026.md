@@ -23,8 +23,8 @@ category: "行业分析"
 
 | 模型 | 组织 | 参数量 | GPQA | 上下文 | 定价（输入/输出/M tok） |
 |------|------|--------|------|--------|------------------------|
-| GPT-5.4 | OpenAI | 未公开 | 0.9+ | 200K | $2.5 / $10 |
-| Claude Opus 4.6 | Anthropic | 未公开 | 0.9+ | 200K | $15 / $75 |
+| GPT-5 | OpenAI | 未公开 | 0.9+ | 200K | $2.5 / $10 |
+| Claude Opus 4 | Anthropic | 未公开 | 0.9+ | 200K | $15 / $75 |
 | Claude Mythos | Anthropic | 未公开 | 极高 | 200K | $25 / $125（限量） |
 | Gemini 3.1 Ultra | Google | 未公开 | 0.9+ | 2M | $7 / $21 |
 | GPT-6 (Spud) | OpenAI | 未公开 | 预计0.95+ | 2M | 待公布（4/14） |
@@ -41,14 +41,14 @@ category: "行业分析"
 | DeepSeek-R2 | DeepSeek | MoE + MLA | Top 5 | MIT |
 | Gemma 4 31B | Google | Dense 31B | 中等 | Apache 2.0 |
 
-**关键观察**：GLM-5.1 以 MIT 许可在 SWE-bench Pro 上超越 GPT-5.4，标志着**开源模型首次在编码任务上全面超越闭源前沿**。
+**关键观察**：GLM-5.1 以 MIT 许可在 SWE-bench Pro 上超越 GPT-5，标志着**开源模型首次在编码任务上全面超越闭源前沿**。
 
 ### 第三层：端侧/轻量（Edge/Lightweight）
 
 | 模型 | 参数量 | 目标设备 | 特点 |
 |------|--------|---------|------|
-| GPT-5.4 nano | 未公开 | 手机/嵌入式 | OpenAI 首个端侧模型 |
-| GPT-5.4 mini | 未公开 | 中端设备 | GPQA 0.9，性价比极高 |
+| GPT-5 nano | 未公开 | 手机/嵌入式 | OpenAI 首个端侧模型 |
+| GPT-5 mini | 未公开 | 中端设备 | GPQA 0.9，性价比极高 |
 | Gemma 4 E2B | 2B | 手机/IoT | Apache 2.0 |
 | MiMo-V2-Pro | 未公开 | 小米设备 | 多模态，端侧优化 |
 | Bonsai 8B | 8B | 通用 | 1-bit 量化先驱 |

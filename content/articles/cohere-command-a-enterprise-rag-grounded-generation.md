@@ -166,14 +166,14 @@ Command A 在训练阶段专门设计了**反幻觉训练**：
 定价对比 ($/1M tokens):
                     Input    Output   Context Window
 Cohere Command A    $0.50    $1.50    128K
-GPT-5.4             $10.00   $30.00   256K
-Claude Opus 4.6     $15.00   $75.00   200K
-DeepSeek V4         $0.30    $0.90    1M
+GPT-5              $10.00   $30.00   256K
+Claude Opus 4      $15.00   $75.00   200K
+DeepSeek V3        $0.30    $0.90    1M
 
 Command A 的定位很明确:
   ❌ 不是最强的通用模型
   ✅ 是最强的企业文档问答模型
-  ✅ 价格只有 GPT-5.4 的 1/20
+  ✅ 价格只有 GPT-5 的 1/20
   ✅ 原生 Grounded Generation 消除幻觉
 
 部署选项:
@@ -206,7 +206,7 @@ RAG 3.0 (2026, Command A 代表):
 1. **Retrieval 仍然重要** — Command A 不是万能的，检索质量仍然是上限
 2. **选择专用模型** — 文档问答不一定需要最强通用模型
 3. **归因是企业刚需** — 没有 citation 的 RAG 无法通过企业合规审查
-4. **成本要算清楚** — Command A 的性价比在企业 RAG 场景下远超 GPT-5.4
+4. **成本要算清楚** — Command A 的性价比在企业 RAG 场景下远超 GPT-5
 
 ## 结语
 

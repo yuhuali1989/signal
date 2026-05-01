@@ -1,6 +1,6 @@
 ---
 title: "Gemini 4 Nano：端侧 100B MoE 如何实现 40 tok/s 推理"
-description: "Google I/O 2026 发布的 Gemini 4 Nano 在手机端实现四模态推理，本文拆解其 MoE 稀疏激活、INT4 量化和 On-Device RAG 三大核心技术"
+description: "【前瞻分析】Gemini 4 Nano 技术架构推测：端侧 MoE 稀疏激活、INT4 量化和 On-Device RAG 三大核心技术分析，截至写作时该模型尚未正式发布"
 date: "2026-04-14"
 tags:
   - "Gemini"
@@ -9,6 +9,8 @@ tags:
   - "量化"
 type: "article"
 ---
+
+> ⚠️ **内容说明**：本文为 AI 基于公开信息生成的前瞻分析，部分模型/事件（如 Gemini 4 Nano）**截至本文写作时尚未正式发布**，相关技术参数均为推测或基于泄露信息整理，不代表官方公告。请以官方正式发布信息为准。
 
 # Gemini 4 Nano：端侧 100B MoE 如何实现 40 tok/s 推理
 

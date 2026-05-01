@@ -70,7 +70,7 @@ category: "模型解析"
 | Qwen3.6-27B | 3B | 27B | 72.5% | ✅ Apache 2.0 |
 | Phi-4-mini | 3.8B | 3.8B | 68.2% | ✅ MIT |
 | Gemma 3 4B | 4B | 4B | 66.5% | ✅ Gemma ToS |
-| DeepSeek-V4 flash（API） | — | — | ~74% | ❌ 仅 API |
+| DeepSeek-V3（API） | — | — | ~74% | ❌ 仅 API |
 
 **Qwen3.6-35B-A3B 在开源 3B 激活参数档位已经建立了明显领先**，且 Apache 2.0 协议允许完全商业化使用，是目前该档位的最优选择。
 

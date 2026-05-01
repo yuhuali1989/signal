@@ -6,7 +6,7 @@ import DatasetExplorer from '@/components/DatasetExplorer';
 import BenchmarkBoard from '@/components/BenchmarkBoard';
 import ArchDiffTool from '@/components/ArchDiffTool';
 import ArchEvolution from '@/components/ArchEvolution';
-import { TransformerBlockSVG, MoEArchSVG, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG, ThreeDGenArchSVG } from '@/components/ArchDiagram';
+import { TransformerBlockSVG, MoEArchSVG, ReasoningArchSVG, AutonomousArchSVG, MultimodalArchSVG, SSMArchSVG, VideoGenArchSVG, ThreeDGenArchSVG } from '@/components/ArchDiagram';
 
 /* ─── 模型类型标签 ─── */
 const categoryLabels = {
@@ -186,6 +186,8 @@ function ModelGallery({ models }) {
                           <ThreeDGenArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         ) : (m.type === 'video' || m.type === 'image') ? (
                           <VideoGenArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
+                        ) : (m.type === 'reasoning') ? (
+                          <ReasoningArchSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         ) : (
                           <TransformerBlockSVG factSheet={m.factSheet} modelName={`${m.name} (${m.params})`} />
                         )}
