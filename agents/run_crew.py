@@ -259,7 +259,7 @@ def call_llm(system_prompt, user_prompt, model=None):
                 [CLAUDE_BIN, '-p', '--dangerously-skip-permissions', full_prompt],
                 capture_output=True,
                 text=True,
-                timeout=600,  # 单次调用最多 10 分钟
+                timeout=1200,  # 单次调用最多 20 分钟
                 cwd=str(ROOT),  # signal 项目根目录，claude 可访问所有文件
             )
             if r.returncode == 0 and r.stdout.strip():
@@ -842,133 +842,71 @@ def run_b1_news(count=3):
 
     today = datetime.now().strftime('%Y-%m-%d')
 
-    # 使用 ai-wiki.md §六 B1 角色完整提示词，claude 自主完成全流程
-    prompt = f"""你是 Signal 知识平台的 AI 新闻编辑员，职责是**自主采集新闻 → 验链 → 写入声浪和全行业动态 → 联动更新排行榜/架构演进 → 更新本模块 Roadmap**。
-你独立完成从采集到写入的全流程，不依赖中央采集员。
+    # B1 新闻采集提示词 — 用 WebSearch 搜索引擎聚合，不逐站访问
+    yesterday = (datetime.now() - __import__('datetime').timedelta(days=1)).strftime('%Y-%m-%d')
+    prompt = f"""你是 Signal 知识平台的 AI 新闻编辑员，今天日期：{today}。
 
-## 前置步骤
+## ⚡ 采集策略（搜索引擎聚合版）
 
-1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和信息源白名单。
-2. 读取 `content/news/news-feed.json` 前 100 行，了解已有声浪条目（去重用）。
-3. 读取 `src/components/IndustryNewsFeed.js` 前 80 行，了解已有全行业动态条目（去重用）。
-4. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `coverageGaps`，了解本模块的重点采集方向。
+**不要逐个访问公司博客或媒体网站**。直接用 **WebSearch** 做 3 条搜索，一次拿到跨来源的新闻列表：
 
-> 📌 **启动检查清单（读完 Roadmap 后，在对话中输出以下确认）**：
-> - 本模块当前有哪些 🔴 高优待完成条目？（列出 1-3 条）
-> - 本模块有哪些已知内容盲区或过期数据需要本次修复？
-> - 本次执行的重点是什么？（一句话概括）
->
-> 如果 Roadmap 中本模块无待完成条目，则按默认日常任务执行。
+### 第一步：3 条 WebSearch 搜索（全部执行）
 
-
----
-
-## ⛔ 真实性铁律（违反则本次采集作废）
-
-1. **每一条新闻必须来自真实、可追溯的公开信息源**，严禁凭印象 / 大模型幻觉 / 行业惯性编造任何内容。
-2. **禁止虚构的元素**：公司名 / 产品名 / 模型名 / 版本号 / 参数量 / 发布日期 / 融资金额 / Benchmark 分数 / 人名 / URL。
-3. **每条新闻的 url/link 字段必须是真实可访问的原始出处**，不是搜索结果页、聚合首页或已失效页面。
-4. **不确定时**：宁可少写一条，也不允许编造填充凑数。宁缺毋滥。
-
----
-
-## ✅ 信息源白名单（只能从以下来源采集）
-
-**AI 公司官方博客**：Anthropic (`anthropic.com/news/`) · OpenAI (`openai.com/index/`) · Google DeepMind (`deepmind.google/discover/blog/`) · Meta AI (`ai.meta.com/blog/`) · Qwen (`qwenlm.github.io/blog/`) · DeepSeek (`deepseek.com/blog/`) · Mistral (`mistral.ai/news/`) · NVIDIA (`nvidianews.nvidia.com/news/` · `developer.nvidia.com/blog/`)
-
-**代码/模型/论文**：GitHub Releases (`github.com/{{org}}/{{repo}}/releases/`) · HuggingFace Blog (`huggingface.co/blog/`) · arXiv (`arxiv.org/abs/{{id}}`)
-
-**AI Infra 开源项目 Releases（重点追踪，近 14 天内新版本）**：
-- Kubernetes: `github.com/kubernetes/kubernetes/releases`
-- Volcano: `github.com/volcano-sh/volcano/releases`
-- Koordinator: `github.com/koordinator-sh/koordinator/releases`
-- HAMi: `github.com/Project-HAMi/HAMi/releases`
-- Kueue: `github.com/kubernetes-sigs/kueue/releases`
-- Apache Iceberg: `github.com/apache/iceberg/releases`
-- Apache Airflow: `github.com/apache/airflow/releases`
-- MLflow: `github.com/mlflow/mlflow/releases`
-- Unity Catalog: `github.com/unitycatalog/unitycatalog/releases`
-- Apache Spark: `github.com/apache/spark/releases`
-- Ray: `github.com/ray-project/ray/releases`
-
-**权威媒体**：VentureBeat · MIT Tech Review · Ars Technica · TechCrunch（需验链）· The Verge（需验链）
-
-**国内来源**：36Kr · 机器之心 · 量子位 · 虎嗅 · 极客公园
-
-**软件/云/数据行业（全行业动态专用）**：Databricks · Snowflake · AWS · Google Cloud · Salesforce · CrowdStrike · Vercel · Cloudflare · Microsoft · Palantir · ServiceNow · HashiCorp
-
-**游戏/硬件/消费电子（全行业动态专用）**：NVIDIA 新闻 (`nvidianews.nvidia.com/news/`) · AMD (`amd.com/en/newsroom`) · Intel (`newsroom.intel.com`) · Apple (`apple.com/newsroom`) · Sony · Nintendo · Steam/Valve · IGN · GameSpot
-
-**AI Infra / 开源生态（全行业动态专用）**：GitHub Blog (`github.blog`) · CNCF Blog (`cncf.io/blog`) · Linux Foundation · Apache Blog · Kubernetes Blog (`kubernetes.io/blog`)
-
----
-
-## 📋 采集流程（按顺序执行，不可跳步）
-
-**步骤 1：扫描信息源**，记录候选新闻（标题 + 原始 URL + 原文发布日期）
-
-**步骤 2：验链（每条必做）**
-```bash
-curl -s -o /dev/null -w "%{{http_code}}" --max-time 8 -L -A "Mozilla/5.0 (SignalBot)" <url>
 ```
-- 200/301/302 → 保留；403 → 标记"需人工确认"；404/5xx/timeout → **丢弃**
+搜索1：AI model release OR benchmark OR agent framework site:huggingface.co OR site:deepmind.google OR site:anthropic.com OR site:openai.com after:{yesterday}
+搜索2：AI infrastructure OR LLM deployment OR open source release site:github.com OR site:venturebeat.com OR site:techcrunch.com after:{yesterday}
+搜索3：人工智能 大模型 发布 OR 融资 OR 开源 after:{yesterday}
+```
 
-**步骤 3：去重**，与 news-feed.json 近 60 天条目对比标题和 url
+每条搜索返回的结果里，提取：**标题、来源域名、日期、完整 URL**，汇总成候选列表（预计 15-25 条）。
 
-**步骤 4：写入**（通过验链后直接写入，不输出中间草稿）
+### 第二步：批量 curl 验链（一条命令并发）
 
----
+```bash
+for url in URL1 URL2 URL3 ...; do
+  curl -s -o /dev/null -w "$url %{{http_code}}\\n" --max-time 8 -L -A "Mozilla/5.0" "$url" &
+done
+wait
+```
+只保留 200/301/302 的条目。
 
-## 写入任务（全程免审批）
+### 第三步：去重 + 写入
 
-### 任务 1：写入声浪 content/news/news-feed.json
-
-- 将通过验链的声浪条目写入 news-feed.json 头部（只写 200/301/302 的条目）
-- 写入格式：`{{ "id": "news-YYYYMMDD-xxx", "title": "...", "summary": "80-150字", "source": "...", "url": "...", "date": "YYYY-MM-DD", "category": "llm|infra|agent|ad|data|industry", "tags": [...], "hot": true, "region": "global|china" }}`
-- JSON 文件使用 UTF-8 直接写中文，严禁 `\\uXXXX` 转义
-- 对 30 天前的旧条目，将同类话题合并为一条摘要条目
-- **date 字段必须覆盖到今天（{today}）**
-
-> 🔔 **新闻写入后联动检查（必须执行）**：
-> 1. **排行榜**：若本次新闻中出现新模型发布 / Benchmark 刷新 / 价格调整等信息，立即更新 `content/benchmarks/benchmarks.json`
-> 2. **架构演进时间线**：若本次新闻中出现新模型架构创新，立即在 `src/components/ArchEvolution.js` 的 `TIMELINE` 数组头部追加新记录
-
-### 任务 2：写入全行业动态 src/components/IndustryNewsFeed.js
-
-**必须追踪的厂商清单（每轮至少覆盖 4 个不同厂商）**：
-☁️ AWS · Google Cloud · Microsoft Azure · 阿里云 · 华为云 · 腾讯云 · 百度智能云
-🗄️ Databricks · Snowflake · Confluent · dbt Labs
-💼 Salesforce · ServiceNow · SAP/Oracle · Adobe
-💻 NVIDIA · AMD · Intel · Apple · 华为 · 国产GPU
-🚗 Tesla · Waymo · 小鹏/理想/蔚来 · 华为智选 · Mobileye
-🔐 CrowdStrike · Palo Alto · Okta
-🚀 AI独角兽融资/IPO/并购（$500M+）
-
-- 每条 title 必须包含「公司名 + 具体动作」
-- 国内外各半，每次 8-12 条，每轮至少覆盖 4 个不同厂商
-- 对超过 90 天的旧条目进行合并归档，保持活跃列表 ≤60 条
-
-### 任务 3：更新本模块 Roadmap
-
-- 使用 `replace_in_file` 局部更新 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
-- 严禁全量重写 strategy-data.js
+1. 读取 `content/news/news-feed.json` 前 80 行去重（标题/URL 相近的跳过）
+2. 读取 `src/components/IndustryNewsFeed.js` 前 60 行了解已有全行业动态
 
 ---
 
-## 重要注意事项
+## ⛔ 真实性铁律
 
-- 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\\uXXXX）
-- JSON 文件修改前先用 grep_search 确认当前末尾结构，避免破坏 JSON 格式
-- 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
-- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须验证 http://localhost:3000 是否正常
+1. **每条新闻必须来自 WebSearch 实际返回的结果**，严禁凭印象编造
+2. **url 字段必须是 curl 验证过 200/301/302 的真实链接**
+3. 不确定时宁可少写，禁止凑数
 
 ---
 
-## 🔍 完成后自检（每次必做，不可跳过）
+## 写入任务
 
-逐条检查本次写入的所有内容，URL curl 验证返回 404/5xx 的立即删除，输出一行自检结论。
+### 声浪 content/news/news-feed.json
+- 写入 news-feed.json **头部**，目标 6-10 条，**date 必须含今天 {today}**
+- 格式：`{{ "id": "news-{today.replace('-','')}-xx", "title": "...", "summary": "80-150字中文", "source": "...", "url": "...", "date": "{today}", "category": "llm|infra|agent|data|industry", "tags": [...], "hot": true, "region": "global|china" }}`
+- **修改前先读文件确认 JSON 结构，用 Edit 在第一个 `[` 后插入新条目，不要整体重写**
+- 写完后：`node -e "JSON.parse(require('fs').readFileSync('content/news/news-feed.json','utf8')); console.log('JSON OK')"` 验证
 
-- 写入完成后，**明确告知系统编辑员**："B1 新闻写入完成"
+### 全行业动态 src/components/IndustryNewsFeed.js
+- 在 NEWS_DATA 数组头部插入 4-6 条，聚焦**公司商业动态**（财报/融资/定价/并购），非技术发布
+- 国内外各半，每条 title 含「公司名 + 具体动作」
+- **修改前先读文件前 30 行确认数组结构**
+
+### 新闻写入后联动
+- 若有新模型发布/Benchmark 刷新 → 更新 `content/benchmarks/benchmarks.json`
+- 若有架构创新 → 在 `src/components/ArchEvolution.js` TIMELINE 头部追加
+
+---
+
+## 完成后输出
+
+最后输出一行：`✅ B1完成：声浪+N条({today})，全行业动态+M条`
 """
 
     result = call_llm("", prompt)
@@ -1436,158 +1374,133 @@ def run_b7_vla():
 
 def run_b8_strategy():
     """
-    B8 战略编辑员 — 更新 strategy-data.js 的战略机会信号
-    写入：src/lib/strategy-data.js（topOpportunities/githubFindings 追加新条目）
-    返回: updates_summary
+    B8 战略编辑员 — 自主扫描 Palantir/Databricks/a16z/Sequoia 等信息源，更新 strategy-data.js
+    claude 使用完整 B8 提示词，通过 curl 验证 URL，直接写入文件
+    返回: "" (claude 自主写入)
     """
-    print(f"\n🎯 B8 战略编辑员 — 更新战略机会信号...")
-
-    STRATEGY_FILE = ROOT / 'src' / 'lib' / 'strategy-data.js'
+    print(f"\n🎯 B8 战略编辑员 — 扫描战略信息源更新战略机会信号...")
 
     if BACKEND == 'template':
         print("  ⚠️ 模板模式，跳过 B8（需要 LLM 后端）")
         return ""
 
-    if not STRATEGY_FILE.exists():
-        print("  ⚠️ strategy-data.js 不存在，跳过 B8")
-        return ""
-
     today = datetime.now().strftime('%Y-%m-%d')
 
-    system = """你是 Signal 知识平台的 B8 战略编辑员，专注于 AI 行业战略动态分析。
+    prompt = f"""你是 Signal 知识平台的 AI 战略编辑员，职责是**自主追踪行业战略/商业分析动态 → 更新业务原生战略页面所有 Tab → 更新本模块 Roadmap**。
+你独立完成从信息追踪到页面更新的全流程，不依赖中央采集员。
 
-追踪方向：
-- Palantir、Databricks、Snowflake、Salesforce 等企业 AI 布局
-- Gartner/IDC/a16z 最新报告和预测
-- AI 独角兽融资事件（>$100M 轮次）
-- 大模型厂商战略变化（OpenAI/Anthropic/Google/Meta/DeepSeek）
-- AI Agent/应用层新机会
+今天是 {today}。
 
-任务：生成最新 AI 战略机会报告。
+## 前置步骤
 
-输出 JSON 格式：
-{
-  "opportunities": [
-    {
-      "id": "唯一-id（小写连字符）",
-      "title": "机会标题（30字以内）",
-      "priority": "P0" | "P1" | "P2",
-      "value": "极高" | "高" | "中",
-      "effort": "低" | "中" | "高",
-      "desc": "机会描述（80-150字）",
-      "action": "建议行动（30字以内）",
-      "color": "#hexcode"
-    }
-  ],
-  "github_findings": [
-    {
-      "repo": "org/repo",
-      "stars": "数量（如 5k+）",
-      "type": "仓库类型",
-      "priority": "P0" | "P1",
-      "reason": "关注原因（40字以内）",
-      "action": "建议行动（20字以内）"
-    }
-  ],
-  "summary": "本期战略摘要（80字）"
-}
+1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前 `/strategy/` 页面的所有 Tab 内容和数据结构（8 个 Tab：行业困境/全球破局/Palantir 深度/应对框架/FDE×飞轮/交付形态/行业对标/模型安全/中国借鉴）。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `productPlans`，了解本模块的重点方向和待完成任务。
 
-只返回 JSON，不要解释。"""
+> 📌 **启动检查清单（读完 Roadmap 后，在对话中输出以下确认）**：
+> - 本模块当前有哪些 🔴 高优待完成条目？（列出 1-3 条）
+> - 本模块有哪些已知内容盲区或过期数据需要本次修复？
+> - 本次执行的重点是什么？（一句话概括）
+>
+> 如果 Roadmap 中本模块无待完成条目，则按默认日常任务执行。
 
-    user = f"""今天是 {today}，请生成最近 2-4 周的 AI 战略机会报告。
+3. 自主扫描以下信息源（近 14 天内）：
+   - **公司财报/投资者日**：Palantir / Databricks / Snowflake / Salesforce / ServiceNow 官方 IR 页面
+   - **行业报告**：Gartner / IDC / a16z / Sequoia 最新报告
+   - **战略分析媒体**：Stratechery / Ben Thompson · The Information · Bloomberg Technology
+   - **国内来源**：36Kr 企业服务 · 虎嗅商业分析 · 晚点 LatePost
+4. 所有引用 URL 必须真实可访问（写入前 curl 验证）。
 
-聚焦：
-1. 最新 AI 公司重大融资事件（>$500M）
-2. 大模型厂商最新产品/定价/商业策略变化
-3. GitHub 上近期爆火的 AI 框架/工具（过去两周 trending）
-4. 企业 AI 采购/部署的新信号
+---
 
-生成 2-3 条机会 + 2-3 个 GitHub 发现，直接返回 JSON。"""
+## 写入任务（全程免审批）
 
-    raw = call_llm(system, user)
-    if not raw:
-        print("  ⚠️ LLM 未返回结果，跳过 B8")
+### 任务 1：更新全球破局思路 Tab
+
+- 若有新的破局案例或信号（Palantir 新合同 / Databricks 新融资 / AI 原生企业软件新进展），更新对应策略的「近期声浪信号」
+- 更新 `lastUpdated` 字段为今日日期
+- 若有新的破局策略值得加入，追加到策略列表
+
+### 任务 2：更新 Palantir 模式深度解析 Tab
+
+- 若 Palantir 有新产品发布 / 新合同 / 财务数据更新，更新对应内容
+- 若 AIP / Foundry / Gotham 有新特性，更新产品矩阵
+
+### 任务 3：更新行业对标 Tab
+
+- 若 Palantir/Databricks/Salesforce/Tesla 有重大战略变化，更新对比矩阵
+- 若有新的值得对标的公司，追加到对标列表
+
+### 任务 4：更新模型安全 Tab
+
+- 若有新的 AI 安全事件 / 监管政策 / 主流模型提供商安全更新，更新对应内容
+- 更新主流模型提供商安全对比表（Anthropic/OpenAI/Google/DeepSeek/Qwen）
+
+### 任务 5：更新本模块 Roadmap
+
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若本轮发现新的战略方向或商业模式创新，追加到 `topOpportunities`
+- 若本轮完成了 `productPlans` 中的战略相关条目，将其标记为完成或移除
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
+
+## 重要注意事项
+
+- 所有引用 URL 必须真实可访问（写入前 curl 验证）
+- 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\\uXXXX）
+- 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
+- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2
+
+---
+
+## 🔍 完成后自检（每次必做，不可跳过）
+
+### 自检 1：真实性核查
+
+逐条检查本次写入的所有内容，对照以下标准：
+
+| 检查项 | 标准 | 不合格处理 |
+|--------|------|-----------|
+| URL/链接 | curl 验证返回 200/301/302 | 立即删除该条目 |
+| 数字/数据 | 来自原始出处，非估算或推断 | 标注"待核实"或删除 |
+| 日期 | 与原文发布日期一致 | 修正为正确日期 |
+| 公司/产品名 | 与官方命名一致 | 修正拼写/大小写 |
+| 版本号 | 来自 GitHub Release 或官方公告 | 修正或删除 |
+
+**自检结论**：在对话中输出一行 `✅ 真实性自检通过（N 条写入，0 条删除）` 或 `⚠️ 自检发现 N 处问题，已修正`
+
+### 自检 2：可靠性核查
+
+- **覆盖完整性**：本次是否遗漏了重要信息源？是否有明显的内容盲区？
+- **时效性**：写入内容是否都在合理的时间窗口内（非过期信息）？
+- **一致性**：新写入内容与已有内容是否存在矛盾（如同一模型的不同版本号）？
+
+**自检结论**：在对话中输出一行 `✅ 可靠性自检通过` 或 `⚠️ 发现 N 处可靠性问题：[简述]`
+
+### 自检 3：本次来不及做的优化 → 写入 Roadmap
+
+在执行过程中，若发现以下情况，**必须写入 `src/lib/strategy-data.js` 的 `SITE_ROADMAP.productPlans`**：
+
+- 发现了有价值但本次来不及深入的内容方向
+- 发现了现有页面结构需要优化但本次未动的地方
+- 发现了数据缺失/过期但本次未修复的条目
+- 发现了新的信息源值得长期追踪
+
+**写入格式**（追加到 `productPlans.categories[content].items[]` 或 `topOpportunities[]`）：
+```js
+{{ priority: '🟡', title: '优化项标题', desc: '具体描述：发现了什么问题/机会，建议如何改进', source: 'B8自检-{today}' }}
+```
+
+**使用 `replace_in_file` 局部追加，严禁全量重写 strategy-data.js**
+
+- 写入完成后，**明确告知系统编辑员**："B8 战略更新完成"
+"""
+
+    result = call_llm("", prompt)
+    if not result:
+        print("  ⚠️ B8 claude 未返回结果")
         return ""
 
-    strategy_data_new = {}
-    try:
-        strategy_data_new = _parse_json_robust(raw)
-    except (ValueError, json.JSONDecodeError) as e:
-        print(f"  ⚠️ JSON 解析失败: {e}")
-        return ""
-
-    opportunities = strategy_data_new.get('opportunities', [])
-    github_findings = strategy_data_new.get('github_findings', [])
-    b8_summary = strategy_data_new.get('summary', '')
-
-    if not opportunities and not github_findings:
-        print("  ℹ️ 无新内容，跳过 B8 写入")
-        return ""
-
-    # 读取现有 strategy-data.js 内容
-    content = STRATEGY_FILE.read_text(encoding='utf-8')
-    new_content = content
-
-    # 在 topOpportunities 数组中追加新机会（在第一个 { 之前插入）
-    if opportunities:
-        # 找到 topOpportunities 数组，在开头插入新条目
-        opp_pattern = re.compile(r'(topOpportunities:\s*\[)')
-        match = opp_pattern.search(new_content)
-        if match:
-            insert_pos = match.end()
-            # 生成新条目的 JS 代码
-            new_opps_js = ''
-            for opp in opportunities[:2]:  # 最多插入2个
-                opp_id = opp.get('id', f'b8-{today}')
-                new_opps_js += f"""
-    {{
-      id: '{opp_id}',
-      title: '{opp.get("title", "").replace("'", "\\'")}',
-      priority: '{opp.get("priority", "P1")}',
-      value: '{opp.get("value", "中")}',
-      effort: '{opp.get("effort", "中")}',
-      desc: '{opp.get("desc", "").replace("'", "\\'")[:120]}',
-      action: '{opp.get("action", "").replace("'", "\\'")}',
-      color: '{opp.get("color", "#6c5ce7")}',
-    }},"""
-            new_content = new_content[:insert_pos] + new_opps_js + new_content[insert_pos:]
-            for opp in opportunities[:2]:
-                print(f"    + 机会: {opp.get('title', '')[:50]}")
-
-    # 在 githubFindings 数组中追加新发现
-    if github_findings:
-        gh_pattern = re.compile(r'(githubFindings:\s*\[)')
-        match = gh_pattern.search(new_content)
-        if match:
-            insert_pos = match.end()
-            new_gh_js = ''
-            for gh in github_findings[:2]:
-                new_gh_js += f"""
-    {{
-      repo: '{gh.get("repo", "")}',
-      stars: '{gh.get("stars", "?")}',
-      type: '{gh.get("type", "未知")}',
-      priority: '{gh.get("priority", "P1")}',
-      reason: '{gh.get("reason", "").replace("'", "\\'")}',
-      action: '{gh.get("action", "").replace("'", "\\'")}',
-    }},"""
-            new_content = new_content[:insert_pos] + new_gh_js + new_content[insert_pos:]
-            for gh in github_findings[:2]:
-                print(f"    + GitHub: {gh.get('repo', '')}")
-
-    # 更新 lastUpdated 日期
-    new_content = re.sub(
-        r"(SITE_ROADMAP\s*=\s*\{[^}]{0,200}lastUpdated:\s*')[^']*(')",
-        rf'\g<1>{today}\g<2>',
-        new_content
-    )
-
-    if new_content != content:
-        STRATEGY_FILE.write_text(new_content, encoding='utf-8')
-
-    result = f"{len(opportunities)} 个机会 + {len(github_findings)} 个 GitHub 发现: {b8_summary[:60] if b8_summary else ''}"
-    print(f"  ✅ B8 完成：{result}")
-    return result
+    print(f"  ✅ B8 完成（claude 自主完成写入）")
+    return result[:200] if result else ""
 
 
 # ═══════════════════════════════════════════
@@ -1596,157 +1509,124 @@ def run_b8_strategy():
 
 def run_b9_lab():
     """
-    B9 实验室编辑员 — 更新 lab-data.js 研究课题 + quant-data.js 量化行情
-    写入：src/lib/lab-data.js（LAB_PROJECTS 追加新课题）
-    返回: updates_summary
+    B9 实验室编辑员 — 自主扫描 arXiv cs.CV/cs.GR 和量化社区，更新 lab-data.js + quant-data.js
+    claude 使用完整 B9 提示词，通过 curl 验证 URL，直接写入文件
+    返回: "" (claude 自主写入)
     """
-    print(f"\n🔬 B9 实验室编辑员 — 更新实验室研究方向...")
-
-    LAB_FILE = ROOT / 'src' / 'lib' / 'lab-data.js'
-    QUANT_FILE = ROOT / 'src' / 'lib' / 'quant-data.js'
+    print(f"\n🔬 B9 实验室编辑员 — 扫描 arXiv/量化社区更新实验室和量化页面...")
 
     if BACKEND == 'template':
         print("  ⚠️ 模板模式，跳过 B9（需要 LLM 后端）")
         return ""
 
     today = datetime.now().strftime('%Y-%m-%d')
-    today_short = datetime.now().strftime('%Y-%m')
-    updates_made = []
 
-    # ── Step 1: 更新 lab-data.js 实验课题 ──
-    if LAB_FILE.exists():
-        system_lab = """你是 Signal 知识平台的 B9 实验室编辑员，专注于轻量级自动驾驶/NeRF/扩散模型研究课题整理。
+    prompt = f"""你是 Signal 知识平台的 AI 实验室编辑员，职责是**自主追踪前沿技术/量化交易进展 → 更新实验室和量化业务页面 → 更新本模块 Roadmap**。
+你独立完成从信息追踪到页面更新的全流程，不依赖中央采集员。
 
-定位：低算力可复现的研究项目（单卡 3090/4090，<1 小时训练）
+今天是 {today}。
 
-追踪方向：
-- NeRF / 3D Gaussian Splatting 最新变体（动态场景/室外街景/高速渲染）
-- 占用网络（Occupancy Network）新方法
-- 扩散模型用于自动驾驶数据生成
-- 知识蒸馏：大模型 → 车端小模型
-- 小样本/零样本目标检测
+## 前置步骤
 
-输出 JSON 格式：
-{
-  "projects": [
-    {
-      "id": "唯一id（小写连字符）",
-      "title": "项目标题（20字以内）",
-      "category": "nerf" | "occ" | "diffusion" | "distill" | "few-shot" | "sim" | "data-synth",
-      "difficulty": "⭐⭐⭐" | "⭐⭐⭐⭐" | "⭐⭐",
-      "computeReq": "硬件要求（如 '1×RTX 3090'）",
-      "dataReq": "数据集（如 'nuScenes mini'）",
-      "trainTime": "训练时间（如 '~30 min'）",
-      "status": "ready" | "wip" | "planned",
-      "tags": ["标签1", "标签2"],
-      "desc": "项目简介（80-150字）",
-      "whyLightweight": "为什么适合轻量级复现（50字）",
-      "papers": ["论文名 (会议 年份)"],
-      "codeRef": "GitHub URL 或 '暂无'",
-      "color": "#hexcode"
-    }
-  ]
-}
+1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前 `/lab/` 和 `/quant/` 页面的内容和数据结构。
+2. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `productPlans`，了解本模块的重点方向和待完成任务。
 
-只返回 JSON，不要解释。"""
+> 📌 **启动检查清单（读完 Roadmap 后，在对话中输出以下确认）**：
+> - 本模块当前有哪些 🔴 高优待完成条目？（列出 1-3 条）
+> - 本模块有哪些已知内容盲区或过期数据需要本次修复？
+> - 本次执行的重点是什么？（一句话概括）
+>
+> 如果 Roadmap 中本模块无待完成条目，则按默认日常任务执行。
 
-        user_lab = f"""今天是 {today}，请推荐 1-2 个最新的轻量级自动驾驶/NeRF/扩散模型研究课题。
+3. 自主扫描以下信息源（近 14 天内）：
+   - **前沿技术**：arXiv cs.CV / cs.GR（NeRF/3DGS/扩散模型/占用网络）· CVPR/ICCV/SIGGRAPH 最新论文
+   - **量化交易**：Two Sigma / Renaissance / Citadel 公开信息 · QuantLib · 量化社区（Qlib/Backtrader）
+   - **国内量化**：幻方/九坤/明汯/灵均/衍复/锐天 公开信息 · 聚宽/米筐社区
+4. 所有引用 URL 必须真实可访问（写入前 curl 验证）。
 
-要求：
-- 基于 2025-2026 年最新论文（CVPR/ICCV/ECCV/arXiv）
-- 必须是单卡可复现的
-- 聚焦 3D Gaussian Splatting / 占用网络 / 扩散模型 / VLA 轻量化
+---
 
-直接返回 JSON。"""
+## 写入任务（全程免审批）
 
-        raw_lab = call_llm(system_lab, user_lab)
-        if raw_lab:
-            try:
-                lab_result = _parse_json_robust(raw_lab)
-                new_projects = lab_result.get('projects', [])
+### 任务 1：更新实验室 `/lab/` 页面
 
-                if new_projects:
-                    content = LAB_FILE.read_text(encoding='utf-8')
-                    # 读取现有 id
-                    existing_lab_ids = set(re.findall(r"id:\s*'([^']+)'", content))
+- 若有新的 NeRF / 3DGS / 扩散模型 / 占用网络重要论文或开源项目，更新对应 Demo 卡片
+- 更新技术成熟度评估（研究阶段 / 工程化阶段 / 产品化阶段）
+- 若有新的单卡可跑 Demo，追加到 Demo 集合
 
-                    for proj in new_projects:
-                        proj_id = proj.get('id', '')
-                        if proj_id and proj_id not in existing_lab_ids:
-                            # 在 LAB_PROJECTS 数组末尾追加
-                            insert_marker = '];  // END_LAB_PROJECTS'
-                            alt_marker = '];\n\nexport'
-                            proj_js = f"""
-  {{
-    id: '{proj_id}',
-    title: '{proj.get("title", "").replace("'", "\\'")}',
-    category: '{proj.get("category", "nerf")}',
-    difficulty: '{proj.get("difficulty", "⭐⭐⭐")}',
-    computeReq: '{proj.get("computeReq", "1×RTX 3090")}',
-    dataReq: '{proj.get("dataReq", "nuScenes mini")}',
-    trainTime: '{proj.get("trainTime", "~1 hr")}',
-    status: '{proj.get("status", "planned")}',
-    tags: {json.dumps(proj.get("tags", []), ensure_ascii=False)},
-    desc: '{proj.get("desc", "").replace("'", "\\'")}',
-    whyLightweight: '{proj.get("whyLightweight", "").replace("'", "\\'")}',
-    papers: {json.dumps(proj.get("papers", []), ensure_ascii=False)},
-    codeRef: '{proj.get("codeRef", "暂无")}',
-    color: '{proj.get("color", "#6c5ce7")}',
-  }},"""
-                            # 在 LAB_PROJECTS 数组最后一个 }  之前插入
-                            # 找 export const LAB_PROJECTS 之后的最后一个 }，
-                            lp_match = re.search(r'export const LAB_PROJECTS\s*=\s*\[', content)
-                            if lp_match:
-                                # 找到数组末尾（最后一个 ],）
-                                arr_end = content.rfind('];', lp_match.start())
-                                if arr_end > 0:
-                                    content = content[:arr_end] + proj_js + '\n' + content[arr_end:]
-                                    existing_lab_ids.add(proj_id)
-                                    updates_made.append(f"实验室课题: {proj.get('title', proj_id)}")
-                                    print(f"    + 实验课题: {proj.get('title', '')[:50]}")
+### 任务 2：更新量化业务 `/quant/` 页面
 
-                    LAB_FILE.write_text(content, encoding='utf-8')
-            except (json.JSONDecodeError, Exception) as e:
-                print(f"  ⚠️ Lab 更新失败: {e}")
+- **AI & 大模型 Tab**：若有新的 LLM 在量化交易中的应用案例或论文，更新对应内容
+- **国内外行情 Tab**：若有头部量化机构重大动态（新产品/业绩/人事），更新对应内容
+- **实战指南 Tab**：若有新的量化工具/平台/数据源值得推荐，更新对应内容
+- **策略体系 Tab**：若有新的 AI 驱动策略值得收录，追加到策略列表
 
-    # ── Step 2: 更新 quant-data.js 量化行情简报 ──
-    # B9 的量化部分只更新 evolution-log，不直接改 quant-data.js（结构复杂，风险高）
-    # 改为追加量化行情简报到 evolution-log
-    system_quant = """你是 Signal 知识平台的 B9 量化编辑员，负责追踪 AI 量化交易行业动态。
+### 任务 3：更新本模块 Roadmap
 
-追踪方向：
-- 头部量化机构动态（Two Sigma/Renaissance/Citadel/D.E. Shaw）
-- 国内量化私募（幻方量化/九坤/明汯/灵均）
-- AI 量化新方法（LLM 因子挖掘/强化学习做市/Graph Neural Networks）
-- 监管政策变化
+- 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP`
+- 若本轮发现新的前沿技术方向或量化机会，追加到 `topOpportunities`
+- 若本轮完成了 `productPlans` 中的实验室/量化相关条目，将其标记为完成或移除
+- 使用 `replace_in_file` 局部更新，严禁全量重写 strategy-data.js
 
-生成一条简短的量化行业动态摘要（60字以内），格式：
-{"summary": "摘要内容"}
+## 重要注意事项
 
-只返回 JSON。"""
+- 所有引用 URL 必须真实可访问（写入前 curl 验证）
+- 所有文件使用 UTF-8 编码，中文直接写入，严禁 Unicode 转义（\\uXXXX）
+- 大文件（isBigFile=true）使用 replace_in_file 或 multi_replace，不要用 edit_file
+- ⚡ **前端保护（强制）**：所有 `.js` 文件写入完成后，必须执行「全局规则：前端样式保护」中的规则 2
 
-    user_quant = f"今天是 {today}，请生成最近 2 周量化交易行业最值得关注的一条动态。"
+---
 
-    raw_quant = call_llm(system_quant, user_quant)
-    if raw_quant:
-        try:
-            quant_result = _parse_json_robust(raw_quant)
-            quant_summary = quant_result.get('summary', '')
-            if quant_summary:
-                append_evolution_log({
-                    'date': now_str(),
-                    'type': 'quant-update',
-                    'agent': 'B9',
-                    'message': f'量化动态: {quant_summary}',
-                })
-                updates_made.append(f"量化动态: {quant_summary[:40]}")
-                print(f"    + 量化: {quant_summary[:60]}")
-        except Exception as e:
-            print(f"  ⚠️ 量化部分解析失败: {e}")
+## 🔍 完成后自检（每次必做，不可跳过）
 
-    result = "；".join(updates_made) if updates_made else "无更新"
-    print(f"  ✅ B9 完成：{result}")
-    return result
+### 自检 1：真实性核查
+
+逐条检查本次写入的所有内容，对照以下标准：
+
+| 检查项 | 标准 | 不合格处理 |
+|--------|------|-----------|
+| URL/链接 | curl 验证返回 200/301/302 | 立即删除该条目 |
+| 数字/数据 | 来自原始出处，非估算或推断 | 标注"待核实"或删除 |
+| 日期 | 与原文发布日期一致 | 修正为正确日期 |
+| 公司/产品名 | 与官方命名一致 | 修正拼写/大小写 |
+| 版本号 | 来自 GitHub Release 或官方公告 | 修正或删除 |
+
+**自检结论**：在对话中输出一行 `✅ 真实性自检通过（N 条写入，0 条删除）` 或 `⚠️ 自检发现 N 处问题，已修正`
+
+### 自检 2：可靠性核查
+
+- **覆盖完整性**：本次是否遗漏了重要信息源？是否有明显的内容盲区？
+- **时效性**：写入内容是否都在合理的时间窗口内（非过期信息）？
+- **一致性**：新写入内容与已有内容是否存在矛盾（如同一模型的不同版本号）？
+
+**自检结论**：在对话中输出一行 `✅ 可靠性自检通过` 或 `⚠️ 发现 N 处可靠性问题：[简述]`
+
+### 自检 3：本次来不及做的优化 → 写入 Roadmap
+
+在执行过程中，若发现以下情况，**必须写入 `src/lib/strategy-data.js` 的 `SITE_ROADMAP.productPlans`**：
+
+- 发现了有价值但本次来不及深入的内容方向
+- 发现了现有页面结构需要优化但本次未动的地方
+- 发现了数据缺失/过期但本次未修复的条目
+- 发现了新的信息源值得长期追踪
+
+**写入格式**（追加到 `productPlans.categories[content].items[]` 或 `topOpportunities[]`）：
+```js
+{{ priority: '🟡', title: '优化项标题', desc: '具体描述：发现了什么问题/机会，建议如何改进', source: 'B9自检-{today}' }}
+```
+
+**使用 `replace_in_file` 局部追加，严禁全量重写 strategy-data.js**
+
+- 写入完成后，**明确告知系统编辑员**："B9 实验室/量化更新完成"
+"""
+
+    result = call_llm("", prompt)
+    if not result:
+        print("  ⚠️ B9 claude 未返回结果")
+        return ""
+
+    print(f"  ✅ B9 完成（claude 自主完成写入）")
+    return result[:200] if result else ""
 
 
 # ═══════════════════════════════════════════
