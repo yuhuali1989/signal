@@ -1394,12 +1394,560 @@ asyncio.run(run())`,
   },
 ];
 
+// ─── 💰 选型指南 ──────────────────────────────────────────────────────────────
+const SELECTION_LAYERS = [
+  {
+    level: '🤖 VLA / 世界模型机器人',
+    title: '具身智能整机选型',
+    subtitle: '按算力需求倒推硬件配置，覆盖入门验证→量产级完整方案',
+    color: '#6c5ce7',
+    items: [
+      {
+        name: '💡 选型逻辑：先定模型再选算力',
+        icon: '🧭',
+        desc: '模型参数量决定推理算力需求，算力决定芯片，芯片决定功耗/散热/成本',
+        details: [
+          { label: '核心决策链', text: '任务复杂度 → 所需模型规模 → 推理 TOPS/TFLOPS → 芯片型号 → 功耗/散热 → 整机成本' },
+          { label: '小型 VLA（1B~7B）', text: 'RT-2-style 蒸馏小模型；Jetson AGX Orin（275 TOPS）可跑 7B INT4；端到端延迟 80~150ms；适合桌面机器人/抓取任务' },
+          { label: '中型 VLA（7B~30B）', text: 'π0/OpenVLA 级别；需双 Orin 或 单 NVIDIA Thor（1000 TOPS）；推理延迟 50~100ms（INT8/FP16）；Figure 02、Unitree G1 同量级' },
+          { label: '大型世界模型（30B+）', text: '云端推理或 8× H100 边缘服务器；延迟 200ms+；适合研究/高端产线；成本 $100k+/套' },
+          { label: '推理频率目标', text: '抓取任务：≥10Hz（100ms/帧）；移动操作：≥20Hz；动态避障：≥30Hz；决策层可降到 5Hz 但感知层保持高频' },
+        ],
+      },
+      {
+        name: '🟢 入门验证套件（¥2~5万）',
+        icon: '🛠️',
+        desc: '桌面级抓取机器人 + VLA 推理，用于算法验证和 Demo',
+        details: [
+          { label: '机械臂', text: 'Unitree Z1（¥7999，6DoF，URDF开源）或 Trossen WidowX 250（$1500，ROS 2 原生）' },
+          { label: '计算单元', text: 'NVIDIA Jetson AGX Orin 64GB 开发套件（$499 Developer Kit / ¥6000国内）；275 TOPS；够跑 7B INT4 VLA' },
+          { label: '相机', text: 'Intel RealSense D435i（¥1500，RGB-D + IMU）× 2（腕部 + 第三视角）' },
+          { label: '基础设施', text: '工控机（i7/Ryzen + 32GB RAM，¥4000）跑 ROS 2 + 数据采集；千兆以太网连接 Jetson' },
+          { label: '总成本估算', text: '机械臂¥8k + Jetson¥6k + 相机¥3k + 工控机¥4k + 配件¥2k ≈ ¥23k；适合1~3人小团队 PoC' },
+        ],
+        code: `# 推理性能评估脚本（在 Jetson AGX Orin 上运行）
+# 用于选型前评估 VLA 模型是否满足延迟需求
+
+import time, torch, numpy as np
+
+def benchmark_inference(model, input_dict, n_runs=50, warmup=5):
+    """
+    model: 已加载的 VLA 模型（如 OpenVLA）
+    input_dict: {'image': tensor[1,3,224,224], 'instruction': str}
+    """
+    device = next(model.parameters()).device
+
+    # Warmup
+    for _ in range(warmup):
+        with torch.no_grad():
+            _ = model.predict_action(**input_dict)
+
+    # 正式计时
+    latencies = []
+    for _ in range(n_runs):
+        t0 = time.perf_counter()
+        with torch.no_grad():
+            action = model.predict_action(**input_dict)
+        torch.cuda.synchronize()   # 等待 GPU 完成
+        latencies.append((time.perf_counter() - t0) * 1000)  # ms
+
+    latencies = np.array(latencies)
+    print(f"推理延迟 (ms): mean={latencies.mean():.1f}  "
+          f"p50={np.percentile(latencies,50):.1f}  "
+          f"p95={np.percentile(latencies,95):.1f}  "
+          f"p99={np.percentile(latencies,99):.1f}")
+    print(f"等效频率: {1000/latencies.mean():.1f} Hz")
+    return latencies
+
+# Jetson 典型结果参考（FP16, batch=1）：
+# 7B  INT4 → mean≈85ms  → 11.8Hz  ✅ 够用
+# 7B  FP16 → mean≈320ms → 3.1Hz   ❌ 太慢
+# 3B  INT8 → mean≈45ms  → 22Hz    ✅ 流畅
+# 13B INT4 → mean≈170ms → 5.9Hz   ⚠️ 勉强`,
+        lang: 'python',
+      },
+      {
+        name: '🟡 量产级具身智能（¥15~50万）',
+        icon: '🏭',
+        desc: '商业双臂移动机器人完整方案，参考 Figure 02 / Unitree H1 量级',
+        details: [
+          { label: '主算力', text: 'NVIDIA Jetson Thor（1000 TOPS AI，2024 Q4 量产）或 NVIDIA AGX Orin 64GB × 2；$2000~4000/套' },
+          { label: '安全控制器', text: 'Arm Cortex-R5 实时控制器（<1ms 安全响应）；独立于 AI 推理链路；满足 IEC 61508 SIL2' },
+          { label: '双臂机械臂', text: '6~7DoF × 2；力矩控制关节；Harmonic Drive 谐波减速器（回差 <1 arcmin）；预算¥5~15万/套臂' },
+          { label: '移动底盘', text: 'Clearpath Husky（四轮差速，¥7万）或 Agile Robots 自研；载重 75kg+；锂电续航 4h+' },
+          { label: '传感器套件', text: 'LiDAR（Ouster OS1-32，¥2万）+ 双目 × 4（Zed X Mini，¥1.5万/个）+ 腕部 F/T 传感器（ATI，¥3万/个）' },
+          { label: '整机 BOM 估算', text: '机械结构¥20~35万 + 算力¥3万 + 传感器¥10万 + 电气/集成¥5万 ≈ ¥40~55万出厂成本（量产可降50%）' },
+        ],
+      },
+      {
+        name: '🔴 端云协同推理架构',
+        icon: '☁️',
+        desc: '大参数世界模型（70B+）端云分离部署，兼顾实时性与智能上限',
+        details: [
+          { label: '架构原理', text: '端侧运行轻量策略网络（<3B，>30Hz）；云端运行世界模型（70B+）进行高层规划（1~5Hz）；通过高可靠低延迟网络同步' },
+          { label: '端侧要求', text: 'Jetson AGX Orin 64GB；运行蒸馏 Policy（ACT/Diffusion Policy 3B以内）；本地紧急停止逻辑独立运行' },
+          { label: '云端要求', text: '4× A100/H100；运行 GPT-4V 级视觉语言规划器；QPS 低（全球部署数百台机器人可共享集群）' },
+          { label: '网络要求', text: '5G SA 专网或 Wi-Fi 6E；上行带宽 ≥ 50Mbps（4路1080p30fps压缩流）；RTT ≤ 20ms（同城）' },
+          { label: '国内典型方案', text: '宇树 + 华为云 / 智元 Agilex + 阿里云；工厂内 Wi-Fi 6 专网保障低延迟；已有量产案例' },
+        ],
+      },
+    ],
+  },
+  {
+    level: '🚗 自动驾驶',
+    title: '按延迟预算选芯片与传感器',
+    subtitle: '感知→融合→规划→控制全链路端到端延迟拆解，从芯片 TOPS 反推方案',
+    color: '#0984e3',
+    items: [
+      {
+        name: '⏱️ 延迟预算拆解',
+        icon: '⏱️',
+        desc: 'L2+/L3 系统从传感器采集到执行器响应的全链路时序',
+        details: [
+          { label: '总延迟目标（L2+）', text: '100~150ms 端到端（ISO 21448 SOTIF 要求）；高速场景 100km/h 下 100ms = 2.78m 反应距离' },
+          { label: '传感器采集', text: 'Camera 帧率 30fps（33ms/帧）；LiDAR 10~20Hz（50~100ms）；Radar 20Hz（50ms）；数据时间戳同步 < 1ms' },
+          { label: '感知推理', text: '目标检测（BEV 占用栅格）：NVIDIA Orin 100ms → H100 15ms；预留预算：20~40ms' },
+          { label: '预测+规划', text: 'Motion Prediction：10~20ms；Path Planning（IDM/MPC）：5~15ms' },
+          { label: '控制输出', text: '线控制动响应（Bosch iBooster）：30~60ms 机械延迟；线控转向：15~30ms' },
+          { label: '典型分配', text: '采集同步5ms + 感知35ms + 预测15ms + 规划10ms + 通信5ms + 执行器60ms = 130ms ✅' },
+        ],
+        code: `# 自动驾驶延迟监控工具（基于 ROS 2）
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import Header
+import time
+
+class LatencyMonitor(Node):
+    """记录从传感器时间戳到控制输出的全链路延迟"""
+    def __init__(self):
+        super().__init__('latency_monitor')
+        self.cam_ts = {}   # 相机帧时间戳
+        self.stats  = {}   # 各阶段耗时统计
+
+        # 订阅关键节点的 Header（含时间戳）
+        self.create_subscription(Header, '/camera/header',
+            lambda m: self._record('camera', m.stamp), 10)
+        self.create_subscription(Header, '/perception/header',
+            lambda m: self._record('perception', m.stamp), 10)
+        self.create_subscription(Header, '/planning/header',
+            lambda m: self._record('planning', m.stamp), 10)
+        self.create_subscription(Header, '/control/header',
+            lambda m: self._record('control', m.stamp), 10)
+
+        self.create_timer(5.0, self._report)
+
+    def _record(self, stage, stamp):
+        t_sec = stamp.sec + stamp.nanosec * 1e-9
+        self.stats.setdefault(stage, []).append(t_sec)
+
+    def _report(self):
+        stages = ['camera', 'perception', 'planning', 'control']
+        if all(s in self.stats and len(self.stats[s]) > 10 for s in stages):
+            # 计算相邻阶段平均延迟
+            for i in range(1, len(stages)):
+                a = self.stats[stages[i-1]]
+                b = self.stats[stages[i]]
+                n = min(len(a), len(b))
+                avg_ms = (sum(b[-n:]) - sum(a[-n:])) / n * 1000
+                self.get_logger().info(
+                    f"{stages[i-1]}→{stages[i]}: {avg_ms:.1f}ms")`,
+        lang: 'python',
+      },
+      {
+        name: '🟢 L2+ 量产方案（¥3000~8000/套 BOM）',
+        icon: '🚗',
+        desc: '特斯拉 FSD / 小鹏 XNGP 类似方案，纯视觉或视觉+毫米波',
+        details: [
+          { label: '主芯片', text: '特斯拉 HW4.0（2× 自研 AI 芯片，144 TOPS × 2）/ 地平线征程 6M（128 TOPS，¥500）/ Mobileye EyeQ6（5 TOPS，低功耗 ADAS）' },
+          { label: '摄像头套件', text: '8路环视（OX08BC 1200万像素，¥150/颗）+ 前向三目（长焦/广角/鱼眼）；Sony IMX490 HDR（¥200）；前向感知距离 200m' },
+          { label: '毫米波雷达', text: '博世 MRR5（前向77GHz，200m，¥800）+ 大陆 ARS540（角雷达，¥600 × 4）；提供速度维度' },
+          { label: '超声波', text: '8~12个 Bosch USC × 超声波（¥50/个）；<5m 近距离停车辅助；不做 AI 计算' },
+          { label: '整车电气', text: '以太网 100BASE-T1（车载）；CAN FD（控制信号）；AUTOSAR CP 底层 OS；ISO 26262 ASIL-B 认证' },
+        ],
+      },
+      {
+        name: '🟡 L4 Robotaxi 方案（¥30~80万/套）',
+        icon: '🏎️',
+        desc: 'Waymo / 百度萝卜快跑级别，激光雷达为核心传感器',
+        details: [
+          { label: '主算力', text: 'NVIDIA DRIVE Thor（2000 TOPS，2025年量产）或 NVIDIA DRIVE Orin × 2（500 TOPS）；$2000~5000' },
+          { label: '激光雷达', text: 'Waymo 自研 × 5（造价已降至 $500 级）；Luminar Iris（250m 200线，¥3万）；Hesai AT128（128线，¥8000）' },
+          { label: '固态LiDAR趋势', text: 'Innoviz One（固态，¥5000，量产中）；Mobileye LaserFusionTM；无旋转结构，可靠性高；2025年主机厂量产配备' },
+          { label: 'GPS/INS', text: 'NovAtel PwrPak7（RTK+IMU，¥6万）；厘米级绝对定位；配合 HD Map 做地图定位（NDT匹配）' },
+          { label: 'V2X 通信', text: 'C-V2X PC5（直连，<3ms）/ DSRC（802.11p）；感知范围扩展到视线外；十字路口碰撞预警' },
+        ],
+      },
+      {
+        name: '🔴 国产芯片替代方案对比',
+        icon: '🇨🇳',
+        desc: '2025年国产主控芯片成熟度与适用场景（出口管制背景下的核心选择）',
+        details: [
+          { label: '地平线征程 6 系列', text: '征程 6P（128 TOPS）/ 6E（40 TOPS）/ 6M（128 TOPS 中算力）；BPU 架构；工具链完善；吉利/长安/广汽已量产' },
+          { label: '华为昇腾 MDC 810', text: '400 TOPS；支持 L3 级功能安全；MindSDK；但生态相对封闭；问界/阿维塔/鸿蒙智行标配' },
+          { label: '黑芝麻 A1000 Pro', text: '196 TOPS；自研华山架构；长安/上汽在用；算子支持度低于英伟达生态' },
+          { label: '芯驰 X9SP', text: '车规 MCU + 应用处理器融合；不做深度学习主算力；适合低算力 ADAS（L2及以下）' },
+          { label: '选型建议', text: '研究阶段用 NVIDIA（工具链最完整）→ 量产用国产（成本/供应链安全）；迁移成本：算子适配 + 精度损失验证，一般需 3~6 个月' },
+        ],
+      },
+    ],
+  },
+  {
+    level: '🛸 无人机',
+    title: '整机方案与价格区间',
+    subtitle: '从消费级 FPV 到工业级多旋翼，完整 BOM 与选型建议',
+    color: '#00cec9',
+    items: [
+      {
+        name: '🟢 自制穿越机 FPV（¥1000~3000）',
+        icon: '🏁',
+        desc: '5寸竞速无人机，适合学习飞控原理和 Betaflight 调参',
+        details: [
+          { label: '机架', text: 'GepRC Mark5（5寸碳纤维，¥200）；轴距 210mm；全碳重量 160g' },
+          { label: '飞控', text: 'MAMBA F405 MK3（STM32F405，Betaflight，¥180）；Blackbox 飞行数据记录' },
+          { label: '电机', text: 'XING-E 2207 1800KV（无刷，4个，¥80/个）；配 5寸三叶桨' },
+          { label: '电调', text: '45A BLHeli_32 4合1（¥300）；DShot600协议；双向反馈' },
+          { label: '图传+遥控', text: 'DJI O3 图传（¥1200）/ Caddx Vista（¥600）；遥控：RadioMaster Boxer（ELRS，¥800）' },
+          { label: '总成本', text: '机架¥200 + 飞控¥180 + 4电机¥320 + 电调¥300 + 图传¥600 + 电池×3¥300 ≈ ¥1900；不含遥控' },
+        ],
+      },
+      {
+        name: '🟡 工业植保/测绘（¥3~15万）',
+        icon: '🌾',
+        desc: '农业植保或 RTK 精密测绘任务，商业作业场景',
+        details: [
+          { label: '大疆 T50 植保机', text: '50kg 载药量；官网¥9万；12 轴旋翼；全向雷达避障；DRTK2 厘米定位；作业效率 200亩/h' },
+          { label: '自研测绘方案', text: '机架（E600 六旋翼，¥3000）+ 飞控（Pixhawk 6X，¥2000）+ RTK模组（HERE4，¥2500）+ 测绘相机（Sony A7R IV，¥15000）' },
+          { label: '任务规划软件', text: 'Mission Planner（免费）/ UgCS（商业，支持复杂地形）；生成 KMZ 格式航线；地面站实时监控' },
+          { label: '数据处理', text: 'Pix4D（摄影测量，¥8000/年）/ Metashape（¥4000）；点云 + 正射影像 + DEM 输出' },
+        ],
+      },
+      {
+        name: '🔴 自主智能无人机（¥5~30万）',
+        icon: '🤖',
+        desc: '搭载边缘 AI 的自主导航无人机，无 GPS 室内定位',
+        details: [
+          { label: '计算平台', text: 'Jetson Orin NX 16GB（100 TOPS，¥2500）；运行 FAST-LIO2 + YOLOv8；总功耗 <15W' },
+          { label: '深度传感器', text: 'Intel RealSense D435i（¥1500，VIO里程计输入）+ Livox Mid-360（360°固态LiDAR，¥3500）' },
+          { label: '通信', text: '4G/5G 数传模块（中移物联 ML302，¥300）+ WiFi 6（Ubiquiti，¥800）；支持远程遥控备援' },
+          { label: '完整方案参考', text: 'AMOVLAB P450（ROS 2，Orin NX，Mid-360，¥28000）；开源代码 + 文档完整；适合科研团队' },
+          { label: '自主飞行关键技术', text: 'FAST-LIO2（建图定位）+ VoxBlox（局部地图）+ FUEL（自主探索）+ FASTER（实时避障规划）；全套开源 ROS 2' },
+        ],
+        code: `# 无人机硬件成本计算器
+hardware_bom = {
+    # 飞行平台
+    'frame_hexacopter':     3500,   # 六旋翼碳纤维机架 (¥)
+    'motors_6x':            2400,   # T-Motor MN501S × 6
+    'esc_40a_6x':           2400,   # Flame 40A × 6
+    'pixhawk6x_fc':         2000,   # 飞控
+    'battery_16000mah_6s':   800,   # 主电池 × 2
+    # 计算平台
+    'jetson_orin_nx_16gb':  2500,   # 边缘 AI 计算
+    # 传感器
+    'livox_mid360':         3500,   # 固态 LiDAR
+    'realsense_d435i':      1500,   # 深度相机 × 1
+    'here4_rtk_gnss':       2500,   # RTK 定位
+    # 通信
+    'dji_o3_video':         1200,   # 图传
+    'sik_radio_telemetry':   400,   # 数传
+}
+
+total = sum(hardware_bom.values())
+print(f"硬件 BOM 合计: ¥{total:,}")
+print(f"\\n各模块占比:")
+for k, v in sorted(hardware_bom.items(), key=lambda x: -x[1]):
+    bar = '█' * int(v / total * 30)
+    print(f"  {k:30s} ¥{v:5,}  {bar}  {v/total*100:.1f}%")
+
+# 输出：
+# 硬件 BOM 合计: ¥22,700
+# livox_mid360       ¥3,500  ████  15.4%
+# motors_6x          ¥2,400  ███   10.6%
+# ...`,
+        lang: 'python',
+      },
+    ],
+  },
+];
+
+// ─── 🧪 材料 ──────────────────────────────────────────────────────────────────
+const MATERIALS_LAYERS = [
+  {
+    level: '🟢 入门',
+    title: '结构材料基础',
+    subtitle: '机器人/航空/电子器件最常用结构材料——力学性能、加工方式、选型原则',
+    color: '#27ae60',
+    items: [
+      {
+        name: '金属材料',
+        icon: '🔩',
+        desc: '铝合金、钢、钛合金——机器人骨架与精密结构件的核心选材',
+        details: [
+          { label: '铝合金 6061-T6', text: '密度 2.7g/cm³，σ=310MPa；比强度高，易加工，阳极氧化耐腐蚀；机械臂连杆/机身骨架首选；¥30/kg' },
+          { label: '铝合金 7075-T6', text: 'σ=572MPa，更高强度；无人机起落架/FPV 机架；加工性稍差；¥80/kg' },
+          { label: '304/316 不锈钢', text: '304 通用耐腐蚀；316 含钼，海洋环境；密度 7.9g/cm³，重；适合螺栓/轴/轴承套' },
+          { label: '钛合金 TC4（Ti-6Al-4V）', text: 'σ=900MPa，密度 4.4g/cm³；比强度最高；航天/高端机器人关节；加工难，¥400/kg；3D 打印可行' },
+          { label: '弹簧钢 65Mn', text: '高弹性，疲劳寿命好；四足机器人腿部弹性储能结构；柔性关节并联弹簧' },
+        ],
+      },
+      {
+        name: '碳纤维复合材料（CFRP）',
+        icon: '🏎️',
+        desc: '无人机/机器人轻量化的终极材料，比铝轻 40%、比强度 5倍',
+        details: [
+          { label: '材料参数', text: 'T300 碳纤维布：E=230GPa，σ=3500MPa，密度 1.76g/cm³；比强度是铝的 5倍，比钢的 10倍' },
+          { label: '成型工艺', text: '手工铺层（HLU）：低成本适合小批量；预浸料热压罐（Autoclave）：航空级，¥2000/m²；拉挤（适合管材，量产）' },
+          { label: '管材规格', text: 'Ø10mm × 8mm × 500mm 碳纤维管（¥30）：无人机机臂；Ø25mm × 23mm：六旋翼主臂；壁厚 1mm 即可承受 200N' },
+          { label: '板材应用', text: '1.5mm 碳纤维板：FPV 机架（HDE模量预浸，¥500/片）；3mm：机器人底板；CNC 数控切割精度 ±0.1mm' },
+          { label: '胶接工艺', text: '环氧树脂胶（Araldite 2011）：剪切强度 26MPa；碳纤维与铝合金接头必须涂绝缘涂层（防电偶腐蚀）' },
+        ],
+      },
+      {
+        name: '工程塑料与 3D 打印',
+        icon: '🖨️',
+        desc: '快速迭代和功能性零件——从 PLA 到 PEEK 全系列',
+        details: [
+          { label: 'PLA / PETG', text: 'PLA：易打印（190°C），脆，不耐热（60°C）；原型验证首选。PETG：韧性好（80°C），食品接触安全；¥100/kg' },
+          { label: 'ABS / ASA', text: 'ABS：σ=40MPa，耐冲击，翘曲大（需加热床）；ASA：户外耐 UV 降解；机器人外壳常用' },
+          { label: 'Nylon PA12 / PA12-CF', text: 'PA12：高韧性，自润滑，耐磨；PA12-CF（碳纤短纤维增强）：比强度接近铝，SLS 烧结成型；关节壳体¥50/件' },
+          { label: 'PEEK', text: '耐温 250°C，化学惰性，σ=100MPa；医疗级关节/航天部件；FDM 打印需 400°C 以上；¥5000/kg' },
+          { label: 'TPU（弹性体）', text: '邵硬度 85A~95A；机器人夹爪柔性衬垫/足底减震垫；FDM 0.8mm 喷嘴打印；¥150/kg' },
+        ],
+        code: `# 材料选型决策辅助脚本
+# 根据力学需求快速筛选材料
+
+materials_db = {
+    'Al_6061': {'density':2.7, 'UTS':310, 'E':69,  'cost_per_kg':30,  'machinability':'★★★★★'},
+    'Al_7075': {'density':2.7, 'UTS':572, 'E':72,  'cost_per_kg':80,  'machinability':'★★★★☆'},
+    'SS_304':  {'density':7.9, 'UTS':515, 'E':200, 'cost_per_kg':20,  'machinability':'★★★☆☆'},
+    'Ti_TC4':  {'density':4.4, 'UTS':900, 'E':114, 'cost_per_kg':400, 'machinability':'★★☆☆☆'},
+    'CFRP_T300':{'density':1.6,'UTS':600, 'E':70,  'cost_per_kg':800, 'machinability':'★★★☆☆'},
+    'PA12_CF': {'density':1.1, 'UTS':85,  'E':8,   'cost_per_kg':200, 'machinability':'★★★★☆'},
+}
+
+def select_material(min_UTS=200, max_density=5.0, max_cost=200):
+    """
+    min_UTS: 最低抗拉强度 (MPa)
+    max_density: 最大密度 (g/cm³)  — 轻量化约束
+    max_cost: 最大单价 (¥/kg)
+    """
+    results = []
+    for name, props in materials_db.items():
+        if (props['UTS'] >= min_UTS and
+            props['density'] <= max_density and
+            props['cost_per_kg'] <= max_cost):
+            # 比强度 = 强度/密度 (MPa·cm³/g)
+            specific_strength = props['UTS'] / props['density']
+            results.append((specific_strength, name, props))
+
+    results.sort(reverse=True)
+    print(f"\\n满足条件 (UTS≥{min_UTS}MPa, ρ≤{max_density}, ≤¥{max_cost}/kg) 的材料:")
+    for ss, name, p in results:
+        print(f"  {name:12s} 比强度={ss:.0f}  UTS={p['UTS']:4d}MPa  加工性{p['machinability']}")
+    return results
+
+select_material(min_UTS=300, max_density=5.0, max_cost=100)
+# → Al_7075: 比强度=211  UTS=572MPa  ★★★★☆  ¥80/kg  ← 首选`,
+        lang: 'python',
+      },
+      {
+        name: '电子封装与 PCB 材料',
+        icon: '🔌',
+        desc: '硬件工程师必知的基板、散热、封装材料选型',
+        details: [
+          { label: 'FR4 基板', text: '标准玻纤环氧树脂；Tg=135~170°C；≥4层时推荐 Tg170；¥0.3/cm²；覆铜厚度 1/2oz~2oz（18~70μm）' },
+          { label: '高频板材', text: 'Rogers 4350B（εr=3.48，tanδ=0.0037）：毫米波雷达/5G 天线必用；¥30/cm²；损耗比 FR4 低 10×' },
+          { label: '铝基板 MCPCB', text: '铝芯直接散热；LED/大功率 MOSFET 驱动板；热阻 1.0°C/W vs FR4 的 20°C/W；¥2/cm²' },
+          { label: '导热材料', text: '导热硅脂（λ=4~8W/m·K）：芯片与散热器接触；石墨烯片（λ=1500W/m·K）：手机均热；相变材料 PCM：不流动，可靠性高' },
+          { label: '焊料', text: 'SAC305（Sn96.5Ag3Cu0.5）：无铅 RoHS；熔点 217°C；BGA 封装必用；焊球强度 > Sn63Pb37' },
+        ],
+      },
+    ],
+  },
+  {
+    level: '🟡 进阶',
+    title: '功能材料与传感器材料',
+    subtitle: '压电、形状记忆、导电聚合物、磁性材料——理解传感器与执行器的材料原理',
+    color: '#e17055',
+    items: [
+      {
+        name: '压电材料',
+        icon: '⚡',
+        desc: '机械变形↔电信号的可逆转换，超声波传感器/力传感器/微执行器核心',
+        details: [
+          { label: 'PZT（锆钛酸铅）', text: '最常用压电陶瓷；d33=300~600 pC/N；压电系数高；超声波探头/加速度计/压电蜂鸣器；居里温度 350°C' },
+          { label: 'PVDF 薄膜', text: '聚偏氟乙烯；柔性；d33=−33pC/N（较低）；柔性传感器/触摸传感；可弯曲至半径 1mm' },
+          { label: '超声换能器原理', text: 'PZT 在激励电压下形变 → 向介质辐射声波；接收模式：声波→形变→电荷→电压信号；HC-SR04 工作于 40kHz' },
+          { label: '压电驱动器', text: '叠堆型（Stack）：最大位移 0.1% 长度，力可达数千 N；用于精密定位（分辨率 nm 级）；AFM 探针扫描头' },
+          { label: '应用实例', text: 'IMU 中的 MEMS 加速度计：多晶硅+压电效应；六维力传感器（ATI）：16个 PZT 元件矩阵采样' },
+        ],
+      },
+      {
+        name: '形状记忆合金（SMA）',
+        icon: '🌀',
+        desc: 'NiTi（镍钛）合金——加热恢复预设形状，可作为微型执行器',
+        details: [
+          { label: '工作原理', text: '马氏体相变：低温时可大变形（奥氏体相→马氏体相）；加热至 Af（奥氏体终止温度）恢复原形；应变可达 8%' },
+          { label: 'Nitinol 参数', text: 'NiTi 50-50 at%；Af = 40~80°C（可调）；功率密度 >100W/g（远超电机）；但响应慢（冷却限制，~1Hz）' },
+          { label: '机器人应用', text: '微型夹爪（医疗内窥镜）；仿肌肉人工肌肉；NiTi 丝径 0.2~1mm；通电加热即收缩' },
+          { label: '软体机器人', text: '气动软体（硅橡胶+气腔）+ SMA 偏置弹簧；哈佛 Soft Robotics Toolkit 开源；用于抓取非规则物体' },
+          { label: '局限性', text: '滞回特性导致难以精确位置控制；寿命约100万次循环；成本¥500/m（Ø0.5mm）' },
+        ],
+      },
+      {
+        name: '磁性材料与电机',
+        icon: '🧲',
+        desc: '永磁体性能直接决定电机功率密度，理解材料才能选对电机',
+        details: [
+          { label: 'NdFeB（钕铁硼）', text: '最强永磁体；N52 级 Br=1.4T，BHmax=52 MGOe；工作温度 <120°C（UH级可达 150°C）；几乎所有无刷电机用此' },
+          { label: 'SmCo（钐钴）', text: 'Br=1.1T，耐温 300°C；高温场景（航空/石油钻探）；价格约 NdFeB 的 3倍；抗腐蚀性好' },
+          { label: '电机功率密度', text: 'T-Motor U10（NdFeB N52）：功率密度 5kW/kg；拓扑选 Halbach Array 可提升 20% 磁通；六极九槽最常见' },
+          { label: 'AMR 各向异性磁阻传感器', text: 'Honeywell HMC5883L；检测弱磁场（地磁）；精度 2mGauss；无人机罗盘；需远离电机安装（磁干扰）' },
+          { label: '软磁材料（铁芯）', text: '硅钢片 0.2~0.35mm（降低涡流损耗）；非晶合金（μ=10万，损耗更低）：高频电感/变压器铁芯' },
+        ],
+      },
+      {
+        name: '半导体功率器件材料',
+        icon: '💡',
+        desc: 'SiC/GaN 正在取代 Si MOSFET，理解材料差异对电驱选型至关重要',
+        details: [
+          { label: '硅（Si）MOSFET', text: '成熟工艺；Vbr<600V；25°C Rds=通态电阻；导通损耗随温度上升；¥5~50/片；<200V 场景仍是主流' },
+          { label: '碳化硅（SiC）', text: '带隙 3.26eV（Si的3倍）；Vbr达 1700V；高温 200°C 工作；Rds 是 Si 的 1/10；特斯拉 Model 3 逆变器用 ST SiC MOSFET（¥500/片）' },
+          { label: '氮化镓（GaN）', text: '电子迁移率最高；横向结构，开关速度 <5ns（Si的10倍）；650V GaN HEMT；手机快充/服务器电源；EPC 9V GaN ¥20' },
+          { label: '电机驱动器选型', text: '<48V 机器人用 Si MOSFET（DRV8302，¥30）；24V~96V 大功率用 SiC（CREE C2M0280120D）；寿命关键：结温控制 <150°C' },
+          { label: '金刚石（Diamond）', text: '带隙 5.45eV，导热率 2200W/m·K（最高）；散热基板理想材料；但成本极高（CVD金刚石¥10万/cm²）；实验室阶段' },
+        ],
+      },
+    ],
+  },
+  {
+    level: '🔴 精通',
+    title: 'AI 驱动材料科学',
+    subtitle: '机器学习加速新材料发现，从晶体结构预测到材料基因组计划',
+    color: '#6c5ce7',
+    items: [
+      {
+        name: '材料基因组计划（MGI）',
+        icon: '🧬',
+        desc: '用计算与数据替代传统试错，将新材料研发周期从20年压缩到2~3年',
+        details: [
+          { label: '核心理念', text: '高通量计算（HTC）+ 机器学习 + 数据库构建三角驱动；奥巴马 2011 年发起；将材料发现速度提升 10× 以上' },
+          { label: 'Materials Project', text: 'LBNL 维护；15万+ 无机材料 DFT 计算结果开放；Python API（pymatgen）；band gap/bulk modulus/formation energy 全有' },
+          { label: 'AFLOW', text: '杜克大学；3000万+ 化合物高通量DFT数据；AFLOW-ML 机器学习预测；超导体、拓扑材料筛选案例' },
+          { label: 'NOMAD', text: '欧盟FAIR原则开放数据；支持 VASP/Quantum ESPRESSO/FHI-aims 多计算软件数据上传' },
+          { label: '材料逆向设计', text: '给定目标性能（如带隙=1.5eV）反向搜索化学空间；GNoME（DeepMind，2023）发现 220万+ 新稳定晶体' },
+        ],
+        code: `# pymatgen — 查询 Materials Project 数据库
+# pip install pymatgen mp-api
+
+from mp_api.client import MPRester
+import matplotlib.pyplot as plt
+
+API_KEY = "your_api_key"   # materialsproject.org 申请（免费）
+
+with MPRester(API_KEY) as mpr:
+    # 查询所有 LiFePO4 相关材料的 DFT 计算结果
+    docs = mpr.materials.summary.search(
+        chemsys="Li-Fe-P-O",
+        fields=["material_id", "formula_pretty",
+                "band_gap", "formation_energy_per_atom",
+                "stability", "is_stable"]
+    )
+
+    print(f"找到 {len(docs)} 个 Li-Fe-P-O 体系材料")
+
+    # 筛选稳定绝缘体（候选正极材料）
+    candidates = [d for d in docs
+                  if d.is_stable and d.band_gap and 1.0 < d.band_gap < 4.0]
+
+    print(f"\\n稳定绝缘体候选 ({len(candidates)} 个):")
+    for d in sorted(candidates, key=lambda x: x.formation_energy_per_atom)[:5]:
+        print(f"  {d.formula_pretty:20s} band_gap={d.band_gap:.2f}eV  "
+              f"Ef={d.formation_energy_per_atom:.3f} eV/atom")
+
+# 典型输出：
+# Li3Fe2(PO4)3   band_gap=3.21eV  Ef=-3.241 eV/atom  ← 正极候选`,
+        lang: 'python',
+      },
+      {
+        name: '晶体结构预测（CSP）',
+        icon: '🔬',
+        desc: 'AlphaFold 的材料版——从化学式直接预测晶体结构',
+        details: [
+          { label: 'DFT 计算基础', text: 'VASP/Quantum ESPRESSO/CP2K：从头算电子结构；计算 GGA-PBE 近似下的总能、带结构、声子谱；一次 100原子计算≈8h（32核）' },
+          { label: 'GNoME（DeepMind 2023）', text: '图神经网络（GNN）预测新稳定晶体；2.2M 候选结构 → 38万稳定（5年内可验证）；开放数据集 GitHub' },
+          { label: 'CGCNN / M3GNet', text: '晶体图卷积网络；输入晶体结构（原子坐标+键信息）→ 输出形成能/带隙；训练集 Materials Project；RMSE<0.1eV' },
+          { label: 'MACE-MP-0', text: '2023 年发布通用机器学习势（MLP）；比 DFT 快 1000×；精度媲美 DFT；支持 94 种元素；分子动力学模拟首选' },
+          { label: '超导体应用', text: 'BCS 理论 + ML 筛选高温超导候选；MgB2（39K）被ML辅助优化；室温超导仍是目标' },
+        ],
+        code: `# MACE-MP-0 — 通用机器学习势快速结构优化
+# 比 DFT 快 1000×，误差 ~5 meV/atom
+# pip install mace-torch ase pymatgen
+
+from mace.calculators import mace_mp
+from ase.build import bulk
+from ase.optimize import BFGS
+from ase.io import write
+import numpy as np
+
+# 加载通用势（自动下载 ~300MB 模型）
+calc = mace_mp(model="medium", dispersion=False,
+               default_dtype="float32", device='cpu')
+
+# 构建 LiFePO4 橄榄石结构（正极材料）
+# 实际使用 pymatgen 从 CIF 文件加载更准确
+atoms = bulk('Fe', 'fcc', a=3.6)   # 简化示例：FCC 铁
+atoms.calc = calc
+
+# 结构弛豫
+opt = BFGS(atoms, logfile='opt.log')
+opt.run(fmax=0.01)   # 收敛标准：最大原子力 < 0.01 eV/Å
+
+e = atoms.get_potential_energy()
+f = atoms.get_forces()
+print(f"弛豫后总能: {e:.4f} eV")
+print(f"最大原子力: {np.abs(f).max():.4f} eV/Å")
+print(f"晶格常数: {atoms.cell.lengths()} Å")
+
+# 计算弹性性质（需要 phonopy）
+# Eform = (E_total - Σ n_i * E_i) / N_atoms`,
+        lang: 'python',
+      },
+      {
+        name: '电池材料与储能',
+        icon: '🔋',
+        desc: '机器人续航的核心——锂电池材料体系演进与下一代固态电池',
+        details: [
+          { label: '正极材料演进', text: 'LCO（钴酸锂，手机）→ NMC811（镍锰钴，高能量密度，≥270Wh/kg）→ LFP（磷酸铁锂，安全，机器人/汽车）→ 富锂锰基（>400Wh/kg，研究中）' },
+          { label: '负极材料', text: '石墨（372mAh/g，成熟）；硅基（Si/C复合，1000mAh/g但膨胀300%，正在量产）；金属锂负极（固态电池关键）' },
+          { label: '固态电池', text: '固态电解质（LLZO/LGPS/Li3PS4）替代液态；不燃，能量密度 ≥ 400Wh/kg；Toyota 2027 量产目标；宁德时代"凝聚态"电池已交付' },
+          { label: '机器人用电池选型', text: '移动机器人：LFP 26650 电芯（3.2V 3Ah，¥15/节）；无人机：LiPo 高倍率（50C放电）；需热管理（<45°C工作）' },
+          { label: 'AI 电池管理', text: 'SOC（荷电状态）估计：LSTM + 卡尔曼；SOH（健康状态）预测：电化学阻抗谱 + 神经网络；Google DeepMind 电池退化预测论文（Nature Energy 2020）' },
+        ],
+      },
+      {
+        name: '软物质与软体机器人材料',
+        icon: '🫧',
+        desc: '仿生软体机器人的材料基础：水凝胶、硅橡胶、液态金属',
+        details: [
+          { label: 'Ecoflex 硅橡胶', text: 'Smooth-On Ecoflex 00-30：最大应变 800%；Shore 00-30 超软；哈佛 Soft Robotics 软体夹爪标配；¥200/kg' },
+          { label: '导电水凝胶', text: 'PVA + MXene（Ti3C2Tx）复合；电导率 10-3 S/cm + 机械柔性；可拉伸传感器/电子皮肤；压阻式触觉感知' },
+          { label: '液态金属 EGaIn', text: '镓铟合金（75% Ga 25% In）；熔点 15.7°C，室温液态；电导率 3.4×10^6 S/m；软体电路/可拉伸导线；¥3000/kg' },
+          { label: '磁性软体', text: '磁性粉末（NdFeB 微粉）+ 硅橡胶基底；外加磁场驱动变形；无需导线，适合微型医疗机器人（胶囊内窥镜）' },
+          { label: '4D 打印', text: '智能材料（SMP形状记忆聚合物/水响应水凝胶）+ 3D打印；加热/浸水触发变形；MIT自组装实验室 Skylar Tibbits 提出' },
+        ],
+      },
+    ],
+  },
+];
+
 // ─── Tab 定义 ─────────────────────────────────────────────────────────────────
 const TABS = [
-  { id: 'basics', name: '🔩 通用基础', desc: '接口·协议·嵌入式·算法' },
-  { id: 'robot',  name: '🤖 机器人',   desc: '执行器·ROS 2·VLA' },
-  { id: 'ad',     name: '🚗 自动驾驶', desc: 'LiDAR·感知·规划·ISO 26262' },
-  { id: 'drone',  name: '🛸 无人机',   desc: 'PX4·ArduPilot·法规·集群' },
+  { id: 'basics',    name: '🔩 通用基础', desc: '接口·协议·嵌入式·算法' },
+  { id: 'robot',     name: '🤖 机器人',   desc: '执行器·ROS 2·VLA' },
+  { id: 'ad',        name: '🚗 自动驾驶', desc: 'LiDAR·感知·规划·ISO 26262' },
+  { id: 'drone',     name: '🛸 无人机',   desc: 'PX4·ArduPilot·法规·集群' },
+  { id: 'selection', name: '💰 选型指南', desc: 'VLA机器人·自动驾驶·无人机BOM' },
+  { id: 'materials', name: '🧪 材料',     desc: '结构·功能·AI驱动材料科学' },
 ];
 
 // ─── LayerCard 组件（支持代码块）─────────────────────────────────────────────
@@ -1459,10 +2007,12 @@ export default function HardwarePage() {
   const [tab, setTab] = useHashState('tab', 'basics');
 
   const layersMap = {
-    basics: BASICS_LAYERS,
-    robot:  ROBOT_LAYERS,
-    ad:     AD_LAYERS,
-    drone:  DRONE_LAYERS,
+    basics:    BASICS_LAYERS,
+    robot:     ROBOT_LAYERS,
+    ad:        AD_LAYERS,
+    drone:     DRONE_LAYERS,
+    selection: SELECTION_LAYERS,
+    materials: MATERIALS_LAYERS,
   };
   const layers = layersMap[tab] || BASICS_LAYERS;
 
@@ -1475,16 +2025,16 @@ export default function HardwarePage() {
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-2xl font-bold text-gray-900">⚙️ 硬件</h1>
             <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium">
-              通用基础 · 机器人 · 自动驾驶 · 无人机
+              通用基础 · 机器人 · 自动驾驶 · 无人机 · 选型指南 · 材料
             </span>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed">
             面向软件工程师的硬件知识体系。从通用接口协议（I2C/CAN/UART）、嵌入式算法（PID/卡尔曼/坐标变换），到 ROS 2 / PX4 / Autoware 完整软件栈，再到 VLA 模型与功能安全标准。每个知识点附带可运行代码，真实客观。
           </p>
           <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-            <span>4 个模块</span>
+            <span>6 个模块</span>
             <span>·</span>
-            <span>12 个知识层</span>
+            <span>15 个知识层</span>
             <span>·</span>
             <span>点击卡片展开代码与详解</span>
           </div>
