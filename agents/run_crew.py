@@ -1984,6 +1984,94 @@ def run_c_qa() -> list:
     except Exception as e:
         issues.append(f"npm build 执行异常: {e}")
 
+    # 7. Playwright 浏览器前端检查
+    print("  🌐 执行 Playwright 前端检查...")
+    try:
+        playwright_script = r"""
+const { chromium } = require('playwright');
+(async () => {
+  const browser = await chromium.launch({ headless: true });
+  const issues = [];
+
+  const pages = [
+    { path: '/', checks: ['Signal', '声浪'] },
+    { path: '/news/', checks: ['新闻', '声浪'] },
+    { path: '/finance/', checks: ['金融', 'AI Infra'] },
+    { path: '/lab/', checks: [] },
+  ];
+
+  for (const { path, checks } of pages) {
+    const page = await browser.newPage();
+    try {
+      const res = await page.goto('http://localhost:3000' + path, { waitUntil: 'networkidle', timeout: 15000 });
+      const status = res ? res.status() : 0;
+      if (status >= 400) {
+        issues.push(path + ' HTTP ' + status);
+        await page.close(); continue;
+      }
+
+      // 检查是否有明显的 Error/崩溃文字
+      const bodyText = await page.evaluate(() => document.body ? document.body.innerText : '');
+      if (/Application error|unhandled.*error|TypeError|ReferenceError/i.test(bodyText)) {
+        const snippet = bodyText.match(/(Application error|unhandled.*error|TypeError|ReferenceError)[^\n]*/i);
+        issues.push(path + ' 页面报错: ' + (snippet ? snippet[0].slice(0, 100) : '未知错误'));
+      }
+
+      // 检查关键词
+      for (const kw of checks) {
+        if (!bodyText.includes(kw)) {
+          issues.push(path + ' 缺少关键内容: "' + kw + '"');
+        }
+      }
+
+      // 截图保存
+      const slug = path.replace(/\//g, '_') || '_home';
+      await page.screenshot({ path: '/tmp/qa-screenshot' + slug + '.png', fullPage: false });
+
+    } catch (e) {
+      issues.push(path + ' 访问失败: ' + e.message.slice(0, 80));
+    }
+    await page.close();
+  }
+
+  await browser.close();
+
+  if (issues.length > 0) {
+    console.log('ISSUES:' + JSON.stringify(issues));
+  } else {
+    console.log('OK');
+  }
+})();
+"""
+        # 写临时脚本到 ROOT 目录，确保 node 能 require playwright
+        script_path = ROOT / '_qa_browser_check.js'
+        script_path.write_text(playwright_script, encoding='utf-8')
+
+        r = subprocess.run(
+            ['node', str(script_path)],
+            capture_output=True, text=True, cwd=str(ROOT), timeout=60
+        )
+        script_path.unlink(missing_ok=True)
+
+        output = (r.stdout + r.stderr).strip()
+        if r.returncode != 0:
+            issues.append(f"Playwright 执行失败: {output[:200]}")
+        elif output.startswith('ISSUES:'):
+            try:
+                pw_issues = json.loads(output[len('ISSUES:'):])
+                for i in pw_issues:
+                    issues.append(f"前端: {i}")
+                print(f"  ⚠️ Playwright 发现 {len(pw_issues)} 个前端问题")
+            except Exception:
+                issues.append(f"Playwright 输出解析失败: {output[:200]}")
+        else:
+            print("  ✅ Playwright 前端检查通过（截图已存 /tmp/qa-screenshot*.png）")
+
+    except subprocess.TimeoutExpired:
+        issues.append("Playwright 检查超时（>60s）")
+    except Exception as e:
+        issues.append(f"Playwright 检查异常: {e}")
+
     return issues
 
 
