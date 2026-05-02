@@ -838,6 +838,58 @@ const ROBOT_LAYERS = [
           { label: 'EtherCAT', text: '实时以太网，循环时间 <100μs，适合多轴同步控制（Beckhoff 力推）' },
           { label: 'RS-485', text: '半双工差分，最远 1200m，适合传感器/执行器简单通信；Modbus RTU 协议' },
         ],
+        code: `# python-can: CAN bus 机器人关节控制（MIT Mini Cheetah 协议）
+import can
+
+bus = can.interface.Bus(channel='can0', bustype='socketcan',
+                        bitrate=1_000_000)   # 1 Mbps
+
+def float_to_uint(x, lo, hi, bits):
+    """浮点 → 无符号整数（CAN 帧压缩传输常用方式）"""
+    x = max(lo, min(hi, x))
+    return int((x - lo) / (hi - lo) * ((1 << bits) - 1))
+
+def send_joint_cmd(motor_id, pos, vel, kp, kd, torque):
+    """
+    MIT Cheetah CAN 协议帧（8 字节）
+      pos    (rad)    : ±12.5  → 16bit
+      vel    (rad/s)  : ±65    → 12bit
+      kp     (N·m/rad): 0~500  → 12bit
+      kd     (N·m·s/r): 0~5    → 12bit
+      torque (N·m)    : ±18    → 12bit
+    """
+    p = float_to_uint(pos,    -12.5, 12.5, 16)
+    v = float_to_uint(vel,    -65,   65,   12)
+    k = float_to_uint(kp,      0,    500,  12)
+    d = float_to_uint(kd,      0,    5,    12)
+    t = float_to_uint(torque, -18,   18,   12)
+
+    data = [p >> 8,  p & 0xFF,
+            (v >> 4) & 0xFF,
+            ((v & 0xF) << 4) | (k >> 8),
+            k & 0xFF,
+            (d >> 4) & 0xFF,
+            ((d & 0xF) << 4) | (t >> 8),
+            t & 0xFF]
+    bus.send(can.Message(arbitration_id=motor_id, data=data))
+
+# 1. 发送使能帧（进入电机控制模式）
+bus.send(can.Message(arbitration_id=1,
+         data=[0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFC]))
+
+# 2. 发送零位保持指令（Kp=5, Kd=0.5 柔顺保持）
+send_joint_cmd(motor_id=1, pos=0.0, vel=0.0,
+               kp=5.0, kd=0.5, torque=0.0)
+print("关节1 CAN 帧已发送，进入力矩控制模式")
+
+# EtherCAT 方向：python-ethercat / pysoem 库
+# import pysoem
+# master = pysoem.Master()
+# master.open('eth0')
+# master.config_init()   # 自动枚举从站（伺服驱动器）
+# master.config_map()    # 映射 PDO（过程数据对象）
+# master.state = pysoem.OP_STATE   # 进入运行态 (循环时间 <1ms)`,
+        lang: 'python',
       },
     ],
   },
@@ -2034,7 +2086,7 @@ export default function HardwarePage() {
           <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
             <span>6 个模块</span>
             <span>·</span>
-            <span>15 个知识层</span>
+            <span>18 个知识层</span>
             <span>·</span>
             <span>点击卡片展开代码与详解</span>
           </div>

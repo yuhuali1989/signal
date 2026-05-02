@@ -17,7 +17,8 @@ const NAV_GROUPS = [
       { name: '模型',     href: '/models/',     icon: '📊' },
       { name: '闭环 Infra', href: '/data-infra/', icon: '🔄' },
       { name: '工具箱',   href: '/tools/',      icon: '🧰' },
-      { name: '硬件',     href: '/hardware/',   icon: '⚙️' },
+      { name: '硬件',     href: '/hardware/',      icon: '⚙️' },
+      { name: '机器人指南', href: '/robot-guide/', icon: '🤖' },
     ],
   },
   {
