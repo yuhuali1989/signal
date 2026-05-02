@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-05-02 12:54",
+    "type": "daily",
+    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
+    "message": "每日进化: 文章 +2 篇"
+  },
+  {
+    "date": "2026-05-02 11:54",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: RLHF 的终结？DPO、GRPO 与强化学习新范式",
+    "slug": "rlhf-dpogrpo"
+  },
+  {
+    "date": "2026-05-02 11:53",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性",
+    "slug": "kubernetes-ai-infra-gpu-ai"
+  },
+  {
     "date": "2026-05-01 14:15",
     "type": "daily",
     "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
