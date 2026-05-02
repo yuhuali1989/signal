@@ -217,6 +217,13 @@ export default function Home() {
                     <p className="text-[11px] text-gray-400">仿真导航 · Tokenizer</p>
                   </div>
                 </Link>
+                <Link href="/hardware/" className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-purple-50/60 transition-colors group">
+                  <span className="text-base">⚙️</span>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 group-hover:text-[#6c5ce7]">硬件</p>
+                    <p className="text-[11px] text-gray-400">机器人 · 自动驾驶 · 无人机</p>
+                  </div>
+                </Link>
               </div>
             </div>
 
