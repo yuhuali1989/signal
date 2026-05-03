@@ -307,13 +307,25 @@ const RESEARCH_PROJECTS = [
   {
     id: 'alpamayo',
     title: 'Alpamayo-R1',
-    badge: 'Reasoning-VLA',
+    badge: '10B · NVIDIA Research',
     badgeColor: '#00cec9',
     status: '跟踪中',
     statusColor: 'bg-cyan-50 text-cyan-600 border-cyan-100',
-    desc: '将 Chain-of-Thought 推理引入自动驾驶决策链，通过慢思考提升复杂场景处理能力。',
-    tags: ['R1-style', 'CoT', 'Driving', 'Reasoning'],
+    desc: 'NVIDIA Research 10B 参数 Reasoning-VLA，CES 2026 首次公开演示。引入 Chain-of-Thought 推理链，慢思考后输出控制指令，目标对齐 DRIVE AGX 车端算力。',
+    tags: ['10B', 'R1-style', 'CoT', 'NVIDIA DRIVE AGX'],
     icon: '🧠',
+    active: false,
+  },
+  {
+    id: 'unidrivevla',
+    title: 'UniDriveVLA',
+    badge: 'Unified · April 2026',
+    badgeColor: '#f59e0b',
+    status: '新论文',
+    statusColor: 'bg-amber-50 text-amber-600 border-amber-100',
+    desc: '2026 年 4 月 arXiv 新作，统一框架同时支持 nuScenes 和 Bench2Drive 双基准，实现多场景 SOTA。简化现有多头架构，单一解码器同时输出轨迹与世界预测。',
+    tags: ['arXiv 2604.02190', 'nuScenes', 'Bench2Drive', 'SOTA'],
+    icon: '🚀',
     active: false,
   },
 ];
@@ -332,6 +344,8 @@ function PageHero({ activeProject, setActiveProject }) {
           <span>{RESEARCH_PROJECTS.length} 个研究项目</span>
           <span>·</span>
           <span>覆盖 VLA · World Model · Reasoning-AD</span>
+          <span>·</span>
+          <span className="text-amber-500 font-medium">🆕 UniDriveVLA April 2026</span>
         </div>
       </div>
 
@@ -343,7 +357,7 @@ function PageHero({ activeProject, setActiveProject }) {
         </span>
         <span className="text-[11px] text-gray-400">选择一个项目查看其技术方案与实验</span>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
         {RESEARCH_PROJECTS.map(proj => {
           const isActive = activeProject === proj.id;
           return (
@@ -386,7 +400,7 @@ function PageHero({ activeProject, setActiveProject }) {
       </div>
 
       {/* ───── 区块二：技术方案分解（步骤） ───── */}
-      {(activeProject === 'driveworld' || activeProject === 'seedad' || activeProject === 'alpamayo') && (
+      {(activeProject === 'driveworld' || activeProject === 'seedad' || activeProject === 'alpamayo' || activeProject === 'unidrivevla') && (
         <div className="mb-3 flex items-center gap-2">
           <span className="inline-flex items-center gap-1 text-[11px] font-semibold tracking-wider text-slate-600 uppercase">
             <span className="inline-block w-1 h-3 bg-slate-400 rounded-sm"></span>
@@ -397,7 +411,9 @@ function PageHero({ activeProject, setActiveProject }) {
               ? 'DriveWorld-VLA 三步技术栈'
               : activeProject === 'seedad'
                 ? 'Seed-AD 三步技术栈（70B 云端 + 13B 车端）'
-                : 'Alpamayo-R1 三步技术栈（CoT × RL 推理驾驶，概要）'}
+                : activeProject === 'unidrivevla'
+                  ? 'UniDriveVLA 三步技术栈（统一框架 · nuScenes + Bench2Drive 双 SOTA）'
+                  : 'Alpamayo-R1 三步技术栈（CoT × RL 推理驾驶，概要）'}
           </span>
           <span className="flex-1 h-px bg-gradient-to-r from-slate-200 to-transparent ml-2"></span>
         </div>
@@ -583,29 +599,120 @@ function PageHero({ activeProject, setActiveProject }) {
               <span className="text-lg">🧠</span>
               <h3 className="text-sm font-semibold text-gray-800">Alpamayo-R1 · 研究概要</h3>
               <span className="text-[10px] px-2 py-0.5 rounded-full border border-cyan-200 bg-white text-cyan-600 font-medium ml-1">跟踪中</span>
-              <span className="text-[10px] text-gray-400 ml-auto">NVIDIA Research · 2025</span>
+              <span className="text-[10px] text-gray-400 ml-auto">NVIDIA Research · CES 2026</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-gray-600 leading-relaxed">
               <div className="rounded-lg border border-gray-100 bg-white p-3">
                 <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">💡 核心创新</div>
-                把 DeepSeek-R1 风格的「显式推理 + RL 后训练」范式迁移到自动驾驶：让端到端模型在输出控制指令之前，先产出一段可解释的思考链，再用仿真环境的稠密奖励做策略优化。相比一步式 VLA，更擅长处理长尾与多步因果场景。
+                把 DeepSeek-R1 风格的「显式推理 + RL 后训练」范式迁移到自动驾驶：10B 参数 VLA 在输出控制指令之前，先产出可解释思考链，再用仿真环境的稠密奖励做策略优化。CES 2026 首次公开演示，目标对齐 NVIDIA DRIVE AGX 车端算力。
               </div>
               <div className="rounded-lg border border-gray-100 bg-white p-3">
                 <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">📈 关键卖点</div>
                 <ul className="space-y-1 list-disc list-inside marker:text-cyan-500">
+                  <li>10B 参数，车端推理友好</li>
                   <li>可解释：输出推理链，便于事故复盘与安全审计</li>
                   <li>长尾能力：复杂场景通过率显著优于无 CoT 的基线 VLA</li>
                   <li>RL 友好：推理链天然适合 GRPO 等过程奖励训练</li>
-                  <li>工程化：目标对齐 NVIDIA DRIVE AGX 车端算力</li>
                 </ul>
               </div>
               <div className="rounded-lg border border-gray-100 bg-white p-3">
                 <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">🔍 与 DriveWorld / Seed-AD 的差异</div>
-                DriveWorld-VLA 强调统一隐空间 + 世界模型预测；Seed-AD 强调 70B 想象-反思-行动三阶段；Alpamayo-R1 不押注世界模型或超大参数量，而是押注「推理链 × RL」这一 LLM 侧被验证过的 Scaling 路径。
+                DriveWorld-VLA 强调统一隐空间 + 世界模型预测；Seed-AD 强调 70B 想象-反思-行动三阶段；Alpamayo-R1 不押注世界模型或超大参数量，而是押注「推理链 × RL」这一 LLM 侧被验证过的 Scaling 路径。参数量仅 10B 但在复杂场景决策质量上具备竞争力。
               </div>
               <div className="rounded-lg border border-gray-100 bg-white p-3">
                 <div className="text-[10px] font-bold tracking-wider text-cyan-600 mb-1">📌 当前状态</div>
-                论文与技术细节尚未完整公开，仅有 NVIDIA DRIVE Labs 的公开演示与博客。本模块将持续跟踪：①论文正式发布 ②开源进展 ③公开 benchmark（nuScenes / NAVSIM / Bench2Drive）数据，届时升级到「深度解读」。
+                论文与技术细节尚未完整公开，仅有 NVIDIA DRIVE Labs 的 CES 2026 公开演示。参考：<a href="https://www.slashgear.com/news/nvidia-alpamayo-r1" target="_blank" rel="noopener" className="text-cyan-600 underline">SlashGear 报道</a>。本模块持续跟踪：①论文正式发布 ②开源进展 ③公开 benchmark 数据，届时升级到「深度解读」。
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* UniDriveVLA 三步骤详情（精简版，新论文） */}
+      {activeProject === 'unidrivevla' && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 relative">
+            {[
+              {
+                step: '01',
+                title: '数据准备（双基准）',
+                desc: 'nuScenes（6路环视 + LiDAR，核心 benchmark）+ Bench2Drive（闭环仿真评估，Town系列场景）+ DriveLM（460K 语言标注）。统一数据 loader 同时支持两个 benchmark，避免分叉维护。',
+                icon: '🗄️',
+                color: '#f59e0b',
+                tags: ['nuScenes', 'Bench2Drive', 'DriveLM', '双基准统一'],
+              },
+              {
+                step: '02',
+                title: '统一模型架构',
+                desc: '单一视觉-语言主干（VLM backbone）→ Unified Decoder 同时输出：① 轨迹（控制指令）② 场景占用预测（世界建模）。去掉多头切换的复杂设计，端到端单次前向推理完成规划+预测。',
+                icon: '🧠',
+                color: '#d97706',
+                tags: ['Unified Decoder', 'VLM Backbone', '轨迹 + 占用预测', '单次前向'],
+              },
+              {
+                step: '03',
+                title: '双基准 SOTA 结果',
+                desc: '在 nuScenes 开环评估和 Bench2Drive 闭环评估双项均达 SOTA。统一框架避免了「针对单一 benchmark 过拟合」的问题，泛化性更强。arXiv 2604.02190，2026 年 4 月发布。',
+                icon: '📊',
+                color: '#b45309',
+                tags: ['nuScenes SOTA', 'Bench2Drive SOTA', 'arXiv 2604.02190', 'Apr 2026'],
+              },
+            ].map((item, idx, arr) => (
+              <div key={item.step} className="relative rounded-xl border-2 border-dashed p-4 bg-white hover:bg-gray-50/50 transition-colors"
+                style={{ borderColor: item.color + '55' }}>
+                <div className="absolute -top-3 left-4 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white border-2"
+                  style={{ borderColor: item.color }}>
+                  <span className="text-[10px] font-mono font-bold tracking-wider" style={{ color: item.color }}>STEP {item.step}</span>
+                </div>
+                {idx < arr.length - 1 && (
+                  <div className="hidden sm:flex absolute top-1/2 -right-[14px] -translate-y-1/2 z-10 w-6 h-6 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-400">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6m0 0L5 2m3 3L5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 mb-2 mt-1">
+                  <span className="text-xl">{item.icon}</span>
+                  <h3 className="text-sm font-semibold text-gray-800">{item.title}</h3>
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
+                <div className="flex flex-wrap gap-1">
+                  {item.tags.map((t) => (
+                    <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                      style={{ background: item.color + '18', color: item.color }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 研究概要卡 */}
+          <div className="mt-4 rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50/40 to-white p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🚀</span>
+              <h3 className="text-sm font-semibold text-gray-800">UniDriveVLA · 研究概要</h3>
+              <span className="text-[10px] px-2 py-0.5 rounded-full border border-amber-200 bg-white text-amber-600 font-medium ml-1">新论文</span>
+              <span className="text-[10px] text-gray-400 ml-auto">arXiv 2604.02190 · April 2026</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-gray-600 leading-relaxed">
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-amber-600 mb-1">💡 核心创新</div>
+                提出统一驾驶 VLA 框架，解决现有方案「只刷 nuScenes 或只刷 Bench2Drive」的局限。单一模型架构在两大权威 benchmark 上同时实现 SOTA，证明统一框架的泛化能力优于专项优化方案。
+              </div>
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-amber-600 mb-1">📊 关键结果</div>
+                <ul className="space-y-1 list-disc list-inside marker:text-amber-500">
+                  <li>nuScenes 开环评估：新 SOTA</li>
+                  <li>Bench2Drive 闭环评估：新 SOTA</li>
+                  <li>统一解码器：轨迹 + 世界预测单次前向</li>
+                  <li>消融实验证明统一框架优于双头分离方案</li>
+                </ul>
+              </div>
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-amber-600 mb-1">🔍 与现有方案的对比</div>
+                DriveWorld-VLA 和 Seed-AD 均主要在 nuScenes 上评估；Alpamayo-R1 无公开 benchmark 数据；UniDriveVLA 是首个在两大主流 benchmark 上均达 SOTA 的统一框架，具有更强的实用价值。
+              </div>
+              <div className="rounded-lg border border-gray-100 bg-white p-3">
+                <div className="text-[10px] font-bold tracking-wider text-amber-600 mb-1">📌 论文信息</div>
+                arXiv: <a href="https://arxiv.org/abs/2604.02190" target="_blank" rel="noopener" className="text-amber-600 underline font-mono">2604.02190</a>，发布于 2026 年 4 月。论文暂未附带开源代码，后续将跟踪代码发布与 benchmark 对比数据。
               </div>
             </div>
           </div>
@@ -1274,6 +1381,73 @@ function VlaPageContent() {
 
             {/* Seed-AD */}
             {activeProject === 'seedad' && <SeedAdSection seedTab={seedTab} setSeedTab={setSeedTab} />}
+
+            {/* ── 行业动态速递（2026 年 4-5 月） ── */}
+            <div className="mt-8 rounded-2xl border border-blue-100/60 bg-gradient-to-br from-blue-50/30 to-slate-50/20 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-base">📡</span>
+                <h3 className="text-sm font-semibold text-gray-800">行业动态速递</h3>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 font-medium">2026 年 4–5 月</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  {
+                    cat: '🌍 世界模型',
+                    catColor: '#6c5ce7',
+                    items: [
+                      { title: 'Wayve 完成 86 亿美元 D 轮', date: '2026-04-22', desc: 'NVIDIA + Microsoft + Uber 领投，GAIA-2 世界模型将加速在量产车上的商业化部署。', link: null },
+                      { title: 'Pony.ai 世界模型 2.0 发布', date: '2026-04-27', desc: '相比上一代训练成本降低 40–50%，已在北京/深圳/硅谷全量部署，用于自动标注与场景生成。', link: null },
+                      { title: 'NVIDIA Cosmos 3 + GR00T N2 发布', date: '2026-04', desc: 'Cosmos 3 物理仿真世界模型更新，GR00T N2 机器人基础模型同步发布，支持具身智能闭环训练。', link: null },
+                    ],
+                  },
+                  {
+                    cat: '🚗 自动驾驶 VLA',
+                    catColor: '#10b981',
+                    items: [
+                      { title: 'LatentVLA: NAVSIM PDMS 92.4 新 SOTA', date: '2026-01', desc: 'arXiv 2601.05611，在 NAVSIM 无反应评估集上刷新 SOTA（PDMS=92.4）。隐空间动作表示 + 多尺度世界建模。', link: 'https://arxiv.org/abs/2601.05611v1' },
+                      { title: 'Tesla FSD v14.3 发布', date: '2026-04', desc: '通过 MLIR 编译优化，反应速度提升 20%；Autopilot 팀全面迁移到 VLA 端到端架构。', link: null },
+                      { title: 'DeepRoute.ai 发布 40B VLA', date: '2026-03（GTC）', desc: 'NVIDIA GTC 2026 发布，基于 NVIDIA Orin 平台优化，面向 Robotaxi 商业化部署。', link: null },
+                    ],
+                  },
+                  {
+                    cat: '🤖 具身智能',
+                    catColor: '#e17055',
+                    items: [
+                      { title: 'Unitree H1/Flash 完成北京半程马拉松', date: '2026-04-19', desc: 'H1 以 2:40:42 完赛，Flash 以 2:22:09 创下人形机器人半马世界纪录，零跌倒全程无人工干预。', link: null },
+                      { title: 'Boston Dynamics Atlas 56-DOF 全液压升级', date: '2026-01（CES）', desc: 'CES 2026 展示，56 个自由度，计划 2028 年量产 3 万台/年，对标特斯拉 Optimus。', link: null },
+                      { title: 'Figure 03 + Helix AI 发布', date: '2026', desc: 'Figure 03 搭载全新 Helix AI 系统，双手灵巧操作能力大幅提升，白宫活动公开演示。', link: null },
+                    ],
+                  },
+                  {
+                    cat: '🔧 数据闭环 & 工具链',
+                    catColor: '#00b894',
+                    items: [
+                      { title: 'UniSim 2.0 集成进 Seed-AD 训练', date: '2026', desc: 'UniSim 2.0 合成数据工具链支持 32 种天气/光照组合，每条样本扩增 ×5，补齐长尾场景，已集成进 Seed-AD 训练管线。', link: null },
+                      { title: 'NAVSIM v2 新增 PDMS++ 指标', date: '2026', desc: 'NAVSIM 评测集增加无反应代理（non-reactive agents）场景，更真实衡量 VLA 在动态环境中的决策质量。', link: null },
+                    ],
+                  },
+                ].map(section => (
+                  <div key={section.cat} className="rounded-xl border border-gray-100 bg-white p-3">
+                    <div className="text-[10px] font-bold mb-2" style={{ color: section.catColor }}>{section.cat}</div>
+                    <div className="space-y-2">
+                      {section.items.map(item => (
+                        <div key={item.title} className="border-b border-gray-50 last:border-0 pb-1.5 last:pb-0">
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-[11px] font-medium text-gray-800 flex-1">
+                              {item.link
+                                ? <a href={item.link} target="_blank" rel="noopener" className="underline" style={{ color: section.catColor }}>{item.title}</a>
+                                : item.title}
+                            </span>
+                            <span className="text-[9px] text-gray-400 flex-shrink-0 font-mono">{item.date}</span>
+                          </div>
+                          <p className="text-[10px] text-gray-500 leading-relaxed mt-0.5">{item.desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </>
         )}
 

@@ -37,6 +37,7 @@ const BASICS_LAYERS = [
     items: [
       {
         name: 'GPIO / PWM / ADC',
+        category: 'interface',
         icon: '⚡',
         desc: '最基础的数字/模拟 IO，控制 LED、读按键、驱动舵机',
         details: [
@@ -72,6 +73,7 @@ print(f"ADC 通道0: {voltage:.3f} V")`,
       },
       {
         name: 'I2C 总线',
+        category: 'interface',
         icon: '🔌',
         desc: '两线制（SDA/SCL），多设备挂载同一总线，最常见于传感器',
         details: [
@@ -113,6 +115,7 @@ for _ in range(5):
       },
       {
         name: 'SPI 总线',
+        category: 'interface',
         icon: '🔄',
         desc: '四线制（MOSI/MISO/SCK/CS），速率高于 I2C，适合高速 ADC/显示屏',
         details: [
@@ -147,6 +150,7 @@ def bme280_read_temp_raw():
       },
       {
         name: 'CAN bus',
+        category: 'interface',
         icon: '🚌',
         desc: '差分双线，工业/汽车标准总线，多节点共享，高抗干扰',
         details: [
@@ -185,6 +189,7 @@ for msg in bus:
       },
       {
         name: 'UART / RS-485',
+        category: 'interface',
         icon: '📡',
         desc: '异步串行通信，最简单的双设备互联，Modbus RTU 工业标准',
         details: [
@@ -235,6 +240,7 @@ print(f"温度: {temp/10:.1f}°C   湿度: {hum/10:.1f}%RH")`,
     items: [
       {
         name: 'FreeRTOS 任务模型',
+        category: 'interface',
         icon: '⏱️',
         desc: '实时操作系统调度核心：任务优先级、精确周期、队列通信',
         details: [
@@ -285,6 +291,7 @@ int main(void) {
       },
       {
         name: '坐标变换 SE(3)',
+        category: 'algorithm',
         icon: '📐',
         desc: '机器人坐标系变换：旋转矩阵、四元数、齐次矩阵',
         details: [
@@ -335,6 +342,7 @@ ts = [0, 0.25, 0.5, 0.75, 1.0]
       },
       {
         name: '卡尔曼滤波',
+        category: 'algorithm',
         icon: '📈',
         desc: '融合多个含噪声传感器的最优估计器，IMU/GPS融合基础',
         details: [
@@ -390,6 +398,7 @@ def ekf_update(x, P, z, H, R):
       },
       {
         name: 'PID 控制器',
+        category: 'algorithm',
         icon: '🎛️',
         desc: '最广泛使用的反馈控制器，掌握它能调好 80% 的控制问题',
         details: [
@@ -446,6 +455,7 @@ for i in range(80):
       },
       {
         name: 'MAVLink 消息',
+        category: 'interface',
         icon: '✈️',
         desc: '无人机/无人车通信协议，理解消息格式是二次开发基础',
         details: [
@@ -506,6 +516,7 @@ mav.mav.command_long_send(
     items: [
       {
         name: 'ROS 2 节点完整模板',
+        category: 'stack',
         icon: '🤖',
         desc: 'Publisher/Subscriber/Service/Action/参数服务 完整示例',
         details: [
@@ -596,6 +607,7 @@ def main():
       },
       {
         name: 'URDF 机器人建模',
+        category: 'stack',
         icon: '🦾',
         desc: 'XML 描述机器人物理结构，ROS 2 / MoveIt 2 / 仿真器通用',
         details: [
@@ -673,6 +685,7 @@ def main():
       },
       {
         name: 'DDS QoS 策略',
+        category: 'stack',
         icon: '🌐',
         desc: 'ROS 2 底层通信质量策略，决定数据可靠性与延迟',
         details: [
@@ -737,6 +750,7 @@ class QosDemoNode(Node):
       },
       {
         name: 'PointCloud 点云处理',
+        category: 'stack',
         icon: '☁️',
         desc: 'LiDAR 数据的核心数据结构与常用处理操作',
         details: [
@@ -1994,17 +2008,601 @@ print(f"晶格常数: {atoms.cell.lengths()} Å")
 
 // ─── Tab 定义 ─────────────────────────────────────────────────────────────────
 const TABS = [
-  { id: 'basics',    name: '🔩 通用基础', desc: '接口·协议·嵌入式·算法' },
-  { id: 'robot',     name: '🤖 机器人',   desc: '执行器·ROS 2·VLA' },
-  { id: 'ad',        name: '🚗 自动驾驶', desc: 'LiDAR·感知·规划·ISO 26262' },
-  { id: 'drone',     name: '🛸 无人机',   desc: 'PX4·ArduPilot·法规·集群' },
+  { id: 'basics',    name: '🔩 通用基础', desc: '接口·算法·嵌入式·ROS 2' },
+  { id: 'domains',   name: '🤖 应用领域', desc: '机器人·自动驾驶·无人机' },
+  { id: 'chip',      name: '🔬 芯片知识', desc: '基础工艺·EDA·商业生态·2nm' },
   { id: 'selection', name: '💰 选型指南', desc: 'VLA机器人·自动驾驶·无人机BOM' },
   { id: 'materials', name: '🧪 材料',     desc: '结构·功能·AI驱动材料科学' },
 ];
 
-// ─── LayerCard 组件（支持代码块）─────────────────────────────────────────────
-function LayerCard({ layer }) {
+const DOMAIN_TABS = [
+  { id: 'robot', name: '🤖 机器人',   layers: ROBOT_LAYERS },
+  { id: 'ad',    name: '🚗 自动驾驶', layers: AD_LAYERS },
+  { id: 'drone', name: '🛸 无人机',   layers: DRONE_LAYERS },
+];
+
+// ─── 芯片知识 ─────────────────────────────────────────────────────────────────
+const CHIP_LAYERS = [
+  {
+    level: '🟢 入门',
+    title: '半导体基础',
+    subtitle: '晶体管·CMOS·逻辑门·存储单元——芯片世界的最小积木',
+    color: '#27ae60',
+    items: [
+      {
+        name: '晶体管与 MOSFET',
+        icon: '⚛️',
+        desc: '芯片的基本开关单元，现代 CPU 集成 100 亿+ 个',
+        details: [
+          { label: 'MOSFET 工作原理', text: '金属-氧化物-半导体场效应晶体管。Gate 施加电压 → 沟道导通 (ON) / 关断 (OFF)。N-MOS：高电平导通；P-MOS：低电平导通。' },
+          { label: '特征尺寸', text: '7nm/5nm/3nm 指栅极长度（现为等效尺寸，实际物理尺寸已不对应）。越小 → 更低功耗、更高密度、更快速度。台积电 N3E：每 mm² 约 1.7 亿个晶体管。' },
+          { label: 'FinFET → GAA', text: 'FinFET（鳍式）：22nm 起引入，鳍片竖起提升控制能力。GAA（全环绕栅极）：3nm/2nm 引入，纳米片叠加，漏电更低。Intel RibbonFET = GAA 的 Intel 叫法。' },
+        ],
+        code: `# SPICE 仿真 — MOSFET 特性曲线（Python 调用 ngspice）
+# 理解 Id-Vgs 转移特性 & Id-Vds 输出特性
+
+spice_netlist = """
+* NMOS 特性测量
+M1 drain gate 0 0 NMOS_MODEL W=1u L=180n
+.model NMOS_MODEL NMOS LEVEL=3 VTO=0.5 KP=200u
+Vgs gate 0 DC 0
+Vds drain 0 DC 1.8
+
+* 扫描 Vgs 从 0 到 1.8V（Id-Vgs 曲线）
+.dc Vgs 0 1.8 0.01
+.probe I(Vds)
+.end
+"""
+
+# 用 PySpice 替代（纯 Python）
+from PySpice.Spice.Netlist import Circuit
+from PySpice.Unit import *
+
+circuit = Circuit('NMOS Transfer')
+circuit.MOSFET('1', 'drain', 'gate', circuit.gnd, circuit.gnd,
+               model='NMOS', w=1@u_um, l=180@u_nm)
+circuit.V('gs', 'gate', circuit.gnd, 0@u_V)
+circuit.V('ds', 'drain', circuit.gnd, 1.8@u_V)
+
+# 阈值电压 Vth ≈ 0.5V：Id 开始显著增大的点
+# 饱和区：Vds > Vgs - Vth，Id 不随 Vds 增大`,
+        lang: 'python',
+      },
+      {
+        name: 'CMOS 反相器与逻辑门',
+        icon: '🔀',
+        desc: 'P-MOS + N-MOS 互补组合，静态功耗趋近于零',
+        details: [
+          { label: 'CMOS 反相器', text: 'P-MOS（上拉）+ N-MOS（下拉）串联。输入高 → N导通P截止 → 输出低；输入低 → P导通N截止 → 输出高。静态功耗几乎为零（两管不同时导通）。' },
+          { label: '标准单元库', text: 'INV/NAND/NOR/DFF 等基本逻辑门组成标准单元库（Standard Cell Library）。台积电授权给 ARM/Cadence 使用。不同 drive strength：INVx1/INVx4/INVx8（驱动能力倍数）。' },
+          { label: '延迟与功耗', text: '动态功耗 P = α·C·V²·f（α=翻转率，C=负载电容，V=电压，f=频率）。减小 V 是降功耗最有效手段（V²）。timing path 最长的路径决定最高频率。' },
+        ],
+        code: `// Verilog 描述逻辑门（RTL 级）
+// 综合工具会把这段代码映射到实际 Standard Cell
+
+module logic_gates (
+    input  wire a, b, c,
+    output wire y_inv,  // 反相
+    output wire y_nand, // 与非
+    output wire y_nor,  // 或非
+    output wire y_xor,  // 异或
+    output wire y_mux   // 2选1 MUX
+);
+    assign y_inv  = ~a;
+    assign y_nand = ~(a & b);
+    assign y_nor  = ~(a | b);
+    assign y_xor  = a ^ b;
+    assign y_mux  = c ? b : a;   // sel=c, 选 b 或 a
+endmodule
+
+// 综合后 (Synopsis Design Compiler 输出示意):
+// y_inv  → 1× INVx1
+// y_nand → 1× NAND2x1
+// y_mux  → 1× MUX2x1  (或 AOI21 + INV 组合)
+// 面积约 5~12 个 GE（Gate Equivalent，以 NAND2 为单位）`,
+        lang: 'verilog',
+      },
+      {
+        name: 'SRAM / DRAM / Flash 存储原理',
+        icon: '💾',
+        desc: '三类主流存储单元的物理结构与读写原理',
+        details: [
+          { label: 'SRAM（6T 单元）', text: '6 个晶体管构成双稳态锁存器。读写速度极快（<1ns），但面积大、功耗高。用于 CPU L1/L2/L3 Cache、寄存器文件。' },
+          { label: 'DRAM（1T1C 单元）', text: '1 个晶体管 + 1 个电容。电容存电荷（1/0）。需周期性刷新（64ms 内刷满）。密度高、成本低。用于主内存（DDR5）。' },
+          { label: 'NAND Flash（浮栅/CTF）', text: '浮栅晶体管：通过 F-N 隧穿注入/抽取电子改变阈值电压。SLC(1bit)/MLC(2bit)/TLC(3bit)/QLC(4bit) 提升密度但降低耐久。3D NAND：垂直堆叠 200+ 层（SK海力士 V9 = 321层）。' },
+        ],
+        code: `# 理解内存层次：访问延迟 × 带宽
+# 实测不同存储层次的访问时间
+
+import time, ctypes, numpy as np
+
+def measure_latency(array, iterations=10_000_000):
+    """指针追踪法测量随机访问延迟（缓存友好 vs 缓存不友好）"""
+    n = len(array)
+    # 生成随机访问序列（缓存不友好：产生大量 cache miss）
+    indices = np.random.permutation(n).astype(np.int64)
+
+    start = time.perf_counter_ns()
+    idx = 0
+    for _ in range(min(iterations, n)):
+        idx = indices[idx % n]  # 随机跳转
+    end = time.perf_counter_ns()
+    return (end - start) / iterations
+
+# L1 Cache (~32KB): 数组小 → 全部在 L1 → 约 1-2ns
+l1_array = np.zeros(4096, dtype=np.int64)
+# L3 Cache (~16MB): 数组大 → 命中 L3 → 约 30-40ns
+l3_array = np.zeros(2_000_000, dtype=np.int64)
+# DRAM: 超过 Cache → 约 60-100ns
+dram_array = np.zeros(50_000_000, dtype=np.int64)
+
+# 带宽对比（理论值）:
+# L1 Cache:  ~1TB/s  | 延迟 ~1ns
+# L2 Cache: ~500GB/s | 延迟 ~4ns
+# L3 Cache: ~200GB/s | 延迟 ~30ns
+# DDR5-6400: ~50GB/s  | 延迟 ~70ns
+# NVMe SSD:  ~7GB/s   | 延迟 ~100μs
+print("内存层次越靠近 CPU 核心，速度越快但容量越小")`,
+        lang: 'python',
+      },
+      {
+        name: '芯片设计流程概览',
+        icon: '🗺️',
+        desc: '从需求到流片：RTL → 综合 → 布局布线 → 制造 → 封测',
+        details: [
+          { label: 'RTL 设计', text: '用 Verilog/VHDL/SystemVerilog 描述寄存器传输级逻辑。功能仿真验证。此阶段产出 .v 文件。工具：Vivado（FPGA）/VCS/ModelSim（仿真）。' },
+          { label: '逻辑综合', text: '将 RTL 映射为标准单元网表（netlist）。优化时序/面积/功耗。工具：Synopsys Design Compiler（DC）/ Cadence Genus。产出 .v netlist + .sdf 时序文件。' },
+          { label: '物理设计（后端）', text: '布局（Placement）：把单元摆到芯片区域内。CTS（时钟树综合）：平衡时钟到达各触发器的延迟。绕线（Routing）：金属连接所有单元。工具：Cadence Innovus / Synopsys ICC2。' },
+          { label: 'DRC/LVS 签核', text: 'DRC（设计规则检查）：验证所有图形符合晶圆厂设计规则（最小线宽/间距等）。LVS（Layout vs Schematic）：验证版图与电路图一致。通过后 Tape-out（流片），发给台积电/三星。' },
+        ],
+        code: `# 芯片设计阶段与主要工具链
+design_flow = {
+    "规格定义": {
+        "输入": "产品需求（性能/功耗/面积/成本）",
+        "产出": "微架构规格文档",
+        "工具": "Excel/Word/内部文档系统",
+    },
+    "RTL 编码": {
+        "语言": ["Verilog", "SystemVerilog", "Chisel(Scala)", "VHDL"],
+        "仿真工具": ["Synopsys VCS", "Cadence Xcelium", "ModelSim", "Verilator(开源)"],
+        "验证方法": "UVM (Universal Verification Methodology)",
+    },
+    "逻辑综合": {
+        "工具": ["Synopsys DC", "Cadence Genus", "Yosys(开源)"],
+        "约束文件": "SDC (Synopsys Design Constraints) — 指定时钟/输入输出延迟",
+        "产出": "门级网表 (.v) + 时序库 (.lib/.db)",
+    },
+    "物理设计": {
+        "工具": ["Cadence Innovus", "Synopsys ICC2"],
+        "步骤": ["Floorplan", "Power Planning", "Placement", "CTS", "Routing", "Filler"],
+        "产出": "GDSII 版图文件（交给晶圆厂）",
+    },
+    "制造与封测": {
+        "代工厂": ["TSMC", "Samsung Foundry", "Intel Foundry", "SMIC"],
+        "封装": ["BGA", "Flip-chip", "CoWoS", "FOPLP"],
+        "测试": "ATE (Automatic Test Equipment) — 良率测试",
+    },
+}`,
+        lang: 'python',
+      },
+    ],
+  },
+  {
+    level: '🟡 进阶',
+    title: 'EDA 工具链与 IP 生态',
+    subtitle: 'Verilog/SV·综合·时序分析·IP授权·SoC集成',
+    color: '#e67e22',
+    items: [
+      {
+        name: 'SystemVerilog & UVM 验证',
+        icon: '🧪',
+        desc: '工业级芯片验证方法论，60% 项目资源用于验证',
+        details: [
+          { label: 'SystemVerilog 扩展', text: 'SV 在 Verilog 基础上增加：interface（端口抽象）/class（面向对象）/assertion（SVA 断言）/constraint（随机约束）。现代芯片设计标准语言。' },
+          { label: 'UVM 框架', text: 'Universal Verification Methodology。组件：uvm_driver → uvm_monitor → uvm_scoreboard → uvm_agent。随机约束测试 + 覆盖率收集（功能覆盖/代码覆盖）。' },
+          { label: '形式验证', text: 'Formal Verification：数学证明代码正确性（无需穷举仿真）。工具：Synopsys VC Formal / Cadence JasperGold。常用于安全相关模块（密码加速器/仲裁器）。' },
+        ],
+        code: `// SystemVerilog — 完整的 AXI4-Lite 从机接口模块
+// 可综合，附带 SVA 断言
+
+module axi4_lite_slave #(
+    parameter DATA_WIDTH = 32,
+    parameter ADDR_WIDTH = 8
+) (
+    input  logic                     clk, rst_n,
+    // Write Address Channel
+    input  logic [ADDR_WIDTH-1:0]    awaddr,
+    input  logic                     awvalid,
+    output logic                     awready,
+    // Write Data Channel
+    input  logic [DATA_WIDTH-1:0]    wdata,
+    input  logic [DATA_WIDTH/8-1:0]  wstrb,
+    input  logic                     wvalid,
+    output logic                     wready,
+    // Write Response Channel
+    output logic [1:0]               bresp,
+    output logic                     bvalid,
+    input  logic                     bready,
+    // Read Address Channel
+    input  logic [ADDR_WIDTH-1:0]    araddr,
+    input  logic                     arvalid,
+    output logic                     arready,
+    // Read Data Channel
+    output logic [DATA_WIDTH-1:0]    rdata,
+    output logic [1:0]               rresp,
+    output logic                     rvalid,
+    input  logic                     rready
+);
+    // 寄存器堆（256个32位寄存器）
+    logic [DATA_WIDTH-1:0] regs [0:2**ADDR_WIDTH/4-1];
+    logic [ADDR_WIDTH-1:0] wr_addr;
+
+    // 写地址握手
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) awready <= 1'b0;
+        else        awready <= ~awready & awvalid & wvalid;
+    end
+
+    // 写数据并产生响应
+    always_ff @(posedge clk) begin
+        if (awvalid & wvalid & awready) begin
+            // 按字节使能写入
+            for (int i = 0; i < DATA_WIDTH/8; i++) begin
+                if (wstrb[i])
+                    regs[awaddr[ADDR_WIDTH-1:2]][i*8+:8] <= wdata[i*8+:8];
+            end
+            bvalid <= 1'b1;
+            bresp  <= 2'b00;  // OKAY
+        end
+        if (bvalid & bready) bvalid <= 1'b0;
+    end
+
+    // SVA 断言：awvalid 有效时 awready 在 1 个周期内必须响应
+    // property p_aw_handshake;
+    //   @(posedge clk) awvalid |-> ##[1:4] awready;
+    // endproperty
+    // assert property (p_aw_handshake) else $error("AW timeout");
+endmodule`,
+        lang: 'verilog',
+      },
+      {
+        name: 'IP 核授权与 ARM 商业模式',
+        icon: '🏛️',
+        desc: 'IP 核是芯片乐高积木，ARM 是最成功的 IP 商业案例',
+        details: [
+          { label: 'IP 核类型', text: 'Soft IP：Verilog RTL，可综合到任意工艺（灵活，需买家自己综合）。Hard IP：已完成物理设计的版图（固定工艺，性能更高，如 SerDes/DDR PHY）。Firm IP：综合后网表（折中）。' },
+          { label: 'ARM 授权模式', text: '架构授权（高通/苹果）：可自研微架构，成本 $5,000万+。内核授权（多数手机 SoC）：直接用 Cortex-A/M 完整核。TLA（技术授权）：ARM 收版税 1~2% per chip。2023 年 ARM IP 收入 $26亿。' },
+          { label: '常用 IP 供应商', text: 'Synopsys/Cadence：DesignWare IP 库（USB/PCIe/DDR/MIPI PHY）。Rambus：HBM PHY。Arteris：NoC 互联 IP。Imagination：GPU IP（PowerVR）。CEVA：DSP/AI IP。' },
+        ],
+        code: `# ARM 处理器家族与适用场景速查
+arm_family = {
+    "Cortex-M (MCU)": {
+        "型号": ["M0/M0+", "M4", "M7", "M33", "M55", "M85"],
+        "特点": "超低功耗，无 MMU，裸机/RTOS",
+        "应用": "IoT/可穿戴/家电控制/安全芯片",
+        "代表芯片": ["STM32", "nRF52", "RP2040(双核M0+)"],
+        "主频": "16MHz ~ 1GHz",
+    },
+    "Cortex-A (Application)": {
+        "型号": ["A53(小核)", "A55(小核)", "A76/A78(大核)", "A710/A715", "X4(超大核)"],
+        "特点": "有 MMU，运行 Linux/Android",
+        "应用": "手机/平板/网关/单板电脑",
+        "代表芯片": ["骁龙8 Gen3", "天玑9300", "Kirin 9010", "Apple M4(自研v8.6)"],
+    },
+    "Cortex-R (Real-time)": {
+        "型号": ["R5", "R8", "R82"],
+        "特点": "硬实时，有 ECC，高可靠",
+        "应用": "汽车MCU/硬盘控制器/基带",
+        "代表": ["Renesas RH850", "TI TDA4 安全岛"],
+    },
+    "Neoverse (Server)": {
+        "型号": ["N1", "N2", "V2"],
+        "应用": "AWS Graviton3/4, 阿里倚天710",
+        "优势": "单核性能接近 x86，功耗比优势明显",
+    },
+}`,
+        lang: 'python',
+      },
+      {
+        name: '光刻工艺与 ASML EUV',
+        icon: '💡',
+        desc: '光刻是芯片制造最关键步骤，EUV 机器每台 1.5 亿欧元',
+        details: [
+          { label: '光刻原理', text: '将光罩（Mask）图案投影缩小到晶圆光刻胶上，再蚀刻形成电路。分辨率 ≈ λ/(2·NA)（瑞利准则）。DUV：193nm 准分子激光；EUV：13.5nm 极紫外光。' },
+          { label: 'EUV 技术要点', text: 'ASML NXE 系列：13.5nm 光源由 Sn 液滴被激光打击产生等离子体。NA=0.33（High-NA EUV = 0.55，2025年量产）。单层曝光可做 7nm 以下图案，无需多重曝光。' },
+          { label: '多重曝光（DUV 扩展）', text: 'SAQP（Self-Aligned Quadruple Patterning）：一条线曝光→刻蚀→沉积→刻蚀，最终图案为曝光线宽 1/4。台积电 5nm SAQP 实现 6nm pitch。成本高：每层需 4~5 次工序。' },
+        ],
+        code: `# 光刻工艺节点与对应设备/参数
+lithography_nodes = {
+    "成熟制程 (≥28nm)": {
+        "光源": "DUV ArF 193nm",
+        "设备": "ASML TWINSCAN 系列",
+        "工艺": "单次曝光",
+        "代工厂": ["TSMC", "Samsung", "SMIC", "GlobalFoundries", "UMC"],
+        "应用": "MCU/模拟IC/功率器件/WiFi芯片",
+        "晶圆价格": "~$2,000/片 (8英寸)",
+    },
+    "先进制程 (7nm-5nm)": {
+        "光源": "DUV + 多重曝光 (SAQP)",
+        "设备": "ASML NXT 2000i immersion",
+        "图案策略": "LELE (Litho-Etch-Litho-Etch) + SADP",
+        "代工厂": ["TSMC N7/N5", "Samsung 5LPE"],
+        "应用": "手机 AP/高性能 CPU",
+        "流片成本": "~$3,000万/次（掩膜版费用）",
+    },
+    "顶尖制程 (3nm-2nm)": {
+        "光源": "EUV 13.5nm",
+        "设备": "ASML NXE:3600D (0.33 NA)",
+        "晶体管": "3nm = FinFET 末代 / 2nm = GAA 首发",
+        "代工厂": ["TSMC N3E/N2", "Samsung 3GAP"],
+        "High-NA EUV": "ASML EXE:5000 (0.55 NA)，Intel 18A/14A 使用",
+        "流片成本": "~$5,000万/次（2nm 掩膜版）",
+    },
+}
+
+# EUV 产业链依赖
+euv_supply_chain = {
+    "ASML": "唯一 EUV 光刻机制造商（荷兰）",
+    "Zeiss": "EUV 光学镜片（德国，垄断）",
+    "Cymer(ASML子公司)": "DUV 光源",
+    "Trumpf": "High-NA EUV 激光源（德国）",
+    "日本三井化学": "EUV 光刻胶（PAG体系）",
+    "信越化学": "硅片（300mm CZ 硅）",
+}`,
+        lang: 'python',
+      },
+      {
+        name: 'SoC 设计与 RISC-V',
+        icon: '🧩',
+        desc: '片上系统集成：CPU+GPU+NPU+总线互联，RISC-V 开放生态',
+        details: [
+          { label: 'SoC 典型架构', text: '大小核 CPU Cluster（ARM big.LITTLE/DynamIQ）+ GPU（Mali/Adreno）+ NPU/AI 加速器 + ISP + DSP + Modem + DRAM/Cache 子系统，通过 NoC（Network on Chip）互联。' },
+          { label: 'RISC-V 生态', text: '开放指令集（UCB 2010），无授权费。基础整数 ISA：RV32I/RV64I。扩展：M（乘除）/A（原子）/F（浮点）/V（向量）/C（压缩）。代表芯片：SiFive U54/U74，阿里平头哥 T-Head 玄铁，中科蓝讯。' },
+          { label: 'Chiplet 与 UCIe', text: '将不同功能模块制造为独立 die，通过先进封装互联。AMD EPYC：8个 Compute Chiplet（5nm）+ I/O Die（12nm）。UCIe 1.1 标准：die-to-die 带宽 3.2TB/s。降低流片风险，提升良率。' },
+        ],
+        code: `// RISC-V 汇编 — 理解 ISA 基本操作
+// RV64I 基础整数指令集
+
+.section .text
+.global _start
+_start:
+    # 基础算术
+    li   a0, 100          # 加载立即数 100 到 a0
+    li   a1, 200          # 加载立即数 200 到 a1
+    add  a2, a0, a1       # a2 = a0 + a1 = 300
+
+    # 内存访问
+    la   t0, data_label   # 加载数据地址
+    ld   t1, 0(t0)        # 从内存加载 64 位数据
+    sd   a2, 8(t0)        # 存储 64 位数据
+
+    # 分支与循环
+    li   t2, 10           # 循环计数器
+    li   t3, 0            # 累加器
+loop:
+    add  t3, t3, t2       # sum += i
+    addi t2, t2, -1       # i--
+    bnez t2, loop         # if i != 0, goto loop
+    # t3 = 10+9+...+1 = 55
+
+    # 函数调用（RISC-V 调用约定）
+    # a0-a7: 参数/返回值; ra: 返回地址
+    # t0-t6: 临时; s0-s11: 调用者保存
+    call fibonacci        # 调用 fibonacci(a0)
+
+.data
+data_label: .dword 0xDEADBEEFCAFEBABE`,
+        lang: 'asm',
+      },
+    ],
+  },
+  {
+    level: '🔴 精通',
+    title: '前沿工艺与商业生态',
+    subtitle: '2nm GAA·HBM3·CoWoS·Chiplet·代工模式·EDA商业流程',
+    color: '#e74c3c',
+    items: [
+      {
+        name: '2nm GAA 工艺详解',
+        icon: '🔬',
+        desc: '台积电/三星/Intel 2nm 技术路线对比，GAA 取代 FinFET',
+        details: [
+          { label: 'GAA 纳米片结构', text: 'Gate-All-Around：栅极 360° 包裹沟道（纳米片/纳米线）。更强的栅控能力 → 更低漏电 → 可在更低电压运行。台积电 N2：4 层纳米片叠加，每层 5~7nm 厚，2nm 为等效节点名（营销名）。' },
+          { label: '台积电 N2/N2P/N2X', text: 'N2（2025量产）：对比 N3E 速度 +10-15%/功耗 -25-30%。N2P（2026）：High Performance Plus 版，进一步提升性能。N2X（2026）：针对超算/AI 加速器的极致性能版本（更高电压/频率）。' },
+          { label: 'Intel 18A 与 RibbonFET', text: 'Intel 18A（2025）= RibbonFET（GAA）+ PowerVia（背面供电）。背面供电：PDN（电源传输网络）从背面引入，正面全部留给信号绕线，密度提升 ~20%。Intel Foundry 争夺台积电客户的核心牌。' },
+        ],
+        code: `# 2nm 工艺生态与竞争格局（2025-2026）
+node_2nm = {
+    "台积电 N2": {
+        "量产": "2025 Q2（Apple A19 首发）",
+        "晶体管密度": "~2.0 亿/mm²（对比 N3E 1.7亿）",
+        "晶体管类型": "NSFET（Nanosheet FET，台积电叫法）",
+        "首批客户": ["Apple（iPhone 17 Pro）", "AMD（Zen6）", "Nvidia（Blackwell Ultra）"],
+        "流片价格": "≈ $2.5万/晶圆（预估）",
+    },
+    "三星 SF2": {
+        "量产": "2025 H2（延期风险）",
+        "量产良率": "目前良率问题导致客户流失（Qualcomm 转投台积电）",
+        "技术": "MBCFET（Multi-Bridge Channel FET）",
+    },
+    "Intel 18A": {
+        "量产": "2025 H2（Intel 自用 + 高通外包验证）",
+        "特色": "PowerVia 背面供电，业界首发",
+        "外部客户": "Microsoft（AI 芯片定制）",
+    },
+    "SMIC N+1/N+2": {
+        "等效节点": "≈7nm（DUV 多重曝光，无 EUV）",
+        "客户": "华为麒麟（出口管制后转 SMIC）",
+        "限制": "美国出口管制限制 ASML EUV 出口中国",
+    },
+}`,
+        lang: 'python',
+      },
+      {
+        name: 'HBM3 / HBM3E 与 AI 芯片',
+        icon: '🧠',
+        desc: 'H100/B200 的带宽秘密：高带宽内存 3D 堆叠技术',
+        details: [
+          { label: 'HBM 结构', text: '2.5D 封装：DRAM die 垂直堆叠（8~16层），通过 TSV（Through-Silicon Via）互联。底部 Base Die 通过 micro-bump 连接到 Si interposer，与 GPU Die 并排。' },
+          { label: 'HBM3E 规格', text: 'HBM3E（2024）：每 stack 1.2TB/s 带宽（共 8 stack in H200 → 总计 4.8TB/s）。容量 96GB（H200）。接口宽度 1024-bit/stack。对比 GDDR6X（512GB/s）快 10倍。' },
+          { label: 'CoWoS 封装', text: 'Chip-on-Wafer-on-Substrate：GPU Die + HBM Stack 并排放在 2.5D Silicon Interposer 上，再焊到 Package Substrate。台积电 CoWoS-S interposer 面积 820mm²（H100）→ 1200mm²（B200）。台积电 CoWoS 产能是 AI 算力瓶颈之一。' },
+        ],
+        code: `# AI 训练芯片规格演进（H100 → B200 → GB300）
+ai_gpu_evolution = {
+    "A100 (2020, 7nm TSMC)": {
+        "显存": "80GB HBM2e",
+        "带宽": "2TB/s",
+        "算力 (BF16)": "312 TFLOPS",
+        "TDP": "400W",
+        "互联": "NVLink 3.0 (600GB/s 双向)",
+    },
+    "H100 (2022, 4nm TSMC)": {
+        "显存": "80GB HBM3",
+        "带宽": "3.35TB/s",
+        "算力 (BF16)": "1979 TFLOPS (with sparsity)",
+        "TDP": "700W (SXM5)",
+        "新特性": "Transformer Engine (FP8), NVLink 4.0 (900GB/s)",
+    },
+    "H200 (2024, 4nm TSMC)": {
+        "显存": "141GB HBM3E (+76%)",
+        "带宽": "4.8TB/s (+43%)",
+        "算力": "同 H100 (相同 GPU die)",
+        "意义": "内存容量瓶颈缓解，大模型推理提升明显",
+    },
+    "B200 (2025, 4NP TSMC)": {
+        "架构": "Blackwell GB202",
+        "显存": "192GB HBM3E (双 die 封装)",
+        "带宽": "8TB/s",
+        "算力 (FP4)": "20 PFLOPS",
+        "NVLink": "NVLink 5.0 (1.8TB/s)",
+        "封装": "NVL72 (72× B200 + 72× Grace CPU 通过 NVLink switch 互联)",
+    },
+    "GB300 (2026预计)": {
+        "显存": "288GB HBM3E",
+        "带宽": "16TB/s (预测)",
+    },
+}`,
+        lang: 'python',
+      },
+      {
+        name: 'EDA 商业流程与三巨头',
+        icon: '💼',
+        desc: 'Synopsys · Cadence · Siemens EDA 垄断 EDA 市场',
+        details: [
+          { label: 'EDA 市场格局', text: '2023 年全球 EDA 市场约 $130 亿。Synopsys（$54亿收入）+ Cadence（$39亿）+ Siemens EDA（原 Mentor Graphics）三家合计 ~80% 份额。中国：华大九天/概伦电子在细分领域追赶。' },
+          { label: 'Synopsys 产品线', text: 'Design Compiler（逻辑综合）/ ICC2（物理设计）/ VCS（仿真）/ VC Formal（形式验证）/ Fusion Compiler（RTL-to-GDSII 一体化）/ Sentaurus（工艺仿真）。2024年收购 Ansys（$350亿），扩展至多物理场仿真。' },
+          { label: 'Cadence 产品线', text: 'Genus（综合）/ Innovus（物理设计）/ Xcelium（仿真）/ JasperGold（形式验证）/ Spectre（SPICE仿真）/ Virtuoso（模拟/混合信号）。Virtuoso 几乎垄断模拟 IC 设计。' },
+        ],
+        code: `# EDA 工具授权成本与商业模式
+eda_business = {
+    "授权模式": {
+        "Time-based License (TBL)": "按年付费，主流，$100万~$1000万/年（视规模）",
+        "Perpetual License": "一次购买永久使用权（已逐渐淘汰）",
+        "Token-based": "购买 Token 池，各工具按消耗扣除（灵活）",
+        "Cloud EDA": "AWS/Azure 上 pay-per-use（初创友好）",
+    },
+    "典型芯片公司 EDA 支出": {
+        "初创 (10人以下)": "$50万~$200万/年（云端 EDA 方案）",
+        "中型 (100人)":   "$1000万~$5000万/年",
+        "大型 (Qualcomm/AMD)": "$3亿~$10亿/年（含工艺仿真全套）",
+        "Apple": "已部分自研 EDA 工具以降低成本",
+    },
+    "中国 EDA 发展": {
+        "华大九天": "模拟EDA全流程（Empyrean），A股上市",
+        "概伦电子": "SPICE仿真器（SmartSpice）",
+        "芯华章": "数字仿真（HuaZhang Simulation）",
+        "挑战": "先进工艺（3nm+）EDA仍依赖 Synopsys/Cadence",
+        "美国管制": "EAR规定：受限公司无法获得 EDA 软件出口许可",
+    },
+}
+
+# 典型设计周期与成本（28nm SoC vs 3nm SoC）
+tape_out_cost = {
+    "28nm (成熟)": {
+        "掩膜版 NRE": "$200万",
+        "流片费（1000片）": "$100万",
+        "EDA 工具（1年）": "$500万",
+        "设计团队（50人·1年）": "$1000万",
+        "合计": "~$1800万",
+    },
+    "3nm (先进)": {
+        "掩膜版 NRE": "$1500万~$2000万",
+        "流片费（1000片）": "$1000万",
+        "EDA 工具（1年）": "$2000万",
+        "设计团队（200人·2年）": "$1.5亿",
+        "合计": "~$2亿",
+    },
+}`,
+        lang: 'python',
+      },
+      {
+        name: 'Chiplet 生态与 UCIe 标准',
+        icon: '🔗',
+        desc: '模块化芯片设计趋势：小 Die 拼接替代单片巨型芯片',
+        details: [
+          { label: 'Chiplet 核心逻辑', text: '单片 Die 越大良率越低（良率 = e^(-D₀·A)，D₀=缺陷密度，A=面积）。将 SoC 拆分为多个小 die（Chiplet），各自独立制造，通过先进封装互联。良率提升 + 混合工艺（不同模块用最优工艺节点）。' },
+          { label: 'AMD EPYC 架构', text: 'Genoa（4th Gen EPYC）：12× CCD（Compute Chiplet Die，5nm Zen4）+ 1× IOD（I/O Die，6nm）。CCD：8 core，64MB L3。IOD：PCIe/DDR/IF 等 IO 功能。总计 96 core，通过 AMD Infinity Fabric 互联。' },
+          { label: 'UCIe 1.2 协议', text: 'Universal Chiplet Interconnect Express（2022，Intel主导，50+成员）。两种物理层：Standard Package（25Gbps/pin）/ Advanced Package（4Gbps/pin 但 100μm pitch）。Die-to-die 带宽 3.2TB/s（Advanced）。协议兼容 PCIe/CXL 语义层。' },
+        ],
+        code: `# AMD EPYC Genoa Chiplet 架构分析
+epyc_genoa_architecture = {
+    "CCD (Compute Chiplet Die)": {
+        "工艺": "台积电 5nm (N5)",
+        "核心": "8× Zen4 core",
+        "L3 Cache": "32MB（每4核共享16MB）",
+        "面积": "~70mm²",
+        "数量": "12× CCD（96核配置）",
+        "接口": "AMD Infinity Fabric → IOD",
+    },
+    "IOD (I/O Die)": {
+        "工艺": "台积电 6nm (N6)",
+        "功能": ["PCIe 5.0 × 128", "DDR5 × 12ch（4800MT/s）", "Infinity Fabric 互联"],
+        "面积": "~400mm²（单颗大 Die）",
+        "数量": "1× IOD",
+    },
+    "封装": {
+        "技术": "Organic Substrate（传统 PCB 基板）",
+        "互联": "Bump 焊接（~110μm pitch）",
+        "对比": "Intel 用 EMIB（die-to-die bridge）集成 HBM",
+    },
+    "性能数据": {
+        "最大核心数": 96,
+        "TDP": "360W",
+        "内存带宽": "460GB/s（12× DDR5-4800）",
+        "PCIe 通道": 128,
+        "首发日期": "2022-11",
+    },
+}
+
+# Chiplet 良率优势计算
+import math
+def chiplet_yield(defect_density, areas):
+    """计算 Chiplet 方案总良率 vs 单片方案"""
+    total_area = sum(areas)
+    monolithic_yield = math.exp(-defect_density * total_area)
+    chiplet_yield = math.prod(math.exp(-defect_density * a) for a in areas)
+    return monolithic_yield, chiplet_yield
+
+D0 = 0.01  # 缺陷密度 (defects/mm²)，先进工艺典型值
+# 3× CCD(70mm²) + 1× IOD(400mm²) vs 单片 610mm²
+mono, chiplet = chiplet_yield(D0, [70, 70, 70, 400])
+print(f"单片良率: {mono:.1%}")    # ~0.2%（灾难性）
+print(f"Chiplet 良率: {chiplet:.1%}")  # ~74%（可接受）`,
+        lang: 'python',
+      },
+    ],
+  },
+];
+
+// ─── LayerCard 组件（支持代码块 + category 过滤）────────────────────────────
+function LayerCard({ layer, activeCategory = 'all' }) {
   const [expanded, setExpanded] = useState(null);
+
+  const items = activeCategory === 'all'
+    ? layer.items
+    : layer.items.filter(i => i.category === activeCategory);
+
+  if (items.length === 0) return null;
 
   return (
     <div className="rounded-2xl border p-5 mb-5"
@@ -2016,7 +2614,7 @@ function LayerCard({ layer }) {
       <p className="text-[12px] text-gray-500 mb-4">{layer.subtitle}</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {layer.items.map((item, idx) => (
+        {items.map((item, idx) => (
           <div key={item.name}
             className="bg-white rounded-xl border p-4 cursor-pointer hover:shadow-sm transition-shadow"
             style={{ borderColor: expanded === idx ? layer.color + '55' : '#f0f0f0' }}
@@ -2057,16 +2655,20 @@ function LayerCard({ layer }) {
 // ─── 主页面 ───────────────────────────────────────────────────────────────────
 export default function HardwarePage() {
   const [tab, setTab] = useHashState('tab', 'basics');
+  const [basicsCategory, setBasicsCategory] = useState('all');
+  const [domain, setDomain] = useState('robot');
 
-  const layersMap = {
-    basics:    BASICS_LAYERS,
-    robot:     ROBOT_LAYERS,
-    ad:        AD_LAYERS,
-    drone:     DRONE_LAYERS,
-    selection: SELECTION_LAYERS,
-    materials: MATERIALS_LAYERS,
-  };
-  const layers = layersMap[tab] || BASICS_LAYERS;
+  const BASICS_CATEGORIES = [
+    { id: 'all',       name: '全部' },
+    { id: 'interface', name: '🔌 接口协议' },
+    { id: 'algorithm', name: '🧮 算法控制' },
+    { id: 'stack',     name: '🖥 软件栈' },
+  ];
+
+  const domainLayers = (() => {
+    const dt = DOMAIN_TABS.find(d => d.id === domain);
+    return dt ? dt.layers : ROBOT_LAYERS;
+  })();
 
   return (
     <>
@@ -2077,16 +2679,16 @@ export default function HardwarePage() {
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-2xl font-bold text-gray-900">⚙️ 硬件</h1>
             <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-medium">
-              通用基础 · 机器人 · 自动驾驶 · 无人机 · 选型指南 · 材料
+              通用基础 · 应用领域 · 芯片知识 · 选型指南 · 材料
             </span>
           </div>
           <p className="text-sm text-gray-500 leading-relaxed">
-            面向软件工程师的硬件知识体系。从通用接口协议（I2C/CAN/UART）、嵌入式算法（PID/卡尔曼/坐标变换），到 ROS 2 / PX4 / Autoware 完整软件栈，再到 VLA 模型与功能安全标准。每个知识点附带可运行代码，真实客观。
+            面向软件工程师的硬件知识体系。从通用接口协议（I2C/CAN/UART）、嵌入式算法（PID/卡尔曼/坐标变换），到 ROS 2 / PX4 / Autoware 完整软件栈，再到芯片设计（RTL→流片）与先进封装（CoWoS/HBM）。每个知识点附带可运行代码，真实客观。
           </p>
           <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-            <span>6 个模块</span>
+            <span>5 个模块</span>
             <span>·</span>
-            <span>18 个知识层</span>
+            <span>18+ 个知识层</span>
             <span>·</span>
             <span>点击卡片展开代码与详解</span>
           </div>
@@ -2108,12 +2710,80 @@ export default function HardwarePage() {
           ))}
         </div>
 
-        {/* ─── 层级卡片 ─── */}
-        <div>
-          {layers.map(layer => (
-            <LayerCard key={layer.level + layer.title} layer={layer} />
-          ))}
-        </div>
+        {/* ─── 通用基础 Tab ─── */}
+        {tab === 'basics' && (
+          <div>
+            {/* Category Chips */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {BASICS_CATEGORIES.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setBasicsCategory(cat.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+                    basicsCategory === cat.id
+                      ? 'bg-gray-800 text-white border-gray-800'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:text-gray-800'
+                  }`}>
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+            {BASICS_LAYERS.map(layer => (
+              <LayerCard key={layer.level + layer.title} layer={layer} activeCategory={basicsCategory} />
+            ))}
+          </div>
+        )}
+
+        {/* ─── 应用领域 Tab ─── */}
+        {tab === 'domains' && (
+          <div>
+            {/* Domain Chips */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {DOMAIN_TABS.map(dt => (
+                <button
+                  key={dt.id}
+                  onClick={() => setDomain(dt.id)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                    domain === dt.id
+                      ? 'bg-gray-800 text-white border-gray-800'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:text-gray-800'
+                  }`}>
+                  {dt.name}
+                </button>
+              ))}
+            </div>
+            {domainLayers.map(layer => (
+              <LayerCard key={layer.level + layer.title} layer={layer} />
+            ))}
+          </div>
+        )}
+
+        {/* ─── 芯片知识 Tab ─── */}
+        {tab === 'chip' && (
+          <div>
+            {CHIP_LAYERS.map(layer => (
+              <LayerCard key={layer.level + layer.title} layer={layer} />
+            ))}
+          </div>
+        )}
+
+        {/* ─── 选型指南 Tab ─── */}
+        {tab === 'selection' && (
+          <div>
+            {SELECTION_LAYERS.map(layer => (
+              <LayerCard key={layer.level + layer.title} layer={layer} />
+            ))}
+          </div>
+        )}
+
+        {/* ─── 材料 Tab ─── */}
+        {tab === 'materials' && (
+          <div>
+            {MATERIALS_LAYERS.map(layer => (
+              <LayerCard key={layer.level + layer.title} layer={layer} />
+            ))}
+          </div>
+        )}
 
         {/* ─── 底部说明 ─── */}
         <div className="mt-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-xs text-gray-400">

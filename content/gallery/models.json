@@ -2230,5 +2230,86 @@
       "license": "Llama 4 Community License"
     },
     "textArch": "Text + Image Input\n     │\n┌────▼──────────────────────────────┐\n│  Multimodal Encoder               │\n│  图像 → Vision Tokens             │\n│  文本 → Text Tokens               │\n└────────────┬──────────────────────┘\n             │\n Embedding + RoPE（10M 上下文）\n             │\n┌────────────▼──────────────────────┐\n│   Llama 4 MoE Block × N           │\n│  ┌────────────────────────────┐   │\n│  │  GQA（分组查询注意力）      │   │\n│  │  支持 10M token 超长序列   │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  Router → Top-1 Gate       │   │\n│  │  128 专家（稀疏激活）       │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n            LM Head\n                │\n          Output Tokens"
+  },
+  {
+    "id": "qwen3-coder-480b",
+    "name": "Qwen3-Coder 480B",
+    "org": "阿里云",
+    "type": "moe",
+    "typeLabel": "混合专家",
+    "typeIcon": "🔀",
+    "open": false,
+    "params": "480B（激活 35B）",
+    "date": "2026-04",
+    "context": "1M tokens",
+    "attention": "GQA",
+    "description": "阿里云面向代码与 Agent 任务的旗舰 MoE 模型，支持 1M token 超长上下文，编程基准综合位列开源第一，思考/非思考双模式切换",
+    "keyInnovation": "1M token 超长代码上下文 + 480B MoE 参数（激活 35B）+ 代码专用预训练数据超 15T tokens",
+    "highlights": [
+      "LiveCodeBench 得分超 70，超越 GPT-4o 和 DeepSeek-V3",
+      "1M token 上下文，支持百万行代码库整体分析",
+      "480B 总参数，激活仅 35B，推理成本大幅降低",
+      "思考/非思考双模式，复杂算法题自动启用 CoT",
+      "SWE-bench 超 40 分，Agent 编码任务能力全面",
+      "阿里 DashScope API 可用，兼容 OpenAI 接口格式"
+    ],
+    "tags": ["LLM", "MoE", "代码", "Agent", "阿里云", "长上下文"],
+    "factSheet": {
+      "highlight": "开源最强代码 MoE，1M 上下文，LiveCodeBench > 70",
+      "params": "480B 总参数，35B 激活参数",
+      "architecture": "细粒度 MoE Transformer，Decoder-only",
+      "attention": "GQA（分组查询注意力）",
+      "ffn": "细粒度 MoE，多路由专家 + 共享专家，Top-8 激活",
+      "norm": "RMSNorm",
+      "posEncoding": "RoPE + YaRN 长上下文扩展",
+      "context": "1M tokens（代码专用优化）",
+      "training": "代码专用预训练 15T+ tokens，覆盖 40+ 编程语言 + 技术文档 + 竞赛题",
+      "inference": "DashScope API / vLLM / SGLang 推理部署",
+      "benchmarks": "LiveCodeBench 71.2 / HumanEval 97.8 / SWE-bench Verified 42.3 / AIME 2025 78.4",
+      "license": "Qwen License v1.0（商业申请）",
+      "thinkingMode": "enable_thinking=True/False 参数切换"
+    },
+    "textArch": "Code / Text Input\n     │\n Embedding + RoPE（YaRN, 1M ctx）\n     │\n┌────▼──────────────────────────────┐\n│   Qwen3-Coder MoE Block × N       │\n│  ┌────────────────────────────┐   │\n│  │  GQA（分组查询注意力）      │   │\n│  │  支持 1M token 代码上下文  │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  Router → Top-8 Gate       │   │\n│  │  细粒度路由专家（稀疏激活） │   │\n│  │  + 共享专家（全量激活）     │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n  ┌─────────────▼──────────────┐\n  │  思考模式（enable_thinking）│\n  │  Chain-of-Thought 代码推理  │\n  │  或直接输出（非思考模式）   │\n  └─────────────┬──────────────┘\n                │\n            LM Head\n                │\n          Output Tokens / Code"
+  },
+  {
+    "id": "gemini-25-flash",
+    "name": "Gemini 2.5 Flash",
+    "org": "Google DeepMind",
+    "type": "multimodal",
+    "typeLabel": "多模态",
+    "typeIcon": "🌐",
+    "open": false,
+    "params": "未公开（估计 ~30B 激活）",
+    "date": "2025-05",
+    "context": "1M tokens",
+    "attention": "MHA（含 Flash Attention 优化）",
+    "description": "Google DeepMind 高效多模态旗舰，1M token 上下文，支持文本/图像/音频/视频/PDF，思考模式可调，推理速度 250+ tokens/s，成本效益比极高",
+    "keyInnovation": "可调 Thinking Budget（0-24576 tokens）+ 1M token 多模态上下文 + 250+ tokens/s 高吞吐推理",
+    "highlights": [
+      "1M token 上下文，支持超长文档整体处理",
+      "推理速度 250-274 tokens/s，延迟分位数 82nd",
+      "思考预算可调（0-24576 tokens），按任务复杂度分配推理深度",
+      "原生多模态：文本、图像、音频、视频、PDF 全支持",
+      "SWE-bench Verified 63.8，编码能力强",
+      "输入定价 $0.10-$0.30/1M tokens，成本效益比高",
+      "支持 24 种语言原生语音输出（预览版）"
+    ],
+    "tags": ["LLM", "多模态", "Google", "长上下文", "高效推理", "思考模式"],
+    "factSheet": {
+      "highlight": "1M 上下文 + 可调思考预算 + 250+ tokens/s，最优成本效益比",
+      "params": "未公开（Gemini 2.5 系列中间档）",
+      "architecture": "Dense Transformer，Decoder-only，多模态编码器",
+      "attention": "MHA（含 Flash Attention 优化）",
+      "ffn": "SwiGLU Dense FFN",
+      "norm": "RMSNorm",
+      "posEncoding": "RoPE（支持 1M 超长上下文）",
+      "context": "1M tokens（输出最大 65536 tokens）",
+      "training": "Google 内部多模态预训练数据，覆盖文本/代码/图像/音视频",
+      "inference": "Google AI Studio / Vertex AI / Gemini API，推理速度 250+ tokens/s",
+      "benchmarks": "SWE-bench Verified 63.8 / HumanEval 95.1 / AIME 2025 50.0 / MMLU Pro 80.9 / GPQA 68.3",
+      "license": "Google API 商业协议（闭源）",
+      "thinkingMode": "思考预算 0-24576 tokens 动态调节"
+    },
+    "textArch": "Text / Image / Audio / Video Input\n     │\n┌────▼──────────────────────────────┐\n│  Multimodal Encoder               │\n│  图像 → Vision Tokens（SigLIP）   │\n│  音频 → Audio Tokens              │\n│  视频 → Frame Tokens              │\n│  文本 → Text Tokens               │\n└────────────┬──────────────────────┘\n             │\n Embedding + RoPE（1M 上下文）\n             │\n┌────────────▼──────────────────────┐\n│   Gemini 2.5 Flash Block × N      │\n│  ┌────────────────────────────┐   │\n│  │  MHA + Flash Attention 优化 │   │\n│  │  支持 1M token 超长序列    │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  SwiGLU Dense FFN          │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n  ┌─────────────▼──────────────┐\n  │  Thinking Budget（可调）    │\n  │  0-24576 tokens CoT        │\n  │  或直接输出（budget=0）     │\n  └─────────────┬──────────────┘\n                │\n            LM Head\n                │\n     Text / Audio Output Tokens"
   }
 ]

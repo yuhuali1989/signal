@@ -107,6 +107,108 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-05-03（第46轮更新 — 蚂蚁Ling-2.6-1T万亿开源/DeepSeek多模态新模型/AIBrix v0.6发布/谷歌I/O前瞻/AI创投周报11亿种子轮）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2801,
+    category: 'startup',
+    region: 'global',
+    title: 'AlphaGo 核心作者新公司完成 11 亿美元种子轮融资，刷新 AI 创投纪录',
+    summary: '前 DeepMind 科学家（参与 AlphaGo 开发）创立的新 AI 公司本周完成 11 亿美元种子轮融资，刷新 AI 赛道种子阶段融资纪录。同期，专为 AI Agent 工作流设计的智能体网页检索引擎获 1 亿美元融资，针对信息密度、低延迟需求做专项优化。2026 Q2 全球 AI 一级市场热度持续高涨，Agent 基础设施已成顶级 VC 新宠。',
+    source: '腾讯新闻',
+    date: '2026-05-03',
+    tags: ['AI融资', 'AlphaGo', 'DeepMind', 'Agent', '创投'],
+    hot: true,
+    link: 'https://news.qq.com/rain/a/20260430A07FWS00',
+  },
+  {
+    id: 2802,
+    category: 'software',
+    region: 'china',
+    title: '蚂蚁集团开源万亿参数 Ling-2.6-1T：对标 GPT-5.4，输出成本为同类 1/4',
+    summary: '蚂蚁集团百灵大模型团队开源旗舰版 Ling-2.6-1T（万亿参数）和效率版 Ling-2.6-flash（104B），构建完整产品矩阵。1T 版采用 MLA+LinearAttention 混合架构与「快思考」机制，输出成本为同类1/4，支持 262K 上下文，在 AIME26/SWE-bench 达开源 SOTA。flash 版推理速度 340 tokens/s，Token 效率为同类 10 倍，API 定价 $0.1/百万输入 tokens，已登陆 HuggingFace 与 ModelScope。',
+    source: 'IT之家 / 站长之家',
+    date: '2026-05-03',
+    tags: ['蚂蚁集团', 'Ling-2.6', '万亿参数', '开源', 'Agent', 'API定价'],
+    hot: true,
+    link: 'https://www.ithome.com/0/943/337.htm',
+  },
+  {
+    id: 2803,
+    category: 'hardware',
+    region: 'global',
+    title: 'Alphabet 宣布 2026 年资本开支 1750-1850 亿美元：全力押注 AI 算力与数据中心',
+    summary: 'Alphabet 公布 2026 年资本开支计划达 1750-1850 亿美元，重点投向 AI 算力与数据中心建设，较 2025 年大幅提速。谷歌 I/O 2026 前瞻显示，Gemini 3 将支持 100 万 token 上下文，推出 Android XR 智能眼镜（搭载 Gemini Live）及 ChromeOS+Android 统一平台，与微软（$800 亿）、亚马逊 AWS 展开全球 AI 算力军备竞赛。',
+    source: '至顶网 / 腾讯新闻',
+    date: '2026-05-03',
+    tags: ['谷歌', 'Alphabet', '资本开支', 'AI算力', '数据中心', 'Google I/O'],
+    hot: true,
+    link: 'https://ai.zhiding.cn/2026/0415/3184082.shtml',
+  },
+  {
+    id: 2804,
+    category: 'cloud',
+    region: 'global',
+    title: 'ByteDance AIBrix v0.6 发布：Kubernetes LLM 推理控制平面批量吞吐提升 4.7 倍',
+    summary: 'ByteDance 开源、现属 vllm-project 生态的 AIBrix 发布 v0.6：Batch API 支持离线高吞吐工作负载，新增分层 KV Cache 卸载机制（吞吐提升 20%+），StormService 原语支持 Prefill/Decode 角色级独立扩缩容。核心指标：批量吞吐 124→588 tokens/s（4.7×），KV Cache 效率 80%→95%，已被腾讯云 TKE 等云平台采用，面向企业级 vLLM 大规模部署场景。',
+    source: 'GitHub / vllm-project',
+    date: '2026-05-03',
+    tags: ['ByteDance', 'AIBrix', 'vLLM', 'Kubernetes', 'LLM推理', '云原生'],
+    hot: true,
+    link: 'https://github.com/aibrix/aibrix/releases',
+  },
+  // ══════════════════════════════════════════════════════
+  // 2026-05-02（第45轮更新 — DeepSeek V4开源+华为适配/腾讯混元Hy3 Preview开源/Anthropic估值冲9000亿/NVIDIA Dynamo迭代DeepSeek V4支持）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2797,
+    category: 'software',
+    region: 'china',
+    title: 'DeepSeek 正式发布并开源 V4：适配华为昇腾，百万上下文，国产算力首获一级支持',
+    summary: 'DeepSeek 推出 V4-Pro（1.6T 参数 MoE）与 V4-Flash 并同步开源，支持 100 万 token 上下文。商业亮点：V4 率先完成华为昇腾芯片专项适配，DeepSeek 将国产算力列为与 NVIDIA 并列的一级支持平台，API 发布当日商业化开放，月活开发者已超百万。DeepSeek 同期推进首轮外部融资，估值预计超 500 亿美元，幻方量化孵化项目走向独立商业化。',
+    source: 'CGTN / 新华社英文',
+    date: '2026-05-02',
+    tags: ['DeepSeek', 'V4', '开源', '华为昇腾', '融资', '商业化'],
+    hot: true,
+    link: 'https://news.cgtn.com/news/2026-04-24/DeepSeek-unveils-new-AI-model-adapted-for-Huawei-chips-1MBU0eOEv9S/index.html',
+  },
+  {
+    id: 2798,
+    category: 'cloud',
+    region: 'china',
+    title: '腾讯混元 Hy3 Preview 开源：2950亿参数 MoE，接入十余款腾讯产品，1.2元/百万 token 定价',
+    summary: '腾讯推出混元 Hy3 Preview 并开源（Apache 2.0），总参数 2950 亿、激活 210 亿，256K 上下文，API 定价 1.2 元/百万 tokens。商业策略：已深度接入 QQ、腾讯云、腾讯文档等十余款核心产品，首席 AI 科学家姚顺雨领衔打造工程实用化路线，标志腾讯大模型从内部工具向对外开放生态竞争转型，与阿里 Qwen3、百度文心形成三足鼎立格局。',
+    source: '腾讯云 / 量子位',
+    date: '2026-05-02',
+    tags: ['腾讯', '混元', 'Hy3', '开源', '定价', '云服务'],
+    hot: true,
+    link: 'https://juejin.cn/post/7629503574842834994',
+  },
+  {
+    id: 2799,
+    category: 'software',
+    region: 'global',
+    title: 'Anthropic 估值冲 9000 亿美元：Claude 定价多轮调整，「先低价养熟再提价」策略引争议',
+    summary: 'Anthropic 最新估值冲向 9000 亿美元，同期 Claude 经历多轮定价调整，被媒体解读为典型平台化获客套路。数据显示 ChatGPT 卸载量上升 413%、Claude 下载量激增 100%，市场份额加速向 Anthropic 转移。投资人押注 Claude 成为 OpenAI 最强竞争者，商业模式成熟度快速提升，但频繁调价引发用户锁定效应担忧，是 2026 上半年最受关注的 AI 商业化博弈案例之一。',
+    source: '36Kr',
+    date: '2026-05-02',
+    tags: ['Anthropic', 'Claude', '估值', '定价策略', '市场竞争'],
+    hot: true,
+    link: 'https://36kr.com/p/3791460373929221',
+  },
+  {
+    id: 2800,
+    category: 'hardware',
+    region: 'global',
+    title: 'NVIDIA Dynamo 迭代 v1.2-dev 支持 DeepSeek-V4：AI 数据中心推理操作系统加速国产模型适配',
+    summary: 'NVIDIA 开源推理操作系统 Dynamo 发布 v1.2.0-dev.1，新增实验性 DeepSeek-V4 部署支持。Dynamo 1.0 今年 3 月发布，Blackwell GPU 上实现 7× 性能提升，已被主流云厂商采用。此次快速跟进适配 DeepSeek-V4，表明 NVIDIA 将中国顶尖开源模型列入官方推理栈优先支持目标，进一步巩固其作为 AI 数据中心推理基础设施提供商的市场地位。',
+    source: 'GitHub / NVIDIA',
+    date: '2026-05-02',
+    tags: ['NVIDIA', 'Dynamo', '推理框架', 'DeepSeek', '数据中心'],
+    hot: true,
+    link: 'https://github.com/ai-dynamo/dynamo/releases',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-05-02（第44轮更新 — 马斯克OpenAI开庭/智谱降智秘密/华为×中科大灵境造物/Claude定价反复横跳/OpenAI硬件布局/Anthropic估值冲9000亿）
   // ══════════════════════════════════════════════════════
   {

@@ -1,5 +1,90 @@
 [
   {
+    "date": "2026-05-03 17:11",
+    "type": "daily",
+    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
+    "message": "每日进化: 文章 +2 篇，模型 +1 个，评测榜更新 1 项"
+  },
+  {
+    "date": "2026-05-03 10:30",
+    "type": "news",
+    "agent": "B1 声浪编辑",
+    "message": "AI 声浪: 蚂蚁百灵 Ling-2.6 万亿参数开源、DeepSeek 视觉原语多模态推理、AIBrix v0.6 KV Cache 效率 95%、谷歌 I/O 2026 前瞻 Gemini 3 超长上下文",
+    "count": 6
+  },
+  {
+    "date": "2026-05-03 10:35",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: 蚂蚁百灵 Ling-2.6 系列深度解析：万亿参数「快思考」旗舰 + 极致效率 flash",
+    "slug": "ant-ling-2-6-trillion-fast-thinking-2026"
+  },
+  {
+    "date": "2026-05-03 10:40",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: DeepSeek 视觉原语多模态推理模型解析：以坐标锚定思维链，7056 倍视觉压缩",
+    "slug": "deepseek-visual-primitives-multimodal-reasoning-2026"
+  },
+  {
+    "date": "2026-05-03 10:45",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: 腾讯混元3D世界模型 HY-World 2.0 深度解析：四阶段流水线与可交互3DGS世界",
+    "slug": "hunyuan-world-2-hy-world-2026"
+  },
+  {
+    "date": "2026-05-03 10:50",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: 机器人仿真平台全景解析：Genesis / Isaac Sim / MuJoCo / Gazebo 选型指南 2026",
+    "slug": "robot-simulation-platforms-2026"
+  },
+  {
+    "date": "2026-05-03 11:00",
+    "type": "book",
+    "agent": "B2 内容编辑",
+    "message": "新书上架：《芯片设计：从沙子到算力》8章全本发布 — 半导体物理基础→CMOS工艺→标准单元→综合与时序→后端设计→验证与仿真→先进工艺→芯片量产",
+    "slug": "chip-design-ch01"
+  },
+  {
+    "date": "2026-05-03 11:05",
+    "type": "book",
+    "agent": "B2 内容编辑",
+    "message": "书籍更新：《机器人入门——从材料到控制》新增 第6章「运动规划与轨迹生成」· 第7章「控制系统与执行器驱动」· 第8章「感知、导航与完整 ROS 2 项目」",
+    "slug": "robot-basics-ch06"
+  },
+  {
+    "date": "2026-05-03 11:10",
+    "type": "system",
+    "agent": "B3 模型编辑",
+    "message": "模型库更新：新增 MiniMax-M1（万亿参数 MoE 推理）· Qwen3-72B（思考/非思考双模）· Ling-2.6-1T（快思考 MoE）· Ling-2.6-flash（104B 超高速）共 4 个新模型，总计 60 个"
+  },
+  {
+    "date": "2026-05-03 11:15",
+    "type": "system",
+    "agent": "B6 Infra 编辑",
+    "message": "Infra 更新：AIBrix v0.6 新特性（批量吞吐 4.7x / KV Cache 95% 效率）写入 data-infra-data.js 推理引擎对比 Tab"
+  },
+  {
+    "date": "2026-05-03 11:20",
+    "type": "system",
+    "agent": "B7 VLA 编辑",
+    "message": "VLA 更新：机器人搭建指南页面上线（/robot-guide/），覆盖结构材料→驱动器→控制器→传感器→通信协议→软件栈→调试部署 7 大步骤，含选型清单与代码示例"
+  },
+  {
+    "date": "2026-05-03 11:25",
+    "type": "system",
+    "agent": "B8 战略编辑",
+    "message": "战略更新：strategy-data.js 写入 AIBrix/Genesis/HY-World 生态机会；机器人仿真平台 GitHub 热点分析"
+  },
+  {
+    "date": "2026-05-03 11:30",
+    "type": "daily",
+    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
+    "message": "每日进化: 文章 +4 篇，书籍新增《芯片设计》8章 + 机器人基础 3 新章，模型库 +4 个（总计 60），新闻 +6 条，新增 /robot-guide/ 指南页"
+  },
+  {
     "date": "2026-05-02 12:54",
     "type": "daily",
     "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",

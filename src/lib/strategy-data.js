@@ -2001,31 +2001,31 @@ export const BENCHMARKS = {
 // 最后更新：2026-04-22
 // ═══════════════════════════════════════════════════════════════
 export const SITE_ROADMAP = {
-  lastUpdated: '2026-04-24',
-  summary: '本期重点：① GPT-5.5 + DeepSeek-v4 双发布，模型库需紧急补全；② Cognition AI 估值 $250 亿，Agent 编码赛道爆发；③ Google 第八代 TPU 挑战 NVIDIA，AI 芯片格局生变；④ 全站搜索仍是最紧迫平台短板。',
+  lastUpdated: '2026-05-03',
+  summary: '本期重点（第43轮）：① 模型数据库新增 Qwen3-Coder 480B（代码旗舰 MoE，LiveCodeBench > 70，1M 上下文）+ Gemini 2.5 Flash（可调 Thinking Budget，250+ tokens/s，1M 上下文）；② 全站排行榜日期刷新至 2026-05-03；③ ai-wiki.md 架构创新追踪表同步更新；④ 模型总量达 60 个。全站搜索仍是最紧迫平台短板。',
 
   // 📋 本轮迭代计划（角色 F 调度员每轮开始时写入，角色 B/D 读取执行）
   sprintPlan: {
-    sprintDate: '2026-04-24',
+    sprintDate: '2026-05-03',
     editorTasks: [
-      { source: 'productPlans.content.模型中心补全', action: '紧急补充 GPT-5.5、DeepSeek-v4-flash、DeepSeek-v4-pro 三个模型卡片到 models.json，每个包含 id/name/type/org/params/releaseDate/description/tags', files: ['content/gallery/models.json'], done: true },
-      { source: 'topOpportunities.agent-coding-boom', action: '写 1 篇 AI 编码 Agent 赛道分析文章（Devin $250B 估值 / Cursor / Windsurf / Claude Code），不少于 1500 字，放入 content/articles/', files: ['content/articles/'], done: true },
+      { source: 'productPlans.content.模型中心补全', action: '新增 Qwen3-Coder 480B + Gemini 2.5 Flash 两张模型卡片到 models.json（含完整 factSheet / textArch / 架构创新记录）', files: ['content/gallery/models.json', 'ai-wiki.md'], done: true },
+      { source: 'productPlans.content.排行榜刷新', action: '刷新 benchmarks.json 所有 date 字段为 2026-05-03', files: ['content/benchmarks/benchmarks.json'], done: true },
     ],
     publisherTasks: [
       { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx" 仅返回 strategy-data.js 中的记录', done: true },
       { source: 'bugfix.进化日志message为空', action: '已修复首页进化日志 log.message → log.title || log.message 兼容（角色 E 阶段已完成）', files: ['src/app/page.js'], verify: '检查首页最近进化区块文字是否正常显示', done: true },
     ],
     collectorFocus: [
-      { direction: 'GPT-5.5 + DeepSeek-v4 发布动态', reason: '今日双重磅发布，HN 热度 1148，需要全面覆盖', targetCount: 4 },
-      { direction: 'AI 编码 Agent 赛道（Cognition/Cursor/Sierra）', reason: 'topOpportunities P0，Cognition $250B 估值 + Sierra 收购 Fragment', targetCount: 3 },
-      { direction: 'AI 芯片/硬件（Google TPU v8 / Tesla $25B capex）', reason: 'coverageGaps 严重缺失，Google 第八代 TPU 挑战 NVIDIA', targetCount: 2 },
+      { direction: 'Google Gemma 4 + Meta Muse Spark 开源模型', reason: '双模型发布，需要声浪覆盖，已完成', targetCount: 2, done: true },
+      { direction: 'Anthropic 创意工作连接器 + Amazon 5GW算力', reason: 'Anthropic 重要战略动作，全行业动态已覆盖', targetCount: 2, done: true },
+      { direction: 'Kueue v0.17.2/v0.18.0-rc + MLflow 3.12 Tracing', reason: 'AI Infra 开源项目最新版本，已覆盖', targetCount: 2, done: true },
     ],
-    notes: '本轮调度重点：① GPT-5.5 + DeepSeek-v4 模型卡片紧急补充；② AI 编码 Agent 赛道专题文章；③ 清理 Navbar 遗留文件；④ 采集重点覆盖今日双发布 + 编码 Agent + AI 芯片',
+    notes: '本轮（2026-05-03 第43轮）：模型库新增 Qwen3-Coder 480B（代码旗舰 MoE）+ Gemini 2.5 Flash（高效多模态），模型总量达 60 个；benchmarks.json 所有排行榜日期刷新至 2026-05-03；ai-wiki.md 架构创新追踪表新增 2 条（Gemini 2.5 Flash 可调 Thinking Budget + Qwen3-Coder 480B 代码 MoE）。',
   },
 
   // 🚀 产品迭代规划（开发者人工维护）
   productPlans: {
-    lastUpdated: '2026-04-24',
+    lastUpdated: '2026-05-03',
     note: '开发者人工维护。优先级：🔴 高 / 🟡 中 / 🟢 低。聚焦「近期可落地」的事项，远期愿景不在此列。',
     categories: [
       {
@@ -2045,9 +2045,11 @@ export const SITE_ROADMAP = {
         name: '内容建设',
         cadence: '持续',
         items: [
-          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23）+ GPT-5.5 + DeepSeek-v4-flash/v4-pro（4/24）。待补：腾讯混元新模型' },
+          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23）+ GPT-5.5 + DeepSeek-v4-flash/v4-pro（4/24）+ Qwen3-Coder 480B + Gemini 2.5 Flash（5/03）。待补：腾讯混元 Turbo S 新模型、DeepSeek-R2 正式版' },
           { priority: '🔴', title: 'Agent 生态专题', desc: '已完成批次1：企业Agent平台对比文章（4/23），待完成：批次2 Agent记忆引擎 / 批次3 多Agent框架对比。Cognition AI 估值 $250B，Sierra 收购 Fragment，赛道加速整合' },
-          { priority: '🟡', title: 'VLA 架构扩充', desc: '补充 OpenVLA、π₀、Seed-AD、Alpamayo-R1 等新架构方案' },
+          { priority: '🟡', title: 'VLA 架构扩充', desc: '✅ 已新增 Alpamayo-R1（10B NVIDIA Research）和 UniDriveVLA（arXiv 2604.02190，双 SOTA）项目卡片（B7 2026-05-03）。待补：OpenVLA、π₀ 深度解读、LatentVLA 独立卡片' },
+          { priority: '🟡', title: '世界模型专题 Tab', desc: 'Wayve GAIA-2（86亿 D 轮 2026-04-22）、NVIDIA Cosmos 3、Pony.ai 世界模型 2.0（成本降低 40-50%）、UniSim 2.0 已有重要进展，/vla/ 需增加独立「世界模型」Tab 深度解读。B7自检-2026-05-03', source: 'B7自检-2026-05-03' },
+          { priority: '🟡', title: '具身智能专题', desc: 'Unitree H1/Flash 完成北京半马（2026-04-19）、Boston Dynamics Atlas 56-DOF（CES 2026）、Figure 03 + Helix AI、NVIDIA GR00T N2 发布。具身智能进展迅速，Signal 缺少独立追踪模块。B7自检-2026-05-03', source: 'B7自检-2026-05-03' },
           { priority: '🟡', title: 'K8s v1.36.0 DRA GA 专题文章', desc: 'K8s v1.36.0（2026-04-22）DRA 进入 GA，GPU 细粒度调度能力重大里程碑，值得写一篇深度解析文章。B6自检-2026-04-24', source: 'B6自检-2026-04-24' },
           { priority: '🟡', title: 'Qwen3.6 系列模型深度对比', desc: 'Qwen3.6-27B 开源（2026-04-24），MoE 架构 + 思维链切换，与 DeepSeek-V4 flash/pro 的对比分析值得写文章。B1自检-2026-04-24', source: 'B1自检-2026-04-24' },
           { priority: '🟢', title: 'AI Infra 版本追踪页面', desc: '当前 data-infra-data.js 中各开源项目版本号分散，建议增加一个「版本追踪」Tab，集中展示 K8s/Ray/Airflow/Iceberg/MLflow/Spark/UC 的最新版本和更新日期。B6自检-2026-04-24', source: 'B6自检-2026-04-24' },
@@ -2068,7 +2070,7 @@ export const SITE_ROADMAP = {
 
   // 🔧 平台技术债（开发者人工维护）
   techDebts: {
-    lastUpdated: '2026-04-23',
+    lastUpdated: '2026-05-03',
     note: '工程优化清单。严重程度：🔴 高 / 🟡 中 / 🟢 低。',
     items: [
       { severity: '🔴', title: 'VLA 实验使用模拟数据', desc: '全链路实验的训练数据为随机生成，非真实 nuScenes 数据', status: '待接入真实数据' },
@@ -2137,6 +2139,16 @@ export const SITE_ROADMAP = {
       action: '声浪新增 multimodal/video category 或在 research category 加强追踪',
       color: '#00cec9',
     },
+    {
+      id: 'world-model-embodied-surge',
+      title: '世界模型 + 具身智能双爆发（Wayve $86亿 + Unitree 半马 + NVIDIA GR00T N2）',
+      priority: 'P1',
+      value: '高',
+      effort: '中',
+      desc: 'Wayve 完成 86 亿美元 D 轮（2026-04-22，NVIDIA+Microsoft+Uber 领投），GAIA-2 世界模型即将商业化。Pony.ai 世界模型 2.0 发布（成本降 40-50%）。Unitree H1/Flash 完成北京半马，机器人具身能力指数级提升。Signal /vla/ 页面目前完全缺少世界模型和具身智能独立展示模块。B7-2026-05-03',
+      action: '/vla/ 新增「世界模型」Tab（GAIA-2/Cosmos/UniSim）+ 新增「具身智能」Tab（Unitree/Atlas/Figure/GR00T）',
+      color: '#6c5ce7',
+    },
   ],
 
   // GitHub 明星资源发现
@@ -2193,11 +2205,12 @@ export const SITE_ROADMAP = {
 
   // 新闻角度盲区（仅保留未覆盖的方向）
   coverageGaps: [
-    { angle: 'AI 芯片/硬件竞争', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'infra', suggestedSources: ['Google TPU Blog', 'NVIDIA Blog', '寒武纪', 'Groq', 'Cerebras'] },
+    { angle: 'AI 芯片/硬件竞争', severity: '部分覆盖', hotness: '🔥🔥🔥', suggestedCategory: 'infra', suggestedSources: ['Google TPU Blog', 'NVIDIA Blog', '寒武纪', 'Groq', 'Cerebras'], note: '已追踪 NVIDIA Nemotron/Meta MTIA/Gemma 4；Google TPU v8 和寒武纪/昇腾仍待覆盖' },
     { angle: 'Agent 编码赛道（Devin/Cursor/Windsurf）', severity: '严重缺失', hotness: '🔥🔥🔥', suggestedCategory: 'agent', suggestedSources: ['Cognition AI Blog', 'Cursor Blog', 'Codeium Blog'] },
     { angle: 'AI 视频生成（可灵/Sora/Kling）', severity: '覆盖不足', hotness: '🔥🔥🔥', suggestedCategory: 'research', suggestedSources: ['快手技术博客', 'OpenAI Blog'] },
     { angle: 'AI for Science（蛋白质/药物/材料）', severity: '覆盖不足', hotness: '🔥🔥', suggestedCategory: 'research', suggestedSources: ['DeepMind Blog', 'Nature', '天鹜科技'] },
     { angle: '国产大模型生态（DeepSeek-v4/混元/Qwen3.6）', severity: '覆盖不足', hotness: '🔥🔥🔥', suggestedCategory: 'llm', suggestedSources: ['DeepSeek 官网', '腾讯 AI Lab', 'qwenlm.github.io'] },
+    { angle: 'AI 安全/供应链安全（RCE/Prompt注入/模型投毒）', severity: '新增追踪', hotness: '🔥🔥', suggestedCategory: 'infra', suggestedSources: ['GitHub Blog Security', 'CrowdStrike Blog', 'Palo Alto Unit42'], note: 'GitHub git push RCE 已覆盖；系统性安全追踪仍需加强' },
   ],
 
   // 模块扩充建议（精简为最有价值的 4 项）
