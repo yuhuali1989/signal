@@ -2167,14 +2167,19 @@ const { chromium } = require('playwright');
 
 def run_d_publish(dry_run=True):
     """
-    D 发布 — git add/commit 内容变更
+    D 发布 — git add/commit/push 内容变更
     dry_run=True 时只打印命令不执行（默认安全模式）
     """
     print(f"\n🚀 D 发布{'（预演）' if dry_run else '（实际执行）'}...")
     git_root = str(ROOT)
+    today = datetime.now().strftime("%Y-%m-%d")
     commands = [
-        ['git', '-C', git_root, 'add', 'content/'],
-        ['git', '-C', git_root, 'commit', '-m', f'feat: 每日进化 {datetime.now().strftime("%Y-%m-%d")} [by Signal agent]'],
+        # add 所有内容文件（content/ + ai-wiki.md）
+        ['git', '-C', git_root, 'add',
+         'content/', 'ai-wiki.md'],
+        ['git', '-C', git_root, 'commit', '-m',
+         f'feat: 每日进化 {today} [by Signal agent]'],
+        ['git', '-C', git_root, 'push', 'origin', 'main'],
     ]
     for cmd in commands:
         cmd_str = ' '.join(cmd)
@@ -2185,7 +2190,11 @@ def run_d_publish(dry_run=True):
             if result.returncode == 0:
                 print(f"  ✅ {cmd_str}")
             else:
-                print(f"  ⚠️ 失败: {result.stderr[:200]}")
+                # commit 若无变更不算失败
+                if 'nothing to commit' in result.stdout + result.stderr:
+                    print(f"  ℹ️  无新变更，跳过 commit")
+                else:
+                    print(f"  ⚠️ 失败: {result.stderr[:200]}")
 
 
 # ═══════════════════════════════════════════
@@ -2476,7 +2485,7 @@ def main():
         if args.publish:
             run_d_publish(dry_run=False)
         else:
-            print("\n💡 提示：加 --publish 参数可自动 git commit 内容变更")
+            print("\n💡 提示：加 --publish 参数可自动 git commit + push 内容变更")
 
     elif args.mode == 'designer':
         # ── 设计师深度扫描（独立模式，较耗时）──
@@ -2489,7 +2498,7 @@ def main():
         if args.publish:
             run_d_publish(dry_run=False)
         else:
-            print("\n💡 提示：加 --publish 参数可自动 git commit 内容变更")
+            print("\n💡 提示：加 --publish 参数可自动 git commit + push 内容变更")
 
     elif args.mode == 'qa':
         # ── 只跑 QA 检查 ──
