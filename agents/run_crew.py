@@ -597,6 +597,13 @@ ARTICLE_TOPICS = [
      'description': '追踪 Ray 最新动态：Ray Data 流式处理、Ray Serve 推理优化、RayJob on K8s、KubeRay Operator 更新',
      'tags': ['Ray', '分布式计算', 'RayServe', 'AI Infra'], 'category': 'AI Infra',
      'oss_watch': ['ray-project/ray', 'ray-project/kuberay']},
+    # ── 机器人仿真 & 世界模型 ──────────────────────────────────────
+    {'title': '开源机器人仿真平台全景：Genesis vs ManiSkill3 vs IsaacGym vs MuJoCo',
+     'description': '深度对比 2025-2026 年最重要的开源机器人仿真平台：速度、任务覆盖、Sim2Real 能力、硬件兼容性与生态成熟度。重点分析 Genesis 80× 加速原理、ManiSkill3 SAPIEN GPU 渲染架构、IsaacLab 迁移路线，以及各平台在 VLA/具身智能训练中的实战表现。同时追踪最新仿真论文（arXiv cs.RO）和开源 benchmark 进展。',
+     'tags': ['机器人仿真', 'Genesis', 'ManiSkill', 'IsaacGym', '具身智能', 'Sim2Real'], 'category': '具身智能'},
+    {'title': '腾讯混元3D世界模型（HY-World 2.0）深度解析：从全景生成到可交互3DGS世界',
+     'description': '深入分析腾讯 HY-World 2.0 的四阶段生成架构：HY-Pano 2.0（360°全景生成）→ WorldNav（语义感知路径规划）→ WorldStereo 2.0（全局几何记忆扩展）→ WorldMirror 2.0（3DGS+Mesh混合重建）。评估其在机器人仿真数据生成、游戏引擎集成、数字孪生场景中的实际效果，与 GAIA-1、DreamerV3、Cosmos、UniSim 等世界模型的技术路线对比，以及开源策略对具身智能生态的影响。',
+     'tags': ['混元', 'HY-World', '世界模型', '3DGS', '腾讯', '具身智能', '3D生成'], 'category': '世界模型'},
 ]
 
 BOOK_TOPICS = [
@@ -902,11 +909,23 @@ wait
 - 若有新模型发布/Benchmark 刷新 → 更新 `content/benchmarks/benchmarks.json`
 - 若有架构创新 → 在 `src/components/ArchEvolution.js` TIMELINE 头部追加
 
+### 论文/开源项目 → B2 研究文章联动（重要！）
+收集到的新闻中，**凡涉及以下类型的条目，必须在 `content/articles/` 目录写入（或更新）对应深度研究文章**：
+- arXiv 论文 / 顶会（NeurIPS/ICML/ICLR/CVPR/ICCV/CoRL/RSS）论文
+- 重大开源项目发布（GitHub stars > 1k 或来自知名团队）
+- 机器人仿真平台、具身智能 benchmark、世界模型、VLA 相关
+
+操作方式：
+1. 从搜索结果提取论文标题 + 摘要 + 关键贡献
+2. 在 `content/articles/` 下新建 `<slugified-title>.md`（或更新已有文件）
+3. 文章结构：frontmatter（title/date/tags/summary）+ 背景 + 核心贡献 + 技术细节 + 意义与局限，**中文，1500-3000字**
+4. **仿真/benchmark/世界模型类论文优先写入**
+
 ---
 
 ## 完成后输出
 
-最后输出一行：`✅ B1完成：声浪+N条({today})，全行业动态+M条`
+最后输出一行：`✅ B1完成：声浪+N条({today})，全行业动态+M条，论文文章+P篇`
 """
 
     result = call_llm("", prompt)
@@ -1956,14 +1975,17 @@ def run_c_qa() -> list:
     # 6. Next.js 构建检查（清缓存后 build，捕获 Error 行）
     print("  🔨 执行 npm run build 检查...")
     try:
-        # 先清 .next 缓存，避免 chunk ID 失效
-        next_dir = ROOT / '.next'
-        if next_dir.exists():
-            import shutil as _shutil
-            _shutil.rmtree(next_dir)
+        # 先清 .next / out 缓存，避免 chunk ID 失效
+        import shutil as _shutil
+        for _d in [ROOT / '.next', ROOT / 'out']:
+            if _d.exists():
+                _shutil.rmtree(_d)
+        # 必须带 NEXT_PUBLIC_BASE_PATH='' 否则资源路径带 /signal/ 前缀导致 CSS 404
+        build_env = {**os.environ, 'NEXT_PUBLIC_BASE_PATH': '', 'NODE_ENV': 'production'}
         r = subprocess.run(
             ['npm', 'run', 'build'],
-            capture_output=True, text=True, cwd=str(ROOT), timeout=180
+            capture_output=True, text=True, cwd=str(ROOT), timeout=180,
+            env=build_env
         )
         output = r.stdout + r.stderr
         # 收集真正的错误行（排除 KaTeX warn）
@@ -1985,6 +2007,20 @@ def run_c_qa() -> list:
         issues.append(f"npm build 执行异常: {e}")
 
     # 7. Playwright 浏览器前端检查
+    # 构建时用 NEXT_PUBLIC_BASE_PATH=''，所有资源路径为 /_next/...
+    # serve 直接从 out/ 根目录提供服务，路径完全匹配
+    print("  🌐 准备静态服务...")
+    import shutil as _sh
+    npx_bin = _sh.which('npx')
+    # 使用端口 3001 进行 QA 检查，避免中断用户在 3000 上运行的预览服务
+    QA_PORT = 3001
+    subprocess.run(['bash', '-c', f'lsof -ti:{QA_PORT} | xargs kill -9 2>/dev/null; true'], shell=False)
+    serve_proc = subprocess.Popen(
+        [npx_bin or 'npx', 'serve', 'out', '-p', str(QA_PORT)],
+        cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+    import time; time.sleep(2)  # 等待 serve 启动
+
     print("  🌐 执行 Playwright 前端检查...")
     try:
         playwright_script = r"""
@@ -1995,36 +2031,65 @@ const { chromium } = require('playwright');
 
   const pages = [
     { path: '/', checks: ['Signal', '声浪'] },
-    { path: '/news/', checks: ['新闻', '声浪'] },
-    { path: '/finance/', checks: ['金融', 'AI Infra'] },
-    { path: '/lab/', checks: [] },
+    { path: '/news', checks: ['新闻', '声浪'] },
+    { path: '/finance', checks: ['金融'] },
+    { path: '/lab', checks: [] },
   ];
 
   for (const { path, checks } of pages) {
-    const page = await browser.newPage();
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
     try {
-      const res = await page.goto('http://localhost:3000' + path, { waitUntil: 'networkidle', timeout: 15000 });
+      const res = await page.goto('http://localhost:3001' + path, { waitUntil: 'networkidle', timeout: 15000 });
       const status = res ? res.status() : 0;
       if (status >= 400) {
         issues.push(path + ' HTTP ' + status);
         await page.close(); continue;
       }
 
-      // 检查是否有明显的 Error/崩溃文字
+      // ── 1. CSS 样式检查 ──
+      const styleInfo = await page.evaluate(() => {
+        const bg = window.getComputedStyle(document.body).backgroundColor;
+        // 背景色应为 rgb(247, 248, 250)（Tailwind bg-[#f7f8fa]），不能是透明或纯白
+        const cssOk = bg !== 'rgba(0, 0, 0, 0)' && bg !== 'rgb(255, 255, 255)';
+        // 侧边栏 aside 应有宽度（桌面端 ~208px）
+        const aside = document.querySelector('aside');
+        const sidebarW = aside ? aside.getBoundingClientRect().width : -1;
+        return { bg, cssOk, sidebarW };
+      });
+      if (!styleInfo.cssOk) {
+        issues.push(path + ' Tailwind CSS 未生效（body背景色=' + styleInfo.bg + '）');
+      }
+      if (styleInfo.sidebarW >= 0 && styleInfo.sidebarW < 50) {
+        issues.push(path + ' 侧边栏宽度异常(' + styleInfo.sidebarW + 'px)，布局可能崩溃');
+      }
+
+      // ── 2. CSS chunk 资源可访问性 ──
+      const cssLinks = await page.evaluate(() =>
+        Array.from(document.querySelectorAll('link[rel="stylesheet"]')).map(l => l.href)
+      );
+      for (const cssUrl of cssLinks) {
+        const httpStatus = await page.evaluate(async (url) => {
+          try { const r = await fetch(url); return r.status; } catch { return 0; }
+        }, cssUrl);
+        if (httpStatus !== 200) {
+          const fname = cssUrl.split('/').pop();
+          issues.push(path + ' CSS资源404: ' + fname + ' (HTTP ' + httpStatus + ') — 可能需重建');
+        }
+      }
+
+      // ── 3. 页面内容检查 ──
       const bodyText = await page.evaluate(() => document.body ? document.body.innerText : '');
       if (/Application error|unhandled.*error|TypeError|ReferenceError/i.test(bodyText)) {
         const snippet = bodyText.match(/(Application error|unhandled.*error|TypeError|ReferenceError)[^\n]*/i);
-        issues.push(path + ' 页面报错: ' + (snippet ? snippet[0].slice(0, 100) : '未知错误'));
+        issues.push(path + ' 页面JS报错: ' + (snippet ? snippet[0].slice(0, 100) : '未知'));
       }
-
-      // 检查关键词
       for (const kw of checks) {
         if (!bodyText.includes(kw)) {
           issues.push(path + ' 缺少关键内容: "' + kw + '"');
         }
       }
 
-      // 截图保存
+      // ── 4. 截图 ──
       const slug = path.replace(/\//g, '_') || '_home';
       await page.screenshot({ path: '/tmp/qa-screenshot' + slug + '.png', fullPage: false });
 
@@ -2071,6 +2136,27 @@ const { chromium } = require('playwright');
         issues.append("Playwright 检查超时（>60s）")
     except Exception as e:
         issues.append(f"Playwright 检查异常: {e}")
+    finally:
+        # 停止 QA 专用 serve 进程（端口 3001）
+        try:
+            serve_proc.terminate()
+        except Exception:
+            pass
+        # 确保用户预览服务（端口 3000）仍在运行
+        try:
+            _check = subprocess.run(
+                ['bash', '-c', 'lsof -ti:3000'],
+                capture_output=True, text=True
+            )
+            if not _check.stdout.strip():
+                # 3000 没有进程，重新启动
+                subprocess.Popen(
+                    [npx_bin or 'npx', 'serve', 'out', '-p', '3000'],
+                    cwd=str(ROOT), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+                )
+                print("  🌐 预览服务已重启（http://localhost:3000）")
+        except Exception:
+            pass
 
     return issues
 

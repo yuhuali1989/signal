@@ -125,7 +125,7 @@ export const K8S_DATA = {
     schedulers: [
       {
         name: 'Volcano',
-        version: 'v1.10',
+        version: 'v1.14.1',
         org: 'CNCF Incubating',
         color: '#e17055',
         icon: '🌋',
@@ -154,7 +154,7 @@ spec:
       },
       {
         name: 'Koordinator',
-        version: 'v1.5',
+        version: 'v1.8.0',
         org: 'CNCF Sandbox（阿里云开源）',
         color: '#6c5ce7',
         icon: '🎯',
@@ -187,7 +187,7 @@ spec:
       },
       {
         name: 'HAMi（原 k8s-vGPU）',
-        version: 'v2.4',
+        version: 'v2.8.2',
         org: 'CNCF Sandbox（第四范式开源）',
         color: '#00cec9',
         icon: '🔬',
@@ -200,6 +200,7 @@ spec:
           { name: '算力限制', desc: '限制容器 GPU SM 使用率上限（如 50%），多容器共享同一 GPU 时互不干扰', icon: '⚙️' },
           { name: '多卡虚拟化', desc: '支持将 1 张物理 GPU 虚拟为多个 vGPU，每个容器独立申请显存和算力', icon: '🃏' },
           { name: '多厂商支持', desc: '支持 NVIDIA / AMD / 寒武纪 / 昇腾 / 海光 DCU 等异构 GPU', icon: '🌐' },
+          { name: 'vLLM 多 GPU 兼容（v2.8.1+）', desc: '修复 vLLM > 0.18 在多 GPU 环境下无法正常启动的兼容性问题，推理框架适配持续完善', icon: '🤖' },
         ],
         useCases: ['推理服务 GPU 共享（节省成本）', '开发环境 GPU 分时复用', '多租户 GPU 隔离', '国产 GPU 适配'],
         limitations: ['基于 LD_PRELOAD，对 CUDA 版本有依赖', '不适合极致性能训练场景', '显存隔离非硬件级（vs MIG）'],
@@ -212,19 +213,21 @@ resources:
       },
       {
         name: 'NVIDIA GPU Operator',
-        version: 'v24.9',
+        version: 'v26.3.1',
         org: 'NVIDIA 官方',
         color: '#76b900',
         icon: '🟢',
         verdict: '基础设施必备',
         verdictColor: '#76b900',
         score: 4,
-        desc: 'NVIDIA 官方 K8s Operator，自动化管理 GPU 驱动、CUDA、Device Plugin、MIG、DCGM 等全套 GPU 基础设施，是所有 GPU 集群的基础层。',
+        desc: 'NVIDIA 官方 K8s Operator，自动化管理 GPU 驱动、CUDA、Device Plugin、MIG、DCGM 等全套 GPU 基础设施，是所有 GPU 集群的基础层。v26.x 系列大幅增强 hostNetwork 支持与机密计算能力。',
         coreFeatures: [
           { name: 'MIG 管理', desc: 'A100/H100 MIG 切分自动化：single/mixed 策略，支持动态重配置', icon: '✂️' },
           { name: 'Time-Slicing', desc: 'GPU 时间片共享，多 Pod 轮流使用同一 GPU（无显存隔离，适合推理）', icon: '⏱️' },
           { name: 'DCGM 集成', desc: 'Data Center GPU Manager 自动部署，提供 GPU 健康检查和性能指标', icon: '📊' },
           { name: 'CDI 支持', desc: 'Container Device Interface，标准化 GPU 设备挂载，支持非 Docker 运行时', icon: '🔌' },
+          { name: 'hostNetwork 全面支持（v26.x）', desc: '所有 Operand 均支持 hostNetwork 模式，解决高性能网络场景下容器网络限制；同时支持 /lib/modules 挂载，SLES 系统预编译驱动无需重新构建', icon: '🌐' },
+          { name: 'GDRCopy v2.5.2 & 机密计算（v26.x）', desc: '集成 GDRCopy v2.5.2（GPU↔CPU 低延迟直接内存拷贝），内置 Confidential Computing Manager v0.4.0，支持 H100 机密 GPU 工作负载', icon: '🔒' },
         ],
         useCases: ['GPU 驱动自动化安装', 'MIG 切分管理', 'GPU 健康监控', 'DCGM 指标采集'],
         limitations: ['仅支持 NVIDIA GPU', 'MIG 需要 A100/H100 硬件', 'Time-Slicing 无显存隔离'],
@@ -245,7 +248,7 @@ data:
       },
       {
         name: 'Kueue',
-        version: 'v0.9',
+        version: 'v0.17.2',
         org: 'K8s SIG Scheduling（Google 主导）',
         color: '#326ce5',
         icon: '☸️',
@@ -258,6 +261,7 @@ data:
           { name: 'LocalQueue', desc: '命名空间级队列，映射到 ClusterQueue，实现多租户隔离', icon: '📬' },
           { name: 'Cohort', desc: '队列组，同 Cohort 内的队列可互相借用空闲资源', icon: '🤝' },
           { name: 'Preemption', desc: '支持 LowerPriority / BorrowWithinCohort 两种抢占策略', icon: '⚡' },
+          { name: '并发准入（v0.18 预览）', desc: 'Concurrent Admission 功能新增（v0.18.0-rc.0），MultiKueue 多集群调度特性晋升为 Stable，配额竞态修复', icon: '🔀' },
         ],
         useCases: ['K8s 原生批处理（JobSet）', 'Ray on K8s（RayJob）', 'Kubeflow Training Operator', '多租户 GPU 配额管理'],
         limitations: ['Gang Scheduling 能力弱于 Volcano', '生态成熟度不如 Volcano', '不支持 MPI 作业'],
@@ -2623,8 +2627,8 @@ export const PIPELINE_DATA = {
   airflowSource: {
     overview: {
       title: 'Apache Airflow 3.x 核心架构',
-      desc: 'Airflow 3.x 对架构进行了彻底重构：UI 与 API Server 完全分离（React SPA + FastAPI）、Worker 通过 Task Execution API 与 API Server 通信（不再直连 DB）、DAG Processor 完全独立、原生 DAG Versioning 与 Asset 驱动调度。',
-      version: '3.2.1（最新）',
+      desc: 'Airflow 3.x 对架构进行了彻底重构：UI 与 API Server 完全分离（React SPA + FastAPI）、Worker 通过 Task Execution API 与 API Server 通信（不再直连 DB）、DAG Processor 完全独立、原生 DAG Versioning 与 Asset 驱动调度。3.2.1（2026-04-22）新增：/dags 端点细粒度权限控制、纯 CSS UI 主题自定义支持。',
+      version: '3.2.1（最新，2026-04-22）',
       repoUrl: 'https://github.com/apache/airflow',
       coreComponents: [
         { name: 'API Server', file: 'airflow/api_fastapi/app.py', color: '#6c5ce7', icon: '🔌',
@@ -3888,7 +3892,7 @@ export const COMPUTE_ENGINE_DATA = {
       name: 'Apache Spark',
       icon: '⚡',
       color: '#e25a1c',
-      version: '3.5+',
+      version: '4.0.2（最新稳定）',
       tagline: '批处理 & 特征工程主力',
       scenarios: ['大规模 ETL（50TB/天原始数据清洗）', '多模态特征工程（BEV 特征批量计算）', 'SQL 分析（Iceberg 表查询）', '数据质量检测（Great Expectations 集成）'],
       strengths: ['生态最成熟，SQL/DataFrame/ML 统一 API', 'Iceberg/Delta Lake 原生支持', 'RAPIDS 加速（GPU Spark）', 'K8s 原生部署（Spark on K8s）'],
@@ -3904,7 +3908,7 @@ export const COMPUTE_ENGINE_DATA = {
       version: '2.55.1（最新）',
       tagline: '分布式 ML 计算统一框架',
       scenarios: ['分布式模型训练（Ray Train + DeepSpeed）', '超参搜索（Ray Tune，数百并发实验）', '批量推理（Ray Serve，自动标注流水线）', '数据处理（Ray Data，与 Spark 互补）'],
-      strengths: ['Python 原生，ML 工程师友好', '训练/推理/数据处理统一框架', 'Actor 模型支持复杂有状态任务', 'KubeRay 原生 K8s 集成'],
+      strengths: ['Python 原生，ML 工程师友好', '训练/推理/数据处理统一框架', 'Actor 模型支持复杂有状态任务', 'KubeRay 原生 K8s 集成', 'DP Group 故障容忍（v2.55.1）：MoE 模型单 GPU 故障不导致全系统重启'],
       weaknesses: ['SQL 能力弱于 Spark', '大规模 ETL 不如 Spark', '社区相对较小'],
       perf: { throughput: '~500 实验/天（Tune）', latency: '秒级', scale: '10~200 节点' },
       usedFor: ['分布式训练', '超参搜索', '批量推理', '主动学习'],
@@ -3998,7 +4002,8 @@ export const UNITY_CATALOG_INFRA_DATA = {
   subtitle: '覆盖模型注册 · 数据集管理 · 数据模型血缘，作为整个 AI Infra 的元数据底座',
   color: '#e84393',
   repo: 'https://github.com/unitycatalog/unitycatalog',
-  version: 'v0.3+ · 开源 · K8s 自托管',
+  version: 'v0.4.1 · 开源 · K8s 自托管',
+  latestRelease: 'v0.4.1（2026-04-16）· Unity Catalog AI 0.4.0（2026-04-24，Python 3.10+ 专属，新增 MLflow Tracing 集成与 GenAI 评测工具）',
 
   // 三大核心能力
   coreCaps: [

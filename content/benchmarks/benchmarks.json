@@ -6,7 +6,7 @@
     "category": "coding",
     "categoryName": "编码能力",
     "categoryIcon": "💻",
-    "date": "2026-04-24",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -150,7 +150,7 @@
     "category": "reasoning",
     "categoryName": "推理能力",
     "categoryIcon": "🧠",
-    "date": "2026-04-24",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -262,7 +262,7 @@
     "category": "overall",
     "categoryName": "综合能力",
     "categoryIcon": "📊",
-    "date": "2026-04-29",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -405,7 +405,7 @@
     "category": "agent",
     "categoryName": "Agent 能力",
     "categoryIcon": "🤖",
-    "date": "2026-04-24",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -504,7 +504,7 @@
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-04-29",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -637,7 +637,7 @@
     "category": "autonomous-driving",
     "categoryName": "自动驾驶",
     "categoryIcon": "🚗",
-    "date": "2026-04-24",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -718,7 +718,7 @@
     "category": "video",
     "categoryName": "视频生成",
     "categoryIcon": "🎬",
-    "date": "2026-04-27",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
@@ -820,7 +820,7 @@
     "category": "3d",
     "categoryName": "3D 生成",
     "categoryIcon": "🧊",
-    "date": "2026-04-27",
+    "date": "2026-05-03",
     "models": [
       {
         "rank": 1,
