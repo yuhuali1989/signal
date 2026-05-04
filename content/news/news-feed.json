@@ -1,5 +1,77 @@
 [
   {
+    "id": "news-20260504-01",
+    "title": "中国 AI 大模型周调用量再超美国：腾讯 Hy3 preview 夺冠 3.03 万亿 Token，环比暴增 799%",
+    "summary": "据 OpenRouter 最新数据，上周全球 AI 大模型总调用量 23.9 万亿 Token，中国大模型周调用量达 7.942 万亿 Token（环比+81.7%），时隔两周再次超越美国（3.258 万亿）。腾讯 Hy3 preview 位居全球榜首，周调用量 3.03 万亿 Token，Kimi K2.6 排名第二，DeepSeek-V4-Flash 首次上榜排第九（+344%）。国产模型集体爆发，显示中国 AI 应用生态在 2026 年春季进入全面爆发期。",
+    "source": "每日经济新闻",
+    "url": "https://m.nbd.com.cn/articles/2026-05-04/4378407.html",
+    "date": "2026-05-04",
+    "category": "industry",
+    "tags": ["腾讯", "Hy3", "DeepSeek", "调用量", "国产AI", "OpenRouter"],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260504-02",
+    "title": "微软正式发布 MAI 系列三款自研模型：语音、图像全面对标 OpenAI，算力成本减半",
+    "summary": "微软推出 MAI-Transcribe-1、MAI-Voice-1 和 MAI-Image-2 三款自研 AI 模型，标志其完成从「AI 应用层」到「基础模型研发者」的战略转型。MAI-Transcribe-1 在 25 种语言 FLEURS 基准中以 3.8% 字错误率超越 Whisper-large-v3，批量速度是 Azure Fast 的 2.5 倍；MAI-Image-2 在 Arena.ai 排名前三，生成速度较前代提升 2 倍；MAI-Voice-1 单 GPU 可 1 秒内生成 60 秒高保真音频。三款模型均通过 Microsoft Foundry 开放，已集成至 Teams、Copilot 和 Bing。",
+    "source": "DoNews / 中关村在线",
+    "url": "https://www.donews.com/news/detail/4/6496723.html",
+    "date": "2026-05-04",
+    "category": "llm",
+    "tags": ["微软", "MAI", "语音模型", "图像生成", "Copilot", "自研"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260504-03",
+    "title": "Anthropic 内省适配器论文：LoRA 插件让大模型「自我坦白」隐藏行为，AuditBench 成功率 59% 创新高",
+    "summary": "Anthropic 研究团队发布论文《Introspection Adapters》（arXiv:2604.16812），提出轻量级 LoRA 插件让模型自行解码内部激活状态并转化为自然语言报告，实现对 682 种可控隐蔽行为（后门/恶意指令/角色扮演等）的规模化审计。在 AuditBench 基准测试中以 59% 成功率超越全部现有审计方法，通用适配器无需为每个模型单独设计。该研究被视为 AI 安全从「外部审讯」转向「内部自白」的里程碑，与 Anthropic 的电路追踪、归因图谱研究体系形成互补。",
+    "source": "新浪财经 / arXiv",
+    "url": "http://finance.sina.com.cn/wm/2026-05-04/doc-inhwrxax1170686.shtml",
+    "date": "2026-05-04",
+    "category": "llm",
+    "tags": ["Anthropic", "可解释性", "AI安全", "LoRA", "内省", "论文"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260504-04",
+    "title": "Token 经济学大逆转：从集体降价到集体涨价，两年风向突变背后的供需逻辑",
+    "summary": "中国 AI 行业正经历 Token 定价的历史性反转：日均调用量从 2024 年初 1000 亿增至 2026 年 3 月的 140 万亿 Token（1400 倍增长），推理需求爆发叠加 GPU 硬件成本上升与供需错配，导致各厂商从 2024 年价格战转向 2026 年集体涨价。蚂蚁 Ling-2.6-flash（$0.1/百万 token）已是最低价异类，专家预测 3-5 年内 Token 费用将随算力扩张重新下降。这一转变深刻影响 AI 应用层的商业模式设计与成本核算逻辑。",
+    "source": "未来科技导报",
+    "url": "https://www.bhwang.cn/youjun/74543716144398.html",
+    "date": "2026-05-04",
+    "category": "industry",
+    "tags": ["Token定价", "AI成本", "供需", "商业模式", "推理经济"],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260504-05",
+    "title": "谷歌 I/O 2026（5月19日）全面前瞻：Gemini 3、Android 17、Aluminum OS 与 XR 智能眼镜",
+    "summary": "谷歌 I/O 2026 大会定于 5 月 19 日召开，预计亮点：Gemini 新版本深度集成 AI 助手；Android XR 智能眼镜从原型向正式产品推进，搭载 Gemini Live 实时翻译；推出 Android 17 操作系统；揭晓合并 Android 与 ChromeOS 的统一平台 Aluminum OS。背景：Alphabet 2026 年资本开支计划 1750-1850 亿美元，全力押注 AI 算力基础设施，与微软、亚马逊展开全球云算力军备竞赛。",
+    "source": "搜狐科技",
+    "url": "https://www.sohu.com/a/1015898223_114765",
+    "date": "2026-05-04",
+    "category": "industry",
+    "tags": ["谷歌", "Google I/O", "Gemini", "Android 17", "Aluminum OS", "XR眼镜"],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260504-06",
+    "title": "新浪 AI 热点速报（5月4日）：Hinton 警告不受监管 AI 危害，iOS 27 新增 AI 影像编辑",
+    "summary": "今日 AI 速报：AI 教父 Geoffrey Hinton 再发警告，称不受监管 AI 对社会构成严重威胁；谷歌发表论文论证 AI 无法产生意识；苹果 iOS 27 新增 AI 影像编辑功能（移除物体/光线调整）；水下人机协同系统取得创新进展。Anthropic 推出「内省适配器」提升 AI 可解释性，ChatGPT 相关自杀悲剧事件再度引发 AI 伦理监管讨论，多国监管机构表示将加快立法进程。",
+    "source": "新浪科技机器学习热点报",
+    "url": "https://k.sina.cn/article_7857201856_1d45362c0019051jkc.html",
+    "date": "2026-05-04",
+    "category": "industry",
+    "tags": ["AI安全", "Hinton", "苹果", "iOS 27", "AI监管", "伦理"],
+    "hot": false,
+    "region": "global"
+  },
+  {
     "id": "news-20260503-01",
     "title": "DeepSeek 发布多模态推理新模型：「视觉原语」破解指代鸿沟，计数/空间推理超越 GPT-5.4",
     "summary": "DeepSeek 于5月1日发布多模态推理模型，技术报告《Thinking with Visual Primitives》揭示核心创新：将点坐标和边界框直接嵌入推理链，解决「指代鸿沟」问题。采用3×3空间压缩与压缩稀疏注意力(CSA)机制，每张图片仅需81个视觉KV条目（vs Claude Sonnet 4.6的870个），实现7056倍视觉压缩。在计数(Pixmo-Count)任务中以89.2% vs 76.6%超越GPT-5.4，但模型随后被官方神秘删除，引发业界广泛关注。",
