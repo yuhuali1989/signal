@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import useHashState from '@/hooks/useHashState';
-import { INDUSTRY_CRISIS, GLOBAL_BREAKOUT, PALANTIR_DEEP_DIVE, RESPONSE_FRAMEWORK, SAAS_DELIVERY, FDE_BP_FLYWHEEL, EXTERNAL_MODEL_SECURITY, BENCHMARKS } from '@/lib/strategy-data';
+import { INDUSTRY_CRISIS, GLOBAL_BREAKOUT, PALANTIR_DEEP_DIVE, RESPONSE_FRAMEWORK, SAAS_DELIVERY, FDE_BP_FLYWHEEL, EXTERNAL_MODEL_SECURITY, BENCHMARKS, DJI_POLICY_RESEARCH } from '@/lib/strategy-data';
 
 // ═══════════════════════════════════════════════════════════════
 // 通用 UI 组件
@@ -2084,6 +2084,317 @@ function ChinaTab() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Tab 10: 政策研究 — 中国无人机管控 × 大疆影响
+// ═══════════════════════════════════════════════════════════════
+function PolicyTab() {
+  const { headline, timeline, usRestrictions, lowAltitudeEconomy, djiProfile, shortTermImpact, longTermOutlook, keyRisks, implications } = DJI_POLICY_RESEARCH;
+  const [openRestriction, setOpenRestriction] = useState(null);
+  const [activeScenario, setActiveScenario] = useState('base');
+
+  return (
+    <div className="space-y-6">
+
+      {/* 核心判断 */}
+      <div className="rounded-2xl border border-[#0984e3]/30 bg-[#0984e3]/04 p-5">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl flex-shrink-0">🛸</span>
+          <div className="flex-1">
+            <p className="text-sm font-bold text-gray-900 mb-1">{headline.short}</p>
+            <p className="text-sm text-[#0984e3] font-semibold mb-2">{headline.verdict}</p>
+            <div className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-white border border-gray-200">
+              <span>{headline.riskLevel}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 政策时间线 */}
+      <SectionCard icon="⏳" title="关键政策时间线" desc="2017–2026：管控收紧与低空经济开放并行">
+        <div className="space-y-2">
+          {timeline.map((t, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div className="w-14 flex-shrink-0 text-right pt-0.5">
+                <span className="text-[11px] font-bold font-mono" style={{ color: t.color }}>{t.year}</span>
+              </div>
+              <div className="w-6 flex-shrink-0 flex flex-col items-center pt-1">
+                <div className="w-2.5 h-2.5 rounded-full border-2 flex-shrink-0"
+                  style={{ borderColor: t.color, background: t.color + '30' }} />
+                {i < timeline.length - 1 && <div className="w-0.5 flex-1 mt-1 bg-gray-100" style={{ minHeight: 16 }} />}
+              </div>
+              <div className="flex-1 rounded-xl border p-3 mb-2" style={{ borderColor: t.color + '33', background: t.color + '04' }}>
+                <div className="flex items-start gap-2 flex-wrap mb-1">
+                  <span>{t.icon}</span>
+                  <span className="text-xs font-semibold text-gray-800 flex-1">{t.event}</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0"
+                    style={{ background: t.type === 'us' ? '#d63031' + '18' : '#00b894' + '18', color: t.type === 'us' ? '#d63031' : '#00b894' }}>
+                    {t.type === 'us' ? '🇺🇸 美国限制' : '🇨🇳 国内政策'}
+                  </span>
+                </div>
+                <p className="text-[10px] text-gray-500 leading-relaxed">{t.impact}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 美国制裁详情 */}
+      <SectionCard icon="🇺🇸" title="美国限制措施详解" desc="从实体清单到 ROTOR Act：层层加码的制裁逻辑">
+        <div className="space-y-3">
+          {usRestrictions.map(r => (
+            <div key={r.id} className="rounded-xl border overflow-hidden" style={{ borderColor: r.color + '33' }}>
+              <button
+                className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50/60 transition-colors"
+                onClick={() => setOpenRestriction(openRestriction === r.id ? null : r.id)}
+              >
+                <span className="text-xl flex-shrink-0">{r.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-semibold text-gray-800">{r.title}</span>
+                    <span className="text-xs font-mono text-gray-400">{r.year}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                      style={{ background: r.color + '18', color: r.color }}>{r.severity}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-0.5">{r.mechanism}</p>
+                </div>
+                <span className="text-gray-300 text-sm flex-shrink-0">{openRestriction === r.id ? '▲' : '▼'}</span>
+              </button>
+              {openRestriction === r.id && (
+                <div className="px-4 pb-4 border-t" style={{ borderColor: r.color + '22', background: r.color + '04' }}>
+                  <div className="mt-3 space-y-3">
+                    <div>
+                      <p className="text-[11px] font-semibold text-gray-600 mb-1.5">直接影响：</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {r.directImpact.map((d, i) => (
+                          <span key={i} className="text-[10px] px-2 py-0.5 rounded-full border"
+                            style={{ borderColor: r.color + '44', color: r.color, background: r.color + '0c' }}>{d}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="rounded-lg bg-white border border-gray-100 p-3">
+                        <p className="text-[10px] font-semibold text-gray-500 mb-1">实际效果</p>
+                        <p className="text-xs text-gray-700 leading-relaxed">{r.actualEffect}</p>
+                      </div>
+                      <div className="rounded-lg bg-white border border-gray-100 p-3">
+                        <p className="text-[10px] font-semibold text-gray-500 mb-1">大疆应对</p>
+                        <p className="text-xs text-gray-700 leading-relaxed">{r.djiResponse}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 低空经济政策 */}
+      <SectionCard icon="🚀" title="中国低空经济：政策红利与市场空间" desc={lowAltitudeEconomy.definition}>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { label: '2024 市场规模', value: lowAltitudeEconomy.marketSize.year2024, color: '#ffa657' },
+              { label: '2026 预测', value: lowAltitudeEconomy.marketSize.year2026, color: '#0984e3' },
+              { label: '2030 目标', value: lowAltitudeEconomy.marketSize.year2030, color: '#00b894' },
+              { label: '大疆预计份额', value: lowAltitudeEconomy.marketSize.djiShare, color: '#6c5ce7' },
+            ].map((m, i) => (
+              <div key={i} className="rounded-xl border p-3 text-center" style={{ borderColor: m.color + '33', background: m.color + '06' }}>
+                <p className="text-[10px] text-gray-400 mb-1">{m.label}</p>
+                <p className="text-sm font-bold" style={{ color: m.color }}>{m.value}</p>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-gray-600">关键政策节点：</p>
+            {lowAltitudeEconomy.keyPolicies.map((p, i) => (
+              <div key={i} className="flex items-start gap-2 rounded-lg border border-[#00b894]/20 bg-[#00b894]/04 p-3">
+                <span className="text-lg flex-shrink-0">{p.icon}</span>
+                <div>
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="text-xs font-semibold text-gray-800">{p.title}</span>
+                    <span className="text-[10px] font-mono text-gray-400">{p.year}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500 leading-relaxed">{p.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-gray-600 mb-2">核心应用场景：</p>
+            <div className="flex flex-wrap gap-2">
+              {lowAltitudeEconomy.keySegments.map((seg, i) => (
+                <div key={i} className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border"
+                  style={{ borderColor: '#0984e3' + '33', background: '#0984e3' + '06', color: '#0984e3' }}>
+                  <span>{seg.icon}</span>
+                  <span className="font-medium">{seg.name}</span>
+                  <span className="text-[10px] text-gray-400">{seg.size}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 近期 vs 长期影响 */}
+      <SectionCard icon="📊" title="近期 vs 长期影响分析" desc={`近期：${shortTermImpact.summary}`}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          <div className="rounded-xl border border-red-100 bg-red-50/30 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-base">⬇️</span>
+              <span className="text-sm font-semibold text-red-700">近期承压因素</span>
+            </div>
+            <div className="space-y-3">
+              {shortTermImpact.negatives.map((n, i) => (
+                <div key={i} className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-gray-700">{n.factor}</span>
+                    <span className="text-[10px] font-mono text-red-600 font-semibold">{n.revenue}</span>
+                  </div>
+                  <ProgressBar value={n.severity === '极高' ? 90 : n.severity === '高' ? 70 : 50} max={100} color="#e17055" />
+                  <p className="text-[10px] text-gray-500 leading-relaxed">{n.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-xl border border-green-100 bg-green-50/30 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-base">⬆️</span>
+              <span className="text-sm font-semibold text-green-700">近期正面因素</span>
+            </div>
+            <div className="space-y-3">
+              {shortTermImpact.positives.map((p, i) => (
+                <div key={i} className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-gray-700">{p.factor}</span>
+                    <span className="text-[10px] font-mono text-green-600 font-semibold">{p.revenue}</span>
+                  </div>
+                  <ProgressBar value={p.severity === '极高' ? 90 : p.severity === '高' ? 70 : 50} max={100} color="#00b894" />
+                  <p className="text-[10px] text-gray-500 leading-relaxed">{p.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 长期情景 */}
+        <div>
+          <p className="text-xs font-semibold text-gray-600 mb-2">长期情景预测：</p>
+          <p className="text-[10px] text-gray-500 mb-3">{longTermOutlook.summary}</p>
+          <div className="flex gap-2 mb-3 flex-wrap">
+            {longTermOutlook.scenarios.map(s => (
+              <button key={s.id} onClick={() => setActiveScenario(s.id)}
+                className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-all"
+                style={activeScenario === s.id
+                  ? { background: s.color, color: '#fff', borderColor: s.color }
+                  : { background: 'transparent', color: s.color, borderColor: s.color + '55' }}>
+                <span>{s.icon}</span>
+                <span>{s.name}</span>
+                <span className="text-[10px] opacity-80">{s.probability}</span>
+              </button>
+            ))}
+          </div>
+          {longTermOutlook.scenarios.filter(s => s.id === activeScenario).map(s => (
+            <div key={s.id} className="rounded-xl border p-4" style={{ borderColor: s.color + '44', background: s.color + '06' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xl">{s.icon}</span>
+                <div>
+                  <span className="text-sm font-semibold text-gray-800">{s.name}</span>
+                  <span className="text-xs text-gray-400 ml-2">概率 {s.probability}</span>
+                </div>
+                <div className="ml-auto text-right">
+                  <p className="text-[10px] text-gray-400">营收目标</p>
+                  <p className="text-xs font-bold" style={{ color: s.color }}>{s.revenueTarget}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+                <div className="rounded-lg bg-white border border-gray-100 p-2">
+                  <p className="text-[10px] font-semibold text-gray-500 mb-1">成立条件</p>
+                  <ul className="space-y-1">
+                    {s.conditions.map((c, i) => (
+                      <li key={i} className="flex items-start gap-1 text-[10px] text-gray-600">
+                        <span style={{ color: s.color }}>•</span><span>{c}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-lg bg-white border border-gray-100 p-2">
+                  <p className="text-[10px] font-semibold text-gray-500 mb-1">结果预测</p>
+                  <p className="text-[10px] text-gray-600 leading-relaxed">{s.outcome}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 结构性转变 */}
+        <div className="mt-4">
+          <p className="text-xs font-semibold text-gray-600 mb-2">无论何种情景，三大结构性转变确定性极高：</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {longTermOutlook.structuralShifts.map((shift, i) => (
+              <div key={i} className="rounded-xl border p-3" style={{ borderColor: shift.color + '33', background: shift.color + '06' }}>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="text-xs px-1.5 py-0.5 rounded-full text-white text-[10px] font-bold"
+                    style={{ background: shift.color }}>{shift.probability}</span>
+                </div>
+                <div className="text-[10px] text-gray-500 mb-1">
+                  <span className="text-gray-400">{shift.from}</span>
+                  <span className="mx-1 font-bold" style={{ color: shift.color }}>→</span>
+                  <span className="font-medium text-gray-700">{shift.to}</span>
+                </div>
+                <p className="text-[10px] text-gray-500 leading-relaxed">{shift.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </SectionCard>
+
+      {/* 关键风险 */}
+      <SectionCard icon="⚡" title="关键风险矩阵" desc="概率 × 严重性评估">
+        <div className="space-y-3">
+          {keyRisks.map((r, i) => (
+            <div key={i} className="rounded-xl border p-3" style={{ borderColor: r.color + '33', background: r.color + '04' }}>
+              <div className="flex items-start gap-3">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                    <span className="text-xs font-semibold text-gray-800">{r.risk}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                      style={{ background: r.color + '18', color: r.color }}>P={r.probability}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">严重性：{r.severity}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-500 leading-relaxed">
+                    <span className="font-medium text-gray-600">应对：</span>{r.mitigation}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+      {/* 对不同受众的启示 */}
+      <SectionCard icon="💡" title="启示：对不同视角的行动建议">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {implications.map((imp, i) => (
+            <div key={i} className="rounded-xl border p-4" style={{ borderColor: imp.color + '33', background: imp.color + '06' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">{imp.icon}</span>
+                <span className="text-xs font-semibold text-gray-800">{imp.audience}</span>
+              </div>
+              <p className="text-[10px] text-gray-600 leading-relaxed mb-3">{imp.insight}</p>
+              <div className="rounded-lg bg-white border border-gray-100 p-2">
+                <p className="text-[10px] font-semibold text-gray-500 mb-1">🎯 行动建议</p>
+                <p className="text-[10px] text-gray-600 leading-relaxed">{imp.action}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════════════
 // 主组件
 // ═══════════════════════════════════════════════════════════════
@@ -2097,6 +2408,7 @@ const TABS = [
   { id: 'benchmark', label: '行业对标', icon: '📊', color: '#ffa657', desc: '四家标杆企业模式对比' },
   { id: 'security', label: '模型安全', icon: '🔐', color: '#d63031', desc: '外部模型接触内部数据的风险论证与可控性方案' },
   { id: 'china', label: '中国借鉴', icon: '🇨🇳', color: '#00b894', desc: 'Palantir 模式在中国的可行路径与本土化策略' },
+  { id: 'policy', label: '政策研究', icon: '🏛️', color: '#0984e3', desc: '中国无人机管控 × 大疆近期与长期影响分析' },
 ];
 
 export default function StrategyViz() {
@@ -2112,6 +2424,7 @@ export default function StrategyViz() {
     benchmark: <BenchmarkTab />,
     security: <SecurityTab />,
     china: <ChinaTab />,
+    policy: <PolicyTab />,
   };
 
   return (
