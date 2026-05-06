@@ -2311,5 +2311,84 @@
       "thinkingMode": "思考预算 0-24576 tokens 动态调节"
     },
     "textArch": "Text / Image / Audio / Video Input\n     │\n┌────▼──────────────────────────────┐\n│  Multimodal Encoder               │\n│  图像 → Vision Tokens（SigLIP）   │\n│  音频 → Audio Tokens              │\n│  视频 → Frame Tokens              │\n│  文本 → Text Tokens               │\n└────────────┬──────────────────────┘\n             │\n Embedding + RoPE（1M 上下文）\n             │\n┌────────────▼──────────────────────┐\n│   Gemini 2.5 Flash Block × N      │\n│  ┌────────────────────────────┐   │\n│  │  MHA + Flash Attention 优化 │   │\n│  │  支持 1M token 超长序列    │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  SwiGLU Dense FFN          │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n  ┌─────────────▼──────────────┐\n  │  Thinking Budget（可调）    │\n  │  0-24576 tokens CoT        │\n  │  或直接输出（budget=0）     │\n  └─────────────┬──────────────┘\n                │\n            LM Head\n                │\n     Text / Audio Output Tokens"
+  },
+  {
+    "id": "hunyuan-hy3-preview",
+    "name": "混元 Hy3 Preview",
+    "org": "腾讯",
+    "type": "moe",
+    "typeLabel": "混合专家",
+    "typeIcon": "🔀",
+    "open": false,
+    "params": "295B（激活 21B）",
+    "date": "2026-04",
+    "context": "128K tokens",
+    "attention": "Mamba2 + MHA 混合注意力",
+    "description": "腾讯混元旗舰推理 MoE，295B 总参数激活 21B，首创 Mamba-Transformer 混合架构，SWE-bench Verified 74.4 创国产最高，Terminal-Bench 2.0 54.4 工具调用强",
+    "keyInnovation": "Mamba2-Transformer 混合架构（选择性状态空间 + 传统 Self-Attention）+ 无辅助损失 MoE 负载均衡 + 超强代码/工具调用能力",
+    "highlights": [
+      "SWE-bench Verified 74.4，国产模型最高，全球前三",
+      "Terminal-Bench 2.0 54.4，终端操作 / 工具调用能力强",
+      "295B MoE 总参数，仅激活 21B，推理成本极低",
+      "Mamba2 线性注意力 + MHA 混合，长序列效率大幅提升",
+      "128K 上下文，支持超长文档和代码库处理",
+      "腾讯内部数据飞轮 + 代码 / Agent 专项数据增强训练"
+    ],
+    "tags": ["MoE", "Mamba", "混合架构", "代码", "腾讯", "推理"],
+    "factSheet": {
+      "highlight": "SWE-bench Verified 74.4 国产最高 + Mamba2 混合架构 + 295B/21B 极低推理成本",
+      "params": "295B 总参数，21B 激活参数",
+      "architecture": "Mamba2-Transformer 混合 MoE，Decoder-only",
+      "attention": "Mamba2 选择性状态空间（线性复杂度）+ MHA 间隔融合",
+      "ffn": "细粒度 MoE，Top-K 路由，无辅助损失负载均衡",
+      "norm": "RMSNorm",
+      "posEncoding": "RoPE",
+      "context": "128K tokens",
+      "training": "腾讯混元预训练语料 + 代码 / Agent / 工具调用专项数据增强",
+      "inference": "腾讯云 API / 混元平台，21B 激活参数低成本推理",
+      "benchmarks": "SWE-bench Verified 74.4 / Terminal-Bench 2.0 54.4 / GPQA Diamond 87.2",
+      "license": "腾讯 API 商业协议（闭源预览版）"
+    },
+    "textArch": "Text / Code Input\n     │\n Embedding + RoPE（128K ctx）\n     │\n┌────▼──────────────────────────────┐\n│   Hy3 Hybrid Block × N            │\n│  ┌────────────────────────────┐   │\n│  │  Mamba2 SSM Layer          │   │\n│  │  （线性复杂度，长序列高效）  │   │\n│  │  每 K 层插入 MHA 块         │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  无辅助损失 MoE Router     │   │\n│  │  295B 总参数，21B 激活     │   │\n│  │  bias 动态调整负载均衡     │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n            LM Head\n                │\n         Output Tokens"
+  },
+  {
+    "id": "claude-sonnet-4",
+    "name": "Claude Sonnet 4",
+    "org": "Anthropic",
+    "type": "reasoning",
+    "typeLabel": "推理模型",
+    "typeIcon": "🧠",
+    "open": false,
+    "params": "未公开（中型旗舰）",
+    "date": "2026-04",
+    "context": "200K tokens",
+    "attention": "MHA（Multi-Head Attention）",
+    "description": "Anthropic Claude 4 系列中的高性价比旗舰，200K 上下文，强化编码与 Agent 能力，SWE-bench Verified 接近 Opus 4 级别，定价更具竞争力，Claude Code 默认推荐模型",
+    "keyInnovation": "Claude 4 系列「高效旗舰」定位：比 Opus 快 3× / 成本降 5×，SWE-bench Verified 接近 Opus 4 水平，Constitutional AI v3 安全框架，Claude Code 官方推荐主力",
+    "highlights": [
+      "SWE-bench Verified 编码能力接近 Claude Opus 4 级别",
+      "200K 上下文，完整代码库分析无截断",
+      "比 Claude Opus 4 快 3×，成本降低约 5×",
+      "Claude Code 官方推荐主力模型，深度 Agent 任务优化",
+      "Constitutional AI v3：更强可解释性与安全对齐",
+      "支持 Function Calling / Tool Use / Computer Use（Beta）"
+    ],
+    "tags": ["LLM", "Agent", "Anthropic", "编码", "高效", "Constitutional AI"],
+    "factSheet": {
+      "highlight": "Claude 4 高效旗舰：Opus 级能力 + 3× 速度 + 1/5 成本，Claude Code 默认主力",
+      "params": "未公开（Anthropic 闭源，中型）",
+      "architecture": "Dense Transformer，Decoder-only，Anthropic 内部架构",
+      "attention": "MHA（Multi-Head Attention）",
+      "ffn": "SwiGLU Dense FFN",
+      "norm": "RMSNorm",
+      "posEncoding": "RoPE（支持 200K 超长上下文）",
+      "context": "200K tokens（输入），最大 8192 tokens（输出）",
+      "training": "Anthropic Constitutional AI v3 对齐训练 + 编码 / Agent 专项强化学习",
+      "inference": "Anthropic API / AWS Bedrock / Google Vertex AI",
+      "benchmarks": "SWE-bench Verified ~70+ / GPQA Diamond ~75 / HumanEval 97+ / MMLU 89+",
+      "license": "Anthropic API 商业协议（闭源）",
+      "safety": "Constitutional AI v3，强化 HHH（Helpful / Harmless / Honest）"
+    },
+    "textArch": "Text / Image / Tool Input\n     │\n Embedding + RoPE（200K ctx）\n     │\n┌────▼──────────────────────────────┐\n│   Claude Sonnet 4 Block × N       │\n│  ┌────────────────────────────┐   │\n│  │  MHA（Multi-Head Attention）│   │\n│  │  支持 200K token 超长序列  │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  SwiGLU Dense FFN          │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n  ┌─────────────▼──────────────┐\n  │  Constitutional AI v3      │\n  │  HHH 对齐 + 安全过滤        │\n  │  Tool Use / Computer Use   │\n  └─────────────┬──────────────┘\n                │\n            LM Head\n                │\n         Output Tokens"
   }
 ]

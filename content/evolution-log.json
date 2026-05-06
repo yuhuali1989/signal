@@ -1,5 +1,18 @@
 [
   {
+    "date": "2026-05-06 13:23",
+    "type": "daily",
+    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
+    "message": "每日进化: 文章 +2 篇，创业信号更新 1 条，Infra 版本: ---\n\n## ✅ 自检 1：真实性核查\n\n| 检查项 | 内容 | 状态 |\n|--------|------|------|\n| MLflow v3.12.0 发布日期 | 来自 GitHub releases tag `v3.12.0`，curl 验证返回 200 | ✅ 通过 |\n| Coding Agent 支持（Codex/Gemini/Qwen） | 来自 release agent，VLA: **B7 VLA 更新完成** ✅"
+  },
+  {
+    "date": "2026-05-06 11:36",
+    "type": "article",
+    "agent": "研究员→编辑→审校员",
+    "message": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成",
+    "slug": "unity-catalog-ai"
+  },
+  {
     "date": "2026-05-06 11:32",
     "type": "daily",
     "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
