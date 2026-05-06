@@ -27,6 +27,458 @@ function CodeBlock({ code, lang = 'code' }) {
   );
 }
 
+// ─── 芯片结构示意图 SVG 组件 ──────────────────────────────────────────────────
+
+/**
+ * N-MOS 横截面结构示意图（精确版）
+ * 层次从下到上：p-type substrate → source/drain n+ 区 → gate oxide → polysilicon gate → metal contacts
+ */
+function NMOSCrossSectionDiagram() {
+  return (
+    <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/30 p-3">
+      <p className="text-[10px] font-semibold text-blue-600 mb-2 flex items-center gap-1">
+        <span>📐</span> N-MOS 横截面结构（平面 FinFET 前身，传统平面 MOSFET）
+      </p>
+      <svg viewBox="0 0 520 260" className="w-full max-w-lg mx-auto block" style={{ fontFamily: 'monospace' }}>
+        {/* ── 背景 ── */}
+        <rect x="0" y="0" width="520" height="260" fill="#f8fafc" rx="8" />
+
+        {/* ── p-type 衬底（蓝灰，底层大块）── */}
+        <rect x="30" y="160" width="460" height="70" fill="#c7d2fe" rx="4" />
+        <text x="260" y="200" textAnchor="middle" fontSize="12" fill="#3730a3" fontWeight="bold">p-type substrate（p⁻ 硅衬底）</text>
+        <text x="260" y="215" textAnchor="middle" fontSize="10" fill="#4338ca">掺杂浓度低（~10¹⁵ cm⁻³），电阻率高</text>
+
+        {/* ── Source n+ 区（左，浅蓝绿）── */}
+        <rect x="50" y="120" width="100" height="42" fill="#6ee7b7" rx="3" />
+        <text x="100" y="137" textAnchor="middle" fontSize="11" fill="#065f46" fontWeight="bold">Source</text>
+        <text x="100" y="152" textAnchor="middle" fontSize="10" fill="#047857">n⁺（高掺杂）</text>
+
+        {/* ── Drain n+ 区（右，浅蓝绿）── */}
+        <rect x="370" y="120" width="100" height="42" fill="#6ee7b7" rx="3" />
+        <text x="420" y="137" textAnchor="middle" fontSize="11" fill="#065f46" fontWeight="bold">Drain</text>
+        <text x="420" y="152" textAnchor="middle" fontSize="10" fill="#047857">n⁺（高掺杂）</text>
+
+        {/* ── 沟道区域（p-body，中间，加虚线框表示反型层）── */}
+        <rect x="150" y="120" width="220" height="42" fill="#ddd6fe" rx="2" />
+        <text x="260" y="141" textAnchor="middle" fontSize="10" fill="#5b21b6">沟道（channel）</text>
+        <text x="260" y="155" textAnchor="middle" fontSize="9" fill="#7c3aed">L = 栅极长度（=特征尺寸）</text>
+
+        {/* 反型层虚线（导通时） */}
+        <line x1="150" y1="162" x2="370" y2="162" stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="4,3" />
+        <text x="260" y="172" textAnchor="middle" fontSize="9" fill="#7c3aed">← 反型层（导通时电子聚集）→</text>
+
+        {/* ── Gate Oxide（栅氧，极薄红线层）── */}
+        <rect x="150" y="112" width="220" height="10" fill="#fca5a5" />
+        <text x="390" y="120" fontSize="9" fill="#dc2626">← Gate Oxide（SiO₂，1~3nm）</text>
+
+        {/* ── Polysilicon / Metal Gate（栅极）── */}
+        <rect x="150" y="72" width="220" height="42" fill="#fbbf24" rx="3" />
+        <text x="260" y="89" textAnchor="middle" fontSize="12" fill="#78350f" fontWeight="bold">Gate</text>
+        <text x="260" y="105" textAnchor="middle" fontSize="10" fill="#92400e">Polysilicon / Metal（栅极）</text>
+
+        {/* ── Gate 引线（向上） ── */}
+        <line x1="260" y1="72" x2="260" y2="40" stroke="#78350f" strokeWidth="2" />
+        <circle cx="260" cy="36" r="5" fill="#fbbf24" stroke="#78350f" strokeWidth="1.5" />
+        <text x="275" y="40" fontSize="10" fill="#78350f">V_G（控制电压）</text>
+
+        {/* ── Source 引线 ── */}
+        <line x1="100" y1="120" x2="100" y2="55" stroke="#065f46" strokeWidth="2" />
+        <circle cx="100" cy="51" r="5" fill="#6ee7b7" stroke="#065f46" strokeWidth="1.5" />
+        <text x="35" y="55" fontSize="10" fill="#065f46">V_S = 0V</text>
+
+        {/* ── Drain 引线 ── */}
+        <line x1="420" y1="120" x2="420" y2="55" stroke="#065f46" strokeWidth="2" />
+        <circle cx="420" cy="51" r="5" fill="#6ee7b7" stroke="#065f46" strokeWidth="1.5" />
+        <text x="430" y="55" fontSize="10" fill="#065f46">V_D &gt; 0V</text>
+
+        {/* ── Body/Bulk 引线 ── */}
+        <line x1="260" y1="230" x2="260" y2="245" stroke="#3730a3" strokeWidth="1.5" />
+        <circle cx="260" cy="249" r="4" fill="#c7d2fe" stroke="#3730a3" strokeWidth="1.5" />
+        <text x="268" y="253" fontSize="9" fill="#3730a3">Bulk（V_B，通常接地）</text>
+
+        {/* ── Width 标注 ── */}
+        <line x1="30" y1="250" x2="490" y2="250" stroke="#94a3b8" strokeWidth="0.8" strokeDasharray="2,2" />
+        <text x="20" y="253" fontSize="8" fill="#94a3b8">W（沟道宽度，垂直纸面方向）</text>
+
+        {/* ── 工作条件说明 ── */}
+        <rect x="30" y="6" width="460" height="26" fill="white" rx="4" stroke="#e2e8f0" />
+        <text x="260" y="17" textAnchor="middle" fontSize="10" fill="#374151">
+          导通条件：V_GS &gt; V_th（阈值电压 ≈ 0.4~0.7V）
+        </text>
+        <text x="260" y="28" textAnchor="middle" fontSize="9" fill="#6b7280">
+          线性区：V_DS &lt; V_GS − V_th　｜　饱和区：V_DS ≥ V_GS − V_th（电流恒定）
+        </text>
+      </svg>
+
+      {/* 图例 */}
+      <div className="flex flex-wrap gap-3 mt-2 justify-center">
+        {[
+          { color: '#c7d2fe', label: 'p⁻ 衬底' },
+          { color: '#6ee7b7', label: 'n⁺ Source/Drain' },
+          { color: '#ddd6fe', label: '沟道 (p-body)' },
+          { color: '#fca5a5', label: 'Gate Oxide (SiO₂)' },
+          { color: '#fbbf24', label: 'Gate 电极' },
+        ].map(l => (
+          <div key={l.label} className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ background: l.color, border: '1px solid #cbd5e1' }} />
+            <span className="text-[10px] text-gray-500">{l.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * CMOS 反相器电路图
+ * 上方 PMOS（源极接 VDD）+ 下方 NMOS（源极接 GND），Gate 共用输入，Drain 共用输出
+ */
+function CMOSInverterDiagram() {
+  return (
+    <div className="mt-4 rounded-xl border border-purple-100 bg-purple-50/30 p-3">
+      <p className="text-[10px] font-semibold text-purple-600 mb-2 flex items-center gap-1">
+        <span>📐</span> CMOS 反相器电路图（P-MOS 上拉 + N-MOS 下拉）
+      </p>
+      <svg viewBox="0 0 420 300" className="w-full max-w-md mx-auto block" style={{ fontFamily: 'monospace' }}>
+        <rect x="0" y="0" width="420" height="300" fill="#faf5ff" rx="8" />
+
+        {/* ── VDD 电源线（顶部）── */}
+        <line x1="210" y1="20" x2="210" y2="40" stroke="#dc2626" strokeWidth="2" />
+        <line x1="185" y1="20" x2="235" y2="20" stroke="#dc2626" strokeWidth="2" />
+        <text x="240" y="24" fontSize="12" fill="#dc2626" fontWeight="bold">VDD</text>
+
+        {/* ── PMOS 符号 ── */}
+        {/* Body + channel（竖线）*/}
+        <line x1="210" y1="40" x2="210" y2="100" stroke="#dc2626" strokeWidth="2" />
+        {/* Source 横线（上）*/}
+        <line x1="210" y1="55" x2="235" y2="55" stroke="#7c3aed" strokeWidth="2" />
+        {/* Drain 横线（下）*/}
+        <line x1="210" y1="85" x2="235" y2="85" stroke="#7c3aed" strokeWidth="2" />
+        {/* Gate 竖线 */}
+        <line x1="235" y1="55" x2="235" y2="85" stroke="#7c3aed" strokeWidth="2" />
+        {/* Gate 横线到 Gate 节点 */}
+        <line x1="235" y1="70" x2="265" y2="70" stroke="#7c3aed" strokeWidth="2" />
+        {/* PMOS 圆圈（区分 P/N） */}
+        <circle cx="269" cy="70" r="5" fill="none" stroke="#7c3aed" strokeWidth="1.5" />
+        {/* Gate 连线继续到输入 */}
+        <line x1="274" y1="70" x2="310" y2="70" stroke="#374151" strokeWidth="2" />
+        {/* Source 到 VDD */}
+        <line x1="210" y1="55" x2="210" y2="40" stroke="#dc2626" strokeWidth="2" />
+        {/* Drain 到中间节点 */}
+        <line x1="210" y1="85" x2="210" y2="105" stroke="#374151" strokeWidth="2" />
+        {/* PMOS 标注 */}
+        <text x="140" y="68" fontSize="11" fill="#7c3aed" fontWeight="bold">P-MOS</text>
+        <text x="140" y="81" fontSize="9" fill="#7c3aed">（低电平导通）</text>
+
+        {/* ── 中间节点（输出 Vout）── */}
+        <line x1="210" y1="105" x2="210" y2="145" stroke="#374151" strokeWidth="2" />
+        <line x1="210" y1="125" x2="340" y2="125" stroke="#374151" strokeWidth="2" />
+        <circle cx="210" cy="125" r="4" fill="#374151" />
+        <text x="345" y="130" fontSize="12" fill="#374151" fontWeight="bold">Vout</text>
+        <text x="345" y="144" fontSize="9" fill="#6b7280">= ¬Vin</text>
+
+        {/* ── NMOS 符号 ── */}
+        {/* Body + channel（竖线）*/}
+        <line x1="210" y1="145" x2="210" y2="205" stroke="#374151" strokeWidth="2" />
+        {/* Drain 横线（上）*/}
+        <line x1="210" y1="160" x2="235" y2="160" stroke="#0284c7" strokeWidth="2" />
+        {/* Source 横线（下）*/}
+        <line x1="210" y1="190" x2="235" y2="190" stroke="#0284c7" strokeWidth="2" />
+        {/* Gate 竖线 */}
+        <line x1="235" y1="160" x2="235" y2="190" stroke="#0284c7" strokeWidth="2" />
+        {/* Gate 横线到输入节点 */}
+        <line x1="235" y1="175" x2="310" y2="175" stroke="#374151" strokeWidth="2" />
+        {/* Source 到 GND */}
+        <line x1="210" y1="190" x2="210" y2="210" stroke="#059669" strokeWidth="2" />
+        {/* Drain 到中间节点 */}
+        <line x1="210" y1="160" x2="210" y2="145" stroke="#374151" strokeWidth="2" />
+        {/* NMOS 标注 */}
+        <text x="140" y="168" fontSize="11" fill="#0284c7" fontWeight="bold">N-MOS</text>
+        <text x="140" y="181" fontSize="9" fill="#0284c7">（高电平导通）</text>
+
+        {/* ── GND 符号 ── */}
+        <line x1="210" y1="210" x2="210" y2="230" stroke="#059669" strokeWidth="2" />
+        <line x1="190" y1="230" x2="230" y2="230" stroke="#059669" strokeWidth="2.5" />
+        <line x1="196" y1="236" x2="224" y2="236" stroke="#059669" strokeWidth="1.8" />
+        <line x1="202" y1="242" x2="218" y2="242" stroke="#059669" strokeWidth="1.2" />
+        <text x="238" y="236" fontSize="12" fill="#059669" fontWeight="bold">GND</text>
+
+        {/* ── 输入 Gate 连线（两个 Gate 汇合）── */}
+        <line x1="310" y1="70" x2="310" y2="175" stroke="#374151" strokeWidth="2" />
+        <circle cx="310" cy="70" r="3" fill="#374151" />
+        <circle cx="310" cy="175" r="3" fill="#374151" />
+        <line x1="310" y1="122" x2="380" y2="122" stroke="#374151" strokeWidth="2" />
+        <circle cx="310" cy="122" r="4" fill="#374151" />
+        <text x="384" y="127" fontSize="12" fill="#374151" fontWeight="bold">Vin</text>
+
+        {/* ── 状态真值表 ── */}
+        <rect x="20" y="255" width="380" height="38" fill="white" rx="4" stroke="#e2e8f0" />
+        <text x="210" y="268" textAnchor="middle" fontSize="10" fill="#374151" fontWeight="bold">
+          真值表：Vin = 0V → PMOS 导通，NMOS 截止 → Vout = VDD（逻辑 1）
+        </text>
+        <text x="210" y="283" textAnchor="middle" fontSize="10" fill="#374151">
+          　　　　Vin = VDD → PMOS 截止，NMOS 导通 → Vout = 0V（逻辑 0）　静态功耗 ≈ 0
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/**
+ * FinFET vs GAA（纳米片）3D 结构对比示意图
+ */
+function FinFETvsGAADiagram() {
+  return (
+    <div className="mt-4 rounded-xl border border-amber-100 bg-amber-50/30 p-3">
+      <p className="text-[10px] font-semibold text-amber-700 mb-2 flex items-center gap-1">
+        <span>📐</span> FinFET vs GAA（纳米片）结构演进对比
+      </p>
+      <svg viewBox="0 0 500 200" className="w-full max-w-lg mx-auto block">
+        <rect x="0" y="0" width="500" height="200" fill="#fffbeb" rx="8" />
+
+        {/* ── FinFET（左半）── */}
+        <text x="115" y="18" textAnchor="middle" fontSize="12" fill="#92400e" fontWeight="bold">FinFET（22nm~5nm）</text>
+
+        {/* 衬底 */}
+        <rect x="20" y="155" width="190" height="30" fill="#c7d2fe" rx="2" />
+        <text x="115" y="173" textAnchor="middle" fontSize="10" fill="#3730a3">p-substrate</text>
+
+        {/* Fin（硅鳍，竖起来的长方体）— 等轴视图 */}
+        {/* 正面 */}
+        <rect x="100" y="85" width="30" height="70" fill="#86efac" stroke="#16a34a" strokeWidth="1" />
+        {/* 顶面 */}
+        <polygon points="100,85 115,70 145,70 130,85" fill="#4ade80" stroke="#16a34a" strokeWidth="1" />
+        {/* 侧面 */}
+        <polygon points="130,85 145,70 145,140 130,155" fill="#22c55e" stroke="#16a34a" strokeWidth="1" />
+        <text x="115" y="125" textAnchor="middle" fontSize="9" fill="#166534">Fin</text>
+        <text x="115" y="136" textAnchor="middle" fontSize="8" fill="#166534">(Si 鳍片)</text>
+
+        {/* Gate 包裹 Fin 三面 */}
+        <rect x="88" y="95" width="10" height="40" fill="#fbbf24" opacity="0.85" />
+        <rect x="130" y="95" width="10" height="40" fill="#fbbf24" opacity="0.85" />
+        <rect x="88" y="90" width="52" height="10" fill="#fbbf24" opacity="0.85" />
+        <text x="50" y="120" fontSize="9" fill="#92400e">Gate</text>
+        <text x="45" y="130" fontSize="8" fill="#92400e">包三面</text>
+        <line x1="70" y1="122" x2="88" y2="118" stroke="#92400e" strokeWidth="0.8" />
+
+        {/* 栅极控制面说明 */}
+        <text x="115" y="190" textAnchor="middle" fontSize="9" fill="#92400e">控制面：3面（两侧+顶）</text>
+
+        {/* Source/Drain */}
+        <text x="67" y="148" fontSize="9" fill="#065f46">S</text>
+        <text x="157" y="148" fontSize="9" fill="#065f46">D</text>
+
+        {/* ── 分隔线 ── */}
+        <line x1="250" y1="10" x2="250" y2="195" stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,3" />
+        <text x="250" y="105" textAnchor="middle" fontSize="20" fill="#d1d5db">vs</text>
+
+        {/* ── GAA（右半）── */}
+        <text x="375" y="18" textAnchor="middle" fontSize="12" fill="#1e40af" fontWeight="bold">GAA / NSFET（3nm~2nm）</text>
+
+        {/* 衬底 */}
+        <rect x="280" y="155" width="190" height="30" fill="#c7d2fe" rx="2" />
+        <text x="375" y="173" textAnchor="middle" fontSize="10" fill="#3730a3">p-substrate</text>
+
+        {/* 纳米片（3层叠加）*/}
+        {[0, 1, 2].map(i => (
+          <g key={i}>
+            <rect x="340" y={115 - i * 22} width="70" height="14" fill="#86efac" stroke="#16a34a" strokeWidth="1" rx="2" />
+            <text x="375" y={125 - i * 22} textAnchor="middle" fontSize="8" fill="#166534">Nanosheet {i + 1}</text>
+          </g>
+        ))}
+
+        {/* Gate 完全包裹（全环绕）*/}
+        {[0, 1, 2].map(i => (
+          <rect key={i} x="332" y={112 - i * 22} width="86" height="20" fill="none"
+            stroke="#fbbf24" strokeWidth="3" rx="4" opacity="0.8" strokeDasharray={i === 1 ? '' : '3,2'} />
+        ))}
+        <text x="290" y="110" fontSize="9" fill="#92400e">Gate</text>
+        <text x="284" y="120" fontSize="8" fill="#92400e">全环绕</text>
+        <line x1="305" y1="113" x2="332" y2="105" stroke="#92400e" strokeWidth="0.8" />
+
+        <text x="375" y="190" textAnchor="middle" fontSize="9" fill="#1e40af">控制面：4面（全环绕）漏电更低</text>
+        <text x="67" y="195" textAnchor="middle" fontSize="8" fill="#6b7280"></text>
+      </svg>
+
+      <div className="flex flex-wrap gap-3 mt-1 justify-center text-[10px] text-gray-500">
+        <span>🟡 金色 = Gate 电极</span>
+        <span>🟢 绿色 = 硅沟道（Fin / Nanosheet）</span>
+        <span>🔵 蓝色 = p-type 衬底</span>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * PN 结形成过程示意图（精确物理版）
+ * 展示：P/N 两侧载流子分布 → 扩散 → 耗尽区 → 内建电场 → 平衡
+ */
+function PNJunctionDiagram() {
+  return (
+    <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50/30 p-3">
+      <p className="text-[10px] font-semibold text-emerald-700 mb-2 flex items-center gap-1">
+        <span>📐</span> PN 结形成物理过程（载流子扩散 → 耗尽区 → 内建电场平衡）
+      </p>
+      <svg viewBox="0 0 560 310" className="w-full max-w-xl mx-auto block" style={{ fontFamily: 'sans-serif' }}>
+        <rect x="0" y="0" width="560" height="310" fill="#f0fdf4" rx="8" />
+
+        {/* ══════════════════════════════════════════════════════════════
+            STEP 1 — 接触前（顶部，y=20~120）
+            左侧 P 型（空穴多），右侧 N 型（电子多）
+            ══════════════════════════════════════════════════════════════ */}
+        <text x="280" y="16" textAnchor="middle" fontSize="10" fill="#6b7280" fontWeight="bold">① 接触前：P 型（左）与 N 型（右）独立存在</text>
+
+        {/* P 型块 */}
+        <rect x="30" y="22" width="220" height="78" fill="#fde68a" rx="4" stroke="#f59e0b" strokeWidth="1" />
+        <text x="140" y="38" textAnchor="middle" fontSize="11" fill="#78350f" fontWeight="bold">P 型半导体</text>
+        <text x="140" y="52" textAnchor="middle" fontSize="9" fill="#92400e">受主掺杂（Boron，B³⁺）</text>
+        <text x="140" y="64" textAnchor="middle" fontSize="9" fill="#92400e">多子：空穴 ⊕　少子：电子 ⊖</text>
+        {/* 空穴符号（⊕红色） */}
+        {[55,85,115,145,175,205].map((x,i) => (
+          <text key={i} x={x} y="84" textAnchor="middle" fontSize="14" fill="#dc2626">⊕</text>
+        ))}
+        {/* 少量电子 */}
+        <text x="95" y="98" textAnchor="middle" fontSize="11" fill="#1d4ed8">⊖</text>
+        <text x="185" y="98" textAnchor="middle" fontSize="11" fill="#1d4ed8">⊖</text>
+
+        {/* N 型块 */}
+        <rect x="310" y="22" width="220" height="78" fill="#bfdbfe" rx="4" stroke="#3b82f6" strokeWidth="1" />
+        <text x="420" y="38" textAnchor="middle" fontSize="11" fill="#1e3a8a" fontWeight="bold">N 型半导体</text>
+        <text x="420" y="52" textAnchor="middle" fontSize="9" fill="#1e40af">施主掺杂（Phosphorus，P⁵⁺）</text>
+        <text x="420" y="64" textAnchor="middle" fontSize="9" fill="#1e40af">多子：电子 ⊖　少子：空穴 ⊕</text>
+        {/* 电子符号 */}
+        {[335,365,395,425,455,485].map((x,i) => (
+          <text key={i} x={x} y="84" textAnchor="middle" fontSize="14" fill="#1d4ed8">⊖</text>
+        ))}
+        {/* 少量空穴 */}
+        <text x="375" y="98" textAnchor="middle" fontSize="11" fill="#dc2626">⊕</text>
+        <text x="465" y="98" textAnchor="middle" fontSize="11" fill="#dc2626">⊕</text>
+
+        {/* 接触界面虚线 */}
+        <line x1="280" y1="22" x2="280" y2="100" stroke="#9ca3af" strokeWidth="1.5" strokeDasharray="4,3" />
+        <text x="280" y="114" textAnchor="middle" fontSize="9" fill="#9ca3af">接触界面（冶金结）</text>
+
+        {/* ══════════════════════════════════════════════════════════════
+            STEP 2 — 扩散与耗尽区（中部，y=130~220）
+            ══════════════════════════════════════════════════════════════ */}
+        <text x="280" y="128" textAnchor="middle" fontSize="10" fill="#6b7280" fontWeight="bold">② 接触后：多子扩散 → 耗尽区（Depletion Region）形成</text>
+
+        {/* P 侧剩余（已失去空穴） */}
+        <rect x="30" y="135" width="165" height="72" fill="#fef3c7" rx="4" stroke="#f59e0b" strokeWidth="1" />
+        <text x="112" y="151" textAnchor="middle" fontSize="10" fill="#92400e">P 中性区（剩余空穴）</text>
+        {[50,80,110,140,170].map((x,i) => (
+          <text key={i} x={x} y="170" textAnchor="middle" fontSize="12" fill="#dc2626">⊕</text>
+        ))}
+        {[55,105,155].map((x,i) => (
+          <text key={i} x={x} y="192" textAnchor="middle" fontSize="12" fill="#dc2626">⊕</text>
+        ))}
+
+        {/* 耗尽区（P 侧：负固定离子） */}
+        <rect x="195" y="135" width="85" height="72" fill="#fce7f3" rx="0" stroke="#db2777" strokeWidth="1.5" />
+        <text x="237" y="149" textAnchor="middle" fontSize="8" fill="#9d174d">耗尽区（P侧）</text>
+        <text x="237" y="160" textAnchor="middle" fontSize="8" fill="#9d174d">固定负电荷</text>
+        {[207,230,252,274].map((x,i) => (
+          <text key={i} x={x} y="178" textAnchor="middle" fontSize="12" fill="#9d174d">⊖</text>
+        ))}
+        {[207,230,252,274].map((x,i) => (
+          <text key={i} x={x} y="196" textAnchor="middle" fontSize="12" fill="#9d174d">⊖</text>
+        ))}
+
+        {/* 耗尽区（N 侧：正固定离子） */}
+        <rect x="280" y="135" width="85" height="72" fill="#ede9fe" rx="0" stroke="#7c3aed" strokeWidth="1.5" />
+        <text x="322" y="149" textAnchor="middle" fontSize="8" fill="#5b21b6">耗尽区（N侧）</text>
+        <text x="322" y="160" textAnchor="middle" fontSize="8" fill="#5b21b6">固定正电荷</text>
+        {[290,313,336,358].map((x,i) => (
+          <text key={i} x={x} y="178" textAnchor="middle" fontSize="12" fill="#5b21b6">⊕</text>
+        ))}
+        {[290,313,336,358].map((x,i) => (
+          <text key={i} x={x} y="196" textAnchor="middle" fontSize="12" fill="#5b21b6">⊕</text>
+        ))}
+
+        {/* 冶金结中心线 */}
+        <line x1="280" y1="135" x2="280" y2="207" stroke="#db2777" strokeWidth="2" />
+
+        {/* N 侧中性区 */}
+        <rect x="365" y="135" width="165" height="72" fill="#dbeafe" rx="4" stroke="#3b82f6" strokeWidth="1" />
+        <text x="447" y="151" textAnchor="middle" fontSize="10" fill="#1e40af">N 中性区（剩余电子）</text>
+        {[380,410,440,470,500].map((x,i) => (
+          <text key={i} x={x} y="170" textAnchor="middle" fontSize="12" fill="#1d4ed8">⊖</text>
+        ))}
+        {[387,427,467,507].map((x,i) => (
+          <text key={i} x={x} y="192" textAnchor="middle" fontSize="12" fill="#1d4ed8">⊖</text>
+        ))}
+
+        {/* 扩散箭头（空穴向右扩散） */}
+        <defs>
+          <marker id="arrowR" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="#dc2626" />
+          </marker>
+          <marker id="arrowL" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+            <path d="M6,0 L6,6 L0,3 z" fill="#1d4ed8" />
+          </marker>
+          <marker id="arrowE" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="#7c3aed" />
+          </marker>
+        </defs>
+        <line x1="178" y1="207" x2="194" y2="207" stroke="#dc2626" strokeWidth="1.5" markerEnd="url(#arrowR)" />
+        <text x="155" y="216" fontSize="8" fill="#dc2626">⊕ 扩散</text>
+        <line x1="369" y1="207" x2="366" y2="207" stroke="#1d4ed8" strokeWidth="1.5" markerEnd="url(#arrowL)" />
+        <text x="371" y="216" fontSize="8" fill="#1d4ed8">⊖ 扩散</text>
+
+        {/* ══════════════════════════════════════════════════════════════
+            STEP 3 — 内建电场与平衡（底部，y=230~300）
+            ══════════════════════════════════════════════════════════════ */}
+        <text x="280" y="228" textAnchor="middle" fontSize="10" fill="#6b7280" fontWeight="bold">③ 内建电场 E₀ 阻止继续扩散 → 动态平衡（V_bi ≈ 0.6~0.7V for Si）</text>
+
+        {/* 内建电场方向（N→P，即从正电荷区到负电荷区） */}
+        <rect x="30" y="237" width="500" height="32" fill="white" rx="4" stroke="#e5e7eb" strokeWidth="1" />
+        {/* 渐变背景代表内建电场方向 */}
+        <defs>
+          <linearGradient id="eFieldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#bfdbfe" stopOpacity="0.5" />
+            <stop offset="40%" stopColor="#fce7f3" stopOpacity="0.4" />
+            <stop offset="50%" stopColor="#f9a8d4" stopOpacity="0.6" />
+            <stop offset="60%" stopColor="#ede9fe" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#dbeafe" stopOpacity="0.5" />
+          </linearGradient>
+        </defs>
+        <rect x="30" y="237" width="500" height="32" fill="url(#eFieldGrad)" rx="4" />
+        {/* 电场箭头（从N侧→P侧，即从右耗尽区到左耗尽区） */}
+        {[360,340,320,300,280].map((x,i) => (
+          <line key={i} x1={x} y1="253" x2={x-14} y2="253" stroke="#7c3aed" strokeWidth="1.5" markerEnd="url(#arrowL)" />
+        ))}
+        <text x="195" y="257" textAnchor="middle" fontSize="9" fill="#5b21b6" fontWeight="bold">← E₀ 内建电场（N→P 方向）</text>
+        <text x="420" y="249" fontSize="8" fill="#6b7280">N 侧 ⊕ 固定离子产生电场</text>
+        <text x="420" y="261" fontSize="8" fill="#6b7280">阻止⊖电子继续向左扩散</text>
+
+        {/* 势垒说明 */}
+        <rect x="30" y="276" width="500" height="28" fill="white" rx="4" stroke="#e5e7eb" />
+        <text x="280" y="290" textAnchor="middle" fontSize="9" fill="#374151">
+          平衡时：扩散电流 = 漂移电流（E₀ 驱动）　|　内建电位差 V_bi = (kT/q)·ln(N_A·N_D / nᵢ²) ≈ 0.6V（Si，室温）
+        </text>
+        <text x="280" y="302" textAnchor="middle" fontSize="8" fill="#9ca3af">
+          耗尽宽度 W_d ∝ 1/√N_doping　|　PN 结 → 二极管（正偏导通，反偏截止）→ MOSFET 的 n⁺ Source/Drain 本质也是 PN 结
+        </text>
+      </svg>
+
+      {/* 图例 */}
+      <div className="flex flex-wrap gap-3 mt-2 justify-center">
+        {[
+          { color: '#fde68a', border: '#f59e0b', label: 'P 型（多子：空穴⊕）' },
+          { color: '#bfdbfe', border: '#3b82f6', label: 'N 型（多子：电子⊖）' },
+          { color: '#fce7f3', border: '#db2777', label: '耗尽区 P 侧（负固定离子）' },
+          { color: '#ede9fe', border: '#7c3aed', label: '耗尽区 N 侧（正固定离子）' },
+        ].map(l => (
+          <div key={l.label} className="flex items-center gap-1">
+            <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ background: l.color, border: `1px solid ${l.border}` }} />
+            <span className="text-[10px] text-gray-500">{l.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── 通用基础 ─────────────────────────────────────────────────────────────────
 const BASICS_LAYERS = [
   {
@@ -2030,6 +2482,19 @@ const CHIP_LAYERS = [
     color: '#27ae60',
     items: [
       {
+        name: 'PN 结与二极管',
+        icon: '🔋',
+        desc: 'MOSFET 的物理基础——P/N 半导体接触形成耗尽区与内建电场',
+        details: [
+          { label: '为什么要先懂 PN 结', text: 'MOSFET 的 Source/Drain 本质是 n⁺p 结；二极管、BJT、LED、光伏电池全都基于 PN 结。理解 PN 结 = 理解半导体器件的物理核心。' },
+          { label: '掺杂与载流子', text: 'P 型：掺 B（硼，3价），产生空穴（⊕）作多子；N 型：掺 P/As（磷/砷，5价），产生自由电子（⊖）作多子。室温下，Si 本征载流子浓度 nᵢ ≈ 1.5×10¹⁰ cm⁻³，掺杂后 N_D 可达 10¹⁷~10²⁰ cm⁻³。' },
+          { label: '耗尽区与内建电场', text: '接触后多子（空穴/电子）跨界扩散 → 界面附近载流子耗尽，留下固定离子（P 侧 ⊖，N 侧 ⊕）→ 形成内建电场 E₀（N→P 方向）→ 阻止继续扩散 → 动态平衡。耗尽宽度 W_d ∝ √(1/N_doping)，掺杂越高越薄。' },
+          { label: '二极管特性', text: '正偏（P 接正，N 接负）：外加电场削弱 E₀ → 扩散电流占主导 → 导通（指数型 I-V，Si 正向压降 ≈ 0.6V）。反偏：外加电场增强 E₀ → 只有极小漂移电流（反向饱和电流 I₀ ≈ 10⁻¹² A）→ 截止。' },
+          { label: '内建电位 V_bi', text: 'Si PN 结：V_bi = (kT/q)·ln(N_A·N_D / nᵢ²) ≈ 0.6~0.9V（取决于掺杂）。k=玻尔兹曼常数，T=温度，q=基本电荷，N_A/N_D=P/N 侧掺杂浓度。室温 kT/q ≈ 26mV。' },
+        ],
+        diagram: <PNJunctionDiagram />,
+      },
+      {
         name: '晶体管与 MOSFET',
         icon: '⚛️',
         desc: '芯片的基本开关单元，现代 CPU 集成 100 亿+ 个',
@@ -2038,6 +2503,7 @@ const CHIP_LAYERS = [
           { label: '特征尺寸', text: '7nm/5nm/3nm 指栅极长度（现为等效尺寸，实际物理尺寸已不对应）。越小 → 更低功耗、更高密度、更快速度。台积电 N3E：每 mm² 约 1.7 亿个晶体管。' },
           { label: 'FinFET → GAA', text: 'FinFET（鳍式）：22nm 起引入，鳍片竖起提升控制能力。GAA（全环绕栅极）：3nm/2nm 引入，纳米片叠加，漏电更低。Intel RibbonFET = GAA 的 Intel 叫法。' },
         ],
+        diagram: <><NMOSCrossSectionDiagram /><FinFETvsGAADiagram /></>,
         code: `# SPICE 仿真 — MOSFET 特性曲线（Python 调用 ngspice）
 # 理解 Id-Vgs 转移特性 & Id-Vds 输出特性
 
@@ -2101,6 +2567,7 @@ endmodule
 // y_mux  → 1× MUX2x1  (或 AOI21 + INV 组合)
 // 面积约 5~12 个 GE（Gate Equivalent，以 NAND2 为单位）`,
         lang: 'verilog',
+        diagram: <CMOSInverterDiagram />,
       },
       {
         name: 'SRAM / DRAM / Flash 存储原理',
@@ -2639,6 +3106,8 @@ function LayerCard({ layer, activeCategory = 'all' }) {
                     </div>
                   ))}
                 </div>
+                {/* 结构示意图（如存在） */}
+                {item.diagram && item.diagram}
                 {/* 代码块（如存在） */}
                 {item.code && (
                   <CodeBlock code={item.code} lang={item.lang || 'code'} />
