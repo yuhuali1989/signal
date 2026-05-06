@@ -1993,6 +1993,9 @@ function VlaLabView() {
             { year: '2026', name: 'DriveWorld-VLA', desc: '统一潜空间 VLA + 世界模型，Latent CoT，nuScenes/NAVSIM 三大 SOTA', color: '#6c5ce7', icon: '⭐' },
             { year: '2026 Q2', name: 'Alpamayo-R1 / π₀.5', desc: 'Alpamayo-R1 引入 RL 奖励驱动的 VLA 微调，π₀.5 将 Flow Matching 扩展到多任务机器人操作，VLA 从自动驾驶向通用具身智能延伸', color: '#e17055', icon: '🚀' },
             { year: '2026-04', name: '混元 3D 世界模型 2.0 / Seed3D 2.0', desc: '腾讯开源混元 3D 世界模型 2.0（物理仿真+可交互场景），字节 Seed3D 2.0 支持视频转 3D；3D 世界模型从"生成"走向"可交互仿真"，为 VLA 训练提供更真实的虚拟环境', color: '#00b894', icon: '🌍' },
+            { year: '2026-04', name: 'Tesla FSD V14.3 纯神经网络架构', desc: '特斯拉删除 30 万行 C++ 规则代码，FSD V14.3 完全由神经网络驱动；模型参数量相比 V12 提升约 10×，单卡 Dojo 推理延迟降低 40%；标志"规则-神经混合"架构彻底退场，纯 E2E-VLA 路线被主要玩家全面采纳', color: '#e84393', icon: '⚡' },
+            { year: '2026-04', name: 'Figure AI Helix 02 + System 0', desc: 'Figure 废弃 10 万行 C++ 运动规划代码，推出全神经网络 System 0 控制栈；Helix 02 机器人以 61 步连续厨房任务完成率 93% 刷新具身智能操作 SOTA；Figure 同步宣布 BMW 工厂批量部署，标志人形机器人从实验室进入工业量产', color: '#fd79a8', icon: '🤖' },
+            { year: '2026-04', name: 'NVIDIA GR00T N2 + LeRobot v0.5', desc: 'NVIDIA 发布 GR00T N2（7B+3B 双模型），专为全身人形机器人设计的 Foundation Model，支持 Unitree H1/G1/Atlas；HuggingFace LeRobot v0.5.0 首次集成 Unitree G1 全身控制 + π₀-FAST VLA，100Hz 本地推理，社区开源具身智能基准进入实用阶段', color: '#a29bfe', icon: '🧠' },
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-3 mb-3 pl-8 relative">
               <div className="absolute left-1.5 w-3 h-3 rounded-full border-2 border-white flex-shrink-0"

@@ -19,9 +19,9 @@ const FED_DATA = {
   cpi_latest: 2.7,
   unemployment: 4.1,
   gdp_q1_2026: 1.8,
-  cuts_expected_2026: 2,
-  market_implied_rate_end2026: 3.75,
-  fomc_minutes_summary: '委员会对通胀回落进程持谨慎态度，就业市场韧性强于预期，多数委员倾向于在更多数据确认通胀可持续回落至 2% 目标前维持利率不变。',
+  cuts_expected_2026: 1,
+  market_implied_rate_end2026: 4.00,
+  fomc_minutes_summary: '【2026-05-07 会议前瞻】市场预期超过 98% 概率维持 4.25-4.50% 不变。4 月非农就业+17.8 万（远超预期+6.5 万），失业率 4.1%，就业韧性消解衰退担忧。核心 PCE 维持 2.8%，通胀回落停滞，鲍威尔明示"需要更多数据确认通胀可持续降至 2%"。首次降息预期推迟至 2026 年 9-10 月，全年降息次数由 2 次下调至 1 次（25bp）。',
 };
 
 const CHINA_DATA = {
@@ -130,7 +130,8 @@ const USD_CNY_HISTORY = [
   { period: '26-01', rate: 6.9497, note: '人民币延续升值，跌破 7.0' },
   { period: '26-02', rate: 6.8582, note: '关税冲击美元信用，人民币加速升值' },
   { period: '26-03', rate: 6.9004, note: '汇率小幅回调' },
-  { period: '26-04', rate: 6.8223, note: '关税持续冲击，人民币维持强势（当前）' },
+  { period: '26-04', rate: 6.8223, note: '关税持续冲击，人民币维持强势' },
+  { period: '26-05', rate: 6.8365, note: '美国就业超预期，美元小幅反弹，人民币温和回调（当前）' },
 ];
 
 // ─── 月度汇率折线图组件 ────────────────────────────────────────────────────────
@@ -370,13 +371,13 @@ const KEY_INDICATORS = [
     category: '汇率相关',
     color: '#00b894',
     items: [
-      { label: '美元指数（DXY）', value: '99.0', trend: '↓ 大幅走弱', status: 'bad' },
-      { label: '中美 10Y 国债利差', value: '-120bp', trend: '↑ 倒挂快速收窄', status: 'warn' },
-      { label: 'USDCNY 即期', value: '6.8223', trend: '↑ 人民币大幅升值', status: 'good' },
-      { label: '离岸人民币（CNH）', value: '6.80', trend: '↑ CNH 领先升值', status: 'good' },
-      { label: '央行中间价', value: '6.83', trend: '→ 跟随市场', status: 'neutral' },
+      { label: '美元指数（DXY）', value: '100.2', trend: '↑ 就业超预期小幅反弹', status: 'neutral' },
+      { label: '中美 10Y 国债利差', value: '-115bp', trend: '↑ 倒挂快速收窄', status: 'warn' },
+      { label: 'USDCNY 即期', value: '6.8365', trend: '↑ 小幅回调，仍处升值通道', status: 'good' },
+      { label: '离岸人民币（CNH）', value: '6.8390', trend: '→ CNH/CNY 基本持平', status: 'good' },
+      { label: '央行中间价', value: '6.8628', trend: '→ 逆周期调节防止单边升值', status: 'neutral' },
       { label: '人民币 CFETS 指数', value: '102.3', trend: '↑ 显著升值', status: 'good' },
-      { label: 'CNY/HKD（港币联系汇率）', value: '1.1464', trend: '→ 随美元联动', status: 'neutral' },
+      { label: 'CNY/HKD（港币联系汇率）', value: '1.1487', trend: '→ 随美元联动', status: 'neutral' },
     ],
   },
 ];
@@ -384,10 +385,10 @@ const KEY_INDICATORS = [
 const FOMC_CALENDAR = [
   { date: '2026-01-29', result: '维持 4.25-4.50%', change: 0 },
   { date: '2026-03-19', result: '维持 4.25-4.50%', change: 0 },
-  { date: '2026-05-07', result: '预计维持', change: 0, future: true },
-  { date: '2026-06-18', result: '预计降息 25bp', change: -25, future: true },
+  { date: '2026-05-07', result: '今日召开 — 预计维持（>98% 概率）', change: 0, future: true },
+  { date: '2026-06-18', result: '预计维持（首次降息预期推迟）', change: 0, future: true },
   { date: '2026-07-30', result: '预计维持', change: 0, future: true },
-  { date: '2026-09-17', result: '预计降息 25bp', change: -25, future: true },
+  { date: '2026-09-17', result: '预计降息 25bp（首次降息）', change: -25, future: true },
   { date: '2026-11-05', result: '预计维持', change: 0, future: true },
   { date: '2026-12-17', result: '预计维持', change: 0, future: true },
 ];
@@ -534,8 +535,8 @@ function ForecastTab() {
         <h3 className="font-bold text-gray-800 mb-1">美元/人民币汇率预测（2026 Q2 — 2027 Q1）</h3>
         <p className="text-sm text-gray-500">
           基于美联储货币政策路径、中美经济基本面、贸易格局、资本流动等多维度数据综合研判。
-当前即期汇率：<span className="font-bold text-purple-700">6.8223</span>（2026-04-17），
-          CNY/HKD：<span className="font-bold text-purple-700">1.1464</span>（即 1 港币 ≈ <span className="font-bold text-purple-700">0.8724</span> 人民币，港币联系汇率 USD/HKD=7.83，随美元联动）。
+当前即期汇率：<span className="font-bold text-purple-700">6.8365</span>（2026-05-06），
+          CNY/HKD：<span className="font-bold text-purple-700">1.1487</span>（即 1 港币 ≈ <span className="font-bold text-purple-700">0.8706</span> 人民币，港币联系汇率 USD/HKD=7.83，随美元联动）。
         </p>
         <div className="mt-2 text-xs text-orange-600 font-medium bg-orange-50 rounded-lg px-3 py-2">
           ⚡ 重要背景：2026 年 4 月美国大规模关税政策冲击美元信用，DXY 跌破 100，人民币从年初 7.24 大幅升值至 6.81，升幅约 6%，为近年罕见走势。
@@ -736,7 +737,7 @@ function UsEconomyTab() {
           <div className="space-y-3 text-sm text-gray-600">
             <p><span className="font-medium text-gray-800">增长：</span>2026 Q1 GDP 增速 1.8%，较 2025 年的 2.8% 明显放缓。消费支出韧性强，但企业投资受高利率压制。</p>
             <p><span className="font-medium text-gray-800">通胀：</span>核心 PCE 2.8%，高于 2% 目标，但下行趋势明确。住房通胀是主要粘性来源，预计 2026 年底回落至 2.3% 左右。</p>
-            <p><span className="font-medium text-gray-800">就业：</span>失业率 4.1%，非农就业月均新增约 15 万，就业市场韧性强于预期，给美联储维持高利率提供了空间。</p>
+            <p><span className="font-medium text-gray-800">就业：</span>4 月非农就业+17.8 万（远超预期+6.5 万），失业率 4.1%，就业市场强劲，消除了衰退担忧，同时也给美联储维持高利率提供了充足空间。首次降息预期因此推迟至 Q3。</p>
             <p><span className="font-medium text-gray-800">财政：</span>联邦财政赤字占 GDP 约 6.5%，国债规模突破 $36T，长期财政可持续性存疑，但短期内不影响美元地位。</p>
           </div>
         </div>

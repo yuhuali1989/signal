@@ -107,6 +107,69 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-05-06（第48轮更新 — 西湖机器人Pre A+融资/英伟达600亿投资生态/DeepSeek国产芯片适配/Llama 4 Ultra开源/Cursor 3多Agent）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2809,
+    category: 'startup',
+    region: 'china',
+    title: '西湖机器人完成 Pre A+ 轮融资，全身统一大模型成核心方向',
+    summary: '西湖机器人宣布完成 Pre A+ 轮融资，由老股东小苗朗程领投，兴证资本、贝鱼资本参与跟投。资金专项用于全身统一大模型技术研发，目标实现机器人感知-决策-控制端到端一体化。当前国内具身智能赛道融资密集，灵心巧手估值已达30亿美元，星动纪元两月内累计融资超2亿美元。',
+    source: '腾讯新闻',
+    date: '2026-05-06',
+    tags: ['西湖机器人', '具身智能', '融资', '全身大模型'],
+    hot: true,
+    link: 'https://news.qq.com/rain/a/20260506A031LD00',
+  },
+  {
+    id: 2810,
+    category: 'market',
+    region: 'global',
+    title: '英伟达2026年密集投资9家AI头部企业，累计超600亿美元构建全产业链生态',
+    summary: '英伟达2026年Q1密集入股9家头部AI企业：向OpenAI投入300亿美元（估值7300亿），参与Anthropic G轮（3800亿）、World Labs（50亿）、Wayve D轮（86亿）、Bedrock Robotics（17.5亿）等，累计超600亿美元。战略从「GPU卖方」全面转向「AI全产业链生态构建者」，算力+平台+应用立体布局。',
+    source: '36氪',
+    date: '2026-05-05',
+    tags: ['英伟达', '投资', 'OpenAI', 'Anthropic', '生态战略', 'AI芯片'],
+    hot: true,
+    link: 'https://eu.36kr.com/zh/p/3716969592927621',
+  },
+  {
+    id: 2811,
+    category: 'software',
+    region: 'global',
+    title: 'Cursor 3 推出多 Agent 并行协作模式，AI 编程进入「分布式智能体」时代',
+    summary: 'Cursor 3 核心新特性：多 AI 智能体同时处理不同代码模块并自动合并，大幅缩短大型工程任务耗时，从「AI 辅助编程」升级为「AI 编程指挥系统」。同期字节 TRAE SOLO 独立版发布、Anthropic Claude Code 进入 GA，AI 编程工具赛道全面向 Agent 化演进加速竞争。',
+    source: '搜狐科技 / 全球AI周报',
+    date: '2026-05-05',
+    tags: ['Cursor', 'AI编程', '多Agent', '并行协作', 'TRAE'],
+    hot: true,
+    link: 'https://www.sohu.com/a/1018306020_122523043',
+  },
+  {
+    id: 2812,
+    category: 'hardware',
+    region: 'china',
+    title: 'DeepSeek-V4 完成昇腾 NPU + 英伟达 GPU 双架构原生适配，国产软硬件自主可控达新里程碑',
+    summary: 'DeepSeek V4 大模型完成华为昇腾 NPU 与英伟达 GPU 原生兼容适配，无需额外转换层即可满载推理，V4-Flash 版定价仅 $0.279/百万 Token。此举标志国产 AI 在算法-芯片协同自主可控层面的实质突破，也将有助于推动昇腾生态在企业级市场的大规模落地。',
+    source: '百度百家号 / AI行业资讯',
+    date: '2026-05-05',
+    tags: ['DeepSeek', '华为昇腾', 'NPU适配', '国产算力', '自主可控'],
+    hot: true,
+    link: 'https://baijiahao.baidu.com/s?id=1864301594185733086&wfr=spider&for=pc',
+  },
+  {
+    id: 2813,
+    category: 'market',
+    region: 'global',
+    title: 'OpenAI GPT-5.5 API 定价升至 180 美元/百万 Token，与 DeepSeek-V4-Flash 价差达 645 倍',
+    summary: 'OpenAI GPT-5.5 发布后 API 标准定价跃至 $180/百万 Token，SWE-Bench Pro 准确率 58.6%。与 DeepSeek-V4-Flash ($0.279) 的价差达645倍，AI 模型市场呈现「高端闭源锁生态」与「低价开源抢份额」两极分化格局。分析师认为 OpenAI 正以高价位构筑企业级生态壁垒，以保持在 DeepSeek 冲击下的商业地位。',
+    source: '搜狐科技 / 全球AI周报',
+    date: '2026-05-05',
+    tags: ['OpenAI', 'GPT-5.5', '定价策略', 'DeepSeek', '市场竞争'],
+    hot: false,
+    link: 'https://www.sohu.com/a/1018306020_122523043',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-05-04（第47轮更新 — 中国AI调用量再超美国/微软MAI三模型自研/Anthropic内省适配器/谷歌I/O前瞻/Token涨价逆转）
   // ══════════════════════════════════════════════════════
   {

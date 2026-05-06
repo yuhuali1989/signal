@@ -345,7 +345,7 @@ function PageHero({ activeProject, setActiveProject }) {
           <span>·</span>
           <span>覆盖 VLA · World Model · Reasoning-AD</span>
           <span>·</span>
-          <span className="text-amber-500 font-medium">🆕 UniDriveVLA April 2026</span>
+          <span className="text-amber-500 font-medium">🆕 GR00T N2 + Helix 02 May 2026</span>
         </div>
       </div>
 
@@ -1405,7 +1405,7 @@ function VlaPageContent() {
                     catColor: '#10b981',
                     items: [
                       { title: 'LatentVLA: NAVSIM PDMS 92.4 新 SOTA', date: '2026-01', desc: 'arXiv 2601.05611，在 NAVSIM 无反应评估集上刷新 SOTA（PDMS=92.4）。隐空间动作表示 + 多尺度世界建模。', link: 'https://arxiv.org/abs/2601.05611v1' },
-                      { title: 'Tesla FSD v14.3 发布', date: '2026-04', desc: '通过 MLIR 编译优化，反应速度提升 20%；Autopilot 팀全面迁移到 VLA 端到端架构。', link: null },
+                      { title: 'Tesla FSD V14.3 纯神经网络架构', date: '2026-04', desc: '删除 30 万行 C++ 规则代码，FSD V14.3 完全由神经网络端到端驱动；参数量相比 V12 提升约 10×，Dojo 推理延迟降低约 40%；"规则-神经混合"架构彻底退场，E2E-VLA 路线被主流玩家全面采纳。', link: null },
                       { title: 'DeepRoute.ai 发布 40B VLA', date: '2026-03（GTC）', desc: 'NVIDIA GTC 2026 发布，基于 NVIDIA Orin 平台优化，面向 Robotaxi 商业化部署。', link: null },
                     ],
                   },
@@ -1413,9 +1413,9 @@ function VlaPageContent() {
                     cat: '🤖 具身智能',
                     catColor: '#e17055',
                     items: [
-                      { title: 'Unitree H1/Flash 完成北京半程马拉松', date: '2026-04-19', desc: 'H1 以 2:40:42 完赛，Flash 以 2:22:09 创下人形机器人半马世界纪录，零跌倒全程无人工干预。', link: null },
-                      { title: 'Boston Dynamics Atlas 56-DOF 全液压升级', date: '2026-01（CES）', desc: 'CES 2026 展示，56 个自由度，计划 2028 年量产 3 万台/年，对标特斯拉 Optimus。', link: null },
-                      { title: 'Figure 03 + Helix AI 发布', date: '2026', desc: 'Figure 03 搭载全新 Helix AI 系统，双手灵巧操作能力大幅提升，白宫活动公开演示。', link: null },
+                      { title: 'Unitree H1/Flash 完成北京半程马拉松', date: '2026-04-19', desc: 'H1 以 2:40:42 完赛（零跌倒），Flash 以 2:22:09 刷新人形机器人半马世界纪录；全程无人工干预；宇树发布同日宣布双臂人形机器人 G2-S 预订量突破 1 万台。', link: null },
+                      { title: 'Figure AI Helix 02 + System 0 全神经网络栈', date: '2026-04', desc: 'Figure 废弃 10 万行 C++ 运动规划代码，推出全神经网络 System 0 控制栈；Helix 02 以 61 步连续厨房任务完成率 93% 刷新具身操作 SOTA；Figure 宣布与 BMW 工厂批量部署合同，标志人形机器人进入工业量产阶段。', link: null },
+                      { title: 'NVIDIA GR00T N2 + LeRobot v0.5.0 发布', date: '2026-04', desc: 'GR00T N2（7B+3B 双模型）专为全身人形机器人设计，支持 Unitree H1/G1/Boston Dynamics Atlas；HuggingFace LeRobot v0.5.0 首次集成 Unitree G1 全身控制 + π₀-FAST VLA（100Hz 本地推理），开源具身智能进入实用阶段。', link: null },
                     ],
                   },
                   {
@@ -1446,6 +1446,35 @@ function VlaPageContent() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* ── 具身智能融资浪潮（2026 年 Q1-Q2） ── */}
+            <div className="mt-6 rounded-2xl border border-orange-100/70 bg-gradient-to-br from-orange-50/25 to-white p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-base">🤖</span>
+                <h3 className="text-sm font-semibold text-gray-800">具身智能融资浪潮</h3>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-100 font-medium">2026 Q1–Q2</span>
+                <span className="text-[10px] text-gray-400 ml-auto">中国具身智能创企融资创历史纪录</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                {[
+                  { name: '它石智航', round: 'Pre-A', amount: '4.55 亿元', note: '自主智能体 + 人形机器人感知方案，2026-04 完成，刷新中国具身 Pre-A 最高纪录', color: '#e17055' },
+                  { name: '星动纪元', round: 'B+', amount: '2 亿元', note: 'STAR1 人形机器人，清华背景团队，2026-04 完成；已在比亚迪工厂完成产线测试', color: '#fd79a8' },
+                  { name: '无界动力', round: 'A+', amount: '2 亿元+', note: '轮足混合具身机器人，工厂仓储场景，2026-04 完成；强调低成本高鲁棒', color: '#a29bfe' },
+                ].map(c => (
+                  <div key={c.name} className="rounded-xl border border-gray-100 bg-white p-3">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs font-bold text-gray-800">{c.name}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: c.color + '18', color: c.color }}>{c.round} · {c.amount}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500 leading-relaxed">{c.note}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-xl bg-amber-50/60 border border-amber-100 p-3 text-[11px] text-amber-800 leading-relaxed">
+                <span className="font-semibold">💡 趋势洞察：</span>
+                中国具身智能在 2026 年 Q1-Q2 掀起史无前例的融资潮——单笔 Pre-A 破 4 亿已成常态。技术方向以<span className="font-medium">人形机器人 + 工厂/仓储落地</span>为核心，与 Figure AI（BMW 工厂）、Unitree（制造业）的全球路径高度吻合。VLA 技术（NVIDIA GR00T N2 / LeRobot v0.5）正成为这波创企构建技术壁垒的关键底座。
               </div>
             </div>
           </>
