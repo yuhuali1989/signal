@@ -1,5 +1,155 @@
 [
   {
+    "id": "news-20260506-01",
+    "title": "西湖机器人完成 Pre A+ 轮融资，资金专项用于全身统一大模型技术研发",
+    "summary": "2026年5月6日，西湖机器人宣布完成 Pre A+ 轮融资，由老股东小苗朗程领投，兴证资本、贝鱼资本跟投。融资资金将重点投入全身统一大模型技术研发，致力于实现机器人全身运动与操作的端到端感知-决策-控制一体化，是当前具身智能热潮下国内头部初创的最新融资动作。",
+    "source": "腾讯新闻",
+    "url": "https://news.qq.com/rain/a/20260506A031LD00",
+    "date": "2026-05-06",
+    "category": "industry",
+    "tags": [
+      "西湖机器人",
+      "具身智能",
+      "融资",
+      "全身大模型",
+      "机器人"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260506-02",
+    "title": "OpenAI GPT-5.5 全面上线：API 定价飙升至 180 美元/百万 Token，闭源生态壁垒策略浮出水面",
+    "summary": "OpenAI 于5月2日正式上线 GPT-5.5，标准版 API 定价高达每百万 Token 180 美元，较 GPT-4 Turbo 高出逾10倍。此举被业界解读为 OpenAI 在 DeepSeek 冲击后以高价构筑闭源生态壁垒的主动选择，同时在 SWE-Bench Pro 上取得 58.6% 准确率。与 DeepSeek-V4-Flash 的 0.279 美元/百万 Token 相比，价差达 645 倍，定价分化加剧。",
+    "source": "搜狐科技 / 全球AI周报",
+    "url": "https://www.sohu.com/a/1018306020_122523043",
+    "date": "2026-05-06",
+    "category": "llm",
+    "tags": [
+      "OpenAI",
+      "GPT-5.5",
+      "定价策略",
+      "API",
+      "闭源生态"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260506-03",
+    "title": "腾讯开源 HY-World 2.0：文字/图片/视频三模态输入直接生成可交互 3D 世界，支持多格式资产导出",
+    "summary": "腾讯于5月1日开源 HY-World 2.0（混元3D世界模型），支持文本、图片、视频三种输入模态，可直接生成具备物理交互性的 3D 世界场景，并支持 FBX、GLB、USD 等主流格式资产导出，可对接游戏引擎与仿真平台。HY-World 2.0 是国内首个覆盖三模态输入的可交互3D世界生成开源模型，面向游戏、影视、机器人仿真等多领域应用。",
+    "source": "搜狐科技 / 全球AI周报",
+    "url": "https://www.sohu.com/a/1018306020_122523043",
+    "date": "2026-05-06",
+    "category": "llm",
+    "tags": [
+      "腾讯",
+      "HY-World",
+      "3D世界模型",
+      "开源",
+      "混元",
+      "仿真"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260506-04",
+    "title": "阿里开源 Qwen3-TTS 系列语音合成模型：最小 0.6B 可手机流畅运行，宣称性能超越部分商业产品",
+    "summary": "阿里通义团队于5月3日开源 Qwen3-TTS 系列，包含 0.6B 和 1.7B 两档参数模型。0.6B 版本可在手机端流畅推理，1.7B 版本在自然度、情感表达和多语种覆盖上宣称超越部分主流商业 TTS 产品。模型采用无 Tokenizer 架构，支持零样本声音克隆，是 Qwen3 多模态系列最新补齐的语音合成能力，发布后已迅速在 HuggingFace 获得大量关注。",
+    "source": "搜狐科技 / 全球AI周报",
+    "url": "https://www.sohu.com/a/1018306020_122523043",
+    "date": "2026-05-06",
+    "category": "llm",
+    "tags": [
+      "阿里",
+      "Qwen3-TTS",
+      "语音合成",
+      "TTS",
+      "开源",
+      "端侧推理"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260506-05",
+    "title": "DeepSeek-V4 完成国产主流 AI 芯片全适配：昇腾 NPU 与英伟达 GPU 双架构原生支持",
+    "summary": "DeepSeek 宣布 V4 大模型完成与国内主流 AI 芯片的原生兼容适配，同时支持华为昇腾 NPU 和英伟达 GPU 两套推理架构，无需额外转换层即可满载运行。此举标志着国产 AI 软硬件生态自主可控能力的实质性提升，也进一步巩固了 DeepSeek 在国内算力市场的规模化部署优势，DeepSeek-V4-Flash 版定价仅 0.279 美元/百万 Token。",
+    "source": "百度百家号 / AI行业资讯",
+    "url": "https://baijiahao.baidu.com/s?id=1864301594185733086&wfr=spider&for=pc",
+    "date": "2026-05-06",
+    "category": "infra",
+    "tags": [
+      "DeepSeek",
+      "V4",
+      "昇腾NPU",
+      "国产芯片",
+      "适配",
+      "推理"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260506-06",
+    "title": "Meta Llama 4 Ultra 开源发布：MoE 架构仅激活 220亿参数，MMLU 均分 89.7% 超越 GPT-4",
+    "summary": "Meta 于5月初正式发布 Llama 4 Ultra 开源模型，采用混合专家架构（MoE），推理时仅激活约 220 亿参数，大幅降低部署算力需求。在 MMLU、HumanEval 等基准测试中平均得分 89.7%，超越 GPT-4 的 88.5%。同系列还包含 Llama 4 Mini 和 Base 版本，覆盖轻量级到旗舰级部署需求，支持多模态和端侧推理，是 Meta 开源战略的重要里程碑。",
+    "source": "百度百家号 / AI行业资讯",
+    "url": "https://baijiahao.baidu.com/s?id=1864119193738363343&wfr=spider&for=pc",
+    "date": "2026-05-06",
+    "category": "llm",
+    "tags": [
+      "Meta",
+      "Llama 4 Ultra",
+      "MoE",
+      "开源",
+      "MMLU",
+      "多模态"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260506-07",
+    "title": "Cursor 3 正式发布：多 Agent 并行协作模式上线，AI 编程工具进入「分布式智能体」新阶段",
+    "summary": "Cursor 于5月3日发布第三代版本，核心新特性是多 Agent 并行协作——多个 AI 智能体可同时处理不同代码模块并自动合并，大幅缩短大型工程任务耗时。这一范式转变使 Cursor 3 从「AI 辅助编程」升级为「AI 编程指挥系统」，与字节 TRAE SOLO、GitHub Copilot 的竞争进入新维度，也印证了 AI 编程工具赛道向 Agent 化演进的主流趋势。",
+    "source": "搜狐科技 / 全球AI周报",
+    "url": "https://www.sohu.com/a/1018306020_122523043",
+    "date": "2026-05-06",
+    "category": "agent",
+    "tags": [
+      "Cursor",
+      "AI编程",
+      "多Agent",
+      "并行协作",
+      "代码生成"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
+    "id": "news-20260506-08",
+    "title": "英伟达2026年密集入股9家头部AI企业，累计超600亿美元构建从芯片到生态的垂直版图",
+    "summary": "36氪报道，英伟达2026年1-3月密集投资9家头部AI企业，包括向 OpenAI 投入300亿美元（估值7300亿美元）、参与 Anthropic G轮（估值3800亿美元）、跟投 World Labs（估值50亿美元）、Wayve D轮（86亿美元）等，累计涉及资金超600亿美元。这标志着英伟达战略从「GPU 硬件卖方」全面转向「AI 全产业链生态构建者」，形成算力+平台+应用的立体护城河。",
+    "source": "36氪",
+    "url": "https://eu.36kr.com/zh/p/3716969592927621",
+    "date": "2026-05-06",
+    "category": "industry",
+    "tags": [
+      "英伟达",
+      "投资",
+      "OpenAI",
+      "Anthropic",
+      "生态",
+      "AI芯片",
+      "战略"
+    ],
+    "hot": true,
+    "region": "global"
+  },
+  {
     "id": "news-20260504-01",
     "title": "中国 AI 大模型周调用量再超美国：腾讯 Hy3 preview 夺冠 3.03 万亿 Token，环比暴增 799%",
     "summary": "据 OpenRouter 最新数据，上周全球 AI 大模型总调用量 23.9 万亿 Token，中国大模型周调用量达 7.942 万亿 Token（环比+81.7%），时隔两周再次超越美国（3.258 万亿）。腾讯 Hy3 preview 位居全球榜首，周调用量 3.03 万亿 Token，Kimi K2.6 排名第二，DeepSeek-V4-Flash 首次上榜排第九（+344%）。国产模型集体爆发，显示中国 AI 应用生态在 2026 年春季进入全面爆发期。",
@@ -7,7 +157,14 @@
     "url": "https://m.nbd.com.cn/articles/2026-05-04/4378407.html",
     "date": "2026-05-04",
     "category": "industry",
-    "tags": ["腾讯", "Hy3", "DeepSeek", "调用量", "国产AI", "OpenRouter"],
+    "tags": [
+      "腾讯",
+      "Hy3",
+      "DeepSeek",
+      "调用量",
+      "国产AI",
+      "OpenRouter"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -19,7 +176,14 @@
     "url": "https://www.donews.com/news/detail/4/6496723.html",
     "date": "2026-05-04",
     "category": "llm",
-    "tags": ["微软", "MAI", "语音模型", "图像生成", "Copilot", "自研"],
+    "tags": [
+      "微软",
+      "MAI",
+      "语音模型",
+      "图像生成",
+      "Copilot",
+      "自研"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -31,7 +195,14 @@
     "url": "http://finance.sina.com.cn/wm/2026-05-04/doc-inhwrxax1170686.shtml",
     "date": "2026-05-04",
     "category": "llm",
-    "tags": ["Anthropic", "可解释性", "AI安全", "LoRA", "内省", "论文"],
+    "tags": [
+      "Anthropic",
+      "可解释性",
+      "AI安全",
+      "LoRA",
+      "内省",
+      "论文"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -43,7 +214,13 @@
     "url": "https://www.bhwang.cn/youjun/74543716144398.html",
     "date": "2026-05-04",
     "category": "industry",
-    "tags": ["Token定价", "AI成本", "供需", "商业模式", "推理经济"],
+    "tags": [
+      "Token定价",
+      "AI成本",
+      "供需",
+      "商业模式",
+      "推理经济"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -55,7 +232,14 @@
     "url": "https://www.sohu.com/a/1015898223_114765",
     "date": "2026-05-04",
     "category": "industry",
-    "tags": ["谷歌", "Google I/O", "Gemini", "Android 17", "Aluminum OS", "XR眼镜"],
+    "tags": [
+      "谷歌",
+      "Google I/O",
+      "Gemini",
+      "Android 17",
+      "Aluminum OS",
+      "XR眼镜"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -67,7 +251,14 @@
     "url": "https://k.sina.cn/article_7857201856_1d45362c0019051jkc.html",
     "date": "2026-05-04",
     "category": "industry",
-    "tags": ["AI安全", "Hinton", "苹果", "iOS 27", "AI监管", "伦理"],
+    "tags": [
+      "AI安全",
+      "Hinton",
+      "苹果",
+      "iOS 27",
+      "AI监管",
+      "伦理"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -79,7 +270,13 @@
     "url": "https://www.itbear.com.cn/html/2026-05/1319018.html",
     "date": "2026-05-03",
     "category": "llm",
-    "tags": ["DeepSeek", "多模态", "视觉推理", "视觉原语", "MoE"],
+    "tags": [
+      "DeepSeek",
+      "多模态",
+      "视觉推理",
+      "视觉原语",
+      "MoE"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -91,7 +288,14 @@
     "url": "https://www.ithome.com/0/943/337.htm",
     "date": "2026-05-03",
     "category": "llm",
-    "tags": ["蚂蚁集团", "Ling-2.6", "万亿参数", "快思考", "开源", "MoE"],
+    "tags": [
+      "蚂蚁集团",
+      "Ling-2.6",
+      "万亿参数",
+      "快思考",
+      "开源",
+      "MoE"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -103,7 +307,13 @@
     "url": "https://www.chinaz.com/ainews/27633.shtml",
     "date": "2026-05-03",
     "category": "llm",
-    "tags": ["蚂蚁集团", "Ling-2.6-flash", "Agent", "推理效率", "开源"],
+    "tags": [
+      "蚂蚁集团",
+      "Ling-2.6-flash",
+      "Agent",
+      "推理效率",
+      "开源"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -115,7 +325,14 @@
     "url": "https://github.com/aibrix/aibrix/releases",
     "date": "2026-05-03",
     "category": "infra",
-    "tags": ["AIBrix", "vLLM", "Kubernetes", "LLM推理", "ByteDance", "开源"],
+    "tags": [
+      "AIBrix",
+      "vLLM",
+      "Kubernetes",
+      "LLM推理",
+      "ByteDance",
+      "开源"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -127,7 +344,13 @@
     "url": "https://ai.zhiding.cn/2026/0415/3184082.shtml",
     "date": "2026-05-03",
     "category": "llm",
-    "tags": ["谷歌", "Google I/O", "Gemini 3", "Android XR", "算力投入"],
+    "tags": [
+      "谷歌",
+      "Google I/O",
+      "Gemini 3",
+      "Android XR",
+      "算力投入"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -139,7 +362,13 @@
     "url": "https://news.qq.com/rain/a/20260430A07FWS00",
     "date": "2026-05-03",
     "category": "agent",
-    "tags": ["AI融资", "AlphaGo", "Agent", "创投", "搜索引擎"],
+    "tags": [
+      "AI融资",
+      "AlphaGo",
+      "Agent",
+      "创投",
+      "搜索引擎"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -151,7 +380,16 @@
     "url": "/articles/robot-simulation-platforms-2026",
     "date": "2026-05-02",
     "category": "robotics",
-    "tags": ["Genesis", "机器人仿真", "具身智能", "Sim2Real", "ManiSkill3", "IsaacLab", "MuJoCo", "开源"],
+    "tags": [
+      "Genesis",
+      "机器人仿真",
+      "具身智能",
+      "Sim2Real",
+      "ManiSkill3",
+      "IsaacLab",
+      "MuJoCo",
+      "开源"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -163,7 +401,16 @@
     "url": "/articles/hunyuan-world-2-hy-world-2026",
     "date": "2026-05-02",
     "category": "world-model",
-    "tags": ["HY-World", "腾讯混元", "3D世界模型", "3DGS", "世界模型", "开源", "具身智能", "神经渲染"],
+    "tags": [
+      "HY-World",
+      "腾讯混元",
+      "3D世界模型",
+      "3DGS",
+      "世界模型",
+      "开源",
+      "具身智能",
+      "神经渲染"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -175,7 +422,14 @@
     "url": "https://news.cgtn.com/news/2026-04-24/DeepSeek-unveils-new-AI-model-adapted-for-Huawei-chips-1MBU0eOEv9S/index.html",
     "date": "2026-05-02",
     "category": "llm",
-    "tags": ["DeepSeek", "V4", "开源", "华为昇腾", "MoE", "国产算力"],
+    "tags": [
+      "DeepSeek",
+      "V4",
+      "开源",
+      "华为昇腾",
+      "MoE",
+      "国产算力"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -187,7 +441,14 @@
     "url": "https://juejin.cn/post/7629503574842834994",
     "date": "2026-05-02",
     "category": "llm",
-    "tags": ["腾讯", "混元Hy3", "MoE", "开源", "大模型", "工程化"],
+    "tags": [
+      "腾讯",
+      "混元Hy3",
+      "MoE",
+      "开源",
+      "大模型",
+      "工程化"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -199,7 +460,14 @@
     "url": "https://github.com/ai-dynamo/dynamo/releases",
     "date": "2026-05-02",
     "category": "infra",
-    "tags": ["NVIDIA", "Dynamo", "推理框架", "DeepSeek-V4", "开源", "Blackwell"],
+    "tags": [
+      "NVIDIA",
+      "Dynamo",
+      "推理框架",
+      "DeepSeek-V4",
+      "开源",
+      "Blackwell"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -211,7 +479,13 @@
     "url": "https://www.qbitai.com/2026/05/412585.html",
     "date": "2026-05-02",
     "category": "llm",
-    "tags": ["智谱AI", "Scaling Law", "训练稳定性", "大模型", "预训练"],
+    "tags": [
+      "智谱AI",
+      "Scaling Law",
+      "训练稳定性",
+      "大模型",
+      "预训练"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -223,7 +497,14 @@
     "url": "https://www.qbitai.com/2026/05/412696.html",
     "date": "2026-05-02",
     "category": "llm",
-    "tags": ["华为", "中科大", "灵境造物", "国产AI", "多模态", "昇腾"],
+    "tags": [
+      "华为",
+      "中科大",
+      "灵境造物",
+      "国产AI",
+      "多模态",
+      "昇腾"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -235,7 +516,14 @@
     "url": "https://www.qbitai.com/2026/05/412447.html",
     "date": "2026-05-02",
     "category": "industry",
-    "tags": ["马斯克", "OpenAI", "诉讼", "知识产权", "模型蒸馏", "AI法律"],
+    "tags": [
+      "马斯克",
+      "OpenAI",
+      "诉讼",
+      "知识产权",
+      "模型蒸馏",
+      "AI法律"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -247,7 +535,14 @@
     "url": "https://github.com/huggingface/transformers/releases/tag/v5.7.0",
     "date": "2026-05-02",
     "category": "infra",
-    "tags": ["HuggingFace", "Transformers", "开源", "Laguna", "DEIMv2", "Flash Attention"],
+    "tags": [
+      "HuggingFace",
+      "Transformers",
+      "开源",
+      "Laguna",
+      "DEIMv2",
+      "Flash Attention"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -259,7 +554,14 @@
     "url": "https://huggingface.co/blog/NeuML/biomedbert-small",
     "date": "2026-05-02",
     "category": "llm",
-    "tags": ["医疗AI", "BiomedBERT", "小模型", "BERT", "医疗NLP", "本地部署"],
+    "tags": [
+      "医疗AI",
+      "BiomedBERT",
+      "小模型",
+      "BERT",
+      "医疗NLP",
+      "本地部署"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -271,7 +573,14 @@
     "url": "https://huggingface.co/blog/ariG23498/pallas-for-beginners",
     "date": "2026-05-02",
     "category": "infra",
-    "tags": ["JAX", "Pallas", "GPU内核", "自定义算子", "HuggingFace", "TPU"],
+    "tags": [
+      "JAX",
+      "Pallas",
+      "GPU内核",
+      "自定义算子",
+      "HuggingFace",
+      "TPU"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -283,7 +592,13 @@
     "url": "https://www.qbitai.com/2026/05/412577.html",
     "date": "2026-05-01",
     "category": "agent",
-    "tags": ["具身智能", "仿真框架", "机器人", "开源", "Sim-to-Real"],
+    "tags": [
+      "具身智能",
+      "仿真框架",
+      "机器人",
+      "开源",
+      "Sim-to-Real"
+    ],
     "hot": true,
     "region": "china"
   },
@@ -295,7 +610,14 @@
     "url": "https://huggingface.co/blog/axolotl-ai-co/finetuning-ternary-llms-tii-axolotl",
     "date": "2026-05-01",
     "category": "llm",
-    "tags": ["HuggingFace", "Axolotl", "量化", "三值化", "微调", "TII"],
+    "tags": [
+      "HuggingFace",
+      "Axolotl",
+      "量化",
+      "三值化",
+      "微调",
+      "TII"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -307,7 +629,13 @@
     "url": "https://huggingface.co/blog/Navid-AI/mcp-era-feels-like-deja-vu",
     "date": "2026-04-30",
     "category": "agent",
-    "tags": ["MCP", "Agent", "工具协议", "HuggingFace", "AI基础设施"],
+    "tags": [
+      "MCP",
+      "Agent",
+      "工具协议",
+      "HuggingFace",
+      "AI基础设施"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -319,7 +647,13 @@
     "url": "https://www.qbitai.com/2026/04/412018.html",
     "date": "2026-04-29",
     "category": "industry",
-    "tags": ["Stripe", "支付", "AI基础设施", "商业化", "AI Agent"],
+    "tags": [
+      "Stripe",
+      "支付",
+      "AI基础设施",
+      "商业化",
+      "AI Agent"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -331,7 +665,13 @@
     "url": "https://www.qbitai.com/2026/04/412015.html",
     "date": "2026-04-29",
     "category": "industry",
-    "tags": ["商汤科技", "AI拐点", "人机协作", "企业AI", "大模型"],
+    "tags": [
+      "商汤科技",
+      "AI拐点",
+      "人机协作",
+      "企业AI",
+      "大模型"
+    ],
     "hot": false,
     "region": "china"
   },
@@ -343,7 +683,13 @@
     "url": "https://deepmind.google/blog/announcing-our-partnership-with-the-republic-of-korea/",
     "date": "2026-04-30",
     "category": "industry",
-    "tags": ["Google DeepMind", "韩国", "主权AI", "政府合作", "国家战略"],
+    "tags": [
+      "Google DeepMind",
+      "韩国",
+      "主权AI",
+      "政府合作",
+      "国家战略"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -355,7 +701,13 @@
     "url": "https://deepmind.google/blog/partnering-with-industry-leaders-to-accelerate-ai-transformation/",
     "date": "2026-04-29",
     "category": "industry",
-    "tags": ["Google DeepMind", "企业AI", "行业合作", "AI转型", "B2B"],
+    "tags": [
+      "Google DeepMind",
+      "企业AI",
+      "行业合作",
+      "AI转型",
+      "B2B"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -367,7 +719,13 @@
     "url": "https://blogs.nvidia.com/blog/what-openclaw-agents-mean-for-every-organization/",
     "date": "2026-05-01",
     "category": "agent",
-    "tags": ["NVIDIA", "AI Agent", "OpenClaw", "企业AI", "多代理"],
+    "tags": [
+      "NVIDIA",
+      "AI Agent",
+      "OpenClaw",
+      "企业AI",
+      "多代理"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -379,7 +737,12 @@
     "url": "https://anthropic.com/news/claude-for-creative-work",
     "date": "2026-05-01",
     "category": "llm",
-    "tags": ["Anthropic", "Claude", "创意写作", "AI能力"],
+    "tags": [
+      "Anthropic",
+      "Claude",
+      "创意写作",
+      "AI能力"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -391,7 +754,13 @@
     "url": "https://deepmind.google/blog/gemini-robotics-er-1-6/",
     "date": "2026-05-01",
     "category": "llm",
-    "tags": ["Google", "Gemini", "机器人", "具身智能", "VLA"],
+    "tags": [
+      "Google",
+      "Gemini",
+      "机器人",
+      "具身智能",
+      "VLA"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -403,7 +772,12 @@
     "url": "https://huggingface.co/blog/evaleval/eval-costs-bottleneck",
     "date": "2026-05-01",
     "category": "llm",
-    "tags": ["HuggingFace", "AI评测", "evals", "基础设施"],
+    "tags": [
+      "HuggingFace",
+      "AI评测",
+      "evals",
+      "基础设施"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -415,7 +789,12 @@
     "url": "https://huggingface.co/blog/inference-providers-deepinfra",
     "date": "2026-05-01",
     "category": "infra",
-    "tags": ["HuggingFace", "DeepInfra", "推理服务", "开源生态"],
+    "tags": [
+      "HuggingFace",
+      "DeepInfra",
+      "推理服务",
+      "开源生态"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -427,7 +806,14 @@
     "url": "https://github.com/vllm-project/vllm/releases/tag/v0.20.0",
     "date": "2026-04-27",
     "category": "infra",
-    "tags": ["vLLM", "推理引擎", "DeepSeek V4", "FlashAttention", "KV Cache", "开源"],
+    "tags": [
+      "vLLM",
+      "推理引擎",
+      "DeepSeek V4",
+      "FlashAttention",
+      "KV Cache",
+      "开源"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -439,7 +825,13 @@
     "url": "https://github.com/huggingface/transformers/releases/tag/v5.7.0",
     "date": "2026-04-28",
     "category": "infra",
-    "tags": ["HuggingFace", "Transformers", "MoE", "开源", "推理优化"],
+    "tags": [
+      "HuggingFace",
+      "Transformers",
+      "MoE",
+      "开源",
+      "推理优化"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -451,7 +843,14 @@
     "url": "https://github.com/sgl-project/sglang/releases/tag/v0.5.10",
     "date": "2026-04-06",
     "category": "infra",
-    "tags": ["SGLang", "推理引擎", "MoE", "CUDA", "FlashInfer", "开源"],
+    "tags": [
+      "SGLang",
+      "推理引擎",
+      "MoE",
+      "CUDA",
+      "FlashInfer",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -463,7 +862,13 @@
     "url": "https://pytorch.org/blog/pytorch-2-11-release/",
     "date": "2026-03-23",
     "category": "infra",
-    "tags": ["PyTorch", "深度学习框架", "FlashAttention", "分布式训练", "开源"],
+    "tags": [
+      "PyTorch",
+      "深度学习框架",
+      "FlashAttention",
+      "分布式训练",
+      "开源"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -475,7 +880,13 @@
     "url": "https://deepmind.google/blog/gemini-robotics-er-1-6/",
     "date": "2026-04-14",
     "category": "agent",
-    "tags": ["Google DeepMind", "Gemini Robotics", "具身智能", "VLA", "波士顿动力"],
+    "tags": [
+      "Google DeepMind",
+      "Gemini Robotics",
+      "具身智能",
+      "VLA",
+      "波士顿动力"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -487,7 +898,13 @@
     "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-tts",
     "date": "2026-04-15",
     "category": "llm",
-    "tags": ["Google", "Gemini TTS", "语音合成", "SynthID", "多语言"],
+    "tags": [
+      "Google",
+      "Gemini TTS",
+      "语音合成",
+      "SynthID",
+      "多语言"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -499,7 +916,13 @@
     "url": "https://www.anthropic.com/news/anthropic-nec",
     "date": "2026-04-24",
     "category": "agent",
-    "tags": ["Anthropic", "NEC", "日本市场", "企业AI", "Claude Code"],
+    "tags": [
+      "Anthropic",
+      "NEC",
+      "日本市场",
+      "企业AI",
+      "Claude Code"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -511,7 +934,13 @@
     "url": "https://github.com/apache/airflow/releases/tag/3.2.1",
     "date": "2026-04-22",
     "category": "infra",
-    "tags": ["Apache Airflow", "数据编排", "开源", "Helm", "权限管理"],
+    "tags": [
+      "Apache Airflow",
+      "数据编排",
+      "开源",
+      "Helm",
+      "权限管理"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -523,7 +952,14 @@
     "url": "https://github.com/koordinator-sh/koordinator/releases/tag/v1.8.0",
     "date": "2026-04-16",
     "category": "infra",
-    "tags": ["Koordinator", "Kubernetes", "GPU调度", "AI Infra", "国产GPU", "阿里"],
+    "tags": [
+      "Koordinator",
+      "Kubernetes",
+      "GPU调度",
+      "AI Infra",
+      "国产GPU",
+      "阿里"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -535,7 +971,13 @@
     "url": "https://github.com/unitycatalog/unitycatalog/releases/tag/v0.4.1",
     "date": "2026-04-16",
     "category": "infra",
-    "tags": ["Unity Catalog", "数据治理", "安全修复", "CVE", "Databricks"],
+    "tags": [
+      "Unity Catalog",
+      "数据治理",
+      "安全修复",
+      "CVE",
+      "Databricks"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -547,7 +989,13 @@
     "url": "https://blogs.nvidia.com/blog/nemotron-3-nano-omni-multimodal-ai-agents/",
     "date": "2026-04-28",
     "category": "llm",
-    "tags": ["NVIDIA", "Nemotron", "多模态", "MoE", "Agent"],
+    "tags": [
+      "NVIDIA",
+      "Nemotron",
+      "多模态",
+      "MoE",
+      "Agent"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -559,7 +1007,13 @@
     "url": "https://huggingface.co/blog/ibm-granite/granite-4-1",
     "date": "2026-04-29",
     "category": "llm",
-    "tags": ["IBM", "Granite", "企业大模型", "开源", "512K上下文"],
+    "tags": [
+      "IBM",
+      "Granite",
+      "企业大模型",
+      "开源",
+      "512K上下文"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -571,7 +1025,13 @@
     "url": "https://github.com/Project-HAMi/HAMi/releases/tag/v2.8.2",
     "date": "2026-04-28",
     "category": "infra",
-    "tags": ["HAMi", "GPU虚拟化", "Kubernetes", "vLLM", "开源"],
+    "tags": [
+      "HAMi",
+      "GPU虚拟化",
+      "Kubernetes",
+      "vLLM",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
@@ -583,7 +1043,13 @@
     "url": "https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/",
     "date": "2026-04-27",
     "category": "agent",
-    "tags": ["GitHub Copilot", "按量计费", "AI Credits", "微软", "AI编程"],
+    "tags": [
+      "GitHub Copilot",
+      "按量计费",
+      "AI Credits",
+      "微软",
+      "AI编程"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -595,7 +1061,13 @@
     "url": "https://github.blog/security/securing-the-git-push-pipeline-responding-to-a-critical-remote-code-execution-vulnerability/",
     "date": "2026-04-28",
     "category": "infra",
-    "tags": ["GitHub", "安全漏洞", "RCE", "供应链安全", "DevSecOps"],
+    "tags": [
+      "GitHub",
+      "安全漏洞",
+      "RCE",
+      "供应链安全",
+      "DevSecOps"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -607,7 +1079,14 @@
     "url": "https://www.anthropic.com/news/claude-for-creative-work",
     "date": "2026-04-28",
     "category": "agent",
-    "tags": ["Anthropic", "Claude", "创意AI", "Adobe", "Blender", "工作流自动化"],
+    "tags": [
+      "Anthropic",
+      "Claude",
+      "创意AI",
+      "Adobe",
+      "Blender",
+      "工作流自动化"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -619,7 +1098,14 @@
     "url": "https://www.anthropic.com/news/anthropic-amazon-compute",
     "date": "2026-04-20",
     "category": "infra",
-    "tags": ["Anthropic", "亚马逊", "AWS", "算力", "Trainium", "云计算"],
+    "tags": [
+      "Anthropic",
+      "亚马逊",
+      "AWS",
+      "算力",
+      "Trainium",
+      "云计算"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -631,7 +1117,13 @@
     "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/",
     "date": "2026-04-02",
     "category": "llm",
-    "tags": ["Google", "Gemma 4", "开源模型", "多模态", "MoE"],
+    "tags": [
+      "Google",
+      "Gemma 4",
+      "开源模型",
+      "多模态",
+      "MoE"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -643,7 +1135,13 @@
     "url": "https://deepmind.google/blog/ai-co-clinician/",
     "date": "2026-04-30",
     "category": "agent",
-    "tags": ["Google DeepMind", "AI医疗", "协诊系统", "多模态", "医疗AI"],
+    "tags": [
+      "Google DeepMind",
+      "AI医疗",
+      "协诊系统",
+      "多模态",
+      "医疗AI"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -655,7 +1153,13 @@
     "url": "https://deepmind.google/blog/decoupled-diloco/",
     "date": "2026-04-23",
     "category": "infra",
-    "tags": ["Google DeepMind", "分布式训练", "DiLoCo", "AI Infra", "跨数据中心"],
+    "tags": [
+      "Google DeepMind",
+      "分布式训练",
+      "DiLoCo",
+      "AI Infra",
+      "跨数据中心"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -667,7 +1171,13 @@
     "url": "https://ai.meta.com/blog/introducing-muse-spark-msl/",
     "date": "2026-04-08",
     "category": "llm",
-    "tags": ["Meta", "Muse Spark", "多模态推理", "Agent", "超级智能"],
+    "tags": [
+      "Meta",
+      "Muse Spark",
+      "多模态推理",
+      "Agent",
+      "超级智能"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -679,7 +1189,13 @@
     "url": "https://ai.meta.com/blog/meta-mtia-scale-ai-chips-for-billions/",
     "date": "2026-03-11",
     "category": "infra",
-    "tags": ["Meta", "MTIA", "AI芯片", "自研芯片", "推理加速"],
+    "tags": [
+      "Meta",
+      "MTIA",
+      "AI芯片",
+      "自研芯片",
+      "推理加速"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -691,7 +1207,13 @@
     "url": "https://github.com/kubernetes-sigs/kueue/releases/tag/v0.17.2",
     "date": "2026-04-30",
     "category": "infra",
-    "tags": ["Kueue", "Kubernetes", "AI调度", "队列管理", "云原生"],
+    "tags": [
+      "Kueue",
+      "Kubernetes",
+      "AI调度",
+      "队列管理",
+      "云原生"
+    ],
     "hot": true,
     "region": "global"
   },
@@ -703,7 +1225,13 @@
     "url": "https://github.com/mlflow/mlflow/releases/tag/v3.12.0rc0",
     "date": "2026-04-28",
     "category": "infra",
-    "tags": ["MLflow", "AI编码助手", "Tracing", "可观测性", "开源"],
+    "tags": [
+      "MLflow",
+      "AI编码助手",
+      "Tracing",
+      "可观测性",
+      "开源"
+    ],
     "hot": false,
     "region": "global"
   },
