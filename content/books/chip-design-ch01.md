@@ -38,38 +38,203 @@ type: "book"
 
 ## 1.2 原子与能带理论
 
-### 硅原子结构
+能带理论回答的核心问题是：**为什么同样都是固体，铜能导电而玻璃不能？硅为什么"可调控"？**  
+答案来自量子力学——但不需要解薛定谔方程，只需要理解三个递进的物理事实。
 
-硅（Silicon，Si）是第 14 号元素，外层有 **4 个价电子**。每个硅原子与周围 4 个硅原子共享价电子，形成正四面体共价键结构——这就是**硅晶体**（单晶硅）。
+---
+
+### 事实一：单个原子里，电子只能待在特定的能级
+
+氢原子最简单，只有 1 个质子和 1 个电子。玻尔模型（1913年）告诉我们：这个电子**不能**随意地待在任意距离上——它只能待在一系列分立的轨道上，每个轨道对应一个**固定的能量值**（能级）：
+
+$$E_n = -\frac{13.6 \text{ eV}}{n^2}, \quad n = 1, 2, 3, \ldots$$
+
+- $n=1$（基态）：$E_1 = -13.6$ eV（束缚最紧）
+- $n=2$：$E_2 = -3.4$ eV
+- $n=3$：$E_3 = -1.5$ eV
+
+**eV 是什么**：电子伏特（electron-Volt），1 eV = 一个电子被 1V 电压加速后获得的动能 = $1.6 \times 10^{-19}$ J。它非常小，但和单个电子、单个化学键的尺度完全匹配，所以半导体物理全用它。
+
+能级是分立的（不连续的），这是量子力学的核心结论。电子想从低能级跳到高能级，必须吸收**精确等于**能级差的光子能量；反过来跳就释放光子。这就是为什么每种原子都有独特的发射光谱（钠灯发黄光、氖灯发红光……）。
 
 ```
-硅晶体中每个 Si 原子的键合：
+单原子能级示意：
 
-        Si
-       /|\
-      / | \
-     Si-Si-Si
-      \ | /
-       \|/
-        Si
-
-4 个共价键，每个键 2 个电子（共享），共 8 个电子满足外层
+    n=3  ─────────────  -1.5 eV    ← 电子可以在这里
+    n=2  ─────────────  -3.4 eV    ← 或者在这里
+    n=1  ─────────────  -13.6 eV   ← 或者在这里（最稳定）
+         （中间的能量完全不允许）
 ```
 
-### 导体 / 绝缘体 / 半导体的区别
+---
 
-量子力学给出了答案：**能带理论**。
+### 事实二：N 个原子靠近时，每个能级"劈裂"成 N 个
 
-| 材料类型 | 导带与价带间隙（带隙 Eg） | 导电性 | 例子 |
-|---------|----------------------|--------|------|
-| 导体 | 0（导带与价带重叠） | 极强 | 铜、铝、金 |
-| 半导体 | 约 1~2 eV | 可调控 | 硅(1.12eV)、锗(0.67eV)、GaAs(1.42eV) |
-| 绝缘体 | > 4 eV | 极弱 | 二氧化硅(~9eV)、玻璃 |
+现在把 2 个氢原子靠近。两个原子的电子会互相感受到对方，原来完全相同的 $n=1$ 能级就**分裂成 2 个**略微不同的能级（一个稍高，一个稍低）。
 
-**硅之所以适合做芯片**，正是因为它的带隙（1.12 eV）：
-- 不像导体，可以被"关断"
-- 不像绝缘体，可以被掺杂或电场激活导通
-- 带隙接近室温热激发（kT ≈ 0.026eV），可以通过电压精确控制
+把 10 个原子靠近，$n=1$ 能级分裂成 10 个。  
+把 $10^{23}$ 个原子（一块固体）靠近，$n=1$ 能级就分裂成 $10^{23}$ 个——**密度如此之高，以至于看起来像一条连续的"带"**。
+
+这就是**能带**（Energy Band）的来源。
+
+<div style="margin:16px 0;padding:12px 12px 8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;">
+<p style="font-size:11px;font-weight:600;color:#0c4a6e;margin:0 0 8px;">📐 从单原子能级到晶体能带的演化</p>
+<svg viewBox="0 0 500 200" style="width:100%;max-width:540px;display:block;margin:0 auto;font-family:sans-serif;">
+  <rect width="500" height="200" fill="#f0f9ff" rx="8"/>
+  <!-- Stage 1: single atom -->
+  <text x="60" y="18" text-anchor="middle" font-size="9.5" fill="#0c4a6e" font-weight="bold">1 个原子</text>
+  <line x1="30" y1="50" x2="90" y2="50" stroke="#1d4ed8" stroke-width="2"/>
+  <line x1="30" y1="95" x2="90" y2="95" stroke="#1d4ed8" stroke-width="2"/>
+  <line x1="30" y1="150" x2="90" y2="150" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="95" y="54" font-size="8" fill="#1d4ed8">n=3</text>
+  <text x="95" y="99" font-size="8" fill="#1d4ed8">n=2</text>
+  <text x="95" y="154" font-size="8" fill="#1d4ed8">n=1</text>
+  <!-- Stage 2: 2 atoms -->
+  <text x="210" y="18" text-anchor="middle" font-size="9.5" fill="#0c4a6e" font-weight="bold">2 个原子靠近</text>
+  <line x1="165" y1="44" x2="255" y2="44" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="165" y1="56" x2="255" y2="56" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="165" y1="88" x2="255" y2="88" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="165" y1="102" x2="255" y2="102" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="165" y1="143" x2="255" y2="143" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="165" y1="157" x2="255" y2="157" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="210" y="34" text-anchor="middle" font-size="8" fill="#6b7280">每个能级 → 2 条</text>
+  <!-- Stage 3: crystal band -->
+  <text x="400" y="18" text-anchor="middle" font-size="9.5" fill="#0c4a6e" font-weight="bold">10²³ 个原子（晶体）</text>
+  <rect x="320" y="38" width="160" height="22" fill="#a5f3fc" stroke="#0891b2" stroke-width="1.5" rx="2"/>
+  <text x="400" y="53" text-anchor="middle" font-size="8.5" fill="#0e7490">导带（Conduction Band）</text>
+  <!-- Band gap -->
+  <rect x="320" y="74" width="160" height="40" fill="#fee2e2" stroke="#dc2626" stroke-width="1" rx="2" stroke-dasharray="4,2"/>
+  <text x="400" y="90" text-anchor="middle" font-size="8.5" fill="#dc2626" font-weight="bold">禁带 Eg（Band Gap）</text>
+  <text x="400" y="104" text-anchor="middle" font-size="8" fill="#dc2626">← 电子不能在此存在 →</text>
+  <rect x="320" y="128" width="160" height="22" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5" rx="2"/>
+  <text x="400" y="143" text-anchor="middle" font-size="8.5" fill="#166534">价带（Valence Band）</text>
+  <!-- arrows -->
+  <line x1="120" y1="100" x2="155" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <line x1="270" y1="100" x2="308" y2="100" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <defs>
+    <marker id="arr2" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 z" fill="#6b7280"/>
+    </marker>
+  </defs>
+  <text x="136" y="94" font-size="7.5" fill="#6b7280">靠近</text>
+  <text x="278" y="94" font-size="7.5" fill="#6b7280">堆叠</text>
+  <!-- Eg label -->
+  <line x1="490" y1="60" x2="490" y2="74" stroke="#dc2626" stroke-width="1"/>
+  <line x1="490" y1="114" x2="490" y2="128" stroke="#dc2626" stroke-width="1"/>
+  <text x="494" y="98" font-size="8" fill="#dc2626">Eg</text>
+  <!-- bottom label -->
+  <text x="400" y="178" text-anchor="middle" font-size="8" fill="#6b7280">n=2 → 价带；n=3 → 导带；中间 = 禁带</text>
+</svg>
+</div>
+
+关键点：**相邻两个能带之间的空隙**（禁带）就是 $E_g$，电子**不能**在这里存在——不是电子不想来，是量子力学不允许这些能量状态存在。
+
+---
+
+### 事实三：导电性取决于价带有没有"空位"
+
+电子要在电场下流动，必须能响应电场加速——即必须能**跳到相邻的略高能量状态**。
+
+但如果一个能带**完全被电子填满了**，就没有相邻的空位可跳——电子被困住了，无法导电。
+
+这就区分出了三类材料：
+
+<div style="margin:16px 0;padding:12px 12px 8px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:12px;">
+<p style="font-size:11px;font-weight:600;color:#6d28d9;margin:0 0 8px;">📐 导体 / 半导体 / 绝缘体的能带结构对比</p>
+<svg viewBox="0 0 500 210" style="width:100%;max-width:540px;display:block;margin:0 auto;font-family:sans-serif;">
+  <rect width="500" height="210" fill="#faf5ff" rx="8"/>
+  <!-- Conductor -->
+  <text x="80" y="16" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">导体（铜）</text>
+  <rect x="20" y="60" width="120" height="40" fill="#fbbf24" rx="2"/>
+  <rect x="20" y="100" width="120" height="40" fill="#fbbf24" rx="2"/>
+  <text x="80" y="85" text-anchor="middle" font-size="8.5" fill="#78350f">导带（半满）</text>
+  <text x="80" y="125" text-anchor="middle" font-size="8.5" fill="#78350f">价带（满）</text>
+  <text x="80" y="155" text-anchor="middle" font-size="8" fill="#059669">两带重叠，无禁带</text>
+  <text x="80" y="168" text-anchor="middle" font-size="8" fill="#059669">导带未满 → 电子自由移动</text>
+  <!-- gap = 0 annotation -->
+  <text x="148" y="102" font-size="9" fill="#059669">Eg = 0</text>
+  <!-- Semiconductor -->
+  <text x="260" y="16" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">半导体（硅）</text>
+  <rect x="200" y="50" width="120" height="34" fill="#bfdbfe" rx="2"/>
+  <rect x="200" y="50" width="120" height="34" fill="none" stroke="#3b82f6" stroke-width="1.5" rx="2"/>
+  <text x="260" y="72" text-anchor="middle" font-size="8.5" fill="#1e40af">导带（空/极少量电子）</text>
+  <!-- band gap -->
+  <rect x="200" y="88" width="120" height="28" fill="#fee2e2" rx="2" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="260" y="104" text-anchor="middle" font-size="8.5" fill="#dc2626">禁带 Eg ≈ 1.12 eV</text>
+  <rect x="200" y="120" width="120" height="34" fill="#bbf7d0" rx="2"/>
+  <text x="260" y="141" text-anchor="middle" font-size="8.5" fill="#166534">价带（满，但近可跨越）</text>
+  <text x="260" y="168" text-anchor="middle" font-size="8" fill="#7c3aed">室温热激发/掺杂可跨禁带</text>
+  <!-- Insulator -->
+  <text x="430" y="16" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">绝缘体（SiO₂）</text>
+  <rect x="370" y="40" width="120" height="28" fill="#bfdbfe" rx="2"/>
+  <text x="430" y="58" text-anchor="middle" font-size="8.5" fill="#1e40af">导带（空）</text>
+  <!-- large gap -->
+  <rect x="370" y="72" width="120" height="60" fill="#fecaca" rx="2" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="430" y="97" text-anchor="middle" font-size="8.5" fill="#dc2626" font-weight="bold">禁带 Eg ≈ 9 eV</text>
+  <text x="430" y="110" text-anchor="middle" font-size="8" fill="#dc2626">极宽，无法跨越</text>
+  <rect x="370" y="136" width="120" height="28" fill="#bbf7d0" rx="2"/>
+  <text x="430" y="154" text-anchor="middle" font-size="8.5" fill="#166534">价带（满）</text>
+  <text x="430" y="176" text-anchor="middle" font-size="8" fill="#9ca3af">室温热能不足以跨越</text>
+  <text x="430" y="188" text-anchor="middle" font-size="8" fill="#9ca3af">（需要约 346× 室温能量）</text>
+  <!-- Eg labels -->
+  <text x="330" y="108" font-size="9" fill="#dc2626">Eg=1.12</text>
+  <text x="498" y="105" font-size="9" fill="#dc2626">Eg≈9</text>
+</svg>
+</div>
+
+---
+
+### 那 1.12 eV 这个数字是怎么来的？
+
+它不是人为定义的，而是由**硅原子中电子的量子态**决定的——具体来说，是硅晶体周期势场中薛定谔方程的解（Bloch 波函数）给出的能带结构。不需要深入这个数学，但可以理解其物理含义：
+
+**带隙的本质**：晶格的周期性势场会在特定的电子动量处产生"布拉格反射"（Bragg reflection），就像 X 射线被晶体衍射一样。这个反射在 $k$ 空间的边界处打开了禁带——这是量子力学和晶体周期性共同决定的，不可调节。
+
+不同材料的带隙数值由以下因素决定：
+
+| 因素 | 影响 |
+|------|------|
+| 原子间距（晶格常数） | 距离越小，电子波函数重叠越多，带宽越宽，禁带宽度随之变化 |
+| 原子序数（核电荷数） | 核的束缚力越强，价电子越难激发，带隙越大 |
+| 键合类型 | 共价键（Si/Ge）带隙比离子键（NaCl）小 |
+
+**硅 1.12 eV vs 锗 0.67 eV** 的原因：锗原子序数更大（32 vs 14），核外电子更多，但最外层价电子被核的屏蔽效应使得束缚反而弱一些，带隙更小；加上锗的晶格常数更大（0.566 nm vs 0.543 nm），电子波函数重叠方式不同。
+
+**SiO₂ 为什么是 9 eV**：SiO₂ 是离子键+共价键混合，氧原子强烈抓住电子（电负性很高），价带里的电子被束缚极深，跨越到导带需要极大的能量。这也是为什么 SiO₂ 是极好的绝缘体——直接作为 MOSFET 的栅氧化层。
+
+---
+
+### 室温热能 kT = 0.026 eV：这个数字为什么重要？
+
+室温（300K）下，一个粒子的平均热运动动能约为 $kT$：
+
+$$kT = 1.38 \times 10^{-23} \times 300 = 4.14 \times 10^{-21} \text{ J} = 0.0259 \text{ eV} \approx 26 \text{ mV}$$
+
+用它和各种带隙比较，立刻就能判断一种材料在室温下的导电性：
+
+| 材料 | Eg | Eg / kT | 室温行为 |
+|------|----|---------|---------| 
+| 铜 | 0 eV | 0 | 大量自由电子，良导体 |
+| 锗 | 0.67 eV | **26×** | 热激发可越过，半导体（但漏电较大） |
+| 硅 | 1.12 eV | **43×** | 热激发偶尔可越过，本征载流子极少，可掺杂控制 |
+| GaAs | 1.42 eV | 55× | 比硅更宽，高频器件好选择 |
+| SiO₂ | 9 eV | **346×** | 室温热能差 346 倍，完全不导电，绝缘层 |
+
+**纯净硅本征载流子浓度 $n_i = 1.5 \times 10^{10}$ cm⁻³** 的来源就在这里：
+
+$$n_i \propto T^{3/2} \cdot e^{-E_g / 2kT} = e^{-1.12 / (2 \times 0.026)} = e^{-21.5} \approx 5 \times 10^{-10}$$
+
+（乘上状态密度常数后得到 $1.5 \times 10^{10}$ cm⁻³）
+
+这个数字极小——纯硅里每立方厘米只有 1500 万个自由电子，而硅原子密度是 $5 \times 10^{22}$ cm⁻³，也就是说**只有约 3 亿分之一的电子能跑出来**——这就是为什么纯净硅几乎不导电，但掺入 $10^{16}$ cm⁻³ 的磷之后，自由电子浓度增加了 **100 万倍**，导电性剧变。
+
+---
+
+### 小结：能带理论三句话
+
+1. **单原子能级 → 晶体能带**：$10^{23}$ 个原子的离散能级密集堆叠成连续的带，带与带之间留有禁带。
+2. **禁带宽度 $E_g$ 由原子结构和晶体周期势场决定**，不同材料数值固定，eV 是它的自然单位。
+3. **导电性取决于价带是否有空位，以及 $E_g$ 与 $kT$ 的比值**：$E_g \ll kT$ → 导体；$E_g \gg kT$ → 绝缘体；$E_g \sim 40kT$ → 半导体（可被掺杂或电场精确控制）。
 
 ---
 
