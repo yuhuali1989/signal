@@ -107,6 +107,57 @@ const REGIONS = [
 
 const NEWS_DATA = [
   // ══════════════════════════════════════════════════════
+  // 2026-05-04（第47轮更新 — 中国AI调用量再超美国/微软MAI三模型自研/Anthropic内省适配器/谷歌I/O前瞻/Token涨价逆转）
+  // ══════════════════════════════════════════════════════
+  {
+    id: 2805,
+    category: 'market',
+    region: 'china',
+    title: '腾讯 Hy3 preview 周调用量冠全球，中国大模型调用量再超美国达 7.9 万亿 Token',
+    summary: '据 OpenRouter 数据，上周中国 AI 大模型周调用量 7.942 万亿 Token（环比+81.7%），时隔两周再超美国（3.258 万亿）。腾讯 Hy3 preview 以 3.03 万亿 Token 夺全球榜首（+799%），Kimi K2.6 第二，DeepSeek-V4-Flash 首次上榜第九（+344%）。国产模型集体爆发信号强烈。',
+    source: '每日经济新闻',
+    date: '2026-05-04',
+    tags: ['腾讯', 'Hy3', 'DeepSeek', '调用量', '国产AI'],
+    hot: true,
+    link: 'https://m.nbd.com.cn/articles/2026-05-04/4378407.html',
+  },
+  {
+    id: 2806,
+    category: 'software',
+    region: 'global',
+    title: '微软发布 MAI 三款自研模型（语音/图像/转写）：算力减半对标 OpenAI，正式入局底层模型竞争',
+    summary: '微软推出 MAI-Transcribe-1、MAI-Voice-1 和 MAI-Image-2，完成从「AI 应用公司」向「基础模型研发者」的战略转型。语音转写在 25 种语言超越 Whisper-large-v3，图像生成 Arena.ai 排名前三，均需行业标准一半算力。三款模型通过 Microsoft Foundry 开放，已集成 Teams、Copilot 和 Bing。',
+    source: 'DoNews / 中关村在线',
+    date: '2026-05-04',
+    tags: ['微软', 'MAI', '自研模型', 'Foundry', 'OpenAI竞争'],
+    hot: true,
+    link: 'https://www.donews.com/news/detail/4/6496723.html',
+  },
+  {
+    id: 2807,
+    category: 'market',
+    region: 'china',
+    title: 'Token 集体涨价逆转：中国 AI 日调用量 140 万亿 Token 推高成本，供需错配主导定价权',
+    summary: '中国 AI 日均 Token 调用量从 2024 年初 1000 亿暴增至 2026 年 3 月的 140 万亿（1400 倍），推理需求爆发叠加 GPU 供需错配，各厂商从价格战转向集体涨价。蚂蚁 Ling-2.6-flash（$0.1/百万 token）是极少数坚守低价的异类，专家预测 3-5 年内随算力扩张价格将重新下降，但当前商业模式设计须重估 Token 成本。',
+    source: '未来科技导报',
+    date: '2026-05-04',
+    tags: ['Token定价', 'AI成本', '供需', '商业模式'],
+    hot: false,
+    link: 'https://www.bhwang.cn/youjun/74543716144398.html',
+  },
+  {
+    id: 2808,
+    category: 'cloud',
+    region: 'global',
+    title: '谷歌 I/O 2026（5月19日）前瞻：Gemini 3、Android 17、Aluminum OS 与 XR 眼镜齐发',
+    summary: '谷歌 I/O 2026 定于 5 月 19 日，核心看点：Gemini 新版本全系 AI 深度集成；Android XR 智能眼镜正式商品化（Gemini Live 实时翻译）；Android 17 + ChromeOS 统一平台 Aluminum OS 首秀。Alphabet 2026 年资本开支 1750-1850 亿美元，与微软、AWS 展开全球 AI 算力军备竞赛，大会将是其集中展示技术实力的最重要窗口。',
+    source: '搜狐科技',
+    date: '2026-05-04',
+    tags: ['谷歌', 'Google I/O', 'Gemini', 'Android XR', 'Aluminum OS'],
+    hot: true,
+    link: 'https://www.sohu.com/a/1015898223_114765',
+  },
+  // ══════════════════════════════════════════════════════
   // 2026-05-03（第46轮更新 — 蚂蚁Ling-2.6-1T万亿开源/DeepSeek多模态新模型/AIBrix v0.6发布/谷歌I/O前瞻/AI创投周报11亿种子轮）
   // ══════════════════════════════════════════════════════
   {

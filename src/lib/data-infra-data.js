@@ -94,7 +94,7 @@ export const K8S_DATA = {
   ],
   components: [
     { name: 'Kubernetes 1.36.0', role: '容器编排核心', desc: '统一管理所有计算资源，支持 GPU 拓扑感知调度；v1.36.0 DRA（Dynamic Resource Allocation）进入 GA，GPU 细粒度分片调度正式成熟', icon: '☸️', category: '核心' },
-    { name: 'Volcano 1.9', role: 'GPU 批调度器', desc: 'Gang Scheduling + Fair Share + 队列管理，训练任务不抢占', icon: '🌋', category: '调度' },
+    { name: 'Volcano 1.14.1', role: 'GPU 批调度器', desc: 'Gang Scheduling + Fair Share + 队列管理，训练任务不抢占；v1.14.1（2026-02-14）为当前最新稳定版', icon: '🌋', category: '调度' },
     { name: 'Istio 1.21', role: '服务网格', desc: 'mTLS 加密 + 流量管理 + 金丝雀发布 + 可观测性', icon: '🕸️', category: '网络' },
     { name: 'Argo CD', role: 'GitOps 部署', desc: 'Git 仓库即真相源，声明式部署，自动同步', icon: '🔄', category: '部署' },
     { name: 'Argo Workflows', role: 'DAG 编排', desc: 'K8s 原生工作流引擎，支持 DAG/Step/Loop', icon: '🔀', category: '编排' },
@@ -201,6 +201,7 @@ spec:
           { name: '多卡虚拟化', desc: '支持将 1 张物理 GPU 虚拟为多个 vGPU，每个容器独立申请显存和算力', icon: '🃏' },
           { name: '多厂商支持', desc: '支持 NVIDIA / AMD / 寒武纪 / 昇腾 / 海光 DCU 等异构 GPU', icon: '🌐' },
           { name: 'vLLM 多 GPU 兼容（v2.8.1+）', desc: '修复 vLLM > 0.18 在多 GPU 环境下无法正常启动的兼容性问题，推理框架适配持续完善', icon: '🤖' },
+          { name: 'Device Monitor 修复（v2.8.2）', desc: 'v2.8.2（2026-04-28）修复 v2.8.1 中 device-monitor 不正常工作的问题，GPU 用量实时上报恢复稳定', icon: '📊' },
         ],
         useCases: ['推理服务 GPU 共享（节省成本）', '开发环境 GPU 分时复用', '多租户 GPU 隔离', '国产 GPU 适配'],
         limitations: ['基于 LD_PRELOAD，对 CUDA 版本有依赖', '不适合极致性能训练场景', '显存隔离非硬件级（vs MIG）'],
@@ -261,7 +262,8 @@ data:
           { name: 'LocalQueue', desc: '命名空间级队列，映射到 ClusterQueue，实现多租户隔离', icon: '📬' },
           { name: 'Cohort', desc: '队列组，同 Cohort 内的队列可互相借用空闲资源', icon: '🤝' },
           { name: 'Preemption', desc: '支持 LowerPriority / BorrowWithinCohort 两种抢占策略', icon: '⚡' },
-          { name: '并发准入（v0.18 预览）', desc: 'Concurrent Admission 功能新增（v0.18.0-rc.0），MultiKueue 多集群调度特性晋升为 Stable，配额竞态修复', icon: '🔀' },
+          { name: '并发准入（v0.18 预览）', desc: 'Concurrent Admission 功能新增（v0.18.0-rc.0，2026-04-30），MultiKueue 多集群调度特性晋升为 Stable，配额竞态修复', icon: '🔀' },
+          { name: 'v0.17.2 补丁（2026-04-30）', desc: '修复 ClusterQueue 删除竞态、TAS nil pointer panic、Cohort 子树配额内存优化、VisibilityOnDemand 端点修正', icon: '🔧' },
         ],
         useCases: ['K8s 原生批处理（JobSet）', 'Ray on K8s（RayJob）', 'Kubeflow Training Operator', '多租户 GPU 配额管理'],
         limitations: ['Gang Scheduling 能力弱于 Volcano', '生态成熟度不如 Volcano', '不支持 MPI 作业'],
@@ -728,7 +730,7 @@ export const DATALAKE_DATA = {
           { engine: 'Trino', support: '✅ 部分 GA', version: 'Trino 460+（2025 Q4 落地）', note: 'DV 读取已 GA，Variant 类型 2026 H1 跟进' },
           { engine: 'DuckDB', support: '🚧 进行中', version: 'DuckDB 1.2+（2026 Q2）', note: 'Iceberg V3 读取支持中，Variant 对接 JSON 生态' },
           { engine: 'StarRocks', support: '✅ 部分 GA', version: 'StarRocks 3.4+（2026 Q1）', note: 'DV 读写已支持，Row Lineage 规划中' },
-          { engine: 'PyIceberg', support: '✅ 已 GA', version: 'PyIceberg 0.9（2025 Q4 发布）', note: 'Variant 读写、DV 支持已合并主干' },
+          { engine: 'PyIceberg', support: '✅ 已 GA', version: 'PyIceberg 0.11.1（2025-03-03）', note: 'V3 DV 读写、Variant 支持已合并主干，REST Catalog 兼容性持续完善' },
         ],
         upgradeNotes: [
           '从 V2 升级到 V3：next-row-id 初始化为 0，历史 Snapshot 不修改（_row_id 读为 null）',
@@ -1525,7 +1527,7 @@ export const DATALAKE_DATA = {
     overview: {
       title: 'Apache Iceberg 核心架构',
       desc: 'Iceberg 是 Netflix 开源的开放表格式，核心解决大规模分析场景下的 ACID 事务、Schema 演化、时间旅行和多引擎互操作问题。其设计哲学是"元数据即一切"——所有状态都通过不可变文件 + 原子指针切换来保证一致性。',
-      version: '1.x（当前主流）',
+      version: '1.10.1（当前最新稳定版，2024-12-22）',
       repoUrl: 'https://github.com/apache/iceberg',
       coreModules: [
         { name: 'Catalog', pkg: 'iceberg-core / iceberg-hive-metastore', color: '#00cec9', icon: '📚',
@@ -2009,12 +2011,12 @@ SparkActions.get(spark)
           ],
         },
         {
-          date: '2025-09-11',
+          date: '2024-12-22',
           version: 'Iceberg 1.10.1（当前最新稳定版）',
           color: '#00b894',
           highlights: [
             { name: 'DV 写入性能优化', desc: 'Puffin DV Blob 写入路径优化，Range GET 减少 30%，高频 Upsert 场景延迟降低' },
-            { name: 'PyIceberg 0.9 GA', desc: 'PyIceberg 0.9 全面支持 V3，DV 读写/Row Lineage/Variant 均可在 Python 中直接操作' },
+            { name: 'PyIceberg 最新版 0.11.1', desc: 'PyIceberg 0.11.1（2025-03-03）修复 REST Catalog HTTP 方法兼容问题、ADLS URI 主机名提取、Partition Statistics 字段别名，Python 原生 Iceberg 访问持续完善' },
             { name: 'Flink 2.0 兼容性修复', desc: '修复 Flink 2.0 connector 与 V3 DV 写入的兼容性问题，生产环境可稳定使用' },
           ],
         },
@@ -2235,7 +2237,7 @@ CREATE TABLE events (...) WITH (
 
     pyicebergApi: {
       title: 'PyIceberg API（Python 集成）',
-      desc: 'PyIceberg 是 Iceberg 的 Python 原生实现，支持直接从 Python 读写 Iceberg 表，无需 JVM，适合 ML 训练数据加载。',
+      desc: 'PyIceberg 是 Iceberg 的 Python 原生实现，支持直接从 Python 读写 Iceberg 表，无需 JVM，适合 ML 训练数据加载。当前最新稳定版为 PyIceberg 0.11.1（2025-03-03），支持 REST Catalog HTTP 方法兼容修复与 Partition Statistics 字段别名。',
       code: `# pip install pyiceberg[s3,hive]
 from pyiceberg.catalog import load_catalog
 from pyiceberg.expressions import GreaterThanOrEqual, And, EqualTo
@@ -2627,8 +2629,8 @@ export const PIPELINE_DATA = {
   airflowSource: {
     overview: {
       title: 'Apache Airflow 3.x 核心架构',
-      desc: 'Airflow 3.x 对架构进行了彻底重构：UI 与 API Server 完全分离（React SPA + FastAPI）、Worker 通过 Task Execution API 与 API Server 通信（不再直连 DB）、DAG Processor 完全独立、原生 DAG Versioning 与 Asset 驱动调度。3.2.1（2026-04-22）新增：/dags 端点细粒度权限控制、纯 CSS UI 主题自定义支持。',
-      version: '3.2.1（最新，2026-04-22）',
+      desc: 'Airflow 3.x 对架构进行了彻底重构：UI 与 API Server 完全分离（React SPA + FastAPI）、Worker 通过 Task Execution API 与 API Server 通信（不再直连 DB）、DAG Processor 完全独立、原生 DAG Versioning 与 Asset 驱动调度。3.2.1（2026-04-22）新增：/dags 端点细粒度权限控制（DAG 读权限不再授予数据访问）、纯 CSS UI 主题自定义支持（tokens 字段可选）、N+1 查询优化与心跳逻辑改进、SDK 正确读取 $AIRFLOW_CONFIG 环境变量、30+ Bug 修复（日志/DAG导入/DB引擎/Gantt渲染等）；Helm Chart 1.21.0（2026-04-24）同步发布，Worker 配置项重构（workers.celery.* / workers.kubernetes.*）。',
+      version: '3.2.1（最新，2026-04-22）· Helm Chart 1.21.0（2026-04-24）',
       repoUrl: 'https://github.com/apache/airflow',
       coreComponents: [
         { name: 'API Server', file: 'airflow/api_fastapi/app.py', color: '#6c5ce7', icon: '🔌',
@@ -2998,6 +3000,13 @@ export const MLOPS_DATA = {
   experimentPlatform: {
     tracking: {
       name: 'MLflow + W&B',
+      mlflowVersion: 'v3.11.1（稳定）· v3.12.0rc0（预发布，2026-04-28）',
+      mlflowV312Highlights: [
+        { name: 'AI 助手自动追踪', desc: 'TypeScript 插件支持 Claude Code / Codex / Qwen Code / Gemini CLI 自动 Tracing，无需手动插桩', icon: '🤖' },
+        { name: 'AI Gateway 护栏', desc: 'JudgeGuardrail 支持 LLM 调用前/后安全检查，结果持久化到 DB，Guard 审计全链路', icon: '🛡️' },
+        { name: '多模态 Trace 附件', desc: 'Trace 可附加图像/音频/文件，UI 支持展开查看（图片放大模态 + 音频播放器）', icon: '🖼️' },
+        { name: 'Diffusers 模型 Flavor', desc: 'mlflow.diffusers 新增 Flavor，支持扩散模型保存与服务，含 LoRA 适配器管理', icon: '🎨' },
+      ],
       features: [
         { name: '实验追踪', desc: '超参数 · Loss 曲线 · 指标对比 · 模型 Artifact', icon: '📈' },
         { name: '模型注册', desc: '版本管理 · Stage (Staging/Production) · 审批流', icon: '📦' },
@@ -3892,7 +3901,7 @@ export const COMPUTE_ENGINE_DATA = {
       name: 'Apache Spark',
       icon: '⚡',
       color: '#e25a1c',
-      version: '4.0.2（最新稳定）',
+      version: '4.1.1（最新稳定，2026-01-09）',
       tagline: '批处理 & 特征工程主力',
       scenarios: ['大规模 ETL（50TB/天原始数据清洗）', '多模态特征工程（BEV 特征批量计算）', 'SQL 分析（Iceberg 表查询）', '数据质量检测（Great Expectations 集成）'],
       strengths: ['生态最成熟，SQL/DataFrame/ML 统一 API', 'Iceberg/Delta Lake 原生支持', 'RAPIDS 加速（GPU Spark）', 'K8s 原生部署（Spark on K8s）'],
@@ -3905,10 +3914,10 @@ export const COMPUTE_ENGINE_DATA = {
       name: 'Ray',
       icon: '☀️',
       color: '#028cf3',
-      version: '2.55.1（最新）',
+      version: '2.55.1（最新，2026-04-22）',
       tagline: '分布式 ML 计算统一框架',
       scenarios: ['分布式模型训练（Ray Train + DeepSpeed）', '超参搜索（Ray Tune，数百并发实验）', '批量推理（Ray Serve，自动标注流水线）', '数据处理（Ray Data，与 Spark 互补）'],
-      strengths: ['Python 原生，ML 工程师友好', '训练/推理/数据处理统一框架', 'Actor 模型支持复杂有状态任务', 'KubeRay 原生 K8s 集成', 'DP Group 故障容忍（v2.55.1）：MoE 模型单 GPU 故障不导致全系统重启'],
+      strengths: ['Python 原生，ML 工程师友好', '训练/推理/数据处理统一框架', 'Actor 模型支持复杂有状态任务', 'KubeRay v1.6.1 原生 K8s 集成（2026-04-23，修复 RayService Suspend + Volcano PodGroup 保护）', 'DP Group 故障容忍（v2.55.1）：MoE 模型单 GPU 故障不导致全系统重启', 'gRPC 双向流（Ray Serve 2.55.0）+ Gang Scheduling 支持'],
       weaknesses: ['SQL 能力弱于 Spark', '大规模 ETL 不如 Spark', '社区相对较小'],
       perf: { throughput: '~500 实验/天（Tune）', latency: '秒级', scale: '10~200 节点' },
       usedFor: ['分布式训练', '超参搜索', '批量推理', '主动学习'],
