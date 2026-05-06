@@ -96,7 +96,7 @@ export const INDUSTRY_CRISIS = {
 export const GLOBAL_BREAKOUT = {
   title: '全球软件行业破局思路',
   subtitle: '从"卖代码"到"卖决策"——价值链重构',
-  lastUpdated: '2026-04-24',
+  lastUpdated: '2026-05-06',
   strategies: [
     {
       id: 'palantir',
@@ -122,6 +122,8 @@ export const GLOBAL_BREAKOUT = {
         { date: '2025-04', tag: '竞争', level: 'watch', text: 'Microsoft 推 Fabric + Copilot 正面竞争 Foundry，Palantir 强调 Ontology 差异化' },
         { date: '2026-04', tag: '战略', level: 'hot', text: 'DeepSeek-V4 预览版发布并开放 API（flash + pro 双版本），国产大模型 API 生态持续完善，对 Palantir 类数据操作系统模式形成竞争压力——低成本 API 降低了企业 AI 化门槛，但也压缩了中间层利润空间' },
         { date: '2026-04', tag: '融资', level: 'hot', text: 'DeepSeek 开启首轮外部融资，估值或超 $500 亿——从幻方量化内部项目到独立商业化，标志着技术效率（低推理成本）可以转化为商业竞争力；对 Palantir 的启示：数据操作系统的护城河在 API 成本战中依然成立，但需要加速 AIP 的中小企业渗透' },
+        { date: '2026-05', tag: '财报', level: 'hot', text: 'Q1 2026 营收 $16.3 亿（+85% YoY），创 2020 年 IPO 后最快增速；商业营收 $5.95 亿（+133% YoY）；全年指引上调至 $76.5–76.6 亿；GAAP 净利润 $8.71 亿，调整后运营利润率 60%。数据操作系统护城河在 AI 大爆发中反而持续加速（来源：investors.palantir.com）' },
+        { date: '2026-05', tag: '合同', level: 'hot', text: 'USDA $3 亿合同（2026-04），支持国家农场安全行动计划和"一农一档"数字化；美国陆军 TITAN 首批交付完成（1st Multi-Domain Task Force），进入实战评估阶段，若评估通过将扩采 150+ 套（来源：investors.palantir.com）' },
       ],
       deepDive: {
         why: 'Palantir 的核心不是技术领先，而是"业务理解深度"。FDE 驻场 6-18 个月后，客户的 Ontology 已经成为业务运转的神经系统，任何替换都意味着重建整个数字孪生。',
@@ -180,6 +182,8 @@ export const GLOBAL_BREAKOUT = {
         { date: '2026-04', tag: 'Agent编码', level: 'hot', text: 'Cognition AI（Devin）以 $250B 估值融资，AI 编码 Agent 从辅助工具升级为自主软件工程师，Sierra 收购 Fragment 加速 AI 客服 Agent 整合，平台生态玩家需要重新思考 Agent 层的竞争格局' },
         { date: '2026-04', tag: '深度研究', level: 'hot', text: 'Gemini 3.1 Pro 深度研究代理（2026-04-26）、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技；深度研究 Agent 正在将知识工作者的初级工作（文献综述/市场调研）自动化，平台生态玩家通过 Agent 能力升级实现从工具到同事的跨越' },
         { date: '2026-04', tag: '开源生态', level: 'hot', text: 'Qwen3 全系列开源（Apache 2.0，2026-04-29）+ Meta Llama 4 Scout 开源（10M 上下文），开源模型能力已接近闭源旗舰。平台生态战略核心变化：开源模型托管（Together AI/Replicate/阿里云 DashScope）正在成为新的平台入口，谁能提供最好的开源模型 API 服务，谁就掌握了 AI 应用层的基础设施' },
+        { date: '2026-05', tag: 'ServiceNow', level: 'hot', text: 'Q1 2026 营收 $37.7 亿（+22% YoY），NOW Assist 大客户合同增速 +130% YoY，AI ACV 目标上调 50% 至 $15 亿；AI Agent 处理案例速度比人工快 99%。股价因中东地缘政治影响季报后下跌 12%——但 AI 货币化加速信号明确（来源：sahmcapital.com）' },
+        { date: '2026-05', tag: 'Databricks', level: 'hot', text: 'Databricks 完成 $500 亿股权融资 + $200 亿债务，估值达 $1340 亿（+34% 较 2025 年夏）；年化营收 $54 亿（+65% YoY），AI 相关产品营收 $14 亿；Lakebase（AI 优化事务型数据库）+ Genie 自然语言查询成为增长新引擎，IPO 时机待定（来源：databricks.com）' },
       ],
       deepDive: {
         why: '平台战略的本质是"控制 Agent 的行动空间"。当 AI Agent 需要读写数据、触发工作流、调用 API 时，谁控制了这些接口，谁就控制了 Agent 的能力边界。Salesforce 的 Agentforce 本质上是把 CRM 数据变成 Agent 的"行动地图"。',
@@ -273,7 +277,7 @@ export const PALANTIR_DEEP_DIVE = {
         { name: 'Data Integration', desc: 'SIGINT/HUMINT/OSINT/GEOINT 多源情报融合' },
         { name: 'Graph Analysis', desc: '万亿级知识图谱，实体关系推理与模式发现' },
         { name: 'Gaia', desc: '地理空间分析，卫星图像 + 地面传感器 + 轨迹数据' },
-        { name: 'TITAN', desc: '边缘部署，断网环境下的自主 AI 推理' },
+        { name: 'TITAN', desc: '边缘部署，断网环境下的自主 AI 推理；首批系统已交付美国陆军第1多域任务部队（2026 Q1），原始合同 $1.78 亿，评估通过后可扩采 150+ 套' },
       ],
     },
     {
@@ -354,16 +358,28 @@ export const PALANTIR_DEEP_DIVE = {
       { year: '2022', value: '$1.91B', growth: '+24%' },
       { year: '2023', value: '$2.23B', growth: '+17%' },
       { year: '2024', value: '$2.87B', growth: '+29%' },
-      { year: '2025E', value: '$3.75B', growth: '+31%' },
+      { year: '2025', value: '$3.75B', growth: '+31%（实际）' },
+      { year: '2026E', value: '$7.65B', growth: '+71%（公司指引）' },
     ],
     metrics: {
       nrr: '>115%',
-      govRevenue: '55%',
-      commercialRevenue: '45%',
-      commercialGrowth: '+54% YoY (2024 Q4)',
+      govRevenue: '42% (Q1 2026)',
+      commercialRevenue: '37% (Q1 2026)',
+      commercialGrowth: '+133% YoY (Q1 2026)',
       customers: '711 (2024)',
       topCustomerConcentration: '<10%',
       ruleOf40: '68 (2024 Q4)',
+      q1_2026: {
+        totalRevenue: '$1.63B (+85% YoY)',
+        usRevenue: '$1.28B (+104% YoY)',
+        commercialRevenue: '$595M (+133% YoY)',
+        govRevenue: '$687M (+84% YoY)',
+        gaapNetIncome: '$871M',
+        adjOperatingMargin: '60%',
+        fcfMargin: '57%',
+        dealsOver1M: '206 笔（其中 47 笔超 $1000 万）',
+        source: 'investors.palantir.com',
+      },
     },
   },
 };
@@ -1299,6 +1315,7 @@ export const FDE_BP_FLYWHEEL = {
 export const EXTERNAL_MODEL_SECURITY = {
   title: '外部模型接触内部数据的风险与可控性方案',
   subtitle: '类 Claude 等外部大模型接触公司内部代码和数据的安全论证',
+  lastUpdated: '2026-05-06',
 
   // 核心问题定义
   coreProblem: {
@@ -1339,6 +1356,9 @@ export const EXTERNAL_MODEL_SECURITY = {
           { date: '2024-01', event: '某金融公司员工将客户交易数据发送给 GPT-4 做分析，违反 GDPR', impact: '被监管机构罚款 €2M，CTO 引咎辞职' },
           { date: '2024-06', event: 'OpenAI 内部安全事件，部分企业 API 调用日志短暂暴露', impact: '多家企业紧急审查 API 调用历史' },
           { date: '2025-03', event: '某科技公司发现员工通过 Cursor 将整个代码仓库索引发送到 Claude API', impact: '紧急部署代码扫描网关' },
+          { date: '2026-01', event: 'Gemini Chrome 插件漏洞（CVE-2026-0628），恶意扩展可劫持 Gemini 侧边栏访问本地文件', impact: '2026-01 已修复，但浏览器插件安全成持续攻击面' },
+          { date: '2026-04', event: 'DeepSeek R1 在 Cisco 安全测试中对有害提示实现 100% 越狱成功率（含错误信息和犯罪指令）', impact: '多国政府/企业限制使用；相比 Claude 3.5 Sonnet 36%、OpenAI o1 26% 越狱率，DeepSeek 安全护栏明显薄弱' },
+          { date: '2026-05', event: 'Anthropic 推出 Claude Security 公测版（企业级漏洞检测），发现 500+ 开源项目隐藏漏洞；明确企业版 30 天数据留存 + ZDR 选项', impact: '将安全能力从"被动防御"升级为主动扫描，与 CrowdStrike/Microsoft Security 集成' },
         ],
         mitigations: [
           { name: 'API 模式 + 零留存协议', desc: '使用 API 而非 Web 界面，签署数据零留存（Zero Data Retention）协议', effectiveness: '⭐⭐⭐⭐' },
@@ -1594,7 +1614,7 @@ export const EXTERNAL_MODEL_SECURITY = {
         color: '#6c5ce7',
         tier: 'Tier 1',
         features: {
-          zdr: '✅ 支持 API 零留存（ZDR）',
+          zdr: '✅ 支持 API 零留存（ZDR）；企业版标准留存 30 天可配置',
           soc2: '✅ SOC 2 Type II',
           gdpr: '✅ GDPR 合规',
           training: '✅ API 数据不用于训练（明确承诺）',
@@ -1603,10 +1623,11 @@ export const EXTERNAL_MODEL_SECURITY = {
           privateDeployment: '❌ 不支持私有化部署（仅 API）',
           auditLog: '✅ 企业版支持审计日志',
         },
-        verdict: '代码辅助首选，安全承诺最明确，但无私有化部署选项',
+        latestUpdate: '2026-05：推出 Claude Security 公测版，主动扫描发现 500+ 开源项目漏洞；与 CrowdStrike / Microsoft Security 集成',
+        verdict: '代码辅助首选，安全承诺最明确；Claude Security 进入主动防御时代，但无私有化部署选项',
       },
       {
-        name: 'OpenAI (GPT-4)',
+        name: 'OpenAI (GPT-4o)',
         icon: '🟢',
         color: '#3fb950',
         tier: 'Tier 1',
@@ -1615,12 +1636,13 @@ export const EXTERNAL_MODEL_SECURITY = {
           soc2: '✅ SOC 2 Type II',
           gdpr: '✅ GDPR 合规',
           training: '✅ API 数据不用于训练（企业版）',
-          encryption: '✅ 传输加密 TLS 1.3 + 静态加密',
+          encryption: '✅ 传输加密 TLS 1.3 + 静态加密；2026 Q1 部署后量子密码学（PQC）',
           region: '⚠️ 美国/欧洲数据中心，Azure 可选更多区域',
           privateDeployment: '⚠️ Azure OpenAI 支持私有网络部署',
           auditLog: '✅ 企业版支持审计日志',
         },
-        verdict: 'Azure OpenAI 是企业级首选，支持私有网络，但成本较高',
+        latestUpdate: '2026 Q1：全面迁移至后量子密码学（Post-Quantum Cryptography），抵御"先截获后解密"攻击',
+        verdict: 'Azure OpenAI 是企业级首选，支持私有网络；PQC 升级领先行业',
       },
       {
         name: 'Google (Gemini)',
@@ -1630,31 +1652,33 @@ export const EXTERNAL_MODEL_SECURITY = {
         features: {
           zdr: '✅ Vertex AI 支持 ZDR',
           soc2: '✅ SOC 2 / ISO 27001',
-          gdpr: '✅ GDPR 合规',
+          gdpr: '⚠️ 2026 年起更新 Gemini 隐私政策，UK/EEA/澳大利亚部分账户关闭',
           training: '✅ API 数据不用于训练',
           encryption: '✅ Google 级加密标准',
           region: '✅ 全球多区域，含亚太',
           privateDeployment: '⚠️ Vertex AI 支持 VPC 内部署',
           auditLog: '✅ Cloud Audit Logs',
         },
-        verdict: 'GCP 生态内最佳选择，多区域部署灵活',
+        latestUpdate: '2026-01：CVE-2026-0628 Chrome 插件漏洞已修复；Gemini 隐私政策更新后英/欧/澳部分账户触发关闭',
+        verdict: 'GCP 生态内最佳选择，多区域部署灵活；需关注插件安全面及 GDPR 政策变更',
       },
       {
         name: 'DeepSeek',
         icon: '🔷',
         color: '#0984e3',
-        tier: 'Tier 2',
+        tier: 'Tier 3',
         features: {
-          zdr: '⚠️ 需确认具体协议条款',
-          soc2: '⚠️ 安全认证体系待完善',
-          gdpr: '⚠️ 主要面向中国市场',
-          training: '⚠️ 数据使用政策需确认',
-          encryption: '✅ 传输加密',
-          region: '✅ 中国境内数据中心',
-          privateDeployment: '✅ 开源模型可完全私有化部署',
+          zdr: '❌ 明文收集聊天历史、设备信息，无 ZDR 选项',
+          soc2: '❌ 无国际安全认证',
+          gdpr: '❌ 主要面向中国市场，跨境数据合规风险高',
+          training: '⚠️ 数据使用政策不透明',
+          encryption: '⚠️ iOS App 传输数据未全程加密（2026-01 披露）',
+          region: '✅ 中国境内数据中心；开源版可私有化',
+          privateDeployment: '✅ 开源模型可完全私有化部署（推荐此路径）',
           auditLog: '⚠️ 需自建',
         },
-        verdict: '中国合规首选，开源可私有化部署是最大优势，安全认证待加强',
+        latestUpdate: '2026-04：Cisco 安全测试 100% 越狱成功率（Claude 3.5 Sonnet 36%，o1 26%）；ClickHouse 数据库未鉴权暴露；多国政府/金融机构限制使用',
+        verdict: '⚠️ 云端 API 不建议用于任何敏感数据；私有化部署开源版性价比高，但需自建安全体系',
       },
       {
         name: 'Qwen (通义千问)',
@@ -1671,7 +1695,8 @@ export const EXTERNAL_MODEL_SECURITY = {
           privateDeployment: '✅ 开源模型可完全私有化部署',
           auditLog: '✅ 阿里云日志服务',
         },
-        verdict: '国内企业级场景优选，阿里云生态完善，开源可私有化',
+        latestUpdate: '2026：阿里云持续更新等保三级合规；Qwen3 系列开源发布，私有化部署门槛进一步降低',
+        verdict: '国内企业级场景优选，阿里云生态完善，开源可私有化；等保合规最完整',
       },
     ],
     featureLabels: {
@@ -1956,6 +1981,7 @@ export const EXTERNAL_MODEL_SECURITY = {
 // 8. 行业对标分析
 export const BENCHMARKS = {
   title: '行业对标分析',
+  lastUpdated: '2026-05-06',
   companies: [
     {
       name: 'Palantir',
@@ -1964,6 +1990,7 @@ export const BENCHMARKS = {
       color: '#6c5ce7',
       strengths: ['Ontology 深度绑定', 'FDE 驻场模式', '安全合规壁垒', 'AIP 让 LLM 可操作'],
       weaknesses: ['高人力成本', '扩展速度受限', '依赖大客户'],
+      latestSignal: 'Q1 2026 营收 $16.3 亿（+85% YoY），商业营收 +133%，全年指引 $76.5 亿；TITAN 首批交付美军。',
       takeaway: '学习 Ontology 思想和 AIP 架构，但用 AI Agent 替代 FDE 降低人力依赖',
     },
     {
@@ -1973,6 +2000,7 @@ export const BENCHMARKS = {
       color: '#e17055',
       strengths: ['开源生态（Spark/Delta/MLflow）', '数据湖仓一体', 'Unity Catalog 治理', 'Mosaic AI 训练'],
       weaknesses: ['偏底层基础设施', '业务理解较浅', '与 Snowflake 竞争激烈'],
+      latestSignal: '2026 年完成 $500 亿股权融资，估值 $1340 亿；年化营收 $54 亿，AI 相关收入占 $14 亿；Lakebase + Genie 引领下一波增长。',
       takeaway: '学习数据平台架构和开源策略，但需要在上层补充业务语义层',
     },
     {
@@ -1982,13 +2010,24 @@ export const BENCHMARKS = {
       color: '#00cec9',
       strengths: ['庞大客户基础', 'Agentforce 生态', 'Data Cloud 统一', '行业解决方案'],
       weaknesses: ['平台臃肿', '定制成本高', 'AI 能力起步晚'],
+      latestSignal: 'Agentforce 全球 World Tour 推进（马德里/迪拜/巴黎等），已处理 6000 万次对话，$2/对话定价显著低于人工成本 $8-10。',
       takeaway: '学习 Agent 平台化思路和行业解决方案模板，但避免平台过度复杂化',
+    },
+    {
+      name: 'ServiceNow',
+      model: 'IT 运维 + 企业流程 AI',
+      icon: '⚙️',
+      color: '#3fb950',
+      strengths: ['企业 IT 流程深度嵌入', 'NOW Assist 快速货币化', 'AI Agent 99% 加速案例处理', '大客户黏性强'],
+      weaknesses: ['股价对 AI 货币化预期敏感', '地缘政治影响区域拓展', '估值压力大'],
+      latestSignal: 'Q1 2026 营收 $37.7 亿，NOW Assist 大客户合同 +130% YoY，AI ACV 目标上调至 $15 亿；Q1 后股价跌 12%（地缘政治拖累）。',
+      takeaway: '学习企业流程 AI 化路径，NOW Assist 的定价和 ROI 量化（99% 加速）是可复用的叙事框架',
     },
     {
       name: 'Tesla',
       model: '数据飞轮 + 端到端 AI',
       icon: '🚗',
-      color: '#3fb950',
+      color: '#ffa657',
       strengths: ['百万级数据采集终端', '端到端神经网络', '数据闭环自动化', '硬件+软件垂直整合'],
       weaknesses: ['封闭生态', '高度依赖自有硬件', '安全监管风险'],
       takeaway: '学习数据飞轮和端到端思想，在自动驾驶领域直接对标',
@@ -2001,31 +2040,27 @@ export const BENCHMARKS = {
 // 最后更新：2026-04-22
 // ═══════════════════════════════════════════════════════════════
 export const SITE_ROADMAP = {
-  lastUpdated: '2026-05-03',
-  summary: '本期重点（第43轮）：① 模型数据库新增 Qwen3-Coder 480B（代码旗舰 MoE，LiveCodeBench > 70，1M 上下文）+ Gemini 2.5 Flash（可调 Thinking Budget，250+ tokens/s，1M 上下文）；② 全站排行榜日期刷新至 2026-05-03；③ ai-wiki.md 架构创新追踪表同步更新；④ 模型总量达 60 个。全站搜索仍是最紧迫平台短板。',
+  lastUpdated: '2026-05-06',
+  summary: '本期重点（第46轮，B7 VLA 更新）：① VlaArchViz.js 世界模型演进时间线新增 3 条（Tesla FSD V14.3 纯神经网络 / Figure Helix 02 + System 0 / NVIDIA GR00T N2 + LeRobot v0.5）；② vla/page.js 行业动态速递具身智能板块升级（Unitree 半马纪录/Figure 量产/GR00T N2），Tesla FSD V14.3 描述精确化；③ 新增「具身智能融资浪潮」专题卡片（它石智航/星动纪元/无界动力）；④ Hero 最新标签更新；⑤ Roadmap world-model-embodied-surge、embodied-ai-startup-wave 状态同步。',
 
   // 📋 本轮迭代计划（角色 F 调度员每轮开始时写入，角色 B/D 读取执行）
   sprintPlan: {
-    sprintDate: '2026-05-03',
+    sprintDate: '2026-05-06',
     editorTasks: [
-      { source: 'productPlans.content.模型中心补全', action: '新增 Qwen3-Coder 480B + Gemini 2.5 Flash 两张模型卡片到 models.json（含完整 factSheet / textArch / 架构创新记录）', files: ['content/gallery/models.json', 'ai-wiki.md'], done: true },
-      { source: 'productPlans.content.排行榜刷新', action: '刷新 benchmarks.json 所有 date 字段为 2026-05-03', files: ['content/benchmarks/benchmarks.json'], done: true },
+      { source: 'productPlans.content.VLA架构扩充', action: 'VlaArchViz.js 世界模型演进时间线新增 3 条：Tesla FSD V14.3 纯神经网络架构 + Figure Helix 02 + System 0 + NVIDIA GR00T N2 + LeRobot v0.5', files: ['src/components/VlaArchViz.js'], done: true },
+      { source: 'topOpportunities.world-model-embodied-surge', action: 'vla/page.js 行业动态速递具身智能板块升级（Unitree 半马纪录/Figure 量产/GR00T N2），新增「具身智能融资浪潮」专题卡片；Hero 最新标签更新', files: ['src/app/vla/page.js'], done: true },
     ],
-    publisherTasks: [
-      { source: 'techDebts.Navbar遗留文件', action: '删除 src/components/Navbar.js，确认无引用后从 techDebts.items 移到 resolved', files: ['src/components/Navbar.js'], verify: 'grep -r "Navbar" src/ --include="*.js" --include="*.jsx" 仅返回 strategy-data.js 中的记录', done: true },
-      { source: 'bugfix.进化日志message为空', action: '已修复首页进化日志 log.message → log.title || log.message 兼容（角色 E 阶段已完成）', files: ['src/app/page.js'], verify: '检查首页最近进化区块文字是否正常显示', done: true },
-    ],
+    publisherTasks: [],
     collectorFocus: [
-      { direction: 'Google Gemma 4 + Meta Muse Spark 开源模型', reason: '双模型发布，需要声浪覆盖，已完成', targetCount: 2, done: true },
-      { direction: 'Anthropic 创意工作连接器 + Amazon 5GW算力', reason: 'Anthropic 重要战略动作，全行业动态已覆盖', targetCount: 2, done: true },
-      { direction: 'Kueue v0.17.2/v0.18.0-rc + MLflow 3.12 Tracing', reason: 'AI Infra 开源项目最新版本，已覆盖', targetCount: 2, done: true },
+      { direction: '具身智能：Unitree/Figure/Boston Dynamics/GR00T N2', reason: '2026-04 具身智能多点突破，VLA 页面需同步', targetCount: 6, done: true },
+      { direction: 'Tesla FSD V14.3 纯神经网络架构', reason: 'C++ 代码全面退场，E2E-VLA 里程碑事件', targetCount: 1, done: true },
     ],
-    notes: '本轮（2026-05-03 第43轮）：模型库新增 Qwen3-Coder 480B（代码旗舰 MoE）+ Gemini 2.5 Flash（高效多模态），模型总量达 60 个；benchmarks.json 所有排行榜日期刷新至 2026-05-03；ai-wiki.md 架构创新追踪表新增 2 条（Gemini 2.5 Flash 可调 Thinking Budget + Qwen3-Coder 480B 代码 MoE）。',
+    notes: '本轮（2026-05-06 第46轮 B7 VLA）：VlaArchViz.js 时间线新增 3 条 2026-04 具身智能/VLA 里程碑；vla/page.js 行业动态速递具身智能板块内容精确化，新增融资浪潮专题；Roadmap world-model-embodied-surge 部分完成，具身智能专题 Tab（独立页面）仍待后续 B8 落地。',
   },
 
   // 🚀 产品迭代规划（开发者人工维护）
   productPlans: {
-    lastUpdated: '2026-05-03',
+    lastUpdated: '2026-05-06',
     note: '开发者人工维护。优先级：🔴 高 / 🟡 中 / 🟢 低。聚焦「近期可落地」的事项，远期愿景不在此列。',
     categories: [
       {
@@ -2045,17 +2080,18 @@ export const SITE_ROADMAP = {
         name: '内容建设',
         cadence: '持续',
         items: [
-          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23）+ GPT-5.5 + DeepSeek-v4-flash/v4-pro（4/24）+ Qwen3-Coder 480B + Gemini 2.5 Flash（5/03）。待补：腾讯混元 Turbo S 新模型、DeepSeek-R2 正式版' },
+          { priority: '🔴', title: '模型中心补全', desc: '已补充 Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet（4/23）+ GPT-5.5 + DeepSeek-v4-flash/v4-pro（4/24）+ Qwen3-Coder 480B + Gemini 2.5 Flash（5/03）+ 混元 Hy3 Preview + Claude Sonnet 4（5/06）。待补：DeepSeek-R2 正式版（尚未发布）、GPT-5 系列后续变体' },
           { priority: '🔴', title: 'Agent 生态专题', desc: '已完成批次1：企业Agent平台对比文章（4/23），待完成：批次2 Agent记忆引擎 / 批次3 多Agent框架对比。Cognition AI 估值 $250B，Sierra 收购 Fragment，赛道加速整合' },
-          { priority: '🟡', title: 'VLA 架构扩充', desc: '✅ 已新增 Alpamayo-R1（10B NVIDIA Research）和 UniDriveVLA（arXiv 2604.02190，双 SOTA）项目卡片（B7 2026-05-03）。待补：OpenVLA、π₀ 深度解读、LatentVLA 独立卡片' },
-          { priority: '🟡', title: '世界模型专题 Tab', desc: 'Wayve GAIA-2（86亿 D 轮 2026-04-22）、NVIDIA Cosmos 3、Pony.ai 世界模型 2.0（成本降低 40-50%）、UniSim 2.0 已有重要进展，/vla/ 需增加独立「世界模型」Tab 深度解读。B7自检-2026-05-03', source: 'B7自检-2026-05-03' },
-          { priority: '🟡', title: '具身智能专题', desc: 'Unitree H1/Flash 完成北京半马（2026-04-19）、Boston Dynamics Atlas 56-DOF（CES 2026）、Figure 03 + Helix AI、NVIDIA GR00T N2 发布。具身智能进展迅速，Signal 缺少独立追踪模块。B7自检-2026-05-03', source: 'B7自检-2026-05-03' },
+          { priority: '🟡', title: 'VLA 架构扩充', desc: '✅ 已新增 Alpamayo-R1（10B NVIDIA Research）和 UniDriveVLA（arXiv 2604.02190，双 SOTA）项目卡片。B7 已更新：VlaArchViz.js 时间线新增 Tesla FSD V14.3 纯神经网络/Figure Helix 02 System 0/GR00T N2+LeRobot v0.5（2026-05-06）。待补：OpenVLA、π₀ 深度解读、LatentVLA 独立卡片' },
+          { priority: '🟡', title: '世界模型专题 Tab', desc: '【B8 待做】Wayve GAIA-2（86亿 D 轮 2026-04-22）、NVIDIA Cosmos 3、Pony.ai 世界模型 2.0（成本降低 40-50%）、UniSim 2.0 有重要进展，/vla/ 需增加独立「世界模型」Tab 深度解读。B7 已将相关动态同步到行业速递，独立 Tab 仍待后续。', source: 'B7自检-2026-05-06' },
+          { priority: '🟡', title: '具身智能专题', desc: '【B7 部分完成 2026-05-06】Unitree H1/Flash 完成北京半马（2026-04-19）、Figure Helix 02 + System 0 全神经网络量产、NVIDIA GR00T N2 发布、中国融资浪潮（它石智航/星动纪元/无界动力）已在行业动态速递 + 融资浪潮卡片中覆盖。独立「具身智能产业」Tab 待 B8 落地。', source: 'B7自检-2026-05-06' },
           { priority: '🟡', title: 'K8s v1.36.0 DRA GA 专题文章', desc: 'K8s v1.36.0（2026-04-22）DRA 进入 GA，GPU 细粒度调度能力重大里程碑，值得写一篇深度解析文章。B6自检-2026-04-24', source: 'B6自检-2026-04-24' },
           { priority: '🟡', title: 'Qwen3.6 系列模型深度对比', desc: 'Qwen3.6-27B 开源（2026-04-24），MoE 架构 + 思维链切换，与 DeepSeek-V4 flash/pro 的对比分析值得写文章。B1自检-2026-04-24', source: 'B1自检-2026-04-24' },
           { priority: '🟢', title: 'AI Infra 版本追踪页面', desc: '当前 data-infra-data.js 中各开源项目版本号分散，建议增加一个「版本追踪」Tab，集中展示 K8s/Ray/Airflow/Iceberg/MLflow/Spark/UC 的最新版本和更新日期。B6自检-2026-04-24', source: 'B6自检-2026-04-24' },
           { priority: '🟡', title: 'PyIceberg 版本迭代持续追踪', desc: 'PyIceberg 已从书中所记 0.9 演进至 0.11.1（2025-03-03），数据已修正。icebergSpecVersions 中的引擎支持矩阵需定期与 apache/iceberg-python releases 对齐。B6自检-2026-05-05', source: 'B6自检-2026-05-05' },
           { priority: '🟡', title: 'Airflow 3.3 新特性前瞻文章', desc: 'Airflow 3.2.1 已稳定（2026-04-22），v3.3 预计带来更多 Asset Partitioning 增强和 DAG Bundle 生产化改进，值得提前跟踪并写一篇技术预览文章。B6自检-2026-05-05', source: 'B6自检-2026-05-05' },
-          { priority: '🟡', title: 'MLflow v3.12 GA 后更新源码解析', desc: 'v3.12.0rc0（2026-04-28）带来多模态 Trace 附件（图像/音频/文件）和 Diffusers Flavor，正式 GA 后需更新 MLOPS_DATA 的 mlflowVersion 字段和 mlflowV312Highlights。B6自检-2026-05-05', source: 'B6自检-2026-05-05' },
+          { priority: '✅', title: 'MLflow v3.12 GA 后更新源码解析（已完成）', desc: 'v3.12.0 正式 GA（2026-05-05）。已更新 MLOPS_DATA.mlflowVersion 为 v3.12.0（正式发布，2026-05-05），mlflowV312Highlights 补充 Coding Agent 集成和 Gateway 护栏 UI 配置说明。B6-2026-05-06 完成', source: 'B6自检-2026-05-05' },
+          { priority: '🟡', title: 'Spark 4.2.0 正式版前瞻追踪', desc: 'Spark 4.2.0-preview5（2026-05-01）持续发布预览版，正式版预计 2026 Q3。COMPUTE_ENGINE_DATA 中已记录 4.1.1 为最新稳定版，待 4.2.0 GA 后更新。B6自检-2026-05-06', source: 'B6自检-2026-05-06' },
         ],
       },
       {
@@ -2148,9 +2184,29 @@ export const SITE_ROADMAP = {
       priority: 'P1',
       value: '高',
       effort: '中',
-      desc: 'Wayve 完成 86 亿美元 D 轮（2026-04-22，NVIDIA+Microsoft+Uber 领投），GAIA-2 世界模型即将商业化。Pony.ai 世界模型 2.0 发布（成本降 40-50%）。Unitree H1/Flash 完成北京半马，机器人具身能力指数级提升。Signal /vla/ 页面目前完全缺少世界模型和具身智能独立展示模块。B7-2026-05-03',
-      action: '/vla/ 新增「世界模型」Tab（GAIA-2/Cosmos/UniSim）+ 新增「具身智能」Tab（Unitree/Atlas/Figure/GR00T）',
+      desc: '【B7 部分完成 2026-05-06】Wayve 完成 86 亿美元 D 轮（2026-04-22），GAIA-2 世界模型即将商业化。Pony.ai 世界模型 2.0 发布（成本降 40-50%）。Unitree H1/Flash 完成北京半马（2026-04-19）。Figure Helix 02 + System 0 废弃 C++ 量产。NVIDIA GR00T N2 发布。B7 已更新：VlaArchViz.js 时间线 +3 条、行业动态速递升级、融资浪潮专题卡片。仍待：独立「世界模型」Tab + 独立「具身智能」Tab。',
+      action: '【B7 已做】时间线+具身动态+融资浪潮；【B8 待做】/vla/ 新增独立「世界模型」Tab（GAIA-2/Cosmos/UniSim）+ 独立「具身智能」Tab（Unitree/Atlas/Figure/GR00T）',
       color: '#6c5ce7',
+    },
+    {
+      id: 'embodied-ai-startup-wave',
+      title: '具身智能创业潮（中国单轮融资纪录，工业部署加速）',
+      priority: 'P1',
+      value: '极高',
+      effort: '中',
+      desc: '【B7 部分完成 2026-05-06】2026-04/05 中国具身智能融资创纪录：它石智航 Pre-A 4.55 亿元（人民币）、星动纪元 B+ 2 亿元、无界动力 A+ 2 亿元+。B7 已在 vla/page.js 新增「具身智能融资浪潮」专题卡片。仍待：独立「具身智能产业」Tab（融资地图/典型公司/灵巧手技术栈）。',
+      action: '【B7 已做】vla/page.js 新增融资浪潮专题卡片；【B8 待做】/vla/ 新增「具身智能产业」Tab（融资地图/典型公司/灵巧手技术栈/部署场景）；声浪 robot category 加强追踪',
+      color: '#10b981',
+    },
+    {
+      id: 'fomc-macro-update-0507',
+      title: '2026-05-07 FOMC 会议 — 经济研究数据需实时跟进',
+      priority: 'P0',
+      value: '高',
+      effort: '低',
+      desc: '明日（2026-05-07）FOMC 会议召开，市场预期维持 4.25-4.50%（>98% 概率）。4 月非农+17.8 万远超预期，首次降息推迟至 9-10 月。已更新汇率数据至 5 月（6.8365），FOMC 纪要和利率决议需会后第一时间更新。',
+      action: '2026-05-07 FOMC 决议公告后立即更新 EconomyResearch.js 的 fomc_minutes_summary 和 FOMC_CALENDAR 结果',
+      color: '#e17055',
     },
   ],
 

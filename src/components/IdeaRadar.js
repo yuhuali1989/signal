@@ -19,7 +19,7 @@ const IDEAS = [
     industry: 'ai-tools',
     title: 'AI 驱动的代码审查 & 安全扫描',
     signal: '🔥🔥 爆发',
-    signalDate: '2026-04-29',
+    signalDate: '2026-05-06',
     summary: 'Qwen3 全系列开源（2026-04-29）、Llama 4 Scout 10M 上下文开源、DeepSeek-R1 持续引用——开源模型能力已接近闭源旗舰，自部署成本约为 API 的 1/10。AI 编码工具（Cursor/GitHub Copilot/Devin）正在重塑软件开发流程，Cognition AI（Devin）完成 $2.5 亿 B 轮融资（估值 $25 亿）验证了 AI 工程师赛道的商业价值。', 
     opportunity: '中国金融/政务软件外包市场对合规审查需求强烈，且国内缺乏对标产品。',
     overseas: [
@@ -165,9 +165,9 @@ const IDEAS = [
     id: 9,
     industry: 'hardware',
     title: 'AI 家庭机器人 / 桌面助手',
-    signal: '🔥 热点',
-    signalDate: '2026-04',
-    summary: 'Figure 01、1X 等人形机器人融资热潮，但家庭场景的小型 AI 机器人（陪伴/教育/家务辅助）市场更快落地。',
+    signal: '🔥🔥 爆发',
+    signalDate: '2026-05-06',
+    summary: '2026-04 具身智能赛道融资创纪录：它石智航 Pre-A 轮 4.55 亿美元（中国具身智能单轮纪录）、星动纪元 B+ 轮 2 亿美元（顺丰/红杉投资）、无界动力天使轮 2 亿美元。Unitree H1 完成北京半马，NVIDIA GR00T N2 发布，具身智能从实验室走向规模化产线部署。',
     opportunity: '国内老龄化加速，AI 陪伴机器人需求增长；教育机器人市场已有验证。',
     overseas: [
       { name: 'Emo Robot', url: 'https://living.ai', desc: '桌面 AI 机器人，Living.ai' },
@@ -258,8 +258,8 @@ const IDEAS = [
     industry: 'dev-tools',
     title: 'AI 编码 Agent（自主软件工程师）',
     signal: '🔥🔥 爆发',
-    signalDate: '2026-04',
-    summary: 'Cognition AI（Devin）以 $250B 估值融资，Cursor 传闻被 SpaceX 以 $60B 收购，Sierra 收购 Fragment。AI 编码 Agent 从"辅助工具"升级为"自主软件工程师"，能独立完成需求分析→编码→测试→部署全流程。',
+    signalDate: '2026-05-06',
+    summary: 'Cognition AI（Devin）以 $250B 估值融资，Cursor 传闻被 SpaceX 以 $60B 收购，Sierra 收购 Fragment。Claude Code、Gemini CLI、GPT-4.1 Code Interpreter 竞相升级，AI 编码 Agent 从"辅助工具"升级为"自主软件工程师"，能独立完成需求分析→编码→测试→部署全流程。2026-05：Qwen3-Coder-Next 开源，国产编码模型首次进入 SWE-bench 前三。',
     opportunity: '国内软件外包市场规模超 $1000 亿，AI 编码 Agent 可将交付效率提升 5-10x。本土化需求（中文代码注释、国内框架适配、私有化部署）为国内玩家提供保护。',
     overseas: [
       { name: 'Cognition AI (Devin)', url: 'https://cognition.ai', desc: '首个 AI 软件工程师，估值 $250B' },
@@ -337,8 +337,8 @@ const IDEAS = [
     industry: 'enterprise',
     title: 'AI 深度研究工具（知识工作者的 AI 同事）',
     signal: '🔥🔥 爆发',
-    signalDate: '2026-04-29',
-    summary: 'Gemini 3.1 Pro 深度研究代理、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技，验证了深度研究 Agent 的市场需求。Perplexity 完成 $5 亿 D 轮融资（估值 $140 亿，2026-04-26），月活超 1 亿。咨询顾问、研究员、分析师等职业的初级工作（文献综述、市场调研）将被大幅自动化。', 
+    signalDate: '2026-05-06',
+    summary: 'Gemini 3.1 Pro 深度研究代理（ARC-AGI-2 得分 77.1%）、OpenAI Deep Research、Perplexity Deep Research 三大巨头同台竞技。Perplexity 完成 $5 亿 D 轮（估值 $140 亿，月活超 1 亿）。Sand.ai（视频生成 Agent）获 5000 万美元融资，ARR 超千万美元，"深度研究 + 多模态生成"成为 2026 年 AI SaaS 最高增长赛道。咨询顾问、研究员、分析师等职业的初级工作（文献综述、市场调研）将被大幅自动化。', 
     opportunity: '国内咨询/投研/法律/医疗等知识密集型行业对深度研究工具需求旺盛，但现有产品均为海外产品，数据合规和中文语料质量是本土玩家的核心壁垒。',
     overseas: [
       { name: 'Perplexity', url: 'https://perplexity.ai', desc: 'AI 搜索+深度研究，估值 $9B' },
@@ -388,6 +388,26 @@ const IDEAS = [
     barrier: '中',
     china: '高',
     tags: ['开源模型', 'API平台', '云服务', '中间层'],
+  },
+
+  // ── 新增方向：具身智能创业 ─────────────────────────────────────────────────
+  {
+    id: 20,
+    industry: 'hardware',
+    title: '具身智能创业（灵巧手 & 工业部署）',
+    signal: '🔥🔥 爆发',
+    signalDate: '2026-05-06',
+    summary: '2026-04 中国具身智能融资创纪录：它石智航 Pre-A 4.55 亿美元（AWE 3.0 完成精密线束装配）、星动纪元 B+ 2 亿美元（物流效率超人类 85%）、源升智能一年内完成 5 轮融资（灵巧手 Apex Hand）、无界动力 2 亿美元（已获 5 亿元全球订单）。腾讯混元开源多模态世界模型，NVIDIA GR00T N2 落地工厂。灵巧手（精密操作）+世界模型（泛化能力）是两大技术壁垒，商业路径聚焦汽车/3C/物流三大产线。',
+    opportunity: '中国制造业产线庞大，且现有自动化设备无法应对非结构化任务。汽车整车厂（蔚来/比亚迪/小米）已在采购具身机器人 PoC 项目，首批落地场景集中在质检、线束装配、电池装配三个方向。',
+    overseas: [
+      { name: 'Figure AI', url: 'https://figure.ai', desc: '人形机器人，估值 $2.6B，宝马工厂已部署' },
+      { name: 'Agility Robotics', url: 'https://agilityrobotics.com', desc: 'Digit 机器人，亚马逊仓储合作' },
+      { name: '1X Technologies', url: 'https://1x.tech', desc: '人形机器人，OpenAI 投资' },
+    ],
+    market: '$38B+（工业机器人市场，2030 CAGR 25%，具身智能占比快速提升）',
+    barrier: '极高',
+    china: '高',
+    tags: ['具身智能', '机器人', '灵巧手', '工业自动化', '世界模型'],
   },
 ];
 

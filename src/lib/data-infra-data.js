@@ -3000,11 +3000,11 @@ export const MLOPS_DATA = {
   experimentPlatform: {
     tracking: {
       name: 'MLflow + W&B',
-      mlflowVersion: 'v3.11.1（稳定）· v3.12.0rc0（预发布，2026-04-28）',
+      mlflowVersion: 'v3.12.0（正式发布，2026-05-05）',
       mlflowV312Highlights: [
-        { name: 'AI 助手自动追踪', desc: 'TypeScript 插件支持 Claude Code / Codex / Qwen Code / Gemini CLI 自动 Tracing，无需手动插桩', icon: '🤖' },
-        { name: 'AI Gateway 护栏', desc: 'JudgeGuardrail 支持 LLM 调用前/后安全检查，结果持久化到 DB，Guard 审计全链路', icon: '🛡️' },
-        { name: '多模态 Trace 附件', desc: 'Trace 可附加图像/音频/文件，UI 支持展开查看（图片放大模态 + 音频播放器）', icon: '🖼️' },
+        { name: 'AI 助手自动追踪', desc: 'TypeScript 插件支持 Claude Code / Codex / Qwen Code / Gemini CLI 自动 Tracing，无需手动插桩；新增 Coding Agent 集成（Codex/Gemini/Qwen）', icon: '🤖' },
+        { name: 'AI Gateway 护栏', desc: 'JudgeGuardrail 支持 LLM 调用前/后安全检查，结果持久化到 DB，Guard 审计全链路；v3.12.0 新增网关输入/输出安全检查可通过 MLflow UI 配置', icon: '🛡️' },
+        { name: '多模态 Trace 附件', desc: 'Trace 可附加 PDF/图像/音频/文件为 Artifact，UI 支持展开查看（图片放大模态 + 音频播放器）；通过 mlflow-attachment:// URI 方案引用', icon: '🖼️' },
         { name: 'Diffusers 模型 Flavor', desc: 'mlflow.diffusers 新增 Flavor，支持扩散模型保存与服务，含 LoRA 适配器管理', icon: '🎨' },
       ],
       features: [
