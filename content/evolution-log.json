@@ -1,5 +1,29 @@
 [
   {
+    "id": "evo-20260507-01",
+    "date": "2026-05-07",
+    "type": "news",
+    "emoji": "📡",
+    "title": "声浪更新：+5 条（GPT-5.5 Instant / Gemma 4 / 文心 5.1 / DeepSeek 融资 / 混元翻译模型）",
+    "detail": "新增 5 条 AI 声浪至 216 条总量，覆盖 OpenAI GPT-5.5 Instant 发布、Google Gemma 4 系列开源、百度文心 5.1 登顶 LMArena、DeepSeek 首轮融资启动、腾讯混元极致压缩翻译模型。"
+  },
+  {
+    "id": "evo-20260507-02",
+    "date": "2026-05-07",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "文章产出：+2 篇（Gemma 4 MTP 架构解读 / DeepSeek 450 亿估值融资格局）",
+    "detail": "产出 2 篇深度文章：1) Gemma 4 深度解读——MTP 如何让开源模型跑赢闭源；2) 2026 年大模型融资竞赛——DeepSeek 450 亿估值背后的产业逻辑。文章总数 107 篇。"
+  },
+  {
+    "id": "evo-20260507-03",
+    "date": "2026-05-07",
+    "type": "system",
+    "emoji": "🤖",
+    "title": "模型库更新：+2 个（Gemma 4 31B / 文心 5.1 Preview）+ 批量字段修复",
+    "detail": "新增 Gemma 4 31B 和文心 5.1 Preview 到模型库（含完整 factSheet + textArch），模型总数 64 个。同时批量修复 60 个历史遗留的缺失字段（description/open/date）。"
+  },
+  {
     "date": "2026-05-06 13:23",
     "type": "daily",
     "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",

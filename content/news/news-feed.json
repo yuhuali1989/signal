@@ -1,5 +1,95 @@
 [
   {
+    "id": "news-20260507-01",
+    "title": "OpenAI 发布 GPT-5.5 Instant：幻觉率降 52%、回复更简洁，全员免费升级",
+    "summary": "OpenAI 正式推出 GPT-5.5 Instant 取代 GPT-5.3 Instant 成为 ChatGPT 默认模型。医疗/法律/金融领域幻觉率下降 52.5%，AIME 2025 得分从 65.4 升至 81.2，GPQA 从 78.5 升至 85.6。新增 Memory Sources 功能，可追溯回答引用了哪些历史对话。",
+    "source": "OpenAI Blog",
+    "url": "https://openai.com/blog/gpt-5-5-instant",
+    "date": "2026-05-06",
+    "category": "model-release",
+    "tags": [
+      "GPT-5.5",
+      "OpenAI",
+      "幻觉降低",
+      "个性化",
+      "ChatGPT"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
+    "id": "news-20260507-02",
+    "title": "Google 发布 Gemma 4 系列：Multi-Token Prediction + 端侧推理，4B/12B/26B/31B 四规格",
+    "summary": "Google 开源 Gemma 4 系列模型（e2B/e4B/26B/31B），引入 Multi-Token Prediction（MTP）机制加速推理。31B 版本支持 262K 上下文窗口，在 LMArena 排名超越同量级闭源模型。e2B/e4B 小模型可直接在手机和 Raspberry Pi 上离线运行，社区 llama.cpp/Ollama/vLLM 首日即完成适配。",
+    "source": "Google DeepMind",
+    "url": "https://blog.google/technology/developers/gemma-4/",
+    "date": "2026-05-05",
+    "category": "model-release",
+    "tags": [
+      "Gemma 4",
+      "Google",
+      "MTP",
+      "端侧部署",
+      "开源"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
+    "id": "news-20260507-03",
+    "title": "百度文心 5.1 登顶 LMArena：国产唯一进入全球 Top 15，Create 2026 大会 5.13 开幕",
+    "summary": "文心 5.1 Preview 在 LMArena 文本排行榜以 1476 分登顶国内第一，超越 GPT-5.5 等主流模型，成为榜单前 15 中唯一的国产模型。依托「多维弹性预训练」技术，以同规模模型约 6% 的预训练成本实现领先效果。百度股价美股涨 11.37%。Create 2026 大会 5 月 13-14 日北京举行。",
+    "source": "百度 AI",
+    "url": "https://cloud.baidu.com/article/detail/3895851",
+    "date": "2026-05-07",
+    "category": "model-release",
+    "tags": [
+      "文心大模型",
+      "百度",
+      "LMArena",
+      "国产大模型",
+      "Create 2026"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260507-04",
+    "title": "DeepSeek 首轮融资启动：国家大基金等洽谈领投，估值或达 450 亿美元",
+    "summary": "据多家媒体报道，此前坚持不融资的 DeepSeek 首度启动外部融资，国家集成电路产业投资基金等机构正在洽谈领投，投后估值或达约 450 亿美元。腾讯等互联网巨头和多家国资基金为潜在投资方。同日月之暗面完成新一轮 20 亿美元融资，估值突破 200 亿美元。",
+    "source": "腾讯新闻",
+    "url": "https://new.qq.com/rain/a/20260507A03Y4400",
+    "date": "2026-05-07",
+    "category": "industry",
+    "tags": [
+      "DeepSeek",
+      "融资",
+      "国家大基金",
+      "月之暗面",
+      "估值"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260507-05",
+    "title": "腾讯混元开源 Hy-MT1.5-1.8B-1.25bit：440MB 极致压缩翻译模型，性能超 Google Translate",
+    "summary": "腾讯混元团队开源 Hy-MT1.5-1.8B-1.25bit 紧凑型翻译模型，模型体积仅 440MB，支持全离线运行和多语言覆盖。凭借 1.25-bit 极致量化，在手机端实现了超越 Google Translate 的翻译质量，推动终端侧 AI 翻译进入商用落地新阶段。",
+    "source": "腾讯 AI Lab",
+    "url": "https://huggingface.co/tencent/HunyuanMT",
+    "date": "2026-05-04",
+    "category": "opensource",
+    "tags": [
+      "混元",
+      "腾讯",
+      "翻译模型",
+      "端侧部署",
+      "极致量化"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
     "id": "news-20260506-01",
     "title": "西湖机器人完成 Pre A+ 轮融资，资金专项用于全身统一大模型技术研发",
     "summary": "2026年5月6日，西湖机器人宣布完成 Pre A+ 轮融资，由老股东小苗朗程领投，兴证资本、贝鱼资本跟投。融资资金将重点投入全身统一大模型技术研发，致力于实现机器人全身运动与操作的端到端感知-决策-控制一体化，是当前具身智能热潮下国内头部初创的最新融资动作。",
