@@ -24,1823 +24,2107 @@
     "detail": "新增 Gemma 4 31B 和文心 5.1 Preview 到模型库（含完整 factSheet + textArch），模型总数 64 个。同时批量修复 60 个历史遗留的缺失字段（description/open/date）。"
   },
   {
-    "date": "2026-05-06 13:23",
+    "id": "evo-20260506-ea0403",
+    "date": "2026-05-06",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 文章 +2 篇，创业信号更新 1 条，Infra 版本: ---\n\n## ✅ 自检 1：真实性核查\n\n| 检查项 | 内容 | 状态 |\n|--------|------|------|\n| MLflow v3.12.0 发布日期 | 来自 GitHub releases tag `v3.12.0`，curl 验证返回 200 | ✅ 通过 |\n| Coding Agent 支持（Codex/Gemini/Qwen） | 来自 release agent，VLA: **B7 VLA 更新完成** ✅"
+    "emoji": "🧬",
+    "title": "每日进化: 文章 +2 篇，创业信号更新 1 条，Infra 版本: ---",
+    "detail": "每日进化: 文章 +2 篇，创业信号更新 1 条，Infra 版本: ---\n\n## ✅ 自检 1：真实性核查\n\n| 检查项 | 内容 | 状态 |\n|--------|------|------|\n| MLflow v3.12.0 发布日期 | 来自 GitHub releases tag `v3.12.0`，curl 验证返回 200 | ✅ 通过 |\n| Coding Agent 支持（Codex/Gemini/Qwen） | 来自 release agent，VLA: **B7 VLA 更新完成** ✅"
   },
   {
-    "date": "2026-05-06 11:36",
+    "id": "evo-20260506-d5ef0e",
+    "date": "2026-05-06",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成",
-    "slug": "unity-catalog-ai"
+    "emoji": "✍️",
+    "title": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成",
+    "detail": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成"
   },
   {
-    "date": "2026-05-06 11:32",
+    "id": "evo-20260506-e2ef20",
+    "date": "2026-05-06",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 文章 +2 篇"
+    "emoji": "🧬",
+    "title": "每日进化: 文章 +2 篇",
+    "detail": "每日进化: 文章 +2 篇"
   },
   {
-    "date": "2026-05-04 19:50",
+    "id": "evo-20260504-c91b05",
+    "date": "2026-05-04",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 声浪 +1 条，文章 +2 篇"
+    "emoji": "🧬",
+    "title": "每日进化: 声浪 +1 条，文章 +2 篇",
+    "detail": "每日进化: 声浪 +1 条，文章 +2 篇"
   },
   {
-    "date": "2026-05-03 17:11",
+    "id": "evo-20260503-1de525",
+    "date": "2026-05-03",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 文章 +2 篇，模型 +1 个，评测榜更新 1 项"
+    "emoji": "🧬",
+    "title": "每日进化: 文章 +2 篇，模型 +1 个，评测榜更新 1 项",
+    "detail": "每日进化: 文章 +2 篇，模型 +1 个，评测榜更新 1 项"
   },
   {
-    "date": "2026-05-03 10:30",
+    "id": "evo-20260503-04fd61",
+    "date": "2026-05-03",
     "type": "news",
-    "agent": "B1 声浪编辑",
-    "message": "AI 声浪: 蚂蚁百灵 Ling-2.6 万亿参数开源、DeepSeek 视觉原语多模态推理、AIBrix v0.6 KV Cache 效率 95%、谷歌 I/O 2026 前瞻 Gemini 3 超长上下文",
-    "count": 6
+    "emoji": "📡",
+    "title": "AI 声浪: 蚂蚁百灵 Ling-2.6 万亿参数开源、DeepSeek 视觉原语多模态推理、AIBrix v0.6 KV Cache 效率 95%、谷歌 I/",
+    "detail": "AI 声浪: 蚂蚁百灵 Ling-2.6 万亿参数开源、DeepSeek 视觉原语多模态推理、AIBrix v0.6 KV Cache 效率 95%、谷歌 I/O 2026 前瞻 Gemini 3 超长上下文"
   },
   {
-    "date": "2026-05-03 10:35",
+    "id": "evo-20260503-2475df",
+    "date": "2026-05-03",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: 蚂蚁百灵 Ling-2.6 系列深度解析：万亿参数「快思考」旗舰 + 极致效率 flash",
-    "slug": "ant-ling-2-6-trillion-fast-thinking-2026"
+    "emoji": "✍️",
+    "title": "AI 生成文章: 蚂蚁百灵 Ling-2.6 系列深度解析：万亿参数「快思考」旗舰 + 极致效率 flash",
+    "detail": "AI 生成文章: 蚂蚁百灵 Ling-2.6 系列深度解析：万亿参数「快思考」旗舰 + 极致效率 flash"
   },
   {
-    "date": "2026-05-03 10:40",
+    "id": "evo-20260503-16a60d",
+    "date": "2026-05-03",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: DeepSeek 视觉原语多模态推理模型解析：以坐标锚定思维链，7056 倍视觉压缩",
-    "slug": "deepseek-visual-primitives-multimodal-reasoning-2026"
+    "emoji": "✍️",
+    "title": "AI 生成文章: DeepSeek 视觉原语多模态推理模型解析：以坐标锚定思维链，7056 倍视觉压缩",
+    "detail": "AI 生成文章: DeepSeek 视觉原语多模态推理模型解析：以坐标锚定思维链，7056 倍视觉压缩"
   },
   {
-    "date": "2026-05-03 10:45",
+    "id": "evo-20260503-27a73b",
+    "date": "2026-05-03",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: 腾讯混元3D世界模型 HY-World 2.0 深度解析：四阶段流水线与可交互3DGS世界",
-    "slug": "hunyuan-world-2-hy-world-2026"
+    "emoji": "✍️",
+    "title": "AI 生成文章: 腾讯混元3D世界模型 HY-World 2.0 深度解析：四阶段流水线与可交互3DGS世界",
+    "detail": "AI 生成文章: 腾讯混元3D世界模型 HY-World 2.0 深度解析：四阶段流水线与可交互3DGS世界"
   },
   {
-    "date": "2026-05-03 10:50",
+    "id": "evo-20260503-d3a98a",
+    "date": "2026-05-03",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: 机器人仿真平台全景解析：Genesis / Isaac Sim / MuJoCo / Gazebo 选型指南 2026",
-    "slug": "robot-simulation-platforms-2026"
+    "emoji": "✍️",
+    "title": "AI 生成文章: 机器人仿真平台全景解析：Genesis / Isaac Sim / MuJoCo / Gazebo 选型指南 2026",
+    "detail": "AI 生成文章: 机器人仿真平台全景解析：Genesis / Isaac Sim / MuJoCo / Gazebo 选型指南 2026"
   },
   {
-    "date": "2026-05-03 11:00",
+    "id": "evo-20260503-cbe9ba",
+    "date": "2026-05-03",
     "type": "book",
-    "agent": "B2 内容编辑",
-    "message": "新书上架：《芯片设计：从沙子到算力》8章全本发布 — 半导体物理基础→CMOS工艺→标准单元→综合与时序→后端设计→验证与仿真→先进工艺→芯片量产",
-    "slug": "chip-design-ch01"
+    "emoji": "📖",
+    "title": "新书上架：《芯片设计：从沙子到算力》8章全本发布 — 半导体物理基础→CMOS工艺→标准单元→综合与时序→后端设计→验证与仿真→先进工艺→芯片量产",
+    "detail": "新书上架：《芯片设计：从沙子到算力》8章全本发布 — 半导体物理基础→CMOS工艺→标准单元→综合与时序→后端设计→验证与仿真→先进工艺→芯片量产"
   },
   {
-    "date": "2026-05-03 11:05",
+    "id": "evo-20260503-d7f2ca",
+    "date": "2026-05-03",
     "type": "book",
-    "agent": "B2 内容编辑",
-    "message": "书籍更新：《机器人入门——从材料到控制》新增 第6章「运动规划与轨迹生成」· 第7章「控制系统与执行器驱动」· 第8章「感知、导航与完整 ROS 2 项目」",
-    "slug": "robot-basics-ch06"
+    "emoji": "📖",
+    "title": "书籍更新：《机器人入门——从材料到控制》新增 第6章「运动规划与轨迹生成」· 第7章「控制系统与执行器驱动」· 第8章「感知、导航与完整 ROS 2 项目」",
+    "detail": "书籍更新：《机器人入门——从材料到控制》新增 第6章「运动规划与轨迹生成」· 第7章「控制系统与执行器驱动」· 第8章「感知、导航与完整 ROS 2 项目」"
   },
   {
-    "date": "2026-05-03 11:10",
+    "id": "evo-20260503-e3ddc1",
+    "date": "2026-05-03",
     "type": "system",
-    "agent": "B3 模型编辑",
-    "message": "模型库更新：新增 MiniMax-M1（万亿参数 MoE 推理）· Qwen3-72B（思考/非思考双模）· Ling-2.6-1T（快思考 MoE）· Ling-2.6-flash（104B 超高速）共 4 个新模型，总计 60 个"
+    "emoji": "🤖",
+    "title": "模型库更新：新增 MiniMax-M1（万亿参数 MoE 推理）· Qwen3-72B（思考/非思考双模）· Ling-2.6-1T（快思考 MoE）· Lin",
+    "detail": "模型库更新：新增 MiniMax-M1（万亿参数 MoE 推理）· Qwen3-72B（思考/非思考双模）· Ling-2.6-1T（快思考 MoE）· Ling-2.6-flash（104B 超高速）共 4 个新模型，总计 60 个"
   },
   {
-    "date": "2026-05-03 11:15",
+    "id": "evo-20260503-d13178",
+    "date": "2026-05-03",
     "type": "system",
-    "agent": "B6 Infra 编辑",
-    "message": "Infra 更新：AIBrix v0.6 新特性（批量吞吐 4.7x / KV Cache 95% 效率）写入 data-infra-data.js 推理引擎对比 Tab"
+    "emoji": "🤖",
+    "title": "Infra 更新：AIBrix v0.6 新特性（批量吞吐 4.7x / KV Cache 95% 效率）写入 data-infra-data.js 推理引擎对",
+    "detail": "Infra 更新：AIBrix v0.6 新特性（批量吞吐 4.7x / KV Cache 95% 效率）写入 data-infra-data.js 推理引擎对比 Tab"
   },
   {
-    "date": "2026-05-03 11:20",
+    "id": "evo-20260503-08f5dd",
+    "date": "2026-05-03",
     "type": "system",
-    "agent": "B7 VLA 编辑",
-    "message": "VLA 更新：机器人搭建指南页面上线（/robot-guide/），覆盖结构材料→驱动器→控制器→传感器→通信协议→软件栈→调试部署 7 大步骤，含选型清单与代码示例"
+    "emoji": "🤖",
+    "title": "VLA 更新：机器人搭建指南页面上线（/robot-guide/），覆盖结构材料→驱动器→控制器→传感器→通信协议→软件栈→调试部署 7 大步骤，含选型清单与代",
+    "detail": "VLA 更新：机器人搭建指南页面上线（/robot-guide/），覆盖结构材料→驱动器→控制器→传感器→通信协议→软件栈→调试部署 7 大步骤，含选型清单与代码示例"
   },
   {
-    "date": "2026-05-03 11:25",
+    "id": "evo-20260503-58633f",
+    "date": "2026-05-03",
     "type": "system",
-    "agent": "B8 战略编辑",
-    "message": "战略更新：strategy-data.js 写入 AIBrix/Genesis/HY-World 生态机会；机器人仿真平台 GitHub 热点分析"
+    "emoji": "🤖",
+    "title": "战略更新：strategy-data.js 写入 AIBrix/Genesis/HY-World 生态机会；机器人仿真平台 GitHub 热点分析",
+    "detail": "战略更新：strategy-data.js 写入 AIBrix/Genesis/HY-World 生态机会；机器人仿真平台 GitHub 热点分析"
   },
   {
-    "date": "2026-05-03 11:30",
+    "id": "evo-20260503-aa2b78",
+    "date": "2026-05-03",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 文章 +4 篇，书籍新增《芯片设计》8章 + 机器人基础 3 新章，模型库 +4 个（总计 60），新闻 +6 条，新增 /robot-guide/ 指南页"
+    "emoji": "🧬",
+    "title": "每日进化: 文章 +4 篇，书籍新增《芯片设计》8章 + 机器人基础 3 新章，模型库 +4 个（总计 60），新闻 +6 条，新增 /robot-guide/",
+    "detail": "每日进化: 文章 +4 篇，书籍新增《芯片设计》8章 + 机器人基础 3 新章，模型库 +4 个（总计 60），新闻 +6 条，新增 /robot-guide/ 指南页"
   },
   {
-    "date": "2026-05-02 12:54",
+    "id": "evo-20260502-416bf9",
+    "date": "2026-05-02",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 文章 +2 篇"
+    "emoji": "🧬",
+    "title": "每日进化: 文章 +2 篇",
+    "detail": "每日进化: 文章 +2 篇"
   },
   {
-    "date": "2026-05-02 11:54",
+    "id": "evo-20260502-64feb7",
+    "date": "2026-05-02",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: RLHF 的终结？DPO、GRPO 与强化学习新范式",
-    "slug": "rlhf-dpogrpo"
+    "emoji": "✍️",
+    "title": "AI 生成文章: RLHF 的终结？DPO、GRPO 与强化学习新范式",
+    "detail": "AI 生成文章: RLHF 的终结？DPO、GRPO 与强化学习新范式"
   },
   {
-    "date": "2026-05-02 11:53",
+    "id": "evo-20260502-bef48a",
+    "date": "2026-05-02",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性",
-    "slug": "kubernetes-ai-infra-gpu-ai"
+    "emoji": "✍️",
+    "title": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性",
+    "detail": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性"
   },
   {
-    "date": "2026-05-01 14:15",
+    "id": "evo-20260501-8bc5a8",
+    "date": "2026-05-01",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 文章 +2 篇"
+    "emoji": "🧬",
+    "title": "每日进化: 文章 +2 篇",
+    "detail": "每日进化: 文章 +2 篇"
   },
   {
-    "date": "2026-05-01 13:15",
+    "id": "evo-20260501-b2f1b7",
+    "date": "2026-05-01",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成",
-    "slug": "unity-catalog-ai"
+    "emoji": "✍️",
+    "title": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成",
+    "detail": "AI 生成文章: Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成"
   },
   {
-    "date": "2026-05-01 13:05",
+    "id": "evo-20260501-67c74a",
+    "date": "2026-05-01",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性",
-    "slug": "apache-airflow-3x-task-sdkasset-partitioning"
+    "emoji": "✍️",
+    "title": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性",
+    "detail": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性"
   },
   {
-    "date": "2026-05-01 12:19",
+    "id": "evo-20260501-67c74a-4bb1",
+    "date": "2026-05-01",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性",
-    "slug": "apache-airflow-3x-task-sdkasset-partitioning"
+    "emoji": "✍️",
+    "title": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性",
+    "detail": "AI 生成文章: Apache Airflow 3.x 社区进展：Task SDK、Asset Partitioning 与调度新特性"
   },
   {
-    "date": "2026-04-30 22:36",
+    "id": "evo-20260430-bae93a",
+    "date": "2026-04-30",
     "type": "daily",
-    "agent": "B1→B2→B3→B4→B6→B7→B8→B9→B5",
-    "message": "每日进化: 声浪 +3 条，文章 +2 篇，模型 +2 个，实验室: 实验室课题: GaussianLSS：高斯深度不确定性BEV感知；实验室课题: DualDiff：双分支扩散驾驶场景生成；量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监"
+    "emoji": "🧬",
+    "title": "每日进化: 声浪 +3 条，文章 +2 篇，模型 +2 个，实验室: 实验室课题: GaussianLSS：高斯深度不确定性BEV感知；实验室课题: DualD",
+    "detail": "每日进化: 声浪 +3 条，文章 +2 篇，模型 +2 个，实验室: 实验室课题: GaussianLSS：高斯深度不确定性BEV感知；实验室课题: DualDiff：双分支扩散驾驶场景生成；量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监"
   },
   {
-    "date": "2026-04-30 22:36",
+    "id": "evo-20260430-811786",
+    "date": "2026-04-30",
     "type": "quant-update",
-    "agent": "B9",
-    "message": "量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监会深化程序化交易监管，A股高频量化成交占比已从30%压缩至20%。"
+    "emoji": "📋",
+    "title": "量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监会深化程序化交易监管，A股高频量化成交占比已从30%压缩至20%。",
+    "detail": "量化动态: 幻方量化旗下DeepSeek拟启动首轮外部融资，估值或超百亿美元；与此同时，证监会深化程序化交易监管，A股高频量化成交占比已从30%压缩至20%。"
   },
   {
-    "date": "2026-04-30 22:23",
+    "id": "evo-20260430-ba94c6",
+    "date": "2026-04-30",
     "type": "infra-check",
-    "agent": "B6",
-    "message": "B6 Infra 版本检查完成（原始响应解析失败）"
+    "emoji": "📋",
+    "title": "B6 Infra 版本检查完成（原始响应解析失败）",
+    "detail": "B6 Infra 版本检查完成（原始响应解析失败）"
   },
   {
-    "date": "2026-04-30 21:55",
+    "id": "evo-20260430-0a81d9",
+    "date": "2026-04-30",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: RAG 2.0：从朴素检索到自适应知识增强",
-    "slug": "rag-20"
+    "emoji": "✍️",
+    "title": "AI 生成文章: RAG 2.0：从朴素检索到自适应知识增强",
+    "detail": "AI 生成文章: RAG 2.0：从朴素检索到自适应知识增强"
   },
   {
-    "date": "2026-04-30 21:53",
+    "id": "evo-20260430-c2c42c",
+    "date": "2026-04-30",
     "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: MoE 架构革命：DeepSeek-V3 如何用 1/10 成本击败 GPT-4",
-    "slug": "moe-deepseek-v3-110-gpt-4"
+    "emoji": "✍️",
+    "title": "AI 生成文章: MoE 架构革命：DeepSeek-V3 如何用 1/10 成本击败 GPT-4",
+    "detail": "AI 生成文章: MoE 架构革命：DeepSeek-V3 如何用 1/10 成本击败 GPT-4"
   },
   {
-    "date": "2026-04-30 20:21",
+    "id": "evo-20260430-ecb477",
+    "date": "2026-04-30",
     "type": "daily",
-    "agent": "B1→B2→B5",
-    "message": "每日进化: 声浪 +3 条，文章 +1 篇"
+    "emoji": "🧬",
+    "title": "每日进化: 声浪 +3 条，文章 +1 篇",
+    "detail": "每日进化: 声浪 +3 条，文章 +1 篇"
   },
   {
-    "date": "2026-04-30 20:21",
-    "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM",
-    "slug": "llm-vllm-vs-sglang-vs-tensorrt-llm"
-  },
-  {
-    "date": "2026-04-30 20:19",
-    "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性",
-    "slug": "mlflow-3x-tracingai-gateway-genai"
-  },
-  {
-    "date": "2026-04-30 20:12",
-    "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Apache Iceberg 社区进展：新版本特性、性能优化与生态集成",
-    "slug": "apache-iceberg"
-  },
-  {
-    "date": "2026-04-30 19:53",
-    "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性",
-    "slug": "kubernetes-ai-infra-gpu-ai"
-  },
-  {
-    "date": "2026-04-30 19:46",
-    "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性",
-    "slug": "mlflow-3x-tracingai-gateway-genai"
-  },
-  {
-    "date": "2026-04-30 19:40",
-    "type": "article",
-    "agent": "研究员→编辑→审校员",
-    "message": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM",
-    "slug": "llm-vllm-vs-sglang-vs-tensorrt-llm"
-  },
-  {
-    "id": 224,
-    "date": "2026-04-30",
-    "type": "news",
-    "title": "声浪 +6 条：Gemma 4 VLA 边缘部署/Ray 2.55.1/MLflow RC/DenseOn-LateOn/KV Cache 全景/OpenRA-RL",
-    "detail": "第38轮迭代 B1 新闻编辑员：新增 6 条声浪（NVIDIA Gemma 4 VLA Jetson Demo、Ray 2.55.1 发布、MLflow v3.12.0 RC、LightOn DenseOn-LateOn 检索融合、KV Cache 优化工程实践、OpenRA-RL 机器人 RL 框架），所有链接已验证可用"
-  },
-  {
-    "id": 225,
-    "date": "2026-04-30",
-    "type": "news",
-    "title": "全行业动态 +6 条：边缘 AI/分布式框架/MLOps/检索技术/推理优化/机器人 RL",
-    "detail": "第38轮迭代 B1 新闻编辑员：全行业动态新增 6 条，覆盖 NVIDIA 边缘 AI 部署、Ray/MLflow 开源生态更新、LightOn 检索创新、KV Cache 工程实践、OpenRA-RL 具身智能框架"
-  },
-  {
-    "id": 226,
+    "id": "evo-20260430-b8fb45",
     "date": "2026-04-30",
     "type": "article",
-    "title": "文章 +1 篇：KV Cache 优化工程实践全景——从 PagedAttention 到 MLA 的部署指南",
-    "detail": "第38轮迭代 B2 内容编辑员：新增深度技术文章，系统梳理 KV Cache 显存瓶颈、架构层面压缩（GQA/MQA/MLA）、工程层面优化（PagedAttention/Prefix Caching/Chunked Prefill/FP8 量化/Speculative Decoding）、前沿方向（NSA/StreamingLLM/Offloading）及选型决策矩阵"
+    "emoji": "✍️",
+    "title": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM",
+    "detail": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM"
   },
   {
-    "id": 227,
+    "id": "evo-20260430-898a2a",
+    "date": "2026-04-30",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性",
+    "detail": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性"
+  },
+  {
+    "id": "evo-20260430-bb7140",
+    "date": "2026-04-30",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "AI 生成文章: Apache Iceberg 社区进展：新版本特性、性能优化与生态集成",
+    "detail": "AI 生成文章: Apache Iceberg 社区进展：新版本特性、性能优化与生态集成"
+  },
+  {
+    "id": "evo-20260430-ef2761",
+    "date": "2026-04-30",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性",
+    "detail": "AI 生成文章: Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性"
+  },
+  {
+    "id": "evo-20260430-898a2a-3018",
+    "date": "2026-04-30",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性",
+    "detail": "AI 生成文章: MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性"
+  },
+  {
+    "id": "evo-20260430-b8fb45-1f6a",
+    "date": "2026-04-30",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM",
+    "detail": "AI 生成文章: LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM"
+  },
+  {
+    "id": "evo-20260430-48cc6b",
+    "date": "2026-04-30",
+    "type": "news",
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
+  },
+  {
+    "id": "evo-20260430-48cc6b-d41d",
+    "date": "2026-04-30",
+    "type": "news",
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
+  },
+  {
+    "id": "evo-20260430-48cc6b-d41d",
+    "date": "2026-04-30",
+    "type": "article",
+    "emoji": "✍️",
+    "title": " 执行",
+    "detail": ""
+  },
+  {
+    "id": "evo-20260430-48cc6b-d41d",
     "date": "2026-04-30",
     "type": "system",
-    "title": "第38轮 ABCDE 流水线完整执行（B1→B2→B3→B5→C→D）",
-    "detail": "2026-04-30 完整迭代：B1 声浪+6/全行业动态+6 · B2 文章+1 · B3 模型库确认无新增 · B5 进化日志更新 · C 质检 · D 发布推送"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0220",
-    "date": "2026-04-29 11:16",
+    "id": "evo-20260429-a6ca91",
+    "date": "2026-04-29",
     "type": "system",
-    "title": "B5 系统编辑员：第37轮补充迭代完成（2026-04-29），修复全行业动态内容 + 补充 B4/B6 执行 + 强化提示词",
-    "detail": "修复全行业动态 2026-04-29 的 4 条错误内容（AI技术信号→公司级商业动态）。补充执行 B4（创业雷达更新3个方向信号+新增id=19开源大模型API平台方向）和 B6（strategy-data.js 平台生态战略新增开源生态信号）。强化 B1 提示词全行业动态区分规则（3关过滤机制）。更新日常执行顺序说明（明确每日必须执行角色）。修复 IdeaRadar.js 语法错误（函数定义行被截断）。前端恢复 HTTP 200。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0219",
-    "date": "2026-04-29 11:10",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "system",
-    "title": "B4 数据编辑员：创业雷达更新 3 个方向信号日期 + 新增第 19 个方向「开源大模型 API 商业化平台」",
-    "detail": "IdeaRadar.js 更新：id=1（AI代码审查）信号日期→2026-04-29，id=17（AI深度研究）信号日期→2026-04-29+Perplexity $140亿融资，id=18（端侧AI）信号日期→2026-04-29+Qwen3小模型。新增 id=19「开源大模型 API 商业化平台」（🔥🔥爆发，$15B+市场，Qwen3/Llama 4 Scout 开源催生中间层需求）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0218",
-    "date": "2026-04-29 11:08",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "system",
-    "title": "B6 Infra 编辑员：strategy-data.js 平台生态战略新增开源生态信号（Qwen3/Llama 4 Scout）",
-    "detail": "strategy-data.js GLOBAL_BREAKOUT 平台生态战略 signals 追加 2026-04-29 开源生态信号：Qwen3 全系列开源+Meta Llama API 商业化，开源模型托管正在成为新的平台入口。lastUpdated 更新为 2026-04-29。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0217",
-    "date": "2026-04-29 11:05",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "system",
-    "title": "提示词优化：B1 全行业动态区分规则强化（3关过滤机制）+ 日常执行顺序明确化",
-    "detail": "ai-wiki.md 两处更新：①B1 提示词全行业动态任务 2 重写，加入「3关过滤机制」（标题测试/声浪去重/商业价值测试），用表格对比两个模块的本质区别，增加正确/错误示例各5条；②日常执行顺序说明新增表格，明确每日必须执行角色（B1/B2/B3/B4/B6/B5/C/D）和每周可选角色（B7/B8/B9），防止只执行B1/B2/B3就结束。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0216",
-    "date": "2026-04-29 11:02",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "news",
-    "title": "B1 新闻编辑员：修复全行业动态 2026-04-29 内容（4条AI技术信号→公司级商业动态）",
-    "detail": "将错误写入全行业动态的 4 条 AI 技术信号（Qwen3开源/Claude 4发布/豆包降价/Llama 4 Scout开源）替换为真正的公司级商业动态：阿里云DashScope降价策略、微软Build 2026企业平台发布、Anthropic企业版ARR $8亿、字节豆包商业化MAU 2000万、Meta Llama API商业化平台战略。"
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0215",
-    "date": "2026-04-29 10:52",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "system",
-    "title": "B5 系统编辑员：第37轮迭代完成（2026-04-29），B1/B2/B3 全角色执行完毕",
-    "detail": "声浪 +6 条（Qwen3全系列开源/微软Build预告/Claude 4降价/豆包降价80%/Llama 4 Scout开源/数据要素流通指引）。全行业动态 +7 条（2026-04-29）。文章 +1 篇（Qwen3全系列深度解析）。模型库 +2（Qwen3-235B-A22B/Llama 4 Scout），共 56 个。benchmarks.json 综合榜+性价比榜各 +1 条。ArchEvolution.js TIMELINE +2 条。ai-wiki.md 同步更新。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0214",
-    "date": "2026-04-29 10:50",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "system",
-    "title": "B3 模型编辑员：模型库 +2（Qwen3-235B-A22B / Llama 4 Scout），排行榜更新，架构演进 +2 条",
-    "detail": "models.json +2（Qwen3-235B-A22B 细粒度MoE+双模式推理 / Llama 4 Scout 10M上下文开源多模态），共 56 个。benchmarks.json 综合榜加入 Llama 4 Scout（rank 12），性价比榜加入 Qwen3-235B-A22B Self-hosted（rank 11）。ArchEvolution.js TIMELINE 新增 Qwen3全系列开源（双模式推理）和 Llama 4 Scout（10M上下文）两条记录，更新至 2026-04-29。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0213",
-    "date": "2026-04-29 10:48",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "article",
-    "title": "B2 内容编辑员：文章 +1 篇（Qwen3全系列开源深度解析）",
-    "detail": "新增文章：qwen3-full-series-opensource-analysis-2026-04-29.md（Qwen3 235B MoE架构解析 / 双模式推理机制 / 基准测试对比 / 开源生态影响 / 部署指南）。文章总计 88 篇。"
+    "emoji": "✍️",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0212",
-    "date": "2026-04-29 10:45",
+    "id": "evo-20260429-a6ca91-d41d",
+    "date": "2026-04-29",
     "type": "news",
-    "title": "B1 新闻编辑员：声浪 +6 条（2026-04-29），全行业动态 +7 条（第37轮）",
-    "detail": "声浪新增：Qwen3全系列开源（235B MoE旗舰登顶）、微软Build 2026预告（Copilot+ PC接入GPT-5.5）、Claude 4系列发布（Sonnet 4编码超Opus 3.7/降价40%）、字节豆包API降价80%、Meta Llama 4 Scout开源（10M上下文）、国家数据局AI数据要素流通指引。全行业动态 +7 条（Qwen3开源/微软Build/Claude 4/豆包降价/Llama 4 Scout/数据要素指引/Cognition AI融资）。"
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0211",
-    "date": "2026-04-28 10:38",
+    "id": "evo-20260428-446f70",
+    "date": "2026-04-28",
     "type": "system",
-    "title": "B5 系统编辑员：第36轮迭代完成（2026-04-28），B1 全角色执行完毕",
-    "detail": "声浪 +6 条（OpenAI IPO落空/GitHub Copilot按量计费/欧盟AI监管/摩尔线程国产GPU/Adobe Firefly/DeepSeek人才流失）。全行业动态 +7 条（2026-04-28）。修复 IndustryNewsFeed.js CATEGORIES 新增 industry 分类。优化全行业动态提示词（区分行业影响视角 vs AI技术视角）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0210",
-    "date": "2026-04-28 10:35",
+    "id": "evo-20260428-446f70-d41d",
+    "date": "2026-04-28",
     "type": "news",
-    "title": "B1 新闻编辑员：声浪 +6 条（2026-04-28），全行业动态 +7 条，修复 industry 分类",
-    "detail": "声浪新增：OpenAI IPO目标落空、GitHub Copilot按量计费、欧盟DMA要求安卓开放AI、摩尔线程国产GPU量产、Adobe Firefly AI助手公测、DeepSeek核心骨干离职。全行业动态新增7条（行业影响视角）。CATEGORIES 新增 industry 分类修复14条孤立条目。"
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0209",
-    "date": "2026-04-28 10:30",
+    "id": "evo-20260428-446f70-d41d",
+    "date": "2026-04-28",
     "type": "system",
-    "title": "B3 模型编辑员：新增 HunyuanVideo / Hunyuan3D 2.0 / Hunyuan3D 2.1 三个模型，新增视频生成和3D生成排行榜",
-    "detail": "models.json +3（HunyuanVideo 13B开源SOTA / Hunyuan3D 2.0 CMMD 3.193最低 / Hunyuan3D 2.1 PBR材质）。benchmarks.json +2（视频生成榜🎬 / 3D生成榜🧊，全部真实数据）。BenchmarkBoard.js 新增 video/3d 颜色和专属列。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0204",
-    "date": "2026-04-27 11:07",
+    "id": "evo-20260427-19a35c",
+    "date": "2026-04-27",
     "type": "system",
-    "title": "B5 系统编辑员：第33-35轮迭代完成（04-25/04-26/04-27三天补录），全角色执行完毕",
-    "detail": "声浪 131 条 / 文章 87 篇 / 进化日志 211 条。全角色执行：B1/B2/B3/B4/B6/B7/B8 均已完成。B9 本周无重大量化/实验室新信号，跳过。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0205",
-    "date": "2026-04-27 11:06",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "system",
-    "title": "B8 战略编辑员：GLOBAL_BREAKOUT 三策略各 +1-2 条 2026-04 最新信号（DeepSeek融资/端侧AI/深度研究Agent）",
-    "detail": "strategy-data.js 三个策略新增信号：Palantir策略+DeepSeek融资信号，垂直AI策略+端侧AI信号，平台生态策略+深度研究Agent信号。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0206",
-    "date": "2026-04-27 11:05",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "system",
-    "title": "B7 VLA 编辑员：VLA 时间线 +1 条（混元3D 2.0 / Seed3D 2.0，3D世界模型走向可交互仿真）",
-    "detail": "VlaArchViz.js 时间线加入 2026-04 条目：混元3D世界模型2.0（物理仿真+可交互）和 Seed3D 2.0（视频转3D），标志3D世界模型从生成走向可交互仿真，为VLA训练提供更真实虚拟环境。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0207",
-    "date": "2026-04-27 11:04",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "system",
-    "title": "B6 Infra 编辑员：K8s 版本更新至 1.36.0（DRA GA），data-infra-data.js 组件描述更新",
-    "detail": "data-infra-data.js components 中 Kubernetes 版本从 1.29 更新为 1.36.0，描述加入 DRA GA 信息（GPU 细粒度分片调度正式成熟）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0208",
-    "date": "2026-04-27 11:03",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "system",
-    "title": "B4 数据编辑员：创业雷达 +2 方向（AI深度研究工具 id=17 / 端侧AI手机模型 id=18）",
-    "detail": "IdeaRadar.js 新增 id=17「AI深度研究工具」（🔥🔥爆发，$30B+市场）和 id=18「端侧AI手机模型」（🔥热点，$20B+市场）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0209",
-    "date": "2026-04-27 11:02",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "system",
-    "title": "B3 模型编辑员：综合榜单 +1（Kimi K2.6），性价比榜单 +1（Qwen3.6-35B-A3B），架构演进时间线 +2 条",
-    "detail": "benchmarks.json 综合榜单加入 Kimi K2.6（rank 8，score 90.2），性价比榜单加入 Qwen3.6-35B-A3B Self-hosted（rank 4）。ArchEvolution.js TIMELINE 新增 Qwen3.6-35B-A3B（MoE专家池扩展）和 Gemini 3.1 Pro 深度研究代理（多源并行检索Agent架构）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0210",
-    "date": "2026-04-27 11:01",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "article",
-    "title": "B2 内容编辑员：三天文章 +3 篇（Qwen3.6-35B-A3B解析/Gemini深度研究代理/DeepSeek融资分析）",
-    "detail": "文章总计 87 篇。qwen36-35b-a3b-moe-analysis-2026-04-25.md（MoE扩展边际收益规律）、gemini-31-pro-deep-research-agent-2026-04-26.md（深度研究Agent架构）、deepseek-first-funding-commercialization-2026-04-27.md（$500亿融资商业化路径）。"
+    "emoji": "✍️",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0211",
-    "date": "2026-04-27 11:00",
+    "id": "evo-20260427-19a35c-d41d",
+    "date": "2026-04-27",
     "type": "news",
-    "title": "B1 新闻编辑员：三天声浪补录 +15 条（04-25/04-26/04-27），IndustryNewsFeed 第33/34/35轮 +15 条",
-    "detail": "声浪总计 131 条。04-25: Seed3D 2.0/MiMo-V2.5/Qwen3.6-35B-A3B/蚂蚁灵光3000万/混元3D 2.0。04-26: ChatGPT Images 2.0/Gemini 3.1 Pro深度研究/Ling-2.6-flash/谷歌云AI战略/Perplexity Mac。04-27: Kimi K2.6/腾讯QClaw出海/Claude Design/DeepSeek融资/SWE-bench饱和。"
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0199",
-    "date": "2026-04-24 20:14",
+    "id": "evo-20260424-f9ad57",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "B7/B8 编辑员：VLA 时间线 +1 条（Alpamayo-R1/π₀.5），战略分析 +3 条 2026-04 信号（DeepSeek-V4/特斯拉豆包/Cognition）",
-    "detail": "VlaArchViz.js 时间线加入 2026 Q2 条目。strategy-data.js GLOBAL_BREAKOUT 三个策略各追加一条 2026-04 最新信号，lastUpdated 更新为 2026-04-24。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0200",
-    "date": "2026-04-24 20:13",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "B4 数据编辑员：创业雷达新增「AI 编码 Agent」方向（Cognition $250B / Cursor $60B / Sierra）",
-    "detail": "IdeaRadar.js 新增 id=16，dev-tools 分组，signal 🔥🔥 爆发，市场规模 $50B+，列出 Cognition/Cursor/Windsurf/Sierra 四家对标公司。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0201",
-    "date": "2026-04-24 20:12",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "article",
-    "title": "B2 内容编辑员：新文章《Qwen3.6-27B 深度解析：轻量 MoE + 思维链切换，开源模型的新范式》",
-    "detail": "文章约 1500 字，覆盖架构创新（MoE 3B激活/27B总参）、思维链无缝切换、性能对比（vs GPT-4o mini / Claude 3.5 Haiku）、与 DeepSeek-V4 flash 对比、开源生态影响。"
+    "emoji": "✍️",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0202",
-    "date": "2026-04-24 20:11",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "news",
-    "title": "B1 新闻编辑员：IndustryNewsFeed 第32轮 +5 条（Qwen3.6-27B / Claude Opus 4.7 / K8s v1.36.0 / Ray 2.55.1 / 特斯拉豆包）",
-    "detail": "IndustryNewsFeed.js 新增 id 2708-2712，全行业动态总计 172 条。"
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0203",
-    "date": "2026-04-24 20:10",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "B3 模型编辑员：架构演进时间线 +2 条（Qwen3.6-27B / Claude Opus 4.7），性价比榜单 +1 条（Qwen3.6-27B 开源）",
-    "detail": "ArchEvolution.js TIMELINE 新增 Qwen3.6-27B（轻量MoE+思维链切换）和 Claude Opus 4.7（SWE-bench 87.6%）。benchmarks.json 性价比榜单加入 Qwen3.6-27B Self-hosted（value_score 99.0，开源免费）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0196",
-    "date": "2026-04-24 19:47",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "B5 系统编辑员：第32轮迭代启动，今日新增声浪 6 条，Infra 版本更新 1 项",
-    "detail": "本轮执行角色：B1（新闻）+ B6（Infra）。模型库已有 Claude Opus 4.7 / Qwen3.6-27B / DeepSeek-V4，无需重复写入。待完成：全站搜索（P0）、AI 芯片 Tab（P0）。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0197",
-    "date": "2026-04-24 19:46",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "B6 Infra 编辑员：更新 Ray 版本至 2.55.1（最新），K8s v1.36.0 DRA GA 信息写入声浪",
-    "detail": "data-infra-data.js Ray version 字段从 '2.x' 更新为 '2.55.1（最新）'。K8s v1.36.0 DRA（Dynamic Resource Allocation）进入 GA，GPU 细粒度调度能力增强。"
+    "emoji": "🤖",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "log-0198",
-    "date": "2026-04-24 19:45",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "news",
-    "title": "B1 新闻编辑员：写入今日声浪 6 条（Ray 2.55.1 / K8s v1.36.0 / DeepSeek-V4 / Qwen3.6-27B / Claude Opus 4.7 / 特斯拉豆包）",
-    "detail": "声浪总计 116 条。来源：GitHub Releases（Ray/K8s）、DeepSeek 官网、Qwen Blog、Anthropic 官网、AIbase 日报。全部链接验证通过（200）。"
+    "emoji": "📡",
+    "title": " 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-publisher-01",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "角色 D 发布员：质检通过，前端验证正常，提交推送完成",
-    "description": "质检结论：声浪/全行业动态/模型/文章链接抽查通过（openai.com 403 为正常防爬虫），JSON 格式完整（声浪 110 条、模型 72 个、进化日志 194 条）。前端服务重启后 HTTP 200 正常。ai-wiki.md 已同步更新数据快照（2026-04-24）。代码已 commit 并推送至 origin/github 双远程。",
-    "date": "2026-04-24 14:15",
-    "agent": "publisher-v1"
+    "emoji": "🤖",
+    "title": "publisher-v1 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-designer-01",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "角色 E 设计师扫描完成：发现 GPT-5.5/DeepSeek-v4 双发布 + AI 编码 Agent 赛道爆发 + AI 芯片格局生变",
-    "description": "设计师完成四维度扫描：① GitHub 新增 google/adk-python + deepseek-ai/DeepSeek-V4 追踪；② 盲区发现 AI 芯片/硬件、AI 编码 Agent、AI 视频生成三大严重缺失方向；③ 模块建议新增 AI 编码 Agent 对比矩阵（P0）和 AI 芯片追踪（P0）；④ 信息源新增 DeepSeek 官网、OpenAI Blog、Cognition AI Blog。SITE_ROADMAP 已全面更新。",
-    "date": "2026-04-24 11:10",
-    "agent": "designer-v1"
+    "emoji": "🤖",
+    "title": "designer-v1 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-dispatch-01",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "角色 F 调度员分配本轮任务：GPT-5.5 模型补充 + AI 编码 Agent 文章 + Navbar 清理",
-    "description": "sprintPlan 已更新。编辑员任务：① 补充 GPT-5.5 + DeepSeek-v4-flash/pro 三个模型卡片；② 写 AI 编码 Agent 赛道分析文章。发布员任务：① 删除 Navbar.js 遗留文件。采集重点：GPT-5.5/DeepSeek-v4 发布动态 + AI 编码 Agent + AI 芯片。",
-    "date": "2026-04-24 11:12",
-    "agent": "dispatcher-v1"
+    "emoji": "🤖",
+    "title": "dispatcher-v1 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-editor-01",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "news",
-    "title": "声浪新增 8 条：GPT-5.5 / DeepSeek-v4 / Cognition $250B / Google TPU v8 / Sierra 收购 / 混元新模型 / 可灵 4K / Tesla $25B",
-    "description": "news-feed.json 头部新增 8 条声浪，覆盖今日三大重磅：GPT-5.5 发布（HN 热度 1148）、DeepSeek-v4 接口上线（flash+pro 双版本）、Cognition AI $250B 估值。同时覆盖 Google TPU v8、Sierra 收购 Fragment、腾讯混元新模型、可灵 AI 3.0 原生 4K、Tesla $25B 资本开支。",
-    "date": "2026-04-24 11:15",
-    "agent": "editor-sprint02"
+    "emoji": "📡",
+    "title": "editor-sprint02 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-editor-02",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "model",
-    "title": "模型中心新增 3 个模型：GPT-5.5 + DeepSeek-v4-flash + DeepSeek-v4-pro",
-    "description": "models.json 新增 3 个模型卡片，执行 sprintPlan.editorTasks[0]。GPT-5.5（OpenAI 最新旗舰，迈向超级应用）、DeepSeek-v4-flash（高性价比推理）、DeepSeek-v4-pro（国产旗舰对标 GPT-5.5）。模型总数从 72 增至 75。",
-    "date": "2026-04-24 11:18",
-    "agent": "editor-sprint02"
+    "emoji": "🏛️",
+    "title": "editor-sprint02 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-editor-03",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "article",
-    "title": "新增文章：AI 编码 Agent 赛道爆发——Devin $250B 估值，谁在重新定义软件开发？",
-    "description": "执行 sprintPlan.editorTasks[1]。新增 content/articles/ai-coding-agent-boom-2026-04-24.md，约 2000 字，深度分析五大 AI 编码 Agent 玩家（Devin/Cursor/Claude Code/Windsurf/Copilot）的技术路线、商业模式和竞争格局。",
-    "date": "2026-04-24 11:20",
-    "agent": "editor-sprint02"
+    "emoji": "✍️",
+    "title": "editor-sprint02 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260424-bugfix-01",
+    "id": "evo-20260424-f9ad57-d41d",
+    "date": "2026-04-24",
     "type": "system",
-    "title": "修复首页「最近进化」日志文字为空的 Bug",
-    "description": "首页 page.js 进化日志区块使用 log.message 字段渲染，但 evolution-log.json 中实际字段名为 title。已修复为 log.title || log.message || '(无标题)' 兼容处理，同时补充了 model 和 system 类型的图标映射。",
-    "date": "2026-04-24 11:08",
-    "agent": "editor-sprint02"
+    "emoji": "🤖",
+    "title": "editor-sprint02 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-sprint01-01",
+    "id": "evo-20260423-84353e",
+    "date": "2026-04-23",
     "type": "system",
-    "title": "新增角色 F 调度员，首轮 sprintPlan 分配完成",
-    "description": "流水线升级为 F→A→B→C→D。调度员读取 SITE_ROADMAP 全量数据，为本轮分配：编辑员补充 4 个模型卡片 + 写 Agent 专题文章；发布员删除 Navbar.js + StrategyViz 懒加载；采集员重点覆盖 Agent 生态和国产模型。sprintPlan 已写入 strategy-data.js。",
-    "date": "2026-04-23 22:30",
-    "agent": "dispatcher-v1"
+    "emoji": "🤖",
+    "title": "dispatcher-v1 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-sprint01-02",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "news",
-    "title": "声浪新增 8 条：Google ADK / Workspace AI / OpenAI-Infosys / 华为 ADS5 等",
-    "description": "news-feed.json 头部新增 8 条声浪，重点覆盖调度员指定的 Agent 生态方向（Google ADK 开源、Workspace AI、OpenAI-Infosys 合作、华为鸿蒙座舱智能体）和自动驾驶（华为 ADS5、千里科技 46 万装车量）。所有 URL 已通过 curl 验证，状态码均为 200。",
-    "date": "2026-04-23 22:35",
-    "agent": "editor-sprint01"
+    "emoji": "📡",
+    "title": "editor-sprint01 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-sprint01-03",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "news",
-    "title": "全行业动态新增 6 条：Google Cloud Next / OpenAI-Infosys / 千里科技 / Anthropic 欧洲 / 华为双发布 / GPU 短缺",
-    "description": "IndustryNewsFeed.js NEWS_DATA 头部新增 6 条全行业动态（第 30 轮更新），覆盖 cloud/software/startup/market 4 个分类，国内外各半。",
-    "date": "2026-04-23 22:38",
-    "agent": "editor-sprint01"
+    "emoji": "📡",
+    "title": "editor-sprint01 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-sprint01-04",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "model",
-    "title": "模型中心新增 4 个模型：Gemini 2.5 Pro/Flash + Claude 4 Opus/Sonnet",
-    "description": "models.json 新增 4 个模型卡片，执行 sprintPlan.editorTasks[0]。Gemini 2.5 Pro（1M 上下文推理旗舰）、Gemini 2.5 Flash（高性价比推理）、Claude 4 Opus（SWE-bench 72.5% 编程最强）、Claude 4 Sonnet（主力开发模型）。模型总数从 65 增至 69。",
-    "date": "2026-04-23 22:40",
-    "agent": "editor-sprint01"
+    "emoji": "🏛️",
+    "title": "editor-sprint01 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-sprint01-05",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "article",
-    "title": "新增文章：2026 企业 Agent 平台四强对比（OpenAI/Google/AWS/MS）",
-    "description": "执行 sprintPlan.editorTasks[1]。新增 content/articles/enterprise-agent-platforms-2026-04-23.md，约 2500 字，从架构、能力、生态、定价四维度对比四大企业 Agent 平台。这是 Agent 生态专题的第 1/3 批次。",
-    "date": "2026-04-23 22:42",
-    "agent": "editor-sprint01"
+    "emoji": "✍️",
+    "title": "editor-sprint01 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-abcde-05",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "news",
-    "title": "声浪新增 3 条 Qwen3.6 系列：27B/35B-A3B/Max-Preview",
-    "description": "news-feed.json 头部新增 3 条 Qwen 官方研究动态，来自 https://qwen.ai/research（已通过浏览器验证）。覆盖 Qwen3.6-27B 开源（Agent 编程旗舰级）、Qwen3.6-35B-A3B MoE 开源（35B 总参数仅激活 3B）、Qwen3.6-Max-Preview 专有预览版。日期分别为 2026-04-22/04-18/04-15，均已存在于官网。",
-    "date": "2026-04-23 19:18",
-    "agent": "editor-abcde"
+    "emoji": "📡",
+    "title": "editor-abcde 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-abcde-06",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "model",
-    "title": "模型中心新增 4 个 Qwen 模型：3.6-27B/3.6-35B-A3B/3.6-Max-Preview/3.5-Omni",
-    "description": "models.json 新增 4 个 2026 年 Qwen 新模型条目，补全模型中心数据。Qwen3.6-27B（多模态密集 27B）、Qwen3.6-35B-A3B（MoE 35B/3B active）、Qwen3.6-Max-Preview（专有密集，未公开参数）、Qwen3.5-Omni（全模态 Hybrid-Attention MoE，256K 上下文）。模型总数从 61 增至 65。",
-    "date": "2026-04-23 19:18",
-    "agent": "editor-abcde"
+    "emoji": "🏛️",
+    "title": "editor-abcde 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-abcde-07",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "system",
-    "title": "工具箱重构：去掉 MCP/AI编程工具/Prompt 模板，新增仿真工具导航",
-    "description": "tools/page.js 重构：删除 MCP 目录、AI 编程工具对比矩阵、Prompt 模板库三个 Tab，新增「仿真工具」Tab，收录 17 个主流仿真平台（CARLA/Waymax/Isaac Sim/Genesis/MuJoCo/Taichi 等），覆盖自动驾驶仿真、机器人仿真、神经世界模型、物理仿真、在线交互仿真五大方向。工具箱从 4 Tab 精简为 2 Tab（仿真工具 + Tokenizer）。",
-    "date": "2026-04-23 17:37",
-    "agent": "editor-abcde"
+    "emoji": "🤖",
+    "title": "editor-abcde 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-book-new",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "book",
-    "title": "新增《物理大模型前沿：从 VLA 到世界模型》全书 7 章",
-    "description": "新增完整书籍《物理大模型前沿：从 VLA 到世界模型》共 7 章，覆盖：第1章物理大模型概论（三次范式跃迁、VLA/世界模型/RL 三大支柱）、第2章 VLA 模型深度解析（RT-2/OpenVLA/π₀ 架构与训练）、第3章世界模型（DreamerV3/GAIA-1/Cosmos）、第4章强化学习（Sim-to-Real/Eureka 自动奖励设计）、第5章自动驾驶前沿（端到端方案/产业格局）、第6章机器人具身智能（灵巧操作/人形机器人/数据飞轮）、第7章无人机自主飞行（视觉导航/城市物流/多机协同）。全书引用 40+ 篇真实 arXiv 论文和 10+ 个开源项目，所有链接经 curl 验证返回 200。",
-    "date": "2026-04-23 17:20",
-    "agent": "editor-v2"
+    "emoji": "📖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-prompt",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "system",
-    "title": "采集员提示词新增「日期覆盖当天」硬性要求",
-    "description": "在角色 A 采集员提示词中新增「⏰ 日期覆盖硬性要求」章节，明确规定声浪和全行业动态的 date 字段必须覆盖到执行当天，禁止出现「提交日期是 4/23 但最新声浪只到 4/22」的情况。采集员输出草稿前必须自检是否包含当天日期条目。",
-    "date": "2026-04-23 15:40",
-    "agent": "editor-v2"
+    "emoji": "🤖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-news2",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "news",
-    "title": "声浪新增 8 条覆盖 4/23 当天：Anthropic 万亿估值、Google TPU、Tesla FSD",
-    "description": "新增 8 条 AI 声浪，日期全部为 2026-04-23，覆盖：Anthropic 二级市场估值超万亿超越 OpenAI、Google Cloud 新 TPU 芯片对标 NVIDIA、Chrome Gemini 自动浏览、Thinking Machines Lab 数十亿美元协议、马斯克确认 HW3 不支持无监督 FSD、字节 Seed3D 2.0、千寻位置具身时空大脑、Meta 键盘数据训练 AI。所有链接经 curl 验证返回 200。",
-    "date": "2026-04-23 15:40",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-industry2",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "news",
-    "title": "全行业动态新增 8 条覆盖 4/23：id 2537-2544",
-    "description": "IndustryNewsFeed.js 新增 8 条全行业动态（id 2537-2544），覆盖 startup/cloud/software/market/security 5 个分类，国内外各半。热点包括 Anthropic 万亿估值、Google TPU 新芯片、Tesla 250 亿资本支出、Thinking Machines Lab 基础设施协议。",
-    "date": "2026-04-23 15:40",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-news",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "news",
-    "title": "第28轮更新：声浪+全行业动态各新增5条（OpenAI Workspace Agents / Google Cloud Next '26 / Qwen3.6-27B）",
-    "description": "声浪 news-feed.json 新增 5 条（id: news-20260423-01~05），全行业动态 IndustryNewsFeed.js 新增 5 条（id: 2532~2536）。覆盖：OpenAI ChatGPT Workspace Agents 上线、Google Cloud Next '26 第8代TPU+Agent平台+Workspace AI层、阿里 Qwen3.6-27B 开源发布（超越397B MoE）、HuggingFace ml-intern 开源 LLM 后训练 Agent、OpenAI 开源 Euphony 可视化工具。所有链接经 curl 验证 200。",
-    "date": "2026-04-23 11:30",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260423-articles",
+    "id": "evo-20260423-84353e-d41d",
+    "date": "2026-04-23",
     "type": "article",
-    "title": "新增2篇文章：OpenAI Workspace Agents 深度解析 + Google Cloud Next '26 全景",
-    "description": "新增文章：(1) openai-workspace-agents-team-automation-2026.md — 深度解析 OpenAI Workspace Agents 的技术架构、与 Custom GPTs 的差异、Codex 驱动的自动化能力及企业落地路径；(2) google-cloud-next-26-tpu8-agent-platform.md — Google Cloud Next '26 全景报道，覆盖第8代TPU性能、Agent平台架构、Workspace AI层与 Microsoft 的竞争格局分析。",
-    "date": "2026-04-23 11:35",
-    "agent": "editor-v2"
+    "emoji": "✍️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-qa-prompt",
+    "id": "evo-20260422-83f054",
+    "date": "2026-04-22",
     "type": "system",
-    "title": "质检员提示词新增检查 3c（新闻可信性）和检查 3d（模型去重与完整性）",
-    "description": "在质检员提示词中新增两个检查项：(1) 检查 3c「新闻可信性深度校验」——自动比对页面 title 与声浪 title 的关键词重叠、检查 summary 中的数字是否在原文中出现，防止 AI 幻觉编造新闻；(2) 检查 3d「模型数据完整性与去重检查」——自动检测 name/id 重复、必要字段缺失、type 值合法性，防止模型页面报错。",
-    "date": "2026-04-22 11:45",
-    "agent": "editor-v2"
+    "emoji": "🤖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-model-fix",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "system",
-    "title": "修复模型库：删除 VLA-World 重复 + 补充 11 个模型缺失的 id/type/org 字段",
-    "description": "(1) 删除 VLA-World 重复条目（保留 ModelGallery 格式的完整版本）；(2) 为 Qwen3-72B/Llama4-Scout/Claude-Opus-4.5/4.7/NVIDIA-B300/Qwen3-Max/Seed-AD/Llama5-MoE/Dense/Ling-2.6-flash/Kimi-K2.6 共 11 个模型补充 id/type/org 字段，修复点击报错（Application error: client-side exception）。模型总数 60→59。",
-    "date": "2026-04-22 11:40",
-    "agent": "editor-v2"
+    "emoji": "🤖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-models",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "model",
-    "title": "模型库新增 2 个：蚂蚁百灵 Ling-2.6-flash + 月之暗面 Kimi K2.6",
-    "description": "模型库从 58 个扩充至 60 个。新增：(1) Ling-2.6-flash（蚂蚁集团，高性价比推理，日均 100B tokens）；(2) Kimi K2.6（月之暗面，100 万 token 上下文，多模态推理）。两个模型均为 2026 年 4 月最新发布。",
-    "date": "2026-04-22 11:30",
-    "agent": "editor-v2"
+    "emoji": "🏛️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-industry",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "news",
-    "title": "全行业动态新增 10 条：SpaceX-Cursor/Anthropic-Amazon/Mythos/百灵/OneDrive",
-    "description": "IndustryNewsFeed.js 新增 10 条真实新闻（id 2511-2520），覆盖 startup/cloud/security/software/market 五大分类。热点：SpaceX-Cursor $600 亿收购、Anthropic-Amazon $1000 亿云支出、Mythos 安全泄露、蚂蚁百灵 100B tokens。所有 link 经 curl 验证 200。",
-    "date": "2026-04-22 11:25",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-paper",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "paper",
-    "title": "新增 UniSim 2.0 论文详细解读：物理一致性世界模型驱动合成数据",
-    "description": "为 Seed-AD 核心组件 UniSim 2.0 撰写 2000+ 字详细解读。核心突破：10% 真实 + 90% 合成数据达 96% 性能，FID 12.3，物理一致性 94%。覆盖方法（物理约束损失+条件生成+多尺度扩散）、实验结果（5 张对比表）、长尾场景覆盖效果、工程启示。",
-    "date": "2026-04-22 11:20",
-    "agent": "editor-v2"
+    "emoji": "🔬",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-book",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "book",
-    "title": "更新《AI Agent 实战指南》第 7 章：追加 MCP 消费级进展和 Agent 安全新挑战",
-    "description": "在第 7 章末尾追加「最新进展」小节，覆盖：Google Deep Research 集成 MCP（消费级里程碑）、Anthropic Mythos 泄露事件、SpaceX-Cursor 收购、Meta 操作数据训练、蚂蚁百灵 100B tokens 等 Agent 经济学新数据。",
-    "date": "2026-04-22 11:15",
-    "agent": "editor-v2"
+    "emoji": "📖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-articles",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "article",
-    "title": "新增 2 篇深度文章：AI Infra 军备竞赛 + MCP 消费级里程碑",
-    "description": "(1)《AI 基础设施军备竞赛：Anthropic-Amazon $1000 亿云支出协议的经济学解读》——分析循环投资逻辑、三方博弈、对自动驾驶推理成本的影响；(2)《MCP 协议从开发者走向消费级：Google Deep Research 集成 MCP 的里程碑意义》——MCP 采纳时间线、三巨头共识、对自动驾驶 Agent 系统的启示。",
-    "date": "2026-04-22 11:10",
-    "agent": "editor-v2"
+    "emoji": "✍️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260422-news",
+    "id": "evo-20260422-83f054-d41d",
+    "date": "2026-04-22",
     "type": "news",
-    "title": "声浪新增 10 条覆盖 SpaceX-Cursor/Anthropic-Amazon/百灵/Deep Research",
-    "description": "通过 ai-news skill 从 TechCrunch/IT之家/钛媒体获取实时新闻，新增 10 条经 curl 验证的真实新闻。重点：SpaceX-Cursor $600 亿收购选项、Anthropic 获 Amazon $50 亿投资承诺 $1000 亿 AWS 支出、蚂蚁百灵 Ling-2.6-flash 日均 100B tokens、Google Deep Research 集成 MCP、Anthropic Mythos 泄露事件。声浪总量 55→65 条。",
-    "date": "2026-04-22 11:00",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-hn-realtime",
+    "id": "evo-20260421-20bbec",
+    "date": "2026-04-21",
     "type": "news",
-    "title": "声浪扩充至 55 条 + IndustryNewsFeed 修复 8 个坏链接 + HN 实时数据接入",
-    "description": "(1) 通过 ai-news-digest skill 和 Hacker News API 获取实时 AI 新闻，新增 7 条来自 HN 的真实新闻（KV Cache 压缩论文 44pts、Kimi K2.6 发布、MCPfinder、RLMs 范式、uncensored 模型分析 132pts、Qwen3 推理优化 62pts、Agent Web Protocol）；(2) 检查 IndustryNewsFeed.js 全部 23 个链接，发现并修复 8 个 404/403 坏链接；(3) 声浪总量从 48 条扩充至 55 条，4/21 当日 7 条。",
-    "date": "2026-04-21 19:00",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-news-daily",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "news",
-    "title": "声浪大扩充至 48 条：最近一周每日 2-3 条 + 时间线完整覆盖",
-    "description": "重建 news-feed.json 为 48 条，结构：(1) 最近一周每日新闻 21 条（4/14-4/21 每天 2-3 条），覆盖 Qwen3/Claude 4/Kimi-VL/BitNet/vLLM/SGLang/OpenAI Agents SDK/Gemini Robotics/GR00T N1/SpaceR 等；(2) 月度总结 3 条（2026.1-3）；(3) 年度总结 6 条（2020-2025）；(4) 历史重要新闻 18 条。所有 URL 经 curl 验证。",
-    "date": "2026-04-21 18:45",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-news-timeline",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "news",
-    "title": "声浪大扩充：37 条时间线式 AI 声浪，覆盖 2020-2026 年",
-    "description": "重建 news-feed.json 为时间线式结构，共 37 条：(1) 年度总结 6 条（2020-2025），覆盖 GPT-3/ChatGPT/GPT-4/BEVFormer/UniAD/DeepSeek-R1 等里程碑；(2) 月度总结 3 条（2026.1-3），覆盖 R1 爆火/Claude 3.7/Gemini Robotics；(3) 周报 3 条（2026.4 W1-W3），覆盖 Qwen3/MCP/DriveLM/SGLang；(4) 最新动态 25 条，重点自动驾驶 VLA/世界模型 14 条。所有 37 条 URL 经 curl 验证 + arXiv 论文标题交叉核实。",
-    "date": "2026-04-21 17:30",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-news-refresh",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "news",
-    "title": "声浪全量刷新：清理历史数据，重建自动驾驶专题 10 条",
-    "description": "清理 news-feed.json 全部历史条目（原 2093 行），重新写入 10 条以自动驾驶/VLA/世界模型为核心的高质量声浪。覆盖：Gemini Robotics（Google DeepMind VLA）、UniAD（端到端框架 4.5K Star）、UniFuture（清华 4D 世界模型）、DriveLM（图结构 VQA 可解释驾驶）、Vista（通用驾驶世界模型）、GAIA-1（Wayve 9B 世界模型）、CarLLaVA（纯视觉 VLM 驾驶）、Copilot4D（Waabi 无监督世界模型）、Qwen3（MoE 全尺寸开源）、NVIDIA GR00T N1（人形机器人基础模型）。所有 URL 经 curl 验证 + 论文标题交叉核实。",
-    "date": "2026-04-21 17:10",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-08",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "system",
-    "title": "全行业动态新增 10 条：覆盖安全/融资/云/软件/市场 6 大分类",
-    "description": "IndustryNewsFeed.js 头部新增 10 条全行业动态（id 2501-2510），覆盖 Google Wiz $320 亿收购（security）、Anthropic $75 亿 D 轮（startup）、Databricks Agent Framework 2.0（data）、阿里云 PAI-Lingjun 3.0（cloud）、Salesforce Agentforce 2.0 GA（software）、Meta Q1 财报（market）等。国内外各半，热点 3 条。",
-    "date": "2026-04-21 16:20",
-    "agent": "editor-v2"
+    "emoji": "🤖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-07",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "model",
-    "title": "模型数据新增 Llama 5 MoE 1.2T 和 Llama 5 Dense 405B",
-    "description": "在 models.json 追加 Llama 5 双版本：MoE 1.2T（128 专家/16 激活，MMLU-Pro 93.1% 登顶）和 Dense 405B（MMLU-Pro 90.8%）。两者均引入 Mixture-of-Depths 动态层跳过技术，Apache 2.0 完全开源。",
-    "date": "2026-04-21 16:15",
-    "agent": "editor-v2"
+    "emoji": "🏛️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-06",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "paper",
-    "title": "论文解读：Llama 5 Mixture-of-Depths 技术详细解析（2500+ 字）",
-    "description": "新增 Llama 5 论文详细解读（llama5-mod-moe-open-source.md），深度分析 Mixture-of-Depths 动态层跳过的数学形式化、Gumbel-Sigmoid 训练策略、层利用率正则化。消融实验显示 τ=0.3 时跳过 35% 层仅损失 0.2% 精度，速度提升 40%。同步更新 papers-index.json。",
-    "date": "2026-04-21 16:10",
-    "agent": "editor-v2"
+    "emoji": "🔬",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-05",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "book",
-    "title": "书架更新：《推理引擎》第 7 章追加 vLLM 1.0 / MoD / Dynamo 2.0 最新进展",
-    "description": "在 inference-ch07.md 末尾追加「最新进展（2026 年 4 月）」小节，补充 vLLM 1.0 GA（统一 MoE 推理 + 多模态 GA + LoRA 热切换 50ms）、Llama 5 Mixture-of-Depths 动态层跳过、NVIDIA Dynamo 2.0 推理编排（PD 分离调度 + 弹性扩缩 + 多模型混部）三大突破。",
-    "date": "2026-04-21 16:05",
-    "agent": "editor-v2"
+    "emoji": "📖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-04",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "article",
-    "title": "新增文章：Google $320 亿收购 Wiz 云安全格局重塑分析",
-    "description": "新增深度文章 google-wiz-acquisition-cloud-security-landscape-2026-04-21.md（约 1800 字），分析 Wiz 无代理扫描技术护城河、Security Graph 安全知识图谱、CNAPP 一体化平台，以及对 CrowdStrike/Palo Alto 的冲击和中国市场启示。含代码示例和三大云厂商安全能力对比表。",
-    "date": "2026-04-21 16:00",
-    "agent": "editor-v2"
+    "emoji": "✍️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-03",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "article",
-    "title": "新增文章：Llama 5 双版本发布与开源生态冲击波分析",
-    "description": "新增深度文章 llama5-open-source-moe-dense-ecosystem-2026-04-21.md（约 1800 字），分析 Llama 5 MoE 1.2T 的 Mixture-of-Depths 技术创新、128 专家架构、训练基础设施（65536×H200），以及对闭源模型定价、API 市场和中国 AI 产业的连锁冲击。含 vLLM 1.0 部署代码示例。",
-    "date": "2026-04-21 15:55",
-    "agent": "editor-v2"
+    "emoji": "✍️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-02",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "news",
-    "title": "声浪新增 10 条：覆盖 Llama 5 / Wiz 收购 / vLLM 1.0 / Codex Agent 等",
-    "description": "news-feed.json 头部新增 10 条最新 AI 动态（id n2604w35-01 至 n2604w35-10），覆盖 Llama 5 发布（MMLU-Pro 93.1% 登顶）、Google Wiz $320 亿收购、vLLM 1.0 GA、Claude 4.7 Haiku、NVIDIA Dynamo 2.0、Waymo 洛杉矶全域运营、OpenAI Codex Agent、DeepSeek-V4-0421、欧盟 AI Act 执行细则、Databricks Agent Framework 2.0。",
-    "date": "2026-04-21 15:50",
-    "agent": "editor-v2"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260421-daily-01",
+    "id": "evo-20260421-20bbec-d41d",
+    "date": "2026-04-21",
     "type": "system",
-    "title": "提示词格式重写：第七节自动化任务提示词彻底修复 5 类问题",
-    "description": "重写 ai-wiki.md 第七节，修复：① 五反引号包裹解决内部 JSON 代码块嵌套渲染错乱；② 项目路径 maxwell-knowledge→signal 全部修正；③ 质检员路由列表去重并补全 /quant/ /economy/ /gallery/ /benchmarks/；④ shell 命令统一放入 bash 代码块；⑤ 全行业动态分类和质检报告改用表格展示。",
-    "date": "2026-04-21 15:45",
-    "agent": "editor-v2"
+    "emoji": "🤖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260420-evolution-render-fix",
-    "type": "system",
-    "title": "修复进化日志渲染：兼容 title+description 格式",
-    "description": "此前 src/app/evolution/page.js 只渲染 log.message 字段，导致使用新格式（含 title+description）的日志条目在页面上丢失详情。现已改为优先渲染 title 作为标题、description 作为详细描述，同时兼容旧的 message 格式。补齐 model/system 类型的 emoji、配色和标签，卡片右上角显示时间，交互增加 hover 阴影。同步重写 ai-wiki.md 中任务 6 的提示词，强制要求统一使用新格式并给出 title/description 撰写规范。",
-    "date": "2026-04-20 16:40",
-    "agent": "editor-v2"
-  },
-  {
-    "date": "2026-04-20 11:21",
-    "type": "news",
-    "agent": "editor-v2",
-    "message": "新增 8 条声浪：Claude Opus 4.7/PrfaaS/VLA-World/Q1 VC $2970B/Vercel安全事件/FlexKV/OpenMythos/Gemini 2M 上下文",
-    "slug": "news-r22-8items"
-  },
-  {
-    "date": "2026-04-20 11:21",
-    "type": "article",
-    "agent": "editor-v2",
-    "message": "新增文章：KVCache 分布式复用架构演进（PrfaaS/FlexKV/LMCache）",
-    "slug": "kvcache-distributed-reuse-architecture-2026-04-20"
-  },
-  {
-    "date": "2026-04-20 11:21",
-    "type": "article",
-    "agent": "editor-v2",
-    "message": "新增文章：VLA-World 深度解析——想象-反思-行动新范式",
-    "slug": "vla-world-unified-imagination-reasoning-driving-2026-04-20"
-  },
-  {
-    "date": "2026-04-20 11:21",
-    "type": "book",
-    "agent": "editor-v2",
-    "message": "更新书籍：AI Agent 实战指南第4章追加最新进展（Vercel事件/MCP安全/YC W26批次）",
-    "slug": "ai-agent-ch04-update"
-  },
-  {
-    "date": "2026-04-20 11:21",
-    "type": "paper",
-    "agent": "editor-v2",
-    "message": "新增论文解读：VLA-World（想象→反思→行动，nuScenes L2 0.58m SOTA）",
-    "slug": "vla-world-imagination-reasoning-driving"
-  },
-  {
-    "date": "2026-04-20 11:21",
-    "type": "model",
-    "agent": "editor-v2",
-    "message": "新增模型：Claude Opus 4.7 + VLA-World",
-    "slug": "models-update-r22"
-  },
-  {
-    "id": "evo-20260420-daily-update-05",
-    "type": "model",
-    "title": "模型数据更新：新增 Qwen3-Max 和 Seed-AD",
-    "description": "在 models.json 中追加 Qwen3-Max（320B MoE，MMLU-Pro 91.2% 超 Opus 4.6）和 Seed-AD（70B 开源 VLA，nuScenes L2 0.54m 新 SOTA）两个新模型。全行业动态新增 10 条软件行业最新动态。",
+    "id": "evo-20260420-0f2bcb",
     "date": "2026-04-20",
-    "agent": "editor-v2"
+    "type": "system",
+    "emoji": "🤖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260420-daily-update-04",
-    "type": "paper",
-    "title": "论文解读：字节 Seed-AD 70B 开源 VLA 详细解析（2500 字）",
-    "description": "新增 Seed-AD 论文详细解读（seed-ad-bytedance-70b-vla.md），深度解析三阶段推理架构、物理一致性约束、多维度反思评分、车端 45ms 推理优化。刷新 nuScenes 规划 SOTA：L2(3s) 0.54m、碰撞率 0.11%。",
+    "id": "evo-20260420-44d7e3",
     "date": "2026-04-20",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260420-daily-update-03",
-    "type": "book",
-    "title": "书架更新：《AI Agent 实战指南》第 6 章追加最新进展",
-    "description": "在 ai-agent-ch06.md 末尾追加「最新进展（2026-04）」小节，补充 MCP 2.1 Agent Identity 规范、Vercel 供应链攻击案例、GPT-5.5 原生多 Agent 对编排框架的影响等最新内容。",
-    "date": "2026-04-20",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260420-daily-update-02",
-    "type": "article",
-    "title": "新增文章 2 篇：AI 编码工具供应链安全 + YC W26 创业地图",
-    "description": "新增《AI 编码工具供应链安全：从 Vercel 事件看 Agent 时代的新型攻击面》和《YC W26 批次 AI 创业地图：196 家公司中的三大主线与中国启示》两篇深度文章，各约 2000 字。",
-    "date": "2026-04-20",
-    "agent": "editor-v2"
-  },
-  {
-    "id": "evo-20260420-daily-update-01",
     "type": "news",
-    "title": "声浪更新：新增 8 条最新 AI 动态（2026-04-20）",
-    "description": "新增 YC W26 批次 60% AI 占比、Qwen3-Max 发布、GPT-5.5 API GA、MCP 2.1 规范、Cruise 退出 Robotaxi、SGLang 0.6、字节 Seed-AD 开源、HBM4 出口管制等共 8 条声浪。",
+    "emoji": "📡",
+    "title": "新增 8 条声浪：Claude Opus 4.7/PrfaaS/VLA-World/Q1 VC $2970B/Vercel安全事件/FlexKV/OpenMyt",
+    "detail": "新增 8 条声浪：Claude Opus 4.7/PrfaaS/VLA-World/Q1 VC $2970B/Vercel安全事件/FlexKV/OpenMythos/Gemini 2M 上下文"
+  },
+  {
+    "id": "evo-20260420-404e67",
     "date": "2026-04-20",
-    "agent": "editor-v2"
-  },
-  {
-    "date": "2026-04-18 16:52",
-    "type": "news",
-    "agent": "editor-v2",
-    "message": "新增 8 条新闻(vLLM 0.8 MoE优化/斯坦福AI Index/VLA-World/AI Scientist-v2/AMI融资/Qwen 3/EU AI Act/Anthropic托管Agent)，合并14条旧闻→10条摘要，总计→103条"
-  },
-  {
-    "date": "2026-04-18 16:52",
     "type": "article",
-    "agent": "editor-v2",
-    "message": "新增2篇深度专栏: vLLM 0.8 MoE推理优化深度解析 + VLA-World想象-反思-行动三阶段范式"
+    "emoji": "✍️",
+    "title": "新增文章：KVCache 分布式复用架构演进（PrfaaS/FlexKV/LMCache）",
+    "detail": "新增文章：KVCache 分布式复用架构演进（PrfaaS/FlexKV/LMCache）"
   },
   {
-    "date": "2026-04-18 16:52",
+    "id": "evo-20260420-79d651",
+    "date": "2026-04-20",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增文章：VLA-World 深度解析——想象-反思-行动新范式",
+    "detail": "新增文章：VLA-World 深度解析——想象-反思-行动新范式"
+  },
+  {
+    "id": "evo-20260420-4dd2b0",
+    "date": "2026-04-20",
     "type": "book",
-    "agent": "editor-v2",
-    "message": "更新《推理引擎》第3章(SGLang)：追加3.10最新进展小节，覆盖vLLM 0.8 MoE突破/推理引擎四强争霸/Speculative Decoding 2.0"
+    "emoji": "📖",
+    "title": "更新书籍：AI Agent 实战指南第4章追加最新进展（Vercel事件/MCP安全/YC W26批次）",
+    "detail": "更新书籍：AI Agent 实战指南第4章追加最新进展（Vercel事件/MCP安全/YC W26批次）"
   },
   {
-    "date": "2026-04-18 16:52",
+    "id": "evo-20260420-f3d33c",
+    "date": "2026-04-20",
     "type": "paper",
-    "agent": "editor-v2",
-    "message": "新增1篇精读: AI Scientist-v2 首篇AI自主论文被顶会接收，更新VLA-World解读文件，papers-index→58篇"
+    "emoji": "🔬",
+    "title": "新增论文解读：VLA-World（想象→反思→行动，nuScenes L2 0.58m SOTA）",
+    "detail": "新增论文解读：VLA-World（想象→反思→行动，nuScenes L2 0.58m SOTA）"
   },
   {
-    "date": "2026-04-18 16:52",
+    "id": "evo-20260420-eec7a8",
+    "date": "2026-04-20",
     "type": "model",
-    "agent": "editor-v2",
-    "message": "新增2个模型: Qwen 3 72B(首个MMLU-Pro超GPT-4o的开源模型) + Llama 4 Scout(10M上下文MoE)，models→50个"
+    "emoji": "🏛️",
+    "title": "新增模型：Claude Opus 4.7 + VLA-World",
+    "detail": "新增模型：Claude Opus 4.7 + VLA-World"
   },
   {
-    "id": "evo-20260418-sw-ai-era",
-    "type": "book",
-    "title": "新增书籍《AI 时代软件行业全景》",
-    "description": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局猜想。覆盖 Databricks/Snowflake/CrowdStrike/Salesforce 等核心玩家深度分析。",
-    "date": "2026-04-18 13:00",
-    "agent": "editor-v2",
-    "message": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局猜想。覆盖 Databricks/Snowflake/CrowdStrike/Salesforce 等核心玩家深度分析。"
-  },
-  {
-    "date": "2026-04-18 12:38",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Cursor $500亿估值AI编程平台化/AAIF全球Agent标准化十城巡回/禾赛EXT+NVIDIA Nemotron-OCR v2感知双突破)，合并 2 条旧闻(GPT-4.5+Claude 3 Opus→2025H1总结)，总计→99 条"
-  },
-  {
-    "date": "2026-04-18 12:38",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Cursor $500亿估值AI编程平台化分水岭 + AAIF全球Agent标准化MCP十城巡回",
-    "slug": "cursor-500b-ai-coding-platform-era-2026"
-  },
-  {
-    "date": "2026-04-18 12:38",
-    "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇精读: Uni-World VLA 交替世界模型+规划(L2 0.63m SOTA) + GenericAgent 自进化Agent 6x Token效率",
-    "slug": "uni-world-vla"
-  },
-  {
-    "id": "evo-20260418-daily-update-05",
+    "id": "evo-20260420-0f2bcb-d41d",
+    "date": "2026-04-20",
     "type": "model",
-    "title": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300",
-    "description": "在 models.json 中追加 Claude Opus 4.5（SWE-bench 72.5%，Agent 长任务专用）和 NVIDIA Blackwell Ultra B300（288GB HBM4，FP4 20 PFLOPS）两个新模型。全行业动态新增5条软件行业最新动态。",
-    "date": "2026-04-18 12:00",
-    "agent": "editor-v2",
-    "message": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300: 在 models.json 中追加 Claude Opus 4.5（SWE-bench 72.5%，Agent 长任务专用）和 NVIDIA Blackwell Ultra B300（288GB HBM4，FP4 20 PFLOPS）两个新模型。全行业动态新增5条软件行业最新动态。"
+    "emoji": "🏛️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260418-daily-update-04",
+    "id": "evo-20260420-0f2bcb-d41d",
+    "date": "2026-04-20",
     "type": "paper",
-    "title": "论文解读：SGLang RadixAttention 深度解析（2500字）",
-    "description": "新增 SGLang 论文详细解读（sglang-radix-attention.md），深度解析 RadixAttention 基数树 KV Cache 共享机制、实验数据（RAG 场景吞吐 4.4x）、与 vLLM 对比、工程实践建议。同步更新 papers-index.json 新增 SGLang 和 UniSim 2.0 两条索引。",
-    "date": "2026-04-18 12:00",
-    "agent": "editor-v2",
-    "message": "论文解读：SGLang RadixAttention 深度解析（2500字）: 新增 SGLang 论文详细解读（sglang-radix-attention.md），深度解析 RadixAttention 基数树 KV Cache 共享机制、实验数据（RAG 场景吞吐 4.4x）、与 vLLM 对比、工程实践建议。同步更新 papers-index.json 新增 SGLang 和 UniSim 2.0 两条索引。"
+    "emoji": "🔬",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260418-daily-update-03",
+    "id": "evo-20260420-0f2bcb-d41d",
+    "date": "2026-04-20",
     "type": "book",
-    "title": "书架更新：《自动驾驶大模型》第7章追加最新进展",
-    "description": "在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数据、UniSim 2.0 合成数据飞轮里程碑、VLA-World 三阶段推理架构等最新内容。",
-    "date": "2026-04-18 12:00",
-    "agent": "editor-v2",
-    "message": "书架更新：《自动驾驶大模型》第7章追加最新进展: 在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数据、UniSim 2.0 合成数据飞轮里程碑、VLA-World 三阶段推理架构等最新内容。"
+    "emoji": "📖",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260418-daily-update-02",
+    "id": "evo-20260420-0f2bcb-d41d",
+    "date": "2026-04-20",
     "type": "article",
-    "title": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026",
-    "description": "新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《合成数据飞轮 2026：从 UniSim 2.0 看自动驾驶数据闭环新范式》两篇深度文章，各约1800字，含代码示例和数据对比表格。",
-    "date": "2026-04-18 12:00",
-    "agent": "editor-v2",
-    "message": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026: 新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《合成数据飞轮 2026：从 UniSim 2.0 看自动驾驶数据闭环新范式》两篇深度文章，各约1800字，含代码示例和数据对比表格。"
+    "emoji": "✍️",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "id": "evo-20260418-daily-update-01",
+    "id": "evo-20260420-0f2bcb-d41d",
+    "date": "2026-04-20",
     "type": "news",
-    "title": "声浪更新：新增10条最新AI动态（2026-04-18）",
-    "description": "新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.0、NVIDIA B300 发布、UniSim 2.0 合成数据飞轮、MCP 2.0 A2A 协议、小鹏 VLA 2.0 量产、Databricks DBRX 2.0、SynthEval-2026 基准、华为昇腾 910C 量产、OpenAI o3-mini-high 开放 API 共10条声浪。",
-    "date": "2026-04-18 12:00",
-    "agent": "editor-v2",
-    "message": "声浪更新：新增10条最新AI动态（2026-04-18）: 新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.0、NVIDIA B300 发布、UniSim 2.0 合成数据飞轮、MCP 2.0 A2A 协议、小鹏 VLA 2.0 量产、Databricks DBRX 2.0、SynthEval-2026 基准、华为昇腾 910C 量产、OpenAI o3-mini-high 开放 API 共10条声浪。"
+    "emoji": "📡",
+    "title": "editor-v2 执行",
+    "detail": ""
   },
   {
-    "date": "2026-04-18 11:00",
+    "id": "evo-20260418-9ffe0d",
+    "date": "2026-04-18",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Cloudflare Agent Week 2026基础设施/蒸馏大战反蒸馏联盟/Microsoft Agent Framework 1.0+MCP v2.1)，合并 3 条 2025H1 旧闻到年度总结，总计→97 条"
+    "emoji": "📡",
+    "title": "新增 8 条新闻(vLLM 0.8 MoE优化/斯坦福AI Index/VLA-World/AI Scientist-v2/AMI融资/Qwen 3/EU AI",
+    "detail": "新增 8 条新闻(vLLM 0.8 MoE优化/斯坦福AI Index/VLA-World/AI Scientist-v2/AMI融资/Qwen 3/EU AI Act/Anthropic托管Agent)，合并14条旧闻→10条摘要，总计→103条"
   },
   {
-    "date": "2026-04-18 11:00",
+    "id": "evo-20260418-78b9ff",
+    "date": "2026-04-18",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Agent 即基础设施——Cloudflare Agents Week 2026 全面解析",
-    "slug": "cloudflare-agent-infra-dynamic-workers-ai-gateway-2026"
+    "emoji": "✍️",
+    "title": "新增2篇深度专栏: vLLM 0.8 MoE推理优化深度解析 + VLA-World想象-反思-行动三阶段范式",
+    "detail": "新增2篇深度专栏: vLLM 0.8 MoE推理优化深度解析 + VLA-World想象-反思-行动三阶段范式"
   },
   {
-    "date": "2026-04-18 11:00",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: 蒸馏大战 2.0——反蒸馏联盟、芯片走私与 AI 数据闭环的安全重构",
-    "slug": "distillation-wars-escalation-anti-alliance-data-security-2026"
+    "id": "evo-20260418-565914",
+    "date": "2026-04-18",
+    "type": "book",
+    "emoji": "📖",
+    "title": "更新《推理引擎》第3章(SGLang)：追加3.10最新进展小节，覆盖vLLM 0.8 MoE突破/推理引擎四强争霸/Speculative Decoding ",
+    "detail": "更新《推理引擎》第3章(SGLang)：追加3.10最新进展小节，覆盖vLLM 0.8 MoE突破/推理引擎四强争霸/Speculative Decoding 2.0"
   },
   {
-    "date": "2026-04-18 11:00",
+    "id": "evo-20260418-79cd7a",
+    "date": "2026-04-18",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增论文精读: TurboQuant (Google DeepMind) — 首个零精度损失 3-bit KV Cache 在线量化，6x 内存减少 + 8x 注意力加速",
-    "slug": "turboquant"
+    "emoji": "🔬",
+    "title": "新增1篇精读: AI Scientist-v2 首篇AI自主论文被顶会接收，更新VLA-World解读文件，papers-index→58篇",
+    "detail": "新增1篇精读: AI Scientist-v2 首篇AI自主论文被顶会接收，更新VLA-World解读文件，papers-index→58篇"
   },
   {
-    "date": "2026-04-18 11:00",
-    "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增论文精读: DreamZero (NVIDIA) — 世界动作模型范式，14B 视频扩散骨干，零样本机器人任务 62.2%",
-    "slug": "dreamzero"
+    "id": "evo-20260418-8014d3",
+    "date": "2026-04-18",
+    "type": "model",
+    "emoji": "🏛️",
+    "title": "新增2个模型: Qwen 3 72B(首个MMLU-Pro超GPT-4o的开源模型) + Llama 4 Scout(10M上下文MoE)，models→50个",
+    "detail": "新增2个模型: Qwen 3 72B(首个MMLU-Pro超GPT-4o的开源模型) + Llama 4 Scout(10M上下文MoE)，models→50个"
   },
   {
-    "date": "2026-04-18 11:00",
+    "id": "evo-20260418-368f45",
+    "date": "2026-04-18",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "修订章节: 推理引擎 - 第5章 量化技术 (+TurboQuant 零损失3-bit/Unweight无损压缩) | Code as Proxy - 第5章 安全威胁模型 (+蒸馏大战/反蒸馏联盟/Agent安全现实)",
-    "slug": "inference-ch05+code-as-proxy-ch05"
+    "emoji": "📖",
+    "title": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局",
+    "detail": "新增 7 章综述研究：软件行业历史演进与格局、AI 对软件开发的重塑、数据平台战略价值重估、企业软件 AI 化转型、安全行业范式变革、创业机会地图、未来十年终局猜想。覆盖 Databricks/Snowflake/CrowdStrike/Salesforce 等核心玩家深度分析。"
   },
   {
-    "date": "2026-04-18 00:19",
+    "id": "evo-20260418-b79fcb",
+    "date": "2026-04-18",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Claude Opus 4.7正式发布/小鹏北京车展VLA 2.0开源/FlashDrive VLA实时推理44x加速)，合并 2023 年 4 条旧闻到年度总结，总计→97 条"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Cursor $500亿估值AI编程平台化/AAIF全球Agent标准化十城巡回/禾赛EXT+NVIDIA Nemotron-OCR v2感知",
+    "detail": "新增 3 条新闻(Cursor $500亿估值AI编程平台化/AAIF全球Agent标准化十城巡回/禾赛EXT+NVIDIA Nemotron-OCR v2感知双突破)，合并 2 条旧闻(GPT-4.5+Claude 3 Opus→2025H1总结)，总计→99 条"
   },
   {
-    "date": "2026-04-18 00:19",
+    "id": "evo-20260418-9886fa",
+    "date": "2026-04-18",
     "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：Claude Opus 4.7 xhigh推理级别技术拆解 + FlashDrive VLA实时推理加速解析（→59 篇专栏）"
+    "emoji": "✍️",
+    "title": "生成深度专栏: Cursor $500亿估值AI编程平台化分水岭 + AAIF全球Agent标准化MCP十城巡回",
+    "detail": "生成深度专栏: Cursor $500亿估值AI编程平台化分水岭 + AAIF全球Agent标准化MCP十城巡回"
   },
   {
-    "date": "2026-04-18 00:19",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：自驾-Ch5 VLA架构(+FlashDrive 44x加速/小鹏VLA 2.0开源量产/脑内推理) + 推理-Ch1 瓶颈分析(+LLM→VLA推理优化迁移/xhigh推理级别/FlashDrive范例)"
-  },
-  {
-    "date": "2026-04-18 00:19",
+    "id": "evo-20260418-d7e561",
+    "date": "2026-04-18",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：FlashDrive (VLA 实时推理加速 Speculative Reasoning+Action Compression 44x) + XPeng VLA 2.0 (开源量产VLA 72B基座大众商用)（→53 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇精读: Uni-World VLA 交替世界模型+规划(L2 0.63m SOTA) + GenericAgent 自进化Agent 6x Toke",
+    "detail": "新增 2 篇精读: Uni-World VLA 交替世界模型+规划(L2 0.63m SOTA) + GenericAgent 自进化Agent 6x Token效率"
   },
   {
-    "date": "2026-04-16 12:52",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(VLA-World CVPR 2026/Supermicro 芯片走私案/蒸馏战争爆发)，合并 2024 年 8 条旧闻到年度总结，总计→98 条"
+    "id": "evo-20260418-f3f247",
+    "date": "2026-04-18",
+    "type": "model",
+    "emoji": "🏛️",
+    "title": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300: 在 models.json 中追加 Claude Opus 4.5（SWE-b",
+    "detail": "模型数据更新：新增 Claude Opus 4.5 和 NVIDIA B300: 在 models.json 中追加 Claude Opus 4.5（SWE-bench 72.5%，Agent 长任务专用）和 NVIDIA Blackwell Ultra B300（288GB HBM4，FP4 20 PFLOPS）两个新模型。全行业动态新增5条软件行业最新动态。"
   },
   {
-    "date": "2026-04-16 12:52",
-    "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：蒸馏战争与 AI 知识产权保护 + VLA-World 想象-反思自动驾驶解读（→57 篇专栏）"
-  },
-  {
-    "date": "2026-04-16 12:52",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：推理框架-Ch4(+NVIDIA Dynamo/LiteRT-LM 端侧推理/推理成本经济学) + 自驾-Ch1(+蒸馏战争启示/VLA-World 生成推理数据集/合规合成数据)"
-  },
-  {
-    "date": "2026-04-16 12:52",
+    "id": "evo-20260418-1fb6c7",
+    "date": "2026-04-18",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：VLA-World (CVPR 2026 Findings 想象+反思统一框架) + DriveVLA-W0 (ICML 2026 世界模型放大数据 Scaling Law)（→51 篇精读）"
+    "emoji": "🔬",
+    "title": "论文解读：SGLang RadixAttention 深度解析（2500字）: 新增 SGLang 论文详细解读（sglang-radix-attention.",
+    "detail": "论文解读：SGLang RadixAttention 深度解析（2500字）: 新增 SGLang 论文详细解读（sglang-radix-attention.md），深度解析 RadixAttention 基数树 KV Cache 共享机制、实验数据（RAG 场景吞吐 4.4x）、与 vLLM 对比、工程实践建议。同步更新 papers-index.json 新增 SGLang 和 UniSim 2.0 两条索引。"
   },
   {
-    "date": "2026-04-16 11:00",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Tesla Cybercab数据飞轮1.6PB/天/NVIDIA Physical AI Data Factory开源/中国端到端路线分裂)，总计→103 条"
-  },
-  {
-    "date": "2026-04-16 11:00",
-    "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：自动驾驶数据飞轮闭环工程(Tesla/Waymo/华为三大范式) + NVIDIA Physical AI Data Factory 开放标准解读（→55 篇专栏）"
-  },
-  {
-    "date": "2026-04-16 11:00",
+    "id": "evo-20260418-3220cb",
+    "date": "2026-04-18",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：自驾-Ch7 未来趋势(+数据飞轮工程/Physical AI Data Factory/中国路线分裂/三种范式对比) + Agent-Ch4 多Agent协作(+MARTI RL训练/A2A协议/微软Agent Framework)"
+    "emoji": "📖",
+    "title": "书架更新：《自动驾驶大模型》第7章追加最新进展: 在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数",
+    "detail": "书架更新：《自动驾驶大模型》第7章追加最新进展: 在 ad-llm-ch07.md 末尾追加「最新进展（2026-04）」小节，补充小鹏 VLA 2.0 量产数据、UniSim 2.0 合成数据飞轮里程碑、VLA-World 三阶段推理架构等最新内容。"
   },
   {
-    "date": "2026-04-16 11:00",
+    "id": "evo-20260418-c44721",
+    "date": "2026-04-18",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026: 新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《",
+    "detail": "新增文章2篇：MCP 2.0 深度解析 + 合成数据飞轮2026: 新增《MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统》和《合成数据飞轮 2026：从 UniSim 2.0 看自动驾驶数据闭环新范式》两篇深度文章，各约1800字，含代码示例和数据对比表格。"
+  },
+  {
+    "id": "evo-20260418-108b7b",
+    "date": "2026-04-18",
+    "type": "news",
+    "emoji": "📡",
+    "title": "声浪更新：新增10条最新AI动态（2026-04-18）: 新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.",
+    "detail": "声浪更新：新增10条最新AI动态（2026-04-18）: 新增 Claude Opus 4.5 发布、SGLang 0.5 RadixAttention 2.0、NVIDIA B300 发布、UniSim 2.0 合成数据飞轮、MCP 2.0 A2A 协议、小鹏 VLA 2.0 量产、Databricks DBRX 2.0、SynthEval-2026 基准、华为昇腾 910C 量产、OpenAI o3-mini-high 开放 API 共10条声浪。"
+  },
+  {
+    "id": "evo-20260418-8f1986",
+    "date": "2026-04-18",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Cloudflare Agent Week 2026基础设施/蒸馏大战反蒸馏联盟/Microsoft Agent Framework 1.0+",
+    "detail": "新增 3 条新闻(Cloudflare Agent Week 2026基础设施/蒸馏大战反蒸馏联盟/Microsoft Agent Framework 1.0+MCP v2.1)，合并 3 条 2025H1 旧闻到年度总结，总计→97 条"
+  },
+  {
+    "id": "evo-20260418-68ac53",
+    "date": "2026-04-18",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: Agent 即基础设施——Cloudflare Agents Week 2026 全面解析",
+    "detail": "生成深度专栏: Agent 即基础设施——Cloudflare Agents Week 2026 全面解析"
+  },
+  {
+    "id": "evo-20260418-bde2a4",
+    "date": "2026-04-18",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: 蒸馏大战 2.0——反蒸馏联盟、芯片走私与 AI 数据闭环的安全重构",
+    "detail": "生成深度专栏: 蒸馏大战 2.0——反蒸馏联盟、芯片走私与 AI 数据闭环的安全重构"
+  },
+  {
+    "id": "evo-20260418-017da2",
+    "date": "2026-04-18",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：NVIDIA Data Flywheel Blueprint (Agent蒸馏优化闭环) + Tesla FSD 4D Auto-Labeling (回溯标注$0.01/帧)（→49 篇精读）"
+    "emoji": "🔬",
+    "title": "新增论文精读: TurboQuant (Google DeepMind) — 首个零精度损失 3-bit KV Cache 在线量化，6x 内存减少 + 8x ",
+    "detail": "新增论文精读: TurboQuant (Google DeepMind) — 首个零精度损失 3-bit KV Cache 在线量化，6x 内存减少 + 8x 注意力加速"
   },
   {
-    "date": "2026-04-15 11:00",
+    "id": "evo-20260418-c04fe7",
+    "date": "2026-04-18",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：HybridDriveVLA (CVPR 2026 Visual CoT+ToT 自动驾驶审慎推理) + MARTI (ICLR 2026 多Agent LLM RL训练框架)（→40 篇精读）"
+    "emoji": "🔬",
+    "title": "新增论文精读: DreamZero (NVIDIA) — 世界动作模型范式，14B 视频扩散骨干，零样本机器人任务 62.2%",
+    "detail": "新增论文精读: DreamZero (NVIDIA) — 世界动作模型范式，14B 视频扩散骨干，零样本机器人任务 62.2%"
   },
   {
-    "date": "2026-04-15 11:00",
-    "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：HybridDriveVLA Visual CoT+ToT 自动驾驶决策推理范式 + AI商业化加速300亿ARR与门控发布分析（→53 篇专栏）"
-  },
-  {
-    "date": "2026-04-15 11:00",
+    "id": "evo-20260418-569fb4",
+    "date": "2026-04-18",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：自驾-Ch6 安全与长尾(+HybridDriveVLA审慎推理安全框架/Project Glasswing AI辅助安全测试) + 推理-Ch3 SGLang(+LiteRT-LM端侧推理/AMD ROCm7.0生态)"
+    "emoji": "📖",
+    "title": "修订章节: 推理引擎 - 第5章 量化技术 (+TurboQuant 零损失3-bit/Unweight无损压缩) | Code as Proxy - 第5章 ",
+    "detail": "修订章节: 推理引擎 - 第5章 量化技术 (+TurboQuant 零损失3-bit/Unweight无损压缩) | Code as Proxy - 第5章 安全威胁模型 (+蒸馏大战/反蒸馏联盟/Agent安全现实)"
   },
   {
-    "date": "2026-04-15 11:00",
+    "id": "evo-20260418-0f10ca",
+    "date": "2026-04-18",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(HybridDriveVLA CVPR 2026/LiteRT-LM端侧推理/Anthropic 300亿ARR)，合并2022年5条旧闻为年度总结（→101 条）"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Claude Opus 4.7正式发布/小鹏北京车展VLA 2.0开源/FlashDrive VLA实时推理44x加速)，合并 2023 年 ",
+    "detail": "新增 3 条新闻(Claude Opus 4.7正式发布/小鹏北京车展VLA 2.0开源/FlashDrive VLA实时推理44x加速)，合并 2023 年 4 条旧闻到年度总结，总计→97 条"
   },
   {
-    "date": "2026-04-14 11:00",
+    "id": "evo-20260418-1bc2ad",
+    "date": "2026-04-18",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：Claude Opus 4.7 xhigh推理级别技术拆解 + FlashDrive VLA实时推理加速解析（→59 篇专栏）",
+    "detail": "新增 2 篇文章：Claude Opus 4.7 xhigh推理级别技术拆解 + FlashDrive VLA实时推理加速解析（→59 篇专栏）"
+  },
+  {
+    "id": "evo-20260418-07c649",
+    "date": "2026-04-18",
+    "type": "book",
+    "emoji": "📖",
+    "title": "深度修订 2 章：自驾-Ch5 VLA架构(+FlashDrive 44x加速/小鹏VLA 2.0开源量产/脑内推理) + 推理-Ch1 瓶颈分析(+LLM→V",
+    "detail": "深度修订 2 章：自驾-Ch5 VLA架构(+FlashDrive 44x加速/小鹏VLA 2.0开源量产/脑内推理) + 推理-Ch1 瓶颈分析(+LLM→VLA推理优化迁移/xhigh推理级别/FlashDrive范例)"
+  },
+  {
+    "id": "evo-20260418-329466",
+    "date": "2026-04-18",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：OccWorld (ECCV 2024 首个 3D 占用世界模型) + GenAD (CVPR 2025 Instance-centric 生成式预测)（→38 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：FlashDrive (VLA 实时推理加速 Speculative Reasoning+Action Compression 44x) ",
+    "detail": "新增 2 篇论文精读：FlashDrive (VLA 实时推理加速 Speculative Reasoning+Action Compression 44x) + XPeng VLA 2.0 (开源量产VLA 72B基座大众商用)（→53 篇精读）"
   },
   {
-    "date": "2026-04-14 11:00",
-    "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：Gemini 4 Nano 端侧 100B MoE 推理技术拆解 + 端到端 VLA 量产落地 SuperDrive 2.0 技术全景（→51 篇专栏）"
-  },
-  {
-    "date": "2026-04-14 11:00",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：自驾-Ch5 VLA架构(+SuperDrive 2.0量产案例/训练数据工程/安全V&V框架) + Agent-Ch3 工具调用(+MCP 2.0 Streamable HTTP/A2A协议/Tool Orchestration/Injection防护)"
-  },
-  {
-    "date": "2026-04-14 11:00",
+    "id": "evo-20260416-5ea281",
+    "date": "2026-04-16",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Gemini 4 Nano端侧MoE/SuperDrive 2.0量产L3/AMD MI450量产)，合并 2021 年 3 条旧闻为年度总结，总计→91 条"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(VLA-World CVPR 2026/Supermicro 芯片走私案/蒸馏战争爆发)，合并 2024 年 8 条旧闻到年度总结，总计→98",
+    "detail": "新增 3 条新闻(VLA-World CVPR 2026/Supermicro 芯片走私案/蒸馏战争爆发)，合并 2024 年 8 条旧闻到年度总结，总计→98 条"
   },
   {
-    "date": "2026-04-13 11:00",
+    "id": "evo-20260416-8f6eff",
+    "date": "2026-04-16",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：蒸馏战争与 AI 知识产权保护 + VLA-World 想象-反思自动驾驶解读（→57 篇专栏）",
+    "detail": "新增 2 篇文章：蒸馏战争与 AI 知识产权保护 + VLA-World 想象-反思自动驾驶解读（→57 篇专栏）"
+  },
+  {
+    "id": "evo-20260416-74349b",
+    "date": "2026-04-16",
+    "type": "book",
+    "emoji": "📖",
+    "title": "深度修订 2 章：推理框架-Ch4(+NVIDIA Dynamo/LiteRT-LM 端侧推理/推理成本经济学) + 自驾-Ch1(+蒸馏战争启示/VLA-Wo",
+    "detail": "深度修订 2 章：推理框架-Ch4(+NVIDIA Dynamo/LiteRT-LM 端侧推理/推理成本经济学) + 自驾-Ch1(+蒸馏战争启示/VLA-World 生成推理数据集/合规合成数据)"
+  },
+  {
+    "id": "evo-20260416-82a0af",
+    "date": "2026-04-16",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：FlashOcc (AAAI 2024 Channel-to-Height 高效占用预测) + World Models AD Survey (CVPR 2026 自动驾驶世界模型综述)（→36 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：VLA-World (CVPR 2026 Findings 想象+反思统一框架) + DriveVLA-W0 (ICML 2026 世界模",
+    "detail": "新增 2 篇论文精读：VLA-World (CVPR 2026 Findings 想象+反思统一框架) + DriveVLA-W0 (ICML 2026 世界模型放大数据 Scaling Law)（→51 篇精读）"
   },
   {
-    "date": "2026-04-13 11:00",
-    "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：GPT-5.5 Spud 200万上下文超级应用技术拆解 + 2026 世界模型元年 Genie 3 UniSim 2 具身AI（→49 篇专栏）"
-  },
-  {
-    "date": "2026-04-13 11:00",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：PyTorch-Ch6 分布式训练(7→16KB+ Context Parallel/4D并行/HSDP/通信调优) + 自驾-Ch4 BEV占用网络(8→16KB+ FlashOcc/SparseOcc/StreamPETR v2/VLA融合)"
-  },
-  {
-    "date": "2026-04-13 11:00",
+    "id": "evo-20260416-60a001",
+    "date": "2026-04-16",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(GPT-5.5 Spud正式发布/世界模型元年Genie 3+UniSim 2/NVIDIA CMX推理内存扩展)，合并 2022 年 3 条旧闻为年度总结，总计 91 条"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Tesla Cybercab数据飞轮1.6PB/天/NVIDIA Physical AI Data Factory开源/中国端到端路线分裂)，",
+    "detail": "新增 3 条新闻(Tesla Cybercab数据飞轮1.6PB/天/NVIDIA Physical AI Data Factory开源/中国端到端路线分裂)，总计→103 条"
   },
   {
-    "date": "2026-04-12 12:17",
+    "id": "evo-20260416-5f052f",
+    "date": "2026-04-16",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：自动驾驶数据飞轮闭环工程(Tesla/Waymo/华为三大范式) + NVIDIA Physical AI Data Factory 开放标准",
+    "detail": "新增 2 篇文章：自动驾驶数据飞轮闭环工程(Tesla/Waymo/华为三大范式) + NVIDIA Physical AI Data Factory 开放标准解读（→55 篇专栏）"
+  },
+  {
+    "id": "evo-20260416-1ea1ba",
+    "date": "2026-04-16",
+    "type": "book",
+    "emoji": "📖",
+    "title": "深度修订 2 章：自驾-Ch7 未来趋势(+数据飞轮工程/Physical AI Data Factory/中国路线分裂/三种范式对比) + Agent-Ch4",
+    "detail": "深度修订 2 章：自驾-Ch7 未来趋势(+数据飞轮工程/Physical AI Data Factory/中国路线分裂/三种范式对比) + Agent-Ch4 多Agent协作(+MARTI RL训练/A2A协议/微软Agent Framework)"
+  },
+  {
+    "id": "evo-20260416-692d69",
+    "date": "2026-04-16",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：Prediction Collapse (Transformer 在高噪声域的扩展极限 arXiv 2604.00064) + Emotion Vectors (LLM 12种结构化情绪向量 arXiv 2604.00005)（→34 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：NVIDIA Data Flywheel Blueprint (Agent蒸馏优化闭环) + Tesla FSD 4D Auto-Labe",
+    "detail": "新增 2 篇论文精读：NVIDIA Data Flywheel Blueprint (Agent蒸馏优化闭环) + Tesla FSD 4D Auto-Labeling (回溯标注$0.01/帧)（→49 篇精读）"
   },
   {
-    "date": "2026-04-12 12:17",
-    "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：Transformer 预测崩溃与扩展极限 + LLM 情绪向量可解释性里程碑（→53 篇专栏）"
-  },
-  {
-    "date": "2026-04-12 12:17",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Meta Muse Spark 发布/Google TurboQuant KV压缩/千亿芯片协议)，合并 2015 年旧闻为年度总结，总计 91 条"
-  },
-  {
-    "date": "2026-04-12 10:56",
+    "id": "evo-20260415-4e7b20",
+    "date": "2026-04-15",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：CircuitProbe (Transformer 推理电路稳定区域检测) + AP-MCTS (自适应并行推理时计算扩展)（→32 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：HybridDriveVLA (CVPR 2026 Visual CoT+ToT 自动驾驶审慎推理) + MARTI (ICLR 2026",
+    "detail": "新增 2 篇论文精读：HybridDriveVLA (CVPR 2026 Visual CoT+ToT 自动驾驶审慎推理) + MARTI (ICLR 2026 多Agent LLM RL训练框架)（→40 篇精读）"
   },
   {
-    "date": "2026-04-12 10:56",
+    "id": "evo-20260415-c5d540",
+    "date": "2026-04-15",
     "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：MCP v2.1+A2A 智能体协议栈成熟化 + 异构推理硬件格局 2026（→51 篇专栏）"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：HybridDriveVLA Visual CoT+ToT 自动驾驶决策推理范式 + AI商业化加速300亿ARR与门控发布分析（→53 篇专",
+    "detail": "新增 2 篇文章：HybridDriveVLA Visual CoT+ToT 自动驾驶决策推理范式 + AI商业化加速300亿ARR与门控发布分析（→53 篇专栏）"
   },
   {
-    "date": "2026-04-12 10:56",
+    "id": "evo-20260415-d48bd5",
+    "date": "2026-04-15",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：推理框架-Ch2 vLLM(7.56→14KB+ PD分离/v0.8/APC哈希/调优) + Agent-Ch2 单Agent架构(11→14KB+ Reflexion/FC版ReAct/DAG规划)"
+    "emoji": "📖",
+    "title": "深度修订 2 章：自驾-Ch6 安全与长尾(+HybridDriveVLA审慎推理安全框架/Project Glasswing AI辅助安全测试) + 推理-C",
+    "detail": "深度修订 2 章：自驾-Ch6 安全与长尾(+HybridDriveVLA审慎推理安全框架/Project Glasswing AI辅助安全测试) + 推理-Ch3 SGLang(+LiteRT-LM端侧推理/AMD ROCm7.0生态)"
   },
   {
-    "date": "2026-04-12 10:56",
+    "id": "evo-20260415-71e885",
+    "date": "2026-04-15",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(xAI Grok 4.20多代理架构/AMD MI355X MLPerf创纪录/MCP v2.1 Server Cards)，合并 2020 年旧闻为年度总结，总计 89 条"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(HybridDriveVLA CVPR 2026/LiteRT-LM端侧推理/Anthropic 300亿ARR)，合并2022年5条旧闻为年",
+    "detail": "新增 3 条新闻(HybridDriveVLA CVPR 2026/LiteRT-LM端侧推理/Anthropic 300亿ARR)，合并2022年5条旧闻为年度总结（→101 条）"
   },
   {
-    "date": "2026-04-12 08:33",
+    "id": "evo-20260414-bba8f9",
+    "date": "2026-04-14",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：Scaling Monosemanticity (Anthropic SAE 3400万特征) + Genie 2 (DeepMind 通用世界模型)（→30 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：OccWorld (ECCV 2024 首个 3D 占用世界模型) + GenAD (CVPR 2025 Instance-centric",
+    "detail": "新增 2 篇论文精读：OccWorld (ECCV 2024 首个 3D 占用世界模型) + GenAD (CVPR 2025 Instance-centric 生成式预测)（→38 篇精读）"
   },
   {
-    "date": "2026-04-12 08:33",
+    "id": "evo-20260414-18c8a3",
+    "date": "2026-04-14",
     "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：AI 推理成本经济学 GPU FinOps 实战 + Agent 运行时安全治理全链路（→49 篇专栏）"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：Gemini 4 Nano 端侧 100B MoE 推理技术拆解 + 端到端 VLA 量产落地 SuperDrive 2.0 技术全景（→51",
+    "detail": "新增 2 篇文章：Gemini 4 Nano 端侧 100B MoE 推理技术拆解 + 端到端 VLA 量产落地 SuperDrive 2.0 技术全景（→51 篇专栏）"
   },
   {
-    "date": "2026-04-12 08:33",
+    "id": "evo-20260414-a3ecbe",
+    "date": "2026-04-14",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：PyTorch-Ch7 性能分析(5.37→14KB+ Roofline/MBU-MFU/Nsight/CUDA Graph) + 自驾-Ch3 训练部署(8.6→14KB+ VLA推理/Dynamo集成/世界模型仿真)"
+    "emoji": "📖",
+    "title": "深度修订 2 章：自驾-Ch5 VLA架构(+SuperDrive 2.0量产案例/训练数据工程/安全V&V框架) + Agent-Ch3 工具调用(+MCP ",
+    "detail": "深度修订 2 章：自驾-Ch5 VLA架构(+SuperDrive 2.0量产案例/训练数据工程/安全V&V框架) + Agent-Ch3 工具调用(+MCP 2.0 Streamable HTTP/A2A协议/Tool Orchestration/Injection防护)"
   },
   {
-    "date": "2026-04-12 08:33",
+    "id": "evo-20260414-f647f2",
+    "date": "2026-04-14",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(GPT-5.5 Spud泄露/微软Agent Governance Toolkit/WEF推理基础设施)，合并 2025 上半年 4 条零散旧闻为年中总结，总计 88 条"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Gemini 4 Nano端侧MoE/SuperDrive 2.0量产L3/AMD MI450量产)，合并 2021 年 3 条旧闻为年度总结",
+    "detail": "新增 3 条新闻(Gemini 4 Nano端侧MoE/SuperDrive 2.0量产L3/AMD MI450量产)，合并 2021 年 3 条旧闻为年度总结，总计→91 条"
   },
   {
-    "date": "2026-04-12 06:11",
+    "id": "evo-20260413-c984e5",
+    "date": "2026-04-13",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增 2 篇论文精读：RECAP 鲁棒安全对齐 + SnapKV KV Cache 自动压缩（→28 篇精读）"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：FlashOcc (AAAI 2024 Channel-to-Height 高效占用预测) + World Models AD Surve",
+    "detail": "新增 2 篇论文精读：FlashOcc (AAAI 2024 Channel-to-Height 高效占用预测) + World Models AD Survey (CVPR 2026 自动驾驶世界模型综述)（→36 篇精读）"
   },
   {
-    "date": "2026-04-12 06:11",
+    "id": "evo-20260413-b7144a",
+    "date": "2026-04-13",
     "type": "article",
-    "agent": "专栏智能体",
-    "message": "新增 2 篇文章：AlphaProof 2 IMO 金牌数学推理 + MCP 生态 2026 标准化之路（→48 篇专栏）"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：GPT-5.5 Spud 200万上下文超级应用技术拆解 + 2026 世界模型元年 Genie 3 UniSim 2 具身AI（→49 篇专",
+    "detail": "新增 2 篇文章：GPT-5.5 Spud 200万上下文超级应用技术拆解 + 2026 世界模型元年 Genie 3 UniSim 2 具身AI（→49 篇专栏）"
   },
   {
-    "date": "2026-04-12 06:11",
+    "id": "evo-20260413-a0ee94",
+    "date": "2026-04-13",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订 2 章：LLM入门-Ch6 Agent与工具使用(5.7→14KB) + 推理-Ch7 前沿与未来(5→14KB)"
+    "emoji": "📖",
+    "title": "深度修订 2 章：PyTorch-Ch6 分布式训练(7→16KB+ Context Parallel/4D并行/HSDP/通信调优) + 自驾-Ch4 BEV",
+    "detail": "深度修订 2 章：PyTorch-Ch6 分布式训练(7→16KB+ Context Parallel/4D并行/HSDP/通信调优) + 自驾-Ch4 BEV占用网络(8→16KB+ FlashOcc/SparseOcc/StreamPETR v2/VLA融合)"
   },
   {
-    "date": "2026-04-12 06:11",
+    "id": "evo-20260413-040328",
+    "date": "2026-04-13",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新增 3 条新闻(Claude Opus 4.6登顶/AlphaProof 2/HF+Dynamo)，合并 2024 年 8 条零散旧新闻为年度总结"
+    "emoji": "📡",
+    "title": "新增 3 条新闻(GPT-5.5 Spud正式发布/世界模型元年Genie 3+UniSim 2/NVIDIA CMX推理内存扩展)，合并 2022 年 3 条",
+    "detail": "新增 3 条新闻(GPT-5.5 Spud正式发布/世界模型元年Genie 3+UniSim 2/NVIDIA CMX推理内存扩展)，合并 2022 年 3 条旧闻为年度总结，总计 91 条"
   },
   {
-    "date": "2026-04-12 03:46",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第15轮: +3新增(GLM-5V-Turbo/Curriculum RL/MAI-1.5开源), 合并K8s DRA 3条为1条+Iceberg 2条为1条, 总计92条"
-  },
-  {
-    "date": "2026-04-12 03:46",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: 课程强化学习提升LLM推理 + MAI-1.5与2026多模态开源模型格局",
-    "slug": "curriculum-rl-llm-reasoning-easy-to-hard"
-  },
-  {
-    "date": "2026-04-12 03:46",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订3章: LLM-Ch4推理优化(+Roofline/MBU/Goodput/PagedAttention代码/EAGLE-2/Dynamo) 5.93→14KB+ | LLM-Ch7前沿展望(+Curriculum RL/BLT/Agent安全/VLA/Embodied AI) 5.21→14KB+ | 推理-Ch5量化(+AWQ代码/SmoothQuant/FP8/EAGLE-2/H2O驱逐) 4.88→16KB+"
-  },
-  {
-    "date": "2026-04-12 03:46",
+    "id": "evo-20260412-99b6a1",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增精读: ReSearch(RL驱动推理时搜索) + SWE-RL(RL提升软件工程推理), 总计26篇全部精读",
-    "slug": "swe-rl"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：Prediction Collapse (Transformer 在高噪声域的扩展极限 arXiv 2604.00064) + Emoti",
+    "detail": "新增 2 篇论文精读：Prediction Collapse (Transformer 在高噪声域的扩展极限 arXiv 2604.00064) + Emotion Vectors (LLM 12种结构化情绪向量 arXiv 2604.00005)（→34 篇精读）"
   },
   {
-    "date": "2026-04-12 02:20",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第14轮: +3新增(NVIDIA Rubin Ultra路线图/Meta×CoreWeave $210亿/Intel×Google Cloud AI合作), URL统一#, categoryName修复, 总计92条"
-  },
-  {
-    "date": "2026-04-12 02:20",
+    "id": "evo-20260412-e66d99",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: NVIDIA Rubin架构与Dynamo推理框架 + GPU云经济学CoreWeave万亿美元竞赛",
-    "slug": "nvidia-rubin-dynamo-inference-framework"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：Transformer 预测崩溃与扩展极限 + LLM 情绪向量可解释性里程碑（→53 篇专栏）",
+    "detail": "新增 2 篇文章：Transformer 预测崩溃与扩展极限 + LLM 情绪向量可解释性里程碑（→53 篇专栏）"
   },
   {
-    "date": "2026-04-12 02:20",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订3章: LLM-Ch2预训练(+Scaling Law MoE/FP8训练/FineWeb pipeline/课程学习) 6.78→14KB+ | LLM-Ch3对齐(+QLoRA实战/GRPO深度/CAI/SimPO/DPO训练代码) 6.1→15KB+ | 推理-Ch3 SGLang(+RadixTree实现/FSM编译/FlashInfer/Dynamo集成) 6.08→14KB+"
+    "id": "evo-20260412-d7933c",
+    "date": "2026-04-12",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Meta Muse Spark 发布/Google TurboQuant KV压缩/千亿芯片协议)，合并 2015 年旧闻为年度总结，总计 9",
+    "detail": "新增 3 条新闻(Meta Muse Spark 发布/Google TurboQuant KV压缩/千亿芯片协议)，合并 2015 年旧闻为年度总结，总计 91 条"
   },
   {
-    "date": "2026-04-12 02:20",
+    "id": "evo-20260412-c29d5b",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增精读: BLT(Meta字节级Transformer无Tokenizer) + DAPO(ByteDance开源RL对齐系统), 总计24篇全部精读",
-    "slug": "byte-latent-transformer"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：CircuitProbe (Transformer 推理电路稳定区域检测) + AP-MCTS (自适应并行推理时计算扩展)（→32 篇精",
+    "detail": "新增 2 篇论文精读：CircuitProbe (Transformer 推理电路稳定区域检测) + AP-MCTS (自适应并行推理时计算扩展)（→32 篇精读）"
   },
   {
-    "date": "2026-04-12 01:12",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第13轮: +3新增(Llama 4 Behemoth 288B/Apple Intelligence 3.0/Claude Code Agent SWE-Bench 68%), 大规模合并2015-2026独立旧新闻为年度总结, 总计24条精选"
-  },
-  {
-    "date": "2026-04-12 01:12",
+    "id": "evo-20260412-251f24",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Llama 4 Behemoth——开源推理模型的登顶之路",
-    "slug": "llama4-behemoth-open-source-reasoning-revolution"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：MCP v2.1+A2A 智能体协议栈成熟化 + 异构推理硬件格局 2026（→51 篇专栏）",
+    "detail": "新增 2 篇文章：MCP v2.1+A2A 智能体协议栈成熟化 + 异构推理硬件格局 2026（→51 篇专栏）"
   },
   {
-    "date": "2026-04-12 01:12",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: AI 编程 Agent 2026——从代码补全到自主软件工程",
-    "slug": "ai-coding-agent-2026-autonomous-software-engineering"
-  },
-  {
-    "date": "2026-04-12 01:12",
+    "id": "evo-20260412-682556",
+    "date": "2026-04-12",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订3章: LLM入门 Ch5 多模态(+Gemma4/SigLIP/语音Token化/代码推理) | 推理框架 Ch1 瓶颈分析(+H200/B200硬件对比/MLA/Goodput/Profiling) | AI Agent Ch1 概述(+MCP协议/2026生态/安全防线)"
+    "emoji": "📖",
+    "title": "深度修订 2 章：推理框架-Ch2 vLLM(7.56→14KB+ PD分离/v0.8/APC哈希/调优) + Agent-Ch2 单Agent架构(11→14",
+    "detail": "深度修订 2 章：推理框架-Ch2 vLLM(7.56→14KB+ PD分离/v0.8/APC哈希/调优) + Agent-Ch2 单Agent架构(11→14KB+ Reflexion/FC版ReAct/DAG规划)"
   },
   {
-    "date": "2026-04-12 01:12",
+    "id": "evo-20260412-de7802",
+    "date": "2026-04-12",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新增 3 条新闻(xAI Grok 4.20多代理架构/AMD MI355X MLPerf创纪录/MCP v2.1 Server Cards)，合并 2020 ",
+    "detail": "新增 3 条新闻(xAI Grok 4.20多代理架构/AMD MI355X MLPerf创纪录/MCP v2.1 Server Cards)，合并 2020 年旧闻为年度总结，总计 89 条"
+  },
+  {
+    "id": "evo-20260412-13ecd0",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增2篇论文精读: Quiet-STaR(COLM 2024 内部推理方法，影响o1/R1) + MoE Meets Instruction Tuning(ICLR 2024 Spotlight，指导DeepSeek/Llama4训练策略)",
-    "slug": "quiet-star"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：Scaling Monosemanticity (Anthropic SAE 3400万特征) + Genie 2 (DeepMind 通",
+    "detail": "新增 2 篇论文精读：Scaling Monosemanticity (Anthropic SAE 3400万特征) + Genie 2 (DeepMind 通用世界模型)（→30 篇精读）"
   },
   {
-    "date": "2026-04-11 23:52",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第12轮: +3新增(GPT-6 Eve发布倒计时/NVIDIA Rubin架构路线图/Cohere Command A企业RAG), 大规模合并旧新闻→保留25条精选(含年度总结), URL全部统一为#"
-  },
-  {
-    "date": "2026-04-11 23:52",
+    "id": "evo-20260412-5eb68a",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: GPT-6 Eve——200万上下文与超级应用的终局之战",
-    "slug": "gpt6-eve-unified-super-app-2m-context"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：AI 推理成本经济学 GPU FinOps 实战 + Agent 运行时安全治理全链路（→49 篇专栏）",
+    "detail": "新增 2 篇文章：AI 推理成本经济学 GPU FinOps 实战 + Agent 运行时安全治理全链路（→49 篇专栏）"
   },
   {
-    "date": "2026-04-11 23:52",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Cohere Command A——当RAG不再是补丁而是模型的原生能力",
-    "slug": "cohere-command-a-enterprise-rag-grounded-generation"
-  },
-  {
-    "date": "2026-04-11 23:52",
+    "id": "evo-20260412-0dadc0",
+    "date": "2026-04-12",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订3章: PyTorch Ch4 优化器(+8bit Adam/LAMB/Adafactor/LR调试) | PyTorch Ch5 torch.compile(+FlexAttention/编译栈全景/分布式) | 推理框架 Ch6 Disaggregated Serving(+DistServe/Mooncake/MoE推理实战)"
+    "emoji": "📖",
+    "title": "深度修订 2 章：PyTorch-Ch7 性能分析(5.37→14KB+ Roofline/MBU-MFU/Nsight/CUDA Graph) + 自驾-Ch",
+    "detail": "深度修订 2 章：PyTorch-Ch7 性能分析(5.37→14KB+ Roofline/MBU-MFU/Nsight/CUDA Graph) + 自驾-Ch3 训练部署(8.6→14KB+ VLA推理/Dynamo集成/世界模型仿真)"
   },
   {
-    "date": "2026-04-11 23:52",
+    "id": "evo-20260412-f8e018",
+    "date": "2026-04-12",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新增 3 条新闻(GPT-5.5 Spud泄露/微软Agent Governance Toolkit/WEF推理基础设施)，合并 2025 上半年 4 条零散旧",
+    "detail": "新增 3 条新闻(GPT-5.5 Spud泄露/微软Agent Governance Toolkit/WEF推理基础设施)，合并 2025 上半年 4 条零散旧闻为年中总结，总计 88 条"
+  },
+  {
+    "id": "evo-20260412-b445f7",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增2篇论文精读: DistServe(OSDI 2024 PD分离推理) + Test-Time Compute Scaling(ICML 2025 推理时计算缩放)",
-    "slug": "distserve"
+    "emoji": "🔬",
+    "title": "新增 2 篇论文精读：RECAP 鲁棒安全对齐 + SnapKV KV Cache 自动压缩（→28 篇精读）",
+    "detail": "新增 2 篇论文精读：RECAP 鲁棒安全对齐 + SnapKV KV Cache 自动压缩（→28 篇精读）"
   },
   {
-    "date": "2026-04-11 22:36",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第11轮: +3新增(Claude Mythos受限发布/GLM-5.1 MIT开源击败GPT-5.4/Gemma 4全系开源多模态), 合并4条→2条, 总计10条(2模型+2行业+4技术+2开源)"
-  },
-  {
-    "date": "2026-04-11 22:36",
+    "id": "evo-20260412-02eaec",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Claude Mythos——当AI实验室说「太危险了，不能公开」",
-    "slug": "claude-mythos-too-dangerous-to-release"
+    "emoji": "✍️",
+    "title": "新增 2 篇文章：AlphaProof 2 IMO 金牌数学推理 + MCP 生态 2026 标准化之路（→48 篇专栏）",
+    "detail": "新增 2 篇文章：AlphaProof 2 IMO 金牌数学推理 + MCP 生态 2026 标准化之路（→48 篇专栏）"
   },
   {
-    "date": "2026-04-11 22:36",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: 开源首次登顶——GLM-5.1击败GPT-5.4意味着什么",
-    "slug": "glm51-opensource-beats-gpt54-frontier"
-  },
-  {
-    "date": "2026-04-11 22:36",
+    "id": "evo-20260412-a24862",
+    "date": "2026-04-12",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订2章: 推理框架 Ch4 TensorRT-LLM(+FP4量化/B200/完整部署示例) | PyTorch Ch6 分布式(+FSDP2/DTensor/2D并行/通信调优)"
+    "emoji": "📖",
+    "title": "深度修订 2 章：LLM入门-Ch6 Agent与工具使用(5.7→14KB) + 推理-Ch7 前沿与未来(5→14KB)",
+    "detail": "深度修订 2 章：LLM入门-Ch6 Agent与工具使用(5.7→14KB) + 推理-Ch7 前沿与未来(5→14KB)"
   },
   {
-    "date": "2026-04-11 22:36",
+    "id": "evo-20260412-eb17a4",
+    "date": "2026-04-12",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新增 3 条新闻(Claude Opus 4.6登顶/AlphaProof 2/HF+Dynamo)，合并 2024 年 8 条零散旧新闻为年度总结",
+    "detail": "新增 3 条新闻(Claude Opus 4.6登顶/AlphaProof 2/HF+Dynamo)，合并 2024 年 8 条零散旧新闻为年度总结"
+  },
+  {
+    "id": "evo-20260412-fc7d4d",
+    "date": "2026-04-12",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第15轮: +3新增(GLM-5V-Turbo/Curriculum RL/MAI-1.5开源), 合并K8s DRA 3条为1条+Iceberg 2条",
+    "detail": "新闻更新第15轮: +3新增(GLM-5V-Turbo/Curriculum RL/MAI-1.5开源), 合并K8s DRA 3条为1条+Iceberg 2条为1条, 总计92条"
+  },
+  {
+    "id": "evo-20260412-1014c5",
+    "date": "2026-04-12",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: 课程强化学习提升LLM推理 + MAI-1.5与2026多模态开源模型格局",
+    "detail": "生成深度专栏: 课程强化学习提升LLM推理 + MAI-1.5与2026多模态开源模型格局"
+  },
+  {
+    "id": "evo-20260412-660efe",
+    "date": "2026-04-12",
+    "type": "book",
+    "emoji": "📖",
+    "title": "深度修订3章: LLM-Ch4推理优化(+Roofline/MBU/Goodput/PagedAttention代码/EAGLE-2/Dynamo) 5.93→",
+    "detail": "深度修订3章: LLM-Ch4推理优化(+Roofline/MBU/Goodput/PagedAttention代码/EAGLE-2/Dynamo) 5.93→14KB+ | LLM-Ch7前沿展望(+Curriculum RL/BLT/Agent安全/VLA/Embodied AI) 5.21→14KB+ | 推理-Ch5量化(+AWQ代码/SmoothQuant/FP8/EAGLE-2/H2O驱逐) 4.88→16KB+"
+  },
+  {
+    "id": "evo-20260412-c14e54",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增2篇论文解读: OpenDriveVLA(端到端自动驾驶VLA SOTA) + Gemma 4(Google开源多模态全系)",
-    "slug": "opendrivevla"
+    "emoji": "🔬",
+    "title": "新增精读: ReSearch(RL驱动推理时搜索) + SWE-RL(RL提升软件工程推理), 总计26篇全部精读",
+    "detail": "新增精读: ReSearch(RL驱动推理时搜索) + SWE-RL(RL提升软件工程推理), 总计26篇全部精读"
   },
   {
-    "date": "2026-04-11 22:15",
+    "id": "evo-20260412-da5328",
+    "date": "2026-04-12",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第10轮: +3新增(DeepSeek V4正式发布Engram架构/OpenClaw 10万Star+Claw Code/DriveWorld-VLA自动驾驶新范式), 合并2条→1条行业综合, 总计10条(2模型+2行业+3技术+3开源)"
+    "emoji": "📡",
+    "title": "新闻更新第14轮: +3新增(NVIDIA Rubin Ultra路线图/Meta×CoreWeave $210亿/Intel×Google Cloud AI合",
+    "detail": "新闻更新第14轮: +3新增(NVIDIA Rubin Ultra路线图/Meta×CoreWeave $210亿/Intel×Google Cloud AI合作), URL统一#, categoryName修复, 总计92条"
   },
   {
-    "date": "2026-04-11 22:15",
+    "id": "evo-20260412-0cd754",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: DriveWorld-VLA——世界模型与 VLA 深度融合的自动驾驶新范式",
-    "slug": "driveworld-vla-world-model-autonomous-driving"
+    "emoji": "✍️",
+    "title": "生成深度专栏: NVIDIA Rubin架构与Dynamo推理框架 + GPU云经济学CoreWeave万亿美元竞赛",
+    "detail": "生成深度专栏: NVIDIA Rubin架构与Dynamo推理框架 + GPU云经济学CoreWeave万亿美元竞赛"
   },
   {
-    "date": "2026-04-11 22:15",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: DeepSeek V4 正式发布——Engram 记忆架构与万亿参数开源的产业冲击",
-    "slug": "deepseek-v4-engram-trillion-parameter-launch"
-  },
-  {
-    "date": "2026-04-11 22:15",
+    "id": "evo-20260412-9c1d0b",
+    "date": "2026-04-12",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订4章: 自动驾驶大模型 Ch5 VLA架构(含OpenDriveVLA/DriveWorld-VLA/BEV/占用网络) + Ch6 安全与长尾(含WM-SAID/OOD检测/SOTIF) + Ch7 未来趋势(VLA量产/端云协同/2030路线图) | AI Agent Ch7 案例研究(Signal平台完整复现)"
+    "emoji": "📖",
+    "title": "深度修订3章: LLM-Ch2预训练(+Scaling Law MoE/FP8训练/FineWeb pipeline/课程学习) 6.78→14KB+ | LL",
+    "detail": "深度修订3章: LLM-Ch2预训练(+Scaling Law MoE/FP8训练/FineWeb pipeline/课程学习) 6.78→14KB+ | LLM-Ch3对齐(+QLoRA实战/GRPO深度/CAI/SimPO/DPO训练代码) 6.1→15KB+ | 推理-Ch3 SGLang(+RadixTree实现/FSM编译/FlashInfer/Dynamo集成) 6.08→14KB+"
   },
   {
-    "date": "2026-04-11 22:15",
+    "id": "evo-20260412-63903b",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "新增论文精读2篇: DriveWorld-VLA (潜在空间统一世界模型+VLA, arXiv 2026) + LLM4AD (IEEE TITS 2026综述, 150+篇论文梳理), 已精读 15/15 篇",
-    "slug": "driveworld-vla-llm4ad"
+    "emoji": "🔬",
+    "title": "新增精读: BLT(Meta字节级Transformer无Tokenizer) + DAPO(ByteDance开源RL对齐系统), 总计24篇全部精读",
+    "detail": "新增精读: BLT(Meta字节级Transformer无Tokenizer) + DAPO(ByteDance开源RL对齐系统), 总计24篇全部精读"
   },
   {
-    "date": "2026-04-11 21:26",
+    "id": "evo-20260412-12af2b",
+    "date": "2026-04-12",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第9轮: +3新增(DeepSeek V4华为昇腾确认/微软Agent Framework 1.0/Qwen 3.6+GLM-5V-Turbo), 合并4条→1条技术突破月报, 总计10条(4模型+2行业+1技术+3开源)"
+    "emoji": "📡",
+    "title": "新闻更新第13轮: +3新增(Llama 4 Behemoth 288B/Apple Intelligence 3.0/Claude Code Agent SW",
+    "detail": "新闻更新第13轮: +3新增(Llama 4 Behemoth 288B/Apple Intelligence 3.0/Claude Code Agent SWE-Bench 68%), 大规模合并2015-2026独立旧新闻为年度总结, 总计24条精选"
   },
   {
-    "date": "2026-04-11 21:26",
+    "id": "evo-20260412-cf57ae",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: DeepSeek V4 前瞻——华为昇腾芯片上的万亿参数 AI",
-    "slug": "deepseek-v4-ascend-trillion-parameter"
+    "emoji": "✍️",
+    "title": "生成深度专栏: Llama 4 Behemoth——开源推理模型的登顶之路",
+    "detail": "生成深度专栏: Llama 4 Behemoth——开源推理模型的登顶之路"
   },
   {
-    "date": "2026-04-11 21:26",
+    "id": "evo-20260412-cf627b",
+    "date": "2026-04-12",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: 微软 Agent Framework 1.0 解析——多智能体编排的生产化之路",
-    "slug": "microsoft-agent-framework-production-multi-agent"
+    "emoji": "✍️",
+    "title": "生成深度专栏: AI 编程 Agent 2026——从代码补全到自主软件工程",
+    "detail": "生成深度专栏: AI 编程 Agent 2026——从代码补全到自主软件工程"
   },
   {
-    "date": "2026-04-11 21:26",
+    "id": "evo-20260412-a488b7",
+    "date": "2026-04-12",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订2章: AI Agent Ch5 记忆与状态管理 + Ch6 生产级部署与监控 (模板→完整章节, 含代码示例/架构图/选型指南)"
+    "emoji": "📖",
+    "title": "深度修订3章: LLM入门 Ch5 多模态(+Gemma4/SigLIP/语音Token化/代码推理) | 推理框架 Ch1 瓶颈分析(+H200/B200硬件",
+    "detail": "深度修订3章: LLM入门 Ch5 多模态(+Gemma4/SigLIP/语音Token化/代码推理) | 推理框架 Ch1 瓶颈分析(+H200/B200硬件对比/MLA/Goodput/Profiling) | AI Agent Ch1 概述(+MCP协议/2026生态/安全防线)"
   },
   {
-    "date": "2026-04-11 21:02",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第8轮: +3新增(Copilot多仓库/MCP注册中心+Conductor/ALTK-Evolve在线学习), 合并3条旧合并新闻→1条月度综合, 删除rag-20重复, 总计11条"
-  },
-  {
-    "date": "2026-04-11 21:02",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: AI 开发者工具 2026 新格局——从代码补全到系统级智能协作",
-    "slug": "ai-devtools-2026-system-level-intelligence"
-  },
-  {
-    "date": "2026-04-11 21:02",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: ALTK-Evolve 与 Agent 在线学习——从静态模型到动态自适应",
-    "slug": "altk-evolve-agent-online-learning-paradigm"
-  },
-  {
-    "date": "2026-04-11 21:02",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订4章: 自动驾驶大模型 Ch2 数据平台闭环 + Ch4 BEV/占用网络 | AI Agent Ch2 ReAct/Plan-Execute + Ch3 工具使用/MCP + Ch4 多Agent协作 (模板→完整章节, 含代码示例和架构图)"
-  },
-  {
-    "date": "2026-04-11 21:02",
-    "type": "article",
-    "agent": "质检智能体",
-    "message": "新增自动化测试框架: Jest 配置 + 12个测试用例覆盖数据完整性/JSON格式/Markdown frontmatter/路由一致性"
-  },
-  {
-    "date": "2026-04-11 20:24",
-    "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第7轮: +3新增(Stanford HAI/Mistral Large 3 Ultra/苹果WWDC泄露), 合并旧闻, 总计12条"
-  },
-  {
-    "date": "2026-04-11 20:24",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: MCP 协议深度解析——AI Agent 的 USB 接口标准",
-    "slug": "mcp-protocol-ai-agent-usb-standard"
-  },
-  {
-    "date": "2026-04-11 20:24",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: AI 基础模型 2026 年 4 月格局——从混战到分层",
-    "slug": "foundation-model-landscape-april-2026"
-  },
-  {
-    "date": "2026-04-11 20:24",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "深度修订: RAG 2.0 + AI Coding 工具对比 + AI Agent 框架大战 (3篇短文章扩充为完整深度内容)",
-    "slug": "rag-2-0"
-  },
-  {
-    "date": "2026-04-11 20:24",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订: 自动驾驶大模型 第1章 数据全链路 + AI Agent 实战指南 第1章 概述与核心概念 (模板→完整章节)",
-    "slug": "ad-llm-ch01-agent-ch01"
-  },
-  {
-    "date": "2026-04-11 20:24",
+    "id": "evo-20260412-0231f8",
+    "date": "2026-04-12",
     "type": "paper",
-    "agent": "论文智能体",
-    "message": "精读论文: FineWeb — 大规模高质量网页数据蒸馏 (NeurIPS 2024)，全部 13/13 篇论文精读完成",
-    "slug": "fineweb"
+    "emoji": "🔬",
+    "title": "新增2篇论文精读: Quiet-STaR(COLM 2024 内部推理方法，影响o1/R1) + MoE Meets Instruction Tuning(IC",
+    "detail": "新增2篇论文精读: Quiet-STaR(COLM 2024 内部推理方法，影响o1/R1) + MoE Meets Instruction Tuning(ICLR 2024 Spotlight，指导DeepSeek/Llama4训练策略)"
   },
   {
-    "date": "2026-04-11 19:54",
-    "type": "paper",
-    "agent": "论文智能体",
-    "message": "精读论文: Fast Inference from Transformers via Speculative Decoding (ICML 2023)",
-    "slug": "speculative-decoding"
-  },
-  {
-    "date": "2026-04-11 19:54",
-    "type": "paper",
-    "agent": "论文智能体",
-    "message": "精读论文: The Llama 3 Herd of Models (Meta AI)",
-    "slug": "llama-3"
-  },
-  {
-    "date": "2026-04-11 19:54",
-    "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订: 自动驾驶大模型深度研究 第3章 训练平台与推理部署",
-    "slug": "ad-llm-ch03"
-  },
-  {
-    "date": "2026-04-11 19:54",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: 语音合成新范式：从 TTS 到无分词器端到端模型",
-    "slug": "tts-tokenizer-free-voxcpm2-speech-synthesis"
-  },
-  {
-    "date": "2026-04-11 19:54",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: AI 编程基准测试的标准化革命：从 SWE-bench 到 Archon",
-    "slug": "ai-coding-benchmark-archon-swebench"
-  },
-  {
-    "date": "2026-04-11 19:54",
+    "id": "evo-20260411-6c8892",
+    "date": "2026-04-11",
     "type": "news",
-    "agent": "新闻智能体",
-    "message": "新闻更新第6轮: +3新增(AITune/VoxCPM2/芯片出口延迟), -5合并→2(Anthropic综合/马斯克帝国), 总计13条"
+    "emoji": "📡",
+    "title": "新闻更新第12轮: +3新增(GPT-6 Eve发布倒计时/NVIDIA Rubin架构路线图/Cohere Command A企业RAG), 大规模合并旧新闻",
+    "detail": "新闻更新第12轮: +3新增(GPT-6 Eve发布倒计时/NVIDIA Rubin架构路线图/Cohere Command A企业RAG), 大规模合并旧新闻→保留25条精选(含年度总结), URL全部统一为#"
   },
   {
-    "date": "2026-04-11 18:57",
+    "id": "evo-20260411-5a3dc3",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot",
-    "slug": "ai-coding-cursor-vs-windsurf-vs-github-copilot"
+    "emoji": "✍️",
+    "title": "生成深度专栏: GPT-6 Eve——200万上下文与超级应用的终局之战",
+    "detail": "生成深度专栏: GPT-6 Eve——200万上下文与超级应用的终局之战"
   },
   {
-    "date": "2026-04-11 18:57",
+    "id": "evo-20260411-c32cbf",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: RAG 2.0：从朴素检索到自适应知识增强",
-    "slug": "rag-2-0"
+    "emoji": "✍️",
+    "title": "生成深度专栏: Cohere Command A——当RAG不再是补丁而是模型的原生能力",
+    "detail": "生成深度专栏: Cohere Command A——当RAG不再是补丁而是模型的原生能力"
   },
   {
-    "date": "2026-04-11 18:57",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: AI Agent 框架大战：CrewAI vs LangGraph vs AutoGen",
-    "slug": "ai-agent-crewai-vs-langgraph-vs-autogen"
-  },
-  {
-    "date": "2026-04-11 18:57",
+    "id": "evo-20260411-9ee843",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "生成/修订书籍: 自动驾驶大模型深度研究 (7 章)",
-    "slug": "ad-llm"
+    "emoji": "📖",
+    "title": "深度修订3章: PyTorch Ch4 优化器(+8bit Adam/LAMB/Adafactor/LR调试) | PyTorch Ch5 torch.comp",
+    "detail": "深度修订3章: PyTorch Ch4 优化器(+8bit Adam/LAMB/Adafactor/LR调试) | PyTorch Ch5 torch.compile(+FlexAttention/编译栈全景/分布式) | 推理框架 Ch6 Disaggregated Serving(+DistServe/Mooncake/MoE推理实战)"
   },
   {
-    "date": "2026-04-11 18:57",
+    "id": "evo-20260411-2e7284",
+    "date": "2026-04-11",
+    "type": "paper",
+    "emoji": "🔬",
+    "title": "新增2篇论文精读: DistServe(OSDI 2024 PD分离推理) + Test-Time Compute Scaling(ICML 2025 推理时计",
+    "detail": "新增2篇论文精读: DistServe(OSDI 2024 PD分离推理) + Test-Time Compute Scaling(ICML 2025 推理时计算缩放)"
+  },
+  {
+    "id": "evo-20260411-1e8ce4",
+    "date": "2026-04-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第11轮: +3新增(Claude Mythos受限发布/GLM-5.1 MIT开源击败GPT-5.4/Gemma 4全系开源多模态), 合并4条→2条",
+    "detail": "新闻更新第11轮: +3新增(Claude Mythos受限发布/GLM-5.1 MIT开源击败GPT-5.4/Gemma 4全系开源多模态), 合并4条→2条, 总计10条(2模型+2行业+4技术+2开源)"
+  },
+  {
+    "id": "evo-20260411-7de8c4",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: Claude Mythos——当AI实验室说「太危险了，不能公开」",
+    "detail": "生成深度专栏: Claude Mythos——当AI实验室说「太危险了，不能公开」"
+  },
+  {
+    "id": "evo-20260411-1a233d",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: 开源首次登顶——GLM-5.1击败GPT-5.4意味着什么",
+    "detail": "生成深度专栏: 开源首次登顶——GLM-5.1击败GPT-5.4意味着什么"
+  },
+  {
+    "id": "evo-20260411-1f5295",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "生成/修订书籍: AI Agent 实战指南 (7 章)",
-    "slug": "ai-agent"
+    "emoji": "📖",
+    "title": "深度修订2章: 推理框架 Ch4 TensorRT-LLM(+FP4量化/B200/完整部署示例) | PyTorch Ch6 分布式(+FSDP2/DTens",
+    "detail": "深度修订2章: 推理框架 Ch4 TensorRT-LLM(+FP4量化/B200/完整部署示例) | PyTorch Ch6 分布式(+FSDP2/DTensor/2D并行/通信调优)"
   },
   {
-    "date": "2026-04-11 18:57",
+    "id": "evo-20260411-127267",
+    "date": "2026-04-11",
+    "type": "paper",
+    "emoji": "🔬",
+    "title": "新增2篇论文解读: OpenDriveVLA(端到端自动驾驶VLA SOTA) + Gemma 4(Google开源多模态全系)",
+    "detail": "新增2篇论文解读: OpenDriveVLA(端到端自动驾驶VLA SOTA) + Gemma 4(Google开源多模态全系)"
+  },
+  {
+    "id": "evo-20260411-4fdc4b",
+    "date": "2026-04-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第10轮: +3新增(DeepSeek V4正式发布Engram架构/OpenClaw 10万Star+Claw Code/DriveWorld-VLA",
+    "detail": "新闻更新第10轮: +3新增(DeepSeek V4正式发布Engram架构/OpenClaw 10万Star+Claw Code/DriveWorld-VLA自动驾驶新范式), 合并2条→1条行业综合, 总计10条(2模型+2行业+3技术+3开源)"
+  },
+  {
+    "id": "evo-20260411-6e71d4",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: DriveWorld-VLA——世界模型与 VLA 深度融合的自动驾驶新范式",
+    "detail": "生成深度专栏: DriveWorld-VLA——世界模型与 VLA 深度融合的自动驾驶新范式"
+  },
+  {
+    "id": "evo-20260411-dd35a5",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: DeepSeek V4 正式发布——Engram 记忆架构与万亿参数开源的产业冲击",
+    "detail": "生成深度专栏: DeepSeek V4 正式发布——Engram 记忆架构与万亿参数开源的产业冲击"
+  },
+  {
+    "id": "evo-20260411-b2b406",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "生成/修订书籍: 大语言模型从入门到前沿 (7 章)",
-    "slug": "93f28994"
+    "emoji": "📖",
+    "title": "深度修订4章: 自动驾驶大模型 Ch5 VLA架构(含OpenDriveVLA/DriveWorld-VLA/BEV/占用网络) + Ch6 安全与长尾(含WM",
+    "detail": "深度修订4章: 自动驾驶大模型 Ch5 VLA架构(含OpenDriveVLA/DriveWorld-VLA/BEV/占用网络) + Ch6 安全与长尾(含WM-SAID/OOD检测/SOTIF) + Ch7 未来趋势(VLA量产/端云协同/2030路线图) | AI Agent Ch7 案例研究(Signal平台完整复现)"
   },
   {
-    "date": "2026-04-11 18:38",
+    "id": "evo-20260411-4fdab9",
+    "date": "2026-04-11",
+    "type": "paper",
+    "emoji": "🔬",
+    "title": "新增论文精读2篇: DriveWorld-VLA (潜在空间统一世界模型+VLA, arXiv 2026) + LLM4AD (IEEE TITS 2026综述",
+    "detail": "新增论文精读2篇: DriveWorld-VLA (潜在空间统一世界模型+VLA, arXiv 2026) + LLM4AD (IEEE TITS 2026综述, 150+篇论文梳理), 已精读 15/15 篇"
+  },
+  {
+    "id": "evo-20260411-521efb",
+    "date": "2026-04-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第9轮: +3新增(DeepSeek V4华为昇腾确认/微软Agent Framework 1.0/Qwen 3.6+GLM-5V-Turbo), 合并",
+    "detail": "新闻更新第9轮: +3新增(DeepSeek V4华为昇腾确认/微软Agent Framework 1.0/Qwen 3.6+GLM-5V-Turbo), 合并4条→1条技术突破月报, 总计10条(4模型+2行业+1技术+3开源)"
+  },
+  {
+    "id": "evo-20260411-40f13a",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "新闻智能体",
-    "message": "更新新闻频道: 新增 3 条最新新闻 (Meta-CoreWeave $210亿/Optimus V3 量产/ClawLess Agent 安全框架)，合并 4 条旧新闻为 2 条综合摘要 (OpenAI 战略综合/安全治理月报)，总计 13 条",
-    "slug": "news-update"
+    "emoji": "✍️",
+    "title": "生成深度专栏: DeepSeek V4 前瞻——华为昇腾芯片上的万亿参数 AI",
+    "detail": "生成深度专栏: DeepSeek V4 前瞻——华为昇腾芯片上的万亿参数 AI"
   },
   {
-    "date": "2026-04-11 18:38",
+    "id": "evo-20260411-f58ef8",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: AI 算力军备竞赛——万亿美元基础设施的赢家与输家",
-    "slug": "ai-compute-arms-race-trillion-infrastructure"
+    "emoji": "✍️",
+    "title": "生成深度专栏: 微软 Agent Framework 1.0 解析——多智能体编排的生产化之路",
+    "detail": "生成深度专栏: 微软 Agent Framework 1.0 解析——多智能体编排的生产化之路"
   },
   {
-    "date": "2026-04-11 18:38",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: 从 Optimus 到 Digital Optimus——当机器人遇见大模型",
-    "slug": "optimus-v3-digital-optimus-embodied-ai"
-  },
-  {
-    "date": "2026-04-11 18:38",
+    "id": "evo-20260411-688c14",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "深度修订章节: 自动驾驶大模型 - 第6章 安全与长尾问题 (从 47 行扩展至完整章节，新增 OOD 检测深度内容、世界模型方法、Apollo Go 事件分析)",
-    "slug": "ad-llm-ch06"
+    "emoji": "📖",
+    "title": "深度修订2章: AI Agent Ch5 记忆与状态管理 + Ch6 生产级部署与监控 (模板→完整章节, 含代码示例/架构图/选型指南)",
+    "detail": "深度修订2章: AI Agent Ch5 记忆与状态管理 + Ch6 生产级部署与监控 (模板→完整章节, 含代码示例/架构图/选型指南)"
   },
   {
-    "date": "2026-04-11 18:38",
+    "id": "evo-20260411-013317",
+    "date": "2026-04-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第8轮: +3新增(Copilot多仓库/MCP注册中心+Conductor/ALTK-Evolve在线学习), 合并3条旧合并新闻→1条月度综合, 删",
+    "detail": "新闻更新第8轮: +3新增(Copilot多仓库/MCP注册中心+Conductor/ALTK-Evolve在线学习), 合并3条旧合并新闻→1条月度综合, 删除rag-20重复, 总计11条"
+  },
+  {
+    "id": "evo-20260411-c59785",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "论文智能体",
-    "message": "新增论文精读: PagedAttention (vLLM 核心技术，OS 分页思想管理 KV Cache) + Self-Instruct (合成数据开创性工作)，已精读 10/13 篇",
-    "slug": "papers-paged-attention-self-instruct"
+    "emoji": "✍️",
+    "title": "生成深度专栏: AI 开发者工具 2026 新格局——从代码补全到系统级智能协作",
+    "detail": "生成深度专栏: AI 开发者工具 2026 新格局——从代码补全到系统级智能协作"
   },
   {
-    "date": "2026-04-11 18:11",
+    "id": "evo-20260411-85c529",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "新闻智能体",
-    "message": "更新新闻频道: 新增 3 条最新新闻 (SpaceX-xAI 合并/GPT-6 发布日锁定/Gemini 3.1 Flash-Lite)，合并 5 条旧新闻为 1 条综合摘要，总计 12 条。所有外部链接清理为 #",
-    "slug": "news-update"
+    "emoji": "✍️",
+    "title": "生成深度专栏: ALTK-Evolve 与 Agent 在线学习——从静态模型到动态自适应",
+    "detail": "生成深度专栏: ALTK-Evolve 与 Agent 在线学习——从静态模型到动态自适应"
   },
   {
-    "date": "2026-04-11 18:11",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: 星际智能帝国——SpaceX-xAI 合并背后的 AI 基础设施终局",
-    "slug": "spacex-xai-merge-orbital-ai-infrastructure"
-  },
-  {
-    "date": "2026-04-11 18:11",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: GPT-6 前夜——四月大模型混战与超级应用时代的开启",
-    "slug": "gpt6-eve-april-model-war-super-app"
-  },
-  {
-    "date": "2026-04-11 18:11",
-    "type": "article",
-    "agent": "论文智能体",
-    "message": "新增论文精读: Attention Is All You Need (Transformer 架构基石) + Chinchilla (Scaling Law 修正)，已精读 8/13 篇",
-    "slug": "papers-transformer-chinchilla"
-  },
-  {
-    "date": "2026-04-11 17:39",
-    "type": "article",
-    "agent": "新闻智能体",
-    "message": "更新新闻频道: 新增 4 条最新新闻 (Sora关停/Anthropic RSP 3.0/Google $1850亿AI投资/DeepSeek V4传闻)，合并 5 条旧新闻为 3 条摘要（开源模型汇总/行业动态汇总/AI治理月报），总计 17 条",
-    "slug": "news-update"
-  },
-  {
-    "date": "2026-04-11 17:39",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Sora 之死与 AI Agent 之生——OpenAI 的战略大转向",
-    "slug": "sora-death-openai-agent-pivot"
-  },
-  {
-    "date": "2026-04-11 17:39",
-    "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: Anthropic RSP 3.0——当安全标杆放弃了自己的红线",
-    "slug": "anthropic-rsp3-safety-compromise"
-  },
-  {
-    "date": "2026-04-11 17:39",
+    "id": "evo-20260411-cb5db1",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "修订章节: 大语言模型从入门到前沿 - 第7章 前沿方向与未来展望 + AI Agent 实战指南 - 第7章 案例研究 (模板→实质内容，全书模板章节清零)",
-    "slug": "93f28994-ch07-agent-ch07"
+    "emoji": "📖",
+    "title": "深度修订4章: 自动驾驶大模型 Ch2 数据平台闭环 + Ch4 BEV/占用网络 | AI Agent Ch2 ReAct/Plan-Execute + Ch",
+    "detail": "深度修订4章: 自动驾驶大模型 Ch2 数据平台闭环 + Ch4 BEV/占用网络 | AI Agent Ch2 ReAct/Plan-Execute + Ch3 工具使用/MCP + Ch4 多Agent协作 (模板→完整章节, 含代码示例和架构图)"
   },
   {
-    "date": "2026-04-11 17:39",
+    "id": "evo-20260411-6af32b",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "论文智能体",
-    "message": "新增论文精读: DeepSeek-R1 (GRPO算法涌现推理能力) + Mamba (线性时间选择性状态空间模型)，已精读 6/13 篇",
-    "slug": "papers-r1-mamba"
+    "emoji": "✍️",
+    "title": "新增自动化测试框架: Jest 配置 + 12个测试用例覆盖数据完整性/JSON格式/Markdown frontmatter/路由一致性",
+    "detail": "新增自动化测试框架: Jest 配置 + 12个测试用例覆盖数据完整性/JSON格式/Markdown frontmatter/路由一致性"
   },
   {
-    "date": "2026-04-11 17:23",
+    "id": "evo-20260411-076c67",
+    "date": "2026-04-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第7轮: +3新增(Stanford HAI/Mistral Large 3 Ultra/苹果WWDC泄露), 合并旧闻, 总计12条",
+    "detail": "新闻更新第7轮: +3新增(Stanford HAI/Mistral Large 3 Ultra/苹果WWDC泄露), 合并旧闻, 总计12条"
+  },
+  {
+    "id": "evo-20260411-7676e8",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "新闻智能体",
-    "message": "更新新闻频道: 新增 5 条最新新闻 (GPT-6 Spud/Anthropic 营收超 OpenAI/Meta Muse Spark/AI Agent 安全危机/LLM 妄想螺旋)，合并 4 条旧新闻为 2 条摘要，总计 17 条",
-    "slug": "news-update"
+    "emoji": "✍️",
+    "title": "生成深度专栏: MCP 协议深度解析——AI Agent 的 USB 接口标准",
+    "detail": "生成深度专栏: MCP 协议深度解析——AI Agent 的 USB 接口标准"
   },
   {
-    "date": "2026-04-11 17:23",
+    "id": "evo-20260411-1e1ad1",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: GPT-6 前瞻：从 Spud 代号看 OpenAI 的超级应用野心",
-    "slug": "gpt6-spud-openai-super-app"
+    "emoji": "✍️",
+    "title": "生成深度专栏: AI 基础模型 2026 年 4 月格局——从混战到分层",
+    "detail": "生成深度专栏: AI 基础模型 2026 年 4 月格局——从混战到分层"
   },
   {
-    "date": "2026-04-11 17:23",
+    "id": "evo-20260411-f5553c",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度专栏: AI 安全周报：当 Agent 学会撒谎、供应链被攻破",
-    "slug": "ai-security-agent-supply-chain-crisis"
+    "emoji": "✍️",
+    "title": "深度修订: RAG 2.0 + AI Coding 工具对比 + AI Agent 框架大战 (3篇短文章扩充为完整深度内容)",
+    "detail": "深度修订: RAG 2.0 + AI Coding 工具对比 + AI Agent 框架大战 (3篇短文章扩充为完整深度内容)"
   },
   {
-    "date": "2026-04-11 17:23",
+    "id": "evo-20260411-3f49cb",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "修订章节: 大语言模型从入门到前沿 - 第5章 多模态扩展 + 第6章 Agent 与工具使用 (模板→实质内容)",
-    "slug": "93f28994-ch05-ch06"
+    "emoji": "📖",
+    "title": "深度修订: 自动驾驶大模型 第1章 数据全链路 + AI Agent 实战指南 第1章 概述与核心概念 (模板→完整章节)",
+    "detail": "深度修订: 自动驾驶大模型 第1章 数据全链路 + AI Agent 实战指南 第1章 概述与核心概念 (模板→完整章节)"
   },
   {
-    "date": "2026-04-11 17:23",
+    "id": "evo-20260411-1b276b",
+    "date": "2026-04-11",
+    "type": "paper",
+    "emoji": "🔬",
+    "title": "精读论文: FineWeb — 大规模高质量网页数据蒸馏 (NeurIPS 2024)，全部 13/13 篇论文精读完成",
+    "detail": "精读论文: FineWeb — 大规模高质量网页数据蒸馏 (NeurIPS 2024)，全部 13/13 篇论文精读完成"
+  },
+  {
+    "id": "evo-20260411-a5512a",
+    "date": "2026-04-11",
+    "type": "paper",
+    "emoji": "🔬",
+    "title": "精读论文: Fast Inference from Transformers via Speculative Decoding (ICML 2023)",
+    "detail": "精读论文: Fast Inference from Transformers via Speculative Decoding (ICML 2023)"
+  },
+  {
+    "id": "evo-20260411-003b38",
+    "date": "2026-04-11",
+    "type": "paper",
+    "emoji": "🔬",
+    "title": "精读论文: The Llama 3 Herd of Models (Meta AI)",
+    "detail": "精读论文: The Llama 3 Herd of Models (Meta AI)"
+  },
+  {
+    "id": "evo-20260411-69ff26",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "修订章节: AI Agent 实战指南 - 第5章 记忆与状态管理 + 第6章 生产级部署与监控 (模板→实质内容)",
-    "slug": "ai-agent-ch05-ch06"
+    "emoji": "📖",
+    "title": "深度修订: 自动驾驶大模型深度研究 第3章 训练平台与推理部署",
+    "detail": "深度修订: 自动驾驶大模型深度研究 第3章 训练平台与推理部署"
   },
   {
-    "date": "2026-04-11 16:20",
+    "id": "evo-20260411-7c94ab",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度文章: 开源逆袭：GLM-5.1 如何用 MIT 许可击败 GPT-5.4 和 Claude Opus",
-    "slug": "opensource-glm51-vs-gpt54"
+    "emoji": "✍️",
+    "title": "生成文章: 语音合成新范式：从 TTS 到无分词器端到端模型",
+    "detail": "生成文章: 语音合成新范式：从 TTS 到无分词器端到端模型"
   },
   {
-    "date": "2026-04-11 16:20",
+    "id": "evo-20260411-2eef95",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度文章: AI 安全的十字路口：当 Anthropic 对峙五角大楼",
-    "slug": "ai-safety-anthropic-pentagon"
+    "emoji": "✍️",
+    "title": "生成文章: AI 编程基准测试的标准化革命：从 SWE-bench 到 Archon",
+    "detail": "生成文章: AI 编程基准测试的标准化革命：从 SWE-bench 到 Archon"
   },
   {
-    "date": "2026-04-11 16:20",
+    "id": "evo-20260411-0a3fbc",
+    "date": "2026-04-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻更新第6轮: +3新增(AITune/VoxCPM2/芯片出口延迟), -5合并→2(Anthropic综合/马斯克帝国), 总计13条",
+    "detail": "新闻更新第6轮: +3新增(AITune/VoxCPM2/芯片出口延迟), -5合并→2(Anthropic综合/马斯克帝国), 总计13条"
+  },
+  {
+    "id": "evo-20260411-cbf549",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot",
+    "detail": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot"
+  },
+  {
+    "id": "evo-20260411-8a63a9",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成文章: RAG 2.0：从朴素检索到自适应知识增强",
+    "detail": "生成文章: RAG 2.0：从朴素检索到自适应知识增强"
+  },
+  {
+    "id": "evo-20260411-f227b9",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成文章: AI Agent 框架大战：CrewAI vs LangGraph vs AutoGen",
+    "detail": "生成文章: AI Agent 框架大战：CrewAI vs LangGraph vs AutoGen"
+  },
+  {
+    "id": "evo-20260411-bec02b",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "修订章节: AI Agent 实战指南 - 第4章 多 Agent 协作框架 (模板→实质内容)",
-    "slug": "ai-agent-ch04"
+    "emoji": "📖",
+    "title": "生成/修订书籍: 自动驾驶大模型深度研究 (7 章)",
+    "detail": "生成/修订书籍: 自动驾驶大模型深度研究 (7 章)"
   },
   {
-    "date": "2026-04-11 16:20",
+    "id": "evo-20260411-9f908f",
+    "date": "2026-04-11",
     "type": "book",
-    "agent": "书籍智能体",
-    "message": "修订章节: 大语言模型从入门到前沿 - 第4章 推理优化 (模板→实质内容)",
-    "slug": "93f28994-ch04"
+    "emoji": "📖",
+    "title": "生成/修订书籍: AI Agent 实战指南 (7 章)",
+    "detail": "生成/修订书籍: AI Agent 实战指南 (7 章)"
   },
   {
-    "date": "2026-04-11 16:20",
-    "type": "article",
-    "agent": "新闻智能体",
-    "message": "更新新闻频道: 新增 8 条最新新闻 (Claude Mythos/GLM-5.1/OpenAI $122B等)，合并 6 条旧新闻为 2 条摘要",
-    "slug": "news-update"
+    "id": "evo-20260411-adca3e",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "生成/修订书籍: 大语言模型从入门到前沿 (7 章)",
+    "detail": "生成/修订书籍: 大语言模型从入门到前沿 (7 章)"
   },
   {
-    "date": "2026-04-10 12:04",
+    "id": "evo-20260411-23b67e",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: Claude 4 Opus 深度评测：代码能力、推理与长文本表现",
-    "slug": "claude-4-opus"
+    "emoji": "✍️",
+    "title": "更新新闻频道: 新增 3 条最新新闻 (Meta-CoreWeave $210亿/Optimus V3 量产/ClawLess Agent 安全框架)，合并 4",
+    "detail": "更新新闻频道: 新增 3 条最新新闻 (Meta-CoreWeave $210亿/Optimus V3 量产/ClawLess Agent 安全框架)，合并 4 条旧新闻为 2 条综合摘要 (OpenAI 战略综合/安全治理月报)，总计 13 条"
   },
   {
-    "date": "2026-04-10 12:04",
+    "id": "evo-20260411-e94b0c",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: Transformer 注意力机制的未来：从 MHA 到 MLA",
-    "slug": "transformer-mha-mla"
+    "emoji": "✍️",
+    "title": "生成深度专栏: AI 算力军备竞赛——万亿美元基础设施的赢家与输家",
+    "detail": "生成深度专栏: AI 算力军备竞赛——万亿美元基础设施的赢家与输家"
   },
   {
-    "date": "2026-04-10 12:04",
+    "id": "evo-20260411-4b1325",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot",
-    "slug": "ai-coding-cursor-vs-windsurf-vs-github-copilot"
+    "emoji": "✍️",
+    "title": "生成深度专栏: 从 Optimus 到 Digital Optimus——当机器人遇见大模型",
+    "detail": "生成深度专栏: 从 Optimus 到 Digital Optimus——当机器人遇见大模型"
   },
   {
-    "date": "2026-04-10 12:04",
+    "id": "evo-20260411-9e3ed2",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "深度修订章节: 自动驾驶大模型 - 第6章 安全与长尾问题 (从 47 行扩展至完整章节，新增 OOD 检测深度内容、世界模型方法、Apollo Go 事件分析",
+    "detail": "深度修订章节: 自动驾驶大模型 - 第6章 安全与长尾问题 (从 47 行扩展至完整章节，新增 OOD 检测深度内容、世界模型方法、Apollo Go 事件分析)"
+  },
+  {
+    "id": "evo-20260411-536be9",
+    "date": "2026-04-11",
     "type": "article",
-    "agent": "文章智能体",
-    "message": "生成深度文章: AI 训练基础设施：万卡集群的架构设计与调度优化",
-    "slug": "ai-305cb957"
+    "emoji": "✍️",
+    "title": "新增论文精读: PagedAttention (vLLM 核心技术，OS 分页思想管理 KV Cache) + Self-Instruct (合成数据开创性工作",
+    "detail": "新增论文精读: PagedAttention (vLLM 核心技术，OS 分页思想管理 KV Cache) + Self-Instruct (合成数据开创性工作)，已精读 10/13 篇"
+  },
+  {
+    "id": "evo-20260411-75f205",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "更新新闻频道: 新增 3 条最新新闻 (SpaceX-xAI 合并/GPT-6 发布日锁定/Gemini 3.1 Flash-Lite)，合并 5 条旧新闻为 ",
+    "detail": "更新新闻频道: 新增 3 条最新新闻 (SpaceX-xAI 合并/GPT-6 发布日锁定/Gemini 3.1 Flash-Lite)，合并 5 条旧新闻为 1 条综合摘要，总计 12 条。所有外部链接清理为 #"
+  },
+  {
+    "id": "evo-20260411-ce5493",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: 星际智能帝国——SpaceX-xAI 合并背后的 AI 基础设施终局",
+    "detail": "生成深度专栏: 星际智能帝国——SpaceX-xAI 合并背后的 AI 基础设施终局"
+  },
+  {
+    "id": "evo-20260411-3cf11e",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: GPT-6 前夜——四月大模型混战与超级应用时代的开启",
+    "detail": "生成深度专栏: GPT-6 前夜——四月大模型混战与超级应用时代的开启"
+  },
+  {
+    "id": "evo-20260411-26b64d",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增论文精读: Attention Is All You Need (Transformer 架构基石) + Chinchilla (Scaling Law 修",
+    "detail": "新增论文精读: Attention Is All You Need (Transformer 架构基石) + Chinchilla (Scaling Law 修正)，已精读 8/13 篇"
+  },
+  {
+    "id": "evo-20260411-0911ae",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "更新新闻频道: 新增 4 条最新新闻 (Sora关停/Anthropic RSP 3.0/Google $1850亿AI投资/DeepSeek V4传闻)，合并",
+    "detail": "更新新闻频道: 新增 4 条最新新闻 (Sora关停/Anthropic RSP 3.0/Google $1850亿AI投资/DeepSeek V4传闻)，合并 5 条旧新闻为 3 条摘要（开源模型汇总/行业动态汇总/AI治理月报），总计 17 条"
+  },
+  {
+    "id": "evo-20260411-210dc4",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: Sora 之死与 AI Agent 之生——OpenAI 的战略大转向",
+    "detail": "生成深度专栏: Sora 之死与 AI Agent 之生——OpenAI 的战略大转向"
+  },
+  {
+    "id": "evo-20260411-d2920a",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: Anthropic RSP 3.0——当安全标杆放弃了自己的红线",
+    "detail": "生成深度专栏: Anthropic RSP 3.0——当安全标杆放弃了自己的红线"
+  },
+  {
+    "id": "evo-20260411-94f8cd",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "修订章节: 大语言模型从入门到前沿 - 第7章 前沿方向与未来展望 + AI Agent 实战指南 - 第7章 案例研究 (模板→实质内容，全书模板章节清零)",
+    "detail": "修订章节: 大语言模型从入门到前沿 - 第7章 前沿方向与未来展望 + AI Agent 实战指南 - 第7章 案例研究 (模板→实质内容，全书模板章节清零)"
+  },
+  {
+    "id": "evo-20260411-c7d713",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "新增论文精读: DeepSeek-R1 (GRPO算法涌现推理能力) + Mamba (线性时间选择性状态空间模型)，已精读 6/13 篇",
+    "detail": "新增论文精读: DeepSeek-R1 (GRPO算法涌现推理能力) + Mamba (线性时间选择性状态空间模型)，已精读 6/13 篇"
+  },
+  {
+    "id": "evo-20260411-96fc96",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "更新新闻频道: 新增 5 条最新新闻 (GPT-6 Spud/Anthropic 营收超 OpenAI/Meta Muse Spark/AI Agent 安全危",
+    "detail": "更新新闻频道: 新增 5 条最新新闻 (GPT-6 Spud/Anthropic 营收超 OpenAI/Meta Muse Spark/AI Agent 安全危机/LLM 妄想螺旋)，合并 4 条旧新闻为 2 条摘要，总计 17 条"
+  },
+  {
+    "id": "evo-20260411-d4b1eb",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: GPT-6 前瞻：从 Spud 代号看 OpenAI 的超级应用野心",
+    "detail": "生成深度专栏: GPT-6 前瞻：从 Spud 代号看 OpenAI 的超级应用野心"
+  },
+  {
+    "id": "evo-20260411-e7571c",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度专栏: AI 安全周报：当 Agent 学会撒谎、供应链被攻破",
+    "detail": "生成深度专栏: AI 安全周报：当 Agent 学会撒谎、供应链被攻破"
+  },
+  {
+    "id": "evo-20260411-1ba7f4",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "修订章节: 大语言模型从入门到前沿 - 第5章 多模态扩展 + 第6章 Agent 与工具使用 (模板→实质内容)",
+    "detail": "修订章节: 大语言模型从入门到前沿 - 第5章 多模态扩展 + 第6章 Agent 与工具使用 (模板→实质内容)"
+  },
+  {
+    "id": "evo-20260411-3fe7b9",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "修订章节: AI Agent 实战指南 - 第5章 记忆与状态管理 + 第6章 生产级部署与监控 (模板→实质内容)",
+    "detail": "修订章节: AI Agent 实战指南 - 第5章 记忆与状态管理 + 第6章 生产级部署与监控 (模板→实质内容)"
+  },
+  {
+    "id": "evo-20260411-d41551",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度文章: 开源逆袭：GLM-5.1 如何用 MIT 许可击败 GPT-5.4 和 Claude Opus",
+    "detail": "生成深度文章: 开源逆袭：GLM-5.1 如何用 MIT 许可击败 GPT-5.4 和 Claude Opus"
+  },
+  {
+    "id": "evo-20260411-46d17e",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度文章: AI 安全的十字路口：当 Anthropic 对峙五角大楼",
+    "detail": "生成深度文章: AI 安全的十字路口：当 Anthropic 对峙五角大楼"
+  },
+  {
+    "id": "evo-20260411-d432cb",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "修订章节: AI Agent 实战指南 - 第4章 多 Agent 协作框架 (模板→实质内容)",
+    "detail": "修订章节: AI Agent 实战指南 - 第4章 多 Agent 协作框架 (模板→实质内容)"
+  },
+  {
+    "id": "evo-20260411-8664df",
+    "date": "2026-04-11",
+    "type": "book",
+    "emoji": "📖",
+    "title": "修订章节: 大语言模型从入门到前沿 - 第4章 推理优化 (模板→实质内容)",
+    "detail": "修订章节: 大语言模型从入门到前沿 - 第4章 推理优化 (模板→实质内容)"
+  },
+  {
+    "id": "evo-20260411-52314d",
+    "date": "2026-04-11",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "更新新闻频道: 新增 8 条最新新闻 (Claude Mythos/GLM-5.1/OpenAI $122B等)，合并 6 条旧新闻为 2 条摘要",
+    "detail": "更新新闻频道: 新增 8 条最新新闻 (Claude Mythos/GLM-5.1/OpenAI $122B等)，合并 6 条旧新闻为 2 条摘要"
+  },
+  {
+    "id": "evo-20260410-9cc103",
+    "date": "2026-04-10",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成文章: Claude 4 Opus 深度评测：代码能力、推理与长文本表现",
+    "detail": "生成文章: Claude 4 Opus 深度评测：代码能力、推理与长文本表现"
+  },
+  {
+    "id": "evo-20260410-630000",
+    "date": "2026-04-10",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成文章: Transformer 注意力机制的未来：从 MHA 到 MLA",
+    "detail": "生成文章: Transformer 注意力机制的未来：从 MHA 到 MLA"
+  },
+  {
+    "id": "evo-20260410-131fba",
+    "date": "2026-04-10",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot",
+    "detail": "生成文章: AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot"
+  },
+  {
+    "id": "evo-20260410-f1cb65",
+    "date": "2026-04-10",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度文章: AI 训练基础设施：万卡集群的架构设计与调度优化",
+    "detail": "生成深度文章: AI 训练基础设施：万卡集群的架构设计与调度优化"
   }
 ]
