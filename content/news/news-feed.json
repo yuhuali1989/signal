@@ -90,6 +90,60 @@
     "region": "china"
   },
   {
+    "id": "news-20260507-06",
+    "title": "小鹏×北大 FastDriveVLA 入选 AAAI 2026：视觉 Token 剪枝降低 7.5× 计算量",
+    "summary": "小鹏汽车与北京大学合作的 FastDriveVLA 被 AAAI 2026 录用（录取率仅 17%）。该框架通过视觉 Token 剪枝让自动驾驶 AI「像人一样只关注关键信息」，在保持驾驶性能的同时实现 7.5 倍计算量降低，为 VLA 模型车端部署扫清算力瓶颈。",
+    "source": "FinViz/AAAI",
+    "url": "https://finviz.com/news/263148/xpeng-peking-university-collaborative-research-accepted-by-aaai-2026-introducing-a-novel-visual-token-pruning-framework-for-autonomous-driving",
+    "date": "2026-05-05",
+    "category": "research",
+    "tags": [
+      "VLA",
+      "小鹏",
+      "AAAI 2026",
+      "Token Pruning",
+      "自动驾驶"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260507-07",
+    "title": "小米 UniDriveVLA：统一理解/感知/规划的自动驾驶 VLA，解决 2D-3D 困境",
+    "summary": "小米研究院发布 UniDriveVLA，解决 VLA 在自动驾驶中「空间感知 vs 语义推理」的两难困境。该模型统一了场景理解、3D 空间感知和动作规划三大能力，避免了直接用 2D VLM 导致空间感知差、或增强 3D 表示又损害推理能力的问题。",
+    "source": "Xiaomi Research",
+    "url": "https://xiaomi-research.github.io/unidrivevla",
+    "date": "2026-05-03",
+    "category": "research",
+    "tags": [
+      "VLA",
+      "小米",
+      "自动驾驶",
+      "3D感知",
+      "多模态"
+    ],
+    "hot": false,
+    "region": "china"
+  },
+  {
+    "id": "news-20260507-08",
+    "title": "Palantir Q1 2026 财报：收入同比增长 85%，Rule of 40 达 145%，但股价跌 7%",
+    "summary": "Palantir 5 月 4 日发布 Q1 2026 财报，收入 YoY 增长 85%（美国商业客户增长 94.4%），EPS 33 美分（超预期 5 美分），Rule of 40 得分高达 145%。尽管全面超预期，但市场担忧估值（108× Forward P/E），股价次日跌 7%。全年 Outlook 再次上调。",
+    "source": "Nasdaq/Motley Fool",
+    "url": "https://www.nasdaq.com/articles/palantir-drops-after-blowout-q1-what-investors-should-know",
+    "date": "2026-05-05",
+    "category": "industry",
+    "tags": [
+      "Palantir",
+      "财报",
+      "AIP",
+      "AI商业化",
+      "估值"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
     "id": "news-20260506-01",
     "title": "西湖机器人完成 Pre A+ 轮融资，资金专项用于全身统一大模型技术研发",
     "summary": "2026年5月6日，西湖机器人宣布完成 Pre A+ 轮融资，由老股东小苗朗程领投，兴证资本、贝鱼资本跟投。融资资金将重点投入全身统一大模型技术研发，致力于实现机器人全身运动与操作的端到端感知-决策-控制一体化，是当前具身智能热潮下国内头部初创的最新融资动作。",
