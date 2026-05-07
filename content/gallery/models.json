@@ -39,7 +39,8 @@
       "CISPO RL：512×H800，3 周，成本约 53 万美元",
       "TAU-bench 工具调用开源 SOTA，SWE-bench Verified 56%"
     ],
-    "textArch": "┌──────────────────────────────────────────────────────┐\n│         MiniMax-M1 456B  (MoE + Lightning Attn)      │\n├──────────────────────────────────────────────────────┤\n│  Input: Text (1M tokens context window)             │\n│           ↓                                          │\n│  ┌──────────────────────────────────────────────┐   │\n│  │  Token Embedding Layer                       │   │\n│  └──────────────────────────────────────────────┘   │\n│           ↓  × N Decoder Blocks                     │\n│  ┌──────────────────────────────────────────────┐   │\n│  │  RMSNorm                                     │   │\n│  │  ├─ Lightning Attention (O(N) linear)        │   │\n│  │  │   Hybrid: Softmax Attn (every K layers)  │   │\n│  │  └─ Residual Connection                     │   │\n│  │  RMSNorm                                     │   │\n│  │  ├─ MoE Router (Top-2 of 32 experts)        │   │\n│  │  └─ SwiGLU FFN × 32 → Weighted Merge       │   │\n│  └──────────────────────────────────────────────┘   │\n│           ↓                                          │\n│  CISPO RL Training: Group Relative Policy Optim.   │\n│  Final RMSNorm → Linear Output → Vocab Logits     │\n└──────────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────────┐\n│         MiniMax-M1 456B  (MoE + Lightning Attn)      │\n├──────────────────────────────────────────────────────┤\n│  Input: Text (1M tokens context window)             │\n│           ↓                                          │\n│  ┌──────────────────────────────────────────────┐   │\n│  │  Token Embedding Layer                       │   │\n│  └──────────────────────────────────────────────┘   │\n│           ↓  × N Decoder Blocks                     │\n│  ┌──────────────────────────────────────────────┐   │\n│  │  RMSNorm                                     │   │\n│  │  ├─ Lightning Attention (O(N) linear)        │   │\n│  │  │   Hybrid: Softmax Attn (every K layers)  │   │\n│  │  └─ Residual Connection                     │   │\n│  │  RMSNorm                                     │   │\n│  │  ├─ MoE Router (Top-2 of 32 experts)        │   │\n│  │  └─ SwiGLU FFN × 32 → Weighted Merge       │   │\n│  └──────────────────────────────────────────────┘   │\n│           ↓                                          │\n│  CISPO RL Training: Group Relative Policy Optim.   │\n│  Final RMSNorm → Linear Output → Vocab Logits     │\n└──────────────────────────────────────────────────────┘\n",
+    "description": "首个突破百万 token 上下文的开源推理模型，CISPO 强化学习算法将训练成本降至 DeepSeek-R1 的 30%，TAU-bench 工具调用开源第一"
   },
   {
     "id": "qwen3-72b",
@@ -83,7 +84,8 @@
       "INT8 量化仅需 7.8GB，消费级 GPU 可运行",
       "119 种语言，长文本 >16K 召回率提升 12%"
     ],
-    "textArch": "┌──────────────────────────────────────────────────┐\n│         Qwen3-72B  (Dense Transformer)           │\n├──────────────────────────────────────────────────┤\n│  Input: Text (32K native / 128K YaRN)          │\n│  Output: (B, T, 151,936)                       │\n│           ↓                                      │\n│  Linear Output Layer                           │\n│  Final RMSNorm                                 │\n│  ├──────────────────────────────────────────┐  │\n│  │  80 × Transformer Decoder Block          │  │\n│  │   RMSNorm                                │  │\n│  │   GQA (64Q / 8KV heads)  +RoPE          │  │\n│  │   Residual ──────────────────────────┐  │  │\n│  │   RMSNorm                            │  │  │\n│  │   SwiGLU FFN  (d_model=8192)        │  │  │\n│  │   Residual ◄────────────────────────┘  │  │\n│  └──────────────────────────────────────────┘  │\n│  Token Embedding (vocab=151,936)              │\n│  ↑                                             │\n│  Mode: /think → chain-of-thought reasoning    │\n│        /no-think → direct answer              │\n└──────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────┐\n│         Qwen3-72B  (Dense Transformer)           │\n├──────────────────────────────────────────────────┤\n│  Input: Text (32K native / 128K YaRN)          │\n│  Output: (B, T, 151,936)                       │\n│           ↓                                      │\n│  Linear Output Layer                           │\n│  Final RMSNorm                                 │\n│  ├──────────────────────────────────────────┐  │\n│  │  80 × Transformer Decoder Block          │  │\n│  │   RMSNorm                                │  │\n│  │   GQA (64Q / 8KV heads)  +RoPE          │  │\n│  │   Residual ──────────────────────────┐  │  │\n│  │   RMSNorm                            │  │  │\n│  │   SwiGLU FFN  (d_model=8192)        │  │  │\n│  │   Residual ◄────────────────────────┘  │  │\n│  └──────────────────────────────────────────┘  │\n│  Token Embedding (vocab=151,936)              │\n│  ↑                                             │\n│  Mode: /think → chain-of-thought reasoning    │\n│        /no-think → direct answer              │\n└──────────────────────────────────────────────────┘\n",
+    "description": "Qwen3 旗舰密集模型，首创 Thinking/Non-thinking 动态双模式，INT8 量化 7.8GB 上手，超越 GPT-4o 级别性能"
   },
   {
     "id": "gpt-55",
@@ -113,7 +115,8 @@
       "OpenAI 全维度超越 GPT-5 的最新旗舰模型",
       "原生全模态 + 更省 Token，推理速度与质量同步提升",
       "内置 Deep Reasoning 模式，复杂任务处理能力大幅增强"
-    ]
+    ],
+    "description": "OpenAI 最新一代旗舰，MoE 架构原生全模态（文本/图像/音频/视频），内置深度推理与工具调用，全维度超越 GPT-5"
   },
   {
     "id": "gemini-25-pro",
@@ -143,7 +146,8 @@
       "1M token 原生上下文，可处理整本代码库或超长文档",
       "Deep Think 模式推理媲美 o3，SWE-bench Verified 63.8%"
     ],
-    "textArch": "┌──────────────────────────────────────────────────┐\n│     Gemini 2.5 Pro  (MoE + Native Multimodal)   │\n├──────────────────────────────────────────────────┤\n│  Input: Text / Image / Audio / Video           │\n│  Context: 1M tokens                           │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  Multimodal Encoder                      │  │\n│  │   ViT (Image) / Audio Enc / Video Enc   │  │\n│  └──────────────────┬───────────────────────┘  │\n│                     ↓                          │\n│  ┌──────────────────────────────────────────┐  │\n│  │  N × MoE Decoder Block                   │  │\n│  │   RMSNorm → GQA Attention → Residual   │  │\n│  │   RMSNorm → Router → Top-K Experts     │  │\n│  └──────────────────────────────────────────┘  │\n│                     ↓                          │\n│  Deep Think Mode: Budget-token Reasoning       │\n│  → <thinking>...</thinking> → Final Answer   │\n└──────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────┐\n│     Gemini 2.5 Pro  (MoE + Native Multimodal)   │\n├──────────────────────────────────────────────────┤\n│  Input: Text / Image / Audio / Video           │\n│  Context: 1M tokens                           │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  Multimodal Encoder                      │  │\n│  │   ViT (Image) / Audio Enc / Video Enc   │  │\n│  └──────────────────┬───────────────────────┘  │\n│                     ↓                          │\n│  ┌──────────────────────────────────────────┐  │\n│  │  N × MoE Decoder Block                   │  │\n│  │   RMSNorm → GQA Attention → Residual   │  │\n│  │   RMSNorm → Router → Top-K Experts     │  │\n│  └──────────────────────────────────────────┘  │\n│                     ↓                          │\n│  Deep Think Mode: Budget-token Reasoning       │\n│  → <thinking>...</thinking> → Final Answer   │\n└──────────────────────────────────────────────────┘\n",
+    "description": "Google 最强推理模型，原生 100 万 token 上下文 + 多模态，LMArena 综合排行第一，Deep Think 模式在数学/代码上领先行业"
   },
   {
     "id": "gemma-4-27b",
@@ -174,7 +178,8 @@
       "Apache 2.0 完全免费商用，适合企业私有化部署",
       "原生多模态无需外部编码器，推理架构更简洁"
     ],
-    "textArch": "┌──────────────────────────────────────────────────┐\n│         Gemma 4 27B  (Native Multimodal)         │\n├──────────────────────────────────────────────────┤\n│  Input: Text + Image + Audio (native fusion)   │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  Unified Token Embedding                 │  │\n│  │  Text BPE + Image Patches + Audio Frames │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  N × Transformer Decoder Block           │  │\n│  │   RMSNorm → GQA Attention → Residual   │  │\n│  │   RMSNorm → GeGLU FFN    → Residual   │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓                                     │\n│  Final RMSNorm → Linear Output Head           │\n│  Multimodal Understanding / Text Generation   │\n└──────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────┐\n│         Gemma 4 27B  (Native Multimodal)         │\n├──────────────────────────────────────────────────┤\n│  Input: Text + Image + Audio (native fusion)   │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  Unified Token Embedding                 │  │\n│  │  Text BPE + Image Patches + Audio Frames │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  N × Transformer Decoder Block           │  │\n│  │   RMSNorm → GQA Attention → Residual   │  │\n│  │   RMSNorm → GeGLU FFN    → Residual   │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓                                     │\n│  Final RMSNorm → Linear Output Head           │\n│  Multimodal Understanding / Text Generation   │\n└──────────────────────────────────────────────────┘\n",
+    "description": "Google 最强开源多模态模型，Apache 2.0 可商用，原生文本+图像+音频融合，无需外部视觉编码器"
   },
   {
     "id": "gpt-oss-120b",
@@ -216,7 +221,8 @@
       "Dense",
       "Decoder-Only"
     ],
-    "keyInnovation": "OpenAI 首个开源 120B 密集模型，Apache 2.0，200K 上下文，性能对标 GPT-4.1 Mini"
+    "keyInnovation": "OpenAI 首个开源 120B 密集模型，Apache 2.0，200K 上下文，性能对标 GPT-4.1 Mini",
+    "description": "OpenAI 首个开源 120B 密集模型，Apache 2.0，200K 上下文，性能对标 GPT-4.1 Mini"
   },
   {
     "id": "llama-4-maverick",
@@ -261,7 +267,8 @@
       "Decoder-Only",
       "Meta"
     ],
-    "keyInnovation": "Meta 首个 MoE 开源旗舰，128 专家 Top-2，1M 原生上下文，性能媲美 GPT-4o"
+    "keyInnovation": "Meta 首个 MoE 开源旗舰，128 专家 Top-2，1M 原生上下文，性能媲美 GPT-4o",
+    "description": "Meta 首个 MoE 开源旗舰，128 专家 Top-2，1M 原生上下文，性能媲美 GPT-4o"
   },
   {
     "id": "gemma-4-26b-a4b",
@@ -294,7 +301,8 @@
       "Decoder-Only",
       "Google"
     ],
-    "keyInnovation": "Google 开源 MoE 轻量旗舰，26B 总参激活 4B，效率极致，手机可运行"
+    "keyInnovation": "Google 开源 MoE 轻量旗舰，26B 总参激活 4B，效率极致，手机可运行",
+    "description": "Google 开源 MoE 轻量旗舰，26B 总参激活 4B，效率极致，手机可运行"
   },
   {
     "id": "mistral-small-4",
@@ -326,7 +334,8 @@
       "Decoder-Only",
       "Mistral"
     ],
-    "keyInnovation": "Mistral 新一代高效小模型，Function Calling 与代码能力大幅提升，延迟极低"
+    "keyInnovation": "Mistral 新一代高效小模型，Function Calling 与代码能力大幅提升，延迟极低",
+    "description": "Mistral 新一代高效小模型，Function Calling 与代码能力大幅提升，延迟极低"
   },
   {
     "id": "olmo-3-32b",
@@ -357,7 +366,8 @@
       "Dense",
       "Decoder-Only"
     ],
-    "keyInnovation": "AI2 完全开放 32B 模型，训练数据/代码/权重全公开，学术复现友好"
+    "keyInnovation": "AI2 完全开放 32B 模型，训练数据/代码/权重全公开，学术复现友好",
+    "description": "AI2 完全开放 32B 模型，训练数据/代码/权重全公开，学术复现友好"
   },
   {
     "id": "deepseek-v4",
@@ -397,7 +407,8 @@
       "Decoder-Only",
       "DeepSeek"
     ],
-    "keyInnovation": "DeepSeek V4 系列（Flash + Pro），延续 MLA+MoE+FP8 架构，DualPipe 流水线并行消除气泡，Flash 高吞吐 / Pro 深度推理双档"
+    "keyInnovation": "DeepSeek V4 系列（Flash + Pro），延续 MLA+MoE+FP8 架构，DualPipe 流水线并行消除气泡，Flash 高吞吐 / Pro 深度推理双档",
+    "description": "DeepSeek V4 系列（Flash + Pro），延续 MLA+MoE+FP8 架构，DualPipe 流水线并行消除气泡，Flash 高吞吐 / Pro 深度推理双档"
   },
   {
     "id": "deepseek-v3",
@@ -443,7 +454,8 @@
       "Decoder-Only",
       "DeepSeek"
     ],
-    "keyInnovation": "DeepSeek 开源 MoE 旗舰，MLA+MoE+FP8+MTP，以极低成本对标 GPT-4o 级别性能"
+    "keyInnovation": "DeepSeek 开源 MoE 旗舰，MLA+MoE+FP8+MTP，以极低成本对标 GPT-4o 级别性能",
+    "description": "DeepSeek 开源 MoE 旗舰，MLA+MoE+FP8+MTP，以极低成本对标 GPT-4o 级别性能"
   },
   {
     "id": "mistral-large-3",
@@ -486,7 +498,8 @@
       "Decoder-Only",
       "Mistral"
     ],
-    "keyInnovation": "Mistral 开源 MoE 旗舰，123B 总参 39B 激活，Function Calling 与多语言 SOTA"
+    "keyInnovation": "Mistral 开源 MoE 旗舰，123B 总参 39B 激活，Function Calling 与多语言 SOTA",
+    "description": "Mistral 开源 MoE 旗舰，123B 总参 39B 激活，Function Calling 与多语言 SOTA"
   },
   {
     "id": "qwen3-235b",
@@ -530,7 +543,8 @@
       "Decoder-Only",
       "阿里"
     ],
-    "keyInnovation": "Qwen3 最大 MoE 开源模型，235B 总参激活 22B，Thinking 模式推理超越 GPT-4.1"
+    "keyInnovation": "Qwen3 最大 MoE 开源模型，235B 总参激活 22B，Thinking 模式推理超越 GPT-4.1",
+    "description": "Qwen3 最大 MoE 开源模型，235B 总参激活 22B，Thinking 模式推理超越 GPT-4.1"
   },
   {
     "id": "qwen3-32b",
@@ -572,7 +586,8 @@
       "Decoder-Only",
       "阿里"
     ],
-    "keyInnovation": "Qwen3 最强开源密集模型，32B 参数 Thinking 模式超越 72B 旗舰，极致效率"
+    "keyInnovation": "Qwen3 最强开源密集模型，32B 参数 Thinking 模式超越 72B 旗舰，极致效率",
+    "description": "Qwen3 最强开源密集模型，32B 参数 Thinking 模式超越 72B 旗舰，极致效率"
   },
   {
     "id": "glm-5-744b",
@@ -614,7 +629,8 @@
       "Decoder-Only",
       "智谱"
     ],
-    "keyInnovation": "GLM-5 旗舰 MoE，744B 总参，清华智谱自研架构，中文理解全面升级"
+    "keyInnovation": "GLM-5 旗舰 MoE，744B 总参，清华智谱自研架构，中文理解全面升级",
+    "description": "GLM-5 旗舰 MoE，744B 总参，清华智谱自研架构，中文理解全面升级"
   },
   {
     "id": "kimi-k2",
@@ -656,7 +672,8 @@
       "Decoder-Only",
       "月之暗面"
     ],
-    "keyInnovation": "Moonshot 万亿参数 MoE，Agent 工具调用与长文本能力卓越，开源 API 双版本"
+    "keyInnovation": "Moonshot 万亿参数 MoE，Agent 工具调用与长文本能力卓越，开源 API 双版本",
+    "description": "Moonshot 万亿参数 MoE，Agent 工具调用与长文本能力卓越，开源 API 双版本"
   },
   {
     "id": "minimax-m2",
@@ -687,7 +704,8 @@
       "MoE",
       "Decoder-Only"
     ],
-    "keyInnovation": "MiniMax 第二代开源 MoE，230B 参数，Lightning Attention 持续优化，工具调用进一步增强"
+    "keyInnovation": "MiniMax 第二代开源 MoE，230B 参数，Lightning Attention 持续优化，工具调用进一步增强",
+    "description": "MiniMax 第二代开源 MoE，230B 参数，Lightning Attention 持续优化，工具调用进一步增强"
   },
   {
     "id": "grok-2-5",
@@ -717,7 +735,8 @@
       "MoE",
       "Decoder-Only"
     ],
-    "keyInnovation": "xAI Grok 最新旗舰 MoE，270B 规模，实时数据接入与代码推理能力领先"
+    "keyInnovation": "xAI Grok 最新旗舰 MoE，270B 规模，实时数据接入与代码推理能力领先",
+    "description": "xAI Grok 最新旗舰 MoE，270B 规模，实时数据接入与代码推理能力领先"
   },
   {
     "id": "nemotron-3-nano",
@@ -749,7 +768,8 @@
       "MoE",
       "Decoder-Only"
     ],
-    "keyInnovation": "NVIDIA Nemotron 轻量 MoE，30B 总参激活 3B，针对 CUDA 推理优化"
+    "keyInnovation": "NVIDIA Nemotron 轻量 MoE，30B 总参激活 3B，针对 CUDA 推理优化",
+    "description": "NVIDIA Nemotron 轻量 MoE，30B 总参激活 3B，针对 CUDA 推理优化"
   },
   {
     "id": "arcee-trinity",
@@ -780,7 +800,8 @@
       "MoE",
       "Decoder-Only"
     ],
-    "keyInnovation": "企业级开源 MoE 旗舰，400B 专为私有化部署与 RAG 场景深度优化"
+    "keyInnovation": "企业级开源 MoE 旗舰，400B 专为私有化部署与 RAG 场景深度优化",
+    "description": "企业级开源 MoE 旗舰，400B 专为私有化部署与 RAG 场景深度优化"
   },
   {
     "id": "deepseek-r1",
@@ -825,7 +846,8 @@
       "MoE",
       "DeepSeek"
     ],
-    "keyInnovation": "首个开源纯 RL 训练推理模型，无 SFT 直接 GRPO，推理能力对标 o1，MIT 开源"
+    "keyInnovation": "首个开源纯 RL 训练推理模型，无 SFT 直接 GRPO，推理能力对标 o1，MIT 开源",
+    "description": "首个开源纯 RL 训练推理模型，无 SFT 直接 GRPO，推理能力对标 o1，MIT 开源"
   },
   {
     "id": "xlstm-7b",
@@ -858,7 +880,8 @@
       "线性复杂度",
       "非Transformer"
     ],
-    "keyInnovation": "线性 LSTM 复兴，O(N) 复杂度训练推理统一，媲美 Transformer 同等性能"
+    "keyInnovation": "线性 LSTM 复兴，O(N) 复杂度训练推理统一，媲美 Transformer 同等性能",
+    "description": "线性 LSTM 复兴，O(N) 复杂度训练推理统一，媲美 Transformer 同等性能"
   },
   {
     "id": "kimi-linear",
@@ -890,7 +913,8 @@
       "线性复杂度",
       "月之暗面"
     ],
-    "keyInnovation": "Moonshot 混合线性架构，48B 总参激活 3B，超长上下文下显存恒定"
+    "keyInnovation": "Moonshot 混合线性架构，48B 总参激活 3B，超长上下文下显存恒定",
+    "description": "Moonshot 混合线性架构，48B 总参激活 3B，超长上下文下显存恒定"
   },
   {
     "id": "phi-4",
@@ -932,7 +956,8 @@
       "端侧部署",
       "Microsoft"
     ],
-    "keyInnovation": "Microsoft 14B 小模型，合成数据为主的高质量训练，性能超越多个 70B 模型"
+    "keyInnovation": "Microsoft 14B 小模型，合成数据为主的高质量训练，性能超越多个 70B 模型",
+    "description": "Microsoft 14B 小模型，合成数据为主的高质量训练，性能超越多个 70B 模型"
   },
   {
     "id": "smollm3-3b",
@@ -962,7 +987,8 @@
       "小模型",
       "端侧部署"
     ],
-    "keyInnovation": "HuggingFace 最小 SOTA 模型，3B 参数在移动端/嵌入式设备超越所有同量级对手"
+    "keyInnovation": "HuggingFace 最小 SOTA 模型，3B 参数在移动端/嵌入式设备超越所有同量级对手",
+    "description": "HuggingFace 最小 SOTA 模型，3B 参数在移动端/嵌入式设备超越所有同量级对手"
   },
   {
     "id": "gpt4o-mm",
@@ -993,7 +1019,8 @@
       "license": "闭源"
     },
     "textArch": "┌─────────────────────────────────┐\n│  GPT-4o — 原生六模态 Transformer │\n├─────────────────────────────────┤\n│ ┌────┐ ┌─────┐ ┌─────┐ ┌─────┐ │\n│ │Text│ │Image│ │Audio│ │Video│ │\n│ └──┬─┘ └──┬──┘ └──┬──┘ └──┬──┘ │\n│    └───┬──┴───┬───┘       │    │\n│        ↓      ↓           ↓    │\n│   ┌─────────────────────────┐  │\n│   │ 统一 Embedding 空间      │  │\n│   └───────────┬─────────────┘  │\n│               ↓                │\n│  ╔═════════════════════════╗   │\n│  ║ Transformer Decoder     ║   │\n│  ║ (推测 GQA, 128K ctx)    ║   │\n│  ║ MHA → FFN (SwiGLU)      ║   │\n│  ╚═══════════╤═════════════╝   │\n│              ↓                 │\n│  ┌───────┐ ┌────────┐          │\n│  │Text出力│ │Audio出力│          │\n│  └───────┘ └────────┘          │\n└─────────────────────────────────┘",
-    "keyInnovation": "OpenAI 首个原生多模态模型，文本/图像/音频统一架构，实时音视频交互"
+    "keyInnovation": "OpenAI 首个原生多模态模型，文本/图像/音频统一架构，实时音视频交互",
+    "open": false
   },
   {
     "id": "llava-next",
@@ -1024,7 +1051,8 @@
       "license": "Apache 2.0"
     },
     "textArch": "┌───────────────────────────────┐\n│ LLaVA-NeXT 34B — 双塔 VLM     │\n├───────────────────────────────┤\n│ ┌──────┐    ┌──────────┐      │\n│ │ Image │    │ Text     │      │\n│ └──┬───┘    └────┬─────┘      │\n│    ↓             ↓             │\n│ ┌──────────┐ ┌──────────┐     │\n│ │CLIP ViT-L│ │ Tokenizer│     │\n│ │14×14 ptch│ │ (64K)    │     │\n│ └────┬─────┘ └────┬─────┘     │\n│      ↓            │           │\n│ ┌──────────┐      │           │\n│ │ AnyRes   │      │           │\n│ │ (5 tiles)│      │           │\n│ └────┬─────┘      │           │\n│      ↓            │           │\n│ ┌──────────┐      │           │\n│ │MLP 投影层 │      │           │\n│ └────┬─────┘      │           │\n│      └──────┬─────┘           │\n│             ↓                  │\n│ ╔═══════════════════════╗     │\n│ ║ Yi-34B LLM × 60L     ║     │\n│ ║ GQA + RMSNorm + SwiGLU║     │\n│ ╚══════════╤════════════╝     │\n│            ↓                   │\n│       LM Head → Text          │\n└───────────────────────────────┘",
-    "keyInnovation": "学术界多模态代表作，动态分辨率 + 高质量视觉理解，开源参考实现"
+    "keyInnovation": "学术界多模态代表作，动态分辨率 + 高质量视觉理解，开源参考实现",
+    "open": false
   },
   {
     "id": "sora",
@@ -1057,7 +1085,8 @@
       "license": "闭源"
     },
     "textArch": "┌──────────────────────────────────┐\n│ Sora — DiT (Diffusion Transformer)│\n├──────────────────────────────────┤\n│ Text: \"A cat on Mars...\"          │\n│      ↓                            │\n│ ┌────────────┐                    │\n│ │ CLIP/T5    │                    │\n│ │ Text Enc.  │                    │\n│ └─────┬──────┘                    │\n│       ↓ Cross-Attn               │\n│                                   │\n│ ┌────────────────────────────┐   │\n│ │ 视频 VAE Encoder            │   │\n│ │ 帧→潜在 → 时空Patch化       │   │\n│ │ [T×H×W] → [N patches]      │   │\n│ └───────────┬────────────────┘   │\n│             ↓ + Noise (t)        │\n│ ╔════════════════════════════╗   │\n│ ║ DiT Block × ?L            ║   │\n│ ║ ┌────────────────────────┐║   │\n│ ║ │ AdaLN-Zero (t, text)   │║   │\n│ ║ │ 3D Self-Attention      │║   │\n│ ║ │ (空间+时间联合)          │║   │\n│ ║ │ Cross-Attn (text)      │║   │\n│ ║ │ FFN (GELU)             │║   │\n│ ║ └────────────────────────┘║   │\n│ ╚═══════════╤════════════════╝   │\n│             ↓                    │\n│ ┌────────────────────────┐       │\n│ │ VAE Decoder → 视频帧   │       │\n│ │ ≤1min 1080p 可变时长    │       │\n│ └────────────────────────┘       │\n└──────────────────────────────────┘",
-    "keyInnovation": "OpenAI 文生视频旗舰，时空一致性 DiT，首个达到电影级一致性的 AI 视频模型"
+    "keyInnovation": "OpenAI 文生视频旗舰，时空一致性 DiT，首个达到电影级一致性的 AI 视频模型",
+    "open": false
   },
   {
     "id": "cogvideox",
@@ -1089,7 +1118,8 @@
       "license": "Apache 2.0"
     },
     "textArch": "┌───────────────────────────────┐\n│ CogVideoX 5B — 开源视频生成    │\n├───────────────────────────────┤\n│ Text: \"一只猫在火星...\"          │\n│      ↓                         │\n│ ┌─────────┐                    │\n│ │ T5-XXL  │                    │\n│ └────┬────┘                    │\n│      ↓                         │\n│ ┌──────────────────────────┐  │\n│ │ 3D Causal VAE            │  │\n│ │ 帧→潜在 (4×8×8 压缩)     │  │\n│ │ 因果卷积保持时序一致       │  │\n│ └───────────┬──────────────┘  │\n│             ↓ + Noise         │\n│ ╔══════════════════════════╗  │\n│ ║ Expert Transformer × 30L ║  │\n│ ║ AdaLN + 3D Self-Attn    ║  │\n│ ║ + Expert FFN             ║  │\n│ ╚═══════════╤══════════════╝  │\n│             ↓                  │\n│  VAE Decoder → 49帧 720p      │\n└───────────────────────────────┘",
-    "keyInnovation": "智谱开源文生视频 5B，端到端 3D VAE + DiT，中文文本控制精准"
+    "keyInnovation": "智谱开源文生视频 5B，端到端 3D VAE + DiT，中文文本控制精准",
+    "open": false
   },
   {
     "id": "uniad",
@@ -1123,7 +1153,8 @@
       "license": "Apache 2.0"
     },
     "textArch": "┌────────────────────────────────────┐\n│ UniAD — 统一自动驾驶 (CVPR Best)    │\n├────────────────────────────────────┤\n│ 6 Cameras (多帧)                    │\n│      ↓                              │\n│ ┌────────────┐                      │\n│ │ ResNet+FPN │                      │\n│ └─────┬──────┘                      │\n│       ↓                             │\n│ ┌────────────────────┐              │\n│ │ BEV Encoder (LSS)  │              │\n│ │ 图像→200×200 BEV    │              │\n│ └────────┬───────────┘              │\n│          ↓                           │\n│ ┌─ TrackFormer ──────────────┐      │\n│ │ 检测Query→3D BBox + 跟踪   │      │\n│ └─────────┬──────────────────┘      │\n│           ↓                          │\n│ ┌─ MapFormer ────────────────┐      │\n│ │ 地图Query→车道线/人行道     │      │\n│ └─────────┬──────────────────┘      │\n│           ↓                          │\n│ ┌─ MotionFormer ─────────────┐      │\n│ │ Agent×Map→未来轨迹 (6 modes)│      │\n│ └─────────┬──────────────────┘      │\n│           ↓                          │\n│ ┌─ Planner ──────────────────┐      │\n│ │ GRU + 占用网格碰撞检查      │      │\n│ │ → 未来 3s 规划轨迹          │      │\n│ └────────────────────────────┘      │\n└────────────────────────────────────┘",
-    "keyInnovation": "CVPR 2023 Best Paper，首个统一端到端自动驾驶框架，检测/跟踪/建图/规划四合一"
+    "keyInnovation": "CVPR 2023 Best Paper，首个统一端到端自动驾驶框架，检测/跟踪/建图/规划四合一",
+    "open": false
   },
   {
     "id": "driveworld-vla",
@@ -1156,7 +1187,8 @@
       "license": "开源"
     },
     "textArch": "┌──────────────────────────────────┐\n│ DriveWorld-VLA — VLA+世界模型     │\n├──────────────────────────────────┤\n│ 6 Cameras + 导航指令              │\n│ ┌────────┐  ┌──────────────┐     │\n│ │ Images │  │ \"Turn left\"  │     │\n│ └───┬────┘  └──────┬───────┘     │\n│     ↓              ↓              │\n│ ┌────────┐  ┌────────────┐       │\n│ │ViT Enc│  │LLM Tokenize│       │\n│ └───┬────┘  └──────┬─────┘       │\n│     └───────┬──────┘             │\n│             ↓                     │\n│ ╔══════════════════════════╗     │\n│ ║ VLA Backbone             ║     │\n│ ║ (视觉-语言 Cross-Attn)    ║     │\n│ ╚═══════════╤══════════════╝     │\n│             ↓                     │\n│ ┌─ World Model ──────────────┐  │\n│ │ 潜在空间「想象」未来 N 步    │  │\n│ │ (特征级, 不生成像素)        │  │\n│ └────────────┬───────────────┘  │\n│              ↓                   │\n│ ┌─ Action Decoder ───────────┐  │\n│ │ Causal Transformer          │  │\n│ │ → (x,y,θ) 碰撞率 -36%      │  │\n│ └────────────────────────────┘  │\n└──────────────────────────────────┘",
-    "keyInnovation": "字节 Latent 世界模型 + VLA 统一，先预测世界再规划行动，nuScenes SOTA"
+    "keyInnovation": "字节 Latent 世界模型 + VLA 统一，先预测世界再规划行动，nuScenes SOTA",
+    "open": false
   },
   {
     "id": "bevformer",
@@ -1197,7 +1229,8 @@
       "开源"
     ],
     "status": "open",
-    "category": "autonomous"
+    "category": "autonomous",
+    "open": false
   },
   {
     "id": "sparsedrive",
@@ -1238,7 +1271,8 @@
       "开源"
     ],
     "status": "open",
-    "category": "autonomous"
+    "category": "autonomous",
+    "open": false
   },
   {
     "id": "vad",
@@ -1279,7 +1313,8 @@
       "开源"
     ],
     "status": "open",
-    "category": "autonomous"
+    "category": "autonomous",
+    "open": false
   },
   {
     "id": "opendrivevla",
@@ -1320,7 +1355,8 @@
       "开源"
     ],
     "status": "open",
-    "category": "autonomous"
+    "category": "autonomous",
+    "open": false
   },
   {
     "id": "gemini-4-nano",
@@ -1360,7 +1396,8 @@
     ],
     "status": "released",
     "category": "general",
-    "keyInnovation": "Google Gemini 4 系列轻量旗舰，设备端可运行，多模态能力下放至边缘设备"
+    "keyInnovation": "Google Gemini 4 系列轻量旗舰，设备端可运行，多模态能力下放至边缘设备",
+    "description": "Google Gemini 4 系列轻量旗舰，设备端可运行，多模态能力下放至边缘设备"
   },
   {
     "id": "vla-drive-3b",
@@ -1401,7 +1438,8 @@
     ],
     "status": "production",
     "category": "autonomous",
-    "keyInnovation": "SuperDrive 2.0 核心，3B VLA 实车验证，Agent 框架下 L3 级复杂场景处理"
+    "keyInnovation": "SuperDrive 2.0 核心，3B VLA 实车验证，Agent 框架下 L3 级复杂场景处理",
+    "description": "SuperDrive 2.0 核心，3B VLA 实车验证，Agent 框架下 L3 级复杂场景处理"
   },
   {
     "id": "hybridvla",
@@ -1443,7 +1481,8 @@
     ],
     "status": "research",
     "category": "autonomous",
-    "keyInnovation": "多序列 VLA + Tree-of-Thought 评估，视觉 CoT 预测 + 候选轨迹筛选，nuScenes L2 SOTA"
+    "keyInnovation": "多序列 VLA + Tree-of-Thought 评估，视觉 CoT 预测 + 候选轨迹筛选，nuScenes L2 SOTA",
+    "description": "多序列 VLA + Tree-of-Thought 评估，视觉 CoT 预测 + 候选轨迹筛选，nuScenes L2 SOTA"
   },
   {
     "id": "tesla-fsd-v13",
@@ -1487,7 +1526,8 @@
     ],
     "status": "production",
     "category": "autonomous",
-    "keyInnovation": "Tesla FSD 首个 VLA 架构版本，端到端视觉直接输出控制，全球最大规模 L2+ 实车数据"
+    "keyInnovation": "Tesla FSD 首个 VLA 架构版本，端到端视觉直接输出控制，全球最大规模 L2+ 实车数据",
+    "description": "Tesla FSD 首个 VLA 架构版本，端到端视觉直接输出控制，全球最大规模 L2+ 实车数据"
   },
   {
     "id": "vla-world",
@@ -1525,7 +1565,8 @@
     ],
     "status": "research",
     "category": "autonomous",
-    "keyInnovation": "VLA + 世界模型统一表征，离线数据驱动的自动驾驶预训练框架"
+    "keyInnovation": "VLA + 世界模型统一表征，离线数据驱动的自动驾驶预训练框架",
+    "description": "VLA + 世界模型统一表征，离线数据驱动的自动驾驶预训练框架"
   },
   {
     "id": "hesai-ext-fusion",
@@ -1562,7 +1603,8 @@
     ],
     "status": "production",
     "category": "autonomous",
-    "keyInnovation": "禾赛激光雷达 × 摄像头深度融合，长距稀疏目标检测行业最优"
+    "keyInnovation": "禾赛激光雷达 × 摄像头深度融合，长距稀疏目标检测行业最优",
+    "description": "禾赛激光雷达 × 摄像头深度融合，长距稀疏目标检测行业最优"
   },
   {
     "name": "Claude Opus 4.7",
@@ -1607,7 +1649,9 @@
       "200K 上下文 + 扩展思考双模式",
       "持久记忆与多步任务协同能力大幅提升"
     ],
-    "textArch": "┌─────────────────────────────────────────────────┐\n│         Claude Opus 4.7  (Dense Transformer)    │\n├─────────────────────────────────────────────────┤\n│  Input: Text / Images / Tool Results           │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Tokenizer (BPE / 200K context)         │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  N × Transformer Decoder Block          │   │\n│  │   RMSNorm → MQA Attention → Residual   │   │\n│  │   RMSNorm → SwiGLU FFN   → Residual   │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Extended Thinking Mode (Token Budget)  │   │\n│  │  → <thinking> chain → Final Answer     │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  Agent Loop: Tool Use → Memory → Resume        │\n└─────────────────────────────────────────────────┘\n"
+    "textArch": "┌─────────────────────────────────────────────────┐\n│         Claude Opus 4.7  (Dense Transformer)    │\n├─────────────────────────────────────────────────┤\n│  Input: Text / Images / Tool Results           │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Tokenizer (BPE / 200K context)         │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  N × Transformer Decoder Block          │   │\n│  │   RMSNorm → MQA Attention → Residual   │   │\n│  │   RMSNorm → SwiGLU FFN   → Residual   │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Extended Thinking Mode (Token Budget)  │   │\n│  │  → <thinking> chain → Final Answer     │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  Agent Loop: Tool Use → Memory → Resume        │\n└─────────────────────────────────────────────────┘\n",
+    "open": false,
+    "date": "2026-04"
   },
   {
     "name": "Qwen3-Max",
@@ -1656,7 +1700,9 @@
       "Thinking 模式推理媲美 DeepSeek-R1，Non-thinking 模式延迟极低",
       "MMLU 88.2%，GPQA Diamond 78.3%，全面超越 GPT-4o"
     ],
-    "textArch": "┌─────────────────────────────────────────────────┐\n│           Qwen3-Max  (MoE Transformer)          │\n├─────────────────────────────────────────────────┤\n│  Input: Text (119 languages, 128K context)     │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Token Embedding  (Large Vocabulary)    │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  N × MoE Decoder Block                  │   │\n│  │   RMSNorm → GQA Attention → Residual   │   │\n│  │   RMSNorm → Router → Top-K Experts     │   │\n│  │   Experts: SwiGLU FFN × M → Merge     │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  Mode Switch:                                   │\n│   /think  → Extended Reasoning Chain           │\n│   /no-think → Direct Answer (low latency)     │\n└─────────────────────────────────────────────────┘\n"
+    "textArch": "┌─────────────────────────────────────────────────┐\n│           Qwen3-Max  (MoE Transformer)          │\n├─────────────────────────────────────────────────┤\n│  Input: Text (119 languages, 128K context)     │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Token Embedding  (Large Vocabulary)    │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  N × MoE Decoder Block                  │   │\n│  │   RMSNorm → GQA Attention → Residual   │   │\n│  │   RMSNorm → Router → Top-K Experts     │   │\n│  │   Experts: SwiGLU FFN × M → Merge     │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  Mode Switch:                                   │\n│   /think  → Extended Reasoning Chain           │\n│   /no-think → Direct Answer (low latency)     │\n└─────────────────────────────────────────────────┘\n",
+    "open": true,
+    "date": "2026-04"
   },
   {
     "name": "Seed-AD",
@@ -1704,7 +1750,9 @@
       "nuScenes L2 轨迹误差 SOTA，碰撞率大幅降低",
       "支持自然语言驾驶指令与可解释输出"
     ],
-    "textArch": "┌─────────────────────────────────────────────────┐\n│         Seed-AD (VLA Autonomous Driving)        │\n├─────────────────────────────────────────────────┤\n│  Input: 6-cam RGB + LiDAR + Language Cmd       │\n│           ↓                                     │\n│  ┌──────────────┐  ┌────────────────────────┐  │\n│  │ ViT Backbone │  │  Text Tokenizer (BPE)  │  │\n│  └──────┬───────┘  └──────────┬─────────────┘  │\n│         │                     │                 │\n│  ┌──────▼─────────────────────▼───────────┐    │\n│  │  BEV Encoder + Temporal Fusion          │    │\n│  └──────────────────────┬──────────────────┘    │\n│                         ↓                       │\n│  ┌──────────────────────────────────────────┐   │\n│  │  LLM Backbone (Cross-Attention Align)    │   │\n│  │  Language Grounding + Scene Reasoning   │   │\n│  └──────────────────────┬───────────────────┘   │\n│                         ↓                       │\n│  Planning Head → Waypoints + Control Signal    │\n└─────────────────────────────────────────────────┘\n"
+    "textArch": "┌─────────────────────────────────────────────────┐\n│         Seed-AD (VLA Autonomous Driving)        │\n├─────────────────────────────────────────────────┤\n│  Input: 6-cam RGB + LiDAR + Language Cmd       │\n│           ↓                                     │\n│  ┌──────────────┐  ┌────────────────────────┐  │\n│  │ ViT Backbone │  │  Text Tokenizer (BPE)  │  │\n│  └──────┬───────┘  └──────────┬─────────────┘  │\n│         │                     │                 │\n│  ┌──────▼─────────────────────▼───────────┐    │\n│  │  BEV Encoder + Temporal Fusion          │    │\n│  └──────────────────────┬──────────────────┘    │\n│                         ↓                       │\n│  ┌──────────────────────────────────────────┐   │\n│  │  LLM Backbone (Cross-Attention Align)    │   │\n│  │  Language Grounding + Scene Reasoning   │   │\n│  └──────────────────────┬───────────────────┘   │\n│                         ↓                       │\n│  Planning Head → Waypoints + Control Signal    │\n└─────────────────────────────────────────────────┘\n",
+    "open": false,
+    "date": "2026-04"
   },
   {
     "name": "Llama 5 MoE",
@@ -1753,7 +1801,9 @@
       "超长原生上下文支持，多模态能力全面增强",
       "开源社区授权，推理效率对标 Gemini 2.5 Flash"
     ],
-    "textArch": "┌─────────────────────────────────────────────────┐\n│           Llama 5 MoE  (Meta AI)                │\n├─────────────────────────────────────────────────┤\n│  Input: Text / Images (Native Multimodal)      │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Token + Vision Embedding               │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  N × MoE Decoder Block                  │   │\n│  │   RMSNorm → GQA Attention → Residual   │   │\n│  │   RMSNorm → Router → Top-K Experts     │   │\n│  │   Shared Expert + Routed Experts        │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  Final RMSNorm → Linear Output Head           │\n└─────────────────────────────────────────────────┘\n"
+    "textArch": "┌─────────────────────────────────────────────────┐\n│           Llama 5 MoE  (Meta AI)                │\n├─────────────────────────────────────────────────┤\n│  Input: Text / Images (Native Multimodal)      │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  Token + Vision Embedding               │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  ┌─────────────────────────────────────────┐   │\n│  │  N × MoE Decoder Block                  │   │\n│  │   RMSNorm → GQA Attention → Residual   │   │\n│  │   RMSNorm → Router → Top-K Experts     │   │\n│  │   Shared Expert + Routed Experts        │   │\n│  └─────────────────────────────────────────┘   │\n│           ↓                                     │\n│  Final RMSNorm → Linear Output Head           │\n└─────────────────────────────────────────────────┘\n",
+    "open": true,
+    "date": "2026-04"
   },
   {
     "id": "qwen3.6-27b",
@@ -1785,7 +1835,8 @@
       "Apache 2.0 开源，支持本地全量部署",
       "Thinking 模式数学与代码推理大幅优于同等密集模型"
     ],
-    "textArch": "┌──────────────────────────────────────────────────┐\n│     Qwen3.6-27B  (Dense Multimodal Transformer) │\n├──────────────────────────────────────────────────┤\n│  Input: Text + Image (128K context)            │\n│           ↓                                     │\n│  ┌───────────────────┐  ┌─────────────────────┐ │\n│  │  ViT Image Enc   │  │  Text Tokenizer    │ │\n│  └─────────┬─────────┘  └──────────┬──────────┘ │\n│            └─────────────┬──────────┘            │\n│                         ↓                       │\n│  ┌──────────────────────────────────────────┐   │\n│  │  N × Transformer Decoder Block           │   │\n│  │   RMSNorm → GQA Attention → Residual   │   │\n│  │   RMSNorm → SwiGLU FFN   → Residual   │   │\n│  └──────────────────────────────────────────┘   │\n│           ↓                                     │\n│  /think → reasoning chain / /no-think → direct │\n└──────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────┐\n│     Qwen3.6-27B  (Dense Multimodal Transformer) │\n├──────────────────────────────────────────────────┤\n│  Input: Text + Image (128K context)            │\n│           ↓                                     │\n│  ┌───────────────────┐  ┌─────────────────────┐ │\n│  │  ViT Image Enc   │  │  Text Tokenizer    │ │\n│  └─────────┬─────────┘  └──────────┬──────────┘ │\n│            └─────────────┬──────────┘            │\n│                         ↓                       │\n│  ┌──────────────────────────────────────────┐   │\n│  │  N × Transformer Decoder Block           │   │\n│  │   RMSNorm → GQA Attention → Residual   │   │\n│  │   RMSNorm → SwiGLU FFN   → Residual   │   │\n│  └──────────────────────────────────────────┘   │\n│           ↓                                     │\n│  /think → reasoning chain / /no-think → direct │\n└──────────────────────────────────────────────────┘\n",
+    "description": "270 亿参数开源旗舰密集模型，Agent 编程能力媲美上代 MoE 旗舰，Thinking/Non-thinking 双模式，Apache 2.0"
   },
   {
     "id": "qwen3.6-35b-a3b",
@@ -1818,7 +1869,8 @@
       "Agent 编程大幅超越 Qwen3.5-35B-A3B，效率 SOTA",
       "Apache 2.0 可商用，单卡 24GB 可部署"
     ],
-    "textArch": "┌──────────────────────────────────────────────────┐\n│   Qwen3.6-35B-A3B  (MoE: 35B total / 3B active) │\n├──────────────────────────────────────────────────┤\n│  Input: Text (128K context)                    │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  Token Embedding Layer                   │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓  × N MoE Decoder Blocks           │\n│  ┌──────────────────────────────────────────┐  │\n│  │  RMSNorm → GQA Attention → Residual     │  │\n│  │  RMSNorm                                 │  │\n│  │  ┌── Router: Token → Top-4 of 64 ───┐  │  │\n│  │  │  Expert_1 (SwiGLU FFN)           │  │  │\n│  │  │  Expert_2 (SwiGLU FFN)           │  │  │\n│  │  │     ··· (62 more experts)         │  │  │\n│  │  └── Weighted Merge → Output ────────┘  │  │\n│  └──────────────────────────────────────────┘  │\n│  Final RMSNorm → Linear Output Head          │\n└──────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────┐\n│   Qwen3.6-35B-A3B  (MoE: 35B total / 3B active) │\n├──────────────────────────────────────────────────┤\n│  Input: Text (128K context)                    │\n│           ↓                                     │\n│  ┌──────────────────────────────────────────┐  │\n│  │  Token Embedding Layer                   │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓  × N MoE Decoder Blocks           │\n│  ┌──────────────────────────────────────────┐  │\n│  │  RMSNorm → GQA Attention → Residual     │  │\n│  │  RMSNorm                                 │  │\n│  │  ┌── Router: Token → Top-4 of 64 ───┐  │  │\n│  │  │  Expert_1 (SwiGLU FFN)           │  │  │\n│  │  │  Expert_2 (SwiGLU FFN)           │  │  │\n│  │  │     ··· (62 more experts)         │  │  │\n│  │  └── Weighted Merge → Output ────────┘  │  │\n│  └──────────────────────────────────────────┘  │\n│  Final RMSNorm → Linear Output Head          │\n└──────────────────────────────────────────────────┘\n",
+    "description": "MoE 架构总参 350 亿仅激活 30 亿，Agent 编程大幅超越 Qwen3.5 同规模，稀疏激活推理成本极低"
   },
   {
     "id": "qwen3.5-omni",
@@ -1851,7 +1903,8 @@
       "Hybrid-Attention MoE：长文本效率与全局理解兼得",
       "Plus/Flash/Light 三档，覆盖旗舰到边缘部署场景"
     ],
-    "textArch": "┌──────────────────────────────────────────────────┐\n│     Qwen3.5-Omni  (Hybrid MoE, 全模态)          │\n├──────────────────────────────────────────────────┤\n│  Input: Text + Image + Audio + Video           │\n│  Context: 256K tokens                         │\n│           ↓                                     │\n│  ┌────────────────────────────────────────┐    │\n│  │  Modality Encoders                     │    │\n│  │  ViT | AudioEnc | VideoEnc | BPE       │    │\n│  └──────────────────┬─────────────────────┘    │\n│                     ↓                          │\n│  ┌──────────────────────────────────────────┐  │\n│  │  N × Hybrid-Attention MoE Block          │  │\n│  │   RMSNorm                                │  │\n│  │   ├─ Full Attn (short seqs)              │  │\n│  │   └─ Sparse Attn (long seqs, 256K)      │  │\n│  │   RMSNorm → Router → Top-K SwiGLU FFN  │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓                                     │\n│  Final RMSNorm → Linear Output Head           │\n└──────────────────────────────────────────────────┘\n"
+    "textArch": "┌──────────────────────────────────────────────────┐\n│     Qwen3.5-Omni  (Hybrid MoE, 全模态)          │\n├──────────────────────────────────────────────────┤\n│  Input: Text + Image + Audio + Video           │\n│  Context: 256K tokens                         │\n│           ↓                                     │\n│  ┌────────────────────────────────────────┐    │\n│  │  Modality Encoders                     │    │\n│  │  ViT | AudioEnc | VideoEnc | BPE       │    │\n│  └──────────────────┬─────────────────────┘    │\n│                     ↓                          │\n│  ┌──────────────────────────────────────────┐  │\n│  │  N × Hybrid-Attention MoE Block          │  │\n│  │   RMSNorm                                │  │\n│  │   ├─ Full Attn (short seqs)              │  │\n│  │   └─ Sparse Attn (long seqs, 256K)      │  │\n│  │   RMSNorm → Router → Top-K SwiGLU FFN  │  │\n│  └──────────────────────────────────────────┘  │\n│           ↓                                     │\n│  Final RMSNorm → Linear Output Head           │\n└──────────────────────────────────────────────────┘\n",
+    "description": "阿里首个原生全模态 LLM，一个模型支持文本/图像/音频/视频理解，Hybrid-Attention MoE + 256K 超长上下文，三档 API 满足全场景需求"
   },
   {
     "id": "hunyuanvideo",
@@ -1895,7 +1948,8 @@
       "license": "Tencent Hunyuan Community",
       "eval": "人工评测综合第1 / Text Align 61.8% / Motion 66.5% / Visual 95.7%"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ HunyuanVideo — 13B 开源视频生成 SOTA  │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ MLLM Text Encoder（Decoder-Only）│  │\n│ │ + Bidirectional Token Refiner    │  │\n│ │ （比 T5 更强的语义理解）          │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ Text Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ Causal 3D VAE Encoder            │  │\n│ │ 视频帧 → 潜在空间（4×8×8 压缩）  │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ + Gaussian Noise     │\n│ ╔══════════════════════════════════╗  │\n│ ║ Dual-stream Phase（多层）        ║  │\n│ ║ ┌──────────────────────────────┐║  │\n│ ║ │ Video Tokens（独立处理）      │║  │\n│ ║ │ Text Tokens（独立处理）       │║  │\n│ ║ │ 各自学习模态内调制机制        │║  │\n│ ║ └──────────────────────────────┘║  │\n│ ║ ↓ Concat                        ║  │\n│ ║ Single-stream Phase（多层）      ║  │\n│ ║ ┌──────────────────────────────┐║  │\n│ ║ │ [Video + Text] 联合 Tokens   │║  │\n│ ║ │ Full Self-Attention（时空）   │║  │\n│ ║ │ 多模态信息深度融合            │║  │\n│ ║ └──────────────────────────────┘║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ┌──────────────────────────────────┐  │\n│ │ Causal 3D VAE Decoder            │  │\n│ │ → 720p 视频（129帧 / 5s）        │  │\n│ └──────────────────────────────────┘  │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ HunyuanVideo — 13B 开源视频生成 SOTA  │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ MLLM Text Encoder（Decoder-Only）│  │\n│ │ + Bidirectional Token Refiner    │  │\n│ │ （比 T5 更强的语义理解）          │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ Text Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ Causal 3D VAE Encoder            │  │\n│ │ 视频帧 → 潜在空间（4×8×8 压缩）  │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ + Gaussian Noise     │\n│ ╔══════════════════════════════════╗  │\n│ ║ Dual-stream Phase（多层）        ║  │\n│ ║ ┌──────────────────────────────┐║  │\n│ ║ │ Video Tokens（独立处理）      │║  │\n│ ║ │ Text Tokens（独立处理）       │║  │\n│ ║ │ 各自学习模态内调制机制        │║  │\n│ ║ └──────────────────────────────┘║  │\n│ ║ ↓ Concat                        ║  │\n│ ║ Single-stream Phase（多层）      ║  │\n│ ║ ┌──────────────────────────────┐║  │\n│ ║ │ [Video + Text] 联合 Tokens   │║  │\n│ ║ │ Full Self-Attention（时空）   │║  │\n│ ║ │ 多模态信息深度融合            │║  │\n│ ║ └──────────────────────────────┘║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ┌──────────────────────────────────┐  │\n│ │ Causal 3D VAE Decoder            │  │\n│ │ → 720p 视频（129帧 / 5s）        │  │\n│ └──────────────────────────────────┘  │\n└──────────────────────────────────────┘",
+    "open": false
   },
   {
     "id": "hunyuan3d-2",
@@ -1937,7 +1991,8 @@
       "license": "Tencent Hunyuan Community",
       "release": "2025-01-21"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.0 — 两阶段 3D 生成        │\n├──────────────────────────────────────┤\n│ 输入：单张图片 / 文本描述              │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: Hunyuan3D-DiT           ║  │\n│ ║ （形状生成）                      ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ DINOv2 Image Encoder         │ ║  │\n│ ║ │ → 条件特征                   │ ║  │\n│ ║ └──────────────┬───────────────┘ ║  │\n│ ║                ↓                 ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Flow-based DiT               │ ║  │\n│ ║ │ 3D 隐式表示 → 显式 Mesh      │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ 裸 Mesh             │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: Hunyuan3D-Paint         ║  │\n│ ║ （纹理合成）                      ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ 多视角渲染 + 扩散先验         │ ║  │\n│ ║ │ → 高分辨率纹理贴图            │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：高分辨率纹理 3D 资产（GLB）      │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.0 — 两阶段 3D 生成        │\n├──────────────────────────────────────┤\n│ 输入：单张图片 / 文本描述              │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: Hunyuan3D-DiT           ║  │\n│ ║ （形状生成）                      ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ DINOv2 Image Encoder         │ ║  │\n│ ║ │ → 条件特征                   │ ║  │\n│ ║ └──────────────┬───────────────┘ ║  │\n│ ║                ↓                 ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Flow-based DiT               │ ║  │\n│ ║ │ 3D 隐式表示 → 显式 Mesh      │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ 裸 Mesh             │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: Hunyuan3D-Paint         ║  │\n│ ║ （纹理合成）                      ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ 多视角渲染 + 扩散先验         │ ║  │\n│ ║ │ → 高分辨率纹理贴图            │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：高分辨率纹理 3D 资产（GLB）      │\n└──────────────────────────────────────┘",
+    "open": false
   },
   {
     "id": "hunyuan3d-21",
@@ -1976,7 +2031,8 @@
       "license": "Tencent Hunyuan Community",
       "release": "2025-06-18"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.1 — PBR 材质 3D 生成      │\n├──────────────────────────────────────┤\n│ 输入：单张图片                         │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: 形状生成（同 2.0）       ║  │\n│ ║ Flow-based DiT → 裸 Mesh         ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: PBR 材质合成（新增）     ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Albedo Map（基础色）          │ ║  │\n│ ║ │ Roughness Map（粗糙度）       │ ║  │\n│ ║ │ Metallic Map（金属度）        │ ║  │\n│ ║ │ Normal Map（法线贴图）        │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：3D Mesh + PBR 材质              │\n│ （可直接导入 Unity / Unreal Engine）   │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ Hunyuan3D 2.1 — PBR 材质 3D 生成      │\n├──────────────────────────────────────┤\n│ 输入：单张图片                         │\n│      ↓                                │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 1: 形状生成（同 2.0）       ║  │\n│ ║ Flow-based DiT → 裸 Mesh         ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ ╔══════════════════════════════════╗  │\n│ ║ Stage 2: PBR 材质合成（新增）     ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ Albedo Map（基础色）          │ ║  │\n│ ║ │ Roughness Map（粗糙度）       │ ║  │\n│ ║ │ Metallic Map（金属度）        │ ║  │\n│ ║ │ Normal Map（法线贴图）        │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓                      │\n│ 输出：3D Mesh + PBR 材质              │\n│ （可直接导入 Unity / Unreal Engine）   │\n└──────────────────────────────────────┘",
+    "open": false
   },
   {
     "id": "kling-2",
@@ -2017,7 +2073,8 @@
       "duration": "最长 180s",
       "license": "闭源 API"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ Kling 2.0 — 运动流畅度 SOTA 视频生成  │\n├──────────────────────────────────────┤\n│ Text / Image 输入                     │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 文本编码器                        │  │\n│ │ T5-XXL（语义）+ CLIP（视觉对齐）  │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 条件向量             │\n│ ┌──────────────────────────────────┐  │\n│ │ 3D Causal VAE Encoder            │  │\n│ │ 视频帧 → 时空潜在表示             │  │\n│ │ 时序因果卷积保持帧间一致性        │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ + Flow Noise (t)     │\n│ ╔══════════════════════════════════╗  │\n│ ║ Video DiT Block × N              ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ AdaLN-Zero（时间步 t 调制）   │ ║  │\n│ ║ │ 3D Self-Attention             │ ║  │\n│ ║ │  空间维度：patch 间互相关注   │ ║  │\n│ ║ │  时间维度：帧间因果注意力     │ ║  │\n│ ║ │  → 运动流畅度核心机制         │ ║  │\n│ ║ │ Cross-Attention（文本条件）   │ ║  │\n│ ║ │ FFN（SwiGLU）                 │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 3D Causal VAE Decoder            │  │\n│ │ → 最高 4K 180s 视频              │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 运动流畅度：Temporal Causal Mask    │\n│   保证帧间运动连贯，无抖动            │\n│ ★ 多镜头一致：共享场景潜在表示        │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ Kling 2.0 — 运动流畅度 SOTA 视频生成  │\n├──────────────────────────────────────┤\n│ Text / Image 输入                     │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 文本编码器                        │  │\n│ │ T5-XXL（语义）+ CLIP（视觉对齐）  │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 条件向量             │\n│ ┌──────────────────────────────────┐  │\n│ │ 3D Causal VAE Encoder            │  │\n│ │ 视频帧 → 时空潜在表示             │  │\n│ │ 时序因果卷积保持帧间一致性        │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ + Flow Noise (t)     │\n│ ╔══════════════════════════════════╗  │\n│ ║ Video DiT Block × N              ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ AdaLN-Zero（时间步 t 调制）   │ ║  │\n│ ║ │ 3D Self-Attention             │ ║  │\n│ ║ │  空间维度：patch 间互相关注   │ ║  │\n│ ║ │  时间维度：帧间因果注意力     │ ║  │\n│ ║ │  → 运动流畅度核心机制         │ ║  │\n│ ║ │ Cross-Attention（文本条件）   │ ║  │\n│ ║ │ FFN（SwiGLU）                 │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 3D Causal VAE Decoder            │  │\n│ │ → 最高 4K 180s 视频              │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 运动流畅度：Temporal Causal Mask    │\n│   保证帧间运动连贯，无抖动            │\n│ ★ 多镜头一致：共享场景潜在表示        │\n└──────────────────────────────────────┘",
+    "open": false
   },
   {
     "id": "wan21",
@@ -2060,7 +2117,8 @@
       "license": "Apache 2.0",
       "vbench": "开源视频生成 VBench 综合 SOTA"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ Wan2.1 — 开源视频生成 VBench SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt（中英双语）               │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ umt5-xxl 文本编码器               │  │\n│ │ 中英双语，4096 维语义向量         │  │\n│ │ → 中文理解能力行业最强            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本条件             │\n│ ┌──────────────────────────────────┐  │\n│ │ Wan-VAE Encoder                  │  │\n│ │ 时空压缩：4×（时间）× 8×8（空间）│  │\n│ │ 因果卷积：保证时序因果性          │  │\n│ │ 支持任意时长视频编解码            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 潜在 + Flow Noise    │\n│ ╔══════════════════════════════════╗  │\n│ ║ Video DiT Block × N（14B）       ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ RMSNorm + AdaLN（t 调制）    │ ║  │\n│ ║ │ 3D Full Self-Attention        │ ║  │\n│ ║ │  时间 + 空间联合注意力        │ ║  │\n│ ║ │  RoPE 3D 位置编码             │ ║  │\n│ ║ │ Cross-Attention（文本条件）   │ ║  │\n│ ║ │ FFN（SwiGLU）                 │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ RF-Solver 去噪       │\n│ ┌──────────────────────────────────┐  │\n│ │ Wan-VAE Decoder                  │  │\n│ │ → 720p 81帧视频（~5s）           │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 开源 Apache 2.0，支持商业使用       │\n│ ★ VBench 综合评分开源最高             │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ Wan2.1 — 开源视频生成 VBench SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt（中英双语）               │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ umt5-xxl 文本编码器               │  │\n│ │ 中英双语，4096 维语义向量         │  │\n│ │ → 中文理解能力行业最强            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本条件             │\n│ ┌──────────────────────────────────┐  │\n│ │ Wan-VAE Encoder                  │  │\n│ │ 时空压缩：4×（时间）× 8×8（空间）│  │\n│ │ 因果卷积：保证时序因果性          │  │\n│ │ 支持任意时长视频编解码            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 潜在 + Flow Noise    │\n│ ╔══════════════════════════════════╗  │\n│ ║ Video DiT Block × N（14B）       ║  │\n│ ║ ┌──────────────────────────────┐ ║  │\n│ ║ │ RMSNorm + AdaLN（t 调制）    │ ║  │\n│ ║ │ 3D Full Self-Attention        │ ║  │\n│ ║ │  时间 + 空间联合注意力        │ ║  │\n│ ║ │  RoPE 3D 位置编码             │ ║  │\n│ ║ │ Cross-Attention（文本条件）   │ ║  │\n│ ║ │ FFN（SwiGLU）                 │ ║  │\n│ ║ └──────────────────────────────┘ ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ RF-Solver 去噪       │\n│ ┌──────────────────────────────────┐  │\n│ │ Wan-VAE Decoder                  │  │\n│ │ → 720p 81帧视频（~5s）           │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 开源 Apache 2.0，支持商业使用       │\n│ ★ VBench 综合评分开源最高             │\n└──────────────────────────────────────┘",
+    "open": false
   },
   {
     "id": "veo3",
@@ -2101,7 +2159,8 @@
       "audio": "原生音频生成（背景音/对话/音效）",
       "license": "闭源 API（VideoFX / Gemini API）"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ Veo 3 — 原生音视频同步生成 SOTA       │\n├──────────────────────────────────────┤\n│ Text Prompt（语义最强）               │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ Gemini 文本编码器                 │  │\n│ │ 深度语义理解（物理/因果/时序）    │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 条件向量             │\n│ ╔══════════════════════════════════╗  │\n│ ║ 双流联合生成架构                  ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ Video DiT Stream            │  ║  │\n│ ║ │ 3D Full Attention           │  ║  │\n│ ║ │ 时空 Patch → 视频帧序列     │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Cross-Modal Attn ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ Audio DiT Stream            │  ║  │\n│ ║ │ 音频 Spectrogram Patch      │  ║  │\n│ ║ │ 与视频帧时间戳对齐          │  ║  │\n│ ║ │ → 背景音 / 对话 / 音效      │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 视频解码器 → 4K 120s 视频        │  │\n│ │ 音频解码器 → 同步音频轨道        │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 音视频同步：Cross-Modal Attention   │\n│   视频帧与音频帧时间戳精确对齐        │\n│ ★ 物理一致性：Gemini 物理世界理解     │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ Veo 3 — 原生音视频同步生成 SOTA       │\n├──────────────────────────────────────┤\n│ Text Prompt（语义最强）               │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ Gemini 文本编码器                 │  │\n│ │ 深度语义理解（物理/因果/时序）    │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 条件向量             │\n│ ╔══════════════════════════════════╗  │\n│ ║ 双流联合生成架构                  ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ Video DiT Stream            │  ║  │\n│ ║ │ 3D Full Attention           │  ║  │\n│ ║ │ 时空 Patch → 视频帧序列     │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Cross-Modal Attn ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ Audio DiT Stream            │  ║  │\n│ ║ │ 音频 Spectrogram Patch      │  ║  │\n│ ║ │ 与视频帧时间戳对齐          │  ║  │\n│ ║ │ → 背景音 / 对话 / 音效      │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 视频解码器 → 4K 120s 视频        │  │\n│ │ 音频解码器 → 同步音频轨道        │  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ 音视频同步：Cross-Modal Attention   │\n│   视频帧与音频帧时间戳精确对齐        │\n│ ★ 物理一致性：Gemini 物理世界理解     │\n└──────────────────────────────────────┘",
+    "open": true
   },
   {
     "id": "flux1",
@@ -2143,7 +2202,8 @@
       "resolution": "任意分辨率，最高 2K",
       "license": "FLUX.1-dev: FLUX Non-Commercial / FLUX.1-schnell: Apache 2.0"
     },
-    "textArch": "┌──────────────────────────────────────┐\n│ FLUX.1 — MM-DiT 开源图像生成 SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 双文本编码器                      │  │\n│ │ T5-XXL（4096维，深度语义理解）    │  │\n│ │ CLIP ViT-L（768维，视觉对齐）     │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本 Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Encoder           │  │\n│ │ 图像 → 高质量潜在表示             │  │\n│ │ + Flow Noise（t 时刻）            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 图像 Tokens          │\n│ ╔══════════════════════════════════╗  │\n│ ║ MM-DiT Block × N（双流架构）     ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ 图像流（Image Stream）       │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ │ AdaLN（t 时间步调制）        │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Joint Attention  ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ 文本流（Text Stream）        │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ║                                   ║  │\n│ ║ 图像和文本 token 各自独立处理     ║  │\n│ ║ 通过 Joint Attention 交互         ║  │\n│ ║ → 文本理解比 SD3 更深             ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Decoder           │  │\n│ │ → 任意分辨率高质量图像（最高 2K）│  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ MM-DiT vs UNet：纯 Transformer 架构 │\n│   文本理解更深，细节更精准            │\n│ ★ Flow Matching：4步快速推理          │\n│   vs DDPM 的 50步，速度 12x           │\n└──────────────────────────────────────┘"
+    "textArch": "┌──────────────────────────────────────┐\n│ FLUX.1 — MM-DiT 开源图像生成 SOTA     │\n├──────────────────────────────────────┤\n│ Text Prompt                           │\n│      ↓                                │\n│ ┌──────────────────────────────────┐  │\n│ │ 双文本编码器                      │  │\n│ │ T5-XXL（4096维，深度语义理解）    │  │\n│ │ CLIP ViT-L（768维，视觉对齐）     │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 文本 Tokens          │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Encoder           │  │\n│ │ 图像 → 高质量潜在表示             │  │\n│ │ + Flow Noise（t 时刻）            │  │\n│ └──────────────┬───────────────────┘  │\n│                ↓ 图像 Tokens          │\n│ ╔══════════════════════════════════╗  │\n│ ║ MM-DiT Block × N（双流架构）     ║  │\n│ ║                                   ║  │\n│ ║ ┌─────────────────────────────┐  ║  │\n│ ║ │ 图像流（Image Stream）       │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ │ AdaLN（t 时间步调制）        │  ║  │\n│ ║ └──────────────┬──────────────┘  ║  │\n│ ║                │ Joint Attention  ║  │\n│ ║ ┌──────────────▼──────────────┐  ║  │\n│ ║ │ 文本流（Text Stream）        │  ║  │\n│ ║ │ 独立 Self-Attention          │  ║  │\n│ ║ │ 独立 FFN                     │  ║  │\n│ ║ └─────────────────────────────┘  ║  │\n│ ║                                   ║  │\n│ ║ 图像和文本 token 各自独立处理     ║  │\n│ ║ 通过 Joint Attention 交互         ║  │\n│ ║ → 文本理解比 SD3 更深             ║  │\n│ ╚══════════════╤═══════════════════╝  │\n│                ↓ Flow Matching 去噪   │\n│ ┌──────────────────────────────────┐  │\n│ │ 16-channel VAE Decoder           │  │\n│ │ → 任意分辨率高质量图像（最高 2K）│  │\n│ └──────────────────────────────────┘  │\n│                                       │\n│ ★ MM-DiT vs UNet：纯 Transformer 架构 │\n│   文本理解更深，细节更精准            │\n│ ★ Flow Matching：4步快速推理          │\n│   vs DDPM 的 50步，速度 12x           │\n└──────────────────────────────────────┘",
+    "open": false
   },
   {
     "id": "qwen3-235b-a22b",
@@ -2253,7 +2313,14 @@
       "SWE-bench 超 40 分，Agent 编码任务能力全面",
       "阿里 DashScope API 可用，兼容 OpenAI 接口格式"
     ],
-    "tags": ["LLM", "MoE", "代码", "Agent", "阿里云", "长上下文"],
+    "tags": [
+      "LLM",
+      "MoE",
+      "代码",
+      "Agent",
+      "阿里云",
+      "长上下文"
+    ],
     "factSheet": {
       "highlight": "开源最强代码 MoE，1M 上下文，LiveCodeBench > 70",
       "params": "480B 总参数，35B 激活参数",
@@ -2294,7 +2361,14 @@
       "输入定价 $0.10-$0.30/1M tokens，成本效益比高",
       "支持 24 种语言原生语音输出（预览版）"
     ],
-    "tags": ["LLM", "多模态", "Google", "长上下文", "高效推理", "思考模式"],
+    "tags": [
+      "LLM",
+      "多模态",
+      "Google",
+      "长上下文",
+      "高效推理",
+      "思考模式"
+    ],
     "factSheet": {
       "highlight": "1M 上下文 + 可调思考预算 + 250+ tokens/s，最优成本效益比",
       "params": "未公开（Gemini 2.5 系列中间档）",
@@ -2334,7 +2408,14 @@
       "128K 上下文，支持超长文档和代码库处理",
       "腾讯内部数据飞轮 + 代码 / Agent 专项数据增强训练"
     ],
-    "tags": ["MoE", "Mamba", "混合架构", "代码", "腾讯", "推理"],
+    "tags": [
+      "MoE",
+      "Mamba",
+      "混合架构",
+      "代码",
+      "腾讯",
+      "推理"
+    ],
     "factSheet": {
       "highlight": "SWE-bench Verified 74.4 国产最高 + Mamba2 混合架构 + 295B/21B 极低推理成本",
       "params": "295B 总参数，21B 激活参数",
@@ -2373,7 +2454,14 @@
       "Constitutional AI v3：更强可解释性与安全对齐",
       "支持 Function Calling / Tool Use / Computer Use（Beta）"
     ],
-    "tags": ["LLM", "Agent", "Anthropic", "编码", "高效", "Constitutional AI"],
+    "tags": [
+      "LLM",
+      "Agent",
+      "Anthropic",
+      "编码",
+      "高效",
+      "Constitutional AI"
+    ],
     "factSheet": {
       "highlight": "Claude 4 高效旗舰：Opus 级能力 + 3× 速度 + 1/5 成本，Claude Code 默认主力",
       "params": "未公开（Anthropic 闭源，中型）",
@@ -2390,5 +2478,101 @@
       "safety": "Constitutional AI v3，强化 HHH（Helpful / Harmless / Honest）"
     },
     "textArch": "Text / Image / Tool Input\n     │\n Embedding + RoPE（200K ctx）\n     │\n┌────▼──────────────────────────────┐\n│   Claude Sonnet 4 Block × N       │\n│  ┌────────────────────────────┐   │\n│  │  MHA（Multi-Head Attention）│   │\n│  │  支持 200K token 超长序列  │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n│  ┌────────────▼───────────────┐   │\n│  │  SwiGLU Dense FFN          │   │\n│  └────────────┬───────────────┘   │\n│               │  RMSNorm          │\n└───────────────┼───────────────────┘\n                │\n  ┌─────────────▼──────────────┐\n  │  Constitutional AI v3      │\n  │  HHH 对齐 + 安全过滤        │\n  │  Tool Use / Computer Use   │\n  └─────────────┬──────────────┘\n                │\n            LM Head\n                │\n         Output Tokens"
+  },
+  {
+    "id": "gemma-4-31b",
+    "name": "Gemma 4 31B",
+    "org": "Google DeepMind",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🏛️",
+    "open": true,
+    "params": "31B",
+    "date": "2026-04",
+    "context": "262K tokens",
+    "attention": "GQA（Grouped Query Attention）",
+    "description": "Google 开源旗舰模型，首次在全系列规模化应用 Multi-Token Prediction（MTP），262K 长上下文，在 LMArena 超越同量级闭源模型。支持 Text/Vision/Video/Code 多模态输入。",
+    "keyInnovation": "Multi-Token Prediction（K=4）统一训练推理，配合 Speculative Decoding 实现 2.7× 推理加速。QAT 量化支持端侧部署。262K 上下文通过 YaRN + Sliding Window 实现。",
+    "highlights": [
+      "MTP K=4：训练时同时预测 4 个 future token",
+      "推理 2.7× 加速（MTP + Speculative Decoding）",
+      "262K 长上下文（YaRN + Sliding Window）",
+      "LMArena 超越同量级闭源模型",
+      "多模态：Text + Vision + Video + Code",
+      "完全开源商用（Gemma License）",
+      "首日 llama.cpp/Ollama/vLLM 全适配"
+    ],
+    "tags": [
+      "LLM",
+      "多模态",
+      "MTP",
+      "开源",
+      "Google",
+      "端侧",
+      "长上下文",
+      "Speculative Decoding"
+    ],
+    "factSheet": {
+      "highlight": "开源 31B 旗舰，MTP K=4 加速 2.7×，262K 上下文，LMArena 超闭源同级",
+      "params": "31B（全激活 Dense）",
+      "architecture": "Dense Transformer（Decoder-only）+ MTP 多预测头",
+      "attention": "GQA（Grouped Query Attention）+ YaRN 位置外推",
+      "ffn": "SwiGLU（Gated Linear Unit with SiLU activation）",
+      "norm": "RMSNorm（Pre-LN）",
+      "posEncoding": "RoPE + YaRN（支持 262K 上下文外推）",
+      "context": "262K tokens（训练 128K，YaRN 外推至 262K）",
+      "training": "大规模预训练 + MTP 联合目标 + 代码/多模态 SFT + RLHF",
+      "inference": "OpenRouter / Google AI Studio / 本地（llama.cpp/Ollama/vLLM）",
+      "benchmarks": "LMArena Top-15 / MMLU 85+ / HumanEval 88+ / GPQA 70+",
+      "license": "Gemma License（商用开源）",
+      "quantization": "支持 QAT INT4（端侧系列 e2B/e4B）"
+    },
+    "textArch": "Text / Vision / Video Input\n     │\n Embedding + RoPE（262K ctx, YaRN）\n     │\n┌─────────────────────────────────────────┐\n│   Gemma 4 Block × N (31B)              │\n│  ┌─────────────────────────────────┐   │\n│  │  GQA（Grouped Query Attention）  │   │\n│  │  262K 长上下文 + Sliding Window │   │\n│  └─────────────────────────────────┘   │\n│     │                                   │\n│  ┌─────────────────────────────────┐   │\n│  │  SwiGLU FFN (Dense)             │   │\n│  │  + RMSNorm Pre-LN               │   │\n│  └─────────────────────────────────┘   │\n└─────────────────────────────────────────┘\n     │\n┌─────────────────────────────────────────┐\n│   Multi-Token Prediction (K=4)         │\n│  ┌────┐ ┌────┐ ┌────┐ ┌────┐          │\n│  │H₁  │ │H₂  │ │H₃  │ │H₄  │          │\n│  │t+1 │ │t+2 │ │t+3 │ │t+4 │          │\n│  └────┘ └────┘ └────┘ └────┘          │\n│  λ=1.0   λ=0.5  λ=0.25  λ=0.125      │\n└─────────────────────────────────────────┘\n     │\n Speculative Decoding（Draft + Verify）\n     │\n Output Tokens（~120 tok/s on H100）"
+  },
+  {
+    "id": "ernie-5-1",
+    "name": "文心 5.1 Preview",
+    "org": "Baidu",
+    "type": "dense",
+    "typeLabel": "密集模型",
+    "typeIcon": "🏛️",
+    "open": false,
+    "params": "未公开（预估 200B+）",
+    "date": "2026-05",
+    "context": "128K tokens",
+    "attention": "MHA（Multi-Head Attention）",
+    "description": "百度文心 5.1 Preview，LMArena 文本排行榜 1476 分登顶国内第一，全球 Top 15 唯一国产模型。基于「多维弹性预训练」技术，以同规模模型约 6% 的预训练成本实现基础效果领先。",
+    "keyInnovation": "多维弹性预训练（Multi-Dimensional Elastic Pre-training）：在训练过程中动态调整模型宽度/深度/序列长度，以极低成本达到 full-size 训练效果。LMArena 1476 分超越 GPT-5.5。",
+    "highlights": [
+      "LMArena 1476 分：国产模型全球 Top 15 唯一",
+      "多维弹性预训练：仅 6% 预训练成本达到 SOTA",
+      "超越 GPT-5.5 等主流模型（LMArena 排名）",
+      "百度千帆模型广场邀测中",
+      "Create 2026 大会 5.13 全栈发布"
+    ],
+    "tags": [
+      "LLM",
+      "百度",
+      "国产大模型",
+      "弹性预训练",
+      "LMArena",
+      "闭源"
+    ],
+    "factSheet": {
+      "highlight": "LMArena 1476 分国内第一、全球 Top 15 唯一国产，6% 预训练成本 SOTA",
+      "params": "未公开（预估 200B+ Dense）",
+      "architecture": "Dense Transformer（Decoder-only）+ 多维弹性预训练",
+      "attention": "MHA（Multi-Head Attention，具体变体未公开）",
+      "ffn": "未公开（预估 SwiGLU）",
+      "norm": "未公开（预估 RMSNorm）",
+      "posEncoding": "未公开（预估 RoPE 变体）",
+      "context": "128K tokens",
+      "training": "多维弹性预训练 + 大规模 SFT + RLHF",
+      "inference": "百度千帆模型广场 / 文心一言",
+      "benchmarks": "LMArena 1476 / MMLU 90+ / GPQA 78+ / AIME 83+",
+      "license": "百度 API 商用（闭源）",
+      "costEfficiency": "同规模约 6% 预训练成本"
+    },
+    "textArch": "Text Input\n     │\n Embedding + Position Encoding（128K ctx）\n     │\n┌─────────────────────────────────────────┐\n│   文心 5.1 Block × N                   │\n│  ┌─────────────────────────────────┐   │\n│  │  Multi-Head Attention           │   │\n│  │  128K 上下文窗口                 │   │\n│  └─────────────────────────────────┘   │\n│     │                                   │\n│  ┌─────────────────────────────────┐   │\n│  │  FFN（具体结构未公开）           │   │\n│  │  + Normalization                 │   │\n│  └─────────────────────────────────┘   │\n└─────────────────────────────────────────┘\n     │\n┌─────────────────────────────────────────┐\n│   多维弹性预训练                        │\n│  ┌─────────┐ ┌─────────┐ ┌─────────┐  │\n│  │宽度弹性  │ │深度弹性  │ │序列弹性  │  │\n│  │动态调整  │ │动态调整  │ │动态调整  │  │\n│  │hidden_d  │ │N layers │ │seq_len  │  │\n│  └─────────┘ └─────────┘ └─────────┘  │\n│  → 仅 6% 预训练成本达到 SOTA           │\n└─────────────────────────────────────────┘\n     │\n LM Head → Output Token\n     │\n LMArena 1476 分（国内 #1，全球 Top 15）"
   }
 ]

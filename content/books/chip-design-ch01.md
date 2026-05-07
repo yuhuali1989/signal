@@ -123,7 +123,7 @@ $$E_n = -\frac{13.6 \text{ eV}}{n^2}, \quad n = 1, 2, 3, \ldots$$
   <line x1="490" y1="114" x2="490" y2="128" stroke="#dc2626" stroke-width="1"/>
   <text x="494" y="98" font-size="8" fill="#dc2626">Eg</text>
   <!-- bottom label -->
-  <text x="400" y="178" text-anchor="middle" font-size="8" fill="#6b7280">n=2 → 价带；n=3 → 导带；中间 = 禁带</text>
+  <text x="400" y="178" text-anchor="middle" font-size="8" fill="#6b7280">以 Si 为例：n=3（3s+3p 杂化）劈裂 → 价带（下）+ 导带（上），Eg 居中</text>
 </svg>
 </div>
 
@@ -145,14 +145,23 @@ $$E_n = -\frac{13.6 \text{ eV}}{n^2}, \quad n = 1, 2, 3, \ldots$$
   <rect width="500" height="210" fill="#faf5ff" rx="8"/>
   <!-- Conductor -->
   <text x="80" y="16" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">导体（铜）</text>
-  <rect x="20" y="60" width="120" height="40" fill="#fbbf24" rx="2"/>
+  <!-- 4s band: bottom half filled, top half empty -->
+  <rect x="20" y="60" width="120" height="80" fill="none" rx="2" stroke="#d97706" stroke-width="1.5"/>
+  <!-- filled half -->
   <rect x="20" y="100" width="120" height="40" fill="#fbbf24" rx="2"/>
-  <text x="80" y="85" text-anchor="middle" font-size="8.5" fill="#78350f">导带（半满）</text>
-  <text x="80" y="125" text-anchor="middle" font-size="8.5" fill="#78350f">价带（满）</text>
-  <text x="80" y="155" text-anchor="middle" font-size="8" fill="#059669">两带重叠，无禁带</text>
-  <text x="80" y="168" text-anchor="middle" font-size="8" fill="#059669">导带未满 → 电子自由移动</text>
-  <!-- gap = 0 annotation -->
-  <text x="148" y="102" font-size="9" fill="#059669">Eg = 0</text>
+  <!-- empty half -->
+  <rect x="20" y="60" width="120" height="40" fill="#fef3c7" rx="2"/>
+  <!-- EF line -->
+  <line x1="16" y1="100" x2="144" y2="100" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="148" y="103" font-size="8" fill="#dc2626">EF</text>
+  <!-- band labels -->
+  <text x="80" y="83" text-anchor="middle" font-size="8" fill="#92400e">4s 带上半（空态）</text>
+  <text x="80" y="127" text-anchor="middle" font-size="8.5" fill="#78350f" font-weight="bold">4s 带下半（已填满）</text>
+  <!-- bracket label -->
+  <line x1="14" y1="60" x2="14" y2="140" stroke="#d97706" stroke-width="1.5"/>
+  <text x="10" y="100" text-anchor="end" font-size="8" fill="#d97706" transform="rotate(-90,10,100)">4s 能带</text>
+  <text x="80" y="156" text-anchor="middle" font-size="8" fill="#059669">每个 Cu 贡献 1e⁻，带容量 2e⁻</text>
+  <text x="80" y="168" text-anchor="middle" font-size="8" fill="#059669">EF 永远在带内 → 无禁带</text>
   <!-- Semiconductor -->
   <text x="260" y="16" text-anchor="middle" font-size="10" fill="#374151" font-weight="bold">半导体（硅）</text>
   <rect x="200" y="50" width="120" height="34" fill="#bfdbfe" rx="2"/>
@@ -181,6 +190,9 @@ $$E_n = -\frac{13.6 \text{ eV}}{n^2}, \quad n = 1, 2, 3, \ldots$$
   <text x="498" y="105" font-size="9" fill="#dc2626">Eg≈9</text>
 </svg>
 </div>
+
+> **💡 铜（以及所有金属）为什么没有禁带？**  
+> 铜的电子构型是 `[Ar] 3d¹⁰ 4s¹`——每个铜原子只贡献 **1 个** 4s 电子，但 4s 能带每个 k 态能容纳自旋↑和↓各一个，共 **2 个**电子。因此整个 4s 带永远只填了一半，费米能级 $E_F$ 落在带的**中间**。费米面上方紧接着就有空态，激发一个电子所需能量趋近于零——根本不存在"需要越过的禁带"。这是金属导电的普遍机制：碱金属（Li/Na/K 等）是半满 s 带，铝是部分填充的 3p 带，铜/银/金是半满的 s 带叠加近满的 d 带。
 
 ---
 
