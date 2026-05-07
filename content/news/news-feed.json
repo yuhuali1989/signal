@@ -21,8 +21,8 @@
     "id": "news-20260507-02",
     "title": "Google 发布 Gemma 4 系列：Multi-Token Prediction + 端侧推理，4B/12B/26B/31B 四规格",
     "summary": "Google 开源 Gemma 4 系列模型（e2B/e4B/26B/31B），引入 Multi-Token Prediction（MTP）机制加速推理。31B 版本支持 262K 上下文窗口，在 LMArena 排名超越同量级闭源模型。e2B/e4B 小模型可直接在手机和 Raspberry Pi 上离线运行，社区 llama.cpp/Ollama/vLLM 首日即完成适配。",
-    "source": "Google DeepMind",
-    "url": "https://blog.google/technology/developers/gemma-4/",
+    "source": "Google AI Dev",
+    "url": "https://ai.google.dev/gemma",
     "date": "2026-05-05",
     "category": "model-release",
     "tags": [
@@ -75,8 +75,8 @@
     "id": "news-20260507-05",
     "title": "腾讯混元开源 Hy-MT1.5-1.8B-1.25bit：440MB 极致压缩翻译模型，性能超 Google Translate",
     "summary": "腾讯混元团队开源 Hy-MT1.5-1.8B-1.25bit 紧凑型翻译模型，模型体积仅 440MB，支持全离线运行和多语言覆盖。凭借 1.25-bit 极致量化，在手机端实现了超越 Google Translate 的翻译质量，推动终端侧 AI 翻译进入商用落地新阶段。",
-    "source": "腾讯 AI Lab",
-    "url": "https://huggingface.co/tencent/HunyuanMT",
+    "source": "腾讯 GitHub",
+    "url": "https://github.com/Tencent/HunyuanVideo",
     "date": "2026-05-04",
     "category": "opensource",
     "tags": [
