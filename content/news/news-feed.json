@@ -1,5 +1,149 @@
 [
   {
+    "id": "news-20260511-01",
+    "title": "Anthropic 估值 1.2 万亿美元首超 OpenAI，登顶全球 AI 公司榜首",
+    "summary": "5 月 8 日，Anthropic 在 Pre-IPO 市场估值达到 1.2 万亿美元，首次超越 OpenAI（1.1 万亿）登顶全球 AI 公司。年化收入同比增长 80 倍，获得 SpaceX 22 万 GPU 算力支持、Google 2000 亿美元云服务协议。Claude 正式集成 Office 全家桶。",
+    "source": "掘金/AI日报",
+    "url": "https://juejin.cn/post/7637321530506870790",
+    "date": "2026-05-08",
+    "category": "industry",
+    "tags": [
+      "Anthropic",
+      "估值",
+      "Claude",
+      "AI商业化",
+      "SpaceX"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
+    "id": "news-20260511-02",
+    "title": "阶跃星辰完成 170 亿元融资，刷新中国大模型单轮融资纪录",
+    "summary": "5 月 8 日，阶跃星辰宣布完成 170 亿元人民币新一轮融资，创下中国大模型公司单轮融资最高纪录。此前 DeepSeek 传闻估值 450 亿美元、月之暗面累计融资 39 亿美元，中国 AI 六小虎融资竞赛进入白热化。",
+    "source": "掘金/AI日报",
+    "url": "https://juejin.cn/post/7637321530506870790",
+    "date": "2026-05-08",
+    "category": "industry",
+    "tags": [
+      "阶跃星辰",
+      "融资",
+      "中国AI",
+      "六小虎",
+      "大模型"
+    ],
+    "hot": true,
+    "region": "china"
+  },
+  {
+    "id": "news-20260511-03",
+    "title": "OpenAI 发布三款实时语音模型 + GPT-5.5 Cyber 网络安全专用版 + Codex Chrome 扩展",
+    "summary": "OpenAI 本周密集发布：(1) 三款 API 语音智能模型，支持实时对话；(2) GPT-5.5 Cyber 专用网络安全模型；(3) Codex Chrome 扩展——AI 可直接在浏览器中操作网站完成工作。同时 ChatGPT 开始测试广告商业化，推出 Trusted Contact 安全功能。",
+    "source": "OpenAI/微博AI日报",
+    "url": "https://juejin.cn/post/7637803221286961162",
+    "date": "2026-05-08",
+    "category": "model-release",
+    "tags": [
+      "OpenAI",
+      "语音模型",
+      "GPT-5.5",
+      "Codex",
+      "Chrome扩展"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
+    "id": "news-20260511-04",
+    "title": "马斯克入局 AI 编程：xAI 即将推出 Grok Build 桌面编程应用，6 月发新模型",
+    "summary": "Grok 网页端意外曝光「Grok 计算机」按钮，透露 xAI 即将推出桌面端编程应用 Grok Build。马斯克表示将在 6 月发布新大模型，目标在编程能力上超越当前王者 Claude。SpaceX 已与 Cursor 合作并有权以 600 亿美元收购该创业公司。",
+    "source": "腾讯新闻/AI早报",
+    "url": "https://new.qq.com/rain/a/20260511A029HO00",
+    "date": "2026-05-11",
+    "category": "industry",
+    "tags": [
+      "xAI",
+      "Grok",
+      "AI编程",
+      "马斯克",
+      "Cursor"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
+    "id": "news-20260511-05",
+    "title": "英伟达市值重回 5 万亿美元，费城半导体指数单周暴涨 11.14%",
+    "summary": "5 月 9 日，纳指和标普 500 双创历史新高，连续第六周收涨。英伟达市值重回 5 万亿美元关口。费城半导体指数单周大涨 11.14%，创近年最佳单周表现。存储芯片板块领涨，AI 算力需求强劲驱动估值重估。",
+    "source": "凌通社/新浪财经",
+    "url": "https://finance.sina.com.cn/wm/2026-05-10/doc-inhxkxui2644299.shtml",
+    "date": "2026-05-10",
+    "category": "industry",
+    "tags": [
+      "英伟达",
+      "半导体",
+      "股市",
+      "算力",
+      "市值"
+    ],
+    "hot": false,
+    "region": "international"
+  },
+  {
+    "id": "news-20260511-06",
+    "title": "特斯拉发布 Optimus 机器人最新进展，端到端 VLA 架构首次公开演示",
+    "summary": "5 月 10 日，特斯拉在投资者日上展示 Optimus 人形机器人最新进展，首次公开演示端到端 VLA 架构在工厂环境中的实际操作能力。机器人可自主完成零件搬运、质检、分拣等任务，推理延迟 < 100ms。",
+    "source": "凌通社",
+    "url": "https://finance.sina.com.cn/wm/2026-05-10/doc-inhxkxui2644299.shtml",
+    "date": "2026-05-10",
+    "category": "research",
+    "tags": [
+      "特斯拉",
+      "Optimus",
+      "机器人",
+      "VLA",
+      "具身智能"
+    ],
+    "hot": true,
+    "region": "international"
+  },
+  {
+    "id": "news-20260511-07",
+    "title": "Google DeepMind 聘请芝加哥大学教授担任 AGI 经济学总监",
+    "summary": "芝加哥大学行为经济学教授 Alex Imas 加入 Google DeepMind 担任 AGI 经济学总监。DeepMind CEO Demis Hassabis 亲自确认。Imas 长期研究 AI 对劳动力市场的影响，提出 AI 会压低可复制劳动价格但推高关系型劳动（护理/教育/医疗）价值。",
+    "source": "腾讯新闻/AI早报",
+    "url": "https://new.qq.com/rain/a/20260511A029HO00",
+    "date": "2026-05-11",
+    "category": "industry",
+    "tags": [
+      "DeepMind",
+      "AGI",
+      "经济学",
+      "劳动力",
+      "Google"
+    ],
+    "hot": false,
+    "region": "international"
+  },
+  {
+    "id": "news-20260511-08",
+    "title": "模型迭代压缩至 50 天：Google 39 天/次、OpenAI 43 天/次、Anthropic 68 天/次",
+    "summary": "据统计，2026 年 5 月三大 AI 公司模型发布周期已压缩至平均 50 天，较三年前缩短 62%。Google 最快（39 天/次）、OpenAI 紧随（43 天/次）、Anthropic 最克制（68 天/次）。驱动因素：Agent 时代性能门槛拉高 + 推理成本下降 + 微调也算新版本。",
+    "source": "掘金",
+    "url": "https://juejin.cn/post/7637803221286961162",
+    "date": "2026-05-09",
+    "category": "industry",
+    "tags": [
+      "模型发布",
+      "竞争格局",
+      "Google",
+      "OpenAI",
+      "Anthropic"
+    ],
+    "hot": false,
+    "region": "international"
+  },
+  {
     "id": "news-20260507-01",
     "title": "OpenAI 发布 GPT-5.5 Instant：幻觉率降 52%、回复更简洁，全员免费升级",
     "summary": "OpenAI 正式推出 GPT-5.5 Instant 取代 GPT-5.3 Instant 成为 ChatGPT 默认模型。医疗/法律/金融领域幻觉率下降 52.5%，AIME 2025 得分从 65.4 升至 81.2，GPQA 从 78.5 升至 85.6。新增 Memory Sources 功能，可追溯回答引用了哪些历史对话。",

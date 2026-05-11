@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260511-01",
+    "date": "2026-05-11",
+    "type": "news",
+    "emoji": "📡",
+    "title": "声浪更新：+8 条（Anthropic 1.2万亿/阶跃170亿/OpenAI语音三连/马斯克Grok Build/英伟达5万亿/特斯拉Optimus/DeepMind AGI经济学/迭代50天）",
+    "detail": "补充 5月8-11日重大声浪至 227 条。Anthropic 估值首超 OpenAI，阶跃星辰刷新中国融资纪录，OpenAI 密集发布语音+安全+浏览器扩展，马斯克宣布入局 AI 编程。"
+  },
+  {
     "id": "evo-20260507-01",
     "date": "2026-05-07",
     "type": "news",
