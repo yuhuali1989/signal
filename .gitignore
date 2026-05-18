@@ -8,3 +8,9 @@ node_modules/
 __pycache__/
 *.pyc
 .idea/
+
+# 大文件/二进制资源（运行时下载）
+ui-screenshots/
+public/nuscenes/
+public/arch-images/
+models-debug.png
