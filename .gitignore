@@ -4,6 +4,7 @@ out/
 .env
 .DS_Store
 *.log
+*.err
 node_modules/
 __pycache__/
 *.pyc
