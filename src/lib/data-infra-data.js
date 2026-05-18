@@ -94,7 +94,7 @@ export const K8S_DATA = {
   ],
   components: [
     { name: 'Kubernetes 1.36.0', role: '容器编排核心', desc: '统一管理所有计算资源，支持 GPU 拓扑感知调度；v1.36.0 DRA（Dynamic Resource Allocation）进入 GA，GPU 细粒度分片调度正式成熟', icon: '☸️', category: '核心' },
-    { name: 'Volcano 1.14.1', role: 'GPU 批调度器', desc: 'Gang Scheduling + Fair Share + 队列管理，训练任务不抢占；v1.14.1（2026-02-14）为当前最新稳定版', icon: '🌋', category: '调度' },
+    { name: 'Volcano 1.14.2', role: 'GPU 批调度器', desc: 'Gang Scheduling + Fair Share + 队列管理，训练任务不抢占；v1.14.2（2026-05-09）修复 device plugin 监测逻辑，优化 GPU 拓扑感知调度', icon: '🌋', category: '调度' },
     { name: 'Istio 1.21', role: '服务网格', desc: 'mTLS 加密 + 流量管理 + 金丝雀发布 + 可观测性', icon: '🕸️', category: '网络' },
     { name: 'Argo CD', role: 'GitOps 部署', desc: 'Git 仓库即真相源，声明式部署，自动同步', icon: '🔄', category: '部署' },
     { name: 'Argo Workflows', role: 'DAG 编排', desc: 'K8s 原生工作流引擎，支持 DAG/Step/Loop', icon: '🔀', category: '编排' },
@@ -125,7 +125,7 @@ export const K8S_DATA = {
     schedulers: [
       {
         name: 'Volcano',
-        version: 'v1.14.1',
+        version: 'v1.14.2',
         org: 'CNCF Incubating',
         color: '#e17055',
         icon: '🌋',
@@ -249,7 +249,7 @@ data:
       },
       {
         name: 'Kueue',
-        version: 'v0.17.2',
+        version: 'v0.17.3',
         org: 'K8s SIG Scheduling（Google 主导）',
         color: '#326ce5',
         icon: '☸️',
@@ -264,6 +264,7 @@ data:
           { name: 'Preemption', desc: '支持 LowerPriority / BorrowWithinCohort 两种抢占策略', icon: '⚡' },
           { name: '并发准入（v0.18 预览）', desc: 'Concurrent Admission 功能新增（v0.18.0-rc.0，2026-04-30），MultiKueue 多集群调度特性晋升为 Stable，配额竞态修复', icon: '🔀' },
           { name: 'v0.17.2 补丁（2026-04-30）', desc: '修复 ClusterQueue 删除竞态、TAS nil pointer panic、Cohort 子树配额内存优化、VisibilityOnDemand 端点修正', icon: '🔧' },
+          { name: 'v0.17.3 补丁（2026-05-15）', desc: '修复 FlavorFungibility 默认策略为空导致的调度失败问题、Workload 删除事件丢失的日志告警，AdmissionCheck 资源竞态稳定性提升', icon: '🔧' },
         ],
         useCases: ['K8s 原生批处理（JobSet）', 'Ray on K8s（RayJob）', 'Kubeflow Training Operator', '多租户 GPU 配额管理'],
         limitations: ['Gang Scheduling 能力弱于 Volcano', '生态成熟度不如 Volcano', '不支持 MPI 作业'],
