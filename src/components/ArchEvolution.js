@@ -52,7 +52,10 @@ const TIMELINE = [
   { date: '2026-04', model: 'Gemini 3.1 Pro 深度研究代理', innovation: '多源并行检索 + 研究规划 + 迭代深化的 Agent 架构', contribution: '首个深度集成 Google Scholar/YouTube/Books 的多模态研究 Agent；支持数小时自主研究任务；研究规划→并行检索→可信度评估→迭代深化的四层 Agent 架构', tag: 'Agent架构', color: 'bg-green-100 text-green-700' },
   { date: '2026-04', model: 'Qwen3 全系列开源（235B-A22B 旗舰）', innovation: '细粒度 128 专家 MoE + 思考/非思考双模式（enable_thinking 参数切换）+ YaRN 长上下文', contribution: 'AIME 2025 85.7% 超越 DeepSeek-R1；同一模型通过参数切换深度推理与快速响应，无需部署两套模型；Apache 2.0 全系列开源（235B/32B/14B/8B/4B/1.7B/0.6B）', tag: 'MoE+双模式', color: 'bg-amber-100 text-amber-700' },
   { date: '2026-04', model: 'Llama 4 Scout（109B MoE）', innovation: '10M token 超长上下文（开源最长）+ MoE 单卡可跑 + 原生多模态', contribution: '10M token 上下文是开源模型最长记录（GPT-4.1 为 1M）；109B 总参数 / 17B 激活，单张 H100 可完整运行；原生文本+图像多模态，DocVQA 超越 GPT-4V；Apache 2.0', tag: '长上下文', color: 'bg-blue-100 text-blue-700' },
-  { date: '2026-04', model: 'NVIDIA Nemotron 3 Nano Omni', innovation: '七模态统一感知 MoE + Conv3D 视频时序编码器（面向 Agent 感知层）', contribution: '30B 总参数 / 3B 激活，首个将文本/图像/音频/视频/文档/图表/GUI 截图七类模态统一于单一 MoE 架构；Conv3D 时序编码器处理视频帧序列，256K 上下文窗口，推理吞吐比同类全模态模型高 9×；专为企业 AI Agent 感知层设计，覆盖对话/文档/多媒体三大场景', tag: '多模态Agent', color: 'bg-green-100 text-green-700' },
+  { date: '2026-05', model: 'Kimi K2.6（1.2T MoE）', innovation: '编程能力超 GPT-5.5 和 Claude，推理成本仅 1/10', contribution: '1.2T 总参数 / 60B 激活，SWE-bench Verified 超越 GPT-5.5 和 Claude Opus 4.0；推理成本仅为 GPT-5.5 的 1/10，验证 MoE 在编码领域的成本效率优势', tag: 'MoE+编码', color: 'bg-amber-100 text-amber-700' },
+  { date: '2026-05', model: 'Grok 4.3（xAI）', innovation: '万亿参数密集模型，AIME 90.2 / SWE-bench 72.4%', contribution: '参数量突破 1 万亿，数学推理 AIME 90.2，代码 SWE-bench 72.4%；首批向 Premium+ 用户开放，xAI 大模型能力跃升', tag: '规模扩展', color: 'bg-blue-100 text-blue-700' },
+  { date: '2026-05', model: 'GPT-5.5 Instant', innovation: 'Memory Sources + 幻觉压制（医/法/金融降 52.5%）', contribution: '幻觉率降 52.5%（医/法/金融领域）；AIME 65.4→81.2；可追溯回答引用历史对话，缓解长上下文一致性难题', tag: '推理增强', color: 'bg-gray-100 text-gray-700' },
+  { date: '2026-05', model: 'Grok 1.5T（训练完成）', innovation: '1.5 万亿参数 + Cursor 编程数据补充训练', contribution: '目前全球最大模型，1.5T 参数；为弥补编程短板吸收 Cursor 代码数据做 SFT+RL 精调；预计 3-4 周公开发布', tag: '规模扩展', color: 'bg-blue-100 text-blue-700' },
 ];
 
 const EVOLUTION_PATHS = [
