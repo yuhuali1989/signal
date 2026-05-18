@@ -108,6 +108,8 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
   const pos = f.positionalEncoding || 'RoPE';
   const emb = f.embeddingDim || hidden || '';
   const ffn = f.ffnDim || (hidden ? `${Math.round(parseInt(hidden.replace(/,/g, '')) * 3.5)}` : '');
+  const arch = f.architecture || '';
+  const hasMTP = arch.toLowerCase().includes('mtp');
 
   // 去掉逗号的纯数字版本，用于 shape 标注
   const d = emb ? emb.replace(/,/g, '') : '';
@@ -127,7 +129,7 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
   const shOut = V ? `(B, T, ${V})` : '';
 
   return (
-    <svg viewBox={`0 0 ${W} 720`} className="w-full max-w-[680px]" style={{ fontFamily: FONT }}>
+    <svg viewBox={`0 0 ${W} ${hasMTP ? 760 : 720}`} className="w-full max-w-[680px]" style={{ fontFamily: FONT }}>
       <defs>
         <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
           <path d="M0,0 L8,3 L0,6 Z" fill="#666" />
@@ -196,25 +198,40 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
       {/* Block 重复次数 */}
       <text x={bx - 30} y={505} textAnchor="end" fill={ACCENT} fontSize="14" fontWeight="700">{layers} ×</text>
 
+      {/* ═══ MTP 模块（当 architecture 含 MTP 时显示） ═══ */}
+      {hasMTP && (
+        <>
+          {/* Block → MTP */}
+          <Arr x1={cx} y1={510} x2={cx} y2={530} id="arr" />
+          <rect x={cx - 85} y={530} width={170} height={38} rx="8" fill="none" stroke={MOE_BD} strokeWidth="1.2" strokeDasharray="4 3" />
+          <text x={cx} y={548} textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">Multi-Token Prediction (K=4)</text>
+          <text x={cx} y={561} textAnchor="middle" fill="#8896A6" fontSize="7.5">4 shared heads · λ=1/0.5/0.25/0.125</text>
+          {/* MTP → Embedding */}
+          <Arr x1={cx} y1={568} x2={cx} y2={595} id="arr" />
+          {/* Shape 下移 */}
+          <Shape x={cx} y={585} text={shEmb} />
+        </>
+      )}
+
       {/* ── RoPE 外挂（左侧） ── */}
       <Box x={bx - 130} y={375} w={75} h={26} label={pos} fs={10} />
       <line x1={bx - 55} y1={388} x2={bx + 15} y2={388} stroke="#666" strokeWidth="1" markerEnd="url(#arr)" />
 
       {/* Block → Embedding */}
-      <Arr x1={cx} y1={510} x2={cx} y2={555} id="arr" />
+      {!hasMTP && <Arr x1={cx} y1={510} x2={cx} y2={555} id="arr" />}
       {/* shape: Embedding 输出维度 */}
-      <Shape x={cx} y={540} text={shEmb} />
+      {!hasMTP && <Shape x={cx} y={540} text={shEmb} />}
 
-      {/* Embedding */}
-      <Box x={bx - 15} y={555} w={bw + 30} h={32} label="Token + positional embedding layer" fs={10} />
-      <Arr x1={cx} y1={587} x2={cx} y2={620} id="arr" />
+      {/* Embedding — 有 MTP 时整体下移 40px */}
+      <Box x={bx - 15} y={hasMTP ? 595 : 555} w={bw + 30} h={32} label="Token + positional embedding layer" fs={10} />
+      <Arr x1={cx} y1={hasMTP ? 627 : 587} x2={cx} y2={hasMTP ? 660 : 620} id="arr" />
 
       {/* Tokenized text */}
-      <Box x={bx + 5} y={620} w={bw - 10} h={28} label="Tokenized text" />
+      <Box x={bx + 5} y={hasMTP ? 660 : 620} w={bw - 10} h={28} label="Tokenized text" />
 
       {/* Input label */}
-      <text x={cx} y={665} textAnchor="middle" fill="#999" fontSize="9" fontStyle="italic">Sample input text</text>
-      <Arr x1={cx} y1={660} x2={cx} y2={648} id="arr" />
+      <text x={cx} y={hasMTP ? 705 : 665} textAnchor="middle" fill="#999" fontSize="9" fontStyle="italic">Sample input text</text>
+      <Arr x1={cx} y1={hasMTP ? 700 : 660} x2={cx} y2={hasMTP ? 688 : 648} id="arr" />
 
       {/* ══════════ 右侧参数标注 ══════════ */}
       {/* Vocabulary size */}
@@ -236,7 +253,7 @@ function TransformerBlockSVG({ factSheet = {}, modelName = '' }) {
 
       {/* Embedding dimension */}
       {emb && (
-        <Note x1={bx + bw + 20} y1={570} x2={W - 190} y2={570}
+        <Note x1={bx + bw + 20} y1={hasMTP ? 610 : 570} x2={W - 190} y2={hasMTP ? 610 : 570}
           label={`d_emb = ${emb}`} value="" />
       )}
 
