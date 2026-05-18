@@ -468,7 +468,7 @@ function PalantirTab() {
           <div>
             <div className="text-[10px] font-semibold text-gray-600 mb-2">📊 关键指标 (2024)</div>
             <div className="space-y-2">
-              {Object.entries(financials.metrics).map(([key, value]) => {
+              {Object.entries(financials.metrics).filter(([key]) => key !== 'q1_2026').map(([key, value]) => {
                 const labels = {
                   nrr: '净收入留存率 (NRR)',
                   govRevenue: '政府营收占比',
