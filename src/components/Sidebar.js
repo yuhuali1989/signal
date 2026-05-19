@@ -50,7 +50,6 @@ const NAV_GROUPS = [
     color: '#3fb950',
     items: [
       { name: 'AI 声浪',    href: '/news/',            icon: '🌊' },
-      { name: '全行业动态', href: '/industry-news/',   icon: '📡' },
       { name: '进化日志',   href: '/evolution/',       icon: '📜' },
     ],
   },
