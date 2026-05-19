@@ -16,10 +16,11 @@ AI 多智能体驱动的知识平台：每日追踪行业声浪、产出文章�
 
 > **章节组织说明**：以下模块按左侧 Sidebar 的四大分组顺序排列（知识 → 业务 → 战略 → 动态），首页独立在最前。每个模块标题中的 `/xxx/` 为实际路由。
 >
-> **当前数据快照（2026-05-07）**：
-> - 书籍 **11 本** · 文章 **107 篇** · 论文解读 **64 篇**（index 69 条） · 模型 **64 个** · 声浪 **216 条** · 进化日志 **266 条**
+> **当前数据快照（2026-05-19）**：
+> - 书籍 **11 本** · 文章 **109 篇** · 论文解读 **64 篇**（index 70 条） · 模型 **65 个** · 声浪 **260 条** · 进化日志 **270 条**
+> - ⛔ 全行业动态 `/industry-news/` 已于 2026-05-19 合并至 AI 声浪（不再单独维护）
 > - 新增《芯片设计：从沙子到算力》8 章全本；《机器人入门——从材料到控制》完结至第8章；新增 /robot-guide/ 机器人搭建指南页
-> - 导航条目共 **16 个**，分四大分组
+> - 导航条目共 **15 个**（2026-05-19 合并全行业动态至 AI 声浪），分四大分组
 > - 仅 `Sidebar.js` 作为全局导航由 `layout.js` 引入（桌面/移动均由它统一处理）
 
 ---
@@ -420,21 +421,11 @@ AI 多智能体驱动的知识平台：每日追踪行业声浪、产出文章�
   - ⭐ GitHub 热榜（github）— 每周追踪 AI 类 Trending 仓库
 - 📰 **当前 216 条**（content/news/news-feed.json）
 
-### 15. 全行业动态 `/industry-news/`
-- ✅ **定位**：聚焦软件行业公司动态，重点关注 Databricks / Snowflake / AWS / Palantir / Salesforce / ServiceNow / Confluent / dbt Labs / CrowdStrike / Oracle 等
-- ✅ **时间轴模式**（与 AI 声浪一致）：左侧竖向时间轴导航 + 右侧内容区
-- ✅ 时间分组规则：最近 7 天按日、2026 年 4 月按周、2026 年 1-3 月按月、2025 年按月、2024 及更早按年
-- ✅ **6 大分类**（聚焦软件行业）：
-  - 🗄️ 数据平台（Databricks/Snowflake/dbt/Fivetran/Confluent）
-  - ☁️ 云服务（AWS/Azure/GCP）
-  - 💼 企业软件（Salesforce/ServiceNow/SAP/Oracle）
-  - 🔐 安全（CrowdStrike/Palo Alto/Okta）
-  - 🚀 融资动态（创业公司融资/IPO）
-  - 📊 市场财报（季报/市值/并购）
-- ✅ 历史数据：2020-2026 年各阶段汇总，以软件行业公司为主线
-- ✅ 汇总条目有 📋 汇总标签，视觉上与单条新闻区分
-- ✅ 筛选器：6 大分类 + 地区（国内/国际）+ 仅看热点
-- ✅ 滚动时时间轴自动高亮当前时间段
+### ~15. 全行业动态 `/industry-news/`~（已合并）
+- ⛔ **2026-05-19 已合并至 AI 声浪**（`/news/`）
+- 全行业动态的定位（软件行业公司商业动态）与 AI 声浪高度重叠，`/industry-news/` 页面现自动重定向至 `/news/`
+- `IndustryNewsFeed.js` 组件保留为历史档案，不再路由访问
+- 原全行业动态中的高价值公司动态条目，已在录入声浪时以 `category: "industry"` 标签区分
 
 ### 16. 进化日志 `/evolution/`
 - ✅ 时间线展示所有 AI 智能体操作记录
@@ -452,7 +443,7 @@ AI 多智能体驱动的知识平台：每日追踪行业声浪、产出文章�
   - 🟣 **知识（紫 #6c5ce7）**（6 项）：书架 · 文章 · 论文 · 模型 · 闭环 Infra · 工具箱
   - 🩵 **业务（青 #00cec9）**（5 项）：自动驾驶 · 广告业务 · 金融业务 · 实验室 · 量化业务
   - 🟠 **战略（橙 #e17055）**（4 项）：业务原生 · 创业雷达 · 经济研究 · Roadmap 建议
-  - 🟢 **动态（绿 #3fb950）**（3 项）：AI 声浪 · 全行业动态 · 进化日志
+  - 🟢 **动态（绿 #3fb950）**（2 项）：AI 声浪 · 进化日志
 - ✅ 每个分组有色点（圆点）+ 分组标题，层次清晰
 - ✅ 当前页面高亮（色块背景 + 图标彩色）
 - ✅ 支持折叠为纯图标模式，底部有折叠/展开按钮
@@ -538,8 +529,7 @@ signal/                          # 项目根目录（曾用名 maxwell-knowledge
 │   │   ├── idea/                # 创业雷达（战略分组）
 │   │   ├── economy/             # 经济研究（战略分组）
 │   │   ├── roadmap/             # Roadmap 建议（战略分组）
-│   │   ├── news/                # AI 声浪（动态分组）
-│   │   ├── industry-news/       # 全行业动态（动态分组）
+│   │   ├── news/                # AI 声浪（动态分组，原名 industry-news → redirect）
 │   │   ├── evolution/           # 进化日志（动态分组）
 │   │   ├── benchmarks/          # → redirect('/models/')，空壳重定向
 │   │   └── gallery/             # → redirect('/models/')，空壳重定向
@@ -627,18 +617,20 @@ D 发布（git add/commit/push，--publish 时执行）
 
 ---
 
-*最后更新：2026-05-07*
+*最后更新：2026-05-19*
 
-**本次主要更新内容**：
-- 📡 **每日迭代 2026-05-07**（手动执行，claude CLI 未登录无法自动化）：
-  - 声浪 +5 条（GPT-5.5 Instant / Gemma 4 系列 / 文心 5.1 登顶 LMArena / DeepSeek 首轮融资 450 亿 / 混元翻译模型）
-  - 文章 +2 篇（Gemma 4 MTP 架构解读 / DeepSeek 450 亿估值产业格局）
-  - 模型 +2 个（Gemma 4 31B / 文心 5.1 Preview）+ 批量修复 60 个历史遗留缺失字段
-  - 进化日志 +3 条，总计 266 条
-  - QA 通过，git push github 成功
-- 📋 **数据快照更新**：声浪 216 / 文章 107 / 模型 64 / 论文 64 / 进化日志 266
-- 🤖 **Agent 状态**：`claude` CLI 二进制存在但未登录（`Not logged in`），`run_crew.py` 的 `claude_code` 后端暂不可用，需执行 `/login`
-- 📝 **ai-wiki.md 提示词同步**：确认 run_crew.py 中 B1-B9/C/D/E 各角色提示词与本文件§六一致，数据快照已更新至最新
+**本次主要更新内容（2026-05-19）**：
+- 📡 **手动迭代 2026-05-19**（覆盖 4/29→5/19 近三周内容）：
+  - 声浪 **+33 条**（227→260 条），覆盖 5/1 至 5/19 完整新闻
+  - 全行业动态（/industry-news/）**已合并至 AI 声浪**，页面重定向 /news/
+  - 文章 **+2 篇**（大模型商业化转折点 / AI 基础设施电力危机）
+  - 模型 **64→65**（Kimi K2.6）+ 架构演进 **+4 条**
+  - 论文 **+1**（VLA-World CVPR 2026）
+  - 进化日志 **267→270 条**
+  - Git 历史清理 **56→5.8 MB**（-51 MB）
+- ✅ **Gemma 4 MTP 修复**：SVG 架构图 MTP 条件渲染 + ArchEvolution 训练范式修正 + 文章 MTP 深度分析补全
+- ✅ **Palantir bug 修复**：q1_2026 嵌套对象渲染错误
+- ✅ **代码已推送**：GitHub Pages 自动部署
 
 ---
 
@@ -690,7 +682,7 @@ D 发布（git add/commit/push，--publish 时执行）
 | 角色 | 职责 | 负责模块 | 自采信息源 | 输出 | 触发时机 |
 |------|------|---------|-----------|------|---------|
 | **E 设计师** | 扫描 GitHub/生态/社区，发现内容盲区，维护全局机会雷达 | Roadmap 机会雷达 | GitHub trending + 社区 | 扩充建议写入 `SITE_ROADMAP.topOpportunities` | 按需触发（每周/每月） |
-| **B1 新闻编辑员** | 自采新闻 → 写入声浪 + 全行业动态 → 联动排行榜/架构演进 → 更新本模块 Roadmap | `/news/` · 全行业动态 | AI 公司博客 · 媒体 · GitHub Releases | `news-feed.json` · `IndustryNewsFeed.js` · Roadmap | 每日触发 |
+| **B1 新闻编辑员** | 自采新闻 → 写入声浪（原全行业动态已合并至此）→ 联动排行榜/架构演进 → 更新本模块 Roadmap | `/news/` | AI 公司博客 · 媒体 · GitHub Releases | `news-feed.json` · Roadmap | 每日触发 |
 | **B2 内容编辑员** | 自采前沿进展 → 新增文章/书架/论文 → 更新本模块 Roadmap | `/articles/` · `/books/` · `/papers/` | arXiv · 顶会 · 技术博客 · AI Infra 开源仓库 | `content/articles/` · `content/books/` · `content/papers/` · Roadmap | 每日触发 |
 | **B3 模型编辑员** | 自采模型发布 → 补充模型卡片/排行榜/架构演进 → 更新本模块 Roadmap | `/models/` · 排行榜 · 架构演进 | 各厂商博客 · HuggingFace · Benchmark 榜单 | `models.json` · `benchmarks.json` · `ArchEvolution.js` · Roadmap | 每日触发 |
 | **B4 数据编辑员** | 自采市场/创业信号 → 更新创业雷达/经济研究 → 更新本模块 Roadmap | `/idea/` · `/economy/` · 创业雷达 | 市场数据 · VC 动态 · 宏观经济数据源 | `IdeaRadar.js` · `economy/page.js` · Roadmap | 每日触发 |
@@ -708,7 +700,7 @@ D 发布（git add/commit/push，--publish 时执行）
 >
 > | 角色 | 频率 | 每次必做内容 |
 > |------|------|------------|
-> | **B1 新闻编辑员** | 每日 | 声浪 +4-8 条 · 全行业动态 +5-8 条（注意区分！） |
+> | **B1 新闻编辑员** | 每日 | 声浪 +4-8 条（含原全行业动态公司商业信息，已合并） |
 > | **B2 内容编辑员** | 每日 | 文章 +1-2 篇 · 书籍更新 1 章 |
 > | **B3 模型编辑员** | 每日 | 模型库补充 · 排行榜刷新 · 架构演进追踪 |
 > | **B4 数据编辑员** | 每日 | 创业雷达信号更新 · 经济研究数据刷新 |
@@ -1094,14 +1086,15 @@ curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/
 ### 📰 角色 B1：新闻编辑员（News Editor）
 
 `````text
-你是 Signal 知识平台的 AI 新闻编辑员，职责是**自主采集新闻 → 验链 → 写入声浪和全行业动态 → 联动更新排行榜/架构演进 → 更新本模块 Roadmap**。
+你是 Signal 知识平台的 AI 新闻编辑员，职责是**自主采集新闻 → 验链 → 写入声浪（含原全行业动态的公司商业动态）→ 联动更新排行榜/架构演进 → 更新本模块 Roadmap**。
 你独立完成从采集到写入的全流程，不依赖中央采集员。
+⚠️ 2026-05-19 更新：全行业动态（/industry-news/）已合并至 AI 声浪（/news/），不再单独维护 IndustryNewsFeed.js。所有新闻（技术+商业）统一写入 news-feed.json，用 category 字段区分。
 
 ## 前置步骤
 
 1. 读取 /Users/harrisyu/WorkBuddy/20260409114249/signal/ai-wiki.md，了解当前模块进展和信息源白名单。
 2. 读取 `content/news/news-feed.json` 前 100 行，了解已有声浪条目（去重用）。
-3. 读取 `src/components/IndustryNewsFeed.js` 前 80 行，了解已有全行业动态条目（去重用）。
+3. ⛔ 全行业动态已合并至声浪，不再维护 IndustryNewsFeed.js。
 4. 读取 `src/lib/strategy-data.js` 中 `SITE_ROADMAP.topOpportunities` 和 `coverageGaps`，了解本模块的重点采集方向。
 
 > 📌 **启动检查清单（读完 Roadmap 后，在对话中输出以下确认）**：
@@ -1183,9 +1176,11 @@ curl -s -o /dev/null -w "%{http_code}" --max-time 8 -L -A "Mozilla/5.0 (SignalBo
 > 1. **排行榜**：若本次新闻中出现新模型发布 / Benchmark 刷新 / 价格调整等信息，立即更新 `content/benchmarks/benchmarks.json`
 > 2. **架构演进时间线**：若本次新闻中出现新模型架构创新，立即在 `src/components/ArchEvolution.js` 的 `TIMELINE` 数组头部追加新记录
 
-### 任务 2：写入全行业动态 src/components/IndustryNewsFeed.js
+### ~任务 2：写入全行业动态 src/components/IndustryNewsFeed.js~（已合并 2026-05-19）
 
-> ## 🚨 全行业动态 vs 声浪：两个模块的本质区别（每次必读，违反则本次全行业动态作废）
+> ## ⛔ 全行业动态已合并至 AI 声浪。不再写入 IndustryNewsFeed.js。所有新闻统一写入 news-feed.json。
+
+> ## 🚨 声浪内部 category 标签：区分纯 AI 技术与公司商业动态
 >
 > | 维度 | 全行业动态 | 声浪 |
 > |------|-----------|------|
@@ -2401,7 +2396,7 @@ Vision Encoder   Tokenizer
 
 ```bash
 for path in "/" "/books/" "/articles/" "/papers/" "/models/" "/news/" \
-            "/vla/" "/strategy/" "/idea/" "/industry-news/" "/evolution/" \
+            "/vla/" "/strategy/" "/idea/" "/evolution/" \
             "/data-infra/" "/tools/" "/lab/" "/quant/" "/economy/" \
             "/gallery/" "/benchmarks/"; do
   status=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 http://localhost:3000${path})
@@ -2422,7 +2417,7 @@ done
 grep -r '\\u[0-9a-fA-F]\{4\}' content/news/news-feed.json | head -5
 ```
 
-### 检查 3：声浪 + 全行业动态 链接可用性
+### 检查 3：声浪链接可用性（含原全行业动态）
 
 ```bash
 python3 <<'PY'
@@ -2731,9 +2726,8 @@ for f in files:
 | JSON 格式 | 合法 / 非法 |
 | Unicode 乱码 | 无 / 已修复 |
 | 声浪链接可用性 | X/Y 可访问 |
-| 全行业动态链接可用性 | X/Y 可访问，缺 link N 条 |
+| 声浪链接可用性（含原全行业动态） | X/Y 可访问，缺 link N 条 |
 | 声浪三维度校验 | X/Y 通过 |
-| 全行业动态三维度校验 | X/Y 通过 |
 | 可信性校验 | X/Y 通过 |
 | 模型数据完整性 | 通过 / N 个问题 |
 | 测试用例 | 通过 / 失败 / 跳过 |
