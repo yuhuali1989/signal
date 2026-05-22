@@ -1,39 +1,37 @@
 ---
-title: "Gemini 4.0 与通义 3.7 同日发布：AI 竞赛格局的重塑"
+title: "Gemini 3.5 Flash 与通义 3.7 同日发布：AI 竞赛格局的重塑"
 date: "2026-05-20"
 tags: ["llm", "multimodal", "agent", "open-source", "reasoning"]
-summary: "2026年5月19-20日 Google I/O 与阿里云峰会相继发布旗舰模型，AI 竞赛进入新阶段。Gemini 4.0 Omni 多模态 SOTA + 通义 3.7 登顶 Arena AI 中文榜，双城记下的格局重塑。"
+summary: "2026年5月19-20日 Google I/O 与阿里云峰会相继发布旗舰模型，AI 竞赛进入新阶段。Gemini 3.5 Flash 多模态 + 通义 3.7 登顶 Arena AI 中文榜，双城记下的格局重塑。"
 category: "article"
 ---
 
-# Gemini 4.0 与通义 3.7 同日发布：AI 竞赛格局的重塑
+# Gemini 3.5 Flash 与通义 3.7 同日发布：AI 竞赛格局的重塑
 
-> **摘要**：2026 年 5 月 19-20 日，两场 AI 产业最重要的发布会——Google I/O 和阿里云峰会——相继举行。Google 正式发布 Gemini 4.0 系列（含 Omni 多模态版），阿里云通义千问推出 Qwen3.7-Max-Preview。本文分析这两场发布对全球 AI 竞争格局的深层影响。
+> **摘要**：2026 年 5 月 19-20 日，两场 AI 产业最重要的发布会——Google I/O 和阿里云峰会——相继举行。Google 正式发布 Gemini 3.5 Flash（以及 Gemini Omni 多模态模型），阿里云通义千问推出 Qwen3.7-Max-Preview。本文分析这两场发布对全球 AI 竞争格局的深层影响。
 
 ---
 
-## 一、Google I/O 2026：Gemini 4.0 的全面攻势
+## 一、Google I/O 2026：Gemini 3.5 Flash 的全面攻势
 
 ### 1.1 核心发布
 
 2026 年 5 月 19 日的 Google I/O 主题演讲围绕三个核心展开：
 
-**Gemini 4.0 Pro**：推理能力相比 3.1 提升约 40%，AIME 达 94.2，SWE-bench 72.1，MMLU-Pro 刷新纪录。上下文窗口扩展至 10M tokens，支持整部代码库的上下文推理。
+**Gemini 3.5 Flash**：谷歌发布 Gemini 3.5 系列首个模型，速度比 3.1 Pro 快 4 倍，多项基准超越上一代。月活用户突破 9 亿，月处理 Token 达 3.2 千万亿。下一代旗舰 **Gemini 3.5 Pro** 预计 6 月推出。
 
-**Gemini 4.0 Omni**：首个全能多模态版本，MMMU 98.3% 刷新多模态评测 SOTA。支持文本、图像、音频、视频的**原生生成**——不仅是理解，而是真正的多模态生成能力。
-
-**Gemini 4.0 Nano**：面向端侧的轻量版，为 Android XR 智能眼镜「金珠」和 Googlebook 提供本地推理能力。
+**Gemini Omni**：全新多模态生成模型，起始支持视频输出，可生成连贯的多模态内容。Google Flow——AI 创意工作室——已集成 Gemini Omni。
 
 ### 1.2 Aluminium OS：AI 优先的桌面平台
 
 Google 正式发布 Aluminium OS——Chrome OS 与 Android 融合的 AI 优先操作系统。核心创新：
-- **Gemini 4.0 作为系统级 AI**：长按电源键唤起 AI 完成跨应用多步骤任务
+- **Gemini 3.5 Flash 作为系统级 AI**：长按电源键唤起 AI 完成跨应用多步骤任务
 - **魔法指针 (Magic Pointer)**：AI 理解屏幕内容，替用户完成操作
 - **组件创建 (Create My Component)**：自然语言描述 → 生成 UI 组件 → 嵌入应用
 
-### 1.3 Android XR 智能眼镜「金珠」
+### 1.3 Android XR 智能眼镜
 
-Google 硬件回归的标志性产品——重量 <80g，379-499 美元，高通骁龙 XR3 芯片 + Gemini 4.0 Nano 端侧推理。支持实时翻译、导航叠加、语音 AI 交互，Q3 开售。
+Google 与 Gentle Monster、Warby Parker、Samsung 合作推出 Android XR 智能眼镜，分音频款和显示款。搭载 Gemini 3.5 端侧推理能力，支持实时翻译、导航叠加、语音 AI 交互。
 
 ### 1.4 Gemini Intelligence：Project Astra 进化版
 
@@ -66,15 +64,15 @@ Google 硬件回归的标志性产品——重量 <80g，379-499 美元，高通
 
 ```
                      推理能力（AIME）
-                      ▲
-             Gemini 4.0 │   ● (94.2)
+                     ▲
+          Gemini 3.5 Flash │ ● (89.x)
               GPT-5.5   │ ● (91.8)
            Claude 4.6   │● (90.5)
              Qwen3.7    │ ● (88.x)
             Kimi K2.6   │ ● (87.x)
                         └──────────────────► 多模态（MMMU）
                                ●  ●  ●  ●
-                        Gemini 4.0 Omni (98.3%) SOTA
+                     Gemini Omni 引领多模态 SOTA
 ```
 
 **特征**：
@@ -106,8 +104,8 @@ Google 硬件回归的标志性产品——重量 <80g，379-499 美元，高通
 
 | 产品 | 厂商 | 价格 | AI 能力 | 上市 |
 |:----|:----|:---:|:-------|:---:|
-| Googlebook | Google | 待公布 | Gemini 4.0 深度集成 | 2026 秋 |
-| 金珠 AR 眼镜 | Google | $379-499 | Gemini 4.0 Nano | Q3 |
+| Googlebook | Google | 待公布 | Gemini 3.5 深度集成 | 2026 秋 |
+| Android XR 眼镜 | Google | $379-499 | Gemini 3.5 端侧 | Q3 |
 | Galaxy S26 | Samsung | 旗舰 | Gemini Intelligence 首批 | 已上市 |
 | Pixel 10 | Google | 旗舰 | Gemini Intelligence 首批 | 秋季 |
 
@@ -142,7 +140,7 @@ Google 硬件回归的标志性产品——重量 <80g，379-499 美元，高通
 | ✅ AI 硬件爆发元年 | Google 三款硬件 + S26/Pixel 10 + AR 眼镜 |
 | ✅ 中国从追赶到竞争 | 调用量超美国 + 通义 3.7 + DeepSeek 全球化 |
 
-**接下来的关注点**：Gemini 4.0 Omni 的实际可用性、GPT-5.6 的内测进展、以及 Qwen3.7 正式版的完整评测。
+**接下来的关注点**：Gemini 3.5 Pro（6 月发布）的实际表现、GPT-5.6 的内测进展、以及 Qwen3.7 正式版的完整评测。
 
 ---
 
