@@ -19,8 +19,8 @@ const IDEAS = [
     industry: 'ai-tools',
     title: 'AI 驱动的代码审查 & 安全扫描',
     signal: '🔥🔥 爆发',
-    signalDate: '2026-05-06',
-    summary: 'Qwen3 全系列开源（2026-04-29）、Llama 4 Scout 10M 上下文开源、DeepSeek-R1 持续引用——开源模型能力已接近闭源旗舰，自部署成本约为 API 的 1/10。AI 编码工具（Cursor/GitHub Copilot/Devin）正在重塑软件开发流程，Cognition AI（Devin）完成 $2.5 亿 B 轮融资（估值 $25 亿）验证了 AI 工程师赛道的商业价值。', 
+    signalDate: '2026-05-31',
+    summary: 'Cursor 发布自研 Composer 2.5 性能对标 Claude Opus 但价格仅 1/30；Anthropic 推出官方 Claude Code 插件目录构建生态；微软 .NET 推出 AI Agent 技能仓库；CodeGraph 预索引代码知识图谱降低 80% Token 消耗。AI 编码工具竞争从「辅助」转向「自主编程」。', 
     opportunity: '中国金融/政务软件外包市场对合规审查需求强烈，且国内缺乏对标产品。',
     overseas: [
       { name: 'Snyk', url: 'https://snyk.io', desc: '代码安全扫描，估值 $8.5B' },
@@ -166,8 +166,8 @@ const IDEAS = [
     industry: 'hardware',
     title: 'AI 家庭机器人 / 桌面助手',
     signal: '🔥🔥 爆发',
-    signalDate: '2026-05-06',
-    summary: '2026-04 具身智能赛道融资创纪录：它石智航 Pre-A 轮 4.55 亿美元（中国具身智能单轮纪录）、星动纪元 B+ 轮 2 亿美元（顺丰/红杉投资）、无界动力天使轮 2 亿美元。Unitree H1 完成北京半马，NVIDIA GR00T N2 发布，具身智能从实验室走向规模化产线部署。',
+    signalDate: '2026-05-31',
+    summary: 'MATRIX-3 旗舰人形机器人发布（58 万元起售，年产 1 万台）；Shift 公司以免费清洁为交换采集家庭机器人训练数据；MCP 协议遭质疑引发 Agent 基础设施争议；Anthropic/OpenAI/Google 三大 Agent 平台全面对决。具身智能从「融资竞赛」进入「量产验证」阶段。',
     opportunity: '国内老龄化加速，AI 陪伴机器人需求增长；教育机器人市场已有验证。',
     overseas: [
       { name: 'Emo Robot', url: 'https://living.ai', desc: '桌面 AI 机器人，Living.ai' },
