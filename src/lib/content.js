@@ -12,6 +12,18 @@ import rehypeStringify from 'rehype-stringify';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
+// ─── 简单内存缓存（同一请求内去重） ───
+const _cache = new Map();
+function _cachedRead(filePath) {
+  if (!_cache.has(filePath)) {
+    _cache.set(filePath, JSON.parse(fs.readFileSync(filePath, 'utf8')));
+  }
+  return _cache.get(filePath);
+}
+function _clearCache() {
+  _cache.clear();
+}
+
 /**
  * 获取指定类型的所有内容
  * @param {'books' | 'articles'} type
@@ -79,7 +91,7 @@ export async function getContentBySlug(type, slug) {
 export function getEvolutionLogs() {
   const logPath = path.join(contentDirectory, 'evolution-log.json');
   if (!fs.existsSync(logPath)) return [];
-  return JSON.parse(fs.readFileSync(logPath, 'utf8'));
+  return _cachedRead(logPath);
 }
 
 /**
@@ -88,7 +100,7 @@ export function getEvolutionLogs() {
 export function getNewsFeed() {
   const feedPath = path.join(contentDirectory, 'news', 'news-feed.json');
   if (!fs.existsSync(feedPath)) return [];
-  return JSON.parse(fs.readFileSync(feedPath, 'utf8'));
+  return _cachedRead(feedPath);
 }
 
 /**
@@ -106,7 +118,7 @@ export function getNewsCategories() {
 export function getPapersIndex() {
   const indexPath = path.join(contentDirectory, 'papers', 'papers-index.json');
   if (!fs.existsSync(indexPath)) return [];
-  return JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+  return _cachedRead(indexPath);
 }
 
 /**

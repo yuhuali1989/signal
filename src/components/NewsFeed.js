@@ -74,10 +74,13 @@ function groupNewsByTimePeriod(news) {
   return Object.values(groups).sort((a, b) => b.sortKey - a.sortKey);
 }
 
+const PAGE_SIZE = 50;
+
 export default function NewsFeed({ news, categories }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [activePlatform, setActivePlatform] = useState('all');
   const [activeGroupKey, setActiveGroupKey] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const contentRef = useRef(null);
 
   // 平台列表
@@ -108,6 +111,9 @@ export default function NewsFeed({ news, categories }) {
   }, [news, activeCategory, activePlatform]);
 
   const groups = useMemo(() => groupNewsByTimePeriod(filtered), [filtered]);
+
+  // 过滤器和分页改变时重置 visibleCount
+  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [activeCategory, activePlatform]);
 
   // 设置初始 active group
   useEffect(() => {
@@ -252,7 +258,7 @@ export default function NewsFeed({ news, categories }) {
         {/* Right: News Content */}
         <div className="flex-1 min-w-0" ref={contentRef}>
           <div className="space-y-8">
-            {groups.map(g => (
+            {groups.slice(0, Math.ceil(visibleCount / 5)).map(g => (
               <div key={g.key} id={`group-${g.key}`} data-group-key={g.key}>
                 {/* Group Header */}
                 <div className="flex items-center gap-3 mb-4">
@@ -343,6 +349,17 @@ export default function NewsFeed({ news, categories }) {
               </div>
             ))}
           </div>
+
+          {visibleCount < filtered.length && (
+            <div className="text-center mt-8">
+              <button
+                onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+                className="px-6 py-2.5 text-sm font-medium text-[#6c5ce7] bg-purple-50 border border-purple-100 rounded-full hover:bg-purple-100 transition-all"
+              >
+                加载更多（{filtered.length - visibleCount} 条剩余）
+              </button>
+            </div>
+          )}
 
           {filtered.length === 0 && (
             <div className="text-center py-16 text-gray-400">
