@@ -56,6 +56,8 @@ const TIMELINE = [
   { date: '2026-05', model: 'Grok 4.3（xAI）', innovation: '万亿参数密集模型，AIME 90.2 / SWE-bench 72.4%', contribution: '参数量突破 1 万亿，数学推理 AIME 90.2，代码 SWE-bench 72.4%；首批向 Premium+ 用户开放，xAI 大模型能力跃升', tag: '规模扩展', color: 'bg-blue-100 text-blue-700' },
   { date: '2026-05', model: 'GPT-5.5 Instant', innovation: 'Memory Sources + 幻觉压制（医/法/金融降 52.5%）', contribution: '幻觉率降 52.5%（医/法/金融领域）；AIME 65.4→81.2；可追溯回答引用历史对话，缓解长上下文一致性难题', tag: '推理增强', color: 'bg-gray-100 text-gray-700' },
   { date: '2026-05', model: 'Grok 1.5T（训练完成）', innovation: '1.5 万亿参数 + Cursor 编程数据补充训练', contribution: '目前全球最大模型，1.5T 参数；为弥补编程短板吸收 Cursor 代码数据做 SFT+RL 精调；预计 3-4 周公开发布', tag: '规模扩展', color: 'bg-blue-100 text-blue-700' },
+  { date: '2026-05', model: 'Gemini 3.5 Flash（Google I/O）', innovation: 'Gemini 3.5 系列首发，速度比 3.1 Pro 快 4 倍，多项基准超越', contribution: 'Google I/O 2026 发布 Gemini 3.5 系列首个模型，速度比 Gemini 3.1 Pro 快 4 倍；同步发布 Gemini Omni（多模态生成）、Gemini Intelligence（跨应用 Agent）、Google Antigravity 2.0（Agent 平台）。月活用户 9 亿，月处理 Token 3.2 千万亿。Gemini 3.5 Pro 预计 6 月推出。', tag: '多模态+Agent', color: 'bg-green-100 text-green-700' },
+  { date: '2026-05', model: 'Qwen3.7-Max（通义千问）', innovation: '双旗舰 MoE 发布，Arena AI 数学第 7 编程第 10', contribution: '阿里云发布 Qwen3.7-Max-Preview 和 Qwen3.7-Plus-Preview 双旗舰模型；Arena AI 文本综合第 13，数学第 7，编程第 10，专家竞技场第 9；同步推出 Qwen3.5-LiveTranslate 实时翻译模型，通义 Pro API 降价 50%。', tag: 'MoE+推理', color: 'bg-amber-100 text-amber-700' },
 ];
 
 const EVOLUTION_PATHS = [
