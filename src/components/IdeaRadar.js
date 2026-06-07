@@ -37,8 +37,8 @@ const IDEAS = [
     industry: 'ai-tools',
     title: 'AI 产品经理 / 需求分析 Agent',
     signal: '🔥 热点',
-    signalDate: '2026-04-22',
-    summary: 'MIT TR 2026趋势报告将Agent Orchestration列为十大趋势，多Agent协作催生PM工具需求。将用户反馈、竞品分析、数据埋点自动转化为PRD草稿和优先级建议。Forbes AI 50有多家PM工具公司入选。',
+    signalDate: '2026-06-05',
+    summary: 'AI Agent 产品经理工具进入爆发期：Notion AI 推出 PRD 自动生成功能；Linear 集成 AI 需求优先级排序；Cycle AI 完成 $5M A 轮融资。MIT TR 2026 趋势报告将 Agent Orchestration 列为十大趋势，多 Agent 协作催生 PM 工具需求。国内互联网公司 PM 数量庞大，工具付费意愿正在提升。',
     opportunity: '国内互联网公司 PM 数量庞大，工具付费意愿正在提升。',
     overseas: [
       { name: 'Productboard', url: 'https://productboard.com', desc: '产品管理平台，已集成 AI' },
@@ -204,8 +204,8 @@ const IDEAS = [
     industry: 'dev-tools',
     title: 'AI 测试自动化平台',
     signal: '🔥 热点',
-    signalDate: '2026-04',
-    summary: 'AI 可自动生成测试用例、识别 UI 变更、修复 flaky test，将测试覆盖率提升同时降低维护成本。',
+    signalDate: '2026-06-05',
+    summary: 'AI 测试自动化进入 Agent 时代：Momentic AI 推出自主 E2E 测试 Agent，可自动识别 UI 变更并修复测试用例；Meticulous AI 无代码录制 + AI 修复 flaky test；Octomind 支持多框架测试自动化。2026 年 AI 测试工具市场预计达 $8B，国内大厂测试团队规模大，外包测试市场成熟，AI 替代空间明确。',
     opportunity: '国内大厂测试团队规模大，外包测试市场成熟，AI 测试工具替代空间明确。',
     overseas: [
       { name: 'Momentic', url: 'https://momentic.ai', desc: 'AI E2E 测试，YC 2023' },
@@ -240,8 +240,8 @@ const IDEAS = [
     industry: 'dev-tools',
     title: 'MCP / Agent 编排中间件',
     signal: '🔥 热点',
-    signalDate: '2026-04',
-    summary: 'MCP 协议爆发，企业需要安全可控的 Agent 编排层：权限管理、审计日志、工具市场。',
+    signalDate: '2026-06-05',
+    summary: 'MCP 协议 2026 路线图（3月9日）确立四大优先级：传输可扩展性、Agent 通信、治理成熟度、企业就绪。企业部署 MCP 普遍遇到审计追踪、SSO 集成、网关行为、配置可移植性四类问题。规范明确：企业相关改动将以扩展（Extensions）形式落地，避免核心协议臃肿。Task 原语（SEP-1686）已作为实验特性上线。',
     opportunity: '国内企业 AI 化加速，但安全合规要求高，私有化部署的 Agent 中间件是刚需。',
     overseas: [
       { name: 'LangChain', url: 'https://langchain.com', desc: 'Agent 框架，估值 $200M' },

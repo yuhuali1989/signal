@@ -2040,12 +2040,12 @@ export const BENCHMARKS = {
 // 最后更新：2026-04-22
 // ═══════════════════════════════════════════════════════════════
 export const SITE_ROADMAP = {
-  lastUpdated: '2026-05-06',
-  summary: '本期重点（第46轮，B7 VLA 更新）：① VlaArchViz.js 世界模型演进时间线新增 3 条（Tesla FSD V14.3 纯神经网络 / Figure Helix 02 + System 0 / NVIDIA GR00T N2 + LeRobot v0.5）；② vla/page.js 行业动态速递具身智能板块升级（Unitree 半马纪录/Figure 量产/GR00T N2），Tesla FSD V14.3 描述精确化；③ 新增「具身智能融资浪潮」专题卡片（它石智航/星动纪元/无界动力）；④ Hero 最新标签更新；⑤ Roadmap world-model-embodied-surge、embodied-ai-startup-wave 状态同步。',
+  lastUpdated: '2026-06-07',
+  summary: '本期重点（第47轮，B1-B4+B6综合更新）：① B1 新闻新增 6 条 6月头条（GPT-Rosalind/Codex Agent/ChatGPT记忆/Anthropic S-1/Glasswing/OpenAI上AWS）；② B2 新增YOLOX深度文章 + VLA-World论文解读 + ai-agent-ch01 新增2026年6月进展；③ B3 新增 Claude Opus 4.8 + GPT-Rosalind 模型卡片；④ B4 IdeaRadar 3个方向信号升级为 2026-06-05 热点；⑤ B6 Airflow 版本 3.2.1→3.2.2；⑥ 新增《多模态数据处理算法从入门到精通》全书 7 章（侧重多模态生成数据处理算子原理与参数调优）。',
 
   // 📋 本轮迭代计划（角色 F 调度员每轮开始时写入，角色 B/D 读取执行）
   sprintPlan: {
-    sprintDate: '2026-05-06',
+    sprintDate: '2026-06-07',
     editorTasks: [
       { source: 'productPlans.content.VLA架构扩充', action: 'VlaArchViz.js 世界模型演进时间线新增 3 条：Tesla FSD V14.3 纯神经网络架构 + Figure Helix 02 + System 0 + NVIDIA GR00T N2 + LeRobot v0.5', files: ['src/components/VlaArchViz.js'], done: true },
       { source: 'topOpportunities.world-model-embodied-surge', action: 'vla/page.js 行业动态速递具身智能板块升级（Unitree 半马纪录/Figure 量产/GR00T N2），新增「具身智能融资浪潮」专题卡片；Hero 最新标签更新', files: ['src/app/vla/page.js'], done: true },
@@ -2055,12 +2055,12 @@ export const SITE_ROADMAP = {
       { direction: '具身智能：Unitree/Figure/Boston Dynamics/GR00T N2', reason: '2026-04 具身智能多点突破，VLA 页面需同步', targetCount: 6, done: true },
       { direction: 'Tesla FSD V14.3 纯神经网络架构', reason: 'C++ 代码全面退场，E2E-VLA 里程碑事件', targetCount: 1, done: true },
     ],
-    notes: '本轮（2026-05-06 第46轮 B7 VLA）：VlaArchViz.js 时间线新增 3 条 2026-04 具身智能/VLA 里程碑；vla/page.js 行业动态速递具身智能板块内容精确化，新增融资浪潮专题；Roadmap world-model-embodied-surge 部分完成，具身智能专题 Tab（独立页面）仍待后续 B8 落地。',
+    notes: '本轮（2026-06-07 第47轮 B1-B4+B6综合）：① B1 新闻新增 6 条 6月头条；② B2 YOLOX文章+VLA-World论文+ai-agent-ch01更新；③ B3 新增 Opus 4.8 + GPT-Rosalind；④ B4 IdeaRadar 3方向升级；⑤ B6 Airflow→3.2.2；⑥ 新增《多模态数据处理算法》全书7章。⚠️ B7/B8/B9 未执行，B5 仅更新 Roadmap+进化日志。下一次应补齐 VLA/战略/实验室更新。',
   },
 
   // 🚀 产品迭代规划（开发者人工维护）
   productPlans: {
-    lastUpdated: '2026-05-06',
+    lastUpdated: '2026-06-07',
     note: '开发者人工维护。优先级：🔴 高 / 🟡 中 / 🟢 低。聚焦「近期可落地」的事项，远期愿景不在此列。',
     categories: [
       {
@@ -2092,6 +2092,7 @@ export const SITE_ROADMAP = {
           { priority: '🟡', title: 'Airflow 3.3 新特性前瞻文章', desc: 'Airflow 3.2.1 已稳定（2026-04-22），v3.3 预计带来更多 Asset Partitioning 增强和 DAG Bundle 生产化改进，值得提前跟踪并写一篇技术预览文章。B6自检-2026-05-05', source: 'B6自检-2026-05-05' },
           { priority: '✅', title: 'MLflow v3.12 GA 后更新源码解析（已完成）', desc: 'v3.12.0 正式 GA（2026-05-05）。已更新 MLOPS_DATA.mlflowVersion 为 v3.12.0（正式发布，2026-05-05），mlflowV312Highlights 补充 Coding Agent 集成和 Gateway 护栏 UI 配置说明。B6-2026-05-06 完成', source: 'B6自检-2026-05-05' },
           { priority: '🟡', title: 'Spark 4.2.0 正式版前瞻追踪', desc: 'Spark 4.2.0-preview5（2026-05-01）持续发布预览版，正式版预计 2026 Q3。COMPUTE_ENGINE_DATA 中已记录 4.1.1 为最新稳定版，待 4.2.0 GA 后更新。B6自检-2026-05-06', source: 'B6自检-2026-05-06' },
+          { priority: '🟢', title: '多模态数据处理算法全书已发布', desc: '《多模态数据处理算法从入门到精通》全书 7 章已完成（2026-06-07），侧重多模态生成模型的数据处理算子算法原理与参数调优。覆盖文本Tokenization/BPE/Unigram/图像增强/VAE编码/ControlNet/Mel频谱/CLIP对齐/Cross-Attention/Data-Juicer框架等。B2-2026-06-07', source: 'B2-2026-06-07' },
         ],
       },
       {

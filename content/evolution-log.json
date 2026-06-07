@@ -1,5 +1,69 @@
 [
   {
+    "id": "evo-20260607-book-multimodal",
+    "date": "2026-06-07 23:00",
+    "agent": "editor-v2",
+    "type": "book",
+    "title": "新增《多模态数据处理算法从入门到精通》全书7章",
+    "description": "新增书籍聚焦多模态生成模型的数据处理算子：ch1概述与架构、ch2文本Tokenization(BPE/Unigram/SentencePiece)、ch3图像处理与增强(ViT Patch/ControlNet/CutMix)、ch4音频视频(STFT/Mel/光流/帧采样)、ch5对齐融合(CLIP/SigLIP/Cross-Attention/Q-Former)、ch6生成流水线(VAE/3D编码/Collation)、ch7生产部署(Data-Juicer/Ray/缓存策略/附录速查表)。侧重算法原理与参数调优。"
+  },
+  {
+    "id": "evo-20260607-news-6-entries",
+    "date": "2026-06-07 22:30",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新闻新增6条2026年6月AI头条",
+    "description": "补充6月1-5日AI重要新闻：OpenAI GPT-Rosalind生命科学模型更新、Codex全流程开发Agent、ChatGPT梦境记忆功能、AI模型上线AWS；Anthropic S-1草案提交(估值$965B)、Project Glasswing扩展至15国。写入 news-feed.json(293→299条)。"
+  },
+  {
+    "id": "evo-20260607-article-yolox",
+    "date": "2026-06-07 22:00",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "新增YOLOX目标检测架构分析与部署实战文章",
+    "description": "新增 articles/yolox-object-detection-architecture-deployment-2026-06.md，覆盖Anchor-Free+SimOTA+NMS-Free三大创新、YOLOX-S/L/X/NAD对比、端侧部署(RK3588 NPU 94.5% AP@15.1ms)、人脸检测打码流水线。约1500字。"
+  },
+  {
+    "id": "evo-20260607-paper-vla-world",
+    "date": "2026-06-07 22:00",
+    "agent": "editor-v2",
+    "type": "paper",
+    "title": "新增VLA-World统一VLA-动作世界模型论文解读",
+    "description": "新增 papers/vla-world-model-2026.md，解读CVPR 2026 Findings论文VLA-World，覆盖生成未来帧-反思推理-优化轨迹闭环，nuScenes规划与未来生成双SOTA。已更新 papers-index.json(74→75篇)。"
+  },
+  {
+    "id": "evo-20260607-book-aiagent-update",
+    "date": "2026-06-07 21:30",
+    "agent": "editor-v2",
+    "type": "book",
+    "title": "更新《AI Agent实战指南》第1章新增2026年6月进展",
+    "description": "ai-agent-ch01.md新增「最新进展2026年6月」小节：MCP 2026路线图(企业就绪/传输扩展/Task原语)、Agent框架生态(OpenAI Agents SDK 0.17.x/LangGraph 1.0/CrewAI企业版)、YOLOX隐私保护应用方向。"
+  },
+  {
+    "id": "evo-20260607-model-2-new",
+    "date": "2026-06-07 21:00",
+    "agent": "editor-v2",
+    "type": "model",
+    "title": "B3 模型库新增Claude Opus 4.8 + GPT-Rosalind",
+    "description": "models.json新增2个模型：Claude Opus 4.8(SWE-bench Pro 69.2% SOTA、Fast Mode 2x提速)；GPT-Rosalind(生命科学专用、LifeSciBench四大基准超越GPT-5.5、token效率提升5-31%)。总数66→68。"
+  },
+  {
+    "id": "evo-20260607-idearadar-update",
+    "date": "2026-06-07 20:30",
+    "agent": "editor-v2",
+    "type": "system",
+    "title": "B4 IdeaRadar 3个创业方向信号升级为2026-06-05热点",
+    "description": "更新 IdeaRadar.js中3个创业方向：MCP/Agent编排中间件、AI测试自动化平台、AI产品经理/需求分析Agent。signalDate升级至2026-06-05，Summary更新为2026年最新进展。"
+  },
+  {
+    "id": "evo-20260607-airflow-update",
+    "date": "2026-06-07 20:00",
+    "agent": "editor-v2",
+    "type": "infra",
+    "title": "B6 Airflow版本更新至3.2.2(2026-05-29发布)",
+    "description": "更新 data-infra-data.js中Airflow版本号从3.2.1更新至3.2.2(2026-05-29发布)。"
+  },
+  {
     "id": "evo-20260531-book-iot-ch67",
     "date": "2026-05-31 20:15",
     "agent": "architecture-editor",

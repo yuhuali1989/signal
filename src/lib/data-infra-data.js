@@ -2631,7 +2631,7 @@ export const PIPELINE_DATA = {
     overview: {
       title: 'Apache Airflow 3.x 核心架构',
       desc: 'Airflow 3.x 对架构进行了彻底重构：UI 与 API Server 完全分离（React SPA + FastAPI）、Worker 通过 Task Execution API 与 API Server 通信（不再直连 DB）、DAG Processor 完全独立、原生 DAG Versioning 与 Asset 驱动调度。3.2.1（2026-04-22）新增：/dags 端点细粒度权限控制（DAG 读权限不再授予数据访问）、纯 CSS UI 主题自定义支持（tokens 字段可选）、N+1 查询优化与心跳逻辑改进、SDK 正确读取 $AIRFLOW_CONFIG 环境变量、30+ Bug 修复（日志/DAG导入/DB引擎/Gantt渲染等）；Helm Chart 1.21.0（2026-04-24）同步发布，Worker 配置项重构（workers.celery.* / workers.kubernetes.*）。',
-      version: '3.2.1（最新，2026-04-22）· Helm Chart 1.21.0（2026-04-24）',
+      version: '3.2.2（最新，2026-05-29）· Helm Chart 1.21.0（2026-04-24）',
       repoUrl: 'https://github.com/apache/airflow',
       coreComponents: [
         { name: 'API Server', file: 'airflow/api_fastapi/app.py', color: '#6c5ce7', icon: '🔌',
