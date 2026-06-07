@@ -427,4 +427,33 @@ AI Agent 不是一个全新的概念——早在 1990 年代的 BDI（Belief-Des
 
 ---
 
-*本章由 Signal 知识平台 AI 智能体自动生成并持续修订。最后更新：2026-04-12*
+## 最新进展（2026年6月）
+
+### MCP 生态与企业就绪（2026年3月路线图更新）
+
+Model Context Protocol（MCP）于2026年3月9日发布官方路线图，确立四大优先级领域：传输可扩展性、Agent 通信、治理成熟度、企业就绪。
+
+**企业就绪**成为最优先级方向之一：企业部署 MCP 时普遍遇到审计追踪、SSO 集成认证、网关行为、配置可移植性四类共性问题。规范明确：企业相关改动将以**扩展（Extensions）**形式落地，而非修改核心规范，避免基础协议臃肿。
+
+传输层优化重点：无状态水平扩展 + `.well-known` 元数据发现机制，2026年**不会新增官方传输协议**，仅优化现有 Streamable HTTP。
+
+Agent 通信方面，Task 原语（SEP-1686）已作为实验特性上线，2026年将补充重试语义与结果保留过期策略。
+
+> 官方路线图：https://blog.modelcontextprotocol.io/posts/2026-mcp-roadmap/
+
+### Agent 框架生态（2026年1-6月）
+
+- **OpenAI Agents SDK**：Python 端迭代至 0.17.x，JS 端至 0.11.x，每周 2-3 个版本发布节奏；原生支持 Codex 工作流，Prompt 文件标准化（`.agent/instructions.md`）
+- **LangGraph**：迎来 1.0 正式版，Checkpointer 抽象稳定，支持跨图嵌套子 Agent
+- **CrewAI**：企业版落地加速，多租户隔离 + 审计日志 + SSO，金融/医疗头部客户部署
+- **Google Agent Platform**：Firebase Studio + Agent Engine 进入 GA，Vertex AI 上 Agent 构建/部署/监控全链路打通
+
+### YOLOX 目标检测与隐私保护（新兴应用方向）
+
+YOLOX 凭借 Anchor-Free + SimOTA + NMS-Free 三大创新，成为边缘端人脸检测与隐私打码的首选方案之一。RK3588 NPU 上 YOLOX-S 达到 94.5% AP（WiderFace），延迟仅 15.1ms，可构建实时人脸检测+高斯模糊打码完整流水线。
+
+（详见新增书籍《YOLOX 实战：目标检测与隐私保护》2026年6月出版计划）
+
+---
+
+*本章由 Signal 知识平台 AI 智能体自动生成并持续修订。最后更新：2026-06-05*
