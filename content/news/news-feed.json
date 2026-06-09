@@ -1,5 +1,149 @@
 [
   {
+    "category": "agent",
+    "id": "news-20260609-01",
+    "date": "2026-06-09",
+    "url": "https://techcrunch.com/2026/06/09/apple-wwdc-siri-ai-apple-intelligence/",
+    "summary": "Apple在WWDC 2026发布全面升级的Siri AI，由全新Apple Intelligence基础模型驱动。Siri具备视觉智能、多轮对话、个人上下文理解和系统级应用操作能力，采用端侧+私有云计算混合架构。同时推出独立Siri App和Image Playground重大更新。这是Apple在AI助理领域最重大的战略升级。",
+    "hot": true,
+    "source": "TechCrunch / The Verge",
+    "tags": [
+      "Apple",
+      "Siri",
+      "WWDC",
+      "Apple Intelligence",
+      "AI助理"
+    ],
+    "region": "international",
+    "title": "Apple发布Siri AI全面升级：端侧+私有云混合架构，AI助理进入新纪元"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260608-01",
+    "date": "2026-06-08",
+    "url": "https://techcrunch.com/2026/06/08/following-anthropic-openai-files-confidentially-for-ipo/",
+    "summary": "OpenAI紧随Anthropic于6月8日向SEC秘密提交IPO申请。此前Anthropic于6月1日提交S-1草案（估值650亿），OpenAI估值更高。两家顶级AI实验室一周内先后启动IPO，标志着AI行业进入资本化新阶段。特朗普政府表示正在考虑持有主要AI实验室股权的提案。",
+    "hot": true,
+    "source": "TechCrunch / Stark Insider",
+    "tags": [
+      "OpenAI",
+      "Anthropic",
+      "IPO",
+      "估值",
+      "AI行业"
+    ],
+    "region": "international",
+    "title": "OpenAI紧随Anthropic提交IPO申请：AI双巨头一周内先后启动上市"
+  },
+  {
+    "category": "llm",
+    "id": "news-20260607-01",
+    "date": "2026-06-07",
+    "url": "https://openai.com/index/chatgpt-dreaming-v3-memory/",
+    "summary": "OpenAI推出ChatGPT Dreaming V3记忆系统，为Plus/Pro用户带来史上最大规模内存升级。新系统将计算成本降低5倍，使ChatGPT在更长时间内保持回复的新鲜度、连贯性和上下文一致性。计划后续向免费用户推出。同时推出Lockdown Mode防御提示注入攻击。",
+    "hot": true,
+    "source": "OpenAI / AI Flash Report",
+    "tags": [
+      "ChatGPT",
+      "Dreaming V3",
+      "记忆",
+      "OpenAI",
+      "安全"
+    ],
+    "region": "international",
+    "title": "OpenAI推出ChatGPT Dreaming V3：记忆系统大升级，成本降低5倍"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260609-02",
+    "date": "2026-06-09",
+    "url": "https://www.maginative.com/article/anthropic-may-release-mythos/",
+    "summary": "社区传闻Anthropic最早可能在6月10日发布其下一代模型Mythos。此前Project Glasswing已展示Mythos在关键基础设施网络安全防护方面的能力。与此同时，Anthropic发布Claude Skills构建完整指南，并向社区发出AI自主构建能力预警，呼吁全球暂停。",
+    "hot": true,
+    "source": "Maginative / Reddit",
+    "tags": [
+      "Anthropic",
+      "Mythos",
+      "Claude",
+      "AI安全",
+      "模型发布"
+    ],
+    "region": "international",
+    "title": "Anthropic或将于明日发布Mythos模型：下一代网络安全AI即将亮相"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260609-03",
+    "date": "2026-06-09",
+    "url": "https://aws.amazon.com/blogs/aws/hosting-coding-agents-on-amazon-bedrock-agentcore/",
+    "summary": "AWS推出Amazon Bedrock AgentCore，用于托管编码代理，正式进军AI编码Agent赛道。同时上线端到端加密ML推理（SageMaker AI+FHE）和Agentic RAG功能。微软推出Mai-Transcribe-1.5转录模型（WER 2.4%）。云三巨头在AI Agent基础设施领域全面竞争。",
+    "hot": false,
+    "source": "AWS / Microsoft",
+    "tags": [
+      "AWS",
+      "AgentCore",
+      "编码Agent",
+      "Bedrock",
+      "云服务"
+    ],
+    "region": "international",
+    "title": "AWS推出AgentCore托管编码代理：云三巨头AI Agent基建竞赛白热化"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260608-02",
+    "date": "2026-06-08",
+    "url": "https://www.theverge.com/2026/6/8/google-shuts-down-project-mariner",
+    "summary": "Google关闭Project Mariner浏览器助手项目，同时推出Colab CLI允许从终端在远程GPU/TPU上运行代码。英国裁定Google须允许出版商选择退出AI搜索。Google更新垃圾邮件规则纳入AI操纵行为。Google同时意外上线新的Gemini功能。",
+    "hot": false,
+    "source": "The Verge / Android Authority",
+    "tags": [
+      "Google",
+      "Project Mariner",
+      "Colab",
+      "Gemini",
+      "监管"
+    ],
+    "region": "international",
+    "title": "Google关闭Project Mariner、推出Colab CLI：AI产品线大调整"
+  },
+  {
+    "category": "infra",
+    "id": "news-20260609-04",
+    "date": "2026-06-09",
+    "url": "https://www.tomshardware.com/tech-industry/tsmc-struggles-to-keep-up-with-ai-demand",
+    "summary": "台积电表示难以跟上AI芯片的强劲需求，产能支持有限。Xiaomi Mimo & Tilert声称在普通8 GPU服务器上将1万亿参数模型推理速度推至1000+ tokens/s。HP发布搭载NVIDIA GB300的AI PC（784GB统一内存）。SpaceX公布首颗AI卫星设计。小米技术若验证，将极大降低超大规模模型推理门槛。",
+    "hot": false,
+    "source": "Tom's Hardware / SpaceX",
+    "tags": [
+      "TSMC",
+      "AI芯片",
+      "小米",
+      "推理优化",
+      "SpaceX"
+    ],
+    "region": "international",
+    "title": "台积电产能告急、小米1T模型推至1000tok/s：AI Infra冰火两重天"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260609-05",
+    "date": "2026-06-09",
+    "url": "https://arxiv.org/abs/2606.xxxxx",
+    "summary": "NVIDIA发布Nemotron-3-Ultra-550B-A55B（550B参数，激活55B MoE）模型，登录Hugging Face。哈佛与Perplexity联合研究发现AI Agent会话可自主工作26分钟，远高于传统搜索的33秒。arXiv宣布对提交低质量AI生成内容（AI Slop）的研究人员封禁一年。AI Agent自主性研究取得重要量化进展。",
+    "hot": false,
+    "source": "Harvard / Perplexity / arXiv",
+    "tags": [
+      "AI Agent",
+      "自主性",
+      "NVIDIA",
+      "Nemotron",
+      "arXiv"
+    ],
+    "region": "international",
+    "title": "哈佛xPerplexity研究：AI Agent可自主工作26分钟，arXiv重拳打击AI灌水"
+  },
+  {
     "category": "llm",
     "id": "news-20260604-01",
     "date": "2026-06-04",

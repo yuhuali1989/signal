@@ -1,5 +1,44 @@
 [
   {
+    "id": "nemotron-3-ultra-550b",
+    "name": "Nemotron-3-Ultra-550B",
+    "org": "NVIDIA",
+    "type": "llm",
+    "typeLabel": "超大MoE语言模型",
+    "typeIcon": "🔬",
+    "open": true,
+    "params": "550B（激活 55B MoE）",
+    "date": "2026-06-07",
+    "context": "128K tokens",
+    "attention": "GQA + MLA",
+    "factSheet": {
+      "params": "550B total / 55B active (MoE)",
+      "architecture": "Mixture of Experts",
+      "attention": "GQA + MLA",
+      "context": "128K tokens",
+      "activation": "SwiGLU",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "RL + 大规模预训练",
+      "license": "NVIDIA Open Model License"
+    },
+    "tags": [
+      "NVIDIA",
+      "Nemotron",
+      "MoE",
+      "开源",
+      "HuggingFace"
+    ],
+    "keyInnovation": "550B 参数超大 MoE 模型，激活仅 55B。Hugging Face 上架开源，延续 NVIDIA 开源大模型策略。",
+    "highlights": [
+      "550B 总参数 / 55B 激活（MoE 稀疏架构）",
+      "开源发布，登录 Hugging Face",
+      "128K 上下文窗口",
+      "NVIDIA 开源策略延续：Nemotron 系列旗舰"
+    ],
+    "description": "Nemotron-3-Ultra-550B 是 NVIDIA 于 2026年6月发布的超大 MoE 语言模型，550B 参数（激活 55B），在 Hugging Face 上开源发布。"
+  },
+  {
     "id": "claude-opus-48",
     "name": "Claude Opus 4.8",
     "org": "Anthropic",

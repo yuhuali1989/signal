@@ -1,5 +1,29 @@
 [
   {
+    "id": "evo-20260609-news-8",
+    "date": "2026-06-09 22:00",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增8条6月7-9日AI重磅新闻",
+    "description": "覆盖：Apple WWDC Siri AI全面升级(端侧+私有云混合架构)、OpenAI正式提交IPO申请、ChatGPT Dreaming V3记忆系统(成本降低5倍)、Anthropic Mythos传闻明发布、AWS推出AgentCore编码代理、Google关闭Project Mariner、TSMC产能+小米1T模型1000tok/s、哈佛xPerplexity Agent研究。news-feed.json 299→307。"
+  },
+  {
+    "id": "evo-20260609-article-siri-ai",
+    "date": "2026-06-09 21:30",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "新增Apple WWDC 2026 Siri AI全面升级深度文章",
+    "description": "新增 articles/apple-wwdc-2026-siri-ai-apple-intelligence.md，深度解读Apple Intelligence模型架构、端侧+私有云混合推理设计、独立Siri App、隐私保护机制，以及与ChatGPT/Gemini/Claude的全面对比。"
+  },
+  {
+    "id": "evo-20260609-model-nemotron",
+    "date": "2026-06-09 21:00",
+    "agent": "editor-v2",
+    "type": "model",
+    "title": "B3 模型库新增NVIDIA Nemotron-3-Ultra-550B (550B MoE)",
+    "description": "models.json新增NVIDIA最新开源MoE模型Nemotron-3-Ultra-550B，550B总参数/55B激活，Hugging Face上架。总数68→69。"
+  },
+  {
     "id": "evo-20260607-book-multimodal",
     "date": "2026-06-07 23:00",
     "agent": "editor-v2",
