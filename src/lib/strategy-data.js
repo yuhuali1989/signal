@@ -2040,12 +2040,12 @@ export const BENCHMARKS = {
 // 最后更新：2026-04-22
 // ═══════════════════════════════════════════════════════════════
 export const SITE_ROADMAP = {
-  lastUpdated: '2026-06-09',
-  summary: '本期重点（第48轮，2026-06-09 B1/B2/B3 更新）：① B1 新闻新增 8 条 6月7-9日头条（Apple Siri AI WWDC / OpenAI+Anthropic IPO / ChatGPT Dreaming V3 / Mythos传闻 / AWS AgentCore / Google Mariner关闭 / TSMC产能 / 哈佛Agent研究）；② B2 新增 Apple WWDC Siri AI 深度文章；③ B3 新增 Nemotron-3-Ultra-550B 模型。',
+  lastUpdated: '2026-06-13',
+  summary: '本期重点（第49轮，2026-06-13 B1/B3 更新）：① B1 新闻新增 7 条 6月10-13日头条（政府叫停Anthropic Fable/Mythos / SpaceX史上最大IPO / Fable 5+Mythos 5+DiffusionGemma+North Mini Code模型潮 / Kimi Work 300-Agent+Grok插件市场 / Netflix AI动画+Visa AI支付 / Anthropic$350亿信贷+微软Foundry万模 / 微软Build 2026七款自研MAI）；② B3 新增 DiffusionGemma-26B + Kimi K2.7-Code 模型。',
 
   // 📋 本轮迭代计划（角色 F 调度员每轮开始时写入，角色 B/D 读取执行）
   sprintPlan: {
-    sprintDate: '2026-06-09',
+    sprintDate: '2026-06-13',
     editorTasks: [
       { source: 'productPlans.content.VLA架构扩充', action: 'VlaArchViz.js 世界模型演进时间线新增 3 条：Tesla FSD V14.3 纯神经网络架构 + Figure Helix 02 + System 0 + NVIDIA GR00T N2 + LeRobot v0.5', files: ['src/components/VlaArchViz.js'], done: true },
       { source: 'topOpportunities.world-model-embodied-surge', action: 'vla/page.js 行业动态速递具身智能板块升级（Unitree 半马纪录/Figure 量产/GR00T N2），新增「具身智能融资浪潮」专题卡片；Hero 最新标签更新', files: ['src/app/vla/page.js'], done: true },
@@ -2055,7 +2055,7 @@ export const SITE_ROADMAP = {
       { direction: '具身智能：Unitree/Figure/Boston Dynamics/GR00T N2', reason: '2026-04 具身智能多点突破，VLA 页面需同步', targetCount: 6, done: true },
       { direction: 'Tesla FSD V14.3 纯神经网络架构', reason: 'C++ 代码全面退场，E2E-VLA 里程碑事件', targetCount: 1, done: true },
     ],
-    notes: '本轮（2026-06-09 第48轮 B1/B2/B3）：① B1 新闻新增 8 条 6月7-9日头条（Apple Siri AI / OpenAI+Anthropic IPO / Dreaming V3 / Mythos / AWS AgentCore / Google Mariner / TSMC / 哈佛研究）；② B2 新增 Apple WWDC Siri AI 深度文章；③ B3 新增 Nemotron-3-Ultra-550B 模型。⚠️ B4/B6/B7/B8/B9 未执行。',
+    notes: '本轮（2026-06-13 第49轮 B1/B3）：① B1 新闻新增 7 条 6月10-13日头条（政府叫停Anthropic Fable/Mythos / SpaceX IPO / 模型发布潮 / Kimi Work+Grok插件 / Netflix AI动画+Visa AI支付 / AI基建军备 / 微软7款自研MAI）；② B3 新增 DiffusionGemma-26B + Kimi K2.7-Code。⚠️ B2/B4/B6/B7/B8/B9 未执行。',
   },
 
   // 🚀 产品迭代规划（开发者人工维护）

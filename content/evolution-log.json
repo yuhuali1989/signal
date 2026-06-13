@@ -1,5 +1,21 @@
 [
   {
+    "id": "evo-20260613-news-7",
+    "date": "2026-06-13 20:00",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增7条6月10-13日AI重磅新闻",
+    "description": "覆盖：政府叫停Anthropic Fable/Mythos访问、SpaceX史上最大IPO+Prometheus20亿融资、Anthropic Fable 5/Mythos 5+DiffusionGemma+North Mini Code模型潮、Moonshot Kimi Work 300-Agent集群+Grok插件市场、Netflix AI动画+Visa AI支付、Anthropic50亿信贷+微软Foundry万模、微软Build 2026七款自研MAI。news-feed.json 307→314。"
+  },
+  {
+    "id": "evo-20260613-model-2",
+    "date": "2026-06-13 19:30",
+    "agent": "editor-v2",
+    "type": "model",
+    "title": "B3 模型库新增DiffusionGemma-26B + Kimi K2.7-Code",
+    "description": "models.json新增Google DiffusionGemma-26B文本扩散MoE模型(4x速度)和Moonshot AI Kimi K2.7-Code编程模型(Kimi Work 300-Agent配套)。总数69→71。"
+  },
+  {
     "id": "evo-20260609-news-8",
     "date": "2026-06-09 22:00",
     "agent": "editor-v2",

@@ -1,5 +1,82 @@
 [
   {
+    "id": "kimi-k27-code",
+    "name": "Kimi K2.7-Code",
+    "org": "Moonshot AI",
+    "type": "llm",
+    "typeLabel": "编程专用模型",
+    "typeIcon": "💻",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-06-13",
+    "context": "128K tokens",
+    "attention": "MLA",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（编程优化）",
+      "attention": "MLA",
+      "context": "128K",
+      "activation": "SwiGLU",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "RL + 代码微调",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "Moonshot AI",
+      "Kimi",
+      "编程模型",
+      "Agent",
+      "Kimi Work"
+    ],
+    "keyInnovation": "Kimi Code Bench V2 提升21.8%，配套Kimi Work桌面代理支持300子Agent集群",
+    "highlights": [
+      "Code Bench V2 提升21.8%",
+      "配套 Kimi Work 桌面 Agent",
+      "支持300+子Agent Swarm"
+    ],
+    "description": "Kimi K2.7-Code 是 Moonshot AI 于 2026年6月发布的编程专用模型，配套 Kimi Work 桌面代理。"
+  },
+  {
+    "id": "diffusiongemma-26b",
+    "name": "DiffusionGemma-26B",
+    "org": "Google DeepMind",
+    "type": "llm",
+    "typeLabel": "文本扩散MoE模型",
+    "typeIcon": "⚡",
+    "open": true,
+    "params": "26B（MoE）",
+    "date": "2026-06-10",
+    "context": "8K tokens",
+    "attention": "GQA",
+    "factSheet": {
+      "params": "26B MoE",
+      "architecture": "文本扩散+Transformer",
+      "attention": "GQA",
+      "context": "8K",
+      "activation": "SwiGLU",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "扩散训练",
+      "license": "Google Open"
+    },
+    "tags": [
+      "Google",
+      "DiffusionGemma",
+      "MoE",
+      "文本扩散",
+      "4x速度"
+    ],
+    "keyInnovation": "文本扩散模型实现4倍生成速度提升，MoE架构26B参数，开源发布",
+    "highlights": [
+      "4x 文本生成速度提升",
+      "26B MoE架构",
+      "开源发布",
+      "文本扩散新范式"
+    ],
+    "description": "DiffusionGemma-26B 是 Google DeepMind 于 2026年6月发布的文本扩散MoE模型，实现4倍生成速度提升。"
+  },
+  {
     "id": "nemotron-3-ultra-550b",
     "name": "Nemotron-3-Ultra-550B",
     "org": "NVIDIA",

@@ -1,5 +1,132 @@
 [
   {
+    "category": "industry",
+    "id": "news-20260613-01",
+    "date": "2026-06-13",
+    "url": "https://techcrunch.com/2026/06/13/us-government-orders-anthropic-to-halt-fable-mythos/",
+    "summary": "美国政府命令Anthropic暂停其最强AI模型Claude Fable 5和Mythos 5的访问。此前Anthropic曾发出AI自主构建能力的预警，但安全警告引发政府担忧并直接介入。特朗普政府同时发布行政令，要求安全机构对前沿模型分类和基准测试，建立自愿预发布访问框架。标志着美国AI监管从自愿框架转向结构化审查。",
+    "hot": true,
+    "source": "TechCrunch / Wired",
+    "tags": [
+      "Anthropic",
+      "Fable",
+      "Mythos",
+      "AI监管",
+      "美国政府"
+    ],
+    "region": "international",
+    "title": "美国政府命令Anthropic暂停Fable 5/Mythos 5访问：AI监管进入新阶段"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260612-01",
+    "date": "2026-06-12",
+    "url": "https://techcrunch.com/2026/06/12/spacex-ipo-largest-ever/",
+    "summary": "SpaceX以每股135美元的价格正式启动有史以来最大规模的IPO。与此同时，Jeff Bezos的AI初创公司Prometheus融资120亿美元，旨在构建人工通用工程师。Anthropic敲定约350亿美元私人信贷融资。OpenAI和Anthropic均在本月提交IPO申请。2026年夏天被称为AI超级IPO之夏。",
+    "hot": true,
+    "source": "TechCrunch",
+    "tags": [
+      "SpaceX",
+      "IPO",
+      "Prometheus",
+      "融资",
+      "AI行业"
+    ],
+    "region": "international",
+    "title": "SpaceX史上最大IPO启动、Prometheus融资20亿：AI超级IPO之夏来临"
+  },
+  {
+    "category": "llm",
+    "id": "news-20260610-01",
+    "date": "2026-06-10",
+    "url": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
+    "summary": "Anthropic发布Claude Fable 5和Mythos 5模型，两者基于相同底层模型但安全级别和定价不同。Fable 5面向大众市场（成本感知路由），Mythos 5为高级安全版。同一天Google推出DiffusionGemma 26B MoE文本扩散模型（4倍生成速度），Cohere发布North Mini Code 30B MoE开源编程模型。",
+    "hot": true,
+    "source": "Anthropic / Google / Cohere",
+    "tags": [
+      "Anthropic",
+      "Fable 5",
+      "Mythos 5",
+      "DiffusionGemma",
+      "North Mini Code"
+    ],
+    "region": "international",
+    "title": "Anthropic发布Fable 5/Mythos 5、Google推出DiffusionGemma：模型发布潮"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260613-02",
+    "date": "2026-06-13",
+    "url": "https://moonshot.ai/blog/kimi-k27-code-kimi-work",
+    "summary": "Moonshot AI（月之暗面）发布Kimi K2.7-Code编程模型（比上一代提升21.8%）和Kimi Work本地桌面代理，支持多达300个子Agent的Agent Swarm。xAI推出Grok Build插件市场（MongoDB/Vercel/Sentry等）。Nous Research发布Hermes Agent Profile Builder。AI Agent生态加速从对话向自主操作演进。",
+    "hot": true,
+    "source": "Moonshot AI / xAI / Nous Research",
+    "tags": [
+      "Kimi",
+      "Agent",
+      "Grok",
+      "插件市场",
+      "桌面代理"
+    ],
+    "region": "international",
+    "title": "Moonshot发布Kimi Work 300-Agent集群、xAI推出Grok插件市场：Agent生态爆发"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260612-02",
+    "date": "2026-06-12",
+    "url": "https://www.theverge.com/2026/6/12/netflix-inkubator-ai-animated-shorts",
+    "summary": "Netflix成立Inkubator工作室，使用AI制作动画短片。Deezer推出AI音乐识别工具。Visa与ChatGPT集成使AI Agent可进行零售购买。EU命令WhatsApp免费托管竞争对手AI助手。标志性事件：AI从内容生成到商业交易的全链条渗透。",
+    "hot": false,
+    "source": "The Verge / TechCrunch",
+    "tags": [
+      "Netflix",
+      "AI动画",
+      "Visa",
+      "AI支付",
+      "Deezer"
+    ],
+    "region": "international",
+    "title": "Netflix用AI做动画、Visa让AI Agent买单：AI商业落地加速"
+  },
+  {
+    "category": "infra",
+    "id": "news-20260611-01",
+    "date": "2026-06-11",
+    "url": "https://techcrunch.com/2026/06/11/anthropic-35b-credit-financing/",
+    "summary": "Anthropic与Apollo/Blackstone敲定约350亿美元私人信贷融资用于AI基础设施扩展。微软Foundry扩展至11,000+模型。Google将Gemini 3.5 Flash作为AI模式默认模型引入搜索。亚马逊从银行借款175亿美元用于AI支出。Meta与印度信实集团签署首个AI数据中心协议。AI基础设施投资进入万亿级时代。",
+    "hot": false,
+    "source": "TechCrunch / The Verge",
+    "tags": [
+      "AI基建",
+      "Anthropic",
+      "Microsoft",
+      "Google",
+      "Amazon",
+      "Meta"
+    ],
+    "region": "international",
+    "title": "Anthropic获50亿信贷、微软Foundry达11000模型：AI基建军备竞赛"
+  },
+  {
+    "category": "llm",
+    "id": "news-20260612-03",
+    "date": "2026-06-12",
+    "url": "https://www.microsoft.com/en-us/build-2026/mai-models",
+    "summary": "微软在Build 2026大会上展示了七款内部MAI模型，涵盖编码、推理、转录和语音领域，完全不依赖OpenAI技术。同时微软修补创纪录的206个漏洞。标志着微软从OpenAI合作向自主AI模型体系的战略转移。",
+    "hot": false,
+    "source": "Microsoft Build 2026",
+    "tags": [
+      "微软",
+      "MAI",
+      "自研模型",
+      "Build 2026",
+      "AI编码"
+    ],
+    "region": "international",
+    "title": "微软Build 2026发布7款自研MAI模型：去OpenAI化战略加速"
+  },
+  {
     "category": "agent",
     "id": "news-20260609-01",
     "date": "2026-06-09",
