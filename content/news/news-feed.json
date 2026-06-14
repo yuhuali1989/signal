@@ -1,6 +1,24 @@
 [
   {
     "category": "llm",
+    "id": "news-20260614-05",
+    "date": "2026-06-14",
+    "url": "https://www.ithome.com/0/963/855.htm",
+    "summary": "智谱AI发布GLM-5.2模型，面向GLM Coding Plan全量用户开放，支持真正可用的1M上下文，在长程任务中保持领先。API与MIT开源版本将于下周上线。同时发布ZCode 3.0编程工具（自研Agent内核）。这是智谱三个月内的第三个版本迭代（5.0→5.1→5.2），迭代速度惊人。",
+    "hot": false,
+    "source": "IT之家 / 智谱AI",
+    "tags": [
+      "智谱",
+      "GLM-5.2",
+      "开源",
+      "1M上下文",
+      "AI编程"
+    ],
+    "region": "china",
+    "title": "智谱发布GLM-5.2：1M上下文+MIT开源，三个月三版本迭代"
+  },
+  {
+    "category": "llm",
     "id": "news-20260614-01",
     "date": "2026-06-14",
     "url": "https://openai.com/index/chatgpt-update-june-2026/",

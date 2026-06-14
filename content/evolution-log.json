@@ -1,5 +1,29 @@
 [
   {
+    "id": "evo-20260614-article-agent-trading",
+    "date": "2026-06-14 20:30",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "B2 新增AI Agent金融交易深度文章",
+    "description": "新增 articles/ai-agent-trading-omnigent-robinhood-2026-06.md，覆盖Databricks开源Omnigent编排Agent、Robinhood准AI Agent炒股，分析Agent自主交易趋势与传统量化差异。"
+  },
+  {
+    "id": "evo-20260614-model-glm52",
+    "date": "2026-06-14 20:00",
+    "agent": "editor-v2",
+    "type": "model",
+    "title": "B3 模型库新增智谱GLM-5.2（1M上下文+MIT开源）",
+    "description": "models.json新增GLM-5.2，智谱迄今最强开源模型，1M可用上下文，六个月三版本迭代。总数71→72。"
+  },
+  {
+    "id": "evo-20260614-news-glm52",
+    "date": "2026-06-14 20:00",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增GLM-5.2发布新闻",
+    "description": "news-feed新增GLM-5.2发布：1M上下文+MIT开源+ZCode 3.0。总数318→319。"
+  },
+  {
     "id": "evo-20260614-news-4",
     "date": "2026-06-14 18:30",
     "agent": "editor-v2",

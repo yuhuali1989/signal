@@ -1,5 +1,45 @@
 [
   {
+    "id": "glm-52-2026",
+    "name": "GLM-5.2",
+    "org": "智谱AI (Zhipu AI)",
+    "type": "llm",
+    "typeLabel": "开源编程MoE模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "未公开（MoE架构）",
+    "date": "2026-06-13",
+    "context": "1M tokens",
+    "attention": "GQA + MLA",
+    "factSheet": {
+      "params": "未公开（MoE）",
+      "architecture": "MoE Transformer",
+      "attention": "GQA+MLA",
+      "context": "1M tokens",
+      "activation": "SwiGLU",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "RL + 代码微调",
+      "license": "MIT（下周开源）"
+    },
+    "tags": [
+      "智谱",
+      "GLM-5.2",
+      "开源",
+      "1M上下文",
+      "AI编程",
+      "MoE"
+    ],
+    "keyInnovation": "智谱迄今最强开源模型，1M可用上下文，三个月三版本迭代（5.0→5.1→5.2），MIT协议下周开源",
+    "highlights": [
+      "1M 上下文窗口（真正可用）",
+      "MIT 协议开源",
+      "三个月三版本迭代",
+      "ZCode 3.0 自研Agent内核配套"
+    ],
+    "description": "GLM-5.2 是智谱AI于2026年6月13日发布的开源大模型，支持1M上下文，MIT协议下周开源。"
+  },
+  {
     "id": "kimi-k27-code",
     "name": "Kimi K2.7-Code",
     "org": "Moonshot AI",
