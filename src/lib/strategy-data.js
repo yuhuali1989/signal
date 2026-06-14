@@ -2040,8 +2040,8 @@ export const BENCHMARKS = {
 // 最后更新：2026-04-22
 // ═══════════════════════════════════════════════════════════════
 export const SITE_ROADMAP = {
-  lastUpdated: '2026-06-13',
-  summary: '本期重点（第49轮，2026-06-13 B1/B3 更新）：① B1 新闻新增 7 条 6月10-13日头条（政府叫停Anthropic Fable/Mythos / SpaceX史上最大IPO / Fable 5+Mythos 5+DiffusionGemma+North Mini Code模型潮 / Kimi Work 300-Agent+Grok插件市场 / Netflix AI动画+Visa AI支付 / Anthropic$350亿信贷+微软Foundry万模 / 微软Build 2026七款自研MAI）；② B3 新增 DiffusionGemma-26B + Kimi K2.7-Code 模型。',
+  lastUpdated: '2026-06-14',
+  summary: '本期重点（第50轮，2026-06-14 B1 更新）：① B1 新闻新增 4 条 6月14日头条（OpenAI全面移除GPT-5.2暗示GPT-6将至 / Databricks开源Omnigent+Robinhood准AI Agent炒股 / Meta取消$20亿Manus交易+Anthropic印度受阻 / KPMG因AI幻觉撤回报告+NVIDIA$13250专业卡）。',
 
   // 📋 本轮迭代计划（角色 F 调度员每轮开始时写入，角色 B/D 读取执行）
   sprintPlan: {
@@ -2055,7 +2055,7 @@ export const SITE_ROADMAP = {
       { direction: '具身智能：Unitree/Figure/Boston Dynamics/GR00T N2', reason: '2026-04 具身智能多点突破，VLA 页面需同步', targetCount: 6, done: true },
       { direction: 'Tesla FSD V14.3 纯神经网络架构', reason: 'C++ 代码全面退场，E2E-VLA 里程碑事件', targetCount: 1, done: true },
     ],
-    notes: '本轮（2026-06-13 第49轮 B1/B3）：① B1 新闻新增 7 条 6月10-13日头条（政府叫停Anthropic Fable/Mythos / SpaceX IPO / 模型发布潮 / Kimi Work+Grok插件 / Netflix AI动画+Visa AI支付 / AI基建军备 / 微软7款自研MAI）；② B3 新增 DiffusionGemma-26B + Kimi K2.7-Code。⚠️ B2/B4/B6/B7/B8/B9 未执行。',
+    notes: '本轮（2026-06-14 第50轮 B1）：B1 新闻新增 4 条 6月14日头条（GPT-5.2移除/Databricks Omnigent+Robinhood Agent炒股/Meta Manus交易取消/KPMG幻觉翻车）。仅 B1 执行。',
   },
 
   // 🚀 产品迭代规划（开发者人工维护）

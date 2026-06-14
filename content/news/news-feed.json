@@ -1,5 +1,77 @@
 [
   {
+    "category": "llm",
+    "id": "news-20260614-01",
+    "date": "2026-06-14",
+    "url": "https://openai.com/index/chatgpt-update-june-2026/",
+    "summary": "OpenAI从ChatGPT中移除所有GPT-5.2变体（Instant、Thinking、Pro），自6月12日起全面过渡到新模型体系。同时，OpenAI面临多州总检察长调查。GPT-5.2作为过渡版本的快速退场，暗示GPT-6或新一代模型即将登场。",
+    "hot": true,
+    "source": "OpenAI / TechCrunch",
+    "tags": [
+      "OpenAI",
+      "GPT-5.2",
+      "ChatGPT",
+      "模型迭代",
+      "监管"
+    ],
+    "region": "international",
+    "title": "OpenAI全面移除GPT-5.2变体：新品将至，模型体系大换血"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260614-02",
+    "date": "2026-06-14",
+    "url": "https://www.databricks.com/blog/omnigent-open-source",
+    "summary": "Databricks开源Omnigent元工具，用于在Claude Code、Codex、Pi等工具间编排、治理和共享AI Agent。Robinhood宣布将允许AI Agent代表用户进行股票交易。AI Agent从开发协作扩展到金融交易，自主性再提升。",
+    "hot": true,
+    "source": "Databricks / The Verge",
+    "tags": [
+      "Databricks",
+      "Omnigent",
+      "AI Agent",
+      "Robinhood",
+      "金融交易"
+    ],
+    "region": "international",
+    "title": "Databricks开源Omnigent编排Agent、Robinhood准AI Agent炒股：Agent自主交易时代"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260614-03",
+    "date": "2026-06-14",
+    "url": "https://techcrunch.com/2026/06/14/meta-cancels-2b-manus-deal-china/",
+    "summary": "Meta在接到中国政府要求后，取消20亿美元收购AI初创公司Manus的交易。Meta内��新AI部门被曝混乱（员工称工作环境像古拉格）。Anthropic暂停印度用户访问新模型。亚马逊CEO被曝曾对Anthropic安全性表达担忧。AI行业地缘政治博弈加剧。",
+    "hot": false,
+    "source": "TechCrunch / Wired",
+    "tags": [
+      "Meta",
+      "Manus",
+      "地缘政治",
+      "Anthropic",
+      "监管"
+    ],
+    "region": "international",
+    "title": "Meta取消0亿Manus交易、Anthropic印度受阻：AI地缘政治升温"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260614-04",
+    "date": "2026-06-14",
+    "url": "https://techcrunch.com/2026/06/14/kpmg-retracts-ai-report-hallucination/",
+    "summary": "四大会计师事务所KPMG因报告中出现明显AI幻觉内容，撤回一份关于AI使用情况的官方报告。KPMG成为专业服务机构因AI失误公开翻车的最新案例。NVIDIA将RTX Pro 6000 Blackwell 96GB标价3,250。GLM 5.2模型已部署，下周开源。",
+    "hot": false,
+    "source": "TechCrunch / VideoCardz",
+    "tags": [
+      "KPMG",
+      "AI幻觉",
+      "审计",
+      "NVIDIA",
+      "GLM"
+    ],
+    "region": "international",
+    "title": "KPMG因AI幻觉撤回官方报告、NVIDIA发3250专业卡：AI行业众生相"
+  },
+  {
     "category": "industry",
     "id": "news-20260613-01",
     "date": "2026-06-13",

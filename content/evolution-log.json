@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260614-news-4",
+    "date": "2026-06-14 18:30",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增4条6月14日AI新闻",
+    "description": "覆盖：OpenAI全面移除GPT-5.2变体(暗示GPT-6将至)、Databricks开源Omnigent编排Agent+Robinhood准AI Agent炒股、Meta取消$20亿Manus交易+Anthropic印度受阻、KPMG因AI幻觉撤回报告+NVIDIA$13250专业卡。news-feed 314→318。"
+  },
+  {
     "id": "evo-20260613-news-7",
     "date": "2026-06-13 20:00",
     "agent": "editor-v2",
