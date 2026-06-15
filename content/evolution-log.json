@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260615-article-mmf-data",
+    "date": "2026-06-15 23:20",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "B2 新增多模态预训练数据格式与Megatron/DeepSpeed适配深度文章",
+    "description": "新增 articles/multimodal-pretraining-data-format-megatron-deepspeed.md，深入解析多模态基础模型预训练数据格式设计、Megatron bin/idx格式细节、DeepSpeed JSONL/MoD机制、图文交错Token化策略、数据格式互转工具、常见踩坑与优化方案。"
+  },
+  {
     "id": "evo-20260614-article-agent-trading",
     "date": "2026-06-14 20:30",
     "agent": "editor-v2",
