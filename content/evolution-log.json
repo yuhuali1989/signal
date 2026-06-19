@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260619-news-8",
+    "date": "2026-06-19 18:00",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增8条6月15-18日AI新闻",
+    "description": "覆盖：SpaceX00亿收购Cursor+ChatGPT份额首破50%/白宫AI国安行政令/Anthropic退役Sonnet4+OpenAI发LifeSciBench/Newcore Agent身份+Vercel开源Eve/AMD999叫板NVIDIA/Odyssey世界模型/OpeaAI年亏数十亿美元流言/Qwen具身三件套+Sony机器人胜职业选手/Copilot 2FA漏洞。news-feed 319→327。"
+  },
+  {
     "id": "evo-20260619-book-eval-mm",
     "date": "2026-06-19 09:30",
     "agent": "editor-v2",

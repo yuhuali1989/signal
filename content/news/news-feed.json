@@ -1,5 +1,149 @@
 [
   {
+    "category": "industry",
+    "id": "news-20260616-01",
+    "date": "2026-06-16",
+    "url": "https://techcrunch.com/2026/06/16/spacex-acquires-cursor-60b-stock/",
+    "summary": "SpaceX以600亿美元股票收购AI编程初创公司Cursor，在创历史纪录的IPO之后迅速出手。同日Salesforce以36亿美元收购AI客服平台Fin。ChatGPT市场份额首次跌破50%。AI行业并购整合大幕拉开。",
+    "hot": true,
+    "source": "TechCrunch",
+    "tags": [
+      "SpaceX",
+      "Cursor",
+      "Salesforce",
+      "并购",
+      "ChatGPT"
+    ],
+    "region": "international",
+    "title": "SpaceX以00亿收购Cursor、ChatGPT份额首破50%：AI大整合时代"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260617-01",
+    "date": "2026-06-17",
+    "url": "https://www.whitehouse.gov/ai-executive-order-june-2026/",
+    "summary": "白宫发布全面AI国家安全行政令，创建覆盖前沿模型监管类别，建立与领先AI开发者的结构化早期访问合作框架，加速AI在国防领域的部署。Anthropic CEO Dario Amodei与顶尖AI公司CEO参加G7峰会。",
+    "hot": true,
+    "source": "White House / multiple",
+    "tags": [
+      "白宫",
+      "AI监管",
+      "国家安全",
+      "G7",
+      "前沿模型"
+    ],
+    "region": "international",
+    "title": "白宫发布AI国家安全行政令：前沿模型正式纳入监管"
+  },
+  {
+    "category": "llm",
+    "id": "news-20260617-02",
+    "date": "2026-06-17",
+    "url": "https://www.anthropic.com/news/retiring-sonnet-4-opus-4",
+    "summary": "Anthropic正式退役Claude Sonnet 4和Opus 4模型，停止接受API请求。斯坦福2026AI指数报告显示行业产出超90%的前沿模型。OpenAI发布LifeSciBench（750项生命科学任务基准）。Gemini 3.5 Flash成为Google搜索AI模式默认模型。",
+    "hot": false,
+    "source": "Anthropic / Stanford / OpenAI",
+    "tags": [
+      "Anthropic",
+      "模型退役",
+      "斯坦福AI指数",
+      "LifeSciBench",
+      "Gemini"
+    ],
+    "region": "international",
+    "title": "Anthropic退役Sonnet 4/Opus 4、OpenAI发LifeSciBench：模型换代之夏"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260616-02",
+    "date": "2026-06-16",
+    "url": "https://techcrunch.com/2026/06/16/newcore-66m-ai-agent-identity/",
+    "summary": "Newcore获6600万美元融资，为作为员工工作的AI Agent创建数字身份。Vercel开源Eve AI Agent框架（每个Agent一个目录）。Sakana AI发布企业级Sakana Marlin（可生成长达100页研究报告）。AI Agent正从工具演变为数字员工。",
+    "hot": true,
+    "source": "TechCrunch / Vercel",
+    "tags": [
+      "AI Agent",
+      "数字身份",
+      "Vercel",
+      "Eve",
+      "Sakana"
+    ],
+    "region": "international",
+    "title": "Newcore为AI Agent造身份、Vercel开源Eve：Agent成为数字员工"
+  },
+  {
+    "category": "infra",
+    "id": "news-20260616-03",
+    "date": "2026-06-16",
+    "url": "https://www.tomshardware.com/amd-ryzen-ai-halo-vs-nvidia-dgx-spark",
+    "summary": "AMD推出3999美元Ryzen AI Halo PC，直接对标NVIDIA 4679美元DGX Spark AI PC。Odyssey世界模型公司获14.5亿美元估值（亚马逊投资）。研究人员将旧Pixel手机变成数据中心。AI硬件竞争从云端延伸到桌面。",
+    "hot": false,
+    "source": "Tom's Hardware / TechCrunch",
+    "tags": [
+      "AMD",
+      "NVIDIA",
+      "AI PC",
+      "Odyssey",
+      "硬件竞争"
+    ],
+    "region": "international",
+    "title": "AMD推999 AI PC叫板NVIDIA、Odyssey估值4.5亿：AI硬件战火蔓延"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260618-01",
+    "date": "2026-06-18",
+    "url": "https://techcrunch.com/2026/06/18/openai-losses-billions-leaked-financials/",
+    "summary": "泄露财务文件显示OpenAI每年亏损数十亿美元。ChatGPT市场份额首次跌破50%。Snap发布昂贵AR眼镜后股价大跌。仅16%的美国人认为AI对社会有积极影响。AI行业高投入低回报的质疑声日益高涨。",
+    "hot": false,
+    "source": "TechCrunch",
+    "tags": [
+      "OpenAI",
+      "亏损",
+      "ChatGPT份额",
+      "Snap",
+      "消费者信心"
+    ],
+    "region": "international",
+    "title": "OpenAI年亏数十亿美元、ChatGPT份额跌破50%：AI泡沫质疑升温"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260617-03",
+    "date": "2026-06-17",
+    "url": "https://qwen.alibaba.com/robot-suite",
+    "summary": "阿里Qwen团队发布Qwen-RobotSuite，包含三款具身AI模型：VLA操作模型、视频世界建模模型、导航模型。Sony AI机器人Ace按国际乒联规则击败职业选手Miyu（Nature论文）。GLM-5.2成为首个在Terminal-Bench上超过80%的开源模型。",
+    "hot": false,
+    "source": "Alibaba / Sony / Zhipu",
+    "tags": [
+      "Qwen",
+      "具身智能",
+      "Sony AI",
+      "机器人",
+      "GLM-5.2"
+    ],
+    "region": "international",
+    "title": "Qwen发具身AI三件套、Sony机器人击败职业选手：具身智能多点突破"
+  },
+  {
+    "category": "security",
+    "id": "news-20260616-04",
+    "date": "2026-06-16",
+    "url": "https://arstechnica.com/security/2026/06/copilot-vulnerability-2fa/",
+    "summary": "严重Copilot漏洞允许黑客窃取用户2FA验证码和电子邮件。FBI针对Kali365攻击向Teams/Outlook/OneDrive用户发出紧急安全警告。AI Agent在提升效率的同时也带来新的攻击面和安全风险。",
+    "hot": false,
+    "source": "Ars Technica / NewsNation",
+    "tags": [
+      "Copilot",
+      "安全漏洞",
+      "2FA",
+      "FBI",
+      "AI安全"
+    ],
+    "region": "international",
+    "title": "Copilot高危漏洞泄露2FA码、FBI发紧急警告：AI安全新挑战"
+  },
+  {
     "category": "llm",
     "id": "news-20260614-05",
     "date": "2026-06-14",
