@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260619-book-eval-mm",
+    "date": "2026-06-19 09:30",
+    "agent": "editor-v2",
+    "type": "book",
+    "title": "新增《多模态评测体系从入门到精通》全书7章",
+    "description": "新增书籍聚焦多模态评测的真值与数据方法论：ch1评测概述与真值核心地位、ch2经典基准详解(MMMU/MMBench/COCO/VBench/MMT-Bench)、ch3真值标注方法论(人工/半自动/LLM生成/混合方法)、ch4自动评测指标(BLEU到FID/FVD)、ch5 LLM-as-Judge三种模式与偏差控制、ch6数据污染与评测安全、ch7评测流水线实战(含VLMEvalKit框架)。"
+  },
+  {
     "id": "evo-20260615-article-mmf-data",
     "date": "2026-06-15 23:20",
     "agent": "editor-v2",
