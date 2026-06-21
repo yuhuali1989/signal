@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260621-article-vlm-clip-vit",
+    "date": "2026-06-21 13:00",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "新增VLM视觉语言模型深度解析文章(突出CLIP+ViT)",
+    "description": "新增 articles/vlm-clip-vit-deep-dive-2026-06.md，深入解析CLIP对比学习原理与代码、ViT Patch Embedding架构与参数、LLaVA投影层融合/Q-Former/统一序列三方案对比、VLM三阶段训练流程。"
+  },
+  {
     "id": "evo-20260619-news-8",
     "date": "2026-06-19 18:00",
     "agent": "editor-v2",
