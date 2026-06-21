@@ -1,5 +1,77 @@
 [
   {
+    "category": "llm",
+    "id": "news-20260620-01",
+    "date": "2026-06-20",
+    "url": "https://openai.com/index/gpt-55-instant-default/",
+    "summary": "OpenAI将GPT-5.5 Instant设为ChatGPT全球默认模型，承诺更高准确性、更好的图像理解能力和更简洁回答。同时为Pro用户和API推出o3-pro推理模型。Google将搜索AI模式升级至Gemini 3.5 Flash，推出搜索代理和生成式UI。AI竞赛从模型能力转向大规模部署能力。",
+    "hot": true,
+    "source": "OpenAI / Google",
+    "tags": [
+      "GPT-5.5",
+      "o3-pro",
+      "Gemini",
+      "默认模型",
+      "搜索AI"
+    ],
+    "region": "international",
+    "title": "OpenAI默认模型升级GPT-5.5 Instant、Google搜索升级Gemini 3.5：AI全面嵌入"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260620-02",
+    "date": "2026-06-20",
+    "url": "https://www.axios.com/2026/06/20/trump-anthropic-national-security-threat",
+    "summary": "特朗普向Axios表示不再将Anthropic视为国家安全威胁，此前美国曾命令Anthropic暂停Fable 5/Mythos 5访问。中国加强对AI数据中心关键材料铟的出口检查。OpenAI和Anthropic签署协议防止AI开发生物武器。AI地缘政治博弈复杂化。",
+    "hot": true,
+    "source": "Axios / Wired",
+    "tags": [
+      "Anthropic",
+      "特朗普",
+      "地缘政治",
+      "铟出口",
+      "生物武器"
+    ],
+    "region": "international",
+    "title": "特朗普松口称Anthropic非威胁、中美AI材料博弈升级：AI地缘新格局"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260619-01",
+    "date": "2026-06-19",
+    "url": "https://perplexity.ai/blog/brain-memory-system",
+    "summary": "Perplexity推出Brain自我改进记忆系统，为AI Agent构建上下文图。OpenAI为IPO引入多位重量级人物。Baseten据报正在筹集15亿美元资金。Snap因成本剥离AI视频团队成立Dotmo。AI Agent从对话工具进化到有记忆的持久化系统。",
+    "hot": false,
+    "source": "Perplexity / TechCrunch",
+    "tags": [
+      "Perplexity",
+      "Brain",
+      "记忆系统",
+      "Baseten",
+      "IPO"
+    ],
+    "region": "international",
+    "title": "Perplexity推出Brain记忆系统、Baseten融资5亿：Agent持久化时代"
+  },
+  {
+    "category": "policy",
+    "id": "news-20260619-02",
+    "date": "2026-06-19",
+    "url": "https://www.pewresearch.org/ai-survey-june-2026/",
+    "summary": "皮尤调查显示三分之二美国人认为AI发展太快。仅16%认为AI对社会有积极影响。近半数单身人士对AI约会持负面看法。伯尼·桑德斯提议从AI利润中每年向每位美国人发放000。AI发展速度与公众接受度之间的鸿沟持续扩大。",
+    "hot": false,
+    "source": "Pew Research / Match.com",
+    "tags": [
+      "皮尤调查",
+      "公众态度",
+      "AI发展",
+      "桑德斯",
+      "UBI"
+    ],
+    "region": "international",
+    "title": "皮尤：66%美国人认为AI发展太快、桑德斯提议AI全民分红"
+  },
+  {
     "category": "industry",
     "id": "news-20260616-01",
     "date": "2026-06-16",
