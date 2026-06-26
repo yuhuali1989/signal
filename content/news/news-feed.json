@@ -1,5 +1,43 @@
 [
   {
+    "category": "paper",
+    "id": "news-20260626-03",
+    "date": "2026-06-26",
+    "url": "/articles/hunyuanvideo-paper-deep-dive-2026-06.html",
+    "summary": "深度解析腾讯HunyuanVideo论文（arXiv:2412.03603），重点介绍其数据管道建设、多层递进式过滤管线、结构化标注方法、3D VAE架构、Transformer设计及5D并行训练策略。HunyuanVideo是当时最大的开源视频生成模型（13B参数）。",
+    "hot": false,
+    "source": "arXiv / 腾讯混元",
+    "tags": [
+      "HunyuanVideo",
+      "视频生成",
+      "数据管道",
+      "3D VAE",
+      "Transformer",
+      "论文解读"
+    ],
+    "region": "domestic",
+    "title": "HunyuanVideo论文深度解读：数据管道与底层算法全解析"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260626-02",
+    "date": "2026-06-26",
+    "url": "/articles/meta-movie-gen-paper-deep-dive-2026-06.html",
+    "summary": "深度解析Meta Movie Gen论文（arXiv:2410.13720），重点介绍其数据管道建设、三层过滤管线、LLaMA3-Video标注方法、TAE架构、Flow Matching训练框架及3D并行训练策略。Movie Gen包含30B参数的视频生成模型和13B参数的视频配乐模型。",
+    "hot": false,
+    "source": "arXiv / Meta AI",
+    "tags": [
+      "Movie Gen",
+      "视频生成",
+      "数据管道",
+      "TAE",
+      "Flow Matching",
+      "论文解读"
+    ],
+    "region": "international",
+    "title": "Meta Movie Gen论文深度解读：数据管道与底层算法全解析"
+  },
+  {
     "category": "industry",
     "id": "news-20260626-01",
     "date": "2026-06-26",

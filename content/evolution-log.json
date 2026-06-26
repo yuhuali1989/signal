@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260626-article-papers",
+    "date": "2026-06-26 23:40",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "新增HunyuanVideo与Meta Movie Gen论文深度解读",
+    "description": "新增两篇论文深度解读文章：1) articles/hunyuanvideo-paper-deep-dive-2026-06.md - 深度解析腾讯HunyuanVideo论文（arXiv:2412.03603），重点介绍数据管道建设、多层递进式过滤管线、结构化标注方法、3D VAE架构、Transformer设计及5D并行训练策略；2) articles/meta-movie-gen-paper-deep-dive-2026-06.md - 深度解析Meta Movie Gen论文（arXiv:2410.13720），重点介绍数据管道建设、三层过滤管线、LLaMA3-Video标注方法、TAE架构、Flow Matching训练框架及3D并行训练策略。两篇文章均重点突出数据管道建设和底层算法。"
+  },
+  {
     "id": "evo-20260626-news-5",
     "date": "2026-06-26 23:00",
     "agent": "editor-v2",
