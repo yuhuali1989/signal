@@ -1,5 +1,95 @@
 [
   {
+    "category": "industry",
+    "id": "news-20260626-01",
+    "date": "2026-06-26",
+    "url": "https://finance.sina.com.cn/roll/2026-06-26/doc-iniesqzz7397551.shtml",
+    "summary": "美国政府在要求Anthropic下架Fable 5/Mythos 5后，进一步要求OpenAI分阶段发布GPT-5.6：先在有限信任合作伙伴范围内发布，再逐步扩大。Altman在内部会议要求员工配合政府安全与使用限制要求。此举标志着美国政府以国家安全为由干预前沿模型发布的力度从Anthropic延伸到OpenAI，AI监管进入新阶段。",
+    "hot": true,
+    "source": "Bloomberg / The Information",
+    "tags": [
+      "OpenAI",
+      "GPT-5.6",
+      "美国政府",
+      "AI监管",
+      "分阶段发布"
+    ],
+    "region": "international",
+    "title": "特朗普政府要求OpenAI分阶段发布GPT-5.6：继Anthropic后AI监管再升级"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260625-01",
+    "date": "2026-06-25",
+    "url": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
+    "summary": "OpenAI正式将GPT-5.5 Instant设为ChatGPT默认模型，提升日常准确性和多模态理解能力。Bloomberg报道Broadcom与OpenAI合作开发AI芯片，宣称能效提升50%。NSPM-11行政令正式将AI定位为核心国防基础设施。斯坦福AI指数报告：美国AI私人投资达859亿，53%人口采用生成式AI。",
+    "hot": true,
+    "source": "OpenAI / Bloomberg / Stanford HAI",
+    "tags": [
+      "GPT-5.5",
+      "Broadcom",
+      "AI芯片",
+      "NSPM-11",
+      "斯坦福AI指数"
+    ],
+    "region": "international",
+    "title": "OpenAI默认模型升级GPT-5.5、Broadcom联合造芯、AI成国防基础设施"
+  },
+  {
+    "category": "policy",
+    "id": "news-20260624-01",
+    "date": "2026-06-24",
+    "url": "https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/",
+    "summary": "白宫发布前沿模型行政令，建立覆盖前沿模型分类基准测试流程，创建结构化的自愿预发布访问框架。Anthropic在Slack中推出AI Agent，可在群聊中与员工协作。Anthropic Mythos模型在测试中发现美国高度敏感系统漏洞，引发政府关注。",
+    "hot": false,
+    "source": "White House / Reuters",
+    "tags": [
+      "白宫",
+      "前沿模型",
+      "Anthropic",
+      "Slack Agent",
+      "Mythos"
+    ],
+    "region": "international",
+    "title": "白宫前沿模型行政令落地、Anthropic发Slack Agent：AI监管与落地并行"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260622-01",
+    "date": "2026-06-22",
+    "url": "https://www.marketingprofs.com/opinions/2026/55065/ai-update-june-19-2026",
+    "summary": "美国政府命令Anthropic全球下线Mythos 5和Fable 5，限制外国用户访问，出口管制从芯片延伸到AI模型。G7领导人考虑建立可信合作伙伴框架，分级开放美国AI模型访问。OpenAI成立部署公司（B+）并推出全球合作伙伴网络，加速企业级嵌入。",
+    "hot": true,
+    "source": "MarketingProfs / Reuters",
+    "tags": [
+      "Anthropic",
+      "AI出口管制",
+      "G7",
+      "OpenAI部署",
+      "企业AI"
+    ],
+    "region": "international",
+    "title": "美国强令Anthropic全球下线Fable 5、G7拟建可信框架：AI地缘政治新格局"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260621-01",
+    "date": "2026-06-21",
+    "url": "https://www.microsoft.com/en-us/ai/mai-models-expansion",
+    "summary": "微软扩大自研MAI模型阵容，加速减少对OpenAI依赖。OpenAI Dreaming V3记忆升级持续向ChatGPT Plus/Pro用户推出，即将扩展至免费和Go用户。微软的MAI系列模型开始覆盖编码、语音、转录等更多领域。",
+    "hot": false,
+    "source": "Microsoft / OpenAI",
+    "tags": [
+      "微软",
+      "MAI",
+      "OpenAI",
+      "Dreaming V3",
+      "自研模型"
+    ],
+    "region": "international",
+    "title": "微软扩大自研MAI模型阵营、OpenAI Dreaming V3持续推送"
+  },
+  {
     "category": "llm",
     "id": "news-20260620-01",
     "date": "2026-06-20",

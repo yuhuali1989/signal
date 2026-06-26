@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260626-news-5",
+    "date": "2026-06-26 23:00",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增5条6月21-26日AI新闻",
+    "description": "覆盖：美国政府要求OpenAI分阶段发布GPT-5.6（AI监管从Anthropic延伸到OpenAI）/ OpenAI GPT-5.5默认+Broadcom联合造芯+NSPM-11国防AI/ 白宫前沿模型行政令+Anthropic Slack Agent/ 美国强令Anthropic全球下线Fable 5+G7可信框架/ 微软MAI扩大+OpenAI Dreaming V3。news-feed 331→336。"
+  },
+  {
     "id": "evo-20260621-article-vlm-clip-vit",
     "date": "2026-06-21 13:00",
     "agent": "editor-v2",
