@@ -1,5 +1,159 @@
 [
   {
+    "id": "gpt-56-sol-2026",
+    "name": "GPT-5.6 Sol",
+    "org": "OpenAI",
+    "type": "llm",
+    "typeLabel": "旗舰大语言模型",
+    "typeIcon": "🌟",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-06-26",
+    "context": "128K tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（优化）",
+      "attention": "未公开",
+      "context": "128K",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "未公开",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "OpenAI",
+      "GPT-5.6",
+      "Sol",
+      "旗舰模型",
+      "编码"
+    ],
+    "keyInnovation": "OpenAI最强模型，Terminal-Bench 2.1得分88.8%，超过Claude Mythos 5（88.0%），Ultra模式下达91.9%。引入Max推理强度和Ultra模式，通过子智能体加速复杂任务。",
+    "highlights": [
+      "Terminal-Bench 2.1得分88.8%",
+      "Ultra模式下达91.9%",
+      "Max推理强度",
+      "Ultra模式+子智能体"
+    ],
+    "description": "GPT-5.6 Sol是OpenAI于2026年6月26日发布的旗舰大语言模型，是GPT-5.6系列中能力最强的模型。"
+  },
+  {
+    "id": "gpt-56-terra-2026",
+    "name": "GPT-5.6 Terra",
+    "org": "OpenAI",
+    "type": "llm",
+    "typeLabel": "均衡大语言模型",
+    "typeIcon": "⚖️",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-06-26",
+    "context": "128K tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（优化）",
+      "attention": "未公开",
+      "context": "128K",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "未公开",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "OpenAI",
+      "GPT-5.6",
+      "Terra",
+      "均衡模型",
+      "日常办公"
+    ],
+    "keyInnovation": "GPT-5.6 Terra主打日常办公场景的性能与成本平衡，综合表现与GPT-5.5相当，但推理效率更高。",
+    "highlights": [
+      "性能与成本平衡",
+      "日常办公场景优化",
+      "推理效率更高"
+    ],
+    "description": "GPT-5.6 Terra是OpenAI于2026年6月26日发布的均衡大语言模型，主打日常办公场景。"
+  },
+  {
+    "id": "gpt-56-luna-2026",
+    "name": "GPT-5.6 Luna",
+    "org": "OpenAI",
+    "type": "llm",
+    "typeLabel": "轻量大语言模型",
+    "typeIcon": "🌙",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-06-26",
+    "context": "128K tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（优化）",
+      "attention": "未公开",
+      "context": "128K",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "未公开",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "OpenAI",
+      "GPT-5.6",
+      "Luna",
+      "轻量模型",
+      "性价比"
+    ],
+    "keyInnovation": "GPT-5.6 Luna是性价比最高的模型，适合大规模部署和低成本应用场景。",
+    "highlights": [
+      "性价比最高",
+      "大规模部署优化",
+      "低成本应用"
+    ],
+    "description": "GPT-5.6 Luna是OpenAI于2026年6月26日发布的轻量大语言模型，主打性价比。"
+  },
+  {
+    "id": "claude-sonnet-45-2026",
+    "name": "Claude Sonnet 4.5",
+    "org": "Anthropic",
+    "type": "llm",
+    "typeLabel": "大语言模型",
+    "typeIcon": "🎯",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-06-21",
+    "context": "200K tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（优化）",
+      "attention": "未公开",
+      "context": "200K",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "RL + 安全对齐",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "Anthropic",
+      "Claude Sonnet 4.5",
+      "编码",
+      "SWE-bench",
+      "Agent"
+    ],
+    "keyInnovation": "在SWE-bench编码基准和OSWorld计算机使用基准上取得最高分，安全性和对齐有重大改进。成为Anthropic新一代主力模型。",
+    "highlights": [
+      "SWE-bench基准最高分",
+      "OSWorld基准最高分",
+      "安全性和对齐重大改进",
+      "新一代主力模型"
+    ],
+    "description": "Claude Sonnet 4.5是Anthropic于2026年6月21日发布的大语言模型，在编码和Agent任务上取得突破。"
+  },
+  {
     "id": "glm-52-2026",
     "name": "GLM-5.2",
     "org": "智谱AI (Zhipu AI)",

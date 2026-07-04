@@ -1,5 +1,60 @@
 [
   {
+    "category": "model",
+    "id": "news-20260704-01",
+    "date": "2026-07-04",
+    "url": "https://openai.com/index/gpt-5.6-system-card/",
+    "summary": "OpenAI GPT-5.6系列模型正式发布，包括旗舰模型Sol、均衡型Terra、轻量化Luna三款。Sol在Terminal-Bench 2.1上得分88.8%，超过Claude Mythos 5（88.0%），开启Ultra模式后达到91.9%。GPT-5.6引入新的Max推理强度和Ultra模式，通过子智能体加速复杂任务处理。",
+    "hot": true,
+    "source": "OpenAI / TechCrunch",
+    "tags": [
+      "OpenAI",
+      "GPT-5.6",
+      "Sol",
+      "Terra",
+      "Luna",
+      "模型发布"
+    ],
+    "region": "international",
+    "title": "OpenAI GPT-5.6系列正式发布：Sol/Terra/Luna三档齐发，编码能力超越Claude"
+  },
+  {
+    "category": "model",
+    "id": "news-20260701-01",
+    "date": "2026-07-01",
+    "url": "https://www.anthropic.com/news/claude-fable-5-global-redeployment",
+    "summary": "Anthropic宣布从7月1日起全球重新部署Claude Fable 5，此前因出口管制指令而下架。新版本更新了网络安全防护措施，符合美国政府的安全要求。此举标志着Anthropic与政府监管达成妥协，在保持安全性的同时恢复模型访问。",
+    "hot": false,
+    "source": "Anthropic / Bloomberg",
+    "tags": [
+      "Anthropic",
+      "Claude Fable 5",
+      "出口管制",
+      "网络安全",
+      "全球部署"
+    ],
+    "region": "international",
+    "title": "Anthropic全球重新部署Claude Fable 5：更新网络安全防护，7月1日起恢复访问"
+  },
+  {
+    "category": "model",
+    "id": "news-20260621-01",
+    "date": "2026-06-21",
+    "url": "https://www.anthropic.com/news/claude-sonnet-4-5",
+    "summary": "Anthropic发布Claude Sonnet 4.5，在SWE-bench编码基准和OSWorld计算机使用基准上取得最高分。新模型在安全性和对齐方面有重大改进，提供更强的编码能力和Agent执行能力。Sonnet 4.5成为Anthropic新一代主力模型。",
+    "hot": true,
+    "source": "Anthropic / Creati.ai",
+    "tags": [
+      "Anthropic",
+      "Claude Sonnet 4.5",
+      "编码基准",
+      "SWE-bench",
+      "Agent"
+    ],
+    "region": "international",
+    "title": "Anthropic发布Claude Sonnet 4.5：SWE-bench和OSWorld基准领跑，安全性和对齐重大改进"
+  },
+  {
     "category": "paper",
     "id": "news-20260626-03",
     "date": "2026-06-26",
