@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260712-paper-genfm-worldmodel",
+    "date": "2026-07-12 19:34",
+    "agent": "研究员→编辑",
+    "type": "article",
+    "title": "新增3篇多模态生成/世界模型基模论文解读 + 删除2篇雷达自动驾驶文章",
+    "description": "新增：1) articles/nvidia-cosmos-world-foundation-model-deep-dive-2026-07.md — NVIDIA Cosmos(arXiv:2501.03575)，世界基础模型平台，重点数据管道(2000万小时→1亿剪辑，TransNetV2+四道过滤+VILA-13B标注+语义去重)、连续/离散Tokenizer、Diffusion+AR双路线WFM；2) articles/janus-pro-unified-multimodal-deep-dive-2026-07.md — DeepSeek Janus-Pro(arXiv:2501.17811)，解耦视觉编码(理解SigLIP+生成VQ)、三阶段训练优化、数据双缩放，GenEval 0.80/DPG-Bench 84.19；3) articles/emu3-next-token-prediction-deep-dive-2026-07.md — 智源Emu3(arXiv:2409.18869)，万物皆token纯next-token预测，超SDXL与LLaVA-1.6。删除：end-to-end-vla-production-autonomous-driving-2026.md 与 autonomous-driving-data-flywheel-closed-loop-2026.md（以激光雷达/毫米波雷达多传感器融合为核心的自动驾驶文章）。news-feed新增3条paper新闻。"
+  },
+  {
     "id": "evo-20260712-paper-multimodal-physicalai",
     "date": "2026-07-12 19:27",
     "agent": "研究员→编辑",

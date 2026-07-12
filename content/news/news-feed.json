@@ -1,6 +1,64 @@
 [
   {
     "category": "paper",
+    "id": "news-20260712-paper-07",
+    "date": "2026-07-12",
+    "url": "/articles/nvidia-cosmos-world-foundation-model-deep-dive-2026-07.html",
+    "summary": "论文解读：NVIDIA Cosmos（arXiv:2501.03575）提出面向物理AI的世界基础模型平台。核心拆解其视频数据管道（2000万小时原始视频→1亿高质量剪辑，TransNetV2镜头检测+四道过滤+VILA-13B标注+语义去重去掉30%）与视频Tokenizer（连续CV/离散DV双套，比SOTA高+4dB PSNR、快12×），并对比Diffusion（7B/14B）与Autoregressive（4B/12B）两条WFM路线，10000块H100训练3个月。",
+    "hot": true,
+    "source": "arXiv / NVIDIA",
+    "tags": [
+      "Cosmos",
+      "世界模型",
+      "基础模型",
+      "物理AI",
+      "数据管道",
+      "Tokenizer",
+      "论文解读"
+    ],
+    "region": "international",
+    "title": "NVIDIA Cosmos论文深度解读：世界基础模型的数据管道与Tokenizer全解析"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260712-paper-06",
+    "date": "2026-07-12",
+    "url": "/articles/janus-pro-unified-multimodal-deep-dive-2026-07.html",
+    "summary": "论文解读：DeepSeek Janus-Pro（arXiv:2501.17811）用「解耦视觉编码」化解统一多模态基模的表示冲突——理解用SigLIP、生成用VQ tokenizer，共享一条自回归Transformer（1.5B/7B）。三阶段训练优化（丢弃低效ImageNet、配比7:3:10→5:1:4）+ 数据双缩放（72M合成美学数据1:1、理解侧+90M），GenEval 0.80超DALL-E 3，DPG-Bench 84.19，实现理解生成双SOTA。",
+    "hot": true,
+    "source": "arXiv / DeepSeek-AI",
+    "tags": [
+      "Janus-Pro",
+      "多模态生成",
+      "统一模型",
+      "DeepSeek",
+      "解耦编码",
+      "论文解读"
+    ],
+    "region": "domestic",
+    "title": "Janus-Pro论文深度解读：理解与生成解耦的统一多模态基模"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260712-paper-05",
+    "date": "2026-07-12",
+    "url": "/articles/emu3-next-token-prediction-deep-dive-2026-07.html",
+    "summary": "论文解读：智源Emu3（arXiv:2409.18869）证明「Next-Token Prediction is All You Need」——把文本、图像、视频统一tokenize成离散token，从头训练单一Transformer纯做next-token预测，在图像生成上超SDXL、多模态理解上超LLaVA-1.6，还能逐token生成视频。万物皆token范式无缝继承LLM全套工程红利，是统一多模态生成/世界基模最激进干净的答案。",
+    "hot": false,
+    "source": "arXiv / 智源研究院",
+    "tags": [
+      "Emu3",
+      "多模态生成",
+      "世界模型",
+      "Next-Token",
+      "统一token化",
+      "论文解读"
+    ],
+    "region": "domestic",
+    "title": "Emu3论文深度解读：Next-Token Prediction一统文本图像与视频生成"
+  },
+  {
+    "category": "paper",
     "id": "news-20260712-paper-04",
     "date": "2026-07-12",
     "url": "/articles/openvla-deep-dive-2026-07.html",
