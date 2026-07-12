@@ -1,5 +1,85 @@
 [
   {
+    "category": "paper",
+    "id": "news-20260712-paper-04",
+    "date": "2026-07-12",
+    "url": "/articles/openvla-deep-dive-2026-07.html",
+    "summary": "论文解读：OpenVLA（arXiv:2406.09246）是首个开源7B视觉-语言-动作(VLA)模型，基于Prismatic（SigLIP+DINOv2双视觉编码器 + LLaMA-2），在Open X-Embodiment的970k真实机器人演示上训练，以7×更少参数在29个任务上比闭源RT-2-X(55B)成功率绝对值高16.5%。支持LoRA/量化在消费级GPU微调。",
+    "hot": false,
+    "source": "arXiv / Stanford等",
+    "tags": [
+      "OpenVLA",
+      "物理AI",
+      "VLA",
+      "机器人",
+      "OXE数据集",
+      "开源",
+      "论文解读"
+    ],
+    "region": "international",
+    "title": "OpenVLA论文深度解读：首个开源7B VLA模型与OXE数据引擎"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260712-paper-03",
+    "date": "2026-07-12",
+    "url": "/articles/rt2-vision-language-action-deep-dive-2026-07.html",
+    "summary": "论文解读：RT-2（arXiv:2307.15818，Google DeepMind）开创VLA范式——把机器人动作离散化为token追加进LLM词汇表，与网页视觉-语言数据联合微调，把互联网常识迁移到机器人控制。6000次真实评测展现了符号理解、语义推理等涌现能力，并支持思维链。",
+    "hot": false,
+    "source": "arXiv / Google DeepMind",
+    "tags": [
+      "RT-2",
+      "物理AI",
+      "VLA",
+      "机器人",
+      "动作token化",
+      "具身智能",
+      "论文解读"
+    ],
+    "region": "international",
+    "title": "RT-2论文深度解读：把互联网知识塞进机器人控制的VLA范式"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260712-paper-02",
+    "date": "2026-07-12",
+    "url": "/articles/qwen2-vl-deep-dive-2026-07.html",
+    "summary": "论文解读：Qwen2-VL（arXiv:2409.12191，阿里Qwen团队）提出Naive Dynamic Resolution（任意分辨率动态处理，2×2 pixel shuffle）与Multimodal RoPE（M-RoPE，统一文本/图像/视频时空位置），提供2B/8B/72B三档，72B逼近GPT-4o，原生支持视频与GUI Agent。",
+    "hot": false,
+    "source": "arXiv / 阿里巴巴",
+    "tags": [
+      "Qwen2-VL",
+      "多模态",
+      "VLM",
+      "动态分辨率",
+      "M-RoPE",
+      "视频理解",
+      "论文解读"
+    ],
+    "region": "domestic",
+    "title": "Qwen2-VL论文深度解读：任意分辨率感知与多模态旋转位置编码"
+  },
+  {
+    "category": "paper",
+    "id": "news-20260712-paper-01",
+    "date": "2026-07-12",
+    "url": "/articles/llava-visual-instruction-tuning-deep-dive-2026-07.html",
+    "summary": "论文解读：LLaVA（arXiv:2304.08485，NeurIPS 2023 Oral）首次用纯语言GPT-4生成多模态指令数据（158K指令+595K对齐），提出视觉编码器+投影层+LLM的三件套架构与两阶段训练（特征对齐→指令微调），开启开源VLM数据引擎范式，ScienceQA达92.53%。",
+    "hot": false,
+    "source": "arXiv / UW-Madison等",
+    "tags": [
+      "LLaVA",
+      "多模态",
+      "VLM",
+      "视觉指令微调",
+      "GPT-4标注",
+      "数据引擎",
+      "论文解读"
+    ],
+    "region": "international",
+    "title": "LLaVA论文深度解读：视觉指令微调的数据引擎与多模态对齐"
+  },
+  {
     "category": "industry",
     "id": "news-20260712-01",
     "date": "2026-07-12",

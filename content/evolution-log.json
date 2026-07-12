@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260712-paper-multimodal-physicalai",
+    "date": "2026-07-12 19:27",
+    "agent": "研究员→编辑",
+    "type": "article",
+    "title": "B3 新增4篇论文深度解读（多模态2篇+物理AI2篇）",
+    "description": "新增论文解读文章：1) articles/llava-visual-instruction-tuning-deep-dive-2026-07.md — LLaVA(arXiv:2304.08485)，数据引擎(158K指令+595K对齐)、三件套架构、两阶段训练；2) articles/qwen2-vl-deep-dive-2026-07.md — Qwen2-VL(arXiv:2409.12191)，Naive Dynamic Resolution、M-RoPE、图文视频统一范式；3) articles/rt2-vision-language-action-deep-dive-2026-07.md — RT-2(arXiv:2307.15818)，VLA范式、动作token化、网页+机器人联合微调；4) articles/openvla-deep-dive-2026-07.md — OpenVLA(arXiv:2406.09246)，7B开源VLA、SigLIP+DINOv2、OXE 970k演示、LoRA微调。news-feed新增4条paper新闻。"
+  },
+  {
     "id": "evo-20260712-book-ch06-pipeline-retune",
     "date": "2026-07-12 17:40",
     "agent": "研究员→编辑",
