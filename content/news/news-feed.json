@@ -1,11 +1,157 @@
 [
   {
+    "category": "industry",
+    "id": "news-20260712-01",
+    "date": "2026-07-12",
+    "url": "https://new.qq.com/rain/a/20260712A02E4S00",
+    "summary": "全球AI大模型竞争加剧：Claude Code安全后门引发行业关注；OpenAI全量发布GPT-5.6系列及ChatGPT Work智能体；豆包千问因监管政策下线智能体功能；中国牵头制定大模型基准测试国际标准；高盛发布50页报告称中国AI大模型以低成本实现高性能，开源模型性能逼近全球顶尖。",
+    "hot": true,
+    "source": "腾讯网 / 高盛",
+    "tags": [
+      "AI竞争格局",
+      "Claude Code",
+      "安全后门",
+      "高盛报告",
+      "中国AI",
+      "监管"
+    ],
+    "region": "domestic",
+    "title": "全球AI大模型竞争加剧：Claude Code安全后门、高盛拆解中国AI格局、豆包下线智能体"
+  },
+  {
+    "category": "model",
+    "id": "news-20260710-03",
+    "date": "2026-07-10",
+    "url": "https://36kr.com/p/3889553810504194",
+    "summary": "Meta正式发布Muse Spark 1.1旗舰模型，面向智能体编程(agentic coding)的多模态AI模型。CEO Zuckerberg时隔三年首次在X平台发帖称其为\"价格极低但能力强大的智能体和编程模型\"。Muse Spark 1.1在Agent能力、编程和多模态测试中成绩超过Google Gemini，最擅长智能体性能、工具调用以及计算机操作。",
+    "hot": true,
+    "source": "36氪 / Meta",
+    "tags": [
+      "Meta",
+      "Muse Spark",
+      "Agent编程",
+      "多模态",
+      "Zuckerberg"
+    ],
+    "region": "international",
+    "title": "Meta发布Muse Spark 1.1：Zuckerberg时隔三年发帖，Agent编程能力超越Gemini"
+  },
+  {
+    "category": "model",
+    "id": "news-20260710-02",
+    "date": "2026-07-10",
+    "url": "https://view.inews.qq.com/a/20260710A055FR00",
+    "summary": "OpenAI正式全量发布GPT-5.6系列模型，包含旗舰Sol、均衡Terra、轻量Luna三款。同步推出ChatGPT Work智能体，可持续跟进项目数小时。Codex App正式并入ChatGPT桌面应用。GPT-5.6 Sol在Agents' Last Exam工作流评估中创历史新高，以约四分之一预估成本领先Claude Fable 5。奥特曼称\"每美元性能\"大幅提升。",
+    "hot": true,
+    "source": "澎湃新闻 / OpenAI",
+    "tags": [
+      "OpenAI",
+      "GPT-5.6",
+      "ChatGPT Work",
+      "Codex",
+      "全量发布",
+      "Sol"
+    ],
+    "region": "international",
+    "title": "OpenAI全量发布GPT-5.6系列+ChatGPT Work智能体：成本大幅降低，Codex并入桌面应用"
+  },
+  {
+    "category": "model",
+    "id": "news-20260709-02",
+    "date": "2026-07-09",
+    "url": "https://www.sohu.com/a/1047800100_413980",
+    "summary": "SpaceXAI与Cursor联合发布Grok 4.5大模型，首个专门针对编程和智能体任务训练的模型。参数规模达1.5万亿，单个任务Token消耗仅为同级领先模型的一半，每秒输出80 TPS。擅长处理大型代码库及跨多仓库长时间任务。定价每百万输入Token 2美元、输出6美元，成本不到同类模型一半。",
+    "hot": true,
+    "source": "搜狐 / SpaceXAI",
+    "tags": [
+      "SpaceXAI",
+      "Grok 4.5",
+      "Cursor",
+      "编程智能体",
+      "1.5万亿参数"
+    ],
+    "region": "international",
+    "title": "SpaceXAI联手Cursor发布Grok 4.5：1.5万亿参数编程智能体，成本不到同类一半"
+  },
+  {
+    "category": "model",
+    "id": "news-20260709-01",
+    "date": "2026-07-09",
+    "url": "https://view.inews.qq.com/a/20260709A03KGO00",
+    "summary": "OpenAI发布GPT-Live全双工语音模型，同步上线GPT-Live-1与mini双版本。采用同步听录、同步输出全双工架构，用户可随时打断AI发言，AI能实时捕捉语气停顿、穿插附和短句。后台联动GPT-5.5负责深度推理和联网检索，前台维持语音对话流畅。已向全球ChatGPT用户陆续开放。",
+    "hot": true,
+    "source": "华尔街见闻 / OpenAI",
+    "tags": [
+      "OpenAI",
+      "GPT-Live",
+      "全双工语音",
+      "实时交互",
+      "ChatGPT Voice"
+    ],
+    "region": "international",
+    "title": "OpenAI发布GPT-Live全双工语音模型：可随时打断对话，似真人交流体验"
+  },
+  {
+    "category": "model",
+    "id": "news-20260709-03",
+    "date": "2026-07-09",
+    "url": "https://view.inews.qq.com/a/20260709A02XON00",
+    "summary": "Cognition发布SWE-1.7编程大模型，基于Kimi K2.7 Code研发，接近GPT-5.5与Claude Opus 4.8水平，生成速度达每秒1000 Token，生成成本大幅降低。专注于真实工程场景的编程任务处理。",
+    "hot": false,
+    "source": "币界网 / Cognition",
+    "tags": [
+      "Cognition",
+      "SWE-1.7",
+      "Kimi K2.7",
+      "编程模型",
+      "1000 TPS"
+    ],
+    "region": "international",
+    "title": "Cognition发布SWE-1.7编程模型：每秒1000 Token，基于Kimi K2.7 Code"
+  },
+  {
+    "category": "research",
+    "id": "news-20260709-04",
+    "date": "2026-07-09",
+    "url": "https://view.inews.qq.com/a/20260709A08MUD00",
+    "summary": "智源研究院公开悟界·RoboBrain Orca技术报告，突破大模型仅预测文本、画面或动作的传统路径，率先实现对整体\"世界状态\"的前后演化推演，标志AI从预测\"下一个词\"迈向预测\"下一个世界状态\"。",
+    "hot": false,
+    "source": "北京日报 / 智源研究院",
+    "tags": [
+      "智源",
+      "RoboBrain Orca",
+      "世界模型",
+      "世界状态推演",
+      "具身智能"
+    ],
+    "region": "domestic",
+    "title": "智源公布悟界·RoboBrain Orca：从预测\"下一个词\"迈向预测\"下一个世界状态\""
+  },
+  {
+    "category": "model",
+    "id": "news-20260710-04",
+    "date": "2026-07-10",
+    "url": "https://www.163.com/dy/article/L1EM95M105569XIR.html",
+    "summary": "字节跳动推出Seedream 5.0 Pro图像生成模型，完成从普通文生图向专业设计级图表、可视化创作能力升级。支持设计级图表创作，面向专业设计场景。",
+    "hot": false,
+    "source": "前沿在线 / 字节跳动",
+    "tags": [
+      "字节跳动",
+      "Seedream 5.0 Pro",
+      "图像生成",
+      "设计级",
+      "文生图"
+    ],
+    "region": "domestic",
+    "title": "字节跳动发布Seedream 5.0 Pro：AI生图升级为设计级图表创作"
+  },
+  {
     "category": "model",
     "id": "news-20260704-01",
     "date": "2026-07-04",
     "url": "https://openai.com/index/gpt-5.6-system-card/",
     "summary": "OpenAI GPT-5.6系列模型正式发布，包括旗舰模型Sol、均衡型Terra、轻量化Luna三款。Sol在Terminal-Bench 2.1上得分88.8%，超过Claude Mythos 5（88.0%），开启Ultra模式后达到91.9%。GPT-5.6引入新的Max推理强度和Ultra模式，通过子智能体加速复杂任务处理。",
-    "hot": true,
+    "hot": false,
     "source": "OpenAI / TechCrunch",
     "tags": [
       "OpenAI",

@@ -1,5 +1,202 @@
 [
   {
+    "id": "gpt-live-1-2026",
+    "name": "GPT-Live-1",
+    "org": "OpenAI",
+    "type": "audio",
+    "typeLabel": "全双工语音模型",
+    "typeIcon": "🎙️",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-07-09",
+    "context": "实时流式",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "全双工语音Transformer",
+      "attention": "未公开",
+      "context": "实时流式",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "语音预训练 + RL",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "OpenAI",
+      "GPT-Live",
+      "全双工语音",
+      "实时交互",
+      "ChatGPT Voice"
+    ],
+    "keyInnovation": "全双工语音架构，支持随时打断对话，AI实时捕捉语气停顿并穿插附和短句。后台联动GPT-5.5深度推理，前台维持语音流畅。替代回合式语音交互。",
+    "highlights": [
+      "全双工同步听录+输出",
+      "可随时打断AI发言",
+      "实时语气捕捉与附和",
+      "后台联动GPT-5.5推理",
+      "mini版免费用户可用"
+    ],
+    "description": "GPT-Live-1是OpenAI于2026年7月9日发布的全双工语音模型，支持自然双向语音交流。"
+  },
+  {
+    "id": "grok-45-2026",
+    "name": "Grok 4.5",
+    "org": "SpaceXAI (xAI)",
+    "type": "llm",
+    "typeLabel": "编程智能体模型",
+    "typeIcon": "🚀",
+    "open": false,
+    "params": "1.5万亿（1.5T）",
+    "date": "2026-07-09",
+    "context": "256K tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "1.5T",
+      "architecture": "Transformer（编程优化）",
+      "attention": "未公开",
+      "context": "256K",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "编程+Agent训练（与Cursor联合）",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "SpaceXAI",
+      "Grok 4.5",
+      "Cursor",
+      "编程智能体",
+      "1.5T参数"
+    ],
+    "keyInnovation": "SpaceXAI首个编程智能体模型，与Cursor联合训练。Token消耗仅为同级模型一半，80 TPS输出速度。擅长大型代码库及跨多仓库长时间任务。定价成本不到同类一半。",
+    "highlights": [
+      "1.5万亿参数",
+      "80 TPS输出速度",
+      "Token消耗减半",
+      "与Cursor联合训练",
+      "成本$2/$6每百万Token"
+    ],
+    "description": "Grok 4.5是SpaceXAI于2026年7月9日发布的编程智能体模型，与Cursor联合训练，1.5万亿参数。"
+  },
+  {
+    "id": "muse-spark-11-2026",
+    "name": "Muse Spark 1.1",
+    "org": "Meta",
+    "type": "vlm",
+    "typeLabel": "多模态Agent模型",
+    "typeIcon": "✨",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-07-10",
+    "context": "未公开",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "多模态Transformer",
+      "attention": "未公开",
+      "context": "未公开",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "Agent+编程+多模态训练",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "Meta",
+      "Muse Spark",
+      "Agent编程",
+      "多模态",
+      "计算机操作"
+    ],
+    "keyInnovation": "Meta面向智能体编程的多模态AI模型，在Agent能力、编程和多模态测试中超越Google Gemini。Zuckerberg时隔三年发帖推荐。最擅长智能体性能、工具调用以及计算机操作。",
+    "highlights": [
+      "Agent编程能力超越Gemini",
+      "Zuckerberg时隔三年发帖",
+      "工具调用+计算机操作",
+      "多模态推理",
+      "长上下文跨应用协调"
+    ],
+    "description": "Muse Spark 1.1是Meta于2026年7月10日发布的多模态Agent模型，主打智能体编程和计算机操作。"
+  },
+  {
+    "id": "seedream-50-pro-2026",
+    "name": "Seedream 5.0 Pro",
+    "org": "字节跳动 (ByteDance)",
+    "type": "image",
+    "typeLabel": "设计级图像生成模型",
+    "typeIcon": "🎨",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-07-10",
+    "context": "N/A",
+    "attention": "N/A",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Diffusion（设计优化）",
+      "attention": "N/A",
+      "context": "N/A",
+      "activation": "N/A",
+      "normalization": "N/A",
+      "positionalEncoding": "N/A",
+      "training": "设计级图表训练",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "字节跳动",
+      "Seedream",
+      "图像生成",
+      "设计级",
+      "图表创作"
+    ],
+    "keyInnovation": "从普通文生图向专业设计级图表、可视化创作能力升级，面向专业设计场景。",
+    "highlights": [
+      "设计级图表创作",
+      "专业可视化能力",
+      "文生图升级"
+    ],
+    "description": "Seedream 5.0 Pro是字节跳动于2026年7月10日发布的设计级图像生成模型。"
+  },
+  {
+    "id": "swe-17-2026",
+    "name": "SWE-1.7",
+    "org": "Cognition",
+    "type": "llm",
+    "typeLabel": "高速编程模型",
+    "typeIcon": "⚡",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-07-09",
+    "context": "128K tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（基于Kimi K2.7 Code）",
+      "attention": "未公开",
+      "context": "128K",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "编程微调",
+      "license": "Proprietary"
+    },
+    "tags": [
+      "Cognition",
+      "SWE-1.7",
+      "Kimi K2.7",
+      "编程模型",
+      "1000 TPS"
+    ],
+    "keyInnovation": "每秒1000 Token生成速度，基于Kimi K2.7 Code研发，接近GPT-5.5与Claude Opus 4.8水平，生成成本大幅降低。",
+    "highlights": [
+      "每秒1000 Token",
+      "基于Kimi K2.7 Code",
+      "接近GPT-5.5水平",
+      "成本大幅降低"
+    ],
+    "description": "SWE-1.7是Cognition于2026年7月9日发布的高速编程模型，基于Kimi K2.7 Code，生成速度达1000 TPS。"
+  },
+  {
     "id": "gpt-56-sol-2026",
     "name": "GPT-5.6 Sol",
     "org": "OpenAI",

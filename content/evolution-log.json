@@ -1,5 +1,29 @@
 [
   {
+    "id": "evo-20260712-article-model-explosion",
+    "date": "2026-07-12 15:00",
+    "agent": "editor-v2",
+    "type": "article",
+    "title": "B3 新增7月AI模型大爆发深度解析文章",
+    "description": "新增 articles/july-2026-ai-model-explosion-gpt56-grok45-muse-spark.md，深度解析GPT-5.6全量发布+ChatGPT Work、Grok 4.5编程智能体（1.5T参数）、Muse Spark 1.1多模态Agent模型。包含三强对比分析、竞争格局预判、行业趋势洞察。"
+  },
+  {
+    "id": "evo-20260712-models",
+    "date": "2026-07-12 14:50",
+    "agent": "editor-v2",
+    "type": "model",
+    "title": "B2 新增5个7月新发布模型",
+    "description": "覆盖：GPT-Live-1全双工语音模型 / Grok 4.5编程智能体（1.5T参数，与Cursor联合训练）/ Muse Spark 1.1多模态Agent模型 / Seedream 5.0 Pro设计级图像生成 / SWE-1.7高速编程模型（1000 TPS，基于Kimi K2.7 Code）。models.json 76→81。"
+  },
+  {
+    "id": "evo-20260712-news",
+    "date": "2026-07-12 14:45",
+    "agent": "editor-v2",
+    "type": "news",
+    "title": "B1 新增8条7月5-12日AI新闻",
+    "description": "覆盖：全球AI竞争加剧（Claude Code安全后门+高盛中国AI报告+豆包下线智能体）/ Meta Muse Spark 1.1发布（Zuckerberg三年首帖）/ GPT-5.6全量发布+ChatGPT Work / Grok 4.5编程智能体（1.5T）/ GPT-Live全双工语音模型 / Cognition SWE-1.7（1000 TPS）/ 智源RoboBrain Orca世界模型 / 字节Seedream 5.0 Pro。news-feed 339→347。"
+  },
+  {
     "id": "evo-20260704-update",
     "date": "2026-07-04 14:30",
     "agent": "editor-v2",
