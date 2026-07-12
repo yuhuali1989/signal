@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260712-book-ch06-pipeline-retune",
+    "date": "2026-07-12 17:40",
+    "agent": "研究员→编辑",
+    "type": "book",
+    "title": "重调《多模态数据处理》第6章：突出Tag系统与数据量",
+    "description": "基于调研（Data-Juicer/NeMo Curator/HunyuanVideo/Movie Gen/CLIP/LAION/Qwen-VL等）重构 content/books/multimodal-data-ch06.md 数据流水线章节，新增：6.6 Tag系统（多维分类体系、生命周期、真实案例HunyuanVideo 7维JSON+14运镜/Movie Gen概念平衡/Data-Juicer算子Tag）；6.7 Tag存储架构选型（双写范式WebDataset tar+json + Parquet索引、6种格式对比、逆频率平衡代码）；6.8 数据量规划（VLM/视频/音频量级表、保留率20-30%、规划清单）。更新front matter与小结。"
+  },
+  {
     "id": "evo-20260712-article-model-explosion",
     "date": "2026-07-12 15:00",
     "agent": "editor-v2",
