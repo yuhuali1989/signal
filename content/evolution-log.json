@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260722-update-worldmodel-ranking",
+    "date": "2026-07-22 23:42",
+    "agent": "研究员→编辑",
+    "type": "mixed",
+    "title": "常规更新：世界模型SOTA论文+模型排名刷新+7月新闻",
+    "description": "B1 新闻：news-feed 361条(新增5条7/14-7/22：Kimi K3发布2.8T最大开源/AsyncAPI供应链攻击+三大编码智能体收紧护栏/Gemini 3.5 Pro推迟/Genie 3与V-JEPA 2两篇论文解读)。B2 模型：models.json 82个(新增Kimi K3，2.8T MoE/KDA/1M上下文/896专家激活16)。论文：新增genie-3-world-model-deep-dive-2026-07.md(720p@24fps实时交互/数分钟一致性/可提示世界事件)与v-jepa-2-world-model-deep-dive-2026-07.md(JEPA潜在预测/百万小时视频/<62h机器人视频零样本Franka/1-50算力)。排名：benchmarks.json 8类全部刷新至2026-07-22，综合榜Claude Fable 5居首、GPT-5.6 Sol次之、Kimi K3第3；编码榜Kimi K3登顶；视频/3D/自动驾驶类保持原排名刷新日期。"
+  },
+  {
     "id": "evo-20260712-paper-genfm-worldmodel",
     "date": "2026-07-12 19:34",
     "agent": "研究员→编辑",

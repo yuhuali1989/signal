@@ -1,5 +1,49 @@
 [
   {
+    "id": "kimi-k3-2026",
+    "name": "Kimi K3",
+    "org": "月之暗面 (Moonshot AI)",
+    "type": "llm",
+    "typeLabel": "超大参数开源MoE模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "2.8万亿 (MoE, 896专家激活16)",
+    "date": "2026-07-16",
+    "context": "1M tokens",
+    "attention": "KDA (Kimi Delta Attention) + AttnRes",
+    "factSheet": {
+      "params": "2.8万亿 (MoE, 896专家/激活16)",
+      "architecture": "MoE Transformer + KDA混合线性注意力 + Attention Residuals + Stable LatentMoE",
+      "attention": "KDA + AttnRes",
+      "context": "1M tokens",
+      "activation": "SwiGLU (推测)",
+      "normalization": "RMSNorm (推测)",
+      "positionalEncoding": "RoPE",
+      "training": "MXFP4量化感知训练(从SFT起) + RL",
+      "license": "Modified MIT (7/27开放权重)"
+    },
+    "tags": [
+      "月之暗面",
+      "Kimi K3",
+      "开源",
+      "2.8万亿",
+      "MoE",
+      "KDA",
+      "1M上下文",
+      "Agent编程",
+      "前端编程第一"
+    ],
+    "keyInnovation": "全球参数最大的开源模型(2.8T)，KDA混合线性注意力+注意力残差+Stable LatentMoE，896专家激活16，扩展效率较K2提升2.5×；Code Arena 1679全球第1",
+    "highlights": [
+      "2.8万亿参数(全球最大开源)",
+      "100万token上下文",
+      "Code Arena 1679全球第1(超Fable 5/Sol)",
+      "MXFP4量化后仅1.4TB可自托管(8节点80GB GPU)",
+      "7月27日开放权重(Modified MIT)"
+    ],
+    "description": "Kimi K3是月之暗面于2026年7月16日发布的旗舰开源大模型，总参数2.8万亿(896专家/激活16)，基于KDA混合线性注意力与注意力残差构建，1M上下文，前端编程Code Arena登顶全球第一，权重将于7月27日以Modified MIT开放。"
+  },
+  {
     "id": "gpt-live-1-2026",
     "name": "GPT-Live-1",
     "org": "OpenAI",
