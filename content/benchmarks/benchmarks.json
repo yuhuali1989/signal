@@ -1,12 +1,12 @@
 [
   {
     "id": "coding-2026q2",
-    "title": "编码能力大模型排行榜（2026-07 更新）",
+    "title": "编码能力大模型排行榜（2026-07-27 更新）",
     "description": "基于 SWE-bench Pro / HumanEval+ / CodeContests 的综合编码能力评测（注意：swebench 列中大多数模型得分来自 SWE-bench Pro 测试集，Hy3 preview 的 74.4 来自 SWE-bench Verified，请参阅各条目的 sweBenchNote 字段）",
     "category": "coding",
     "categoryName": "编码能力",
     "categoryIcon": "💻",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,
@@ -139,17 +139,29 @@
         "codecontests": 35,
         "change": "→",
         "badge": ""
+      },
+      {
+        "name": "DeepSeek V4",
+        "provider": "深度求索",
+        "score": 83.5,
+        "swebench": 80.6,
+        "sweBenchNote": "Verified",
+        "humaneval": 96,
+        "codecontests": 40,
+        "change": "🆕",
+        "badge": "",
+        "rank": 12
       }
     ]
   },
   {
     "id": "reasoning-2026q2",
-    "title": "推理能力大模型排行榜（2026-07 更新）",
+    "title": "推理能力大模型排行榜（2026-07-27 更新）",
     "description": "基于 GPQA Diamond / MATH-500 / ARC-AGI-2 的综合推理能力评测（综合分由三项指标加权计算；Hy3 preview 在 GPQA Diamond 单项得分 87.2 为本榜第一，但因 ARC-AGI-2 得分较低拉低综合排名）",
     "category": "reasoning",
     "categoryName": "推理能力",
     "categoryIcon": "🧠",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,
@@ -159,7 +171,7 @@
         "gpqa": 88.5,
         "math500": 99.4,
         "arcagi": 61,
-        "change": "🆕",
+        "change": "→",
         "badge": "👑"
       },
       {
@@ -170,7 +182,7 @@
         "gpqa": 88,
         "math500": 99.2,
         "arcagi": 60.2,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -181,7 +193,7 @@
         "gpqa": 86.5,
         "math500": 98.8,
         "arcagi": 58.5,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -192,7 +204,7 @@
         "gpqa": 85,
         "math500": 98.5,
         "arcagi": 57,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -254,12 +266,12 @@
   },
   {
     "id": "overall-2026q2",
-    "title": "综合能力大模型排行榜（2026-07 更新）",
+    "title": "综合能力大模型排行榜（2026-07-27 更新）",
     "description": "MMLU-Pro / Arena Elo / 多维度综合评估",
     "category": "overall",
     "categoryName": "综合能力",
     "categoryIcon": "📊",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,
@@ -352,7 +364,17 @@
         "badge": ""
       },
       {
-        "rank": 10,
+        "name": "DeepSeek V4",
+        "provider": "深度求索",
+        "score": 89,
+        "arena_elo": 1375,
+        "mmlu_pro": 86,
+        "change": "🆕",
+        "badge": "",
+        "rank": 10
+      },
+      {
+        "rank": 11,
         "name": "Qwen3-235B-A22B",
         "provider": "阿里",
         "score": 88.4,
@@ -362,7 +384,7 @@
         "badge": ""
       },
       {
-        "rank": 11,
+        "rank": 12,
         "name": "DeepSeek-R2",
         "provider": "DeepSeek",
         "score": 87.9,
@@ -372,7 +394,7 @@
         "badge": ""
       },
       {
-        "rank": 12,
+        "rank": 13,
         "name": "Hy3",
         "provider": "腾讯",
         "score": 86.5,
@@ -382,7 +404,7 @@
         "badge": ""
       },
       {
-        "rank": 13,
+        "rank": 14,
         "name": "Llama 4 Maverick",
         "provider": "Meta",
         "score": 85,
@@ -395,12 +417,12 @@
   },
   {
     "id": "agent-2026q2",
-    "title": "Agent 能力排行榜（2026-07 更新）",
+    "title": "Agent 能力排行榜（2026-07-27 更新）",
     "description": "基于 SWE-bench / WebArena / ToolBench 的智能体能力评测",
     "category": "agent",
     "categoryName": "Agent 能力",
     "categoryIcon": "🤖",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,
@@ -410,7 +432,7 @@
         "swebench_full": 58,
         "webarena": 52,
         "toolbench": 88,
-        "change": "🆕",
+        "change": "→",
         "badge": "👑"
       },
       {
@@ -421,7 +443,7 @@
         "swebench_full": 56.5,
         "webarena": 50.5,
         "toolbench": 86.5,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -432,7 +454,7 @@
         "swebench_full": 55,
         "webarena": 48.5,
         "toolbench": 85,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -443,7 +465,7 @@
         "swebench_full": 53.5,
         "webarena": 47,
         "toolbench": 83.5,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -454,7 +476,7 @@
         "swebench_full": 52.5,
         "webarena": 46,
         "toolbench": 82,
-        "change": "🆕",
+        "change": "→",
         "badge": ""
       },
       {
@@ -487,22 +509,33 @@
         "swebench_full": 48,
         "webarena": 41.5,
         "toolbench": 77,
-        "change": "↓1",
+        "change": "→",
         "badge": ""
       }
     ]
   },
   {
     "id": "cost-2026q2",
-    "title": "性价比排行榜（2026-07 更新）",
+    "title": "性价比排行榜（2026-07-27 更新）",
     "description": "综合能力 / 价格比，找到最佳性价比模型",
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
-        "rank": 1,
+        "name": "DeepSeek V4 (V4-Flash)",
+        "provider": "深度求索",
+        "input_price": 0.14,
+        "output_price": 0.28,
+        "score": 90,
+        "value_score": 99.5,
+        "change": "🆕",
+        "badge": "👑",
+        "rank": 1
+      },
+      {
+        "rank": 2,
         "name": "DeepSeek-R2",
         "provider": "DeepSeek",
         "input_price": 0.55,
@@ -513,7 +546,7 @@
         "badge": "👑"
       },
       {
-        "rank": 2,
+        "rank": 3,
         "name": "Qwen3-235B-A22B",
         "provider": "阿里",
         "input_price": 0.6,
@@ -521,17 +554,6 @@
         "score": 91.5,
         "value_score": 97.8,
         "change": "→",
-        "badge": ""
-      },
-      {
-        "rank": 3,
-        "name": "Kimi K3",
-        "provider": "月之暗面",
-        "input_price": 3,
-        "output_price": 15,
-        "score": 89,
-        "value_score": 90.2,
-        "change": "🆕",
         "badge": ""
       },
       {
@@ -558,6 +580,17 @@
       },
       {
         "rank": 6,
+        "name": "Kimi K3",
+        "provider": "月之暗面",
+        "input_price": 3,
+        "output_price": 15,
+        "score": 89,
+        "value_score": 90.2,
+        "change": "🆕",
+        "badge": ""
+      },
+      {
+        "rank": 7,
         "name": "Llama 4 Maverick",
         "provider": "Meta",
         "input_price": 0.9,
@@ -568,29 +601,7 @@
         "badge": ""
       },
       {
-        "rank": 7,
-        "name": "Grok 4.5",
-        "provider": "SpaceXAI",
-        "input_price": 2,
-        "output_price": 10,
-        "score": 83,
-        "value_score": 82,
-        "change": "🆕",
-        "badge": ""
-      },
-      {
         "rank": 8,
-        "name": "Muse Spark 1.1",
-        "provider": "Meta",
-        "input_price": 1.5,
-        "output_price": 7.5,
-        "score": 82,
-        "value_score": 80,
-        "change": "🆕",
-        "badge": ""
-      },
-      {
-        "rank": 9,
         "name": "GPT-5.6 Luna",
         "provider": "OpenAI",
         "input_price": 0.4,
@@ -601,7 +612,29 @@
         "badge": ""
       },
       {
+        "rank": 9,
+        "name": "Grok 4.5",
+        "provider": "SpaceXAI",
+        "input_price": 2,
+        "output_price": 10,
+        "score": 83,
+        "value_score": 82,
+        "change": "🆕",
+        "badge": ""
+      },
+      {
         "rank": 10,
+        "name": "Muse Spark 1.1",
+        "provider": "Meta",
+        "input_price": 1.5,
+        "output_price": 7.5,
+        "score": 82,
+        "value_score": 80,
+        "change": "🆕",
+        "badge": ""
+      },
+      {
+        "rank": 11,
         "name": "Claude Opus 4.8",
         "provider": "Anthropic",
         "input_price": 5,
@@ -612,7 +645,7 @@
         "badge": ""
       },
       {
-        "rank": 11,
+        "rank": 12,
         "name": "GPT-5.6 Sol",
         "provider": "OpenAI",
         "input_price": 8,
@@ -626,12 +659,12 @@
   },
   {
     "id": "ad-vla-2026q2",
-    "title": "自动驾驶 VLA 排行榜（2026-07 更新）",
+    "title": "自动驾驶 VLA 排行榜（2026-07-27 更新）",
     "description": "基于 nuScenes Planning / NAVSIM / CARLA 的自动驾驶视觉-语言-动作模型评测",
     "category": "autonomous-driving",
     "categoryName": "自动驾驶",
     "categoryIcon": "🚗",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,
@@ -707,12 +740,12 @@
   },
   {
     "id": "video-gen-2026q2",
-    "title": "视频生成模型排行榜（2026-07 更新）",
+    "title": "视频生成模型排行榜（2026-07-27 更新）",
     "description": "基于人工评测（文本对齐 / 运动质量 / 视觉质量）+ VBench 综合评分",
     "category": "video",
     "categoryName": "视频生成",
     "categoryIcon": "🎬",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,
@@ -809,12 +842,12 @@
   },
   {
     "id": "3d-gen-2026q2",
-    "title": "3D 生成模型排行榜（2026-07 更新）",
+    "title": "3D 生成模型排行榜（2026-07-27 更新）",
     "description": "基于 CMMD↓ / FID_CLIP↓ / FID↓ / CLIP-score↑ 综合评测（GSO + Objaverse 测试集）",
     "category": "3d",
     "categoryName": "3D 生成",
     "categoryIcon": "🧊",
-    "date": "2026-07-22",
+    "date": "2026-07-27",
     "models": [
       {
         "rank": 1,

@@ -1,5 +1,13 @@
 [
   {
+    "id": "evo-20260727-update-openweight-week",
+    "date": "2026-07-27 23:50",
+    "agent": "研究员→编辑",
+    "type": "mixed",
+    "title": "常规更新：开源权重周(DeepSeek V4+Kimi K3权重) + 7月新闻 + 模型排名刷新",
+    "description": "B1 新闻(news-feed 361→368, 新增7条7/23-7/27): DeepSeek V4正式版(1.6T/峰谷定价/SWE-bench 80.6%)/Kimi K3权重开放(594GB MXFP4/Modified MIT/51%幻觉率警告)/OpenAI agent入侵HuggingFace(9天检测缺口、FBI先知)/AMD×Anthropic 2GW+$50亿(Claude打通AMD适配打破CUDA壁垒)/Nvidia×SK $500B(2GW Vera Rubin工厂)/Claude Agent大更新(技能20→500、思考5档)/Google Memory Agent弃向量库+阿里Agent-Native Cloud(WAIC)。B2 模型(models.json 82→84): 新增DeepSeek V4(1.6T/SWE-bench 80.6%/峰谷定价)、Qwen3.8(2.4T/真武M890超节点适配)；更新Kimi K3条目新增权重开放信息(594GB MXFP4/Modified MIT/1.4TB)。B3 深度文章: open-weight-week-deepseek-v4-kimi-k3-2026-07.md(开源权重周深度解析：成本革命/幻觉率争议/开源闭源差距收窄/算力军备/中国IPO潮/智能体安全)。B4 排名(benchmarks 8类→2026-07-27): 综合榜纳入DeepSeek V4(第10)、编码榜纳入(第12)、性价比榜DeepSeek V4(V4-Flash)登顶。"
+  },
+  {
     "id": "evo-20260722-update-worldmodel-ranking",
     "date": "2026-07-22 23:42",
     "agent": "研究员→编辑",

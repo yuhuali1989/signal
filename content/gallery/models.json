@@ -1,5 +1,90 @@
 [
   {
+    "id": "qwen38-2026",
+    "name": "Qwen3.8",
+    "org": "阿里 (Alibaba)",
+    "type": "llm",
+    "typeLabel": "超大规模MoE模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "2.4万亿 (MoE)",
+    "date": "2026-07-18",
+    "context": "未公开",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "2.4万亿 (MoE)",
+      "architecture": "MoE Transformer",
+      "attention": "MoE",
+      "context": "未公开",
+      "activation": "推测",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "推测",
+      "license": "开源(推测)"
+    },
+    "tags": [
+      "阿里",
+      "Qwen3.8",
+      "通义千问",
+      "2.4万亿",
+      "超节点",
+      "真武M890",
+      "模型发布"
+    ],
+    "keyInnovation": "2.4万亿参数MoE，阿里真武M890超节点成功适配(国内首个运行超2万亿参数大模型)，64张M890通过ICN Switch 1.0实现800GB/s互联、9TB显存，上线阿里云百炼平台",
+    "highlights": [
+      "2.4万亿参数",
+      "真武M890超节点适配",
+      "800GB/s互联/9TB显存",
+      "百炼平台推理服务",
+      "国产芯片超大规模突破"
+    ],
+    "description": "Qwen3.8是阿里于2026年7月发布的通义千问系列大模型，参数规模2.4万亿(MoE)。阿里真武M890超节点已成功适配Qwen3.8并上线阿里云百炼平台，成为国内首个成功运行超2万亿参数大模型的超节点，通过ICN Switch 1.0互联芯片实现64张M890间800GB/s高速互联、9TB显存规模。"
+  },
+  {
+    "id": "deepseek-v4-2026",
+    "name": "DeepSeek V4",
+    "org": "深度求索 (DeepSeek)",
+    "type": "llm",
+    "typeLabel": "开源MoE模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "1.6万亿 (MoE)",
+    "date": "2026-07-24",
+    "context": "未公开",
+    "attention": "MoE (推测)",
+    "factSheet": {
+      "params": "1.6万亿 (MoE)",
+      "architecture": "MoE Transformer",
+      "attention": "推测",
+      "context": "未公开",
+      "activation": "推测",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "RL + 峰谷定价策略",
+      "license": "开源(推测)"
+    },
+    "tags": [
+      "DeepSeek",
+      "V4",
+      "深度求索",
+      "开源",
+      "1.6万亿",
+      "SWE-bench",
+      "峰谷定价",
+      "模型发布"
+    ],
+    "keyInnovation": "1.6万亿参数MoE正式版，V4-Flash定价0.14/0.28美元每MTok(顶级模型1/100)，SWE-bench 80.6%，旧API端点下线，瞄准710亿美元上海上市估值",
+    "highlights": [
+      "1.6万亿参数MoE",
+      "V4-Flash成本仅顶级1/100",
+      "SWE-bench 80.6%",
+      "峰谷定价落地",
+      "港股上市估值710亿美元"
+    ],
+    "description": "DeepSeek V4是深度求索于2026年7月24日发布的正式版大模型，参数规模约1.6万亿(MoE)。V4-Flash定价每百万Token输入0.14美元、输出0.28美元，比顶级美国模型便宜约100倍；最佳版本SWE-bench软件工程测试得分80.6%。旧版deepseek-chat与deepseek-reasoner端点同日下线。"
+  },
+  {
     "id": "kimi-k3-2026",
     "name": "Kimi K3",
     "org": "月之暗面 (Moonshot AI)",
@@ -20,7 +105,8 @@
       "normalization": "RMSNorm (推测)",
       "positionalEncoding": "RoPE",
       "training": "MXFP4量化感知训练(从SFT起) + RL",
-      "license": "Modified MIT (7/27开放权重)"
+      "license": "Modified MIT (7/27开放权重)",
+      "weights": "594GB MXFP4 (约1.4TB存储) / Modified MIT"
     },
     "tags": [
       "月之暗面",
@@ -39,9 +125,10 @@
       "100万token上下文",
       "Code Arena 1679全球第1(超Fable 5/Sol)",
       "MXFP4量化后仅1.4TB可自托管(8节点80GB GPU)",
-      "7月27日开放权重(Modified MIT)"
+      "7月27日开放权重(Modified MIT)",
+      "2026-07-27 开放完整权重(594GB MXFP4/Modified MIT)"
     ],
-    "description": "Kimi K3是月之暗面于2026年7月16日发布的旗舰开源大模型，总参数2.8万亿(896专家/激活16)，基于KDA混合线性注意力与注意力残差构建，1M上下文，前端编程Code Arena登顶全球第一，权重将于7月27日以Modified MIT开放。"
+    "description": "Kimi K3是月之暗面于2026年7月16日发布的旗舰开源大模型，总参数2.8万亿(896专家/激活16)，基于KDA混合线性注意力与注意力残差构建，1M上下文，前端编程Code Arena登顶全球第一，权重将于7月27日以Modified MIT开放。 完整开源权重已于2026年7月27日开放：MXFP4格式约594GB(约1.4TB存储)、Modified MIT协议，企业/个人可8-16节点H100/B200集群自托管；独立测试提示约51%事实性幻觉率，投产前需按场景实测。"
   },
   {
     "id": "gpt-live-1-2026",

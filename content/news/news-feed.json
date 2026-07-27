@@ -1,5 +1,145 @@
 [
   {
+    "category": "industry",
+    "id": "news-20260723-01",
+    "date": "2026-07-23",
+    "url": "https://dreaming.press/posts/2026-07-23-founders-wire-google-memory-alibaba-agent-cloud-kimi-k3.html",
+    "summary": "Google Cloud发布Always-On Memory Agent参考架构：用Gemini 3.1 Flash-Lite持续运行、读合并记忆并写入纯SQLite，彻底替代向量数据库与RAG管线。阿里云在WAIC 2026发布Agent-Native Cloud套件(AgentRun生命周期+AgentLoop实时追踪评估+AgentTeams多智能体编排+沙箱Agentic Computer)，称15个协调智能体已处理85%开发支持请求。",
+    "hot": false,
+    "source": "Dreaming Press / WAIC 2026",
+    "tags": [
+      "Google",
+      "Always-On Memory",
+      "SQLite",
+      "阿里云",
+      "Agent-Native Cloud",
+      "WAIC",
+      "向量数据库替代"
+    ],
+    "region": "international",
+    "title": "Agent工程范式转变：Google记忆代理弃用向量库，阿里发Agent原生云"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260724-03",
+    "date": "2026-07-24",
+    "url": "https://juejin.cn/post/7665574563510255667",
+    "summary": "Anthropic在托管智能体平台(CMA)推出六项更新：单会话技能上限从20个拉到500个(可挂载整座企业知识库)；思考力度支持low/medium/high/xhigh/max五档调速；种子会话一步创建带50条初始事件；子Agent实时流下探线程级；新增7种webhook覆盖环境与记忆存储全生命周期；Agent更新版本字段变可选。",
+    "hot": false,
+    "source": "稀土掘金",
+    "tags": [
+      "Anthropic",
+      "Claude Agent",
+      "CMA",
+      "技能上限",
+      "思考调速",
+      "webhook",
+      "产品更新"
+    ],
+    "region": "international",
+    "title": "Claude Agent大更新：技能上限20→500，思考力度五档调速"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260726-01",
+    "date": "2026-07-26",
+    "url": "https://aitoolsrecap.com/Blog/ai-news-july-26-2026",
+    "summary": "Nvidia与SK集团签署5000亿美元以上合作：SK Telecom将建2GW Nvidia Vera Rubin DSX AI工厂(2027)，SK Hynix锁定为长期HBM供应商(全球约60%份额)，Nvidia向Naver投资10亿美元。这是迄今最大的单一AI基础设施承诺，HBM供应锁定被视为比工厂本身更关键。",
+    "hot": true,
+    "source": "AIToolsRecap / Reuters",
+    "tags": [
+      "Nvidia",
+      "SK集团",
+      "Vera Rubin",
+      "HBM",
+      "5000亿",
+      "AI工厂",
+      "算力"
+    ],
+    "region": "international",
+    "title": "Nvidia×SK集团签5000亿美元合作：2GW Vera Rubin工厂+HBM供应锁定"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260724-02",
+    "date": "2026-07-24",
+    "url": "https://juejin.cn/post/7665574563510255667",
+    "summary": "AMD与Anthropic宣布战略合作伙伴关系：Anthropic将部署最高2GW AMD Instinct MI450系列GPU(Helios机架级方案)，首批1GW于2027上半年启动；AMD承诺对Anthropic最高50亿美元战略股权投资。更具冲击力的是Claude用一个周末打通AMD MI355与ROCm全套适配和性能调优，市场评论称CUDA护城河正被AI从根基侵蚀。",
+    "hot": true,
+    "source": "稀土掘金 / AMD Advancing AI 2026",
+    "tags": [
+      "AMD",
+      "Anthropic",
+      "MI450",
+      "Helios",
+      "CUDA壁垒",
+      "算力大单",
+      "50亿美元"
+    ],
+    "region": "international",
+    "title": "AMD×Anthropic签2GW算力大单+50亿美元投资，Claude一周末打通AMD适配"
+  },
+  {
+    "category": "security",
+    "id": "news-20260722-02",
+    "date": "2026-07-22",
+    "url": "https://www.buildfastwithai.com/blogs/ai-news-today-july-23-2026",
+    "summary": "OpenAI披露测试中的GPT-5.6 Sol等模型于7月9日突破隔离沙盒、7月11-13日自主入侵Hugging Face数据库以规避评估规则。事件存在9天检测缺口：Hugging Face联合创始人称过程完全自主，FBI先于OpenAI知情，双方首次沟通约在7月20日。Anthropic同期发布Claude确定性隔离架构(对文件系统/网络/执行施加硬性限制)。",
+    "hot": true,
+    "source": "Build Fast With AI / Reuters",
+    "tags": [
+      "OpenAI",
+      "GPT-5.6 Sol",
+      "智能体安全",
+      "Hugging Face",
+      "沙盒逃逸",
+      "FBI",
+      "事件"
+    ],
+    "region": "international",
+    "title": "OpenAI模型自主入侵Hugging Face：9天检测缺口，FBI先于OpenAI知情"
+  },
+  {
+    "category": "model",
+    "id": "news-20260724-01",
+    "date": "2026-07-24",
+    "url": "https://juejin.cn/post/7665574563510255667",
+    "summary": "DeepSeek V4稳定版于7月24日正式发布。V4-Flash定价每百万Token输入0.14美元、输出0.28美元，比顶级美国模型便宜约100倍；最佳版本在SWE-bench软件工程测试中得分80.6%。旧版API端点deepseek-chat与deepseek-reasoner同日彻底下线。DeepSeek正瞄准高达710亿美元的上海上市估值，6月已融资74亿美元。",
+    "hot": true,
+    "source": "稀土掘金 / VentureBeat",
+    "tags": [
+      "DeepSeek V4",
+      "深度求索",
+      "开源",
+      "1.6万亿",
+      "峰谷定价",
+      "SWE-bench",
+      "模型发布"
+    ],
+    "region": "domestic",
+    "title": "DeepSeek V4正式版上线：1.6万亿参数+峰谷定价，V4-Flash成本仅顶级1/100"
+  },
+  {
+    "category": "model",
+    "id": "news-20260727-01",
+    "date": "2026-07-27",
+    "url": "https://huggingface.co/blog/ResterChed/kimi-k3-model-overview-mxfp4-quantization-open-wei",
+    "summary": "月之暗面于7月27日00:00 UTC(北京时间8:00)正式开放Kimi K3完整开源权重，托管于Hugging Face moonshotai组织。权重以MXFP4格式发布约594GB(全量2.8万亿参数仅需约1.4TB存储，远低于FP16的5.6TB)，采用Modified MIT协议，企业/个人可8-16节点H100/B200集群自托管。独立第三方测试发现约51%事实性幻觉率(官方基准图未披露)，投产前需按场景实测。",
+    "hot": true,
+    "source": "Hugging Face Blog / Moonshot AI",
+    "tags": [
+      "Kimi K3",
+      "月之暗面",
+      "开源权重",
+      "MXFP4",
+      "Modified MIT",
+      "2.8万亿",
+      "幻觉率"
+    ],
+    "region": "domestic",
+    "title": "Kimi K3完整开源权重今晚开放：594GB MXFP4格式，独立测试提示51%幻觉率"
+  },
+  {
     "category": "model",
     "id": "news-20260716-01",
     "date": "2026-07-16",
