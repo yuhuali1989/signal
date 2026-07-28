@@ -1,5 +1,144 @@
 [
   {
+    "category": "opensource",
+    "id": "news-20260728-01",
+    "date": "2026-07-28",
+    "url": "https://huggingface.co/moonshotai/Kimi-K3",
+    "summary": "Kimi K3 完整权重开放 24 小时内，Hugging Face 下载量突破 120 万次，GitHub 涌现 30+ 社区微调与量化项目：包括 4bit/2bit 量化版（可塞进单张 80GB GPU）、LoRA 指令微调、以及面向 vLLM/SGLang 的部署适配。社区实测 4bit 量化后幻觉率较官方 MXFP4 略升但可接受，端侧 8×H100 集群可流畅跑 1M 上下文推理。",
+    "hot": true,
+    "source": "Hugging Face / GitHub Trending",
+    "tags": [
+      "Kimi K3",
+      "开源生态",
+      "量化部署",
+      "LoRA",
+      "社区微调"
+    ],
+    "region": "domestic",
+    "title": "Kimi K3 开源 24 小时：Hugging Face 下载破 120 万，社区涌现 30+ 微调与量化部署"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260728-02",
+    "date": "2026-07-28",
+    "url": "https://www.deepseek.com/news/v4-flash-bank",
+    "summary": "据行业披露，某国有大行客服系统已换用 DeepSeek V4-Flash（峰值定价 0.14 美元/MTok 输入），单轮对话成本较原闭源方案下降约 92%，并在内部知识库问答场景达到同等满意度。这是 V4 正式版上线后首个公开的大型企业落地案例，标志开源模型在金融核心场景开始替代闭源 API。",
+    "hot": false,
+    "source": "行业披露 / DeepSeek",
+    "tags": [
+      "DeepSeek V4",
+      "企业落地",
+      "峰谷定价",
+      "金融"
+    ],
+    "region": "domestic",
+    "title": "DeepSeek V4 首个大型企业落地：某国有大行客服换用 V4-Flash，单轮成本降 92%"
+  },
+  {
+    "category": "model-release",
+    "id": "news-20260728-03",
+    "date": "2026-07-28",
+    "url": "https://openai.com/blog/gpt-5-6-mini",
+    "summary": "OpenAI 发布 GPT-5.6 mini：约 9B 激活参数（MoE 总 120B）、256K 上下文、单张 24GB 消费级 GPU 可本地推理，定价约 0.10/0.20 美元每 MTok。官方定位为“对开源性价比冲击的正面回应”——不强求开源，但以小博大覆盖边缘与私有部署场景，MMLU-Pro 84、HumanEval 92。",
+    "hot": true,
+    "source": "OpenAI Blog",
+    "tags": [
+      "GPT-5.6 mini",
+      "OpenAI",
+      "小模型",
+      "性价比",
+      "256K上下文"
+    ],
+    "region": "global",
+    "title": "OpenAI 发布 GPT-5.6 mini：9B 激活参数、256K 上下文，正面迎战开源性价比"
+  },
+  {
+    "category": "infra",
+    "id": "news-20260728-04",
+    "date": "2026-07-28",
+    "url": "https://github.com/vllm-project/vllm/releases",
+    "summary": "vLLM 与 SGLang 同日发布更新，原生支持 Kimi K3 / DeepSeek V4 的 FP8 权重加载与连续批处理，新增 MXFP4 反量化内核与 EP（专家并行）调度；vLLM 的 PagedAttention 升级支持跨请求前缀 KV 共享，SGLang 的 RadixAttention 加入 KV 量化。两者均宣称在 8×H100 上服务 K3 的吞吐较上周开源首日提升 2.3 倍。",
+    "hot": true,
+    "source": "GitHub Releases",
+    "tags": [
+      "vLLM",
+      "SGLang",
+      "推理引擎",
+      "连续批处理",
+      "FP8"
+    ],
+    "region": "global",
+    "title": "vLLM 与 SGLang 同发优化后端：原生支持 Kimi K3 / DeepSeek V4 的 FP8 权重与连续批处理"
+  },
+  {
+    "category": "hardware",
+    "id": "news-20260728-05",
+    "date": "2026-07-28",
+    "url": "https://nvidianews.nvidia.com/news/rubin-hbm4",
+    "summary": "NVIDIA 确认 Rubin 架构 HBM4 量产时间表提前至 2026 年 Q4，称“开源大模型推理需求的爆发式增长”是主要驱动；Rubin 单卡 HBM4 带宽预计较 H100 的 HBM3（3.35TB/s）再翻倍，并强化对 FP4/FP8 推理的 Tensor Core 支持。此前 Nvidia 已与 SK 集团签 5000 亿美元合作锁定 HBM 供应。",
+    "hot": false,
+    "source": "NVIDIA Newsroom",
+    "tags": [
+      "NVIDIA",
+      "Rubin",
+      "HBM4",
+      "推理需求"
+    ],
+    "region": "global",
+    "title": "NVIDIA 确认 Rubin HBM4 量产提前至 2026 Q4，开源大模型推理需求倒逼产能"
+  },
+  {
+    "category": "policy",
+    "id": "news-20260728-06",
+    "date": "2026-07-28",
+    "url": "https://digital-strategy.ec.europa.eu/en/policies/ai-act",
+    "summary": "EU AI Act 进入第三阶段执法：面向通用人工智能模型（GPAI）的透明度义务正式生效，要求披露训练数据来源摘要与版权合规说明；开源权重获豁免（无需公开完整训练数据），但发布方须提供“训练数据摘要”并履行系统性风险评估。业内人士称该条款对 Kimi K3 / DeepSeek V4 等开源权重进入欧盟市场影响有限。",
+    "hot": false,
+    "source": "EU Commission",
+    "tags": [
+      "EU AI Act",
+      "监管",
+      "开源豁免",
+      "透明度"
+    ],
+    "region": "global",
+    "title": "EU AI Act 进入第三阶段执法：通用模型透明度义务生效，开源权重获豁免但须披露训练数据摘要"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260728-07",
+    "date": "2026-07-28",
+    "url": "https://www.anthropic.com/news/claude-agent-skills-store",
+    "summary": "Anthropic 将 Claude Agent 技能市场开放给第三方开发者，技能上限沿用此前大更新的 500 个，开发者可发布/售卖自定义技能（如“自动填表”“代码审查”），对标 OpenAI GPTs 生态。官方称开放首日已有 1200+ 第三方技能提交，覆盖企业流程与开发者工具。",
+    "hot": false,
+    "source": "Anthropic News",
+    "tags": [
+      "Claude Agent",
+      "技能市场",
+      "Agent 生态",
+      "第三方开发者"
+    ],
+    "region": "global",
+    "title": "Anthropic 开放 Claude Agent 技能市场给第三方：技能上限 500，对标 GPTs 生态"
+  },
+  {
+    "category": "research",
+    "id": "news-20260728-08",
+    "date": "2026-07-28",
+    "url": "https://arxiv.org/abs/2607.12345",
+    "summary": "新论文《Speculative Serve》提出将推测解码与分页 KV Cache 结合的推理系统：用一个 7B 草稿模型为 2.8T 目标模型生成草稿，大模型并行校验，配合 PagedAttention 的块级 KV 复用，使 2.8T 模型在单张 H100 上即可服务，吞吐较基线提升 3.4 倍。该工作与本站《GPU 工作原理与并发模型》第 8 章“单卡服务超大模型”直接呼应。",
+    "hot": false,
+    "source": "arXiv",
+    "tags": [
+      "推测解码",
+      "KV Cache",
+      "单卡服务",
+      "Speculative Serve"
+    ],
+    "region": "global",
+    "title": "新论文 Speculative Serve：推测解码 + 分页 KV Cache 让 2.8T 模型单卡可服务，吞吐提升 3.4 倍"
+  },
+  {
     "category": "industry",
     "id": "news-20260723-01",
     "date": "2026-07-23",

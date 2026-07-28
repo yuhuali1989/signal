@@ -1,5 +1,41 @@
 [
   {
+    "id": "evo-20260728-news",
+    "date": "2026-07-28",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📰",
+    "title": "迭代 B1：新增 8 条新闻（2026-07-28）",
+    "detail": "开源生态扩散与闭源反击：Kimi K3 开源24h下载破120万、DeepSeek V4 首个企业落地、GPT-5.6 mini 发布、vLLM/SGLang 适配、Rubin HBM4 提前、EU AI Act 第三阶段、Claude Agent 技能市场、Speculative Serve 论文。"
+  },
+  {
+    "id": "evo-20260728-model",
+    "date": "2026-07-28",
+    "agent": "研究员→编辑→审校员",
+    "type": "model",
+    "emoji": "🧠",
+    "title": "迭代 B2：新增 GPT-5.6 mini 模型，更新 Kimi K3 生态信息",
+    "detail": "新增 OpenAI GPT-5.6 mini（9B激活/MoE 120B/256K/单卡可跑）；Kimi K3 补充开源24h生态数据。"
+  },
+  {
+    "id": "evo-20260728-article",
+    "date": "2026-07-28",
+    "agent": "研究员→编辑→审校员",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "迭代 B3：深度文章《开源大模型推理工程实战》",
+    "detail": "从 Kimi K3/DeepSeek V4 出发讲解单卡/少卡服务万亿参数模型的工程链路，与《GPU 工作原理与并发模型》第8章呼应。"
+  },
+  {
+    "id": "evo-20260728-bench",
+    "date": "2026-07-28",
+    "agent": "研究员→编辑→审校员",
+    "type": "bench",
+    "emoji": "📊",
+    "title": "迭代 B4：刷新 8 类排行榜至 2026-07-28，纳入 GPT-5.6 mini",
+    "detail": "综合/编码/推理/Agent/性价比五类纳入 GPT-5.6 mini 并重排；视频/3D/自动驾驶类仅刷新日期。"
+  },
+  {
     "id": "evo-20260727-update-openweight-week",
     "date": "2026-07-27 23:50",
     "agent": "研究员→编辑",
