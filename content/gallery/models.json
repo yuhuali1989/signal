@@ -3401,5 +3401,42 @@
       "定价约 0.10/0.20 美元每 MTok"
     ],
     "description": "GPT-5.6 mini 是 OpenAI 于 2026 年 7 月 28 日发布的紧凑型闭源模型，约 9B 激活参数（MoE 总 120B），256K 上下文，单张 24GB 消费级 GPU 即可本地推理，MMLU-Pro 84、HumanEval 92，定价约 0.10/0.20 美元每 MTok。定位为对 Kimi K3 / DeepSeek V4 等开源性价比冲击的正面回应——不强求开源，但以小博大覆盖边缘与私有部署场景。"
+  },
+  {
+    "id": "qwen3-max-2026",
+    "name": "Qwen3-Max",
+    "org": "阿里巴巴（通义千问）",
+    "type": "llm",
+    "typeLabel": "超大参数开源 MoE 模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "约 3 万亿 (MoE, 推测)",
+    "date": "2026-07-29",
+    "context": "256K tokens",
+    "attention": "GQA + 推测解码",
+    "factSheet": {
+      "highlight": "通义千问旗舰开源，256K 上下文，编码与 Agent 能力国产第一",
+      "training": "大规模 MoE + RL",
+      "inference": "多节点 H100/B200 自托管",
+      "benchmarks": "MMLU-Pro 90 / SWE-bench 85 / 256K 上下文"
+    },
+    "tags": [
+      "通义千问",
+      "Qwen3-Max",
+      "开源",
+      "MoE",
+      "256K上下文",
+      "编码第一",
+      "Agent"
+    ],
+    "keyInnovation": "阿里通义千问 2026-07-29 发布的旗舰开源模型，约 3 万亿 MoE 参数、256K 上下文，编码与 Agent 能力登顶国产第一，Apache 2.0 协议，对标 Kimi K3 / DeepSeek V4。",
+    "highlights": [
+      "约 3 万亿参数 (MoE)",
+      "256K 上下文",
+      "SWE-bench 85 / MMLU-Pro 90",
+      "编码与 Agent 国产第一",
+      "Apache 2.0 开源"
+    ],
+    "description": "Qwen3-Max 是阿里巴巴通义千问于 2026 年 7 月 29 日发布的旗舰开源大模型，约 3 万亿 MoE 参数、256K 上下文，编码（SWE-bench 85）与 Agent 能力登顶国产第一，采用 Apache 2.0 协议，企业可多节点 H100/B200 集群自托管，定位为对标 Kimi K3 / DeepSeek V4 的国产开源顶梁柱。"
   }
 ]

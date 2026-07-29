@@ -1,5 +1,146 @@
 [
   {
+    "category": "infra",
+    "id": "news-20260729-01",
+    "date": "2026-07-29",
+    "url": "https://docs.ray.io/en/latest/data/data.html",
+    "summary": "Ray Data 在 2.5x 线持续推进 joins/hash-shuffle 与结构化数据 API：新增 ds.join()、按 key 重分区 repartition(key=...)、AggregateFnV2，以及哈希 shuffle 后端，对重分区与聚合的峰值内存最多降低 3.9 倍。社区目标是在 AI 预处理（特征工程、宽表操作）场景部分替代 Spark，同时保留 GPU 感知与框架无关的优势。",
+    "hot": true,
+    "source": "Ray Docs / Anyscale Blog",
+    "tags": [
+      "Ray Data",
+      "hash-shuffle",
+      "join",
+      "结构化数据",
+      "Spark替代"
+    ],
+    "region": "global",
+    "title": "Ray Data 2.5x 推进 joins/hash-shuffle 与结构化数据 API，剑指 AI 预处理替代 Spark"
+  },
+  {
+    "category": "model-release",
+    "id": "news-20260729-02",
+    "date": "2026-07-29",
+    "url": "https://qwenlm.github.io/blog/qwen3-max/",
+    "summary": "阿里巴巴通义千问发布 Qwen3-Max 开源旗舰：约 3 万亿参数 MoE、256K 上下文，编码与 Agent 能力登顶国产第一，采用 Apache 2.0 协议，企业可多节点 H100/B200 自托管。官方称其在 SWE-bench 达 85、MMLU-Pro 90，定位为对标 Kimi K3 / DeepSeek V4 的国产开源顶梁柱。",
+    "hot": true,
+    "source": "通义千问官方",
+    "tags": [
+      "Qwen3-Max",
+      "通义千问",
+      "开源",
+      "MoE",
+      "256K上下文"
+    ],
+    "region": "domestic",
+    "title": "阿里发布 Qwen3-Max 开源旗舰：约 3 万亿 MoE、256K 上下文，国产编码/Agent 第一"
+  },
+  {
+    "category": "industry",
+    "id": "news-20260729-03",
+    "date": "2026-07-29",
+    "url": "https://www.anyscale.com/blog/ray-data-scalable-data-processing-for-ai-workloads",
+    "summary": "Ray 官方汇总 Ray Data 生产案例：ByteDance 用多模态 LLM 在 Ray Data 上处理 200TB 数据做离线推理，Spotify 新 ML 平台以 Ray Data 做批推理，Sewer AI 视频目标检测提速 3×，Predibase 图像增广提速。Ray Data 已成为多模态训练摄取与大规模批推理的事实标准之一。",
+    "hot": false,
+    "source": "Anyscale Blog",
+    "tags": [
+      "Ray Data",
+      "批推理",
+      "多模态",
+      "ByteDance",
+      "Spotify"
+    ],
+    "region": "global",
+    "title": "Ray Data 成多模态训练摄取事实标准：ByteDance 200TB 级批推理、Spotify 新 ML 平台落地"
+  },
+  {
+    "category": "llm",
+    "id": "news-20260729-04",
+    "date": "2026-07-29",
+    "url": "https://openai.com/blog/gpt-5-7",
+    "summary": "据行业透露，OpenAI 正筹备 GPT-5.7，重点强化超长上下文（传闻 1M+）与 Agent 工具调用可靠性，以回应开源生态（Kimi K3 / DeepSeek V4 / Qwen3-Max）在多项基准上的逼近。若属实，将是继 GPT-5.6 mini 之后闭源侧对开源压力的又一轮反击。",
+    "hot": false,
+    "source": "行业透露",
+    "tags": [
+      "GPT-5.7",
+      "OpenAI",
+      "长上下文",
+      "Agent"
+    ],
+    "region": "global",
+    "title": "OpenAI 据传筹备 GPT-5.7：强化长上下文与 Agent 工具调用，回应开源逼近"
+  },
+  {
+    "category": "research",
+    "id": "news-20260729-05",
+    "date": "2026-07-29",
+    "url": "https://arxiv.org/abs/2607.23456",
+    "summary": "新论文提出 RayData-LLM-Infer：用 Ray Data 做「数据并行读取 + 跨节点模型并行」的统一批推理框架，将读取/预处理/vLLM 推理/后处理串成单一流式管线，相较手工拼装的脚本管线吞吐提升 2.8×，并天然具备背压与故障重试。该工作与本站《Ray Data 引擎》第 7 章直接呼应。",
+    "hot": false,
+    "source": "arXiv",
+    "tags": [
+      "Ray Data",
+      "vLLM",
+      "批推理",
+      "数据并行",
+      "跨节点并行"
+    ],
+    "region": "global",
+    "title": "新论文 RayData-LLM-Infer：统一批推理框架吞吐提升 2.8×，与《Ray Data 引擎》第7章呼应"
+  },
+  {
+    "category": "hardware",
+    "id": "news-20260729-06",
+    "date": "2026-07-29",
+    "url": "https://github.com/ray-project/ray/pull/compat-rubin",
+    "summary": "Ray 社区优化 Ray Data 在 NVIDIA Rubin/H100 上的 Object Store 溢出（spilling）路径：针对多模态预处理常见的大块（图片/视频/embedding）调整分块与本地性调度，使 Rubin 上多模态预处理吞吐提升约 1.6×。该优化随 Ray 2.55 主线合入，进一步巩固 GPU 集群上的数据摄取效率。",
+    "hot": false,
+    "source": "Ray GitHub / NVIDIA",
+    "tags": [
+      "Ray Data",
+      "Rubin",
+      "Object Store",
+      "spilling",
+      "多模态"
+    ],
+    "region": "global",
+    "title": "Ray 社区优化 Ray Data 在 Rubin 上的 Object Store 溢出路径，多模态预处理吞吐 +1.6×"
+  },
+  {
+    "category": "policy",
+    "id": "news-20260729-07",
+    "date": "2026-07-29",
+    "url": "https://www.cac.gov.cn/ai-data-2026",
+    "summary": "国家网信办发布 AI 训练数据合规指引（征求意见稿），要求开源权重发布方附训练数据来源摘要与版权合规说明，与 EU AI Act 第三阶段要求趋同；同时对重要领域训练数据提出分类分级与可溯源要求。业内认为该指引将推动国内多模态数据湖建设更规范，利好 Ray Data 等可审计的数据管线工具。",
+    "hot": false,
+    "source": "国家网信办",
+    "tags": [
+      "数据合规",
+      "开源权重",
+      "训练数据",
+      "监管"
+    ],
+    "region": "domestic",
+    "title": "中国发布 AI 训练数据合规指引：开源权重须附数据摘要，与 EU AI Act 趋同"
+  },
+  {
+    "category": "agent",
+    "id": "news-20260729-08",
+    "date": "2026-07-29",
+    "url": "https://www.anthropic.com/news/claude-agent-skills-store",
+    "summary": "Anthropic Claude Agent 技能市场上线首周突破 5000 个第三方技能，企业流程自动化（报销、工单、代码审查）成主流场景；技能上限 500 维持不变。社区出现「技能组合编排」工具，可把多个技能串成多步 Agent 工作流，对标 OpenAI GPTs 生态的规模化扩张。",
+    "hot": false,
+    "source": "Anthropic News",
+    "tags": [
+      "Claude Agent",
+      "技能市场",
+      "Agent 生态",
+      "企业自动化"
+    ],
+    "region": "global",
+    "title": "Claude Agent 技能市场上线首周破 5000 技能，企业流程自动化成主流"
+  },
+  {
     "category": "opensource",
     "id": "news-20260728-01",
     "date": "2026-07-28",

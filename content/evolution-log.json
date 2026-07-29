@@ -1,5 +1,41 @@
 [
   {
+    "id": "evo-20260729-book",
+    "date": "2026-07-29",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "迭代 B3：新增书籍《Ray Data 引擎：从 2.10 到 2.5x》（8章）",
+    "detail": "覆盖 Ray Data 定位/2.10 GA、Dataset 与 Block、逻辑/物理计划与流式执行、StreamingExecutor 调度循环与背压、内存与溢出、格式与连接器、与 Ray Train/vLLM/SGLang 集成及与 Megatron/DeepSpeed 对比、版本演进与最佳实践。"
+  },
+  {
+    "id": "evo-20260729-news",
+    "date": "2026-07-29",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📰",
+    "title": "迭代 B1：新增 8 条新闻（2026-07-29）",
+    "detail": "Ray Data joins/hash-shuffle 与结构化数据、Qwen3-Max 开源、Ray Data 生产案例、GPT-5.7 传闻、RayData-LLM-Infer 论文、Rubin spilling 优化、中国训练数据合规指引、Claude Agent 技能市场首周破5000。"
+  },
+  {
+    "id": "evo-20260729-model",
+    "date": "2026-07-29",
+    "agent": "研究员→编辑→审校员",
+    "type": "model",
+    "emoji": "🧠",
+    "title": "迭代 B2：新增 Qwen3-Max 模型",
+    "detail": "阿里通义千问旗舰开源（约3万亿 MoE/256K/Apache 2.0/国产编码Agent第一），纳入综合/编码/性价比榜。"
+  },
+  {
+    "id": "evo-20260729-bench",
+    "date": "2026-07-29",
+    "agent": "研究员→编辑→审校员",
+    "type": "bench",
+    "emoji": "📊",
+    "title": "迭代 B4：刷新 8 类排行榜至 2026-07-29，纳入 Qwen3-Max",
+    "detail": "综合/编码/性价比三类纳入 Qwen3-Max 并重排；视频/3D/自动驾驶类仅刷新日期。"
+  },
+  {
     "id": "evo-20260728-news",
     "date": "2026-07-28",
     "agent": "研究员→编辑→审校员",
