@@ -3438,5 +3438,80 @@
       "Apache 2.0 开源"
     ],
     "description": "Qwen3-Max 是阿里巴巴通义千问于 2026 年 7 月 29 日发布的旗舰开源大模型，约 3 万亿 MoE 参数、256K 上下文，编码（SWE-bench 85）与 Agent 能力登顶国产第一，采用 Apache 2.0 协议，企业可多节点 H100/B200 集群自托管，定位为对标 Kimi K3 / DeepSeek V4 的国产开源顶梁柱。"
+  },
+  {
+    "id": "claude-opus-5-2026",
+    "name": "Claude Opus 5",
+    "org": "Anthropic",
+    "type": "llm",
+    "typeLabel": "接近前沿半价旗舰",
+    "typeIcon": "🟣",
+    "open": false,
+    "params": "未公开 (推测 MoE)",
+    "date": "2026-07-24",
+    "context": "1M tokens",
+    "attention": "GQA + Extended Thinking",
+    "factSheet": {
+      "highlight": "接近 Fable 5 性能、半价，Frontier-Bench 翻倍，Claude Max 默认模型",
+      "training": "RLHF + Constitutional AI 5",
+      "inference": "低/中/高 effort 挡位 + Fast 模式(2.5x)",
+      "benchmarks": "SWE-bench 96.0% / Frontier-Bench 43.3% / ARC-AGI-3 30.2%"
+    },
+    "tags": [
+      "Claude Opus 5",
+      "Anthropic",
+      "Frontier-Bench",
+      "SWE-bench",
+      "Agent",
+      "1M上下文",
+      "半价"
+    ],
+    "keyInnovation": "Anthropic 2026-07-24 发布的第四个 Claude 5 系列模型。$5/$25 定价不变但性能翻倍：Frontier-Bench v0.1 43.3%（超 Fable 5 的 33.7%），ARC-AGI-3 30.2%（3倍次优），OSWorld 2.0 70.6%。新增 effort 挡位（low/medium/high）和 Fast 模式。两个月内完成从 Sonnet 5 到 Mythos 5 到 Fable 5 到 Opus 5 的全价位覆盖。",
+    "highlights": [
+      "SWE-bench Verified 96.0%",
+      "Frontier-Bench v0.1 43.3%（SOTA）",
+      "ARC-AGI-3 30.2%（3倍次优）",
+      "1M 上下文 + Extended Thinking 默认",
+      "$5/$25 半价对标 Fable 5"
+    ],
+    "description": "Claude Opus 5 是 Anthropic 在 2026-07-24 发布的接近前沿旗舰模型，以 Opus 4.8 同价实现接近 Fable 5 的性能。在编码（Frontier-Bench 43.3%）、推理（ARC-AGI-3 30.2%）、计算机使用（OSWorld 2.0 70.6%）三大领域达到或接近 SOTA。引入 per-request effort toggle，成为 Claude Max 默认模型。"
+  },
+  {
+    "id": "inkling-small-2026",
+    "name": "Inkling-Small",
+    "org": "Thinking Machines Lab",
+    "type": "llm",
+    "typeLabel": "高效开源多模态 MoE",
+    "typeIcon": "🇺🇸",
+    "open": true,
+    "params": "276B (MoE, 12B 激活)",
+    "date": "2026-07-30",
+    "context": "1M tokens",
+    "attention": "GQA + Hybrid Local/Global + 可变思考强度",
+    "factSheet": {
+      "highlight": "276B/12B 开源 MoE，SWE-bench 反超 975B 原版，原生图文音频多模态",
+      "training": "GB300 NVL72 集群 + on-policy 蒸馏 + agentic-coding RL",
+      "inference": "BF16 需 600GB VRAM, NVFP4 仅 180GB",
+      "benchmarks": "SWE-bench Verified 80.2% / HLE 31.6% / ARC-AGI-2 40.1%"
+    },
+    "tags": [
+      "Inkling-Small",
+      "Thinking Machines",
+      "276B",
+      "开源",
+      "MoE",
+      "SWE-bench",
+      "Apache2.0",
+      "多模态"
+    ],
+    "keyInnovation": "Thinking Machines Lab 2026-07-30 发布的 276B/12B 开源 MoE，规模仅原版 Inkling 的 1/4 但在 SWE-bench Verified（80.2% vs 77.6%）、HLE（31.6% vs 29.7%）、ARC-AGI-2（40.1% vs 36.5%）全面反超。原生多模态（图文音频），42 层 decoder-only，256 专家中每 token 选 6 个 + 2 个共享专家。Apache 2.0 + NVFP4 量化单卡 B300 可跑。",
+    "highlights": [
+      "276B/12B MoE (原版 1/4)",
+      "SWE-bench 80.2% 反超 975B 原版",
+      "HLE 31.6% vs 原版 29.7%",
+      "原生图文音频多模态 + 1M 上下文",
+      "NVFP4 单卡 B300 可跑 (180GB)"
+    ],
+    "description": "Inkling-Small 是 Thinking Machines Lab 于 2026-07-30 发布的高效开源 MoE 模型。276B 总参仅 12B 激活，在 NVIDIA GB300 NVL72 上训练。以原版 1/4 的规模在多项 Agent 编码和推理基准上反超 975B 的 Inkling，支持原生图文音频多模态和 1M 上下文。Apache 2.0 开源，BF16 需 4xB300，NVFP4 量化仅 1xB300 即可运行。"
   }
 ]

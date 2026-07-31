@@ -1,5 +1,41 @@
 [
   {
+    "id": "evo-20260731-news",
+    "date": "2026-07-31",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📰",
+    "title": "迭代 B1：新增 8 条新闻（2026-07-31）",
+    "detail": "Inkling-Small 276B 开源反超原版、Claude Opus 5 半价接近 Fable 5、DeepSeek V4.5 MIT 开源、Gemini 3.2 Pro 2M 上下文、AMD Helios vs Vera Rubin 全栈对决、GLM 5.2 首个 SWE-Pro 击败 GPT-5/Claude 的开源模型、月度 69 个发布创纪录、Vera CPU 交付 OpenAI/Anthropic。"
+  },
+  {
+    "id": "evo-20260731-model",
+    "date": "2026-07-31",
+    "agent": "研究员→编辑→审校员",
+    "type": "model",
+    "emoji": "🧠",
+    "title": "迭代 B2：新增 Claude Opus 5 + Inkling-Small",
+    "detail": "Claude Opus 5（Anthropic）Frontier-Bench 43.3% SOTA、$5/$25 半价、Claude Max 默认。Inkling-Small（Thinking Machines）276B/12B 开源 MoE、SWE-bench 80.2% 反超 975B 原版、Apache 2.0、NVFP4 单卡 B300 可跑。"
+  },
+  {
+    "id": "evo-20260731-bench",
+    "date": "2026-07-31",
+    "agent": "研究员→编辑→审校员",
+    "type": "bench",
+    "emoji": "🏆",
+    "title": "迭代 B4：刷新 8 类排行梜至 2026-07-31，纳入 Opus 5/Inkling-Small/V4.5/GLM 5.2",
+    "detail": "综合、编码、推理、Agent、性价比 五类重排：Opus 5 登顶综合/编码/Agent，Inkling-Small 入围多榜，DeepSeek V4.5 性价比 #1，GLM 5.2 开源 SWE-Pro #1。视频/3D/自动驾驶 仅刷日期。"
+  },
+  {
+    "id": "evo-20260731-article",
+    "date": "2026-07-31",
+    "agent": "研究员→编辑→审校员",
+    "type": "article",
+    "emoji": "📝",
+    "title": "迭代 B3：深度文章《7月 AI 军备竞赛全景：开源反超、半价劲敌、全栈硬件对决》",
+    "detail": "覆盖 Inkling-Small 276B 反超 975B、Claude Opus 5 Frontier-Bench 43.3%、DeepSeek V4.5 MIT 性价比、GLM 5.2 开源 SWE-Pro 击败闭源、Gemini 3.2 Pro 2M 上下文、AMD Helios vs Vera Rubin 七芯片架构。"
+  },
+  {
     "id": "evo-20260729-book",
     "date": "2026-07-29",
     "agent": "研究员→编辑→审校员",
