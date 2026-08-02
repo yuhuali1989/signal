@@ -3513,5 +3513,154 @@
       "NVFP4 单卡 B300 可跑 (180GB)"
     ],
     "description": "Inkling-Small 是 Thinking Machines Lab 于 2026-07-30 发布的高效开源 MoE 模型。276B 总参仅 12B 激活，在 NVIDIA GB300 NVL72 上训练。以原版 1/4 的规模在多项 Agent 编码和推理基准上反超 975B 的 Inkling，支持原生图文音频多模态和 1M 上下文。Apache 2.0 开源，BF16 需 4xB300，NVFP4 量化仅 1xB300 即可运行。"
+  },
+  {
+    "id": "deepseek-v4-flash-0731-2026",
+    "name": "DeepSeek V4 Flash 0731",
+    "org": "DeepSeek",
+    "type": "llm",
+    "typeLabel": "极致性价比 MoE 旗舰",
+    "typeIcon": "🇨🇳",
+    "open": false,
+    "params": "2840 亿 (MoE, 130 亿激活)",
+    "date": "2026-07-31",
+    "context": "1M tokens",
+    "attention": "MLA + GQA + 思考/非思考双模式",
+    "factSheet": {
+      "highlight": "Artificial Analysis 50 分逼近 GPT-5.6 Luna，98% 缓存命中折扣，Arena.ai 前端代码 1586 分登顶",
+      "training": "纯后训练优化，模型结构与参数量不变",
+      "inference": "自有 API，输出 $0.28/M token，缓存命中输入 $0.028/M",
+      "benchmarks": "Artificial Analysis 50 / GPQA 90.8% / Arena.ai 前端代码 1586"
+    },
+    "tags": [
+      "DeepSeek",
+      "V4-Flash",
+      "MoE",
+      "284B",
+      "1M上下文",
+      "缓存命中",
+      "性价比",
+      "Agent"
+    ],
+    "keyInnovation": "DeepSeek 2026-07-31 发布的 V4-Flash 正式版。总参 2840 亿/激活 130 亿 MoE，纯靠后训练将 Agent 能力大幅拉升，不改模型结构和参数量。Artificial Analysis 智能指数 50 分（比 4 月版高 10 分），仅比 GPT-5.6 Luna 低 1 分。98% 缓存命中折扣远超业内 90%，即使 OpenAI 降价 80% 仍便宜 60%。",
+    "highlights": [
+      "Artificial Analysis 50 分（逼近 Luna 51 分）",
+      "Arena.ai 前端代码竞技场 1586 分登顶",
+      "98% 缓存命中折扣（业内最高）",
+      "输出 $0.28/M token（顶级模型 1/100）",
+      "纯后训练优化，结构不变"
+    ],
+    "description": "DeepSeek V4 Flash 0731 是 2026-07-31 上线公测的正式版。2840 亿参数 MoE / 130 亿激活，1M 上下文，思考/非思考双模式。凭借 98% 缓存命中率实现极致性价比，单任务成本比 GPT-5.6 Luna 低 60%。证明后训练优化对 MoE 模型的巨大杠杆。"
+  },
+  {
+    "id": "gemini-36-flash-2026",
+    "name": "Gemini 3.6 Flash",
+    "org": "Google",
+    "type": "llm",
+    "typeLabel": "Flash 级推理旗舰",
+    "typeIcon": "🔵",
+    "open": false,
+    "params": "未公开 (推测 MoE)",
+    "date": "2026-07-21",
+    "context": "1M tokens",
+    "attention": "GQA + Sliding Window + Flash 优化",
+    "factSheet": {
+      "highlight": "GPQA 92.8% 超越 Claude Opus 4.8 和 GPT-5.4，Flash 定价实现接近前沿推理",
+      "training": "蒸馏 + 高效训练 + Flash 级量化",
+      "inference": "Google Cloud Vertex AI",
+      "benchmarks": "GPQA 92.8% / BenchAlign 75.27 / Artificial Analysis 80"
+    },
+    "tags": [
+      "Gemini",
+      "3.6 Flash",
+      "Google",
+      "1M上下文",
+      "GPQA",
+      "Flash级",
+      "性价比"
+    ],
+    "keyInnovation": "Google 2026-07-21 发布的 Flash 级模型。以 Flash 定价实现 GPQA 92.8%（超 Claude Opus 4.8 的 92.0%），证明蒸馏技术已足够成熟。BenchAlign 75.27 分排名第 9，是 Flash 级模型中排名最高的。",
+    "highlights": [
+      "GPQA 92.8%（超 Claude Opus 4.8）",
+      "BenchAlign 75.27 分（Flash 级最高）",
+      "1M 上下文",
+      "Flash 定价接近前沿推理",
+      "Artificial Analysis 80 分"
+    ],
+    "description": "Gemini 3.6 Flash 是 Google 于 2026-07-21 发布的 Flash 级推理模型。以 Flash 定价实现 GPQA 92.8%，超越 Claude Opus 4.8 和 GPT-5.4 等旗舰模型。1M 上下文，BenchAlign 75.27 分。证明 Flash 级模型已具备接近前沿的推理能力，加速 AI 推理价格趋零。"
+  },
+  {
+    "id": "qwen37-flash-2026",
+    "name": "Qwen3.7 Flash",
+    "org": "阿里巴巴（通义千问）",
+    "type": "llm",
+    "typeLabel": "通义千问 Flash 级模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "未公开 (推测 MoE)",
+    "date": "2026-07-27",
+    "context": "1M tokens",
+    "attention": "GQA + 推测解码",
+    "factSheet": {
+      "highlight": "通义千问 Flash 级开源模型，1M 上下文，Apache 2.0 协议",
+      "training": "MoE 高效训练 + 蒸馏",
+      "inference": "多平台部署",
+      "benchmarks": "Artificial Analysis 40"
+    },
+    "tags": [
+      "Qwen",
+      "3.7 Flash",
+      "阿里",
+      "开源",
+      "1M上下文",
+      "Apache2.0",
+      "Flash级"
+    ],
+    "keyInnovation": "阿里巴巴 2026-07-27 发布的 Flash 级开源模型。1M 上下文，Apache 2.0 协议。与 Qwen3-Max 同期发布，定位为低延迟高性价比的通义千问 Flash 版本。",
+    "highlights": [
+      "1M 上下文",
+      "Apache 2.0 开源",
+      "Flash 级低延迟",
+      "Artificial Analysis 40 分"
+    ],
+    "description": "Qwen3.7 Flash 是阿里巴巴通义千问于 2026-07-27 发布的 Flash 级开源模型，1M 上下文，Apache 2.0 协议。定位为低延迟高性价比版本，与旗舰 Qwen3-Max 形成高低搭配。"
+  },
+  {
+    "id": "minimax-h3-2026",
+    "name": "MiniMax H3",
+    "org": "稀宇科技（MiniMax）",
+    "type": "multimodal",
+    "typeLabel": "原生多模态视频生成模型",
+    "typeIcon": "🎬",
+    "open": true,
+    "params": "未公开",
+    "date": "2026-08-03",
+    "context": "15s 2K 视频",
+    "attention": "H3-Omni Transformer + Contextual Omni Representation",
+    "factSheet": {
+      "highlight": "原生双声道 2K 音视频统一生成，2K 每秒价格不到主流 1/3",
+      "training": "H3-VAE + In-context Regeneration + 多模态统一训练",
+      "inference": "魔搭社区开源部署",
+      "benchmarks": "原生双声道 2K / 15s 视频 / 多模态精准编辑"
+    },
+    "tags": [
+      "MiniMax",
+      "H3",
+      "多模态视频",
+      "开源",
+      "双声道",
+      "2K",
+      "H3-VAE",
+      "音视频生成"
+    ],
+    "keyInnovation": "稀宇科技 2026-08-03 开源的通用多模态视频模型。首个将原生双声道音频与 2K 视频生成统一到单一模型的开源方案。核心创新：Contextual Omni Representation（上下文全模态表征）、H3-VAE（多模态变分自编码器）、H3-Omni Transformer（全模态 Transformer）、In-context Regeneration（上下文内再生）。支持文字/图片/音频/视频多模态输入理解与生成，多维度精准编辑。",
+    "highlights": [
+      "原生双声道 2K 音视频（行业首个开源）",
+      "2K 价格不到主流 1/3",
+      "15s 最高 2K 分辨率",
+      "多模态精准编辑（人物/物体/场景/声音）",
+      "面向商用场景（影视/广告/电商/游戏）"
+    ],
+    "description": "MiniMax H3 是稀宇科技于 2026-08-03 开源的通用多模态视频模型，首个将原生双声道音频与 2K 视频生成统一到单一模型。支持多模态输入理解与生成、多维度精准编辑，2K 分辨率每秒价格不到主流模型 1/3。面向影视/广告/电商/游戏等商用场景。"
   }
 ]
