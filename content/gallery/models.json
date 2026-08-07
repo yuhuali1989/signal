@@ -1,45 +1,48 @@
 [
   {
     "id": "qwen38-2026",
-    "name": "Qwen3.8",
+    "name": "Qwen3.8-Max",
     "org": "阿里 (Alibaba)",
     "type": "llm",
     "typeLabel": "超大规模MoE模型",
     "typeIcon": "🇨🇳",
     "open": true,
-    "params": "2.4万亿 (MoE)",
-    "date": "2026-07-18",
-    "context": "未公开",
+    "params": "2.4万亿 (MoE, 激活95B)",
+    "date": "2026-08-03",
+    "context": "1M Tokens",
     "attention": "MoE",
     "factSheet": {
-      "params": "2.4万亿 (MoE)",
+      "params": "2.4万亿 (MoE, 激活95B)",
       "architecture": "MoE Transformer",
       "attention": "MoE",
-      "context": "未公开",
+      "context": "1M Tokens",
       "activation": "推测",
       "normalization": "推测",
       "positionalEncoding": "推测",
       "training": "推测",
-      "license": "开源(推测)"
+      "license": "Apache 2.0 (下周开源)"
     },
     "tags": [
       "阿里",
-      "Qwen3.8",
+      "Qwen3.8-Max",
       "通义千问",
       "2.4万亿",
-      "超节点",
-      "真武M890",
-      "模型发布"
+      "MoE",
+      "95B激活",
+      "Arena第二",
+      "开源",
+      "Apache2.0"
     ],
-    "keyInnovation": "2.4万亿参数MoE，阿里真武M890超节点成功适配(国内首个运行超2万亿参数大模型)，64张M890通过ICN Switch 1.0实现800GB/s互联、9TB显存，上线阿里云百炼平台",
+    "keyInnovation": "2.4万亿参数MoE旗舰，95B激活参数，Arena全球第二仅次于Claude。编程可从空文件夹自主运行16天完成真实项目交付，OSWorld-Verified 86.1分居主流模型首位，PaperBench 93.0分。下周开源权重(Apache 2.0)，同步开源27B版本。国内定价输入12元/输出36元每百万token，国际价格仅为Opus 5的40%与24%。",
     "highlights": [
-      "2.4万亿参数",
-      "真武M890超节点适配",
-      "800GB/s互联/9TB显存",
-      "百炼平台推理服务",
-      "国产芯片超大规模突破"
+      "2.4万亿参数 MoE (95B激活)",
+      "Arena 全球第二",
+      "PaperBench 93.0 (+28.2)",
+      "OSWorld-Verified 86.1 首位",
+      "1M tokens 上下文",
+      "Apache 2.0 开源"
     ],
-    "description": "Qwen3.8是阿里于2026年7月发布的通义千问系列大模型，参数规模2.4万亿(MoE)。阿里真武M890超节点已成功适配Qwen3.8并上线阿里云百炼平台，成为国内首个成功运行超2万亿参数大模型的超节点，通过ICN Switch 1.0互联芯片实现64张M890间800GB/s高速互联、9TB显存规模。"
+    "description": "Qwen3.8-Max是阿里2026年8月3日发布的通义千问系列旗舰大模型，2.4万亿总参数、95B激活参数MoE架构，支持视觉理解和1M tokens上下文。Arena全球第二仅次于Claude系列，编程能力可自主运行16天完成真实项目交付。官方宣布下周开源权重(Apache 2.0)，同步开源27B版本，这是Qwen-Max级别首次开源。"
   },
   {
     "id": "deepseek-v4-2026",
@@ -3662,5 +3665,222 @@
       "面向商用场景（影视/广告/电商/游戏）"
     ],
     "description": "MiniMax H3 是稀宇科技于 2026-08-03 开源的通用多模态视频模型，首个将原生双声道音频与 2K 视频生成统一到单一模型。支持多模态输入理解与生成、多维度精准编辑，2K 分辨率每秒价格不到主流模型 1/3。面向影视/广告/电商/游戏等商用场景。"
+  },
+  {
+    "id": "grok46-2026",
+    "name": "Grok 4.6",
+    "org": "xAI",
+    "type": "llm",
+    "typeLabel": "前沿大语言模型",
+    "typeIcon": "🇺🇸",
+    "open": false,
+    "params": "1.5万亿 (V9架构)",
+    "date": "2026-08-07",
+    "context": "500K",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "1.5万亿 (V9架构)",
+      "architecture": "MoE Transformer",
+      "attention": "MoE",
+      "context": "500K",
+      "activation": "推测",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "SFT + RL后训练提升",
+      "license": "闭源"
+    },
+    "tags": [
+      "xAI",
+      "Grok 4.6",
+      "1.5T",
+      "后训练",
+      "Agent",
+      "500K"
+    ],
+    "keyInnovation": "保持Grok 4.5的1.5万亿参数V9架构不变，改进全部来自SFT和RL后训练。定价$2/$6每百万token不变，API端点不变迁移仅需改模型名。直击4.5的54%幻觉率问题。Grok 4.7(2.1T)数周后跟进。",
+    "highlights": [
+      "1.5T V9架构不变",
+      "纯后训练提升",
+      "$2/$6 定价维持",
+      "500K 上下文",
+      "4周一版发布节奏",
+      "直击幻觉率问题"
+    ],
+    "description": "Grok 4.6是xAI于2026年8月7日发布的前沿大语言模型，保持Grok 4.5的1.5万亿参数V9架构，改进全部来自SFT和RL后训练。定价$2/$6每百万token不变，API端点不变。Grok 4.5此前在AA智能指数排第四(54分)，SWE-Bench Pro 64.7%，但幻觉率高达54%。4.7版本(2.1T参数)预计数周后发布。"
+  },
+  {
+    "id": "ling30-flash-2026",
+    "name": "Ling-3.0-flash",
+    "org": "蚂蚁集团 (Ant Group)",
+    "type": "llm",
+    "typeLabel": "原生混合推理MoE模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "124B (MoE, 激活5.1B)",
+    "date": "2026-08-07",
+    "context": "未公开",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "124B (MoE, 激活5.1B)",
+      "architecture": "MoE Transformer + 混合推理",
+      "attention": "MoE",
+      "context": "未公开",
+      "activation": "5.1B",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "混合推理训练",
+      "license": "开源"
+    },
+    "tags": [
+      "蚂蚁",
+      "Ling-3.0",
+      "百灵",
+      "MoE",
+      "5.1B激活",
+      "开源",
+      "单机部署",
+      "混合推理"
+    ],
+    "keyInnovation": "124B总参数5.1B激活的MoE架构，保留千亿参数知识容量但生成每token仅激活5.1B参数。MXFP4/INT4版本可在单台DGX Spark上端到端推理，高性能部署平均输出突破1100 tok/s。AA Intelligence Index每任务成本约$0.04。",
+    "highlights": [
+      "124B/5.1B MoE",
+      "单机私有化部署",
+      "1100 tok/s 高性能",
+      "混合推理架构",
+      "开源",
+      "任务成本$0.04"
+    ],
+    "description": "Ling-3.0-flash是蚂蚁集团2026年8月7日开源的新一代原生混合推理模型，124B总参数5.1B激活参数MoE架构。MXFP4/INT4版本可在单台NVIDIA DGX Spark上端到端推理，高性能部署平均输出速率突破1100 tokens/s。在AA Intelligence Index榜单中每任务加权成本约$0.04、解码约1.4分钟。"
+  },
+  {
+    "id": "hy3-2026",
+    "name": "Tencent Hy3",
+    "org": "腾讯 (Tencent)",
+    "type": "llm",
+    "typeLabel": "混合快慢思考MoE模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "295B (MoE, 激活21B)",
+    "date": "2026-08-05",
+    "context": "256K",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "295B (MoE, 激活21B)",
+      "architecture": "MoE Transformer + 混合快慢思考",
+      "attention": "MoE",
+      "context": "256K",
+      "activation": "21B",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "产品协同设计 + 真实场景反馈",
+      "license": "Apache 2.0"
+    },
+    "tags": [
+      "腾讯",
+      "Hy3",
+      "混元",
+      "MoE",
+      "21B激活",
+      "Apache2.0",
+      "OpenRouter第一",
+      "WorkBuddy"
+    ],
+    "keyInnovation": "295B总参数21B激活的混合快慢思考MoE，性能可比2-5倍参数旗舰。上线一周OpenRouter调用量超上代68倍登顶全球第一。Apache 2.0开源，API定价$0.13/$0.53每百万token。已接入Hermes/Kilo/Cline/OpenClaw/OpenCode/Cherry Studio等平台。WorkBuddy中任务成功率超90%，平均完成时间降34%。",
+    "highlights": [
+      "295B/21B MoE 混合推理",
+      "OpenRouter 周榜第一",
+      "Apache 2.0 开源",
+      "256K 上下文",
+      "WorkBuddy 任务成功率90%+",
+      "全球开发者平台广泛接入"
+    ],
+    "description": "Tencent Hy3（原混元）是腾讯2026年7月6日发布、8月5日全球开放的混合快慢思考MoE大模型，295B总参数21B激活，256K上下文。性能可比2-5倍参数旗舰模型。上线一周OpenRouter调用量超上代68倍登顶全球第一。Apache 2.0开源，已接入WorkBuddy/Miora/TokenHub及多家全球开发者平台。"
+  },
+  {
+    "id": "seedrealtime-2026",
+    "name": "SeedRealtime",
+    "org": "字节跳动 (ByteDance)",
+    "type": "multimodal",
+    "typeLabel": "原生音视频全双工大模型",
+    "typeIcon": "🇨🇳",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-08-05",
+    "context": "连续多模态流",
+    "attention": "统一架构",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "统一多模态 Transformer",
+      "attention": "统一架构",
+      "context": "连续多模态流",
+      "activation": "未公开",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "原生多模态联合训练",
+      "license": "闭源(豆包App)"
+    },
+    "tags": [
+      "字节跳动",
+      "SeedRealtime",
+      "全双工",
+      "音视频",
+      "多模态",
+      "豆包",
+      "实时交互"
+    ],
+    "keyInnovation": "原生融合音频、视频与文本的统一架构，在连续多模态信息流上实时交互，实现边看、边听、边说。告别ASR→LLM→TTS级联架构，对话节奏问题较级联模型减半。具备音视频联合理解、主动交互与抗背景干扰能力。",
+    "highlights": [
+      "原生音视频全双工",
+      "统一架构非级联",
+      "边看边听边说",
+      "主动交互能力",
+      "抗背景干扰",
+      "豆包App全量上线"
+    ],
+    "description": "SeedRealtime是字节跳动2026年8月5日推出的原生音视频全双工大模型，用统一架构原生融合音频、视频与文本，在连续多模态信息流上实时交互。告别传统ASR→LLM→TTS级联架构，实现边看、边听、边说的全新体验。已在豆包App全量上线。"
+  },
+  {
+    "id": "lfm25-2026",
+    "name": "LFM2.5-2.6B",
+    "org": "Liquid AI",
+    "type": "llm",
+    "typeLabel": "端侧Agent模型",
+    "typeIcon": "🇺🇸",
+    "open": true,
+    "params": "2.6B",
+    "date": "2026-08-04",
+    "context": "128K",
+    "attention": "LFM (非Transformer)",
+    "factSheet": {
+      "params": "2.6B",
+      "architecture": "Liquid Foundation Model",
+      "attention": "LFM (非Transformer)",
+      "context": "128K",
+      "activation": "2.6B (稠密)",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "34万亿token + on-policy蒸馏",
+      "license": "开放权重"
+    },
+    "tags": [
+      "Liquid AI",
+      "LFM2.5",
+      "端侧",
+      "Agent",
+      "2.6B",
+      "128K",
+      "手机推理",
+      "开源"
+    ],
+    "keyInnovation": "2.6B参数端侧Agent模型，手机本地运行规划/工具调用/多步任务无需云端API。34万亿token训练，128K词表和上下文。后训练用专家模型强化数学/代码/工具使用再on-policy蒸馏。Apple M5 Max 220 tok/s，手机约30 tok/s，H100高并发近15000 tok/s，CPU内存<2.5GB。多项基准超越更大Gemma和Qwen模型。",
+    "highlights": [
+      "2.6B 端侧 Agent",
+      "手机 30 tok/s 本地运行",
+      "H100 高并发 15000 tok/s",
+      "128K 上下文",
+      "34万亿 token 训练",
+      "支持 llama.cpp/MLX/vLLM/SGLang/ONNX"
+    ],
+    "description": "LFM2.5-2.6B是Liquid AI于2026年8月4日发布的2.6B参数端侧Agent模型，可在手机上完全本地运行规划、工具调用和多步任务。基于34万亿token训练，128K上下文。Apple M5 Max达220 tok/s，智能手机约30 tok/s，H100高并发近15000 tok/s，CPU内存低于2.5GB。开放权重，支持llama.cpp/MLX/vLLM/SGLang/ONNX。"
   }
 ]

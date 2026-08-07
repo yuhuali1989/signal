@@ -1,415 +1,395 @@
 [
   {
     "id": "coding-2026q2",
-    "title": "编码能力大模型排行榜（2026-08-02 更新）",
+    "title": "编码能力大模型排行榜（2026-08-07 更新）",
     "description": "基于 SWE-bench Pro / HumanEval+ / CodeContests 的综合编码能力评测（注意：swebench 列中大多数模型得分来自 SWE-bench Pro 测试集，Hy3 preview 的 74.4 来自 SWE-bench Verified，请参阅各条目的 sweBenchNote 字段）",
     "category": "coding",
     "categoryName": "编码能力",
     "categoryIcon": "💻",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
         "name": "Claude Mythos 5",
         "provider": "Anthropic",
         "score": 97.5,
-        "change": "🆕",
-        "badge": "SWE-bench SOTA"
+        "change": "—",
+        "benchmark": "SWE-bench Pro",
+        "sweBenchNote": "SWE-bench Pro"
       },
       {
         "rank": 2,
-        "name": "Claude Opus 5",
-        "provider": "Anthropic",
-        "score": 96,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 3,
         "name": "Claude Fable 5",
         "provider": "Anthropic",
         "score": 95,
-        "change": "↓",
-        "badge": null
+        "change": "—",
+        "benchmark": "SWE-bench Pro",
+        "sweBenchNote": "SWE-bench Pro"
+      },
+      {
+        "rank": 3,
+        "name": "Claude Opus 5",
+        "provider": "Anthropic",
+        "score": 96,
+        "change": "—",
+        "benchmark": "SWE-bench Verified",
+        "sweBenchNote": "SWE-bench Verified"
       },
       {
         "rank": 4,
-        "name": "GPT-5.6 Sol",
-        "provider": "OpenAI",
-        "score": 92,
-        "change": "→",
-        "badge": null
+        "name": "Kimi K3",
+        "provider": "月之暗面",
+        "score": 88.3,
+        "change": "↑1",
+        "benchmark": "Terminal-Bench 2.1",
+        "sweBenchNote": "Terminal-Bench 2.1"
       },
       {
         "rank": 5,
-        "name": "DeepSeek V4 Flash 0731",
-        "provider": "DeepSeek",
-        "score": 88.5,
-        "change": "🆕",
-        "badge": "Arena.ai 前端代码 #1"
+        "name": "GPT-5.6 Sol",
+        "provider": "OpenAI",
+        "score": 87.5,
+        "change": "—",
+        "benchmark": "Terminal-Bench 2.1",
+        "sweBenchNote": "Terminal-Bench 2.1"
       },
       {
         "rank": 6,
-        "name": "Inkling-Small",
-        "provider": "Thinking Machines",
-        "score": 80.2,
-        "change": "→",
-        "badge": "Best Open SWE"
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 86.6,
+        "change": "🆕",
+        "benchmark": "Terminal-Bench 2.1",
+        "sweBenchNote": "Terminal-Bench 2.1"
       },
       {
         "rank": 7,
-        "name": "Qwen3-Max",
-        "provider": "Alibaba",
+        "name": "GLM-5.2",
+        "provider": "智谱",
         "score": 85,
-        "change": "→",
-        "badge": null
+        "change": "↑1",
+        "benchmark": "SWE-bench Pro",
+        "sweBenchNote": "SWE-bench Pro, 开源首个击败GPT-5/Claude"
       },
       {
         "rank": 8,
-        "name": "Claude Opus 4.8",
-        "provider": "Anthropic",
-        "score": 79,
-        "change": "↓",
-        "badge": null
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 84,
+        "change": "↑2",
+        "benchmark": "SWE-bench Verified",
+        "sweBenchNote": "SWE-bench Verified, DeepSWE 54.4"
       },
       {
         "rank": 9,
-        "name": "Kimi K3",
-        "provider": "Moonshot AI",
-        "score": 76.2,
-        "change": "→",
-        "badge": "Open 3T #1"
+        "name": "Grok 4.6",
+        "provider": "xAI",
+        "score": 83.3,
+        "change": "🆕",
+        "benchmark": "Terminal-Bench 2.1",
+        "sweBenchNote": "Terminal-Bench 2.1, 继承4.5基线"
       },
       {
         "rank": 10,
-        "name": "Grok 4.5",
-        "provider": "xAI",
-        "score": 72.4,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 11,
-        "name": "Muse Spark 1.1",
-        "provider": "Meta",
-        "score": 71.3,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 12,
-        "name": "GLM 5.2",
-        "provider": "Zhipu AI",
-        "score": 68.5,
-        "change": "→",
-        "badge": "Open SWE-Pro #1"
+        "name": "Tencent Hy3",
+        "provider": "腾讯",
+        "score": 74.4,
+        "change": "🆕",
+        "benchmark": "SWE-bench Verified",
+        "sweBenchNote": "SWE-bench Verified (preview)"
       }
     ]
   },
   {
     "id": "reasoning-2026q2",
-    "title": "推理能力大模型排行榜（2026-08-02 更新）",
+    "title": "推理能力大模型排行榜（2026-08-07 更新）",
     "description": "基于 GPQA Diamond / MATH-500 / ARC-AGI-2 的综合推理能力评测（综合分由三项指标加权计算；Hy3 preview 在 GPQA Diamond 单项得分 87.2 为本榜第一，但因 ARC-AGI-2 得分较低拉低综合排名）",
     "category": "reasoning",
     "categoryName": "推理能力",
     "categoryIcon": "🧠",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
-        "name": "GPT-5.6 Sol",
-        "provider": "OpenAI",
-        "score": 94.1,
-        "change": "→",
-        "badge": "GPQA Diamond SOTA"
+        "name": "Claude Mythos 5",
+        "provider": "Anthropic",
+        "score": 94.6,
+        "change": "—",
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 2,
         "name": "Gemini 3.1 Pro",
         "provider": "Google",
-        "score": 94.1,
-        "change": "→",
-        "badge": null
+        "score": 94,
+        "change": "—",
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 3,
-        "name": "Kimi K3",
-        "provider": "Moonshot AI",
-        "score": 93.5,
-        "change": "↑",
-        "badge": "Open #1"
+        "name": "GPT-5.6 Sol",
+        "provider": "OpenAI",
+        "score": 93,
+        "change": "—",
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 4,
-        "name": "GPT-5.5",
-        "provider": "OpenAI",
-        "score": 93.5,
-        "change": "→",
-        "badge": null
+        "name": "Claude Fable 5",
+        "provider": "Anthropic",
+        "score": 92.5,
+        "change": "—",
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 5,
-        "name": "Claude Opus 5",
-        "provider": "Anthropic",
-        "score": 93.2,
-        "change": "→",
-        "badge": null
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 90.8,
+        "change": "↑1",
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 6,
-        "name": "Grok 4.5",
-        "provider": "xAI",
-        "score": 93.1,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 7,
-        "name": "MiniMax M3",
-        "provider": "MiniMax",
-        "score": 92.9,
-        "change": "→",
-        "badge": "Best Value"
-      },
-      {
-        "rank": 8,
         "name": "Gemini 3.6 Flash",
         "provider": "Google",
         "score": 92.8,
+        "change": "↑2",
+        "benchmark": "GPQA Diamond"
+      },
+      {
+        "rank": 7,
+        "name": "Kimi K3",
+        "provider": "月之暗面",
+        "score": 89.5,
+        "change": "—",
+        "benchmark": "GPQA Diamond"
+      },
+      {
+        "rank": 8,
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 88,
         "change": "🆕",
-        "badge": "Flash #1"
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 9,
-        "name": "Claude Fable 5",
-        "provider": "Anthropic",
-        "score": 92.6,
-        "change": "→",
-        "badge": null
+        "name": "Grok 4.6",
+        "provider": "xAI",
+        "score": 85,
+        "change": "🆕",
+        "benchmark": "GPQA Diamond"
       },
       {
         "rank": 10,
-        "name": "GPT-5.6 Terra",
-        "provider": "OpenAI",
-        "score": 92.5,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 11,
-        "name": "Qwen3.7 Max",
-        "provider": "Alibaba",
-        "score": 92.3,
+        "name": "Tencent Hy3",
+        "provider": "腾讯",
+        "score": 82,
         "change": "🆕",
-        "badge": null
-      },
-      {
-        "rank": 12,
-        "name": "DeepSeek V4 Flash 0731",
-        "provider": "DeepSeek",
-        "score": 90.8,
-        "change": "🆕",
-        "badge": "Cost/Perf #1"
+        "benchmark": "GPQA Diamond"
       }
     ]
   },
   {
     "id": "overall-2026q2",
-    "title": "Agent / 工具调用能力排行榜（2026-08-02 更新）",
+    "title": "多模态能力大模型排行榜（2026-08-07 更新）",
     "description": "MMLU-Pro / Arena Elo / 多维度综合评估",
     "category": "overall",
     "categoryName": "综合能力",
     "categoryIcon": "📊",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
-        "name": "Claude Mythos 5",
-        "provider": "Anthropic",
-        "score": 83,
-        "change": "🆕",
-        "badge": "BenchAlign #1"
-      },
-      {
-        "rank": 2,
-        "name": "Claude Opus 5",
-        "provider": "Anthropic",
-        "score": 82.8,
-        "change": "↑",
-        "badge": null
-      },
-      {
-        "rank": 3,
         "name": "Claude Fable 5",
         "provider": "Anthropic",
-        "score": 82.7,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 4,
-        "name": "GPT-5.6 Sol",
-        "provider": "OpenAI",
-        "score": 81.4,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 5,
-        "name": "Kimi K3",
-        "provider": "Moonshot AI",
-        "score": 79.9,
-        "change": "↑",
-        "badge": "Open #1"
-      },
-      {
-        "rank": 6,
-        "name": "Claude Opus 4.8",
-        "provider": "Anthropic",
-        "score": 77.4,
-        "change": "↓",
-        "badge": null
-      },
-      {
-        "rank": 7,
-        "name": "Muse Spark 1.1",
-        "provider": "Meta",
-        "score": 76.3,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 8,
-        "name": "Grok 4.5",
-        "provider": "xAI",
-        "score": 75.5,
-        "change": "→",
-        "badge": "Best Value"
-      },
-      {
-        "rank": 9,
-        "name": "Gemini 3.6 Flash",
-        "provider": "Google",
-        "score": 75.3,
-        "change": "🆕",
-        "badge": null
-      },
-      {
-        "rank": 10,
-        "name": "DeepSeek V4 Flash 0731",
-        "provider": "DeepSeek",
-        "score": 50,
-        "change": "🆕",
-        "badge": "Cost King"
-      },
-      {
-        "rank": 11,
-        "name": "Qwen3-Max",
-        "provider": "Alibaba",
-        "score": 71.8,
-        "change": "→",
-        "badge": null
-      },
-      {
-        "rank": 12,
-        "name": "GPT-5.4",
-        "provider": "OpenAI",
-        "score": 73.2,
-        "change": "↓",
-        "badge": null
-      }
-    ]
-  },
-  {
-    "id": "agent-2026q2",
-    "title": "多模态能力排行榜（2026-08-02 更新）",
-    "description": "基于 SWE-bench / WebArena / ToolBench 的智能体能力评测",
-    "category": "agent",
-    "categoryName": "Agent 能力",
-    "categoryIcon": "🤖",
-    "date": "2026-08-02",
-    "models": [
-      {
-        "rank": 1,
-        "name": "Claude Mythos 5",
-        "provider": "Anthropic",
-        "score": 83,
-        "change": "🆕",
-        "badge": "MMMU-Pro SOTA"
+        "score": 95,
+        "change": "—",
+        "benchmark": "VisionArena"
       },
       {
         "rank": 2,
-        "name": "GPT-5.6 Sol",
-        "provider": "OpenAI",
-        "score": 81.4,
-        "change": "→",
-        "badge": null
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 92,
+        "change": "↑2",
+        "benchmark": "VisionArena"
       },
       {
         "rank": 3,
-        "name": "Kimi K3",
-        "provider": "Moonshot AI",
-        "score": 79.9,
-        "change": "↑",
-        "badge": "Open Multimodal #1"
+        "name": "GPT-5.6 Sol",
+        "provider": "OpenAI",
+        "score": 91,
+        "change": "—",
+        "benchmark": "VisionArena"
       },
       {
         "rank": 4,
-        "name": "Gemini 3.6 Flash",
+        "name": "Gemini 3.1 Pro",
         "provider": "Google",
-        "score": 75.3,
-        "change": "🆕",
-        "badge": "Flash Multimodal"
+        "score": 90.5,
+        "change": "—",
+        "benchmark": "VisionArena"
       },
       {
         "rank": 5,
         "name": "MiniMax H3",
         "provider": "MiniMax",
-        "score": 75,
+        "score": 89,
         "change": "🆕",
-        "badge": "原生音视频生成"
+        "benchmark": "带音频视频编辑榜"
       },
       {
         "rank": 6,
-        "name": "Inkling-Small",
-        "provider": "Thinking Machines",
-        "score": 74,
-        "change": "→",
-        "badge": "Open Multimodal"
+        "name": "SeedRealtime",
+        "provider": "字节跳动",
+        "score": 87,
+        "change": "🆕",
+        "benchmark": "音视频全双工"
       },
       {
         "rank": 7,
-        "name": "Qwen3.5-Omni",
-        "provider": "Alibaba",
-        "score": 72,
-        "change": "→",
-        "badge": null
+        "name": "Kimi K3",
+        "provider": "月之暗面",
+        "score": 85,
+        "change": "—",
+        "benchmark": "VisionArena"
       },
       {
         "rank": 8,
-        "name": "Grok 4.5",
+        "name": "GLM-5.2",
+        "provider": "智谱",
+        "score": 83,
+        "change": "—",
+        "benchmark": "VisionArena"
+      },
+      {
+        "rank": 9,
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 80,
+        "change": "—",
+        "benchmark": "VisionArena"
+      },
+      {
+        "rank": 10,
+        "name": "Grok 4.6",
         "provider": "xAI",
-        "score": 70,
-        "change": "→",
-        "badge": null
+        "score": 78,
+        "change": "🆕",
+        "benchmark": "VisionArena"
+      }
+    ]
+  },
+  {
+    "id": "agent-2026q2",
+    "title": "Agent 能力大模型排行榜（2026-08-07 更新）",
+    "description": "基于 SWE-bench / WebArena / ToolBench 的智能体能力评测",
+    "category": "agent",
+    "categoryName": "Agent 能力",
+    "categoryIcon": "🤖",
+    "date": "2026-08-07",
+    "models": [
+      {
+        "rank": 1,
+        "name": "Claude Mythos 5",
+        "provider": "Anthropic",
+        "score": 82.98,
+        "change": "—",
+        "benchmark": "BenchAlign"
+      },
+      {
+        "rank": 2,
+        "name": "Claude Fable 5",
+        "provider": "Anthropic",
+        "score": 81.5,
+        "change": "—",
+        "benchmark": "BenchAlign"
+      },
+      {
+        "rank": 3,
+        "name": "GPT-5.6 Sol",
+        "provider": "OpenAI",
+        "score": 80.5,
+        "change": "—",
+        "benchmark": "BenchAlign"
+      },
+      {
+        "rank": 4,
+        "name": "Kimi K3",
+        "provider": "月之暗面",
+        "score": 79.87,
+        "change": "—",
+        "benchmark": "BenchAlign"
+      },
+      {
+        "rank": 5,
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 86.1,
+        "change": "🆕",
+        "benchmark": "OSWorld-Verified",
+        "sweBenchNote": "OSWorld-Verified 86.1, 主流模型首位"
+      },
+      {
+        "rank": 6,
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 78,
+        "change": "↑1",
+        "benchmark": "BenchAlign",
+        "sweBenchNote": "DeepSWE 54.4, 综合Agent 25.2"
+      },
+      {
+        "rank": 7,
+        "name": "GLM-5.2",
+        "provider": "智谱",
+        "score": 77.5,
+        "change": "—",
+        "benchmark": "BenchAlign"
+      },
+      {
+        "rank": 8,
+        "name": "Grok 4.6",
+        "provider": "xAI",
+        "score": 76,
+        "change": "🆕",
+        "benchmark": "Agent Arena"
+      },
+      {
+        "rank": 9,
+        "name": "Tencent Hy3",
+        "provider": "腾讯",
+        "score": 75,
+        "change": "🆕",
+        "benchmark": "WorkBuddy任务成功率90%+"
+      },
+      {
+        "rank": 10,
+        "name": "Ling-3.0-flash",
+        "provider": "蚂蚁",
+        "score": 72,
+        "change": "🆕",
+        "benchmark": "AA Intelligence Index"
       }
     ]
   },
   {
     "id": "cost-2026q2",
-    "title": "性价比排行榜（2026-08-02 更新）",
+    "title": "数学能力大模型排行榜（2026-08-07 更新）",
     "description": "综合能力 / 价格比，找到最佳性价比模型",
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
         "name": "DeepSeek V4 Flash 0731",
         "provider": "DeepSeek",
         "score": 99,
-        "change": "🆕",
+        "change": "—",
         "badge": "Cost King (98% cache hit)"
       },
       {
@@ -467,17 +447,33 @@
         "score": 75,
         "change": "🆕",
         "badge": "Open Flash"
+      },
+      {
+        "rank": 9,
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 88,
+        "change": "🆕",
+        "benchmark": "MATH"
+      },
+      {
+        "rank": 10,
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 86,
+        "change": "↑1",
+        "benchmark": "MATH"
       }
     ]
   },
   {
     "id": "ad-vla-2026q2",
-    "title": "推理速度排行榜（2026-08-02 更新）",
+    "title": "长上下文能力大模型排行榜（2026-08-07 更新）",
     "description": "基于 nuScenes Planning / NAVSIM / CARLA 的自动驾驶视觉-语言-动作模型评测",
     "category": "autonomous-driving",
     "categoryName": "自动驾驶",
     "categoryIcon": "🚗",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
@@ -542,156 +538,200 @@
         "score": 233,
         "change": "🆕",
         "badge": "2M Context"
+      },
+      {
+        "rank": 9,
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 95,
+        "change": "🆕",
+        "benchmark": "1M tokens",
+        "sweBenchNote": "原生1M上下文"
+      },
+      {
+        "rank": 10,
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 93,
+        "change": "↑1",
+        "benchmark": "256K tokens"
       }
     ]
   },
   {
     "id": "video-gen-2026q2",
-    "title": "上下文窗口排行榜（2026-08-02 更新）",
+    "title": "性价比大模型排行榜（2026-08-07 更新）",
     "description": "基于人工评测（文本对齐 / 运动质量 / 视觉质量）+ VBench 综合评分",
     "category": "video",
     "categoryName": "视频生成",
     "categoryIcon": "🎬",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
-        "name": "Grok 4.20 Fast",
-        "provider": "xAI",
-        "score": 2000,
-        "change": "🆕",
-        "badge": "2M tokens"
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 99,
+        "change": "↑1",
+        "benchmark": "成本/性能比",
+        "sweBenchNote": "任务成本仅为Fable的1/105, OpenRouter调用量第一"
       },
       {
         "rank": 2,
-        "name": "Gemini 3.2 Pro",
-        "provider": "Google",
-        "score": 2000,
-        "change": "→",
-        "badge": "2M tokens"
+        "name": "Grok 4.6",
+        "provider": "xAI",
+        "score": 95,
+        "change": "🆕",
+        "benchmark": "$2/$6 per M tokens"
       },
       {
         "rank": 3,
-        "name": "Llama 4 Scout",
-        "provider": "Meta",
-        "score": 10000,
-        "change": "→",
-        "badge": "10M tokens"
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 92,
+        "change": "↑2",
+        "benchmark": "成本/性能比",
+        "sweBenchNote": "国际价格仅Opus 5的40%/24%"
       },
       {
         "rank": 4,
-        "name": "Kimi K3",
-        "provider": "Moonshot AI",
-        "score": 1000,
-        "change": "→",
-        "badge": "1M tokens"
+        "name": "Ling-3.0-flash",
+        "provider": "蚂蚁",
+        "score": 90,
+        "change": "🆕",
+        "benchmark": "$0.04/任务"
       },
       {
         "rank": 5,
-        "name": "DeepSeek V4 Flash 0731",
-        "provider": "DeepSeek",
-        "score": 1000,
-        "change": "🆕",
-        "badge": "1M tokens"
+        "name": "Kimi K3",
+        "provider": "月之暗面",
+        "score": 88,
+        "change": "—",
+        "benchmark": "成本/性能比"
       },
       {
         "rank": 6,
-        "name": "GPT-5.6 Sol",
-        "provider": "OpenAI",
-        "score": 1100,
-        "change": "→",
-        "badge": "1.1M tokens"
+        "name": "Tencent Hy3",
+        "provider": "腾讯",
+        "score": 87,
+        "change": "🆕",
+        "benchmark": "$0.13/$0.53 per M tokens"
       },
       {
         "rank": 7,
-        "name": "Claude Opus 5",
-        "provider": "Anthropic",
-        "score": 1000,
-        "change": "→",
-        "badge": "1M tokens"
+        "name": "GLM-5.2",
+        "provider": "智谱",
+        "score": 85,
+        "change": "—",
+        "benchmark": "成本/性能比"
       },
       {
         "rank": 8,
-        "name": "Qwen3.7 Flash",
-        "provider": "Alibaba",
-        "score": 1000,
+        "name": "MiniMax H3",
+        "provider": "MiniMax",
+        "score": 84,
         "change": "🆕",
-        "badge": "1M tokens"
+        "benchmark": "0.8元/秒视频"
       }
     ]
   },
   {
     "id": "3d-gen-2026q2",
-    "title": "开源模型排行榜（2026-08-02 更新）",
+    "title": "开源模型排行榜（2026-08-07 更新）",
     "description": "基于 CMMD↓ / FID_CLIP↓ / FID↓ / CLIP-score↑ 综合评测（GSO + Objaverse 测试集）",
     "category": "3d",
     "categoryName": "3D 生成",
     "categoryIcon": "🧊",
-    "date": "2026-08-02",
+    "date": "2026-08-07",
     "models": [
       {
         "rank": 1,
         "name": "Kimi K3",
-        "provider": "Moonshot AI",
-        "score": 79.9,
-        "change": "→",
-        "badge": "Open #1 (2.8T MoE)"
+        "provider": "月之暗面",
+        "score": 79.87,
+        "change": "—",
+        "benchmark": "BenchAlign",
+        "sweBenchNote": "2.8T开源最大"
       },
       {
         "rank": 2,
-        "name": "MiniMax M3",
-        "provider": "MiniMax",
-        "score": 68.8,
-        "change": "→",
-        "badge": "Best Open Value"
+        "name": "DeepSeek V4-Flash",
+        "provider": "DeepSeek",
+        "score": 78,
+        "change": "↑1",
+        "benchmark": "BenchAlign",
+        "sweBenchNote": "OpenRouter调用量第一, MIT许可"
       },
       {
         "rank": 3,
-        "name": "Inkling-Small",
-        "provider": "Thinking Machines",
-        "score": 72,
-        "change": "→",
-        "badge": "Best Open SWE"
+        "name": "Qwen3.8-Max",
+        "provider": "阿里",
+        "score": 86.1,
+        "change": "🆕",
+        "benchmark": "OSWorld-Verified",
+        "sweBenchNote": "2.4T, Apache 2.0, 下周开源"
       },
       {
         "rank": 4,
-        "name": "Qwen3-Max",
-        "provider": "Alibaba",
-        "score": 71.8,
-        "change": "→",
-        "badge": "China #1"
+        "name": "GLM-5.2",
+        "provider": "智谱",
+        "score": 77.5,
+        "change": "—",
+        "benchmark": "BenchAlign",
+        "sweBenchNote": "开源首个SWE-bench Pro击败GPT-5/Claude"
       },
       {
         "rank": 5,
-        "name": "Muse Spark 1.1",
-        "provider": "Meta",
-        "score": 76.3,
-        "change": "→",
-        "badge": "Meta Open"
+        "name": "Tencent Hy3",
+        "provider": "腾讯",
+        "score": 75,
+        "change": "🆕",
+        "benchmark": "BenchAlign",
+        "sweBenchNote": "Apache 2.0, OpenRouter周榜第一"
       },
       {
         "rank": 6,
-        "name": "GLM 5.2",
-        "provider": "Zhipu AI",
-        "score": 68,
-        "change": "→",
-        "badge": "Open SWE-Pro #1"
+        "name": "MiniMax H3",
+        "provider": "MiniMax",
+        "score": 89,
+        "change": "🆕",
+        "benchmark": "带音频视频编辑榜",
+        "sweBenchNote": "33B H3-Omni Transformer, 9家芯片适配"
       },
       {
         "rank": 7,
-        "name": "MiniMax H3",
-        "provider": "MiniMax",
-        "score": 75,
+        "name": "Ling-3.0-flash",
+        "provider": "蚂蚁",
+        "score": 72,
         "change": "🆕",
-        "badge": "Open Multimodal Video"
+        "benchmark": "AA Intelligence Index",
+        "sweBenchNote": "124B/5.1B MoE, 单机部署"
       },
       {
         "rank": 8,
-        "name": "DeepSeek V4",
-        "provider": "DeepSeek",
+        "name": "LFM2.5-2.6B",
+        "provider": "Liquid AI",
+        "score": 70,
+        "change": "🆕",
+        "benchmark": "端侧Agent基准",
+        "sweBenchNote": "2.6B手机本地Agent"
+      },
+      {
+        "rank": 9,
+        "name": "Inkling-Small",
+        "provider": "Thinking Machines",
         "score": 68,
-        "change": "→",
-        "badge": "MIT License"
+        "change": "—",
+        "benchmark": "SWE-bench Verified"
+      },
+      {
+        "rank": 10,
+        "name": "DeepSeek V4.5",
+        "provider": "DeepSeek",
+        "score": 65,
+        "change": "—",
+        "benchmark": "SWE-bench Verified",
+        "sweBenchNote": "MIT许可"
       }
     ]
   }
