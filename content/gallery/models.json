@@ -4192,5 +4192,252 @@
       "Apache 2.0 协议"
     ],
     "description": "阿里通义千问于2026年8月15日首次开放Max级旗舰模型权重。2.4万亿参数MoE架构(A95B)，AA Intelligence Index 58.1全球第五，VisionArena全球第二。可连续自主编程16天。Apache 2.0协议，同步开源27B稠密版。国内定价仅为Opus 5的24-40%。"
+  },
+  {
+    "id": "qwen-ui-agent",
+    "name": "Qwen-UI-Agent",
+    "org": "阿里 (通义千问)",
+    "type": "agent",
+    "typeLabel": "GUI 智能体模型",
+    "typeIcon": "📱",
+    "open": true,
+    "params": "未公开 (Qwen基座)",
+    "date": "2026-08-20",
+    "context": "—",
+    "attention": "VLM + 混合动作空间",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "多模态 VLM 基座",
+      "attention": "—",
+      "context": "—",
+      "activation": "—",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "真机轨迹 + 在线RL (10000并发环境)",
+      "license": "开源 (技术报告+代码公开)"
+    },
+    "tags": [
+      "阿里",
+      "Qwen-UI-Agent",
+      "GUI Agent",
+      "MobileWorld",
+      "OSWorld",
+      "WebArena",
+      "真机训练"
+    ],
+    "keyInnovation": "全球首款真机驱动的跨端 GUI 智能体基座模型。MobileWorld 82.1% 领先 GPT-5.6 Sol 12 分、Claude Opus 4.8 14.6 分；MobileWorld-Real 真机基准 92.2%；AndroidDaily 97.5%；OSWorld-Verified 79.5%；WebArena 73.6% 全场第一；ScreenSpot-Pro 81.5%。搭建 100+ 真机、150+ 应用训练环境，自建 MobileWorld-Real 真机基准（400 任务/100 应用）。支持 GUI+CLI 混合动作空间，电脑任务 40% 动作批量输出；100+ 步长轨迹在线 RL；高危请求直接拒绝、敏感操作暂停确认的安全机制。",
+    "highlights": [
+      "MobileWorld 82.1% 超 GPT/Claude",
+      "真机基准 MobileWorld-Real 92.2%",
+      "WebArena 73.6% 全场第一",
+      "100+ 真机 / 150+ 应用训练环境",
+      "GUI + CLI 混合动作空间",
+      "10000 并发环境在线 RL"
+    ],
+    "description": "阿里 2026 年 8 月 20 日发布的 GUI 智能体基座模型，覆盖移动/桌面/网页/深度搜索四大环境，以真机训练打通模拟到现实的鸿沟，移动端基准全面超越 GPT 与 Claude。"
+  },
+  {
+    "id": "sensenova-u1-5-lite",
+    "name": "SenseNova U1.5 Lite",
+    "org": "商汤科技",
+    "type": "multimodal",
+    "typeLabel": "开源多模态模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "8B (MoE)",
+    "date": "2026-08-22",
+    "context": "3-4K (原生分辨率)",
+    "attention": "MoE 统一架构",
+    "factSheet": {
+      "params": "8B",
+      "architecture": "MoE 统一多模态",
+      "attention": "—",
+      "context": "3-4K 原生",
+      "activation": "—",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "多模态预训练 + 视觉指令微调",
+      "license": "开源"
+    },
+    "tags": [
+      "商汤",
+      "SenseNova",
+      "多模态",
+      "开源",
+      "4K输出",
+      "视觉编辑",
+      "端侧"
+    ],
+    "keyInnovation": "8B 轻量统一多模态大模型，原生支持 3-4K 上下文（高分辨率图像输入）与 4K 输出。复杂布局与中英文文本渲染媲美大规模商用模型，自然语言控制视觉编辑无需 JSON schema。统一文本、信息图、视觉编辑能力，覆盖文档理解、OCR、图表分析等任务，适合边缘部署。",
+    "highlights": [
+      "8B 轻量级开源",
+      "原生 3-4K 高分辨率上下文",
+      "4K 图像输出",
+      "自然语言视觉编辑",
+      "中英文本渲染媲美商用模型"
+    ],
+    "description": "商汤 2026 年 8 月开源的 8B 轻量统一多模态模型，原生 4K 分辨率输入输出，统一文本/信息图/视觉编辑能力，大幅降低多模态部署门槛。"
+  },
+  {
+    "id": "qwen3-8-27b",
+    "name": "Qwen3.8-27B",
+    "org": "阿里 (Qwen)",
+    "type": "multimodal",
+    "typeLabel": "开源视觉语言模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "27B Dense",
+    "date": "2026-08-14",
+    "context": "262,144 (YaRN→1M)",
+    "attention": "Dense",
+    "factSheet": {
+      "params": "270亿 (稠密)",
+      "architecture": "原生多模态 Dense",
+      "attention": "GQA",
+      "context": "262K → 1M (YaRN)",
+      "activation": "27B 全激活",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE + YaRN",
+      "training": "多阶段预训练 + SFT + RL",
+      "license": "Apache 2.0"
+    },
+    "tags": [
+      "阿里",
+      "Qwen3.8-27B",
+      "多模态",
+      "开源",
+      "262K",
+      "端侧",
+      "Apache 2.0"
+    ],
+    "keyInnovation": "270 亿参数原生多模态稠密模型，支持图文、视频理解。编程与办公场景能力反超自家更大的 Qwen3.7-Plus，量化后消费级显卡即可运行。原生上下文 262K，通过 YaRN 可扩展至 1M。与 Qwen3.8-2.4T-A95B 同期开源，形成\"旗舰 + 端侧\"双梯队，阿里累计开源模型超 460 个。",
+    "highlights": [
+      "27B 原生多模态稠密",
+      "编程办公反超 Qwen3.7-Plus",
+      "262K → 1M (YaRN)",
+      "消费级显卡可跑",
+      "Apache 2.0"
+    ],
+    "description": "阿里 2026 年 8 月 14 日开源的 27B 原生视觉语言稠密模型，编程与办公能力反超更大模型，量化后消费级硬件可部署，262K 上下文可扩展至 1M。"
+  },
+  {
+    "id": "gen-1-5",
+    "name": "GEN-1.5",
+    "org": "Generalist AI",
+    "type": "robotics",
+    "typeLabel": "具身基础模型",
+    "typeIcon": "🤖",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-08-20",
+    "context": "30 秒感觉运动记忆",
+    "attention": "多模态融合",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "多模态具身基础模型",
+      "attention": "—",
+      "context": "30s 记忆窗口",
+      "activation": "—",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "连续预训练 8 个月物理交互数据",
+      "license": "闭源 (API/合作)"
+    },
+    "tags": [
+      "Generalist AI",
+      "GEN-1.5",
+      "具身智能",
+      "物理提示",
+      "机器人",
+      "GPT-3时刻"
+    ],
+    "keyInnovation": "首个规模化展示物理任务 one-shot 学习的机器人基础模型：3-12 秒演示作为\"物理提示\"放入 30 秒上下文窗口，无需梯度更新当场执行，10 任务平均成功率 59%；10 个梯度步微调后 83%。100Hz 动作轨迹输出。涌现能力：用香蕉替代刷子、自创簸箕策略（预训练 189 万段场景中检索不到）、zero-shot sim-to-real、双手协作。微调 10 步仅改变 0.15% 参数。公司 4 亿美元融资估值 20 亿，李飞飞/英伟达/贝索斯参投。",
+    "highlights": [
+      "一次演示学会新任务 (零梯度)",
+      "One-shot 成功率 59% / 微调后 83%",
+      "即兴工具使用与错误恢复",
+      "Zero-shot Sim-to-Real",
+      "连续预训练 8 个月",
+      "李飞飞/黄仁勋/贝索斯参投"
+    ],
+    "description": "Generalist AI 2026 年 8 月发布的具身基础模型，以\"物理提示\"实现一次演示学习新任务，被研究者类比为具身智能的 GPT-3 时刻，机器人任务适配成本从月级降到秒级。"
+  },
+  {
+    "id": "dots3-note",
+    "name": "dots3-note",
+    "org": "小红书",
+    "type": "multimodal",
+    "typeLabel": "开源三模态Agent模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "280B (16B active)",
+    "date": "2026-08-14",
+    "context": "512K",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "2800亿 (激活160亿)",
+      "architecture": "MoE 三模态",
+      "attention": "GQA",
+      "context": "512K",
+      "activation": "16B",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "多模态预训练 + Agent后训练",
+      "license": "开源"
+    },
+    "tags": [
+      "小红书",
+      "dots3-note",
+      "三模态",
+      "Agent",
+      "开源",
+      "512K"
+    ],
+    "keyInnovation": "内容社区厂商首个大规模开源 Agent 基座：280B/16B MoE 三模态（文本+图像+视频），512K 上下文，面向笔记内容理解与创作场景。与 Qwen3.8 系列、DeepSeek V4 Pro、GLM-5.3 共同构成 8 月国产开源潮。",
+    "highlights": [
+      "280B/16B MoE 三模态",
+      "512K 上下文",
+      "内容社区首个大规模开源",
+      "Agent 能力原生"
+    ],
+    "description": "小红书 2026 年 8 月开源的 280B/16B 三模态 Agent 模型，512K 上下文，标志着垂直内容社区加入大模型开源卡位战。"
+  },
+  {
+    "id": "nemotron-3-5-lightning",
+    "name": "Nemotron 3.5 Lightning",
+    "org": "NVIDIA",
+    "type": "llm",
+    "typeLabel": "开源端侧Agent模型",
+    "typeIcon": "🟩",
+    "open": true,
+    "params": "轻量级",
+    "date": "2026-08-10",
+    "context": "—",
+    "attention": "—",
+    "factSheet": {
+      "params": "轻量级 (单GPU可跑)",
+      "architecture": "Dense",
+      "attention": "—",
+      "context": "—",
+      "activation": "—",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "预训练 + Agent执行微调",
+      "license": "开源"
+    },
+    "tags": [
+      "NVIDIA",
+      "Nemotron",
+      "开源",
+      "端侧",
+      "Agent执行层"
+    ],
+    "keyInnovation": "NVIDIA 开源的轻量 Agent 执行层模型，专为长时间运行的 AI 智能体设计，可在普通笔记本的单块 GPU 上流畅运行。与黄仁勋\"世界需要前沿闭源模型，也需要前沿开源模型\"的公开表态呼应，芯片厂商以开源模型为 GPU 生态铺软件底座。",
+    "highlights": [
+      "笔记本单 GPU 可跑",
+      "长时 Agent 执行层优化",
+      "NVIDIA 官方开源"
+    ],
+    "description": "NVIDIA 2026 年 8 月开源的轻量 Agent 执行层模型，专为长时间智能体任务设计，端侧单 GPU 即可部署。"
   }
 ]
