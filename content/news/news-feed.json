@@ -8193,5 +8193,293 @@
     ],
     "hot": true,
     "region": "global"
+  },
+  {
+    "id": "news-2026-08-10-1",
+    "title": "Meta 回归开源：Muse Glimmer 30B 开放权重，24GB 消费级 GPU 可跑 Agent",
+    "summary": "扎克伯格宣布开源 Muse Glimmer 30B 稠密模型，Apache 2.0 协议。24GB 显存可运行完整 Agent 工作流（规划+工具调用+自我纠错+故障恢复），4-bit 量化压缩至 20GB 以下。DFlash 投机解码在 RTX 5090 上 3.1x 加速，M5 Max 1.8x，M4 Max 1.5x。同日预告旗舰模型 Muse Spark 1.2 权重即将开放。这是 Llama 4 失利后 Meta 首次重回开源阵营。",
+    "whyMatters": "Meta FAIR 团队解散后通过 Scale AI 创始人 Alexandr Wang 领导的 MSL 重新杀回开源赛道。30B 参数在消费级硬件跑 Agent 是端侧 AI 的里程碑，直接威胁 OpenAI/Anthropic 的 API 生意。",
+    "importance": 4,
+    "source": "Meta 官方博客 / HuggingFace",
+    "url": "https://huggingface.co/meta-muse/Muse-Glimmer-30B",
+    "date": "2026-08-10",
+    "tags": [
+      "Meta",
+      "Muse Glimmer",
+      "开源",
+      "Apache 2.0",
+      "30B",
+      "端侧Agent",
+      "DFlash",
+      "Muse Spark 1.2"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-12-1",
+    "title": "Grok 4.6 发布：AA 指数 61 平 GPT-5.6 Sol，缓存输入涨价 67% 隐蔽加价",
+    "summary": "xAI 发布 Grok 4.6，35 天迭代一代。500K 上下文，输入 $2/输出 $6 不变，但缓存输入从 $0.30 涨到 $0.50 每百万 token（+67%）。AA Intelligence Index 61 分平 GPT-5.6 Sol，仅次于 Claude Opus 5（63）和 Claude Fable 5（62）。GDPVal-AA v2 1753，CursorBench v3.2 69.9%，DeepSWE v1.1 65.9%。200K token 后全部价格翻倍。",
+    "whyMatters": "Grok 4.6 证明纯后训练可以逼近前沿。但缓存输入涨价对 Agent 循环影响巨大——大前缀反复重放的 Agent 场景，缓存成本可能占总账单 70%+。",
+    "importance": 3,
+    "source": "xAI / Artificial Analysis",
+    "url": "https://x.ai/grok-4.6",
+    "date": "2026-08-12",
+    "tags": [
+      "xAI",
+      "Grok 4.6",
+      "AA 61",
+      "缓存涨价",
+      "后训练"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-13-1",
+    "title": "Gemini 3.7 Flash 发布：DeepSWE 从 49% 跳至 65%，$0.75/$3.75 半价旗舰",
+    "summary": "Google 发布 Gemini 3.7 Flash，全球 160+ 国家同步上线。1M 输入/64K 输出。对比 Gemini 3.6 Flash：DeepSWE v1.1 从 49.0% 升至 65.3%，FrontierCode 1.1 Main 从 34.4% 到 43.6%，WebDev Arena Elo 1538→1588，GDP.pdf 22.0%→34.0%，AutomationBench 17.0%→30.4%。AA Intelligence Index 56，比 Grok 4.6 低 5 分但价格仅其 1/4。Bloomberg 报道 Gemini 3.5 Pro 仍延期中。",
+    "whyMatters": "Flash 级模型编程能力从 49% 跳到 65% 意味着中端模型已可胜任大部分编码 Agent 任务，高端旗舰模型的性价比差距进一步拉大。",
+    "importance": 3,
+    "source": "Google AI Blog",
+    "url": "https://blog.google/gemini-3.7-flash",
+    "date": "2026-08-13",
+    "tags": [
+      "Google",
+      "Gemini 3.7 Flash",
+      "1M上下文",
+      "DeepSWE 65.3%",
+      "性价比"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-13-2",
+    "title": "DeepSeek V4-Pro-0813 正式开源：1.6T MoE / 49B 激活 / 1M 上下文 / MIT 协议",
+    "summary": "DeepSeek 发布 V4-Pro-0813 正式版并 MIT 协议开源权重。MoE 架构总参数 1.6 万亿，每 token 激活 490 亿，100 万上下文窗口，最大输出 38.4 万 token。Terminal-Bench 2.1 从 72.1 跳至 87.9，DeepSWE 从 12.8 暴涨至 62.7，CyberGym 83.3。AA Intelligence Index 从 45 升至 53。支持低/高/最大三档推理强度。定价 $1.32/$3.96/$0.44（缓存命中），仅为 Grok 4.6 的 1/7、Fable 5 的 1/57。8/17 起引入峰谷定价。",
+    "whyMatters": "DeepSeek V4 Pro 正式版在 Agent 能力上从 12.8 跳到 62.7 的 DeepSWE 是史上最大单版本跃升。MIT 协议 + 本地部署 + 低至旗舰 1/57 的价格，直接把 Agent 模型变成基础设施。",
+    "importance": 4,
+    "source": "DeepSeek 官方 / GitHub",
+    "url": "https://github.com/deepseek-ai",
+    "date": "2026-08-13",
+    "tags": [
+      "DeepSeek",
+      "V4 Pro 0813",
+      "1.6T MoE",
+      "MIT开源",
+      "Terminal-Bench 87.9",
+      "DeepSWE 62.7",
+      "峰谷定价"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-13-3",
+    "title": "DeepSeek 开源 Harness 框架：一切皆插件，对标 Claude Cowork 与 OpenAI Codex",
+    "summary": "DeepSeek 同步推出基于 Cordis 元框架的代码智能体 Harness v0.1，MIT 协议开源。设计理念\"一切皆插件\"：模型、工具、UI、沙箱、调度全以插件形式存在，无需改源码即可替换扩展。四种运行模式：Standard（完整Agent）/ Code PTC（程序化工具调用）/ Minimal（基准测试）/ Creator（自定义预设）。支持 OpenAI/Anthropic/AWS Bedrock/Azure/Gemini 等 OpenAI 兼容端点。GitHub 上线数小时 33000 star。QQ Bot 插件已适配。国家超算互联网 Day 0 上线。",
+    "whyMatters": "DeepSeek 从纯模型公司转型为\"模型+基础设施\"平台。Harness + V4 Pro 组合让开发者可完全本地部署 Agent 工作流，降低对云厂商依赖，对标 Claude Code/Cowork 的开源替代。",
+    "importance": 4,
+    "source": "DeepSeek / IT之家",
+    "url": "https://github.com/deepseek-ai/Harness",
+    "date": "2026-08-13",
+    "tags": [
+      "DeepSeek",
+      "Harness",
+      "MIT开源",
+      "Cordis",
+      "Agent框架",
+      "Claude Cowork",
+      "一切皆插件"
+    ],
+    "category": "tools"
+  },
+  {
+    "id": "news-2026-08-14-1",
+    "title": "GLM-5.3 发布：同基座纯后训练 50% 提升，Terminal-Bench 3.0 从 4.6 暴涨至 28.3",
+    "summary": "智谱 Z.ai 发布 GLM-5.3，基座参数 744B 与 GLM-5.2 完全相同，所有提升来自后训练。Terminal-Bench 3.0 从 4.6 跃至 28.3（开源SOTA），DeepSWE v1.1 从 46.2 升至 66.9，Agents' Last Exam 从 23.8 升至 28.5。安全能力意外爆发：CyberGym 84.5% 超 Claude Mythos 5（83.8%）和 GPT-5.6 Sol（83.6%），ExploitBench 从 24.4 跳至 54.4。已发现 2436 个漏洞覆盖 269 个开源项目，53 个 CVE 已披露。1M 上下文/128K 输出，三档推理强度。权重两周后安全加固后开放。",
+    "whyMatters": "GLM-5.3 是\"后训练 Scaling\"范式的最强证据——不改基座，纯靠更多任务环境和更长 RL 训练就能 50% 提升。Cyber 能力超预期爆发引发安全权重 staged release 先例。",
+    "importance": 4,
+    "source": "Z.ai 官方博客",
+    "url": "https://z.ai/blog/glm-5.3",
+    "date": "2026-08-14",
+    "tags": [
+      "智谱",
+      "GLM-5.3",
+      "后训练",
+      "Terminal-Bench 28.3",
+      "CyberGym 84.5%",
+      "安全能力",
+      "开源SOTA"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-14-2",
+    "title": "Anthropic 启动 IPO 路演：年化营收 650 亿美元超 OpenAI，估值目标 2 万亿",
+    "summary": "Anthropic 已向 SEC 秘密提交 S-1，承销团含摩根士丹利/高盛/摩根大通/花旗。计划 10 月挂牌，估值目标 2 万亿美元，募资超 1000 亿美元（超 SpaceX 的 857 亿）。年化营收从 2025 年底 90 亿飙至 2026 年 7 月 650 亿（8 个月 7 倍），Q2 首次调整后营业利润转正。净收入留存率 500%。OpenAI 年化营收约 400 亿，计划 2027 年上市。Anthropic 累计融资 1320 亿美元。",
+    "whyMatters": "Anthropic 5 年 2 万亿估值将刷新全球 IPO 史最大纪录。年化营收 8 个月 7 倍增长验证了企业级 AI Agent 的商业化路径。与 OpenAI 的 C 端路线对比，B 端 AI 公司首次在营收上反超。",
+    "importance": 4,
+    "source": "彭博社 / 新浪财经",
+    "url": "https://finance.sina.com.cn/stock/usstock/c/2026-08-22/doc-inipcwvx7663069.shtml",
+    "date": "2026-08-14",
+    "tags": [
+      "Anthropic",
+      "IPO",
+      "2万亿估值",
+      "650亿营收",
+      "超OpenAI",
+      "史上最大IPO"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-08-15-1",
+    "title": "阿里开源 Qwen3.8-2.4T-A95B 权重：Max 级旗舰首次开放下载",
+    "summary": "阿里通义千问团队在 HuggingFace 正式开源 Qwen3.8-2.4T-A95B，总参数 2.4 万亿、A95B 架构（激活 950 亿）。这是 Qwen-Max 级别模型首次向社区开放权重，此前仅通过 API 提供。同步开源 Qwen3.8-27B 稠密模型，可在高端手机和消费级显卡上流畅运行。AA Intelligence Index 58.1，VisionArena 全球第二。国内定价输入 12 元/百万 token、输出 36 元，海外为 Opus 5 的 40% 和 24%。",
+    "whyMatters": "Max 级旗舰开源是国产大模型开源策略的重大升级。2.4T 参数权重免费下载将直接冲击闭源 API 市场，降低企业深度定制门槛。",
+    "importance": 3,
+    "source": "阿里云 / HuggingFace",
+    "url": "https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B",
+    "date": "2026-08-15",
+    "tags": [
+      "阿里",
+      "Qwen3.8",
+      "2.4T",
+      "A95B",
+      "Max开源",
+      "HuggingFace",
+      "27B"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-16-1",
+    "title": "DeepSeek API 峰谷定价生效：高峰翻倍、闲时半价，最高涨价 12 倍",
+    "summary": "DeepSeek 8 月 17 日零时起正式引入峰谷定价。高峰时段（每日 9:00-12:00、14:00-18:00 北京时间）价格翻倍，闲时价格为高峰的一半。V4 Flash 缓存命中从 $0.07 涨至高峰 $0.84（12 倍），V4 Pro 高峰输入 $2.64/输出 $7.92。旨在缓解容量压力并优化变现，对标云厂商峰谷计费模式。",
+    "whyMatters": "DeepSeek 从价格屠夫转向精细化变现，峰谷定价验证了推理算力的电力属性。高峰 12 倍涨价意味着 Agent 批处理任务应迁移至闲时执行。",
+    "importance": 2,
+    "source": "DeepSeek 官方 / 新浪财经",
+    "url": "https://finance.sina.com.cn/jjxw/2026-08-13/",
+    "date": "2026-08-16",
+    "tags": [
+      "DeepSeek",
+      "峰谷定价",
+      "涨价12倍",
+      "变现"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-08-18-1",
+    "title": "OpenAI 更新 Model Spec：行为政策重大修订，非新模型发布",
+    "summary": "OpenAI 于 8 月 18 日更新 Model Spec 行为政策规范。这是行为准则修订而非新模型发布，调整了模型在安全边界、拒绝策略和工具使用方面的行为标准。具体变更涉及模型在面对模糊请求时的默认行为、多轮对话中的上下文保持策略，以及 Agent 模式下的自主决策边界。",
+    "whyMatters": "Model Spec 更新标志着 OpenAI 从模型能力竞争转向行为规范竞争，直接影响 API 调用者的系统提示词设计策略。",
+    "importance": 2,
+    "source": "OpenAI 官方",
+    "url": "https://openai.com/model-spec",
+    "date": "2026-08-18",
+    "tags": [
+      "OpenAI",
+      "Model Spec",
+      "行为政策",
+      "安全边界"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-08-21-1",
+    "title": "DeepSeek V4 Flash Vision Exp 上线：视觉基准超 Opus 4.8，定价与文本模型一致",
+    "summary": "DeepSeek 推出 V4 Flash Vision 实验版多模态模型，基于 V4 Flash 2840B/13B MoE 架构。在 ALE 和 ZeroBench 两项视觉基准中超越 Anthropic Opus 4.8。四项视觉测试中两项提升超 10%。文本性能与正式版持平。采用 HCA 和 CSA 技术压缩 KV 缓存，处理百万 token 提示词算力降低 73%。Muon 算法加速训练。目前仅付费开发者平台可用，未来可能开源。",
+    "whyMatters": "DeepSeek V4 系列补齐视觉短板，多模态 Agent 能力接近 Anthropic 顶尖模型。定价与文本模型一致打破行业多模态溢价惯例。",
+    "importance": 3,
+    "source": "DeepSeek 开发者平台",
+    "url": "https://platform.deepseek.com",
+    "date": "2026-08-21",
+    "tags": [
+      "DeepSeek",
+      "V4 Flash Vision",
+      "多模态",
+      "超Opus 4.8",
+      "ALE",
+      "ZeroBench",
+      "HCA",
+      "CSA"
+    ],
+    "category": "model-release"
+  },
+  {
+    "id": "news-2026-08-22-1",
+    "title": "AI API 排行 8 月榜：Claude Opus 5 AA 63.1 领跑，DeepSeek V4 Flash 最佳性价比",
+    "summary": "Artificial Analysis 8 月 AI API 排行更新。AA Intelligence Index：Claude Opus 5（63.1）> Claude Fable 5（62.1）> GPT-5.6 Sol（60.9）> Kimi K3（59.7）> Qwen3.8-Max（58.1）。最佳性价比（AA指数/混合价格）：DeepSeek V4 Flash 240.6 遥遥领先，GPT-5.6 Luna 116.2，MiniMax M3 86.5。SWE-bench：Claude Opus 5 96%。GPQA：GPT-5.6 Sol 94.6%。AIME：GPT-5.5 100%。中国开源模型 Kimi K3 和 Qwen3.8-Max 进入前五。",
+    "whyMatters": "中国开源模型在 AA 指数前五占两席（Kimi K3 第四、Qwen3.8-Max 第五），与闭源前沿差距缩小至 3-5 分。DeepSeek V4 Flash 性价比 240.6 是 GPT-5.6 Luna 的 2 倍。",
+    "importance": 3,
+    "source": "Artificial Analysis / aiapiindex.com",
+    "url": "https://aiapiindex.com/",
+    "date": "2026-08-22",
+    "tags": [
+      "AA指数",
+      "Claude Opus 5",
+      "DeepSeek性价比",
+      "Kimi K3",
+      "Qwen3.8-Max",
+      "排行榜"
+    ],
+    "category": "benchmark"
+  },
+  {
+    "id": "news-2026-08-22-2",
+    "title": "ModelGrep 8 月基准：Grok 4.6 GPQA 94.9% 登顶，Claude Fable 5 HLE 55.5%",
+    "summary": "ModelGrep 8 月实时排行榜更新。GPQA Diamond：Grok 4.6 以 94.9% 登顶。HLE：Claude Fable 5 以 55.5% 领先。SciCode：Claude Fable 5 60.2%。Terminal-Bench Hard：GPT-5.6 Sol 65.9%。Tau2-Bench：GLM-5.2 99.1%。MMLU-Pro：Claude Opus 4.5 88.9%。IFBench：MiniMax M3 82.9%。长上下文推理：Muse Spark 1.2 83.3%。395 个模型，10 项基准，Artificial Analysis 标准化运行，每小时刷新。",
+    "whyMatters": "Grok 4.6 在 GPQA 登顶证明后训练 Scaling 对推理能力的提升不亚于新基座。GLM-5.2 在 Tau2-Bench 99.1% 领先展示中国模型在工具使用场景的竞争力。",
+    "importance": 2,
+    "source": "ModelGrep",
+    "url": "https://modelgrep.com/benchmarks",
+    "date": "2026-08-22",
+    "tags": [
+      "ModelGrep",
+      "GPQA",
+      "Grok 4.6",
+      "HLE",
+      "Claude Fable 5",
+      "基准排行"
+    ],
+    "category": "benchmark"
+  },
+  {
+    "id": "news-2026-08-22-3",
+    "title": "清华大学联合联想突破 AI 芯片供电：R2SC 谐振变换器赋能万卡集群",
+    "summary": "清华大学集成电路学院刘效森团队联合联想集团突破 AI 芯片供电技术。采用垂直供电架构和 R2SC（Resonant Resonant Switched Capacitor）谐振变换器，解决万卡 GPU 集群高密度供电瓶颈。传统横向供电在 1000+ GPU 规模面临 PDN 阻抗和瞬态响应挑战，垂直供电将供电网络直接嵌入芯片封装下方，缩短电流路径。这是国产 AI 基础设施在供电层面的关键突破。",
+    "whyMatters": "万卡集群供电是物理 AI 基础设施的最后一块拼图。垂直供电+R2SC 技术可降低 30%+ 供电损耗，对 B200/B300 级单卡 1000W+ 功耗场景至关重要。",
+    "importance": 2,
+    "source": "清华新闻网",
+    "url": "https://www.tsinghua.edu.cn/info/1175/127641.htm",
+    "date": "2026-08-15",
+    "tags": [
+      "清华",
+      "联想",
+      "R2SC",
+      "垂直供电",
+      "万卡集群",
+      "AI基础设施"
+    ],
+    "category": "hardware"
+  },
+  {
+    "id": "news-2026-08-22-4",
+    "title": "北大 HMI 联合智源智元打通人形机器人全身协同：灵巧手+移动一体化控制",
+    "summary": "北京大学计算机学院 HMI 实验室（黄铁军、仉尚航）联合智源研究院和智元机器人，在世界人形机器人运动会前夕发布具身全身协同控制突破。实现灵巧手操作与移动底盘的一体化控制，解决人形机器人\"移动到位置后才能操作\"的串行瓶颈，实现边走边操作的并行控制。这是人形机器人从实验室走向产线的关键一步。",
+    "whyMatters": "全身协同控制是人形机器人落地的核心技术瓶颈。北大+智源+智元的产学研组合代表了中国 Physical AI 在控制层面的最快路径。",
+    "importance": 2,
+    "source": "北京日报客户端",
+    "url": "https://xinwen.bjd.com.cn/content/s6a7db54de4b0e45f3fd600ee.html",
+    "date": "2026-08-13",
+    "tags": [
+      "北大",
+      "智源",
+      "智元",
+      "人形机器人",
+      "全身协同",
+      "灵巧手",
+      "Physical AI"
+    ],
+    "category": "robotics"
   }
 ]
