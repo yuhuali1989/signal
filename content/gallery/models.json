@@ -4439,5 +4439,299 @@
       "NVIDIA 官方开源"
     ],
     "description": "NVIDIA 2026 年 8 月开源的轻量 Agent 执行层模型，专为长时间智能体任务设计，端侧单 GPU 即可部署。"
+  },
+  {
+    "id": "qwen3-8-flash",
+    "name": "Qwen3.8-Flash",
+    "org": "阿里 (Qwen)",
+    "type": "llm",
+    "typeLabel": "开源高效MoE模型",
+    "typeIcon": "⚡",
+    "open": true,
+    "params": "125B + 51B N-gram (6B active)",
+    "date": "2026-08-26",
+    "context": "262,144 (YaRN→1M)",
+    "attention": "Gated DeltaNet + QSA 混合",
+    "factSheet": {
+      "params": "1250亿 + 510亿N-gram (激活60亿)",
+      "architecture": "MoE (Qwen4 架构预览版)",
+      "attention": "GDN + QSA 混合注意力",
+      "context": "262K → 1M (YaRN)",
+      "activation": "6B",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE + YaRN",
+      "training": "Muon 优化器 + 重拟合 Scaling Law",
+      "license": "开源 (HF / 魔搭)"
+    },
+    "tags": [
+      "阿里",
+      "Qwen3.8-Flash",
+      "Qwen4预览",
+      "开源",
+      "6B激活",
+      "Muon",
+      "N-gram Embedding"
+    ],
+    "keyInnovation": "下一代 Qwen4 架构的先导预览版：主模型 125B + 51B N-gram Embedding，每 token 仅激活 6B，性能超越 Claude Opus 4.6、接近 Opus 4.8。四项架构升级——GDN+QSA 混合注意力（micro-block 粒度筛选上下文）、Gated Residual 四分支残差流、51B N-gram Embedding（可卸载 Host Memory 异步预取）、Muon 优化器并重拟合 Scaling Law。训练成本仅为 Qwen3.7-Plus 的约 1/9，1M 上下文 Prefill/Decode 加速 7.6x/4.9x，高缓存命中场景提速 8 倍。定价输入 0.8 元、输出 2.7 元/百万 token，最低至 DeepSeek-V4-Flash 的 1/3。",
+    "highlights": [
+      "125B 仅激活 6B",
+      "训练成本降 90% (vs Qwen3.7-Plus)",
+      "GDN + QSA 混合注意力",
+      "51B N-gram Embedding",
+      "Muon 优化器重拟合 Scaling Law",
+      "输入 0.8 元 / 百万 token"
+    ],
+    "description": "阿里 2026 年 8 月 26 日开源的 Qwen4 架构预览版，125B 参数仅激活 6B 即达 Opus 4.6 级性能，训练成本降至前代 1/9，把旗舰能力压到小模型开销水平。"
+  },
+  {
+    "id": "glm-5-3-flash",
+    "name": "GLM-5.3-Flash (Ox-Alpha)",
+    "org": "智谱 AI",
+    "type": "multimodal",
+    "typeLabel": "开源原生多模态模型",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "320B (18B active)",
+    "date": "2026-08-26",
+    "context": "1,000,000",
+    "attention": "稀疏注意力 + 线性注意力混合",
+    "factSheet": {
+      "params": "3200亿 (激活180亿)",
+      "architecture": "MoE 原生多模态 (45层)",
+      "attention": "稀疏 + 线性注意力混合 (mHC)",
+      "context": "1,000,000",
+      "activation": "18B",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "30T token 多模态预训练",
+      "license": "MIT"
+    },
+    "tags": [
+      "智谱",
+      "GLM-5.3-Flash",
+      "Ox-Alpha",
+      "牛来",
+      "国产芯片",
+      "MIT",
+      "多模态"
+    ],
+    "keyInnovation": "GLM-5 系列首个原生多模态模型。AA 综合智能指数 57 分持平 Claude Opus 4.8，全面超越参数高一倍的 GLM-5.2。首个采用稀疏注意力与线性注意力混合架构的开源前沿模型：注意力计算量降至前代 1/3.01、KV 缓存缩减 4.44 倍，配合流形约束超连接（mHC）提升 Scaling 能力。发布前以匿名模型 Ox-Alpha 在 OpenRouter 与 OpenCode 登顶，Token 调用量 62T。全部线上流量由 10 万张国产芯片（自研高带宽互联）承载，端到端性能较初始基线提升 3 倍，单 token 成本达主流英伟达 GPU 水平。定价输入 0.8 元/输出 2.8 元，仅为 Opus 4.8 的 1/40。",
+    "highlights": [
+      "AA 57 分持平 Claude Opus 4.8",
+      "10 万张国产芯片承载全部流量",
+      "稀疏+线性注意力: KV缓存减 4.44x",
+      "MIT 协议，价格仅 Opus 4.8 的 1/40",
+      "1M 上下文原生多模态",
+      "匿名测试期调用量 62T token"
+    ],
+    "description": "智谱 2026 年 8 月 26 日开源的原生多模态模型（前身匿名模型 Ox-Alpha/牛来），320B/18B，AA 57 分持平 Opus 4.8，全部流量由 10 万张国产芯片承载，MIT 协议价格仅 Opus 4.8 的 1/40。"
+  },
+  {
+    "id": "hunyuan-hy4-preview",
+    "name": "Hy4 preview",
+    "org": "腾讯混元",
+    "type": "llm",
+    "typeLabel": "开源旗舰模型",
+    "typeIcon": "🐧",
+    "open": true,
+    "params": "770B (49B active)",
+    "date": "2026-08-28",
+    "context": "1,000,000",
+    "attention": "Gated DSA + IndexCache",
+    "factSheet": {
+      "params": "7700亿 (激活490亿, 含MTP层780B)",
+      "architecture": "MoE (78层, 256路由专家+1共享, top-8)",
+      "attention": "Gated DSA + IndexCache 跨层稀疏索引复用",
+      "context": "1,000,000",
+      "activation": "49B",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "预训练+后训练, 模型参与自身研发全链路优化",
+      "license": "Apache 2.0"
+    },
+    "tags": [
+      "腾讯",
+      "混元",
+      "Hy4",
+      "开源",
+      "1M上下文",
+      "递归自我改进",
+      "Apache 2.0"
+    ],
+    "keyInnovation": "770B/49B MoE，上下文突破 1M，Apache 2.0 开源。在腾讯内部 163 名专家、203 个工程任务的盲测中均分 2.99/4，略优于 GLM-5.3（2.92）与 Kimi K3（2.94）。架构上用 4 条残差流、Gated DSA + IndexCache 跨层稀疏索引复用、内置 10B/0.7B MTP 投机解码层。最大亮点是首次参与自身研发全链路——提出训练方法、数据策略、评估体系与底层算子的优化方案并自主运行实验迭代，端到端吞吐提升 31.8%，形成初步递归自我改进闭环。定价输入 6 元、输出 18 元、缓存命中 0.3 元/百万 token。",
+    "highlights": [
+      "770B/49B，1M 上下文",
+      "内部盲测 2.99 超 GLM-5.3 / Kimi K3",
+      "首次参与自身研发全链路优化",
+      "自主优化推理吞吐 +31.8%",
+      "Apache 2.0，缓存命中 0.3 元/百万",
+      "两月一个大版本迭代节奏"
+    ],
+    "description": "腾讯混元 2026 年 8 月 28 日开源的 770B/49B 旗舰模型，1M 上下文，内部盲测超过 GLM-5.3 与 Kimi K3，并首次实现模型参与自身研发全链路的递归自我改进。"
+  },
+  {
+    "id": "gemini-3-5-transcribe",
+    "name": "Gemini 3.5 Transcribe",
+    "org": "Google DeepMind",
+    "type": "multimodal",
+    "typeLabel": "语音转写模型",
+    "typeIcon": "🎙️",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-08-27",
+    "context": "流式 / 非流式",
+    "attention": "—",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "语音专用转写模型",
+      "attention": "—",
+      "context": "流式与非流式 API",
+      "activation": "—",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "大规模多语种语音数据",
+      "license": "商业 API (公开预览)"
+    },
+    "tags": [
+      "Google",
+      "Gemini 3.5 Transcribe",
+      "语音识别",
+      "WER 2.6%",
+      "85+语言",
+      "Agent栈"
+    ],
+    "keyInnovation": "专用语音转文本模型，流式与非流式平均词错率分别为 4.0% 与 2.6%，较上一代 Chirp 3 转写耗时缩短约 70%。支持 85+ 种语言与方言、自定义词汇、最多 3 名说话人身份识别，可将原始音频直接转为去除语气词（um/ah）的格式规范文本。与 Gemini 智能体栈打通，可通过函数调用把图片生成、文件分析等任务委托给其他 Gemini 模型。",
+    "highlights": [
+      "非流式 WER 低至 2.6%",
+      "转写耗时比 Chirp 3 少 70%",
+      "85+ 语言与方言",
+      "最多 3 人说话人识别",
+      "自动去除口语语气词",
+      "并入 Gemini Agent 栈"
+    ],
+    "description": "Google DeepMind 2026 年 8 月发布的专用语音转写模型，词错率压到 2.6%，支持 85+ 语言，并作为感知层并入 Gemini 智能体栈。"
+  },
+  {
+    "id": "granite-4-2",
+    "name": "Granite 4.2",
+    "org": "IBM",
+    "type": "llm",
+    "typeLabel": "开源推理模型家族",
+    "typeIcon": "🅸",
+    "open": true,
+    "params": "3B / 8B / 30B",
+    "date": "2026-08-25",
+    "context": "512K",
+    "attention": "Dense",
+    "factSheet": {
+      "params": "30亿 / 80亿 / 300亿",
+      "architecture": "稠密推理模型",
+      "attention": "GQA",
+      "context": "512K",
+      "activation": "全激活 (Dense)",
+      "normalization": "RMSNorm",
+      "positionalEncoding": "RoPE",
+      "training": "预训练 + 推理微调 + 沙箱工具调用",
+      "license": "Apache 2.0"
+    },
+    "tags": [
+      "IBM",
+      "Granite 4.2",
+      "开源",
+      "推理模型",
+      "Thinking开关",
+      "512K",
+      "企业级"
+    ],
+    "keyInnovation": "IBM 首个稠密推理模型家族，Apache 2.0 开源 3B/8B/30B 三种规格，最高 512K 上下文。每个模型都带可关闭的 thinking 模式，便于在成本与推理深度间切换；8B 与 30B 在实时沙箱中学会了工具调用，具备 Agentic 自主工具使用能力。面向受监管行业提供可自托管的企业级 Agent 底座。",
+    "highlights": [
+      "Apache 2.0 三规格开源",
+      "可开关的 thinking 模式",
+      "8B/30B 原生沙箱工具调用",
+      "512K 上下文",
+      "企业级可自托管"
+    ],
+    "description": "IBM 2026 年 8 月开源的稠密推理模型家族（3B/8B/30B），Apache 2.0，带 thinking 开关与 Agentic 工具调用能力，512K 上下文。"
+  },
+  {
+    "id": "thomson-1-0-small",
+    "name": "Thomson 1.0 Small",
+    "org": "Thomson Reuters",
+    "type": "llm",
+    "typeLabel": "法律税务垂直模型",
+    "typeIcon": "⚖️",
+    "open": true,
+    "params": "35B",
+    "date": "2026-08-24",
+    "context": "—",
+    "attention": "Dense",
+    "factSheet": {
+      "params": "350亿",
+      "architecture": "Dense 垂直领域模型",
+      "attention": "—",
+      "context": "—",
+      "activation": "35B",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "法律税务语料训练 (成本4000万美元)",
+      "license": "开放权重 (学术/非商业)"
+    },
+    "tags": [
+      "Thomson Reuters",
+      "Thomson 1.0",
+      "法律AI",
+      "税务",
+      "垂直模型",
+      "开放权重"
+    ],
+    "keyInnovation": "汤森路透首个自研大语言模型，聚焦法律与税务垂直领域，训练成本 4000 万美元。35B 小版本以开放权重形式发布到 Hugging Face，供学术与非商业用途使用。代表专业信息服务商把领域数据与合规语料沉淀为自有模型能力的路线。",
+    "highlights": [
+      "法律税务垂直领域",
+      "训练成本 4000 万美元",
+      "35B 开放权重",
+      "专业语料沉淀"
+    ],
+    "description": "汤森路透 2026 年 8 月发布的首个自研法律税务模型，训练成本 4000 万美元，35B 版本以开放权重形式供学术与非商业使用。"
+  },
+  {
+    "id": "echowm",
+    "name": "EchoWM",
+    "org": "京东探索研究院",
+    "type": "multimodal",
+    "typeLabel": "全模态世界模型",
+    "typeIcon": "🌐",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-08-24",
+    "context": "可交互场景",
+    "attention": "—",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "全模态世界模型",
+      "attention": "—",
+      "context": "逐步相机控制",
+      "activation": "—",
+      "normalization": "—",
+      "positionalEncoding": "—",
+      "training": "视频+音频联合生成训练",
+      "license": "研究预览"
+    },
+    "tags": [
+      "京东",
+      "EchoWM",
+      "世界模型",
+      "全模态",
+      "视频生成",
+      "音频生成",
+      "仿真"
+    ],
+    "keyInnovation": "全模态世界模型：生成 720p 视频的同时匹配环境音、音乐与语音，并支持观看者逐步操控相机在场景中漫游。相比纯视觉世界模型（Genie 3、V-JEPA 2），EchoWM 把听觉模态纳入生成与控制的统一框架。",
+    "highlights": [
+      "720p 视频 + 环境音 + 语音",
+      "相机逐步可控漫游",
+      "听觉纳入统一生成框架",
+      "面向具身智能仿真环境"
+    ],
+    "description": "京东探索研究院 Joy Future Academy 2026 年 8 月发布的全模态世界模型，生成 720p 视频的同时匹配环境音与语音，支持相机逐步操控漫游。"
   }
 ]

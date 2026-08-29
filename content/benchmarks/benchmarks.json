@@ -6,7 +6,7 @@
     "category": "coding",
     "categoryName": "编码能力",
     "categoryIcon": "💻",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -107,7 +107,7 @@
     "category": "reasoning",
     "categoryName": "推理能力",
     "categoryIcon": "🧠",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -198,7 +198,7 @@
     "category": "overall",
     "categoryName": "综合智能",
     "categoryIcon": "🏆",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -218,6 +218,14 @@
       },
       {
         "rank": 3,
+        "name": "Grok 4.6",
+        "provider": "xAI",
+        "score": 61,
+        "change": "—",
+        "benchmark": "AA Intelligence Index"
+      },
+      {
+        "rank": 4,
         "name": "GPT-5.6 Sol",
         "provider": "OpenAI",
         "score": 60.9,
@@ -225,7 +233,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 4,
+        "rank": 5,
         "name": "Kimi K3",
         "provider": "月之暗面",
         "score": 59.7,
@@ -233,7 +241,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 5,
+        "rank": 6,
         "name": "Qwen3.8-Max",
         "provider": "阿里",
         "score": 58.1,
@@ -241,15 +249,23 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 6,
+        "rank": 7,
         "name": "Claude Opus 4.8",
         "provider": "Anthropic",
         "score": 57.3,
-        "change": "↓1",
+        "change": "—",
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 7,
+        "rank": 8,
+        "name": "GLM-5.3-Flash",
+        "provider": "智谱",
+        "score": 57,
+        "change": "NEW",
+        "benchmark": "AA Intelligence Index"
+      },
+      {
+        "rank": 9,
         "name": "Muse Spark 1.2",
         "provider": "Meta",
         "score": 56.8,
@@ -257,27 +273,11 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 8,
+        "rank": 10,
         "name": "GPT-5.6 Terra",
         "provider": "OpenAI",
         "score": 56.6,
         "change": "—",
-        "benchmark": "AA Intelligence Index"
-      },
-      {
-        "rank": 9,
-        "name": "Grok 4.6",
-        "provider": "xAI",
-        "score": 61,
-        "change": "NEW",
-        "benchmark": "AA Intelligence Index"
-      },
-      {
-        "rank": 10,
-        "name": "DeepSeek V4 Pro 0813",
-        "provider": "DeepSeek",
-        "score": 53,
-        "change": "↑1",
         "benchmark": "AA Intelligence Index"
       }
     ]
@@ -289,7 +289,7 @@
     "category": "agent",
     "categoryName": "Agent能力",
     "categoryIcon": "🤖",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -305,53 +305,49 @@
         "provider": "智谱",
         "score": 99.1,
         "change": "—",
-        "benchmark": "Tau²-Bench",
-        "sweBenchNote": "多轮工具使用第一"
+        "benchmark": "Tau²-Bench"
       },
       {
         "rank": 3,
         "name": "Qwen-UI-Agent",
         "provider": "阿里",
         "score": 92.2,
-        "change": "NEW",
+        "change": "—",
         "benchmark": "MobileWorld-Real",
-        "sweBenchNote": "真机GUI基准, 超GPT-5.6 Sol/Claude/Gemini"
+        "sweBenchNote": "真机GUI基准, 超GPT/Claude"
       },
       {
         "rank": 4,
-        "name": "GLM-5.3",
+        "name": "GLM-5.3-Flash",
         "provider": "智谱",
-        "score": 84.5,
-        "change": "↑2",
-        "benchmark": "CyberGym",
-        "sweBenchNote": "安全能力超Claude/GPT"
+        "score": 87.4,
+        "change": "NEW",
+        "benchmark": "Terminal Bench 2.1",
+        "sweBenchNote": "超GLM-5.2(85.0)与Opus 4.8(84.3)"
       },
       {
         "rank": 5,
+        "name": "GLM-5.3",
+        "provider": "智谱",
+        "score": 84.5,
+        "change": "—",
+        "benchmark": "CyberGym"
+      },
+      {
+        "rank": 6,
+        "name": "MiniMax M3",
+        "provider": "MiniMax",
+        "score": 82.9,
+        "change": "—",
+        "benchmark": "IFBench"
+      },
+      {
+        "rank": 7,
         "name": "Claude Fable 5",
         "provider": "Anthropic",
         "score": 80,
         "change": "—",
-        "benchmark": "SWE-Bench Pro",
-        "sweBenchNote": "Agent代码榜第一"
-      },
-      {
-        "rank": 6,
-        "name": "DeepSeek V4 Pro",
-        "provider": "DeepSeek",
-        "score": 62.7,
-        "change": "—",
-        "benchmark": "DeepSWE",
-        "sweBenchNote": "预览版12.8→62.7"
-      },
-      {
-        "rank": 7,
-        "name": "Gemini 3.7 Flash",
-        "provider": "Google",
-        "score": 65.3,
-        "change": "—",
-        "benchmark": "DeepSWE",
-        "sweBenchNote": "半价旗舰"
+        "benchmark": "SWE-Bench Pro"
       },
       {
         "rank": 8,
@@ -359,26 +355,24 @@
         "provider": "阿里",
         "score": 67.7,
         "change": "—",
-        "benchmark": "SWE-Bench Pro",
-        "sweBenchNote": "SWE-Bench Pro开源第一"
+        "benchmark": "SWE-Bench Pro"
       },
       {
         "rank": 9,
-        "name": "GEN-1.5",
-        "provider": "Generalist AI",
-        "score": 59,
-        "change": "NEW",
-        "benchmark": "One-shot物理任务",
-        "sweBenchNote": "一次演示学习, 具身GPT-3时刻"
+        "name": "Gemini 3.7 Flash",
+        "provider": "Google",
+        "score": 65.3,
+        "change": "—",
+        "benchmark": "DeepSWE"
       },
       {
         "rank": 10,
-        "name": "MiniMax M3",
-        "provider": "MiniMax",
-        "score": 82.9,
-        "change": "—",
-        "benchmark": "IFBench",
-        "sweBenchNote": "指令遵循第一"
+        "name": "Hy4 preview",
+        "provider": "腾讯",
+        "score": 2.99,
+        "change": "NEW",
+        "benchmark": "腾讯内部203工程任务盲测(4分制)",
+        "sweBenchNote": "超GLM-5.3(2.92)与Kimi K3(2.94)"
       }
     ]
   },
@@ -389,7 +383,7 @@
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -480,7 +474,7 @@
     "category": "autonomous-driving",
     "categoryName": "自动驾驶",
     "categoryIcon": "🚗",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -572,7 +566,7 @@
     "category": "video",
     "categoryName": "视频生成",
     "categoryIcon": "🎬",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
@@ -649,7 +643,7 @@
     "category": "3d",
     "categoryName": "3D 生成",
     "categoryIcon": "🧊",
-    "date": "2026-08-23",
+    "date": "2026-08-29",
     "models": [
       {
         "rank": 1,
