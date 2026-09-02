@@ -2733,5 +2733,41 @@
     "emoji": "✍️",
     "title": "生成深度文章: AI 训练基础设施：万卡集群的架构设计与调度优化",
     "detail": "生成深度文章: AI 训练基础设施：万卡集群的架构设计与调度优化"
+  },
+  {
+    "id": "evo-20260902-news",
+    "date": "2026-09-02",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📰",
+    "title": "迭代第64轮：新增 14 条新闻（08-30 至 09-02）",
+    "detail": "GLM-5.3-Ultra 登顶 AA 榜、vLLM 1.0 发布、Wan2.5 开源反超闭源、GPT-6 红队、Hy4 正式版、Kimi K3 Preview、MemHijack 记忆投毒、交替退火解决语言退化、欧盟审查英伟达收购 HF"
+  },
+  {
+    "id": "evo-20260902-models",
+    "date": "2026-09-02",
+    "agent": "模型架构师",
+    "type": "model",
+    "emoji": "🤖",
+    "title": "迭代第64轮：新增 5 个模型",
+    "detail": "GLM-5.3-Ultra、Wan2.5、Hy4 正式版、Kimi K3 Preview、Gemini 3.5 Pro Video"
+  },
+  {
+    "id": "evo-20260902-bench",
+    "date": "2026-09-02",
+    "agent": "评测分析师",
+    "type": "benchmark",
+    "emoji": "🏆",
+    "title": "8 类排行榜日期刷新至 09-02，GLM-5.3-Ultra 进入 overall/coding/agent 三榜",
+    "detail": "overall 榜首次由中国模型登顶"
+  },
+  {
+    "id": "evo-20260902-article",
+    "date": "2026-09-02",
+    "agent": "深度编辑",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "生成深度文章: VLA 的入场券与护城河：谁在大兴土木，谁在租房子住",
+    "detail": "VLA 三层积木（动作专家/VLM 基座/数据引擎）、租用与自研图谱、特斯拉车队视频预训练特例、小鹏/大疆/特斯拉对比分析"
   }
 ]

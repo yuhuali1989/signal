@@ -4733,5 +4733,213 @@
       "面向具身智能仿真环境"
     ],
     "description": "京东探索研究院 Joy Future Academy 2026 年 8 月发布的全模态世界模型，生成 720p 视频的同时匹配环境音与语音，支持相机逐步操控漫游。"
+  },
+  {
+    "id": "glm-53-ultra-2026",
+    "name": "GLM-5.3-Ultra",
+    "org": "智谱 (Zhipu)",
+    "type": "llm",
+    "typeLabel": "国产芯片训练旗舰",
+    "typeIcon": "🇨🇳",
+    "open": false,
+    "params": "400B (MoE, 激活32B)",
+    "date": "2026-09-01",
+    "context": "1M Tokens",
+    "attention": "稀疏+线性混合",
+    "factSheet": {
+      "params": "400B (MoE, 激活32B)",
+      "architecture": "MoE Transformer (混合注意力)",
+      "attention": "稀疏+线性混合",
+      "context": "1M Tokens",
+      "activation": "32B",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "8.5万张昇腾910D 国产集群全参训练",
+      "license": "API (权重年内评估开放)"
+    },
+    "tags": [
+      "智谱",
+      "GLM-5.3-Ultra",
+      "昇腾",
+      "国产芯片",
+      "AA登顶",
+      "SWE-bench 95.8",
+      "混合注意力"
+    ],
+    "keyInnovation": "AA Intelligence Index 63.4 首次超越 Claude Opus 5 登顶全球榜首，全程在 8.5 万张昇腾 910D 国产芯片集群完成全参训练。稀疏+线性混合注意力支持 1M 上下文，解码吞吐较同规模稠密模型快 3.2 倍。SWE-bench Verified 95.8、τ-bench 89.4，API 定价仅为 Opus 5 的 1/3。",
+    "highlights": [
+      "AA 63.4 全球登顶",
+      "SWE-bench Verified 95.8",
+      "8.5万张昇腾全参训练",
+      "1M 上下文",
+      "解码吞吐 3.2x",
+      "Opus 5 价格的 1/3"
+    ],
+    "description": "GLM-5.3-Ultra 是智谱 2026 年 9 月 1 日发布的旗舰模型，400B 总参/32B 激活 MoE，全程在国产昇腾 910D 集群完成全参训练，AA Intelligence Index 63.4 首次超越 Claude Opus 5 登顶全球榜首。混合稀疏+线性注意力支持 1M 上下文，编码与 Agent 双榜前列，API 定价为 Opus 5 的三分之一。"
+  },
+  {
+    "id": "wan25-2026",
+    "name": "Wan2.5",
+    "org": "阿里 (Alibaba)",
+    "type": "video",
+    "typeLabel": "开源原生视频生成模型",
+    "typeIcon": "🎬",
+    "open": true,
+    "params": "14B (双流DiT)",
+    "date": "2026-08-31",
+    "context": "≤15s 720p/24fps",
+    "attention": "文本-时空联合注意力",
+    "factSheet": {
+      "params": "14B (双流DiT)",
+      "architecture": "双流 DiT (文本-时空联合注意力)",
+      "attention": "文本-时空联合",
+      "context": "最长 15 秒 720p/24fps",
+      "activation": "全激活",
+      "normalization": "推测",
+      "positionalEncoding": "3D RoPE (推测)",
+      "training": "FP8 混合精度",
+      "license": "Apache 2.0"
+    },
+    "tags": [
+      "阿里",
+      "Wan2.5",
+      "视频生成",
+      "开源",
+      "DiT",
+      "FP8",
+      "VBench-2.0 88.7"
+    ],
+    "keyInnovation": "开源视频生成首次在 VBench-2.0 综合分反超头部闭源模型（88.7 vs 可灵 2.8 的 87.1、Sora Pro 的 86.3）。14B 双流 DiT 支持首尾帧控制，FP8 量化后单卡 H20 可推理；SGLang 原生支持（Cache-DiT + Token 级 SP），显存较裸 diffusers 降低 58%，自托管成本降至商用 API 的 1/6。",
+    "highlights": [
+      "VBench-2.0 88.7 开源第一",
+      "反超可灵2.8与Sora Pro",
+      "Apache 2.0 开源",
+      "720p/24fps 最长15秒",
+      "FP8 单卡 H20 可跑",
+      "SGLang 原生支持"
+    ],
+    "description": "Wan2.5 是阿里通义万相 2026 年 8 月 31 日开源的视频生成模型（Apache 2.0），14B 双流 DiT 架构，支持 720p/24fps、最长 15 秒与首尾帧控制。VBench-2.0 综合 88.7 首次让开源反超闭源头部；FP8 量化后单卡 H20 可推理，SGLang Diffusion 栈原生支持使自托管成本降至商用 API 的 1/6。"
+  },
+  {
+    "id": "hy4-stable-2026",
+    "name": "Hy4 (正式版)",
+    "org": "腾讯 (Tencent)",
+    "type": "llm",
+    "typeLabel": "递归自我改进模型",
+    "typeIcon": "♻️",
+    "open": true,
+    "params": "770B (MoE, 激活49B)",
+    "date": "2026-09-02",
+    "context": "1M Tokens",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "770B (MoE, 激活49B)",
+      "architecture": "MoE Transformer",
+      "attention": "MoE",
+      "context": "1M Tokens",
+      "activation": "49B",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "递归自我改进二阶段 (算子采纳率37%)",
+      "license": "Apache 2.0 (10月开放)"
+    },
+    "tags": [
+      "腾讯",
+      "混元Hy4",
+      "递归自我改进",
+      "Triton自动生成",
+      "算力降25%"
+    ],
+    "keyInnovation": "递归自我改进进入第二阶段：模型自动生成 CUDA 算子的 Triton 迁移并回灌训练栈，新算子采纳率 37%；相较 preview 训练算力再降 25%，API 降价 20%。770B/49B、1M 上下文，权重 10 月以 Apache 2.0 开放。",
+    "highlights": [
+      "算子自动迁移采纳率37%",
+      "训练算力再降25%",
+      "1M 上下文",
+      "API 降价20%",
+      "10月开源权重"
+    ],
+    "description": "混元 Hy4 正式版（腾讯，2026-09-02）将递归自我改进推进到基础设施层：自动生成 Triton 算子回灌训练栈，新算子采纳率 37%，端到端训练算力较 preview 再降 25%。770B/49B MoE、1M 上下文，API 同步降价 20%，权重预计 10 月以 Apache 2.0 开放。"
+  },
+  {
+    "id": "kimi-k3-preview-2026",
+    "name": "Kimi K3 Preview",
+    "org": "月之暗面 (Moonshot)",
+    "type": "llm",
+    "typeLabel": "Agent 长记忆模型",
+    "typeIcon": "🌙",
+    "open": false,
+    "params": "1T (MoE, 激活48B)",
+    "date": "2026-09-02",
+    "context": "256K (含结构化记忆区)",
+    "attention": "MoE",
+    "factSheet": {
+      "params": "1T (MoE, 激活48B)",
+      "architecture": "MoE Transformer",
+      "attention": "MoE",
+      "context": "256K (含结构化记忆区)",
+      "activation": "48B",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "推测",
+      "license": "API 免费额度至10月 (权重待定)"
+    },
+    "tags": [
+      "月之暗面",
+      "Kimi K3",
+      "Agent工作记忆",
+      "256K",
+      "SWE-bench 94.9",
+      "BrowseComp 41.2"
+    ],
+    "keyInnovation": "首次把 Agent 工作记忆做成一等公民：256K 上下文内预留结构化记忆区（分层摘要 + 指针回指），长轨迹任务记忆检索延迟降低 70%。SWE-bench Verified 94.9、BrowseComp 41.2。免费 API 额度开放至 10 月。",
+    "highlights": [
+      "结构化 Agent 记忆区",
+      "记忆检索延迟 -70%",
+      "SWE-bench 94.9",
+      "BrowseComp 41.2",
+      "1T/48B MoE"
+    ],
+    "description": "Kimi K3 Preview（月之暗面，2026-09-02）主打长程 Agent：1T/48B MoE，原生 256K 上下文中预留结构化记忆区，分层摘要 + 指针回指使记忆检索延迟降低 70%。SWE-bench Verified 94.9，正式版与权重开放时间待定。"
+  },
+  {
+    "id": "gemini-35-pro-video-2026",
+    "name": "Gemini 3.5 Pro Video",
+    "org": "Google",
+    "type": "multimodal",
+    "typeLabel": "原生长视频理解模型",
+    "typeIcon": "🌐",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-08-30",
+    "context": "1小时原生视频",
+    "attention": "推测",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "原生多模态 Transformer",
+      "attention": "推测",
+      "context": "1 小时原生视频 (不抽帧)",
+      "activation": "未公开",
+      "normalization": "推测",
+      "positionalEncoding": "推测",
+      "training": "推测",
+      "license": "Vertex AI 企业套餐"
+    },
+    "tags": [
+      "Google",
+      "Gemini",
+      "视频理解",
+      "Video-MME 89.2",
+      "Vertex AI",
+      "长视频"
+    ],
+    "keyInnovation": "支持最长 1 小时原生视频输入（不抽帧、保留音频轨），Video-MME (w/o subs) 89.2 创新高，时序定位误差中位数 2.1 秒。定价每分钟 0.35 美元，YouTube 创作者工具率先接入，是首个规模商用的原生长视频理解 API。",
+    "highlights": [
+      "1小时原生视频输入",
+      "Video-MME 89.2 新高",
+      "时序定位误差 2.1s",
+      "保留音频轨",
+      "Vertex AI 商用"
+    ],
+    "description": "Gemini 3.5 Pro Video（Google，2026-08-30 GA）支持 1 小时原生视频输入，Video-MME 89.2 创新高，时序定位误差中位数 2.1 秒，每分钟 0.35 美元，是首个规模商用的原生长视频理解 API，YouTube 创作者工具率先接入。"
   }
 ]

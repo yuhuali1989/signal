@@ -1,12 +1,12 @@
 [
   {
     "id": "coding-2026q3",
-    "title": "编码能力大模型排行榜（2026-08-22 更新）",
+    "title": "编码能力大模型排行榜（2026-09-02 更新）",
     "description": "基于 SWE-bench Pro / Terminal-Bench / DeepSWE 的综合编码能力评测",
     "category": "coding",
     "categoryName": "编码能力",
     "categoryIcon": "💻",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
@@ -28,6 +28,15 @@
       },
       {
         "rank": 3,
+        "name": "GLM-5.3-Ultra",
+        "provider": "智谱",
+        "score": 95.8,
+        "change": "🆕",
+        "benchmark": "SWE-bench Verified",
+        "sweBenchNote": "混合注意力架构编码榜第二"
+      },
+      {
+        "rank": 4,
         "name": "Grok 4.6",
         "provider": "xAI",
         "score": 95.6,
@@ -36,7 +45,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 4,
+        "rank": 5,
         "name": "Claude Mythos 5",
         "provider": "Anthropic",
         "score": 95.5,
@@ -45,7 +54,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 5,
+        "rank": 6,
         "name": "Kimi K3",
         "provider": "月之暗面",
         "score": 93.4,
@@ -54,7 +63,7 @@
         "sweBenchNote": "开源第二"
       },
       {
-        "rank": 6,
+        "rank": 7,
         "name": "DeepSeek-V4-Flash-0731",
         "provider": "DeepSeek",
         "score": 88.8,
@@ -63,7 +72,7 @@
         "sweBenchNote": "性价比之王"
       },
       {
-        "rank": 7,
+        "rank": 8,
         "name": "Grok 4.5",
         "provider": "xAI",
         "score": 86.6,
@@ -72,7 +81,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 8,
+        "rank": 9,
         "name": "Qwen3.8 Max",
         "provider": "阿里",
         "score": 85.6,
@@ -81,33 +90,24 @@
         "sweBenchNote": "SWE-bench Pro开源第一(67.7)"
       },
       {
-        "rank": 9,
+        "rank": 10,
         "name": "Muse Spark 1.1",
         "provider": "Meta",
         "score": 82,
         "change": "—",
         "benchmark": "SWE-bench Verified",
         "sweBenchNote": "SWE-bench Verified"
-      },
-      {
-        "rank": 10,
-        "name": "Gemini 3.7 Flash",
-        "provider": "Google",
-        "score": 80.8,
-        "change": "—",
-        "benchmark": "SWE-bench Verified",
-        "sweBenchNote": "DeepSWE 65.3% 半价旗舰"
       }
     ]
   },
   {
     "id": "reasoning-2026q3",
-    "title": "推理能力大模型排行榜（2026-08-22 更新）",
+    "title": "推理能力大模型排行榜（2026-09-02 更新）",
     "description": "基于 GPQA Diamond / AIME / HLE 的综合推理能力评测",
     "category": "reasoning",
     "categoryName": "推理能力",
     "categoryIcon": "🧠",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
@@ -193,15 +193,24 @@
   },
   {
     "id": "overall-2026q3",
-    "title": "综合智能大模型排行榜（2026-08-22 更新）",
+    "title": "综合智能大模型排行榜（2026-09-02 更新）",
     "description": "基于 Artificial Analysis Intelligence Index v4.1 的综合评测，独立第三方标准化运行",
     "category": "overall",
     "categoryName": "综合智能",
     "categoryIcon": "🏆",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
+        "name": "GLM-5.3-Ultra",
+        "provider": "智谱",
+        "score": 63.4,
+        "change": "🆕",
+        "benchmark": "AA Intelligence Index",
+        "sweBenchNote": "国产芯片全参训练首次登顶AA榜"
+      },
+      {
+        "rank": 2,
         "name": "Claude Opus 5",
         "provider": "Anthropic",
         "score": 63.1,
@@ -209,7 +218,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 2,
+        "rank": 3,
         "name": "Claude Fable 5",
         "provider": "Anthropic",
         "score": 62.1,
@@ -217,7 +226,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 3,
+        "rank": 4,
         "name": "Grok 4.6",
         "provider": "xAI",
         "score": 61,
@@ -225,7 +234,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 4,
+        "rank": 5,
         "name": "GPT-5.6 Sol",
         "provider": "OpenAI",
         "score": 60.9,
@@ -233,7 +242,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 5,
+        "rank": 6,
         "name": "Kimi K3",
         "provider": "月之暗面",
         "score": 59.7,
@@ -241,7 +250,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 6,
+        "rank": 7,
         "name": "Qwen3.8-Max",
         "provider": "阿里",
         "score": 58.1,
@@ -249,7 +258,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 7,
+        "rank": 8,
         "name": "Claude Opus 4.8",
         "provider": "Anthropic",
         "score": 57.3,
@@ -257,7 +266,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 8,
+        "rank": 9,
         "name": "GLM-5.3-Flash",
         "provider": "智谱",
         "score": 57,
@@ -265,18 +274,10 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 9,
+        "rank": 10,
         "name": "Muse Spark 1.2",
         "provider": "Meta",
         "score": 56.8,
-        "change": "—",
-        "benchmark": "AA Intelligence Index"
-      },
-      {
-        "rank": 10,
-        "name": "GPT-5.6 Terra",
-        "provider": "OpenAI",
-        "score": 56.6,
         "change": "—",
         "benchmark": "AA Intelligence Index"
       }
@@ -284,23 +285,15 @@
   },
   {
     "id": "agent-2026q3",
-    "title": "Agent能力大模型排行榜（2026-08-22 更新）",
+    "title": "Agent能力大模型排行榜（2026-09-02 更新）",
     "description": "基于 Terminal-Bench / DeepSWE / Agents' Last Exam / AutomationBench 的综合Agent能力评测",
     "category": "agent",
     "categoryName": "Agent能力",
     "categoryIcon": "🤖",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
-        "name": "GPT-5.6 Sol",
-        "provider": "OpenAI",
-        "score": 65.9,
-        "change": "—",
-        "benchmark": "Terminal-Bench Hard"
-      },
-      {
-        "rank": 2,
         "name": "GLM 5.2",
         "provider": "智谱",
         "score": 99.1,
@@ -308,13 +301,22 @@
         "benchmark": "Tau²-Bench"
       },
       {
-        "rank": 3,
+        "rank": 2,
         "name": "Qwen-UI-Agent",
         "provider": "阿里",
         "score": 92.2,
         "change": "—",
         "benchmark": "MobileWorld-Real",
         "sweBenchNote": "真机GUI基准, 超GPT/Claude"
+      },
+      {
+        "rank": 3,
+        "name": "GLM-5.3-Ultra",
+        "provider": "智谱",
+        "score": 89.4,
+        "change": "🆕",
+        "benchmark": "τ-bench",
+        "sweBenchNote": "τ-bench 89.4 进入前三"
       },
       {
         "rank": 4,
@@ -359,31 +361,30 @@
       },
       {
         "rank": 9,
+        "name": "GPT-5.6 Sol",
+        "provider": "OpenAI",
+        "score": 65.9,
+        "change": "—",
+        "benchmark": "Terminal-Bench Hard"
+      },
+      {
+        "rank": 10,
         "name": "Gemini 3.7 Flash",
         "provider": "Google",
         "score": 65.3,
         "change": "—",
         "benchmark": "DeepSWE"
-      },
-      {
-        "rank": 10,
-        "name": "Hy4 preview",
-        "provider": "腾讯",
-        "score": 2.99,
-        "change": "NEW",
-        "benchmark": "腾讯内部203工程任务盲测(4分制)",
-        "sweBenchNote": "超GLM-5.3(2.92)与Kimi K3(2.94)"
       }
     ]
   },
   {
     "id": "cost-2026q3",
-    "title": "性价比大模型排行榜（2026-08-22 更新）",
+    "title": "性价比大模型排行榜（2026-09-02 更新）",
     "description": "AA Intelligence Index ÷ 混合价格（3:1 输入:输出加权），数值越高性价比越好",
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
@@ -469,12 +470,12 @@
   },
   {
     "id": "ad-vla-2026q2",
-    "title": "长上下文能力大模型排行榜（2026-08-22 更新）",
+    "title": "长上下文能力大模型排行榜（2026-09-02 更新）",
     "description": "基于 nuScenes Planning / NAVSIM / CARLA 的自动驾驶视觉-语言-动作模型评测",
     "category": "autonomous-driving",
     "categoryName": "自动驾驶",
     "categoryIcon": "🚗",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
@@ -561,12 +562,12 @@
   },
   {
     "id": "video-gen-2026q2",
-    "title": "性价比大模型排行榜（2026-08-22 更新）",
+    "title": "性价比大模型排行榜（2026-09-02 更新）",
     "description": "基于人工评测（文本对齐 / 运动质量 / 视觉质量）+ VBench 综合评分",
     "category": "video",
     "categoryName": "视频生成",
     "categoryIcon": "🎬",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
@@ -638,12 +639,12 @@
   },
   {
     "id": "3d-gen-2026q2",
-    "title": "开源模型排行榜（2026-08-22 更新）",
+    "title": "开源模型排行榜（2026-09-02 更新）",
     "description": "基于 CMMD↓ / FID_CLIP↓ / FID↓ / CLIP-score↑ 综合评测（GSO + Objaverse 测试集）",
     "category": "3d",
     "categoryName": "3D 生成",
     "categoryIcon": "🧊",
-    "date": "2026-08-29",
+    "date": "2026-09-02",
     "models": [
       {
         "rank": 1,
