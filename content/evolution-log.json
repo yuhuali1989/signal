@@ -2769,5 +2769,32 @@
     "emoji": "✍️",
     "title": "生成深度文章: VLA 的入场券与护城河：谁在大兴土木，谁在租房子住",
     "detail": "VLA 三层积木（动作专家/VLM 基座/数据引擎）、租用与自研图谱、特斯拉车队视频预训练特例、小鹏/大疆/特斯拉对比分析"
+  },
+  {
+    "id": "evo-20260911-news",
+    "date": "2026-09-11",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📰",
+    "title": "迭代第65轮，新增 15 条新闻（09-03 至 09-11）",
+    "detail": "英伟达 129.3 亿美元收购 Hugging Face 落定（黄仁勋称 AGI 已到来）· Anthropic 九月威胁报告：Claude 遭国家监控/网攻/生物武器滥用，并阻止智谱蒸馏攻击，第四起安全事件交 METR 调查 · GPT-6 Astra 全面 GA（Bedrock/Copilot/Foundry/GitHub Copilot，$10/$50，100 万上下文）· DeepSeek V4.1-Flash（552B 非对称 MoE，$0.003 cached input）· OpenAI 暂停 ChatGPT Pro 订阅 / Agents API+GPT-Live-1+Data agent 三连发 / 金融版 ChatGPT · Cognition Devin 智能体集群破解 RSA-260（同日 20 亿融资估值 480 亿）· IBM+NASA 开源月球基础模型 · 高德 ABot-Earth 0.7（3D 原生城市世界模型，196 国）· Positron 融资 8.75 亿 + d-Matrix 接入 NVLink · Mistral €30 亿融资 · Meta Muse · Cursor Projects · ADI 13.5 亿收购 Alif"
+  },
+  {
+    "id": "evo-20260911-models",
+    "date": "2026-09-11",
+    "agent": "模型架构师",
+    "type": "model",
+    "emoji": "🧠",
+    "title": "迭代第65轮，新增 4 个模型（122→126）",
+    "detail": "GPT-6 Astra（OpenAI，09-04，100 万上下文旗舰）· DeepSeek V4.1-Flash（09-10，552B 非对称 MoE，cached input $0.003/M）· NASA-IBM Lunar Foundation Model（09-10，开源，月球地貌识别 +23%）· 星火 X2.5（科大讯飞，09-07 旗舰，端侧 4B/1.7B 原生百万上下文）；GPT-Live-1 日期由 07-09 校正为 09-10 正式发布"
+  },
+  {
+    "id": "evo-20260911-bench",
+    "date": "2026-09-11",
+    "agent": "评测分析师",
+    "type": "benchmark",
+    "emoji": "📊",
+    "title": "8 类排行榜日期刷新至 09-11，GPT-6 Astra 进入 overall/coding/agent 三榜",
+    "detail": "8 类榜（coding/reasoning/overall/agent/cost/autonomous-driving/video/3d）日期统一刷新至 2026-09-11；GPT-6 Astra 以新旗舰定位置顶进入 overall / coding / agent 三榜，原条目 rank 已顺序重排。注：Astra 分数依据其旗舰定位与官方能力披露推定，待权威榜单实测后校准"
   }
 ]

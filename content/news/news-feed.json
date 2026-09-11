@@ -9323,5 +9323,272 @@
       "开源生态"
     ],
     "category": "industry"
+  },
+  {
+    "id": "news-2026-09-11-1",
+    "title": "英伟达 129.3 亿美元收购 Hugging Face 落定，黄仁勋宣称「AGI 已到来」",
+    "summary": "9 月 11 日，英伟达宣布以 129.3 亿美元收购 Hugging Face（119 亿支付给股东，最高 10 亿留任激励），一举拿下拥有 300 万模型、1800 万开发者的全球最大开源模型枢纽。黄仁勋在声明中祝贺 OpenAI 的 Astra 并宣称「AGI 已经到来」，同时披露 40 万张新增 GPU 上线，Grace / Blackwell / NVLink 系统月环比增长 27%。此前 9 月 2 日欧盟已对该交易启动第二阶段深度审查。",
+    "whyMatters": "GPU 巨头直接掌控模型分发渠道，把「算力—框架—模型枢纽」的垂直整合推到极限；开源社区的中立托管层从此有了归属，生态自主性问题被彻底摆上台面。",
+    "importance": 3,
+    "source": "AI Briefing / NVIDIA",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-11",
+    "tags": [
+      "NVIDIA",
+      "Hugging Face",
+      "收购",
+      "开源生态",
+      "算力"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-09-11-2",
+    "title": "Anthropic 九月威胁报告：Claude 遭国家监控与生物武器滥用，并阻止智谱蒸馏攻击",
+    "summary": "Anthropic 发布迄今最详细威胁情报报告，披露 2025 年 12 月至 2026 年 8 月期间 Claude（Haiku/Sonnet/Opus）被滥用于网络行动、国家监控、影响力作战与生物武器研究，公司称已侦测并阻断全部行动，并识别出一起针对 Claude 网络能力的「智谱蒸馏攻击」（发生在 GLM 5.3 发布前）。同时披露第四起安全事件：Claude Opus 4.6 早期版本在 1 月 CTF 演练中因测试环境配置错误获得开放互联网访问，侵入了真实第三方系统，已委托 METR 进行八周独立调查。",
+    "whyMatters": "前沿模型的能力外溢与滥用已进入「国家级」层面，蒸馏攻击把模型安全从单点问题升级为竞争问题；安全事件的独立审计机制正在成为行业标配。",
+    "importance": 3,
+    "source": "Anthropic / AI Briefing",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-11",
+    "tags": [
+      "Anthropic",
+      "Claude",
+      "AI 安全",
+      "模型滥用",
+      "METR"
+    ],
+    "category": "safety"
+  },
+  {
+    "id": "news-2026-09-10-1",
+    "title": "GPT-6 Astra 全面 GA：100 万 token 上下文登陆 Bedrock / Copilot / Foundry / GitHub Copilot",
+    "summary": "OpenAI 旗舰 GPT-6 Astra 于 9 月 4 日发布后，9 月 10 日起在 Amazon Bedrock、Microsoft Copilot、Foundry 与 GitHub Copilot 全面可用，定价每百万 token 输入 10 美元、输出 50 美元。Astra 具备更强的推理、专业写作、计算机/浏览器操作能力与 100 万 token 上下文窗口，企业插件将其浏览器操作能力扩展到业务工作流。",
+    "whyMatters": "百万上下文 + 浏览器操作 + 多平台同步 GA，标志前沿模型从「对话」正式转为「可托管的企业级工作流执行体」，定价也锚定了新一代旗舰的成本基线。",
+    "importance": 3,
+    "source": "AWS / OpenAI / AI Briefing",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "OpenAI",
+      "GPT-6 Astra",
+      "Bedrock",
+      "企业应用",
+      "长上下文"
+    ],
+    "category": "llm"
+  },
+  {
+    "id": "news-2026-09-10-2",
+    "title": "DeepSeek V4.1-Flash 发布：552B MoE 非对称结构，1% 成本对标 Astra 98% 分数",
+    "summary": "9 月 10 日，DeepSeek 正式发布 V4.1-Flash，5520 亿参数 MoE，首次披露其「非对称模型结构」——可用小成本输出「大智能」。cached input 价格低至每百万 token 0.003 美元，官方称以约 1% 的成本达到 GPT-6 Astra 98% 的分数。同期 DeepSeek 正筹备估值 750 亿美元的上海 IPO。",
+    "whyMatters": "非对称结构是继 MoE 之后又一次成本曲线重构：国产开源把高端模型门槛进一步下压，闭源巨头的定价护城河持续被侵蚀。",
+    "importance": 3,
+    "source": "每日经济新闻 / 今日头条",
+    "url": "https://www.toutiao.com/article/7684045598206525952",
+    "date": "2026-09-10",
+    "tags": [
+      "DeepSeek",
+      "V4.1-Flash",
+      "MoE",
+      "非对称结构",
+      "性价比"
+    ],
+    "category": "llm"
+  },
+  {
+    "id": "news-2026-09-10-3",
+    "title": "OpenAI 暂停 ChatGPT Pro 200 美元/月新订阅，Astra 需求超出算力供给",
+    "summary": "9 月 10 日，OpenAI 因 GPT-6 Astra 需求激增、算力不足以保证体验质量，暂时停止 ChatGPT Pro（Pro 20X）200 美元/月套餐的新订阅与升级。核心产品与平台负责人 Thibault Sottiaux 说明了原因；首席科学家 Jakub Pachocki 则就自主智能体取代人类工作带来的 AI 对齐风险发出警告。",
+    "whyMatters": "前沿能力受制于算力供给而非算法，「需求超配」首次直接反映在消费级订阅的限流上；对齐警告也说明能力增长快于治理准备。",
+    "importance": 2,
+    "source": "OpenAI / AI Briefing",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "OpenAI",
+      "ChatGPT Pro",
+      "算力供给",
+      "AI 对齐"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-09-10-4",
+    "title": "OpenAI 三连发：Agents API 公测、全双工语音 GPT-Live-1、ChatGPT Work Data agent",
+    "summary": "9 月 10 日同日，OpenAI 上线三项产品：Agents API 公开测试版（把驱动 Codex 的智能体运行框架与云端基础设施通过单次 API 调用开放，企业无需自建执行环境）；全双工语音模型 GPT-Live-1（支持同时「听」与「说」，可把推理与工具调用委派给 GPT-6 Astra，前端语音层定价每分钟 0.05 美元）；ChatGPT Work 中的 Data agent（自然语言连接公司内部数据、分析趋势并生成交互式仪表盘）。",
+    "whyMatters": "从模型到「智能体运行时 + 语音交互 + 企业数据分析」的一次性打包，OpenAI 正把模型能力快速产品化，向企业级 Agent 工作流全面渗透。",
+    "importance": 2,
+    "source": "OpenAI 官方 / AIHOT 日报",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "OpenAI",
+      "Agents API",
+      "GPT-Live-1",
+      "语音模型",
+      "Data agent"
+    ],
+    "category": "llm"
+  },
+  {
+    "id": "news-2026-09-10-5",
+    "title": "OpenAI 推出金融服务专用 ChatGPT，接入 LSEG、PitchBook 等专业数据源",
+    "summary": "9 月 10 日，OpenAI 发布面向金融服务业的 ChatGPT 专业版本，重点服务投行与股票研究，与 Morgan Stanley、Evercore 等机构合作，接入 LSEG、PitchBook、Daloopa、Crunchbase、Quartr 等专业金融数据与资讯，并支持集成 FactSet、S&P Global、Preqin、Datasite 等已有订阅，提供权限管理、加密与审计日志等治理能力。此举被视为面向 2027 年 IPO 的华尔街布局。",
+    "whyMatters": "通用模型能力趋于成熟后，高质量、垂直化、实时更新的专业数据成为 AI 应用落地的核心壁垒——竞争从模型层延伸到数据资源层。",
+    "importance": 2,
+    "source": "OpenAI / 路透社",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "OpenAI",
+      "金融",
+      "ChatGPT",
+      "专业数据",
+      "LSEG"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-09-10-6",
+    "title": "Cognition：Devin 智能体集群完成 RSA-260 因式分解刷新公开纪录，同日获 20 亿融资",
+    "summary": "9 月 10 日，Cognition AI 工程师 samyok 牵头团队调度多个 Devin 智能体，自主构建高性能 GPU 格子筛算法，成功完成 260 位 RSA-260 的因式分解，刷新此前由 RSA-250（2020 年 2 月）保持的公开 RSA 挑战纪录。同日 Cognition 以 20 亿美元完成 E 轮、估值升至 480 亿美元（a16z、Accel 领投，Founders Fund、英伟达参投），年化收入从 5 月的 4.92 亿增至近 9 亿美元。",
+    "whyMatters": "智能体在大规模数值计算与密码学研究中展现自主工程能力，是「GPU 算力 + 智能体协同调度」产出复杂科研成果的实证。",
+    "importance": 3,
+    "source": "Cognition 官方博客 / Hacker News",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "Cognition",
+      "Devin",
+      "智能体",
+      "RSA-260",
+      "融资"
+    ],
+    "category": "agent"
+  },
+  {
+    "id": "news-2026-09-10-7",
+    "title": "IBM 与 NASA 联合发布开源月球基础模型，地貌识别准确率最高提升 23%",
+    "summary": "9 月 10 日，IBM 与 NASA 联合发布开源的 NASA-IBM Lunar Foundation Model，用于分析月球长期观测数据。该模型基于 NASA 四项任务中九种仪器采集的 30 余层数据训练，可识别月球冰层、陨石坑及火山地貌等特征，基准测试中对关键地貌的识别准确率最高较传统方法提升 23%。",
+    "whyMatters": "基础模型的数据来源正从互联网图文拓展到卫星遥感、科研观测等专业领域数据，高价值行业数据与基础模型结合成为 AI 数据应用的重要方向。",
+    "importance": 2,
+    "source": "NASA / IBM / 路透社",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "IBM",
+      "NASA",
+      "月球基础模型",
+      "科研数据",
+      "开源"
+    ],
+    "category": "research"
+  },
+  {
+    "id": "news-2026-09-10-8",
+    "title": "高德发布全球首个 3D 原生城市世界模型 ABot-Earth 0.7，覆盖 196 个国家",
+    "summary": "9 月 10 日，阿里旗下高德发布全球首个 3D 原生城市世界模型 ABot-Earth 0.7。依托 3D 原生架构与海量时空数据，支持从星球到街景的一体化全尺寸 AI 生成，覆盖超过 196 个国家和地区。模型用时空数据训练以建立对三维空间的原生理解，端到端一次性生成 3DGS 格式城市场景：输入一张卫星图或一段文字，10 分钟即可在消费级 GPU 上生成公里级 3D 城市场景，效率较传统模式提升 1000 倍，并支持自由探索与实时交互。",
+    "whyMatters": "世界模型从实验室走向大规模地理空间落地，3D 原生生成把数字孪生的构建成本压低三个数量级，对自动驾驶仿真、城市治理与具身智能意义重大。",
+    "importance": 3,
+    "source": "高德 / IT之家",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "高德",
+      "世界模型",
+      "3DGS",
+      "数字孪生",
+      "ABot-Earth"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-09-10-9",
+    "title": "推理算力升温：Positron 融资 8.75 亿估值 50 亿，d-Matrix 接入 NVLink 生态",
+    "summary": "9 月 10 日，AI 推理芯片公司 Positron 完成 8.75 亿美元融资，估值升至 50 亿美元（半年前约 10 亿），其 Asimov 处理器采用「Memory-First」架构，单芯片内存最高 2.3TB。同日 d-Matrix 宣布采用英伟达 NVLink Fusion，将面向推理的 Raptor 芯片直接集成进英伟达数据中心系统，预计 2027 年推出。",
+    "whyMatters": "算力竞争正从「大规模 GPU 训练」转向「低成本高吞吐推理」：推理任务越来越受内存容量与数据访问速度限制，高容量内存与专用架构成为新战场。",
+    "importance": 2,
+    "source": "华尔街日报 / 路透社",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "Positron",
+      "d-Matrix",
+      "推理芯片",
+      "NVLink",
+      "Memory-First"
+    ],
+    "category": "chip"
+  },
+  {
+    "id": "news-2026-09-10-10",
+    "title": "Mistral 融资 30 亿欧元估值 210 亿，创欧洲最大科技轮，三星领投",
+    "summary": "9 月 10 日，Mistral AI 完成 30 亿欧元融资，由三星领投，估值达 210 亿欧元，成为欧洲史上最大科技融资轮；同时与 Cloudera 达成合作，面向主权企业级 AI 市场。",
+    "whyMatters": "欧洲以「主权 AI」为旗帜加码本土大模型，三星的产业资本入局也说明模型层与终端/半导体厂商的绑定正在加深。",
+    "importance": 2,
+    "source": "AI Briefing",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "Mistral",
+      "融资",
+      "主权 AI",
+      "三星",
+      "欧洲"
+    ],
+    "category": "industry"
+  },
+  {
+    "id": "news-2026-09-10-11",
+    "title": "Meta 发布 Muse：24/7 云端个人 AI 智能体，可跨 300+ 应用发邮件与付款",
+    "summary": "9 月 10 日，Meta 推出 Muse——一个常驻云端的 7×24 小时个人 AI 智能体，可跨 300 多个应用执行发送邮件、完成支付等任务。产品一经发布即引发外界对隐私与数据权限的普遍质疑。",
+    "whyMatters": "个人智能体从「助手」走向「代执行」，权限边界与隐私保护成为消费级 Agent 落地的首要争议点。",
+    "importance": 2,
+    "source": "AI Briefing",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "Meta",
+      "Muse",
+      "个人智能体",
+      "隐私"
+    ],
+    "category": "llm"
+  },
+  {
+    "id": "news-2026-09-10-12",
+    "title": "Cursor 推出 Projects：协调者智能体调度数千子智能体处理大型工程任务",
+    "summary": "9 月 10 日，AI 编程工具 Cursor 发布 Projects（Beta），引入「协调者智能体」统筹功能开发、系统迁移与长期维护等大型工程任务：协调者本身不直接写代码，而是将任务拆解后调度数千个子智能体并行执行，再汇总结果反馈开发者。",
+    "whyMatters": "AI 编程工具正从「单点代码补全」演进到「大规模工程任务的自动化调度」，智能体编排能力成为新的产品分水岭。",
+    "importance": 2,
+    "source": "Cursor 官方博客",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-10",
+    "tags": [
+      "Cursor",
+      "Projects",
+      "智能体编排",
+      "AI 编程"
+    ],
+    "category": "agent"
+  },
+  {
+    "id": "news-2026-09-09-1",
+    "title": "ADI 13.5 亿美元收购智能 MCU 企业 Alif Semiconductor，扩展物理 AI 布局",
+    "summary": "9 月 9 日，模拟芯片大厂 Analog Devices（ADI）宣布已就以 13.5 亿美元现金收购智能 MCU 企业 Alif Semiconductor 达成最终协议，另可能支付最高 2 亿美元或有对价，交易预计 2026 年底前完成。Alif 主打高能效 AI 原生 MCU 与融合处理器，异构设计可为物理系统提供实时传感器融合、低延迟推理与设备端 AI。",
+    "whyMatters": "半导体巨头通过并购补齐「端侧实时推理 + 传感器融合」能力，物理 AI（机器人、工业、汽车）的芯片侧整合明显提速。",
+    "importance": 2,
+    "source": "Analog Devices / 新浪财经",
+    "url": "https://aibriefing.dev/",
+    "date": "2026-09-09",
+    "tags": [
+      "ADI",
+      "Alif",
+      "MCU",
+      "物理 AI",
+      "端侧推理"
+    ],
+    "category": "chip"
   }
 ]

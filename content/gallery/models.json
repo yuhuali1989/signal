@@ -144,7 +144,7 @@
     "typeIcon": "🎙️",
     "open": false,
     "params": "未公开",
-    "date": "2026-07-09",
+    "date": "2026-09-10",
     "context": "实时流式",
     "attention": "未公开",
     "factSheet": {
@@ -4941,5 +4941,167 @@
       "Vertex AI 商用"
     ],
     "description": "Gemini 3.5 Pro Video（Google，2026-08-30 GA）支持 1 小时原生视频输入，Video-MME 89.2 创新高，时序定位误差中位数 2.1 秒，每分钟 0.35 美元，是首个规模商用的原生长视频理解 API，YouTube 创作者工具率先接入。"
+  },
+  {
+    "id": "gpt-6-astra-2026",
+    "name": "GPT-6 Astra",
+    "org": "OpenAI",
+    "type": "llm",
+    "typeLabel": "旗舰大模型",
+    "typeIcon": "🚀",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-09-04",
+    "context": "1M Tokens",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "Transformer（旗舰，推测 MoE）",
+      "attention": "未公开",
+      "context": "1M Tokens",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "大规模预训练 + RL",
+      "license": "Proprietary",
+      "pricing": "$10 / $50 每百万 token（输入/输出）"
+    },
+    "tags": [
+      "OpenAI",
+      "GPT-6",
+      "旗舰",
+      "长上下文",
+      "企业应用"
+    ],
+    "keyInnovation": "100 万 token 上下文 + 深度推理 + 原生计算机/浏览器操作，9 月 10 日起在 Amazon Bedrock、Microsoft Copilot、Foundry 与 GitHub Copilot 全面 GA，定价每百万 token 输入 10 美元、输出 50 美元；企业插件将浏览器操作能力延伸到业务工作流。",
+    "highlights": [
+      "100万 token 上下文",
+      "深度推理 + 专业写作",
+      "计算机/浏览器操作",
+      "多平台同步 GA（09-10）",
+      "$10/$50 每M token"
+    ],
+    "description": "GPT-6 Astra（OpenAI，2026-09-04 发布，09-10 全面 GA）是 OpenAI 新一代旗舰，具备 100 万 token 上下文、更强的推理与专业写作能力，以及原生的计算机与浏览器操作能力，已登陆 Amazon Bedrock、Microsoft Copilot、Foundry 与 GitHub Copilot。"
+  },
+  {
+    "id": "deepseek-v41-flash-2026",
+    "name": "DeepSeek V4.1-Flash",
+    "org": "DeepSeek",
+    "type": "llm",
+    "typeLabel": "非对称 MoE",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "5520亿 (MoE，非对称结构)",
+    "date": "2026-09-10",
+    "context": "未公开",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "5520亿 (MoE)",
+      "architecture": "非对称 MoE Transformer",
+      "attention": "未公开",
+      "context": "未公开",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "大规模预训练 + 后训练",
+      "license": "开源",
+      "pricing": "cached input $0.003 每百万 token"
+    },
+    "tags": [
+      "DeepSeek",
+      "V4.1-Flash",
+      "MoE",
+      "非对称结构",
+      "性价比"
+    ],
+    "keyInnovation": "首次披露「非对称模型结构」——用更小的成本输出「大智能」；5520 亿参数 MoE，cached input 低至每百万 token 0.003 美元，官方称以约 1% 成本达到 GPT-6 Astra 98% 的分数。同期筹备估值 750 亿美元的上海 IPO。",
+    "highlights": [
+      "5520亿参数 MoE",
+      "非对称结构首次披露",
+      "cached input $0.003/M",
+      "≈1% 成本对标 Astra 98%",
+      "筹备 750 亿上海 IPO"
+    ],
+    "description": "DeepSeek V4.1-Flash（2026-09-10）是 5520 亿参数 MoE 模型，首次披露非对称结构，cached input 每百万 token 0.003 美元，官方称以约 1% 成本达到 GPT-6 Astra 98% 的分数，进一步巩固高性价比开源模型市场地位。"
+  },
+  {
+    "id": "nasa-ibm-lunar-fm-2026",
+    "name": "NASA-IBM Lunar Foundation Model",
+    "org": "IBM + NASA",
+    "type": "vlm",
+    "typeLabel": "科研遥感基础模型",
+    "typeIcon": "🌕",
+    "open": true,
+    "params": "未公开",
+    "date": "2026-09-10",
+    "context": "N/A（遥感观测数据）",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "遥感基础模型",
+      "attention": "未公开",
+      "context": "N/A",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "NASA 4 项任务 9 种仪器 30+ 层观测数据",
+      "license": "开源",
+      "tasks": "月球冰层 / 陨石坑 / 火山地貌识别"
+    },
+    "tags": [
+      "NASA",
+      "IBM",
+      "月球",
+      "遥感",
+      "科研数据",
+      "开源"
+    ],
+    "keyInnovation": "基于 NASA 四项任务九种仪器采集的 30 余层观测数据训练，可识别月球冰层、陨石坑及火山地貌等特征，基准测试中关键地貌识别准确率最高较传统方法提升 23%。",
+    "highlights": [
+      "NASA 4 任务 9 仪器 30+ 层数据",
+      "地貌识别准确率 +23%",
+      "开源发布",
+      "科研观测数据驱动"
+    ],
+    "description": "NASA-IBM Lunar Foundation Model（2026-09-10，开源）由 IBM 与 NASA 联合发布，基于 NASA 四项任务九种仪器的 30 余层月球观测数据训练，可识别冰层、陨石坑与火山地貌，关键地貌识别准确率最高较传统方法提升 23%。"
+  },
+  {
+    "id": "spark-x25-2026",
+    "name": "星火 X2.5",
+    "org": "科大讯飞",
+    "type": "llm",
+    "typeLabel": "旗舰大模型",
+    "typeIcon": "🇨🇳",
+    "open": false,
+    "params": "未公开（旗舰）；端侧开源 4B / 1.7B",
+    "date": "2026-09-07",
+    "context": "100万 token（端侧模型原生支持）",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开（旗舰）；端侧开源 4B / 1.7B",
+      "architecture": "Transformer",
+      "attention": "未公开",
+      "context": "100万 token（端侧模型）",
+      "activation": "未公开",
+      "normalization": "未公开",
+      "positionalEncoding": "未公开",
+      "training": "全国产算力训练",
+      "license": "端侧开源 / 旗舰 Proprietary"
+    },
+    "tags": [
+      "科大讯飞",
+      "星火",
+      "端侧",
+      "百万上下文",
+      "国产算力"
+    ],
+    "keyInnovation": "9 月 1 日开源端侧星火 X2.5-4B 与 1.7B，为端侧首个原生支持 100 万 token 上下文的模型，基于全国产算力训练；9 月 7 日发布旗舰星火 X2.5。",
+    "highlights": [
+      "端侧首个原生百万上下文",
+      "端侧 4B / 1.7B 开源",
+      "全国产算力训练",
+      "09-07 旗舰发布"
+    ],
+    "description": "星火 X2.5（科大讯飞，2026-09-07 旗舰发布）系列中，端侧 X2.5-4B 与 1.7B 于 9 月 1 日开源，是端侧首个原生支持 100 万 token 上下文的模型，基于全国产算力训练，已上架 Hugging Face 与 GitHub。"
   }
 ]
