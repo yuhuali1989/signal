@@ -2796,5 +2796,14 @@
     "emoji": "📊",
     "title": "8 类排行榜日期刷新至 09-11，GPT-6 Astra 进入 overall/coding/agent 三榜",
     "detail": "8 类榜（coding/reasoning/overall/agent/cost/autonomous-driving/video/3d）日期统一刷新至 2026-09-11；GPT-6 Astra 以新旗舰定位置顶进入 overall / coding / agent 三榜，原条目 rank 已顺序重排。注：Astra 分数依据其旗舰定位与官方能力披露推定，待权威榜单实测后校准"
+  },
+  {
+    "id": "evo-20260918-article",
+    "date": "2026-09-18",
+    "agent": "深度编辑",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "更新深度文章：多模态数据管道实战（新增 Ray Data + vLLM actor 离线 caption 推理优化）",
+    "detail": "⑤ 重标注章节新增 5.1 节（234→366 行）：两层参数表（Ray Data LLM 调度层 batch_size / concurrency / max_concurrent_batches / has_image，vLLM 引擎层 max_num_seqs / max_num_batched_tokens / gpu_memory_utilization / prefix caching / 量化 / 投机解码）· 黄金约束 batch_size × max_concurrent_batches ≥ max_num_seqs · 任务粒度与 repartition 切块 · 多模态专属优化（预 resize / CPU 解码瓶颈 / encoder-output caching / vision encoder 数据并行）· 重排序收益 1.1–1.44× · 效果参考（Ray Data ~2,500 rows/s、vLLM V1 vs V0 最高 1.7×、TensorRT-LLM 峰值高 10–20%）· vLLMEngineProcessorConfig 可运行骨架与六步调优 SOP"
   }
 ]

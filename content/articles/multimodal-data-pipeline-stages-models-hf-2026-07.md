@@ -2,7 +2,7 @@
 title: "多模态数据管道实战：最新处理环节、算法与可用模型（附 HuggingFace 对照）"
 description: "系统梳理 2026 年主流多模态数据管道的标准化处理环节与底层算法，逐环节给出具体可落地的模型选型，并对照 HuggingFace 上是否已有同等能力权重，覆盖采集、解码、质量过滤、去重、重标注、Tag、安全、配比、分片、训练前处理十个阶段"
 date: "2026-07-30"
-updatedAt: "2026-07-30"
+updatedAt: "2026-09-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "多模态数据管道"
@@ -15,6 +15,9 @@ tags:
   - "GOT-OCR2"
   - "HuggingFace"
   - "数据配方"
+  - "Ray Data"
+  - "vLLM"
+  - "离线推理"
 type: "article"
 ---
 
@@ -152,6 +155,135 @@ def recaption(image_path):
     out = model.generate(**inputs, max_new_tokens=512)
     return processor.decode(out[0], skip_special_tokens=True)
 ```
+
+### 5.1 百万级以上：Ray Data + vLLM actor 的离线批量 caption
+
+上面的 `transformers` 单条循环只适合原型验证。真到百万/十亿级，必须换成 **Ray Data + vLLM actor**：Ray Data 负责分片与调度，每个 worker 起一个 vLLM 引擎副本（actor）独占 GPU，靠连续批处理把 GPU 塞满。
+
+```text
+Ray Dataset（图片/视频块）
+  ↓ repartition 切小块（避免超大任务、负载不均）
+预处理 Stage（解码 / resize —— CPU 密集，常是隐藏瓶颈）
+  ↓
+vLLMEngineStageUDF（每 worker 一个 vLLM 引擎，占 1+ GPU）
+  ↓
+后处理（解析结构化 caption / 落盘）
+```
+
+#### 两层参数：Ray Data 调度层 + vLLM 引擎层
+
+**第一层 · Ray Data LLM（`vLLMEngineProcessorConfig`）**
+
+| 参数 | 默认 | 作用 | 调优要点 |
+|---|---|---|---|
+| `batch_size` | 32 | 每批发给 vLLM 的行数 | 从 `= max_num_seqs` 起步；太小→调度欠饱和 GPU 空转，太大→调度过载且整批重试代价高 |
+| `concurrency` | 1 | 模型副本 / worker 数（数据并行） | 从 GPU 数起步；若 CPU 预处理是瓶颈，加副本无效 |
+| `max_concurrent_batches` | 8 | 每 worker 队列可排队的批数，重叠处理消尾延迟 | `batch_size ≥ 64` 时默认基本够用 |
+| `has_image` | False | 输入是否含图像 | **多模态 caption 必须设 True** |
+| `accelerator_type` | None | 加速器类型 | 如 `"L4"` / `"A10G"` / `"H100"` |
+| `engine_kwargs` | {} | 透传给 vLLM 引擎 | **核心调优点，见下** |
+| `detokenize` | True | 是否反解 token | 批量落盘场景可设 False 省 CPU |
+
+**第二层 · vLLM 引擎（`engine_kwargs`）**
+
+| 参数 | 默认 | 离线 batch 建议 | 说明 |
+|---|---|---|---|
+| `max_num_seqs` | 128 | 256+ | 并发序列数，决定 KV cache 预分配；太小 GPU 吃不饱 |
+| `max_num_batched_tokens` | 8192 | **16384+** | 离线最大杠杆之一，直接决定能否把 GPU 塞满 |
+| `gpu_memory_utilization` | 0.90 | **0.95**（专用硬件） | 更多显存→更大 KV cache→更高并发→更高吞吐 |
+| `enable_prefix_caching` | True | 保持开 | caption 场景 system prompt 共享，命中率很高 |
+| `enable_chunked_prefill` | True | 保持开 | 与连续批处理配合 |
+| `tensor_parallel_size` / `pipeline_parallel_size` | 1 | 大模型按需 | 跨节点需 `distributed_executor_backend="ray"` |
+| `quantization` | None | FP8 / INT8（看显卡） | 省显存换吞吐，注意质量回退 |
+| 投机解码 | — | **高 batch 建议关** | 它是延迟工具不是吞吐工具；vLLM 提供 `-speculative-disable-by-batch-size` |
+
+#### 黄金约束（Anyscale 官方）
+
+```text
+batch_size × max_concurrent_batches ≥ max_num_seqs
+```
+
+这是最容易踩的一条：Ray Data 会自动检测欠饱和并告警。例：`batch_size=128 × max_concurrent_batches=4 = 512 ≥ max_num_seqs=256` ✅。
+
+#### 任务粒度：别让 worker 饿着
+
+推理任务数 ≈ `dataset_size / batch_size`。读少量大文件会产生超大预处理块，进而变成超大推理任务——负载不均、故障要整块重跑。解决：
+
+```python
+ds = ray.data.read_parquet("s3://.../images/").repartition(num_blocks=256)
+```
+
+算一笔账：1 万行 `repartition(256)` → 每块约 39 行；`batch_size=128` → 每推理任务约 156 行 → 约 64 个任务；`concurrency=4` → 每 worker 约 16 个任务。
+
+#### 多模态专属优化（和纯文本最大的不同）
+
+- **预 resize 图片到一致尺寸**：降内存、提吞吐、减少 padding 浪费。
+- **CPU 解码 / resize 常是真瓶颈**：图像比文本重得多。用 `ds.stats()` 看每个 operator 的吞吐——若预处理慢于推理，加 GPU 副本纯属浪费，要扩 CPU 并行或优化解码链路。
+- **vLLM 2026 多模态已成一等公民**：`encoder-output caching`（同一张图被多次问不重算视觉编码）与 **vision encoder 的 batch-level data parallelism**，对"一图多问"型 caption（同时问描述 / OCR / 属性）收益尤其明显。
+
+#### 重排序：离线白捡的收益
+
+离线能先看到全量数据，这是在线服务没有的特权：
+
+- 按**共享前缀**排序 → 提高 prefix cache / RadixAttention 命中率
+- 按**长度分桶** → 减少 padding 与调度抖动
+
+围绕这个思路的研究系统（BlendServe、BatchLLM）比原生 vLLM / SGLang 快 **1.1–1.44×**。
+
+#### 效果参考
+
+| 项 | 量级 | 来源 |
+|---|---|---|
+| Ray Data 视觉批推理吞吐 | ~2,500 rows/s（单节点估计 ~5,000 rows/s；Qwen2.5-VL，1 万张验证后扩展到 100 万） | Ray 官方示例 |
+| vLLM V1 vs V0 | 官方称最高 **1.7×** 吞吐提升，**VLM 增益更大** | vLLM V1 博客 |
+| 引擎横评 | TensorRT-LLM 在稳定 NVIDIA 部署峰值吞吐高 10–20%（代价是数十分钟编译）；SGLang 在共享前缀场景更优；**vLLM 是通用默认** | Parasail 2026 指南 |
+
+#### 可运行骨架
+
+```python
+from ray.data.llm import vLLMEngineProcessorConfig, build_llm_processor
+
+config = vLLMEngineProcessorConfig(
+    model_source="Qwen/Qwen2.5-VL-7B-Instruct",
+    accelerator_type="L4",
+    has_image=True,               # 多模态必须
+    concurrency=4,                # 4 个 vLLM 副本 → 需 4 张 GPU
+    batch_size=128,
+    max_concurrent_batches=4,
+    engine_kwargs=dict(
+        max_num_seqs=256,             # 128 × 4 = 512 ≥ 256 ✅
+        max_num_batched_tokens=16384, # 离线最大杠杆
+        gpu_memory_utilization=0.95,
+        enable_prefix_caching=True,
+        enable_chunked_prefill=True,
+    ),
+)
+
+processor = build_llm_processor(
+    config,
+    preprocess=lambda row: dict(
+        messages=[{"role": "user", "content": [
+            {"type": "image", "image": row["image_path"]},
+            {"type": "text", "text": "用中文写一段详尽的图像描述，包含主体、场景、文字内容与显著属性。"},
+        ]}],
+        sampling_params=dict(temperature=0.2, max_tokens=512),
+    ),
+    postprocess=lambda row: dict(caption=row["generated_text"]),
+)
+
+ds = ray.data.read_parquet("s3://.../images/").repartition(256)
+ds = processor(ds).materialize()
+print(ds.stats())   # 逐 operator 看吞吐，定位瓶颈
+```
+
+#### 调优 SOP
+
+1. **`stats()` 先定位**：是 CPU 预处理慢，还是 GPU 推理慢？不要凭感觉加卡。
+2. **GPU 空转** → 调大 `max_num_seqs` / `batch_size`，并校验 `batch_size × max_concurrent_batches ≥ max_num_seqs`。
+3. **预处理慢** → `repartition` 切块 + 扩 CPU 并行 + 预 resize。
+4. **OOM** → 降 `max_num_seqs`、把 `max_model_len` 收到实际需要、或上量化。
+5. **高 batch 关掉投机解码**：`--speculative-disable-by-batch-size`。
+6. **caption 模板固定** → 务必开 prefix caching，并按前缀排序喂数据。
 
 ---
 
