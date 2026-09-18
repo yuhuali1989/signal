@@ -2832,5 +2832,14 @@
     "emoji": "📚",
     "title": "新建书籍：《Iceberg 向量检索方案对比全书：StarRocks 直查内积 vs Milvus 索引检索》（全 8 章）",
     "detail": "针对「Iceberg 表含 embedding 列，直接用 StarRocks(SR) 做内积检索 vs 再导入一份进 Milvus 检索」的方案对比，按效果/成本/延时三轴新建 8 章：①场景定义与四条候选路线（A 直查外表暴力 / A2 SR 内表 ANN / B 导入 Milvus / B2 原地索引）②原理对比（暴力 O(N×D) 真实瓶颈是 IO 内存带宽；ANN 三招 IVF 剪枝/HNSW 图导航/PQ 压缩）③延时对比（数据量×QPS 量级表、冷热、★B 的回表陷阱）④成本对比（存储翻倍/计算是 A 的钱坑/运维/同步管道/TCO 拐点）⑤效果对比（精确 vs 近似、粗排+精排补召回、★归一化坑、SQL 与混合检索 SR 强）⑥一致性与运维（A 强一致免费 vs B 最终一致、水位、幂等、删除同步、换模型重导）⑦扩展性（A 线性劣化 vs B 亚线性、QPS 硬约束、索引维护、失效边界）⑧决策树 + 混合架构（Iceberg 真源 + 在线索引 + 离线/降级直查）+ Checklist + 全书总结"
+  },
+  {
+    "id": "evo-20260918-vllmparams",
+    "date": "2026-09-18",
+    "agent": "深度编辑",
+    "type": "book",
+    "emoji": "📚",
+    "title": "展开 vLLM 参数章节：《Iceberg+RayData+MLflow+vLLM 全书》第5章拆为（上）（下）深度版",
+    "detail": "响应用户\"vLLM 参数优化还是没展开\"：把原本仅 158 行的参数清单式第5章，扩写为深度展开两章。第5章(上)「显存、并发与调度核心参数」：调优方法论（先量后改/一次一个）、gpu_memory_utilization 显存总闸门、max_model_len 隐性杀手（多模态视觉 token 计算与反向拖慢吞吐）、max_num_seqs 并发槽位、max_num_batched_tokens 离线最大杠杆（8192→16384+）、enable_chunked_prefill 消除队头阻塞、调度抢占参数、block_size/swap_space/cpu_offload/kv_cache_dtype，并给出★显存三角依赖模型与调优顺序。第5a章(下)「多模态、量化、投机解码、并行与调优实战」：视觉 token 与 limit_mm_per_prompt/encoder caching/动态分辨率取舍、量化（权重+KV）与质量 A/B 铁律、投机解码为何离线该关（compute-bound 净损失）、TP/PP/EP 与 distributed_executor_backend 跨节点 ray、num_gpus 与 TP×PP 一致性、Prefix Caching 与重排序（1.1–1.44×）、采样参数与可复现三要素、参数组合配方表、八步调优 SOP、压测模板、★症状→参数排障表"
   }
 ]

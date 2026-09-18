@@ -628,7 +628,8 @@ D 发布（git add/commit/push，--publish 时执行）
 - ✍️ **文章更新**：《多模态数据管道实战》⑤ 重标注章节新增 **5.1 节**：Ray Data + vLLM actor 离线 caption 推理优化（234→366 行）
 - 📚 **新建全书**：《Iceberg + Ray Data + MLflow + vLLM 离线多模态处理优化全书》（**全 8 章，1372 行**）——针对「Iceberg 源表（OSS 路径列）→ Ray Data 读表调度 → MLflow PyFunc 模型（内含 OSS 拉取/解码预处理 + vLLM 离线推理）→ 写回 Iceberg 目标表」端到端生产场景的优化全书：源表读取与增量读 · OSS 解码瓶颈与视频抽帧 · PyFunc 封装（引擎只在 load_context 初始化 + Registry 别名）· vLLM 三板斧与多模态专属参数 · Ray Data 粒度与容错 · 写回幂等与小文件治理 · 可观测血缘与上线 Checklist
 - 📚 **新建全书 2**：《Iceberg 向量检索方案对比全书：StarRocks 直查内积 vs Milvus 索引检索》（**全 8 章，1222 行**）——按**效果 / 成本 / 延时**三轴系统对比「Iceberg embedding 列用 StarRocks 直查暴力内积」与「再导入一份进 Milvus 建 ANN 索引」两条路线；梳理四条候选路线（**A 直查外表暴力 / A2 SR 内表 ANN / B 导入 Milvus / B2 原地索引**），给出决策树与「Iceberg 真源 + 在线索引 + 离线/降级直查」混合架构 + 上线 Checklist
-- 进化日志 348→**351**（+1 书籍更新，+2 新建全书）
+- 🔧 **参数章节展开**（响应用户"vLLM 参数还是没展开"）：《Iceberg+RayData+MLflow+vLLM 全书》第 5 章由 158 行的"参数清单"扩写为**深度两章共 564 行**——**第 5 章（上）**显存/并发/调度核心参数（`gpu_memory_utilization` / `max_model_len` / `max_num_seqs` / `max_num_batched_tokens` / `enable_chunked_prefill`）+ ★显存三角依赖模型与调优顺序；**第 5a 章（下）**多模态视觉 token 与 `limit_mm_per_prompt` / encoder caching、量化与质量 A/B 铁律、投机解码离线该关、TP/PP 与跨节点 `ray` 后端、Prefix Caching 与重排序（1.1–1.44×）、可复现三要素 + 组合配方表、八步调优 SOP、压测模板、★症状→参数排障表
+- 进化日志 348→**352**（+1 书籍更新，+2 新建全书，+1 参数章节展开）
 
 **历史更新（2026-09-11 · 第 65 轮迭代）**：
 - 📡 **迭代第 65 轮**（覆盖 09-03 → 09-11）：
