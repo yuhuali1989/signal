@@ -2814,5 +2814,14 @@
     "emoji": "📚",
     "title": "更新书籍：《Ray+vLLM 参数优化深度全书》第10章新增 10.5.6 离线多模态 caption 批量推理场景",
     "detail": "在 10.5 场景化最优配置模板中新增「场景 6：离线多模态 caption 批量推理（Ray Data + vLLM actor）」：两种范式对比（原生 vllm.LLM vs Ray Data LLM）· 架构与数据流转 · 两层参数表（Ray Data LLM 调度层 batch_size / concurrency / max_concurrent_batches / has_image，vLLM 引擎层 max_num_seqs / max_num_batched_tokens(16384+) / gpu_memory_utilization(0.95) / prefix caching / 量化 / 离线关投机解码）· 黄金约束 batch_size × max_concurrent_batches ≥ max_num_seqs · 任务粒度与 repartition 切块 · 多模态三坑（has_image 必开 / CPU 解码是真瓶颈 / 预 resize + encoder-output caching）· 重排序收益 1.1–1.44× · 效果参考（Ray Data ~2,500 rows/s、V1 vs V0 最高 1.7×、TensorRT-LLM +10–20%、三项组合约 2–3×）· 完整配置模板与六步调优 SOP"
+  },
+  {
+    "id": "evo-20260918-book2",
+    "date": "2026-09-18",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建书籍：《Iceberg + Ray Data + MLflow + vLLM 离线多模态处理优化全书》（全 8 章）",
+    "detail": "针对「Iceberg 源表（OSS 路径列）→ Ray Data 读表调度 → MLflow PyFunc 模型（内含 OSS 拉取/解码预处理 + vLLM 离线推理）→ 写回 Iceberg 目标表」端到端生产场景新建 8 章：①场景定义与四层职责边界 ②Iceberg 源表读取优化（列投影/谓词下推/分区裁剪/增量读与水位持久化）③OSS 读取与多模态预处理（解码常被误判的 CPU 瓶颈/视频抽帧/预 resize/并发拉取/缓存/CPU:GPU 配比/坏文件兜底）④MLflow PyFunc 封装（引擎只在 load_context 初始化一次/predict 必须批式/map_batches + ActorPoolStrategy 集成/Registry 别名与依赖锁定）⑤vLLM 参数优化（三板斧塞满 GPU/多模态 max_model_len 含视觉 token/limit_mm_per_prompt/离线高 batch 关投机解码/量化须 A-B 验质量）⑥Ray Data 调度与容错（repartition 粒度/batch_size 压测/actor=GPU/batch 级重试/straggler 与 spilling）⑦写回 Iceberg（幂等 overwrite/merge/事务原子性/并发冲突重试/小文件 compaction/schema 演进/写后对账）⑧端到端可观测与血缘（MLflow 四重身份/完整埋点/质量指标/血缘回溯/调参闭环/上线 Checklist + 全书总结）"
   }
 ]
