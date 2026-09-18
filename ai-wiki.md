@@ -627,7 +627,8 @@ D 发布（git add/commit/push，--publish 时执行）
 - 📚 **书籍更新**：《Ray+vLLM 参数优化深度全书》第 10 章新增 **10.5.6 场景 6：离线多模态 caption 批量推理（Ray Data + vLLM actor）**——两种范式对比、两层参数表、黄金约束 `batch_size × max_concurrent_batches ≥ max_num_seqs`、多模态三坑、重排序收益（1.1–1.44×）、效果参考与完整配置模板（636→771 行）
 - ✍️ **文章更新**：《多模态数据管道实战》⑤ 重标注章节新增 **5.1 节**：Ray Data + vLLM actor 离线 caption 推理优化（234→366 行）
 - 📚 **新建全书**：《Iceberg + Ray Data + MLflow + vLLM 离线多模态处理优化全书》（**全 8 章，1372 行**）——针对「Iceberg 源表（OSS 路径列）→ Ray Data 读表调度 → MLflow PyFunc 模型（内含 OSS 拉取/解码预处理 + vLLM 离线推理）→ 写回 Iceberg 目标表」端到端生产场景的优化全书：源表读取与增量读 · OSS 解码瓶颈与视频抽帧 · PyFunc 封装（引擎只在 load_context 初始化 + Registry 别名）· vLLM 三板斧与多模态专属参数 · Ray Data 粒度与容错 · 写回幂等与小文件治理 · 可观测血缘与上线 Checklist
-- 进化日志 348→**350**（+1 书籍更新，+1 新建全书）
+- 📚 **新建全书 2**：《Iceberg 向量检索方案对比全书：StarRocks 直查内积 vs Milvus 索引检索》（**全 8 章，1222 行**）——按**效果 / 成本 / 延时**三轴系统对比「Iceberg embedding 列用 StarRocks 直查暴力内积」与「再导入一份进 Milvus 建 ANN 索引」两条路线；梳理四条候选路线（**A 直查外表暴力 / A2 SR 内表 ANN / B 导入 Milvus / B2 原地索引**），给出决策树与「Iceberg 真源 + 在线索引 + 离线/降级直查」混合架构 + 上线 Checklist
+- 进化日志 348→**351**（+1 书籍更新，+2 新建全书）
 
 **历史更新（2026-09-11 · 第 65 轮迭代）**：
 - 📡 **迭代第 65 轮**（覆盖 09-03 → 09-11）：
