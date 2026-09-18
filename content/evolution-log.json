@@ -2805,5 +2805,14 @@
     "emoji": "✍️",
     "title": "更新深度文章：多模态数据管道实战（新增 Ray Data + vLLM actor 离线 caption 推理优化）",
     "detail": "⑤ 重标注章节新增 5.1 节（234→366 行）：两层参数表（Ray Data LLM 调度层 batch_size / concurrency / max_concurrent_batches / has_image，vLLM 引擎层 max_num_seqs / max_num_batched_tokens / gpu_memory_utilization / prefix caching / 量化 / 投机解码）· 黄金约束 batch_size × max_concurrent_batches ≥ max_num_seqs · 任务粒度与 repartition 切块 · 多模态专属优化（预 resize / CPU 解码瓶颈 / encoder-output caching / vision encoder 数据并行）· 重排序收益 1.1–1.44× · 效果参考（Ray Data ~2,500 rows/s、vLLM V1 vs V0 最高 1.7×、TensorRT-LLM 峰值高 10–20%）· vLLMEngineProcessorConfig 可运行骨架与六步调优 SOP"
+  },
+  {
+    "id": "evo-20260918-book",
+    "date": "2026-09-18",
+    "agent": "深度编辑",
+    "type": "book",
+    "emoji": "📚",
+    "title": "更新书籍：《Ray+vLLM 参数优化深度全书》第10章新增 10.5.6 离线多模态 caption 批量推理场景",
+    "detail": "在 10.5 场景化最优配置模板中新增「场景 6：离线多模态 caption 批量推理（Ray Data + vLLM actor）」：两种范式对比（原生 vllm.LLM vs Ray Data LLM）· 架构与数据流转 · 两层参数表（Ray Data LLM 调度层 batch_size / concurrency / max_concurrent_batches / has_image，vLLM 引擎层 max_num_seqs / max_num_batched_tokens(16384+) / gpu_memory_utilization(0.95) / prefix caching / 量化 / 离线关投机解码）· 黄金约束 batch_size × max_concurrent_batches ≥ max_num_seqs · 任务粒度与 repartition 切块 · 多模态三坑（has_image 必开 / CPU 解码是真瓶颈 / 预 resize + encoder-output caching）· 重排序收益 1.1–1.44× · 效果参考（Ray Data ~2,500 rows/s、V1 vs V0 最高 1.7×、TensorRT-LLM +10–20%、三项组合约 2–3×）· 完整配置模板与六步调优 SOP"
   }
 ]
