@@ -3,7 +3,7 @@ title: "Iceberg 向量检索方案对比全书 - 第2章: 技术原理对比—�
 book: "Iceberg 向量检索方案对比全书：StarRocks 直查内积 vs Milvus 索引检索"
 chapter: "2"
 chapterTitle: "技术原理对比：为什么索引能快几个数量级"
-description: "从计算复杂度与硬件瓶颈讲清暴力内积（O(N×D)）与 ANN 索引（IVF/HNSW/PQ）的原理差异，说明暴力检索的真实瓶颈常常是内存带宽与 IO 而非算力，以及"近似"换来速度所付出的召回代价"
+description: "从计算复杂度与硬件瓶颈讲清暴力内积（O(N×D)）与 ANN 索引（IVF/HNSW/PQ）的原理差异，说明暴力检索的真实瓶颈常常是内存带宽与 IO 而非算力，以及「近似」换来速度所付出的召回代价"
 date: "2026-09-18"
 updatedAt: "2026-09-18"
 agent: "研究员→编辑→审校员"
