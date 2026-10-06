@@ -628,8 +628,9 @@ D 发布（git add/commit/push，--publish 时执行）
   - 声浪 **+23 条**（488→511 条）
   - 模型 **126→132**：新增 Gemini 4 Argon / MiMo-V2.6-Pro-RL / Beam / Kolibri / IQuest-Q1 / Clef；GLM-5.3 已于 08-14 收录，本轮仅补充 Anthropic 评估（称其为迄今最强网络能力开源权重模型）
   - 8 类排行榜日期刷新至 **10-06**，Gemini 4 Argon 进入 **overall / coding** 两榜（LMArena Text Arena 1525 分）
-  - 进化日志 **352→355 条**
+  - 进化日志 **352→356 条**（迭代 +3，新建全书 +1）
 - 🔭 **本轮焦点**：Gemini 4 Argon 登顶 Text Arena · 国产开源走向「开放全流程」（华为 openPangu 训练管线 / 紫东太初数据管线 / DeepSeek 昇腾算子库 373 GB/s）· 阿里真武 V900 与海光 Day0 适配 · **OpenAI 因安全取消 GPT-6.1 Astra 发布** · 自主恶意软件 CLOSEDQUORUM 与 FTC 调查、白宫设 AI 主管 · Cognition ARR 破 10 亿
+- 📚 **新建全书 3**：《AI Native Notebook 平台架构与选型全书》（**全 8 章，1118 行**）——从 AI Native 严格定义出发（AI 操作运行时 + 继承执行保证），按 ★四类版图（经典 / 响应式 / 出版 / 协作 SaaS）系统拆解：五层架构与 ★AI 层两种范式（外挂式 MCP/ACP 工具访问 vs 内生式 kernel 内执行 + 提交前校验）、执行引擎（有状态内核 vs 响应式 DAG，★hidden state 与约 96% 公开 notebook 不可复现）、AI 能力层与上下文工程、状态数据与可复现、协作发布工程化、主流平台横向对比大表 + 决策树、分层混合落地架构与上线 Checklist
 
 **历史更新（2026-09-18 · 书籍与文章更新）**：
 - 📚 **书籍更新**：《Ray+vLLM 参数优化深度全书》第 10 章新增 **10.5.6 场景 6：离线多模态 caption 批量推理（Ray Data + vLLM actor）**——两种范式对比、两层参数表、黄金约束 `batch_size × max_concurrent_batches ≥ max_num_seqs`、多模态三坑、重排序收益（1.1–1.44×）、效果参考与完整配置模板（636→771 行）

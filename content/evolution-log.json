@@ -2868,5 +2868,14 @@
     "emoji": "📊",
     "title": "8 类排行榜日期刷新至 10-06，Gemini 4 Argon 进入 overall/coding 两榜",
     "detail": "8 类榜日期统一刷新至 2026-10-06；Gemini 4 Argon 以 LMArena Text Arena 1525 分登顶的表现置顶进入 overall / coding 两榜，原条目 rank 已重排。注：分数采用 LMArena Text Arena 公开分值（与站内 AA Intelligence Index 口径不同，仅作跨榜参考）"
+  },
+  {
+    "id": "evo-20261006-book4",
+    "date": "2026-10-06",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建全书：《AI Native Notebook 平台架构与选型全书》（全 8 章，1118 行）",
+    "detail": "系统讲清 AI 原生下的 Notebook 平台架构与选型：①演进与定义（四次演进、AI Native 严格定义=AI 操作运行时+继承执行保证、五特征、★2026 四类版图：经典/响应式/出版/协作 SaaS，跨类比较必错）②五层架构（交互/AI/执行/状态数据/平台服务）与★AI 层两种范式：外挂式（Jupyter AI v3 的 MCP/ACP 工具访问，兼容与广度优先）vs 内生式（marimo pair 在 kernel 内执行，提交前校验语法/重定义/依赖循环/删除被依赖变量，无效批次整体拒绝，可复现与深度优先）③执行引擎（有状态内核 vs 响应式 DAG；★hidden state 与约 96% 公开 notebook 不可复现；远程执行、沙箱、多语言内核）④AI 能力层（五层能力 L1-L5、★上下文工程决定好用度、模型路由与自建端点、Agent 安全边界与可审查、六项实测评估法）⑤状态数据与可复现（.ipynb vs .py vs .qmd 格式对比、Git 噪声与 jupytext、环境锁定、数据下推、缓存检查点、★可复现十项 Checklist）⑥协作发布工程化（RTC、Modules 复用、参数化调度、app/报告/端点发布、★别只优化编辑器要优化 notebook 之后、分层管理）⑦平台选型对比（JupyterLab 5/Notebook 7/VSCode/Colab、Marimo/Observable/Pluto.jl、Quarto、Hex/Deepnote/Databricks 逐一拆解 + 横向大表 + 按角色推荐）⑧决策树、分层混合落地架构、渐进迁移路径、成本模型、上线 Checklist + 全书总结"
   }
 ]
