@@ -628,9 +628,11 @@ D 发布（git add/commit/push，--publish 时执行）
   - 声浪 **+23 条**（488→511 条）
   - 模型 **126→132**：新增 Gemini 4 Argon / MiMo-V2.6-Pro-RL / Beam / Kolibri / IQuest-Q1 / Clef；GLM-5.3 已于 08-14 收录，本轮仅补充 Anthropic 评估（称其为迄今最强网络能力开源权重模型）
   - 8 类排行榜日期刷新至 **10-06**，Gemini 4 Argon 进入 **overall / coding** 两榜（LMArena Text Arena 1525 分）
-  - 进化日志 **352→356 条**（迭代 +3，新建全书 +1）
+  - 进化日志 **352→357 条**（迭代 +3，新建全书 +2）
 - 🔭 **本轮焦点**：Gemini 4 Argon 登顶 Text Arena · 国产开源走向「开放全流程」（华为 openPangu 训练管线 / 紫东太初数据管线 / DeepSeek 昇腾算子库 373 GB/s）· 阿里真武 V900 与海光 Day0 适配 · **OpenAI 因安全取消 GPT-6.1 Astra 发布** · 自主恶意软件 CLOSEDQUORUM 与 FTC 调查、白宫设 AI 主管 · Cognition ARR 破 10 亿
 - 📚 **新建全书 3**：《AI Native Notebook 平台架构与选型全书》（**全 8 章，1118 行**）——从 AI Native 严格定义出发（AI 操作运行时 + 继承执行保证），按 ★四类版图（经典 / 响应式 / 出版 / 协作 SaaS）系统拆解：五层架构与 ★AI 层两种范式（外挂式 MCP/ACP 工具访问 vs 内生式 kernel 内执行 + 提交前校验）、执行引擎（有状态内核 vs 响应式 DAG，★hidden state 与约 96% 公开 notebook 不可复现）、AI 能力层与上下文工程、状态数据与可复现、协作发布工程化、主流平台横向对比大表 + 决策树、分层混合落地架构与上线 Checklist
+- 📚 **新建全书 4**：《Skill 与服务 API 版本对应全书：调用前的版本校验与兼容治理》（**全 8 章，1349 行**）——紧扣「Skill 版本与服务 API 版本如何对应、调用前必须先检查 API 是否对应」：★三层版本模型（Skill 版本 / 服务 API 版本 / 数据 schema 版本各自独立演进，最危险的是 200 但内容已变的**静默失败**）· 五种版本承载机制全景（URI 路径 / 请求头 / 查询参数 / 日期钉住 / 主机名，Stripe 日期钉住与 GitHub `X-GitHub-Api-Version` 24 个月窗口，Sunset RFC 8594 与 Deprecation RFC 9745）· Skill 侧 manifest 版本区间与兼容矩阵（required / optional 能力划分、字段 fallback 链）· ★能力协商优于版本号比较（以 **MCP 官方规范**为完整实证：无握手逐请求自带版本、版本不符返回 -32022 并带 supported 列表供自动重试、capabilities + extensions 扩展协商、server/discover 可选探测、能力缺失 MUST 回退核心行为或明确拒绝、探测结果 SHOULD 缓存并在假设失效时重探）· ★Preflight 五查（连通 / 版本 / 能力 / 配额 / 形状）与 discover-first vs inline+retry 取舍、fail-fast / degrade 决策树、幂等重试、VersionGuard 完整参考实现、降级必须显式外露 · 适配器模式与双跑→影子→灰度渐进迁移、网关代协商、版本矩阵 CI · ★fallback 命中率作为最灵敏漂移信号、Pact 消费者驱动契约测试、Sunset 头自动告警、反向索引看板与废弃时间表 · 三张决策树 + Skill 侧 12 项与 API 侧 10 项 Checklist + 完整 manifest 模板 + 16 条反模式 + 全书二十条结论
+- 🛠️ **新建 skill**：`signal-iteration`（仓库内 `.workbuddy/skills/`）——把 signal 站点迭代 SOP 固化为可复用能力：主线 A 标准数据迭代 9 步（B1 新闻 → B3 模型 → B7 榜单 → B5 进化日志 → B5 wiki → C 质检 → D commit → curl 验证 200 → push）与主线 B 写书写文章 8 步；配套三个实测跑通脚本（`qa_check.mjs` 数据质检 / `check_frontmatter.mjs` frontmatter 全量校验防首页 500 / `push.sh` 绕过沙箱推送）+ 数据 schema 参考；已解决 ★沙箱 HOME 隔离导致的推送误判
 
 **历史更新（2026-09-18 · 书籍与文章更新）**：
 - 📚 **书籍更新**：《Ray+vLLM 参数优化深度全书》第 10 章新增 **10.5.6 场景 6：离线多模态 caption 批量推理（Ray Data + vLLM actor）**——两种范式对比、两层参数表、黄金约束 `batch_size × max_concurrent_batches ≥ max_num_seqs`、多模态三坑、重排序收益（1.1–1.44×）、效果参考与完整配置模板（636→771 行）
