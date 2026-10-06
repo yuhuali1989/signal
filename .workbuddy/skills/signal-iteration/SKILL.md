@@ -25,6 +25,8 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 |---|---|---|
 | `content/news/news-feed.json` | AI 声浪（新闻） | 511 |
 | `content/gallery/models.json` | 模型库 | 132 |
+| `content/papers/papers-index.json` | **论文库** | 85 |
+| `content/papers/categories.json` | 论文分类（arch / alignment / inference / data / autonomous-driving / agent / hf-picks） | 7 |
 | `content/benchmarks/benchmarks.json` | 8 类排行榜 | 8 榜 |
 | `content/evolution-log.json` | 进化日志 | 356 |
 | `content/articles/*.md` | 文章 | 143 |
@@ -35,6 +37,42 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 - **数据更新轮**（新闻 / 模型 / 榜单 / 进化日志 / wiki）→ 走「主线 A：标准 9 步」
 - **内容创作轮**（写书 / 写文章）→ 走「主线 B：写书 8 步」
 - 两者都做 → 先数据轮、后内容轮，最后**统一**跑质检 → commit → 验证 → push
+
+## ★ 每轮必须覆盖的内容模块（缺一不可）
+
+signal 是**多模块站点**，迭代时最容易漏更新某些模块，造成「模块间时间不同步 / 某个模块长期停更」。
+
+**每轮开工先巡检一遍各模块的上次更新时间，凡是落后于本轮窗口的都要补：**
+
+| 模块 | 数据文件 | 巡检方式 |
+|---|---|---|
+| **① 声浪（新闻）** | `content/news/news-feed.json` | 看最后一条 `date` |
+| **② 模型** | `content/gallery/models.json` | 按 `date` 倒序看最新 |
+| **③ 论文** | `content/papers/papers-index.json` | 按 `date` 倒序看最新（★**历史长期停更，最易漏**） |
+| **④ 排行榜** | `content/benchmarks/benchmarks.json` | 8 榜 `date` 是否为本轮日期 |
+| **⑤ 进化日志** | `content/evolution-log.json` | 本轮每类各加一条 |
+| **⑥ wiki** | `ai-wiki.md` | 顶部「最后更新」+ 本轮区块 |
+| ⑦ 文章 / 书籍 | `content/articles`、`content/books` | 有需求才写（走主线 B） |
+
+> ★**教训**：曾连续多轮只更新新闻与模型，**论文模块停更 4 个月**（停在 2026-06）。**不要把「迭代」等同于「加新闻」——每个数据模块都要跟上。**
+
+### 快速巡检命令
+
+```bash
+cd E:/workbuddy/signal/signal && node -e "
+const n=require('./content/news/news-feed.json');
+const m=require('./content/gallery/models.json');
+const p=require('./content/papers/papers-index.json');
+const b=require('./content/benchmarks/benchmarks.json');
+const e=require('./content/evolution-log.json');
+const latest=a=>[...new Set(a.map(x=>x.date).filter(Boolean))].sort().slice(-1)[0];
+console.log('新闻最新:', latest(n));
+console.log('模型最新:', latest(m));
+console.log('论文最新:', latest(p));
+console.log('榜单日期:', [...new Set(b.map(x=>x.date))].join(','));
+console.log('进化日志最新:', latest(e));
+"
+```
 
 ## ★ 收尾铁律：完成即推送 GitHub
 
@@ -52,17 +90,22 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 - 推送失败要**当场排查**（通常是没绕过沙箱或私钥没加载），**不要留到下一轮**。
 - 每轮结束前用 `git log origin/main..HEAD` 自检：输出为空即已同步。
 
-## 主线 A：标准数据迭代 9 步
+## 主线 A：标准数据迭代 10 步
 
 1. **B1 新闻编辑员** — WebSearch 搜集本轮窗口（上次更新日 → 今天）的 AI 新闻，用 `query_keyword_groups` 多角度覆盖（模型发布 / 开源 / 芯片算力 / 融资并购 / 安全政策）。写脚本按 `news-YYYY-MM-DD-N` 生成 id 追加进 `news-feed.json`（数组按时间正序）。**追加前先按已有 id 去重**。
 2. **B3 模型编辑员** — 新模型写进 `models.json`（16 字段，见 `references/data-schema.md`）。**先查 id 是否已存在**：若已存在则校正其 `date` 或增强 `keyInnovation` / `highlights`，**不要重复新增**。
-3. **B7 榜单编辑员** — 刷新 `benchmarks.json`：8 个榜的 `date` 改成今天，按新分数重排 `models` 数组，**`rank` 必须严格 1..N 连续**（新登顶模型要进对应榜）。
-4. **B5 系统编辑员（进化日志）** — 向 `evolution-log.json` 追加本轮条目，通常每类一条（news / models / bench / book / article），id 唯一、带 emoji 与 detail。
-5. **B5 系统编辑员（wiki）** — 更新 `ai-wiki.md`：① 顶部「最后更新」改成今天；② 新增「本次主要更新内容」区块（本轮变化 + 焦点）；③ 上一轮区块降级保留为历史更新。
-6. **C 质检员** — 跑 `scripts/qa_check.mjs`，确认 JSON 可解析、id 唯一、模型字段齐全、8 榜 rank 连续。**注意区分「本轮新增」与「历史遗留」**（4~6 月旧数据的问题不阻断本轮）。
-7. **D 提交员** — `git add -A && git commit -m "迭代第N轮(YYYY-MM-DD): 新闻X(+n)/模型Y(+m)/8类榜单刷新至MM-DD/进化日志Z(+k)"`。
-8. **验证** — 起 dev server（`npm run dev`，后台），`curl` 首页 / 新闻页 / 模型页 / 新书页，**必须全是 200**。
-9. **★push（必做，完成即推）** — 见下方「push 正确姿势」。**推完本轮才算结束**，不留待推送积压。
+3. **★B4 论文编辑员** — WebSearch（**topic: academic**）搜集本轮窗口的重要论文，方向对齐站点聚焦（**大模型 / VLA / 自动驾驶**），兼顾架构 / 推理优化 / Agent。追加进 `content/papers/papers-index.json`（10 字段，见 `references/data-schema.md`）。
+   - **`category` 必须用 `categories.json` 里存在的 id**：`arch` / `alignment` / `inference` / `data` / `autonomous-driving` / `agent` / `hf-picks`（★历史遗留的 `ad`、`reasoning` 不在分类表里，**新增时不要用**）
+   - `importance` 只取 **4 或 5**；无解读文章时 `hasReview: false`；`date` 用 `YYYY-MM`
+   - `summary` 要写出**关键数字与方法名**（不要写空泛摘要）
+   - **追加前先按 id 去重**
+4. **B7 榜单编辑员** — 刷新 `benchmarks.json`：8 个榜的 `date` 改成今天，按新分数重排 `models` 数组，**`rank` 必须严格 1..N 连续**（新登顶模型要进对应榜）。
+5. **B5 系统编辑员（进化日志）** — 向 `evolution-log.json` 追加本轮条目，**每动过的模块各加一条**（news / models / **papers** / bench / book / article），id 唯一、带 emoji 与 detail。
+6. **B5 系统编辑员（wiki）** — 更新 `ai-wiki.md`：① 顶部「最后更新」改成今天；② 新增「本次主要更新内容」区块（本轮变化 + 焦点）；③ 上一轮区块降级保留为历史更新。
+7. **C 质检员** — 跑 `scripts/qa_check.mjs`，确认 JSON 可解析、id 唯一、模型字段齐全、8 榜 rank 连续。**注意区分「本轮新增」与「历史遗留」**（4~6 月旧数据的问题不阻断本轮）。论文侧另查：id 唯一 + category 合法 + importance ∈ {4,5}。
+8. **D 提交员** — `git add -A && git commit -m "迭代第N轮(YYYY-MM-DD): 新闻X(+n)/模型Y(+m)/论文Z(+k)/8类榜单刷新至MM-DD/进化日志W(+j)"`。
+9. **验证** — 起 dev server（`npm run dev`，后台），`curl` 首页 / 新闻页 / **模型页 / 论文页** / 新书页，**必须全是 200**。
+10. **★push（必做，完成即推）** — 见下方「push 正确姿势」。**推完本轮才算结束**，不留待推送积压。
 
 ## 主线 B：写书 / 写文章 8 步
 

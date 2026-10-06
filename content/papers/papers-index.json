@@ -1176,5 +1176,184 @@
     "hasReview": false,
     "date": "2026-06",
     "summary": "VLA-World 首次将 VLA 模型的多模态推理能力和世界模型的未来预测能力统一，通过「生成未来帧-反思推理-优化轨迹」闭环，在 nuScenes 规划和未来生成双基准上超越 SOTA。"
+  },
+  {
+    "id": "rho-vla-foundation-2026",
+    "title": "Rho: A Foundation for Efficiently Adaptable VLA Models",
+    "authors": "Rho Team: Simran Bagaria, Daphne Chen, Dean Fortier, Jianlong Fu, et al.",
+    "venue": "arXiv 2609.38164",
+    "category": "autonomous-driving",
+    "importance": 5,
+    "tags": [
+      "vla",
+      "embodied-ai",
+      "bimanual-manipulation",
+      "open-weights",
+      "adaptation"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "面向双臂操作的开放权重 VLA 模型家族，覆盖 YAM Box / UR AI Trainer / FR3 Duo 三种本体。系统消融了动作专家架构与训练配方，证明「本体中训（embodiment midtraining）」能显著改善下游适配。★最大亮点是内置在线适配能力：一个内部潜在策略从纠正反馈中学习，为冻结的 flow-matching 动作专家选择观测条件的噪声输入，**仅需 15 条纠正 episode** 就能处理落在离线微调分布边缘的任务情境。"
+  },
+  {
+    "id": "vla-dreamer-2026",
+    "title": "Towards VLA-Dreamer: Refining VLA Behavior Using World Models",
+    "authors": "Parsa Mastouri Kashani, Jan-Gerrit Habekost, Stefan Wermter",
+    "venue": "arXiv 2609.31313",
+    "category": "autonomous-driving",
+    "importance": 4,
+    "tags": [
+      "vla",
+      "world-model",
+      "sample-efficiency",
+      "jepa",
+      "planning"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "针对 VLA 依赖海量高质量模仿数据、且缺乏显式世界模型这两个痛点，提出在 VLA 视觉编码器的 **embedding 空间**训练预测性世界模型（而非像素空间），类 JEPA 思路。核心假设是：VLA 的视觉 embedding 是动作相关的、可用于未来预测；若不能预测，即暴露 VLA 架构缺少「无损失的隐式世界模型」这一关键局限。训练好的世界模型还能通过按目标图像采样 VLA 动作来做短期规划。"
+  },
+  {
+    "id": "unified-robot-learning-survey-2026",
+    "title": "Toward Unified Robot Learning: Bridging Representation, Vision-Language-Action, and World Models",
+    "authors": "Shaunak A. Mehta, Ananya Hazarika, Haochen Zhang, Fan Yang, et al.",
+    "venue": "arXiv 2609.03927",
+    "category": "autonomous-driving",
+    "importance": 4,
+    "tags": [
+      "survey",
+      "vla",
+      "world-model",
+      "representation-learning",
+      "taxonomy"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "把机器人学习统一到三个互补轴上审视：**通过表示学习来理解、通过 VLA 来行动、通过世界模型来推理**。指出三条路线长期各自发展，导致系统在泛化、长程时序推理与规划、非结构化环境部署上表现割裂。给出覆盖环境表示、策略学习、预测建模的结构化分类法，并列出核心挑战：不确定性量化、OOD 泛化、跨本体迁移、长上下文理解与长程规划——强调这些挑战不只源于单模块局限，更源于感知、动作与推理之间缺乏整合。"
+  },
+  {
+    "id": "world-model-distill-vla-2026",
+    "title": "Think Like a World Model, Act Like a VLA: Distilling World-Model Representations into Compact Robot Policies",
+    "authors": "arXiv 2609.24682",
+    "venue": "arXiv 2609.24682",
+    "category": "autonomous-driving",
+    "importance": 5,
+    "tags": [
+      "vla",
+      "world-model",
+      "distillation",
+      "representation-alignment",
+      "edge-deployment"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "★解决「世界模型太慢进不了控制回路」的关键工作：论证世界模型对物理场景的知识存在于其**内部特征**中，生成未来只是产生这些特征的目标，因此可以继承其接地能力而丢弃生成机制。做法是在普通 VLA 训练上加一项特征对齐损失——冻结的世界模型对训练帧只跑一遍并缓存，学生去对齐该缓存，训练时无需加载教师， projector 用完即弃，**部署的策略与未蒸馏基线完全相同**（消费级 RTX 5090 上 32 ms / 1.86 GB）。一个 0.8B 学生在 LIBERO 达到 **97.9%**，RoboCasa-GR1 人形操作从 48.2% 提升到 50.5%，并在真实单臂与双臂平台上验证有效。"
+  },
+  {
+    "id": "mamba-3-2026",
+    "title": "Mamba-3: Improved Selective State Space Models with Complex State Updates and MIMO Formulation",
+    "authors": "Lahoti, Li, Chen, Wang, Bick, Kolter, Dao, Gu",
+    "venue": "ICLR 2026",
+    "category": "arch",
+    "importance": 5,
+    "tags": [
+      "ssm",
+      "mamba",
+      "architecture",
+      "state-tracking",
+      "efficiency"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "选择性状态空间模型的新一代：提出更具表达力的离散化递归、**复数状态更新**（更丰富的状态追踪）以及**多输入多输出（MIMO）**公式。在检索与状态追踪精度上明显改善，并能匹配强 Transformer 基线，同时**解码成本约为其一半**。与 Mamba-2 的结构化状态空间对偶（SSD）一脉相承——训练可在 GPU 擅长的矩阵乘上高效进行，推理时仍是 O(n) 递归、状态大小恒定，对长时运行的端侧与机器人场景尤其友好。"
+  },
+  {
+    "id": "recap-persistent-context-graph-2026",
+    "title": "Persistent Context Graphs for Efficient Memory Compaction in LLM Agents (ReCAP)",
+    "authors": "Jingbo Yang, Kwei-Herng Lai, Xiaowen Wang, Zhaoxuan Tan, et al.",
+    "venue": "arXiv 2609.40118",
+    "category": "agent",
+    "importance": 4,
+    "tags": [
+      "agent",
+      "memory",
+      "context-compaction",
+      "kv-cache",
+      "long-horizon"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "针对长程 Agent 交互历史膨胀导致的上下文窗口与 prefill 成本问题。现有方法要么摘要、要么压缩 KV cache，而 KV 过期后重新评估历史需要重新编码。ReCAP 把**注意力导出的重要性分数与依赖链接**存进一个轻量的持久化上下文图；每个新请求结合存储的重要性、请求相关性线索与依赖链接来选取消息，**选择过程无需额外模型调用**。相比 Codex 默认摘要式压缩，压缩与冷恢复延迟降低约 **95%**（Qwen3-Coder 与 gpt-oss）；SWE-Together 上历史上下文约减半而任务质量相当；Lost-in-Conversation 代码任务比全历史提升 **19.8 / 41.2 分**。"
+  },
+  {
+    "id": "attuner-kv-reuse-2026",
+    "title": "ATTUNER: Recomputation-Free KV Cache Reuse via Query-Side Adaptation",
+    "authors": "Xinghao Chen, Junnan Dong, Cai Ke, Chak Tou Leong, et al.",
+    "venue": "arXiv 2609.36722",
+    "category": "inference",
+    "importance": 4,
+    "tags": [
+      "kv-cache",
+      "inference",
+      "agent",
+      "position-independent-caching",
+      "distillation"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "Agent 反复把技能、文档、记忆等可复用内容载入上下文，每次重新编码是巨大浪费。位置无关缓存（PIC）能复用但相对 full-context prefill 有质量损失。本文定位了损失来源：位置错配影响很小，独立缓存的产物表征是忠实的，**失败定位在 attention 而非 KV 重算**。据此提出 query 侧适配方法 Attuner：在 query 投影中插入低秩适配器，用 full-prefill 分布蒸馏训练，**训练参数量不到模型的 0.05%**，推理时既不需重算缓存也不需全上下文参考，在 Qwen3-4B/8B 的七个基准上匹配 full-context 质量并提供最高 **3.73× 加速**。"
+  },
+  {
+    "id": "actkv-agent-kv-compression-2026",
+    "title": "ActKV: Efficient LLM Agents through Action-Guided KV Cache Management",
+    "authors": "Zihan Wang, Cheng Tang, Lei Gong, Chao Wang, et al.",
+    "venue": "arXiv 2609.31395",
+    "category": "inference",
+    "importance": 4,
+    "tags": [
+      "kv-cache",
+      "agent",
+      "inference",
+      "compression",
+      "throughput"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "首个面向 Agent 推理的 KV cache 压缩框架。观察：Agent 的观测-推理-动作循环中，观测与推理占 KV 的 99% 以上，而用户真正关心的是驱动任务进展的动作，因此压缩准则应按「对动作生成的贡献」评估 KV 条目。三件事：面向动作的 KV 驱逐（利用稳定的动作访问模式）、置信度驱动的自适应预算分配、页面感知的压缩管理（三个原语 + 定制 kernel）。结果：长轨迹任务上保留 FullKV **98.53%** 精度，只用 **25.98%** 峰值 KV 内存，token 与任务吞吐达 **3.97× / 3.58×**。"
+  },
+  {
+    "id": "distilling-sequential-computation-2026",
+    "title": "Distilling Sequential Computation in Transformer Language Models",
+    "authors": "Zixuan Lan, Jessica Yang, Yanhong Li, Karen Livescu, Jiawei Zhou",
+    "venue": "arXiv 2609.27233",
+    "category": "inference",
+    "importance": 4,
+    "tags": [
+      "inference",
+      "token-compression",
+      "kv-cache",
+      "sequence-distillation"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "观察到相邻 token 跨度常高度可预测或作为稳定单元反复出现，提出用一个轻量 merge 模块「即时」把一段 token 折叠成单一代理 embedding，使预训练模型能在压缩输入上工作，**无需改架构或重新训练**。推理时同时压缩 prompt 与中间解码步骤，并用回滚机制把已存的多 token KV 条目替换为单步代理表示。实验显示有效序列长度最多减少 **40%**，在语言建模、问答、摘要、常识推理与长链数学推理上精度退化极小。"
+  },
+  {
+    "id": "kv-streams-agentic-rl-2026",
+    "title": "KV-streams for Efficient Compaction in Agentic Reinforcement Learning",
+    "authors": "Emiliano Penaloza, Dane Malenfant, Dheeraj Vattikonda, et al.",
+    "venue": "arXiv 2609.35750",
+    "category": "inference",
+    "importance": 4,
+    "tags": [
+      "agent",
+      "rl",
+      "kv-cache",
+      "context-compaction",
+      "recurrent-state"
+    ],
+    "hasReview": false,
+    "date": "2026-09",
+    "summary": "Agent RL 的上下文轨迹越来越长，现有压缩策略需要反复 prefill 整个上下文，严重拖累训练吞吐。KV-streams 是一个即插即用策略：把 KV cache 向前**流式传递**而非每次压缩后清空，兼容任何压缩策略，**训练 wall-clock 加速 2.6–5×** 且无性能损失迹象。★额外发现：流式传递的 KV cache 可充当一种**递归状态**，携带早已从上下文中消失的信息；在受控实验中，仅靠 RL 就能让这种行为自发出现（与先前工作结论相反）。"
   }
 ]

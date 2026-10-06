@@ -2913,5 +2913,23 @@
     "emoji": "📚",
     "title": "新建全书：物理 AI 落地全书——最新模型架构研究与工程路径（8 章 964 行）",
     "detail": "《物理 AI 落地全书：最新模型架构研究与工程路径》。①数字 AI 与物理 AI 的本质差异（★数字 AI 的错误是可丢弃的代码，物理 AI 的错误是已发生的碰撞）；五个硬约束（实时 10–100Hz / 可靠 99.9% / 能耗 / 安全 / 可解释）；2026 拐点与落差（ICLR 164 篇 VLA 投稿、Amazon 百万台机器人 vs ★实验室 95%→部署 60%、每天失败约 50 次）；三路线分化（大模型增强 Gemini Robotics / 专用高效 π0 3B / 平台生态 GR00T+Isaac）②★底层架构最新研究：Transformer 两瓶颈（O(n²)、KV cache 膨胀）；Mamba/SSM 与 Mamba-2 的**结构化状态空间对偶 SSD**、**Mamba-3（ICLR 2026，复数状态更新+MIMO，解码成本约一半）**；★**混合架构成为 2026 默认**（Jamba 1:7、Nemotron-H 84% Mamba 层 56B 仅 10 个 attention、Nemotron 3 LatentMoE 1M 上下文效率 4×、Kimi Linear 3:1 KV−75% 吞吐 6×、Qwen3-Next、Granite 4.0 内存−70%、MiniMax-01 456B MoE 4M）；稀疏/线性注意力（DSA/Gated DeltaNet/RetNet/RWKV-7）；MoE 条件计算；dLLM 并行去噪与 Titans 神经长期记忆；★对物理 AI 的价值=常数状态适合长时运行③物理 AI 模型家族：VLA 三大创新（统一表征/动作 token 化/Flow Matching 连续解码）；代表模型 **GR00T N1.6（32 层 DiT）与 N1.7（3B，Cosmos-Reason 骨干，★EgoScale 21,000 小时人类第一人称视频预训练）** / π0·π0.5（3B Flow Matching，未见环境零样本）/ Gemini Robotics（动作作直接输出模态）/ LingBot-VLA（2 万小时双臂）/ GEN-0（27 万小时）；世界模型（★Cosmos 3 统一合成生成+视觉推理+动作模拟、Cosmos 3 Edge、Transfer/Predict 2.5、Marble、开悟 3.1 自进化闭环已开源）；★系统 1（VLA 快）+系统 2（世界模型深思）④★四道鸿沟：可靠性（95%→60%，应对=域随机化/师生蒸馏/数字孪生实时校准/真实→仿真→真实闭环/降级兜底）、数据与仿真、★算力能耗（人形电池 90–120 分钟 vs 需求 8–20 小时，固态电池 2035 → 架构必须按极低能耗设计）、★评估可信度（NVIDIA 自述「从 100 次失败挑最好看的演示」，1% 成功率常见）⑤★务实落地四法：元技能拆解与组合编排、LLM 代码生成加速现场工程、★**精度分层（粗操作给 VLA/VLM，精定位还给传统视觉+力控）**、NVIDIA 三台计算机（训练/仿真/边缘）；端云协同铁律（★端侧必须断网独立安全运行）；★降级与兜底（**不要用模型保证安全，用架构保证安全**）⑥★场景落地「看（成熟）→抓（结构化可落地）→装（早期）」刻度；物流仓储最成熟、制造组装卡精度、移动服务已铺开、★人形是期权不是产能（**所有公开演示仍是遥操作**、Figure 退出 BMW 无生产承诺）、自动驾驶是最成熟的物理 AI⑦数据飞轮：遥操作 50–150 美元/小时；Open X-Embodiment 100 万轨迹/22 本体/34 实验室；★第一人称视频绕开遥操作瓶颈（1 亿小时目标≈150 人一生）；★真实→仿真→真实闭环（校准决定成败、失败样本更值钱）；飞轮抄自动驾驶（影子模式/触发器采集/只回传失败与低置信）⑧安全三层（模型层触发 + ★不依赖模型的硬约束 + 流程层）；★评估四类指标（全量成功率禁 cherry-pick / 分档 / MTBF / 恢复能力）；ROI 按 MTBF 折算有效产能；决策树五问与落地 Checklist 十条；全书二十条结论"
+  },
+  {
+    "id": "evo-20261006-papers-update",
+    "date": "2026-10-06",
+    "agent": "研究员→编辑→审校员",
+    "type": "papers",
+    "emoji": "📄",
+    "title": "论文模块补更（停更 4 个月后补齐）：新增 10 篇 2026-09 重要论文（75→85）",
+    "detail": "论文模块此前停在 2026-06，本轮补齐 2026-09 窗口的重要论文 10 篇：【VLA/具身】Rho（开放权重双臂 VLA 家族，**仅需 15 条纠正 episode 即可在线适配**）、VLA-Dreamer（在视觉 encoder 的 embedding 空间训世界模型，类 JEPA）、Toward Unified Robot Learning（表示/VLA/世界模型三轴统一综述）、Think Like a World Model Act Like a VLA（★**世界模型表征蒸馏进紧凑 VLA**，0.8B 学生 LIBERO 97.9%，RTX 5090 上 32ms/1.86GB）；【架构】Mamba-3（ICLR 2026，复数状态更新 + MIMO，解码成本约为 Transformer 一半）；【Agent/推理】ReCAP（持久上下文图做记忆压缩，压缩与冷恢复延迟降约 95%）、ATTUNER（query 侧低秩适配实现无重计算 KV 复用，训练 <0.05% 参数，**最高 3.73× 加速**）、ActKV（首个面向 Agent 的 KV 压缩，保留 98.53% 精度仅用 25.98% 峰值 KV 内存，吞吐 3.97×/3.58×）、Distilling Sequential Computation（token 折叠，有效序列长度减 40%）、KV-streams（流式传递 KV，**训练加速 2.6–5×**，KV 可作递归状态）"
+  },
+  {
+    "id": "evo-20261006-skill-modules",
+    "date": "2026-10-06",
+    "agent": "系统编辑员",
+    "type": "skill",
+    "emoji": "🛠️",
+    "title": "skill 更新：signal-iteration 补齐「论文」模块与全模块巡检清单",
+    "detail": "针对「论文模块长期停更、迭代只更新新闻」的问题，signal-iteration skill 做了三处加固：①★新增 **「每轮必须覆盖的内容模块」清单**（声浪/模型/**论文**/排行榜/进化日志/wiki 六项 + 快速巡检命令），明确 **★不要把「迭代」等同于「加新闻」**；②主线 A 由 9 步扩为 **10 步**，新增 **B4 论文编辑员**（WebSearch topic: academic；category 必须用 categories.json 合法 id；importance 只取 4|5；summary 必须写关键数字）；③`references/data-schema.md` 补充 **papers-index.json 的 10 字段 schema 与合法 category 表**，并标注历史遗留的 `ad`/`reasoning` 非法值与早期论文缺 date 的情况；④环境事实表与 commit/验证/进化日志步骤同步加入论文模块（进化日志改为「每动过的模块各加一条」，验证页加入论文页）"
   }
 ]
