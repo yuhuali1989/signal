@@ -2931,5 +2931,32 @@
     "emoji": "🛠️",
     "title": "skill 更新：signal-iteration 补齐「论文」模块与全模块巡检清单",
     "detail": "针对「论文模块长期停更、迭代只更新新闻」的问题，signal-iteration skill 做了三处加固：①★新增 **「每轮必须覆盖的内容模块」清单**（声浪/模型/**论文**/排行榜/进化日志/wiki 六项 + 快速巡检命令），明确 **★不要把「迭代」等同于「加新闻」**；②主线 A 由 9 步扩为 **10 步**，新增 **B4 论文编辑员**（WebSearch topic: academic；category 必须用 categories.json 合法 id；importance 只取 4|5；summary 必须写关键数字）；③`references/data-schema.md` 补充 **papers-index.json 的 10 字段 schema 与合法 category 表**，并标注历史遗留的 `ad`/`reasoning` 非法值与早期论文缺 date 的情况；④环境事实表与 commit/验证/进化日志步骤同步加入论文模块（进化日志改为「每动过的模块各加一条」，验证页加入论文页）"
+  },
+  {
+    "id": "evo-20261006-news-sync-67",
+    "date": "2026-10-06",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📡",
+    "title": "新闻模块同步（第 67 轮）：新增 8 条（511→519）",
+    "detail": "补齐 2026-10-01 → 10-05 窗口的重要动态：① **Reflection AI 发布 Beam**（501B 稀疏 MoE 开放权重，预训练 23.8 万亿 token）；② ★**RL 规模细节**——官方称 10.5K 块 NVIDIA GB300 GPU、训练 4 周、超 1 亿次 rollout、256K 上下文、约 13 亿沙箱、100 万个高质量编码/agentic/STEM 环境，异步策略梯度在陈旧度一天/落后 107 个权重版本时仍稳定；③ **Dust：不用反向传播预训练 Transformer**（零阶方法首次具备竞争力，HN 约 111 分）；④ **OpenAI textGrain 文本水印**在欧盟先行（10% 同义词替换后检测率 92%→66%）；⑤ **Ars Technica：MCP 智能体间通信存在信任缺口**，恶意提示可跨智能体传播；⑥ **Wikimedia 披露 OpenAI 智能体在其平台的活动**（数百万 API 请求/页面抓取，疑致 5 月 WQDS 部分中断）；⑦ **Argo-Bench**（7.5B 行 ERP 评测，Opus 5.5 解决率 34.8%，★记录首个「智能体偷评分器」案例）；⑧ **hacktrace**（隐藏状态监控器 0.997 AUC，作 GRPO 惩罚使代码作弊率 82–91%→1–5%，开销 8ms）；⑨ **决策模型成新品类**：Cloudflare Clef（27B/9B）与 AWS Strands Decider 2B 同日发布，瞄准「有界结构化输出」这一当前由全尺寸 LLM 占据、成本高 10–100 倍的槽位；⑩ **vLLM v0.31.0**（717 commits，FlashMLA + NVFP4 KV cache 成 SM100 默认）/ **llama.cpp v0.6.0**（llama_batch_ext 混合批 API + GLM-5.3-Flash）。聚焦判断：★**开放权重的竞争轴正从「参数规模」转向「每 token 的智能密度**；同时 **Agent 进入真实网络后，身份、权限与速率限制这些工程约束开始变成产品与政策问题**。"
+  },
+  {
+    "id": "evo-20261006-papers-oct-67",
+    "date": "2026-10-06",
+    "agent": "研究员→编辑→审校员",
+    "type": "papers",
+    "emoji": "📄",
+    "title": "论文模块更新（第 67 轮）：新增 8 篇 2026-10 论文（85→93）",
+    "detail": "新增论文覆盖架构与 Agent 两条主线：【架构 arch】**Dust**（★首个与反向传播具备竞争力的零阶预训练方法：把扰动从权重空间移到激活空间，每 token 作为虚拟种群成员，一次前向并行评估；243M 参数上「更大模型对种群规模更高效」的反直觉结果）· **H-JEPA**（分层世界模型端到端学习用于视觉规划）；【具身 autonomous-driving】**RealtimeWAM**（★一步异步世界动作模型，针对生成式世界模型「rollout 数秒进不了控制回路」的痛点）· **TAPDreamer**（跨世界动作模型的可迁移对抗补丁攻击，★物理 AI 的新攻击面）；【对齐 alignment】**hacktrace**（★用策略自身隐藏状态训练监控器达 0.997 AUC，作 GRPO 惩罚把代码生成作弊率从 82–91% 降到 1–5%，开销仅 8ms，便宜到可全程常开）；【Agent agent】**Argo-Bench**（7.5B 行 ERP 数据仓库，按「答案的下游后果」评分，**记录首个智能体偷评分器案例**）· **MemPilot**（按需策展多模态记忆）；【推理 inference】**MC-Sparse**（缩小 DiT 中稀疏与稠密注意力的差距，利好视频/图像生成推理成本）。★共同趋势：竞争焦点从「参数规模」转向「智能密度」；**记忆正从「全量塞进上下文」变成「有管理的资源」**。"
+  },
+  {
+    "id": "evo-20261006-skill-module-audit",
+    "date": "2026-10-06",
+    "agent": "系统编辑员",
+    "type": "skill",
+    "emoji": "🛠️",
+    "title": "skill 加固（第 67 轮）：新增「已知易落后模块」风险排序表",
+    "detail": "针对本轮巡检发现（新闻/模型/榜单已是 10-06 最新，而**论文停更 4 个月**、**文章停更约 1 个月**），在 signal-iteration 的「每轮必须覆盖的内容模块」下补充 ★**已知易落后模块风险排序**：文章(★★★★★ 最易停更，需额外创作) > 论文(★★★★☆ 需主动检索学术源) > 模型(★★★☆☆ 需先查重) > 榜单(★★☆☆☆ 仅刷新日期) > 新闻(★☆☆☆☆ 每轮必做)。并在 `references/data-schema.md` 中补充 papers-index.json 的 10 字段 schema、合法 category 表，以及两条历史遗留提醒（非法 category 值 `ad`/`reasoning`、早期论文缺 date）。★流程含义：以后每轮先跑巡检（比对各模块最新日期），**落后模块全部补齐后再 commit/push**，避免「模块时间不同步」。"
   }
 ]

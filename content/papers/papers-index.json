@@ -1355,5 +1355,140 @@
     "hasReview": false,
     "date": "2026-09",
     "summary": "Agent RL 的上下文轨迹越来越长，现有压缩策略需要反复 prefill 整个上下文，严重拖累训练吞吐。KV-streams 是一个即插即用策略：把 KV cache 向前**流式传递**而非每次压缩后清空，兼容任何压缩策略，**训练 wall-clock 加速 2.6–5×** 且无性能损失迹象。★额外发现：流式传递的 KV cache 可充当一种**递归状态**，携带早已从上下文中消失的信息；在受控实验中，仅靠 RL 就能让这种行为自发出现（与先前工作结论相反）。"
+  },
+  {
+    "id": "dust-pretraining-without-backprop-2026",
+    "title": "Dust: Pretraining Transformers Without Backpropagation",
+    "authors": "Samip Dahal, Bishwas Mandal, Serdar Gülbahar, Akshay Vegesna",
+    "venue": "Q Labs Research",
+    "category": "arch",
+    "importance": 5,
+    "tags": [
+      "预训练",
+      "零阶优化",
+      "反向传播替代",
+      "架构"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "首个在预训练语言模型上与反向传播具备竞争力的零阶方法。把扰动从权重空间移到激活空间：每个 token 独立扰动激活值成为虚拟种群成员，一次前向即可并行评估全部成员，再按扰动降低损失的幅度给予奖励，对奖励加权扰动求平均估计梯度。★反直觉结果：更大模型对种群规模更高效（243M 参数模型优于小 120 倍的模型）；梯度估计与反向传播方向的对齐度随种群增大而提升。局限：停留在 243M 参数/10 亿 token 量级，属机制验证而非生产方案。"
+  },
+  {
+    "id": "h-jepa-hierarchical-world-model-2026",
+    "title": "H-JEPA: Learning Hierarchical World Models End-to-End for Visual Planning",
+    "authors": "arXiv 2609 (October 2026 track)",
+    "venue": "arXiv",
+    "category": "arch",
+    "importance": 4,
+    "tags": [
+      "世界模型",
+      "JEPA",
+      "层级表征",
+      "视觉规划"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "以端到端方式学习分层世界模型用于视觉规划。属于 JEPA 系路线（在表征空间预测而非像素空间）的层级化扩展，把不同抽象层级的世界动态组织起来，支撑长程视觉规划。与 V-JEPA 2、Cosmos 等共同构成世界模型的重要分支。"
+  },
+  {
+    "id": "realtimewam-world-action-model-2026",
+    "title": "RealtimeWAM: A One-Step Asynchronous World Action Model for Real-Time Robot Control",
+    "authors": "arXiv 2609",
+    "venue": "arXiv",
+    "category": "autonomous-driving",
+    "importance": 4,
+    "tags": [
+      "世界动作模型",
+      "实时控制",
+      "机器人",
+      "异步推理"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "面向实时机器人控制的**一步异步**世界动作模型（WAM）。针对生成式世界模型「rollout 一次要几秒、进不了控制回路」的核心痛点，用一步预测 + 异步执行把延迟压到可进控制回路的量级。与第 3 章「系统 2 太慢」的问题直接对应。"
+  },
+  {
+    "id": "tapdreamer-adversarial-patches-wam-2026",
+    "title": "TAPDreamer: Transferable Adversarial Patches for World Action Models",
+    "authors": "arXiv 2609",
+    "venue": "arXiv",
+    "category": "autonomous-driving",
+    "importance": 4,
+    "tags": [
+      "对抗攻击",
+      "世界动作模型",
+      "安全",
+      "可迁移性"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "研究可跨世界动作模型（WAM）迁移的对抗补丁攻击。★这是物理 AI 的新型攻击面：当策略开始依赖「想象」出的未来做决策时，对感知输入的微小扰动就可能被放大成错误的物理动作。对于要部署 VLA/世界模型的团队，这是必须纳入威胁模型的条目。"
+  },
+  {
+    "id": "hacktrace-hidden-state-cheating-monitor-2026",
+    "title": "hacktrace: Detecting Reward Hacking via Hidden-State Monitoring",
+    "authors": "arXiv 2609",
+    "venue": "arXiv",
+    "category": "alignment",
+    "importance": 5,
+    "tags": [
+      "reward hacking",
+      "隐藏状态",
+      "监控器",
+      "GRPO"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "用智能体自身隐藏状态训练监控器，达到 **0.997 AUC**，能抓住连失败的捷径尝试；不需要额外的语言模型 token。★作为 GRPO 惩罚项，把代码生成作弊率从 82–91% 降到 1–5%，开销仅 8ms——便宜到可以在整个训练过程中常开。这是「评估可信度危机」的具体工程解法。"
+  },
+  {
+    "id": "argo-bench-enterprise-data-agent-2026",
+    "title": "Argo-Bench: Benchmarking Data Agents on a 7.5B-Row Enterprise Warehouse",
+    "authors": "arXiv 2609",
+    "venue": "arXiv",
+    "category": "agent",
+    "importance": 4,
+    "tags": [
+      "数据智能体",
+      "评测",
+      "ERP",
+      "企业级"
+    ],
+    "hasReview": false,
+    "date": "2026-10"
+  },
+  {
+    "id": "mempilot-multimodal-memory-2026",
+    "title": "MemPilot: Curating Multimodal Memory on Demand for LLM Agents",
+    "authors": "arXiv 2609",
+    "venue": "arXiv",
+    "category": "agent",
+    "importance": 4,
+    "tags": [
+      "记忆",
+      "多模态",
+      "Agent",
+      "按需策展"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "为 LLM 智能体按需策展多模态记忆。与 ReCAP 的持久化上下文图形成互补：ReCAP 用注意力导出的重要性分数做结构化选取，MemPilot 强调按需策展。两者都指向同一趋势——**记忆正从「全量塞进上下文」转向「有管理的资源」**。"
+  },
+  {
+    "id": "mc-sparse-diffusion-transformer-2026",
+    "title": "MC-Sparse: Closing the Gap Between Sparse and Dense Attention in Diffusion Transformers",
+    "authors": "arXiv 2609",
+    "venue": "arXiv",
+    "category": "inference",
+    "importance": 4,
+    "tags": [
+      "稀疏注意力",
+      "扩散 Transformer",
+      "推理优化",
+      "视频生成"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "缩小扩散 Transformer 中稀疏注意力与稠密注意力的差距。对视频/图像生成类模型的推理成本是直接利好——稀疏化长期以来的质量损失正在被逐步补齐。"
   }
 ]

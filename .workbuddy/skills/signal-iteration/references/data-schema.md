@@ -56,6 +56,30 @@ id / title / authors / venue / category / importance / tags / hasReview / date /
 > ⚠️ 历史遗留：部分旧论文用了 `ad` 与 `reasoning`（不在分类表中）。**新增时不要用这两个值**。
 > ⚠️ 部分早期经典论文（如 `attention-is-all-you-need`）**没有 `date` 字段**，按日期排序时会显示为 undefined，属历史遗留。
 
+### content/papers/papers-index.json — 论文库（10 字段）
+
+```
+id / title / authors / venue / category / importance / tags / hasReview / date / summary
+```
+
+| 字段 | 说明 |
+|---|---|
+| `id` | 小写连字符，建议带年份后缀（`rho-vla-foundation-2026`），必须唯一 |
+| `title` | 论文原标题（英文） |
+| `authors` | 作者串，多人用 `et al.` 省略 |
+| `venue` | 发表处（`arXiv 2609.38164` / `ICLR 2026` / `CVPR 2026 Findings`） |
+| `category` | ★**必须取 `categories.json` 中存在的 id** |
+| `importance` | ★**只取 4 或 5**（5 最高） |
+| `hasReview` | 是否有解读文章（无则 `false`） |
+| `date` | `YYYY-MM` |
+| `summary` | ★中文摘要，**必须写出关键数字与方法名** |
+
+**合法 category**（`content/papers/categories.json`）：`arch` 模型架构 ／ `alignment` 训练与对齐 ／ `inference` 推理优化 ／ `data` 数据与合成 ／ `autonomous-driving` 自动驾驶 ／ `agent` AI Agent ／ `hf-picks` HF 精选
+
+> ⚠️ 历史遗留：部分旧论文用了 `ad` 与 `reasoning`（**不在分类表中，新增时不要用**）；部分早期经典论文（如 `attention-is-all-you-need`）**没有 `date` 字段**，按日期排序显示为 undefined。
+>
+> 📌 **论文库特点**：`date` 为 `YYYY-MM` 粒度（比新闻粗），且存在「有解读文章」与「仅收录」两种状态，用 `hasReview` 区分。新增时若暂无解读文章，保持 `hasReview: false`，后续补解读再翻转。
+
 ### content/gallery/models.json — 模型库（16 字段）
 
 ```
