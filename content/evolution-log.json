@@ -2895,5 +2895,14 @@
     "emoji": "📚",
     "title": "新建全书：基于 marimo 构建内部 AI Native Notebook 平台（8 章 1115 行）",
     "detail": "《基于 marimo 构建内部 AI Native Notebook 平台全书：产品架构、技术架构与投入产出》。①定位与决策：marimo 三件套（OSS 引擎 Apache-2.0 / molab 托管 4CPU+32GB 可挂 96GB 显存 GPU / WASM playground），★开源引擎不等于平台（不管 SSO、权限、持久化、调度、审计、成本），自建四动因（合规、SSO、内部生态、长期成本），边界原则「包一层不改里面」②源码拆解：Python 引擎 + Starlette/ASGI + React/TS 前端；核心模块 App/Cell(defs+refs)/Kernel/DirectedGraph/cell_runner/ScopedVisitor/asgi.py；★响应式靠静态分析建 DAG，执行顺序与页面顺序无关，★不要跨 cell 改对象；四种执行环境（Native/Sandbox uv+PEP723/Docker/WASM Pyodide）推荐 Sandbox 为主；四产物形态 edit/run(app)/script/export；SQL 一等公民；molab 架构（Modal+uv+R2）为自建范本③产品架构：五角色痛点（★业务方要的是 app 不是 notebook）、五能力模块（开发/运行/交付/协作复用/治理）、★五种产品形态矩阵、权限三原则（app 权限独立于源码/凭证永不进 notebook/配额按空间）、★notebook 当模块 import、MVP 边界（不做 RTC、不改响应式、不做 ipynb 双向同步）④技术架构：控制面自研+执行面用 marimo；会话编排（一 notebook 一容器、镜像分层+PEP723+uv、★冷启动<10s、★闲置 30min 回收、GPU 独立池）、存储（.py 进 Git）、★数据源凭证代管（KMS+会话注入，绝不进 notebook）、App 托管（marimo run 天然隐藏代码）⑤★差距清单：14 项逐条给方案与工作量，**MVP 25-35 人周（2-3 人 3-5 个月）**，含 fork 治理五规则、最易低估五件事、迁移要择优不平移⑥AI Native 接入：marimo 已有 marimo pair（agent 连运行中 session）+ 编辑器 AI（自带 key/本地模型/自定义 prompt），平台只做接内部模型+加边界；★内生式意味着 AI 代码必须真跑过才成为结论⑦投入：2-3 人 MVP、PoC 2-4 周→MVP 3-5 月；★诚实结论——纯许可费视角自建不必然省钱（50 人 SaaS 12-28 万/年 vs 自建首年 40-70 万）⑧★产出与价值：四层价值（①交付效率最大 > ②可复现 > ③合规硬门槛 > ④许可费替代常被误当主理由）；★核心账——单个交互看板从 2-3 人周降到 0.2 人周，年交付 ≥20 个即可覆盖自建年成本，回本 <1 年；ROI 三情形（高频交付型/合规驱动型/纯替代自用型）；度量首推「业务方自助使用次数」；Go/No-Go 三问与止损线"
+  },
+  {
+    "id": "evo-20261006-book-notebook-vs-script-vs-html",
+    "date": "2026-10-06",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建全书：Notebook · Python 脚本 · HTML 三种形态的本质差异与协作（8 章 1031 行）",
+    "detail": "《Notebook · Python 脚本 · HTML：三种形态的本质差异与协作全书》。①★三层模型（Notebook=探索厨房台面 / 脚本=固化工厂产线 / HTML=交付成品橱窗），三者是管线接力不是三选一；六维差异总表②执行模型：Jupyter 有状态内核 / marimo 响应式 DAG / 脚本一次性进程 / HTML 不执行；★hidden state 导致约 96% 公开 notebook 不可复现；三解法（Restart&Run All 纪律 / nbconvert --execute 接 CI / 换响应式引擎）③★可复现六要素（代码/依赖/数据/环境/执行顺序/随机性）；★AI 时代致命风险——让模型直接生成 HTML 报告时数字可能从未被计算过，**能不能重跑 = 能不能相信**；产物必须带运行指纹④★交互三层级（L1 触发真实重算 / L2 前端过滤 / L0 无），判据「能否算出数据里原本没有的东西」；★App = HTML 外壳 + Notebook 内核，是 Notebook 家族对纯 HTML 的最大反超⑤★.ipynb diff 灾难（base64 输出 + execution_count）；三解法 nbstripout / jupytext / nbdime；marimo .py 从格式根治（可 diff/import/pytest/PEP 723）；★Notebook 是唯一能同时评审逻辑与结论的形态；RTC 需求常被高估⑥★工程化：被 cron 依赖的 notebook 已是「带漂亮 UI 的技术债」；参数化 argparse/papermill；★notebook 是库代码的消费者不是源码（被复制/需测试/要 import = 提升为 .py）；工业流水线 Notebook→jupytext/nbconvert→脚本→单测→生产→HTML⑦数据：★下推 vs 拉进内存是数据工程分水岭；notebook >100MB 性能骤降、HTML 页面随嵌入数据线性膨胀；★凭证绝不写进 notebook⑧★标准管线（探索→固化→交付，最常见错误是跳过中间一棒）；转脚本六信号；直接 HTML 前提（能回答从哪来）与升级 App 判据；决策树 + 12 条反模式 + 13 维对照总表 + 全书二十条"
   }
 ]
