@@ -36,6 +36,22 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 - **内容创作轮**（写书 / 写文章）→ 走「主线 B：写书 8 步」
 - 两者都做 → 先数据轮、后内容轮，最后**统一**跑质检 → commit → 验证 → push
 
+## ★ 收尾铁律：完成即推送 GitHub
+
+**每轮工作收尾必须推送，不留待推送积压。**
+
+| 场景 | 是否推送 |
+|---|---|
+| 完成一轮数据迭代 | ✅ 必推 |
+| 写完一本书 / 一篇文章 | ✅ 必推 |
+| 改完 skill / 配置 / 修完 bug（如 frontmatter 500） | ✅ 必推 |
+| 只做了调研、讨论、回答，未改任何文件 | ❌ 无需 |
+
+- 推送**不需要征求用户同意**——它是本 SOP 的收尾步骤，不是可选项。
+- 推完 GitHub Pages 自动部署，站点才算真正更新（只 commit 不 push = 线上没变）。
+- 推送失败要**当场排查**（通常是没绕过沙箱或私钥没加载），**不要留到下一轮**。
+- 每轮结束前用 `git log origin/main..HEAD` 自检：输出为空即已同步。
+
 ## 主线 A：标准数据迭代 9 步
 
 1. **B1 新闻编辑员** — WebSearch 搜集本轮窗口（上次更新日 → 今天）的 AI 新闻，用 `query_keyword_groups` 多角度覆盖（模型发布 / 开源 / 芯片算力 / 融资并购 / 安全政策）。写脚本按 `news-YYYY-MM-DD-N` 生成 id 追加进 `news-feed.json`（数组按时间正序）。**追加前先按已有 id 去重**。
@@ -46,7 +62,7 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 6. **C 质检员** — 跑 `scripts/qa_check.mjs`，确认 JSON 可解析、id 唯一、模型字段齐全、8 榜 rank 连续。**注意区分「本轮新增」与「历史遗留」**（4~6 月旧数据的问题不阻断本轮）。
 7. **D 提交员** — `git add -A && git commit -m "迭代第N轮(YYYY-MM-DD): 新闻X(+n)/模型Y(+m)/8类榜单刷新至MM-DD/进化日志Z(+k)"`。
 8. **验证** — 起 dev server（`npm run dev`，后台），`curl` 首页 / 新闻页 / 模型页 / 新书页，**必须全是 200**。
-9. **push** — 见下方「push 正确姿势」。
+9. **★push（必做，完成即推）** — 见下方「push 正确姿势」。**推完本轮才算结束**，不留待推送积压。
 
 ## 主线 B：写书 / 写文章 8 步
 
@@ -57,7 +73,7 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 5. 更新 `ai-wiki.md`（最后更新 + 本轮区块）。
 6. `git add -A && git commit`。
 7. 起服务，curl 该书第 1 章页 + 书架页确认 200。
-8. push。
+8. **★push（必做，完成即推）** —— 写完即推，本轮才算结束。
 
 ## 两条硬校验（不做会出线上故障）
 
@@ -87,6 +103,7 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 - 私钥无 passphrase，`ssh-add </dev/null` 可直接加载。
 - **HTTPS / GCM 路线在沙箱内不可行**（GCM 需 GUI 登录，报 `User cancelled dialog`），认准 SSH 这一条。
 - 推送前先 `git log origin/main..HEAD` 确认待推送范围；推完 GitHub Pages 自动部署。
+- ★**默认每轮结束即推送，不必问用户要不要推**（用户已明确要求：每次写完都推送 GitHub）。若推送失败，**当场排查**（先确认 Bash 带了 `dangerouslyDisableSandbox: true`、私钥已 `ssh-add`），不要留积压。
 - 封装版：`bash .workbuddy/skills/signal-iteration/scripts/push.sh`
 
 ## 坑清单（踩过的）
