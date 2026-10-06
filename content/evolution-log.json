@@ -2841,5 +2841,32 @@
     "emoji": "📚",
     "title": "展开 vLLM 参数章节：《Iceberg+RayData+MLflow+vLLM 全书》第5章拆为（上）（下）深度版",
     "detail": "响应用户\"vLLM 参数优化还是没展开\"：把原本仅 158 行的参数清单式第5章，扩写为深度展开两章。第5章(上)「显存、并发与调度核心参数」：调优方法论（先量后改/一次一个）、gpu_memory_utilization 显存总闸门、max_model_len 隐性杀手（多模态视觉 token 计算与反向拖慢吞吐）、max_num_seqs 并发槽位、max_num_batched_tokens 离线最大杠杆（8192→16384+）、enable_chunked_prefill 消除队头阻塞、调度抢占参数、block_size/swap_space/cpu_offload/kv_cache_dtype，并给出★显存三角依赖模型与调优顺序。第5a章(下)「多模态、量化、投机解码、并行与调优实战」：视觉 token 与 limit_mm_per_prompt/encoder caching/动态分辨率取舍、量化（权重+KV）与质量 A/B 铁律、投机解码为何离线该关（compute-bound 净损失）、TP/PP/EP 与 distributed_executor_backend 跨节点 ray、num_gpus 与 TP×PP 一致性、Prefix Caching 与重排序（1.1–1.44×）、采样参数与可复现三要素、参数组合配方表、八步调优 SOP、压测模板、★症状→参数排障表"
+  },
+  {
+    "id": "evo-20261006-news",
+    "date": "2026-10-06",
+    "agent": "研究员→编辑→审校员",
+    "type": "news",
+    "emoji": "📰",
+    "title": "迭代第66轮，新增 23 条新闻（09-21 至 10-06）",
+    "detail": "Gemini 4 Argon 登顶 Text Arena · 小米开源万亿参数 MiMo-V2.6 系列 · Qwen4 训练中将扩至 5—10T · 阿里真武 V900 芯片（50万卡集群）· 清华 Puro-2B（$4400 训练成本）/ TeleOCR 登顶 · 海光 DCU Day0 适配旗舰 · 紫东太初开源 ZDTaichu5.0-9B + 数据管线 · 华为开源 openPangu-2.0 训练管线 · 国产开源走向\"开放全流程\" · IQuest-Q1 / 书生·明决 · DeepSeek 开源昇腾算子库（373 GB/s）· Ling 3.1 Flash · Cloudflare Clef 决策模型 · Volantis 光子 AI 融资 · Aleph Alpha Kolibri 主权模型 · Reflection AI Beam（501B，Nvidia）· OpenAI Dots + Microsoft Autopilot · 自主恶意软件 CLOSEDQUORUM · FTC 调查 + 白宫 AI 主管（AI czar）· Cognition ARR 破 10 亿 + Anthropic IPO 传 2 万亿 · Z.ai GLM-5.3（Anthropic 称最强网络能力开源模型）· OpenAI 因安全取消 GPT-6.1 Astra"
+  },
+  {
+    "id": "evo-20261006-models",
+    "date": "2026-10-06",
+    "agent": "模型架构师",
+    "type": "model",
+    "emoji": "🧠",
+    "title": "迭代第66轮，新增 7 个模型（126→133）",
+    "detail": "Gemini 4 Argon（09-30，Text Arena 第一）· MiMo-V2.6-Pro-RL（小米，1.02T MoE，MIT）· GLM-5.3（Z.ai，744B 开源）· Beam（Reflection AI，501B/23B 激活）· Kolibri（Aleph Alpha，781亿，主权）· IQuest-Q1（至知创新，320B MoE）· Clef（Cloudflare，决策模型）"
+  },
+  {
+    "id": "evo-20261006-bench",
+    "date": "2026-10-06",
+    "agent": "评测分析师",
+    "type": "benchmark",
+    "emoji": "📊",
+    "title": "8 类排行榜日期刷新至 10-06，Gemini 4 Argon 进入 overall/coding 两榜",
+    "detail": "8 类榜日期统一刷新至 2026-10-06；Gemini 4 Argon 以 LMArena Text Arena 1525 分登顶的表现置顶进入 overall / coding 两榜，原条目 rank 已重排。注：分数采用 LMArena Text Arena 公开分值（与站内 AA Intelligence Index 口径不同，仅作跨榜参考）"
   }
 ]

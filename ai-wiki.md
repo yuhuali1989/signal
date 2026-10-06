@@ -621,9 +621,17 @@ D 发布（git add/commit/push，--publish 时执行）
 
 ---
 
-*最后更新：2026-09-18*
+*最后更新：2026-10-06*
 
-**本次主要更新内容（2026-09-18 · 书籍与文章更新）**：
+**本次主要更新内容（2026-10-06 · 第 66 轮迭代）**：
+- 📡 **迭代第 66 轮**（覆盖 09-21 → 10-06）：
+  - 声浪 **+23 条**（488→511 条）
+  - 模型 **126→132**：新增 Gemini 4 Argon / MiMo-V2.6-Pro-RL / Beam / Kolibri / IQuest-Q1 / Clef；GLM-5.3 已于 08-14 收录，本轮仅补充 Anthropic 评估（称其为迄今最强网络能力开源权重模型）
+  - 8 类排行榜日期刷新至 **10-06**，Gemini 4 Argon 进入 **overall / coding** 两榜（LMArena Text Arena 1525 分）
+  - 进化日志 **352→355 条**
+- 🔭 **本轮焦点**：Gemini 4 Argon 登顶 Text Arena · 国产开源走向「开放全流程」（华为 openPangu 训练管线 / 紫东太初数据管线 / DeepSeek 昇腾算子库 373 GB/s）· 阿里真武 V900 与海光 Day0 适配 · **OpenAI 因安全取消 GPT-6.1 Astra 发布** · 自主恶意软件 CLOSEDQUORUM 与 FTC 调查、白宫设 AI 主管 · Cognition ARR 破 10 亿
+
+**历史更新（2026-09-18 · 书籍与文章更新）**：
 - 📚 **书籍更新**：《Ray+vLLM 参数优化深度全书》第 10 章新增 **10.5.6 场景 6：离线多模态 caption 批量推理（Ray Data + vLLM actor）**——两种范式对比、两层参数表、黄金约束 `batch_size × max_concurrent_batches ≥ max_num_seqs`、多模态三坑、重排序收益（1.1–1.44×）、效果参考与完整配置模板（636→771 行）
 - ✍️ **文章更新**：《多模态数据管道实战》⑤ 重标注章节新增 **5.1 节**：Ray Data + vLLM actor 离线 caption 推理优化（234→366 行）
 - 📚 **新建全书**：《Iceberg + Ray Data + MLflow + vLLM 离线多模态处理优化全书》（**全 8 章，1372 行**）——针对「Iceberg 源表（OSS 路径列）→ Ray Data 读表调度 → MLflow PyFunc 模型（内含 OSS 拉取/解码预处理 + vLLM 离线推理）→ 写回 Iceberg 目标表」端到端生产场景的优化全书：源表读取与增量读 · OSS 解码瓶颈与视频抽帧 · PyFunc 封装（引擎只在 load_context 初始化 + Registry 别名）· vLLM 三板斧与多模态专属参数 · Ray Data 粒度与容错 · 写回幂等与小文件治理 · 可观测血缘与上线 Checklist

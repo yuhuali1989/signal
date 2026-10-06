@@ -6,10 +6,19 @@
     "category": "coding",
     "categoryName": "编码能力",
     "categoryIcon": "💻",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
+        "name": "Gemini 4 Argon",
+        "provider": "Google DeepMind",
+        "score": 1525,
+        "change": "🆕",
+        "benchmark": "LMArena Text Arena",
+        "sweBenchNote": "1525 分登顶 Text Arena；WebDev 1679（第8）"
+      },
+      {
+        "rank": 2,
         "name": "GPT-6 Astra",
         "provider": "OpenAI",
         "score": 68,
@@ -18,7 +27,7 @@
         "sweBenchNote": "100万上下文 · $10/$50 每M token"
       },
       {
-        "rank": 2,
+        "rank": 3,
         "name": "DeepSeek-V4-Pro-0813",
         "provider": "DeepSeek",
         "score": 96.4,
@@ -27,7 +36,7 @@
         "sweBenchNote": "开源模型首次登顶SWE-bench Verified"
       },
       {
-        "rank": 3,
+        "rank": 4,
         "name": "Claude Opus 5",
         "provider": "Anthropic",
         "score": 96,
@@ -36,7 +45,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 4,
+        "rank": 5,
         "name": "GLM-5.3-Ultra",
         "provider": "智谱",
         "score": 95.8,
@@ -45,7 +54,7 @@
         "sweBenchNote": "混合注意力架构编码榜第二"
       },
       {
-        "rank": 5,
+        "rank": 6,
         "name": "Grok 4.6",
         "provider": "xAI",
         "score": 95.6,
@@ -54,7 +63,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 6,
+        "rank": 7,
         "name": "Claude Mythos 5",
         "provider": "Anthropic",
         "score": 95.5,
@@ -63,7 +72,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 7,
+        "rank": 8,
         "name": "Kimi K3",
         "provider": "月之暗面",
         "score": 93.4,
@@ -72,7 +81,7 @@
         "sweBenchNote": "开源第二"
       },
       {
-        "rank": 8,
+        "rank": 9,
         "name": "DeepSeek-V4-Flash-0731",
         "provider": "DeepSeek",
         "score": 88.8,
@@ -81,7 +90,7 @@
         "sweBenchNote": "性价比之王"
       },
       {
-        "rank": 9,
+        "rank": 10,
         "name": "Grok 4.5",
         "provider": "xAI",
         "score": 86.6,
@@ -90,7 +99,7 @@
         "sweBenchNote": "SWE-bench Verified"
       },
       {
-        "rank": 10,
+        "rank": 11,
         "name": "Qwen3.8 Max",
         "provider": "阿里",
         "score": 85.6,
@@ -99,7 +108,7 @@
         "sweBenchNote": "SWE-bench Pro开源第一(67.7)"
       },
       {
-        "rank": 11,
+        "rank": 12,
         "name": "Muse Spark 1.1",
         "provider": "Meta",
         "score": 82,
@@ -116,7 +125,7 @@
     "category": "reasoning",
     "categoryName": "推理能力",
     "categoryIcon": "🧠",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
@@ -207,10 +216,19 @@
     "category": "overall",
     "categoryName": "综合智能",
     "categoryIcon": "🏆",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
+        "name": "Gemini 4 Argon",
+        "provider": "Google DeepMind",
+        "score": 1525,
+        "change": "🆕",
+        "benchmark": "LMArena Text Arena",
+        "sweBenchNote": "1525 分登顶 Text Arena；WebDev 1679（第8）"
+      },
+      {
+        "rank": 2,
         "name": "GPT-6 Astra",
         "provider": "OpenAI",
         "score": 68,
@@ -219,7 +237,7 @@
         "sweBenchNote": "100万上下文 · $10/$50 每M token"
       },
       {
-        "rank": 2,
+        "rank": 3,
         "name": "GLM-5.3-Ultra",
         "provider": "智谱",
         "score": 63.4,
@@ -228,7 +246,7 @@
         "sweBenchNote": "国产芯片全参训练首次登顶AA榜"
       },
       {
-        "rank": 3,
+        "rank": 4,
         "name": "Claude Opus 5",
         "provider": "Anthropic",
         "score": 63.1,
@@ -236,7 +254,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 4,
+        "rank": 5,
         "name": "Claude Fable 5",
         "provider": "Anthropic",
         "score": 62.1,
@@ -244,7 +262,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 5,
+        "rank": 6,
         "name": "Grok 4.6",
         "provider": "xAI",
         "score": 61,
@@ -252,7 +270,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 6,
+        "rank": 7,
         "name": "GPT-5.6 Sol",
         "provider": "OpenAI",
         "score": 60.9,
@@ -260,7 +278,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 7,
+        "rank": 8,
         "name": "Kimi K3",
         "provider": "月之暗面",
         "score": 59.7,
@@ -268,7 +286,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 8,
+        "rank": 9,
         "name": "Qwen3.8-Max",
         "provider": "阿里",
         "score": 58.1,
@@ -276,7 +294,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 9,
+        "rank": 10,
         "name": "Claude Opus 4.8",
         "provider": "Anthropic",
         "score": 57.3,
@@ -284,7 +302,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 10,
+        "rank": 11,
         "name": "GLM-5.3-Flash",
         "provider": "智谱",
         "score": 57,
@@ -292,7 +310,7 @@
         "benchmark": "AA Intelligence Index"
       },
       {
-        "rank": 11,
+        "rank": 12,
         "name": "Muse Spark 1.2",
         "provider": "Meta",
         "score": 56.8,
@@ -308,7 +326,7 @@
     "category": "agent",
     "categoryName": "Agent能力",
     "categoryIcon": "🤖",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
@@ -411,7 +429,7 @@
     "category": "cost",
     "categoryName": "性价比",
     "categoryIcon": "💰",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
@@ -502,7 +520,7 @@
     "category": "autonomous-driving",
     "categoryName": "自动驾驶",
     "categoryIcon": "🚗",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
@@ -594,7 +612,7 @@
     "category": "video",
     "categoryName": "视频生成",
     "categoryIcon": "🎬",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
@@ -671,7 +689,7 @@
     "category": "3d",
     "categoryName": "3D 生成",
     "categoryIcon": "🧊",
-    "date": "2026-09-11",
+    "date": "2026-10-06",
     "models": [
       {
         "rank": 1,
