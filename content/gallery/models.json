@@ -5132,7 +5132,7 @@
       "编程",
       "Text Arena"
     ],
-    "keyInnovation": "主打真实场景编程，百万 token 上下文，定价 $2/$10 每百万 token；在 LMArena 以 1525 分登顶 Text Arena 第一，WebDev 榜第 8（1679 分），在编码、指令遵循与多语言创意写作上均列第一，重塑了 Text Arena 的 Pareto 前沿。",
+    "keyInnovation": "主打真实场景编程，百万 token 上下文，定价 $2/$10 每百万 token；在 LMArena 以 1525 分登顶 Text Arena 第一，WebDev 榜第 8（1679 分），在编码、指令遵循与多语言创意写作上均列第一，重塑了 Text Arena 的 Pareto 前沿。 ★发布策略值得注意：采取**受控的分阶段上线**，暂不对普通用户开放，优先面向网络安全领域经筛选的专业人员；重点强化长周期任务推理、软件工程与企业知识能力。",
     "highlights": [
       "Text Arena 第一（1525 分）",
       "WebDev 榜第 8（1679）",
@@ -5322,5 +5322,111 @@
       "决策模型新品类"
     ],
     "description": "Clef（Cloudflare，2026-10-01）是 Cloudflare 首个自研开放决策模型，直接返回带概率的类型化答案而非生成文本，仅对输入计费，中位决策延迟 209ms。"
+  },
+  {
+    "id": "mai-thinking-1-2026",
+    "name": "MAI-Thinking-1",
+    "org": "Microsoft",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": false,
+    "params": "35B 激活（MoE）",
+    "date": "2026-10-07",
+    "context": "256K",
+    "attention": "Interleaved Attention",
+    "factSheet": {
+      "params": "35B 激活参数（MoE）",
+      "architecture": "Mixture of Experts，宣称从零训练、未使用蒸馏",
+      "attention": "Interleaved Attention",
+      "context": "256K",
+      "pricing": "$2 / 每百万输入 token，$8 / 每百万输出 token，$0.20 cached input",
+      "latency": "未公开",
+      "license": "闭源（通过 GitHub Copilot / VS Code / M365 分发）"
+    },
+    "tags": [
+      "Microsoft",
+      "推理",
+      "MoE",
+      "端侧"
+    ],
+    "keyInnovation": "微软 MAI 家族旗舰，主打推理能力；官方强调**从零训练、未使用模型蒸馏**（针对数据溯源的差异化叙事）。★定价 $2/$8（cached $0.20）击穿了 GPT-6.1 Sol 与 Gemini 4 Argon 的 $2/$10 价格底线，直接冲击「推理税」。10 月 7 日起随硬件转向一起走向端侧执行。",
+    "highlights": [
+      "定价击穿 $2/$10 底线（cached $0.20）",
+      "宣称从零训练、无蒸馏（数据可溯源）",
+      "256K 上下文，35B 激活参数 MoE",
+      "配套 Maia 200 芯片与 MXC OS 级隔离执行层"
+    ],
+    "description": "微软 MAI 模型家族的推理旗舰，2026 年 6 月 Build 2026 随七款 MAI 模型一同发布，10 月 7 日活动上宣布随 Surface Laptop Ultra（NVIDIA RTX Spark）走向本地执行。性能基准均为厂商自报、未经第三方审计。"
+  },
+  {
+    "id": "mistral-large-4-2026",
+    "name": "Mistral Large 4（Le Chonk）",
+    "org": "Mistral AI",
+    "type": "moe",
+    "typeLabel": "MoE 稀疏",
+    "typeIcon": "🔀",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-10-07",
+    "context": "未公开",
+    "attention": "未公开",
+    "factSheet": {
+      "params": "未公开",
+      "architecture": "未公开（Large 系列延续 MoE）",
+      "attention": "未公开",
+      "context": "未公开",
+      "pricing": "未公开",
+      "latency": "未公开",
+      "license": "未公开"
+    },
+    "tags": [
+      "Mistral",
+      "推理",
+      "多语言"
+    ],
+    "keyInnovation": "Mistral 新一代旗舰，代号 Le Chonk，明确聚焦**推理能力与多语言支持**。截至发布时性能与定位细节尚未完整公布，待官方文档与第三方评测补齐。",
+    "highlights": [
+      "Large 系列新一代旗舰",
+      "主打推理与多语言",
+      "代号 Le Chonk"
+    ],
+    "description": "Mistral AI 于 2026 年 10 月 7 日发布的新一代大语言模型，为 Mistral Large 3 的后继。"
+  },
+  {
+    "id": "embeddinggemma-2-2026",
+    "name": "EmbeddingGemma 2",
+    "org": "Google",
+    "type": "small",
+    "typeLabel": "小模型",
+    "typeIcon": "🔬",
+    "open": true,
+    "params": "740M",
+    "date": "2026-10-07",
+    "context": "嵌入模型",
+    "attention": "Full Attention",
+    "factSheet": {
+      "params": "740M",
+      "architecture": "嵌入模型（多模态检索）",
+      "attention": "Full Attention",
+      "context": "嵌入/检索场景",
+      "pricing": "免费（Apache 2.0）",
+      "latency": "低（可在轻量环境运行）",
+      "license": "Apache 2.0（商用限制少）"
+    },
+    "tags": [
+      "嵌入模型",
+      "开源",
+      "多模态检索",
+      "端侧"
+    ],
+    "keyInnovation": "★仅 740M 参数却在各项基准上超越一些参数量两倍以上的专用模型。价值在于**轻量**：可跑在更轻量的环境里，为应用添加多模态搜索（如用语音备忘录在视频中定位片段），与 Gemma 4 搭配可实现**数据不出设备的端侧 RAG**。Apache 2.0 授权，商用限制很少。",
+    "highlights": [
+      "740M 小参数、性能超两倍规模专用模型",
+      "Apache 2.0，商用限制少",
+      "多模态搜索（语音 → 视频片段定位）",
+      "与 Gemma 4 搭配做端侧私密 RAG"
+    ],
+    "description": "Google 于 2026 年 10 月 7 日发布的开源嵌入模型，权重可在 HuggingFace 与 Kaggle 获取。"
   }
 ]

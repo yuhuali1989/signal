@@ -1490,5 +1490,39 @@
     "hasReview": false,
     "date": "2026-10",
     "summary": "缩小扩散 Transformer 中稀疏注意力与稠密注意力的差距。对视频/图像生成类模型的推理成本是直接利好——稀疏化长期以来的质量损失正在被逐步补齐。"
+  },
+  {
+    "id": "va-bench-spatial-execution-gap-2026",
+    "title": "VA-Bench: Measuring the Execution Gap in Multimodal Spatial Intelligence",
+    "authors": "机器之心报道 / VA-Bench Team",
+    "venue": "Benchmark",
+    "category": "autonomous-driving",
+    "importance": 5,
+    "tags": [
+      "多模态",
+      "空间智能",
+      "评测",
+      "具身执行"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "对 12 个主流多模态模型测试「从看懂空间到实际执行」的差距。★结果极具警示性：表现最好的模型在**目标识别与定位（TL）上可达 100%**，但在**操作语义**层面——该移动多少毫米、当前视角是否充足、抓空后如何调整——仍存在明显断层。★结论：空间智能的「理解」与「执行」之间尚有真实距离，感知准确率接近满分**不代表能完成物理操作**。这是「实验室 95% → 部署 60%」在感知—执行链路上的量化映射。"
+  },
+  {
+    "id": "rsi-recursive-self-improvement-first-paper-2026",
+    "title": "First Paper on Recursive Self-Improvement (RSI): Will AI Bootstrapping Trigger an Intelligence Explosion?",
+    "authors": "Geoffrey Hinton, Yoshua Bengio, Andrew Barto, Jakub Pachocki, et al.（22 位学者）",
+    "venue": "arXiv",
+    "category": "alignment",
+    "importance": 5,
+    "tags": [
+      "RSI",
+      "递归自我改进",
+      "AI 安全",
+      "智能爆炸"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "Hinton 领衔 22 位学者（含 Bengio、图灵奖得主 Barto、OpenAI 首席科学家 Pachocki）的首篇 RSI 论文，探讨 AI 参与研发下一代 AI 是否会触发智能爆炸。★关键数据：引用 Anthropic 内部数据，**AI 生成并经审核的代码占比已从 2025 年 1 月的个位数升至 2026 年 5 月的 80% 以上**；论文估算若 AI 研发实现全自动化，技术进展速度可能在约 **1.5 年内提升十倍**。★但作者强调当前证据**尚不足以证明智能爆炸已发生**——算力、数据、实验时间与科研收益递减仍是主要制约因素。"
   }
 ]
