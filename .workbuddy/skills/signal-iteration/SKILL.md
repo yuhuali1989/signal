@@ -105,6 +105,8 @@ console.log('进化日志最新:', latest(e));
 ## 主线 A：标准数据迭代 10 步
 
 1. **B1 新闻编辑员** — WebSearch 搜集本轮窗口（上次更新日 → 今天）的 AI 新闻，用 `query_keyword_groups` 多角度覆盖（模型发布 / 开源 / 芯片算力 / 融资并购 / 安全政策）。写脚本按 `news-YYYY-MM-DD-N` 生成 id 追加进 `news-feed.json`（数组按时间正序）。**追加前先按已有 id 去重**。
+   - ★**先查该日期已有的最大序号，再从 +1 开始**：同一天若已做过多轮迭代，`news-2026-10-06-1` 这类编号会撞车，去重逻辑会把**新内容静默跳过**（本轮真实踩过：6 条内容因此丢失，只能换号重加）。脚本应**自动探测下一个可用序号**，不要硬编码 `-1`。
+   - ★**加完必须回查复核**：按关键词检索新条目是否真的落库，不要只看脚本打印的「跳过」就收工。
 2. **B3 模型编辑员** — 新模型写进 `models.json`（16 字段，见 `references/data-schema.md`）。**先查 id 是否已存在**：若已存在则校正其 `date` 或增强 `keyInnovation` / `highlights`，**不要重复新增**。
 3. **★B4 论文编辑员** — WebSearch（**topic: academic**）搜集本轮窗口的重要论文，方向对齐站点聚焦（**大模型 / VLA / 自动驾驶**），兼顾架构 / 推理优化 / Agent。追加进 `content/papers/papers-index.json`（10 字段，见 `references/data-schema.md`）。
    - **`category` 必须用 `categories.json` 里存在的 id**：`arch` / `alignment` / `inference` / `data` / `autonomous-driving` / `agent` / `hf-picks`（★历史遗留的 `ad`、`reasoning` 不在分类表里，**新增时不要用**）
@@ -171,6 +173,9 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 | 榜单 rank 不连续 | 重排后必须 1..N |
 | 误以为有 `github` remote | 只有 `origin` |
 | 质检报历史遗留问题 | 用起始日期参数区分，不阻断本轮 |
+| ★新闻 id 序号撞车 | 同一天多轮迭代时 `news-YYYY-MM-DD-N` 会撞号 → **新内容被去重静默跳过**。脚本自动探测下一个可用序号，加完按关键词回查是否落库 |
+| 论文 `category` 用非法值 | 必须用 `categories.json` 里的 id；历史遗留的 `ad` / `reasoning` 不要用 |
+| 巡检脚本遇 `Date` 类型日期 | YAML 日期被 gray-matter 解析成 `Date` 对象，直接 `.slice` 会崩 → 先 `String(d)` 再正则归一化为 `YYYY-MM-DD` |
 
 ## 资源
 - `scripts/qa_check.mjs` — 数据质检（JSON / id 唯一 / 字段完整 / rank 连续）
