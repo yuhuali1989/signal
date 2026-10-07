@@ -2,7 +2,7 @@
 title: "GPU 云经济学 2026：CoreWeave、超算巨头与万亿美元基础设施竞赛"
 description: "深度解析 2026 年 GPU 云市场格局，CoreWeave 如何拿下 Meta $350 亿合同，以及超大规模算力基础设施背后的经济学逻辑。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 02:20"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "GPU 云"

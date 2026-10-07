@@ -2,7 +2,7 @@
 title: "Genie 3 世界模型深度解读：实时可交互 SOTA 与数据管道全解析"
 description: "深度解析 Google DeepMind Genie 3（720p@24fps 实时交互、数分钟一致性、可提示世界事件、互联网视频自监督），重点拆解其数据管道、实时自回归生成的工程突破、与视频生成/Genie 2 的范式差异，以及作为具身智能 RL 环境的价值。"
 date: "2026-07-22"
-updatedAt: "2026-07-22 23:00"
+updatedAt: "2026-07-22"
 tags:
   - "世界模型"
   - "Genie 3"

@@ -2,7 +2,7 @@
 title: "2026 世界模型元年：从 Genie 3 到 UniSim 2，具身 AI 训练的范式转移"
 description: "2026 年世界模型从学术概念走向商业化落地。Genie 3 实现单图实时 3D 世界生成，UniSim 2 统一物理仿真，具身 AI 训练数据成本降低 100 倍。"
 date: "2026-04-13"
-updatedAt: "2026-04-13 11:00"
+updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
 tags:
   - "世界模型"

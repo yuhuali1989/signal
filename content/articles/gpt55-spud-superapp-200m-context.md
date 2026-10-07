@@ -2,7 +2,7 @@
 title: "GPT-5.5 Spud：200 万上下文 + 三合一超级应用的技术架构深度拆解"
 description: "【前瞻分析】OpenAI GPT-5.5 Spud 技术架构推测：原生 200 万 token 上下文、全模态融合、ChatGPT/Codex/Atlas 三合一。本文深度拆解其推测中的技术架构、推理优化和产品策略。"
 date: "2026-04-13"
-updatedAt: "2026-04-13 11:00"
+updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
 tags:
   - "LLM"

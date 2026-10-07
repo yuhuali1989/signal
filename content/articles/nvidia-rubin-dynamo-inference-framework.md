@@ -2,7 +2,7 @@
 title: "NVIDIA Rubin 架构与 Dynamo 推理框架：下一代 AI 推理基础设施"
 description: "深度解析 NVIDIA GTC 2026 发布的 Rubin Ultra GPU 路线图和 Dynamo 开源推理框架，从硬件到软件全栈剖析下一代 AI 推理基础设施。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 02:20"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "NVIDIA"

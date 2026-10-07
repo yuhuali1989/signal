@@ -3021,5 +3021,41 @@
     "emoji": "✍️",
     "title": "新增文章：《决策模型成新品类：为什么「让大模型做裁决」正在独立出来》",
     "detail": "补文章模块（巡检显示落后 1 天）。内容：从 OpenAI Decisions API 公测 / Musubi 开源 PolicyLM-1.7B / Cloudflare Clef / AWS Strands Decider 同期出手切入，讲清**决策模型与生成模型的本质区别**（有界结构化输出 + 校准置信度 + 毫秒级固定延迟 + 高可预测性），它为何在 2026 年成为独立赛道（成本 10–100 倍差、延迟、可预测性三重压力），四类典型用法（路由 / 打标评分 / GUI 选按钮 / 风险标记，另补缓存判定与兜底判断），玩家定位表，工程落地建议（★**在架构里预留决策位、用置信度分流、独立可观测、与生成模型互备**），以及风险边界（置信度校准、责任边界、供应商锁定）。★核心判断：**把决策模型当「可观测、可校准、可降级」的组件，而不是更便宜的 LLM**。"
+  },
+  {
+    "id": "evo-20261007-tidy-articles",
+    "date": "2026-10-07",
+    "agent": "系统编辑员",
+    "type": "article",
+    "emoji": "🧹",
+    "title": "文章库整理（第 70 轮）：日期标准化 62 篇，删除重复短版 4 篇（146→142）",
+    "detail": "修复 7 篇 YAML 无引号导致日期被解析成 Date 对象、55 篇 updatedAt 带时分的问题，全部归一为 YYYY-MM-DD；删除 4 篇与扩写版完全重复的初版（LLM 推理框架对决 / MoE 架构革命 / RAG 2.0 / RLHF 与 DPO-GRPO），保留内容更完整的扩写版。"
+  },
+  {
+    "id": "evo-20261007-tidy-papers",
+    "date": "2026-10-07",
+    "agent": "系统编辑员",
+    "type": "papers",
+    "emoji": "🧹",
+    "title": "论文库整理（第 70 轮）：category 归一 5 条，补 date 58 条，按时间重排",
+    "detail": "修复非法 category（ad→autonomous-driving 4 条、reasoning→arch 1 条）；从 arxivUrl 的 arXiv ID（YYMM）自动推断发布时间，为 58 篇经典论文补上 date；全库按发布时间升序重排，无日期的经典论文置顶。"
+  },
+  {
+    "id": "evo-20261007-tidy-models",
+    "date": "2026-10-07",
+    "agent": "系统编辑员",
+    "type": "models",
+    "emoji": "🧹",
+    "title": "模型库整理（第 70 轮）：补齐缺字段 21 处，全库按发布时间升序重排",
+    "detail": "kimi-k26 补 date=2026-05-19 与 type=moe（原为 undefined）；按 type 补齐 typeLabel/typeIcon 共 21 条（含 3d 类型新增标签「3D 生成模型」）；★全库 137 个模型改为按发布时间升序排列（2022-03 BEVFormer → 2026-10 Clef），页面直接按时间线展示。"
+  },
+  {
+    "id": "evo-20261007-skill-tidy",
+    "date": "2026-10-07",
+    "agent": "系统编辑员",
+    "type": "skill",
+    "emoji": "🛠️",
+    "title": "skill 补充：内容整理规范化（日期三态、typeLabel 双语义、重复文章处理）",
+    "detail": "记录三类易错点：① YAML 日期三种形态（字符串 / 带时分 / 无引号被解析成 Date 对象）必须统一为带引号的 YYYY-MM-DD；② 模型 typeLabel 是「类型名」与「个性化定位语」双语义混用，不可按 type 强行统一；③ 处理重复文章前须比对正文规模，保留扩写版。"
   }
 ]

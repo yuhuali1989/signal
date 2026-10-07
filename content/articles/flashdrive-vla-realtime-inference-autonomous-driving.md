@@ -2,7 +2,7 @@
 title: "FlashDrive：将 Reasoning VLA 推理延迟从 2s 压缩到 45ms，打通量产最后一公里"
 description: "深度解析 FlashDrive 的三大核心技术：Speculative Reasoning、Action Token Compression 和 Latent Prefill Pipeline，首次实现 Reasoning VLA 的实时车规部署。"
 date: "2026-04-18"
-updatedAt: "2026-04-18 00:19"
+updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "自动驾驶"

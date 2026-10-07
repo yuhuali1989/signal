@@ -2,7 +2,7 @@
 title: "语音合成新范式：从 TTS 到无分词器端到端模型"
 description: "深度解析 VoxCPM2 的技术突破，以及语音 AI 从传统 TTS 到端到端神经语音合成的完整演进路线"
 date: "2026-04-11"
-updatedAt: "2026-04-11 19:54"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "多模态"

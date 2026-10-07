@@ -2,7 +2,7 @@
 title: "Agent 运行时安全治理：从沙箱到审计的全链路实践"
 description: "微软开源 Agent Governance Toolkit 标志着 Agent 安全从'事后补救'走向'运行时治理'。本文系统剖析 Agent 安全威胁模型、防御架构和生产实践。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 08:30"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI Agent"

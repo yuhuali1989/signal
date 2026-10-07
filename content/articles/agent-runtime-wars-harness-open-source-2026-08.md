@@ -1,7 +1,7 @@
 ---
 title: "Agent 运行时战争：当 OpenAI 和 DeepSeek 同时开源 Harness"
 slug: agent-runtime-wars-harness-open-source-2026-08
-date: 2026-08-23
+date: "2026-08-23"
 author: signal
 category: 深度分析
 tags: ["Harness", "Codex", "DeepSeek", "Agent", "运行时", "Qwen-UI-Agent", "GEN-1.5", "开源"]

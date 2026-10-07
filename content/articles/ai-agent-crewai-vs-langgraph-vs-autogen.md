@@ -2,7 +2,7 @@
 title: "AI Agent 框架大战：CrewAI vs LangGraph vs AutoGen"
 description: "三大主流 AI Agent 框架的技术对比、适用场景与选型指南"
 date: "2026-04-11"
-updatedAt: "2026-04-11 20:24"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "Agent"

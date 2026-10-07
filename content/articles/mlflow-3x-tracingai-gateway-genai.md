@@ -2,7 +2,7 @@
 title: "MLflow 3.x 社区进展：Tracing、AI Gateway 与 GenAI 评估新特性"
 description: "追踪 MLflow 最新 Release：LLM Tracing 增强、AI Gateway 多模型路由、GenAI 评估框架、Unity Catalog 集成进展"
 date: "2026-04-30"
-updatedAt: "2026-04-30 20:19"
+updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
   - "MLflow"

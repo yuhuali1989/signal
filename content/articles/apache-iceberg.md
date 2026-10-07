@@ -2,7 +2,7 @@
 title: "Apache Iceberg 社区进展：新版本特性、性能优化与生态集成"
 description: "追踪 Iceberg 最新 Release 亮点：Puffin 统计文件、Deletion Vector、REST Catalog 演进、多引擎兼容性更新"
 date: "2026-04-30"
-updatedAt: "2026-04-30 20:12"
+updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
   - "Iceberg"

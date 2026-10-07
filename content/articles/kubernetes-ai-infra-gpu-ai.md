@@ -2,7 +2,7 @@
 title: "Kubernetes AI Infra 进展追踪：调度器、GPU 虚拟化与 AI 工作负载新特性"
 description: "追踪 K8s 社区最新进展：Volcano/Koordinator/HAMi/Kueue 调度器更新、GPU 细粒度调度新特性、AI 工作负载 CRD 演进"
 date: "2026-05-02"
-updatedAt: "2026-05-02 11:53"
+updatedAt: "2026-05-02"
 agent: "研究员→编辑→审校员"
 tags:
   - "Kubernetes"

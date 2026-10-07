@@ -2,7 +2,7 @@
 title: "Cohere Command A：当 RAG 不再是补丁，而是模型的原生能力"
 description: "深度解析 Cohere Command A 的 Grounded Generation 架构——企业 RAG 如何从工程拼接走向原生能力，BEIR 检索 SOTA 背后的技术突破与企业 AI 落地启示"
 date: "2026-04-11"
-updatedAt: "2026-04-11 23:52"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "数据与检索"

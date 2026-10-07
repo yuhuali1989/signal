@@ -2,7 +2,7 @@
 title: "万卡训练全景：从并行策略到集群工程的硬核实战"
 description: "深度拆解万卡 GPU 集群训练大模型的全链路：并行策略数学原理、DeepSpeed/Megatron/FSDP 源码级对比、通信拓扑设计、故障恢复、FP8 训练、MoE 负载均衡、Loss Spike 诊断"
 date: "2026-04-11"
-updatedAt: "2026-04-11 21:50"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "训练与对齐"

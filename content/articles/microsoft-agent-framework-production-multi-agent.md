@@ -2,7 +2,7 @@
 title: "微软 Agent Framework 1.0 解析：多智能体编排的生产化之路"
 description: "微软发布 Agent Framework 1.0 正式版，支持 Python/.NET 双语言的多智能体编排框架深度解析"
 date: "2026-04-11"
-updatedAt: "2026-04-11 21:26"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "Agent"

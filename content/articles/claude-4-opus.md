@@ -2,7 +2,7 @@
 title: "Claude 4 Opus 深度评测：代码能力、推理与长文本表现"
 description: "Claude 4 Opus 全方位评测，覆盖代码生成、数学推理、长文本处理等核心能力"
 date: "2026-04-11"
-updatedAt: "2026-04-11 15:46"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑"
 tags:
   - "评测"

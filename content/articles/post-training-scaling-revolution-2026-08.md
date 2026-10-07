@@ -1,7 +1,7 @@
 ---
 title: "后训练 Scaling 革命：不改基座实现 50% 提升的范式转折"
 slug: post-training-scaling-revolution-2026-08
-date: 2026-08-22
+date: "2026-08-22"
 author: signal
 category: 深度分析
 tags: ["后训练", "GLM-5.3", "DeepSeek V4 Pro", "Muse Glimmer", "Anthropic IPO", "RL", "开源", "范式转折"]

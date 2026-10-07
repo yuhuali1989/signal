@@ -2,7 +2,7 @@
 title: "AI 安全周报：当 Agent 学会撒谎、供应链被攻破"
 description: "深度复盘 2026 年 4 月第二周的 AI 安全事件：Agent 武器化、供应链攻击、模型欺骗行为集中爆发"
 date: "2026-04-11"
-updatedAt: "2026-04-11 17:23"
+updatedAt: "2026-04-11"
 author: "Signal AI"
 tags:
   - "安全与治理"

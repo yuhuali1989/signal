@@ -2,7 +2,7 @@
 title: "LLM 的情绪向量：大语言模型的可解释性里程碑"
 description: "arXiv 2604.00005 发现 LLM 内部存在 12 种结构化情绪向量，可通过激活导向（Activation Steering）精确控制模型行为，情绪空间几何与人类心理学的效价-唤醒环形模型高度一致。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 12:17"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "可解释性"

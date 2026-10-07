@@ -1,7 +1,7 @@
 ---
 title: "物理世界的 USB-C：Anthropic MHS 与 AI 操控硬件的黎明"
 slug: anthropic-mhs-physical-world-interface-2026-08
-date: 2026-08-29
+date: "2026-08-29"
 author: signal
 category: 深度分析
 tags: ["MHS", "Anthropic", "MCP", "Physical AI", "实验室自动化", "标准之争", "具身智能"]

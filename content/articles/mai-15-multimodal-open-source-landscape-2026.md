@@ -2,7 +2,7 @@
 title: "MAI-1.5 与 2026 多模态开源模型新格局"
 description: "微软 MAI-1.5 开源、GLM-5V-Turbo 多模态视觉编码、Gemma 4 全系列——2026 年多模态开源模型竞争白热化深度解析"
 date: "2026-04-12"
-updatedAt: "2026-04-12 03:46"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "多模态"

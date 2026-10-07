@@ -2,7 +2,7 @@
 title: "课程强化学习：从简到难训练 LLM 推理的新范式"
 description: "深入解析课程强化学习（Curriculum RL）如何通过难度渐进策略大幅提升 LLM 数学与代码推理能力，对比 DeepSeek-R1 的纯 GRPO 方案"
 date: "2026-04-12"
-updatedAt: "2026-04-12 03:46"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "强化学习"

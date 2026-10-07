@@ -1,7 +1,7 @@
 ---
 title: "中国大模型八周五连发：从卷参数到卷落地的范式转折"
 slug: china-ai-five-models-eight-weeks-2026-08
-date: 2026-08-07
+date: "2026-08-07"
 author: signal
 category: 深度分析
 tags: ["中国AI", "Qwen3.8-Max", "Kimi K3", "DeepSeek V4-Flash", "GLM-5.2", "Seedance 2.5", "开源", "MoE", "后训练"]

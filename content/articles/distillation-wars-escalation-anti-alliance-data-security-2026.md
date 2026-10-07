@@ -2,7 +2,7 @@
 title: "蒸馏大战 2.0：反蒸馏联盟、芯片走私与 AI 数据闭环的安全重构"
 description: "OpenAI/Anthropic/Google 组建反蒸馏联盟，Supermicro 联创因走私 25 亿美元 GPU 被捕，AI 数据闭环安全进入新阶段"
 date: "2026-04-18"
-updatedAt: "2026-04-18 11:00"
+updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI安全"

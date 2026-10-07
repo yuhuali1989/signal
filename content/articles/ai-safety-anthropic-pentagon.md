@@ -2,7 +2,7 @@
 title: "AI 安全的十字路口：当 Anthropic 对峙五角大楼"
 description: "从 Claude Mythos 的封闭发布到 Anthropic 被五角大楼拉黑，AI 伦理治理正式进入博弈时代"
 date: "2026-04-11"
-updatedAt: "2026-04-11 16:20"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "安全与治理"

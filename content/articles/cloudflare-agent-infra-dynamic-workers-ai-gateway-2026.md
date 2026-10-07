@@ -2,7 +2,7 @@
 title: "Agent 即基础设施：Cloudflare Agents Week 2026 全面解析"
 description: "Cloudflare 在 Agents Week 2026 发布 12 大类更新，从 Dynamic Workers 到 AI Gateway，重新定义边缘计算为 Agent 原生基础设施"
 date: "2026-04-18"
-updatedAt: "2026-04-18 11:00"
+updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI Infra"

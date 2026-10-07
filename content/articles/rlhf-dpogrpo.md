@@ -2,7 +2,7 @@
 title: "RLHF 的终结？DPO、GRPO 与强化学习新范式"
 description: "从 PPO 到 DPO 到 GRPO，对齐技术的演进链和未来方向"
 date: "2026-05-02"
-updatedAt: "2026-05-02 11:54"
+updatedAt: "2026-05-02"
 agent: "研究员→编辑→审校员"
 tags:
   - "RLHF"

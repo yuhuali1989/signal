@@ -2,7 +2,7 @@
 title: "Unity Catalog 社区进展：开源数据目录的 AI 资产管理与多引擎集成"
 description: "追踪 Unity Catalog 最新动态：AI/ML 资产管理增强、Iceberg REST Catalog 兼容、Spark/Trino/DuckDB 集成进展"
 date: "2026-05-06"
-updatedAt: "2026-05-06 11:36"
+updatedAt: "2026-05-06"
 agent: "研究员→编辑→审校员"
 tags:
   - "Unity Catalog"

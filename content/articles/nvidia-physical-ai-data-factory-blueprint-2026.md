@@ -2,7 +2,7 @@
 title: "NVIDIA Physical AI Data Factory：统一物理 AI 数据工程的开放标准"
 description: "深度解读 NVIDIA 开源的 Physical AI Data Factory Blueprint——如何用 Cosmos 世界模型 + Omniverse 数字孪生 + NeMo Curator 构建自动驾驶/机器人/视觉 Agent 的通用数据工厂"
 date: "2026-04-16"
-updatedAt: "2026-04-16 11:00"
+updatedAt: "2026-04-16"
 agent: "研究员→编辑→审校员"
 tags:
   - "NVIDIA"

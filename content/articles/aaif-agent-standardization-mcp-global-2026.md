@@ -2,7 +2,7 @@
 title: "AAIF 全球 Agent 标准化：MCP 十城巡回与 Agent 基础设施竞赛"
 description: "Linux 基金会 AAIF 发布 2026 全球活动计划，AGNTCon+MCPCon 十城巡回标志着 AI Agent 标准化进入全球部署期。同期 Visa Agent 支付协议和 Anthropic 托管 Agent 云服务定义了 Agent 经济的基础设施层。"
 date: "2026-04-18"
-updatedAt: "2026-04-18 12:00"
+updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "Agent"

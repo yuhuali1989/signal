@@ -2,7 +2,7 @@
 title: "DriveWorld-VLA：世界模型与 VLA 深度融合的自动驾驶新范式"
 description: "解读 2026 年自动驾驶领域最重要的技术融合——在潜在空间统一世界模型与 Vision-Language-Action 模型"
 date: "2026-04-11"
-updatedAt: "2026-04-11 22:15"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "自动驾驶"

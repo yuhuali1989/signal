@@ -2,7 +2,7 @@
 title: "AI Coding 工具对比：Cursor vs Windsurf vs GitHub Copilot"
 description: "四大 AI 编程助手的功能对比、2026 最新实测与选型建议"
 date: "2026-04-11"
-updatedAt: "2026-04-11 20:24"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI 编程"

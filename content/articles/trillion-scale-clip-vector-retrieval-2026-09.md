@@ -1,7 +1,7 @@
 ---
 title: "万亿 CLIP 向量检索：多模态大模型时代，检索不是被参数化了，而是被换了个位置"
 slug: trillion-scale-clip-vector-retrieval-2026-09
-date: 2026-09-03
+date: "2026-09-03"
 author: signal
 category: 深度分析
 tags: ["CLIP", "向量检索", "ANN", "Faiss", "多模态RAG", "数据工程", "SPANN", "DiskANN", "Milvus", "语义缓存", "数据去重"]

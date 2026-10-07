@@ -2,7 +2,7 @@
 title: "开源逆袭：GLM-5.1 如何用 MIT 许可击败 GPT-5.4 和 Claude Opus"
 description: "【前瞻分析】GLM-5.1 与 GPT-5.4 对比推测（两者均为虚构/未经官方确认的模型）：开源大模型追上闭源的技术路径与行业影响分析"
 date: "2026-04-11"
-updatedAt: "2026-04-11 16:20"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "开源生态"

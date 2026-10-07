@@ -2,7 +2,7 @@
 title: "GPT-6 Eve：200 万上下文与超级应用的终局之战"
 description: "【前瞻分析】OpenAI GPT-6 Eve 技术架构推测——200 万 token 上下文、三合一超级应用战略、$20 亿训练成本的背后逻辑，以及对 AI 行业格局的潜在影响"
 date: "2026-04-11"
-updatedAt: "2026-04-11 23:52"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "行业动态"

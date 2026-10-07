@@ -2,7 +2,7 @@
 title: "Cursor $500 亿估值：AI 编程从工具走向平台的分水岭"
 description: "【前瞻分析】Cursor 约 500 亿美元估值融资传闻分析（待官方确认）：AI 编程赛道从辅助工具升级为核心开发平台的趋势解读。本文深度解析 AI IDE 三巨头格局、Tokenmaxxing 隐性成本及开发者效率的悖论。"
 date: "2026-04-18"
-updatedAt: "2026-04-18 12:00"
+updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI编程"

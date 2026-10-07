@@ -1,7 +1,7 @@
 ---
 title: "VLA 的入场券与护城河：谁在大兴土木，谁在租房子住"
 slug: vla-entry-ticket-vs-moat-2026-09
-date: 2026-09-02
+date: "2026-09-02"
 author: signal
 category: 深度分析
 tags: ["VLA", "具身智能", "VLM", "LLM预训练", "特斯拉", "小鹏", "大疆", "数据引擎", "世界模型", "物理AI"]

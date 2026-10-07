@@ -2,7 +2,7 @@
 title: "Claude Opus 4.7 技术拆解：xhigh 推理级别、98.5% 视觉精度与编码 Agent 新基线"
 description: "【前瞻分析】Claude Opus 4.7 技术推测：xhigh 推理级别精细控制推理深度、XBOW 视觉精度从 54.5% 到 98.5%、CursorBench +12pp 编码能力跃升、文件系统记忆架构。"
 date: "2026-04-18"
-updatedAt: "2026-04-18 00:19"
+updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
   - "LLM"

@@ -2,7 +2,7 @@
 title: "AI 开发者工具 2026 新格局：从代码补全到系统级智能协作"
 description: "GitHub Copilot Workspace 多仓库、Cursor Shadow Mode、Conductor 1.0 — 开发者工具正从辅助走向自主"
 date: "2026-04-11"
-updatedAt: "2026-04-11 21:02"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI 编程"

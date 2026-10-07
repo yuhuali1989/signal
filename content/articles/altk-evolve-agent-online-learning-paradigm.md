@@ -2,7 +2,7 @@
 title: "ALTK-Evolve 与 Agent 在线学习：从静态模型到动态自适应"
 description: "IBM Research 的 ALTK-Evolve 开启 AI Agent 在线学习新范式，告别传统微调流程"
 date: "2026-04-11"
-updatedAt: "2026-04-11 21:02"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "训练与对齐"

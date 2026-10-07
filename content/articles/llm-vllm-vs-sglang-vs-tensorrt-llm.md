@@ -2,7 +2,7 @@
 title: "LLM 推理框架终极对决：vLLM vs SGLang vs TensorRT-LLM"
 description: "三大推理框架的架构设计、性能对比和选型指南"
 date: "2026-04-30"
-updatedAt: "2026-04-30 20:21"
+updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
   - "推理优化"

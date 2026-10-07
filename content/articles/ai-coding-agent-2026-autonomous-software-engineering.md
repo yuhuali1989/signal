@@ -2,7 +2,7 @@
 title: "AI 编程 Agent 2026：从代码补全到自主软件工程"
 description: "Claude Code Agent 公测 SWE-Bench 68%，Devin 2.0 转向团队协作，Cursor Agent 模式重构 IDE 体验。深度分析 AI 编程从代码补全走向自主软件工程的技术演进与产业格局。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 01:00"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "Agent"

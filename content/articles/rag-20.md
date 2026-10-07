@@ -2,7 +2,7 @@
 title: "RAG 2.0：从朴素检索到自适应知识增强"
 description: "RAG 技术的演进路线和前沿方向"
 date: "2026-04-30"
-updatedAt: "2026-04-30 21:55"
+updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
   - "RAG"

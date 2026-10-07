@@ -2,7 +2,7 @@
 title: "AI 编程基准测试的标准化革命：从 SWE-bench 到 Archon"
 description: "系统梳理 AI 编程能力评测的演进路线，从 HumanEval 到 SWE-bench Pro 到 Archon，分析基准测试如何驱动 AI 编码模型的进化"
 date: "2026-04-11"
-updatedAt: "2026-04-11 19:54"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "评测"

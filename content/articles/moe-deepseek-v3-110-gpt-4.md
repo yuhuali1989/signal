@@ -2,7 +2,7 @@
 title: "MoE 架构革命：DeepSeek-V3 如何用 1/10 成本击败 GPT-4"
 description: "深入分析 Mixture of Experts 架构的技术细节和 DeepSeek-V3 的工程创新"
 date: "2026-04-30"
-updatedAt: "2026-04-30 21:53"
+updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
   - "MoE"

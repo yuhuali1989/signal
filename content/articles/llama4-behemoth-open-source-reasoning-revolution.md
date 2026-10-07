@@ -2,7 +2,7 @@
 title: "Llama 4 Behemoth：开源推理模型的登顶之路"
 description: "Meta 发布 2880 亿参数 Llama 4 Behemoth，首创 Mixture-of-Thought 推理机制，GPQA 88.2% 超越 GPT-5.4。深度解析开源推理模型如何从追赶走向引领。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 01:00"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "行业动态"

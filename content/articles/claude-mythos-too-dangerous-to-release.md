@@ -2,7 +2,7 @@
 title: "Claude Mythos：当 AI 实验室说「太危险了，不能公开」"
 description: "Anthropic 发布史上最强模型 Claude Mythos，但首次选择不向公众开放。从网络安全超能力到 50 家机构限量访问，这背后隐含着 AI 安全治理的根本性转折。"
 date: "2026-04-11"
-updatedAt: "2026-04-11 22:30"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "安全与治理"

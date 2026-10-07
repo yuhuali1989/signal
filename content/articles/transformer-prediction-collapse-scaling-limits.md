@@ -2,7 +2,7 @@
 title: "Transformer 预测崩溃：扩展定律的隐形天花板"
 description: "2026年4月最重要的理论贡献之一：数学证明了在高噪声时间序列场景中，盲目扩展Transformer参数反而导致更高预测误差，揭示了Scaling Law的适用边界。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 12:17"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "Transformer"

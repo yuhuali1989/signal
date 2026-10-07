@@ -2,7 +2,7 @@
 title: "Transformer 注意力机制的未来：从 MHA 到 GQA 再到 MLA"
 description: "深入解读多头注意力机制的演进路线，MHA → MQA → GQA → MLA 的设计权衡与工程实践"
 date: "2026-04-11"
-updatedAt: "2026-04-11 15:46"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑"
 tags:
   - "模型架构"

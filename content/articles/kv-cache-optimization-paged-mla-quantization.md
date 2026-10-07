@@ -2,7 +2,7 @@
 title: "KV Cache 优化全景：从 PagedAttention 到 MLA 再到 1-bit 压缩"
 description: "大模型推理的显存瓶颈与解决方案，系统梳理 KV Cache 优化的完整技术图谱"
 date: "2026-04-11"
-updatedAt: "2026-04-11 15:41"
+updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "推理优化"

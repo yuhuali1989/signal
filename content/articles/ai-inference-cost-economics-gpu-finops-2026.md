@@ -2,7 +2,7 @@
 title: "AI 推理成本经济学 2026：GPU FinOps 实战手册"
 description: "80% 的 AI GPU 支出已转向推理侧。本文系统剖析 Token 成本公式、四层优化策略和实战案例，帮助团队将月度推理支出削减 59%。"
 date: "2026-04-12"
-updatedAt: "2026-04-12 08:30"
+updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI Infra"
