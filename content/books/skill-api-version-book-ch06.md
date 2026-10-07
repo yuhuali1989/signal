@@ -1,6 +1,6 @@
 ---
 title: "第6章 · 兼容层与适配工程"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 6
 description: "讲清版本不匹配时如何优雅适配：适配器模式与双栈共存、字段兜底与 fallback 链、双跑与影子流量的渐进迁移、网关代协商、回滚预案，以及多版本并行的 CI 测试策略"
 date: "2026-10-06"

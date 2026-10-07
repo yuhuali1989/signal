@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第6章: 投机解码参数配置"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第6章: 投机解码参数配置：Draft 模型选择、接受率调优与离线场景适用性"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "6"
 chapterTitle: "投机解码参数配置：Draft 模型选择、接受率调优与离线场景适用性"
 description: "深入解析 vLLM 投机解码的参数体系，对比 Vanilla Speculative Decoding 和 EAGLE 方法的性能差异，分析离线推理中投机解码的收益与限制"
@@ -14,6 +14,7 @@ tags:
   - "Speculative Decoding"
   - "Draft Model"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 6 章：投机解码参数配置

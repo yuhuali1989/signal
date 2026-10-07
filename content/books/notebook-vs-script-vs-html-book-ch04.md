@@ -1,7 +1,7 @@
 ---
-title: "第4章 · 交互性：重算与过滤是两回事"
-book: "notebook-vs-script-vs-html-book"
-chapter: 4
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第4章: 交互性：重算与过滤是两回事"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "4"
 description: "区分「触发真实重算」「对已有数据做前端过滤」「完全无交互」三种交互层级，讲清 marimo run 这类 App 形态为何是 HTML 的外壳配 Notebook 的内核，以及交互能力的选型判据"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "Streamlit"
   - "前端过滤"
 type: "book"
+part: "篇一 · 形态与原理"
 ---
 
 ## 4.1 三种「交互」，本质完全不同

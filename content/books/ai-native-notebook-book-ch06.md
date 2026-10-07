@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第6章: 协作、发布与工程化"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "6"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第14章: 协作、发布与工程化：Notebook 之后才是主战场"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "14"
 chapterTitle: "协作、发布与工程化：Notebook 之后才是主战场"
 description: "讨论实时协作、逻辑复用（Modules）、参数化调度与发布形态（app、报告、端点），并强调核心观点：编辑体验已足够好，真正的摩擦在于 Notebook 完成之后的协作、部署、调度与结果交付"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "工程化"
   - "data app"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 6.1 一句必须先讲的话

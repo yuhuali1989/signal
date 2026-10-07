@@ -1,7 +1,7 @@
 ---
-title: "第2章 · marimo 开源代码拆解：能复用什么、必须懂什么"
-book: "marimo-internal-platform-book"
-chapter: 2
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第18章: marimo 开源代码拆解：能复用什么、必须懂什么"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "18"
 description: "拆解 marimo 的代码结构与核心模块（App/Cell/Kernel/DAG/ScopedVisitor/ASGI 服务）、响应式执行原理、四种执行环境与部署形态，并给出 molab 的参考架构与二次开发切入点"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -14,6 +14,7 @@ tags:
   - "Pyodide"
   - "uv"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 2.1 总体技术栈

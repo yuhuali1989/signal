@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第3章: Ray+vLLM Actor 架构详解"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "3"
+title: "Ray + vLLM 离线推理优化全书 - 第13章: Ray + vLLM Actor 内离线推理架构详解"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "13"
 chapterTitle: "Ray + vLLM Actor 内离线推理架构详解"
 description: "深入解析 Ray Actor 如何嵌入 vLLM LLM 引擎、Placement Group 如何分配 CPU/GPU 资源、以及进程内推理的数据流路径"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "Placement Group"
   - "离线推理"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 3 章：Ray + vLLM Actor 内离线推理架构详解

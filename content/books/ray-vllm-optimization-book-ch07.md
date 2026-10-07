@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第7章: 并行策略参数与 Ray 协同"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第7章: 并行策略参数与 Ray Placement Group 协同"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "7"
 chapterTitle: "并行策略参数与 Ray Placement Group 协同"
 description: "深入解析 vLLM 张量并行/流水线并行/专家并行参数，以及 Ray Placement Group 如何与 vLLM 并行策略协同分配 GPU 资源"
@@ -14,6 +14,7 @@ tags:
   - "Ray"
   - "Placement Group"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 7 章：并行策略参数与 Ray 协同

@@ -1,7 +1,7 @@
 ---
-title: "第7章 · 数据连接与规模化：谁能碰 TB 级数据"
-book: "notebook-vs-script-vs-html-book"
-chapter: 7
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第7章: 数据连接与规模化：谁能碰 TB 级数据"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "7"
 description: "从数据源连接、计算下推、内存边界、缓存策略与凭证安全五个角度，讲清 Notebook、脚本、HTML 在真实数据链路里各自能承担什么角色、不能承担什么角色"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "缓存"
   - "凭证安全"
 type: "book"
+part: "篇一 · 形态与原理"
 ---
 
 ## 7.1 谁能连数据源

@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第3章: 调度器参数与批处理策略"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第3章: 调度器参数与批处理策略：让 GPU 永远满载"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "3"
 chapterTitle: "调度器参数与批处理策略：让 GPU 永远满载"
 description: "深入解析 max_num_seqs、max_num_batched_tokens、chunked_prefill、num_scheduler_steps 等调度器参数的底层原理，以及离线场景的批处理最优策略"
@@ -14,6 +14,7 @@ tags:
   - "Chunked Prefill"
   - "批处理"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 3 章：调度器参数与批处理策略

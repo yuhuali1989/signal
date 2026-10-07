@@ -1,6 +1,6 @@
 ---
 title: "第3章 · 物理 AI 的模型家族：VLA、世界模型与分层架构"
-book: "physical-ai-landing-book"
+book: "物理 AI 落地全书：最新模型架构研究与工程路径"
 chapter: 3
 description: "拆解 VLA 成为主导范式的原因与架构细节，盘点 GR00T N1.7、π0.5、Gemini Robotics、LingBot-VLA、GEN-0 等代表模型，对比世界模型路线，并讲清系统1与系统2 的分层组合方式"
 date: "2026-10-06"

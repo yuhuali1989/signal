@@ -1,7 +1,7 @@
 ---
-title: "第3章 · 产品架构：给谁用、提供什么、先做哪些"
-book: "marimo-internal-platform-book"
-chapter: 3
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第19章: 产品架构：给谁用、提供什么、先做哪些"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "19"
 description: "定义内部 marimo 平台的用户角色与五大能力模块，给出探索 notebook、生产 app、定时任务、嵌入组件、报告五种产品形态矩阵，以及工作空间权限模型、资产复用机制和 MVP 范围界定"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "权限模型"
   - "App 交付"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 3.1 用户角色与真实诉求

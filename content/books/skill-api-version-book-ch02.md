@@ -1,6 +1,6 @@
 ---
 title: "第2章 · 服务 API 的版本化策略全景"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 2
 description: "系统梳理 URI 路径、请求头、查询参数、日期钉住、主机名五种版本承载机制，对比语义化版本与日历版本，讲清什么是破坏性变更、各家的支持窗口与 Sunset 信号，以及为什么不能混用策略"
 date: "2026-10-06"

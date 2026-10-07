@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第2章: 显存管理参数深度调优"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第2章: 显存管理参数深度调优：让每一 MB GPU 显存都发挥价值"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "2"
 chapterTitle: "显存管理参数深度调优：让每一 MB GPU 显存都发挥价值"
 description: "深入剖析 gpu_memory_utilization、max_model_len、block_size、swap_space、kv_cache_dtype 等显存参数的底层原理、调优策略和陷阱"
@@ -14,6 +14,7 @@ tags:
   - "block_size"
   - "调优"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 2 章：显存管理参数深度调优

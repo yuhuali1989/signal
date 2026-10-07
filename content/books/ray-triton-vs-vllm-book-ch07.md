@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第7章: 故障恢复与容错"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "7"
+title: "Ray + vLLM 离线推理优化全书 - 第17章: 故障恢复与容错机制对比"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "17"
 chapterTitle: "故障恢复与容错机制对比"
 description: "从进程崩溃、GPU OOM、模型加载失败三个故障场景出发，对比两种架构的恢复速度、数据丢失风险和断点续传能力"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "Actor 重启"
   - "Triton 健康检查"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 7 章：故障恢复与容错机制对比

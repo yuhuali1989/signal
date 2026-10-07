@@ -1,6 +1,6 @@
 ---
 title: "第8章 · 安全、评估与落地决策"
-book: "physical-ai-landing-book"
+book: "物理 AI 落地全书：最新模型架构研究与工程路径"
 chapter: 8
 description: "给出物理 AI 的安全分层设计、避免「挑最好演示」的评估指标体系、成本与 ROI 构成，以及架构选型决策树、落地 Checklist 与全书二十条结论"
 date: "2026-10-06"

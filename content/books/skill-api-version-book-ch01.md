@@ -1,6 +1,6 @@
 ---
 title: "第1章 · 版本对应为什么是第一性问题"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 1
 description: "从一个静默失败事故出发，讲清 Skill 版本、服务 API 版本、数据 schema 版本三层独立演进的模型，以及为什么「调用前先检查 API 是否对应」不是可选项而是必选项"
 date: "2026-10-06"

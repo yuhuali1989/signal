@@ -1,7 +1,7 @@
 ---
-title: "第5章 · 差距清单：从开源到产品要补什么、各多大工作量"
-book: "marimo-internal-platform-book"
-chapter: 5
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第21章: 差距清单：从开源到产品要补什么、各多大工作量"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "21"
 description: "逐项列出 marimo 开源与内部平台之间的能力差距、对应技术方案与工作量量级，讲清外围包装、服务封装、源码改造三条路径的取舍，以及 fork 治理与上游升级策略"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "二次开发"
   - "迁移"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 5.1 差距总表

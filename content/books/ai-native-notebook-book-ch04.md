@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第4章: AI 能力层设计"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "4"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第12章: AI 能力层设计：上下文工程、Agent 接入与治理"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "12"
 chapterTitle: "AI 能力层设计：上下文工程、Agent 接入与治理"
 description: "拆解 AI 能力层的五个层次与上下文工程要点，对比 Agent 接入的两种实践路径（外部协议接入与内核内执行），并讨论模型路由与成本、Agent 安全边界、以及怎么评估一个平台的 AI 能力"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "成本"
   - "安全"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 4.1 AI 能力的五个层次

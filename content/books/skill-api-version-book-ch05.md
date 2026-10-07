@@ -1,6 +1,6 @@
 ---
 title: "第5章 · 调用前的检查（Preflight 设计）"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 5
 description: "给出调用前检查的完整落地方案：五查内容与短路顺序、先发现还是内联重试两种模式的取舍、探测结果的缓存与失效重探、快速失败与优雅降级的决策树，以及一份可直接抄的 Preflight 参考实现"
 date: "2026-10-06"

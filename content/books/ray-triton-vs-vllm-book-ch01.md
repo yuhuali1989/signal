@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第1章: 两种架构的诞生背景与核心差异"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "1"
+title: "Ray + vLLM 离线推理优化全书 - 第11章: 两种架构的诞生背景与核心差异"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "11"
 chapterTitle: "两种架构的诞生背景与核心差异"
 description: "从离线批量推理的工程痛点出发，理解 Ray+远程 Triton 服务与 Ray+vLLM Actor 内推理两种架构的设计动机、核心差异与适用边界"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "离线推理"
   - "架构对比"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 1 章：两种架构的诞生背景与核心差异

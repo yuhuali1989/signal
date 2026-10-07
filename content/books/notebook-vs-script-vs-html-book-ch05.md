@@ -1,7 +1,7 @@
 ---
-title: "第5章 · 版本控制与协作：ipynb 的 diff 灾难与三个解法"
-book: "notebook-vs-script-vs-html-book"
-chapter: 5
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第5章: 版本控制与协作：ipynb 的 diff 灾难与三个解法"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "5"
 description: "剖析 .ipynb 因内含 base64 输出与执行计数导致的 Git diff 不可读问题，给出 nbstripout、jupytext、nbdime 三个工具解法与 marimo 纯 .py 的天然优势，并对比三者的代码评审与协作体验"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -14,6 +14,7 @@ tags:
   - "nbstripout"
   - "Code Review"
 type: "book"
+part: "篇一 · 形态与原理"
 ---
 
 ## 5.1 .ipynb 的 diff 灾难

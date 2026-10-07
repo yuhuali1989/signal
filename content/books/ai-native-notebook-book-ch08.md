@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第8章: 决策、落地架构与 Checklist"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "8"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第16章: 决策、落地架构与 Checklist：给出可执行的选型答案"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "16"
 chapterTitle: "决策、落地架构与 Checklist：给出可执行的选型答案"
 description: "给出 Notebook 平台选型的决策树与典型企业落地架构（本地探索 + 云端协作调度 + 发布分层），讨论从 Jupyter 迁移的路径与成本模型，并提供上线 Checklist 与全书总结"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "Checklist"
   - "全书总结"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 8.1 决策树：按顺序问自己五个问题

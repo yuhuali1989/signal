@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第4章: 通信开销深度对比"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "4"
+title: "Ray + vLLM 离线推理优化全书 - 第14章: 通信开销深度对比：gRPC vs 进程内调用"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "14"
 chapterTitle: "通信开销深度对比：gRPC vs 进程内调用"
 description: "从 protobuf 序列化、localhost TCP 传输、共享内存三个层面量化两种架构的通信开销，给出不同 batch 大小和序列长度下的延迟分解"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "protobuf"
   - "性能分析"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 4 章：通信开销深度对比——gRPC vs 进程内调用

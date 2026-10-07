@@ -1,7 +1,7 @@
 ---
-title: "第2章 · 执行模型：状态才是根本分野"
-book: "notebook-vs-script-vs-html-book"
-chapter: 2
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第2章: 执行模型：状态才是根本分野"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "2"
 description: "对比有状态内核、响应式 DAG、一次性进程与纯渲染四种执行模型，讲清 hidden state 如何导致约 96% 的 notebook 不可复现，以及增量执行与全量重跑各自的代价"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "DAG"
   - "可复现"
 type: "book"
+part: "篇一 · 形态与原理"
 ---
 
 ## 2.1 四种执行模型

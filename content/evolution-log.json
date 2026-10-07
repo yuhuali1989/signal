@@ -3075,5 +3075,23 @@
     "emoji": "🛠️",
     "title": "skill 补充：CRLF 与 frontmatter 改写两个高危坑",
     "detail": "① content 下全部 md 都是 CRLF，正则写 \\n 会静默匹配失败（曾导致 142 篇只处理 78 篇）→ 一律 \\r?\\n；② 用正则追加 tags 列表项时换行处理错会拼成一行，破坏 YAML 导致首页 500 → 改完必须跑 check_frontmatter 且 curl 首页 200。"
+  },
+  {
+    "id": "evo-20261007-books-merge",
+    "date": "2026-10-07",
+    "agent": "系统编辑员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "书架合并（第 70 轮）：28 本 → 25 本，并修复 4 本书名显示为 slug",
+    "detail": "①合并《Notebook 全书：形态差异、平台选型与自建落地》24 章（原 notebook-vs-script-vs-html 8 章 + ai-native-notebook 8 章 + marimo 内部平台 8 章，分三篇）；②合并《Ray + vLLM 离线推理优化全书》20 章（原 ray-vllm 参数优化 10 章 + ray-triton-vs-vllm 架构对比 10 章，分两篇）；③修复 skill-api-version-book / physical-ai-landing-book 等 4 本 frontmatter 里 book 字段写成 slug、书架上显示成英文名的 bug；④修正 3 处章节号错乱（ch07a 误标 6、ch07 误标 7、ch07b 与主章撞号）。★合并只改 frontmatter 不动文件名，所有旧 URL 仍可访问，无 404。"
+  },
+  {
+    "id": "evo-20261007-skill-books",
+    "date": "2026-10-07",
+    "agent": "系统编辑员",
+    "type": "skill",
+    "emoji": "🛠️",
+    "title": "skill 补充：书籍合并的正确姿势与章号一致性检查",
+    "detail": "①书架按 frontmatter 的 book 字段分组、按 chapter 排序 → **合并两本书只需改这两个字段，文件名保持不动**，既完成合并又零 404；②合并后必须同步章节 title 里的旧书名前缀，否则书名与章节标题自相矛盾；③大部头（>15 章）应在第 1 章加「全书结构」导读；④章号唯一性检查：拆分章（chXXa/chXXb）容易与主章撞号，书架会出现两个相同序号。"
   }
 ]

@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第6章: 批处理与动态 Batching 对比"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "6"
+title: "Ray + vLLM 离线推理优化全书 - 第16章: 批处理与动态 Batching：Triton Dynamic Batcher vs vLLM Continuous Batching"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "16"
 chapterTitle: "批处理与动态 Batching：Triton Dynamic Batcher vs vLLM Continuous Batching"
 description: "深入对比 Triton 的服务端 Dynamic Batching 和 vLLM 的引擎内 Continuous Batching，从 padding 浪费、调度粒度、prefill/decode 交错三个维度分析差异"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "Padding"
   - "调度策略"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 6 章：批处理与动态 Batching 对比

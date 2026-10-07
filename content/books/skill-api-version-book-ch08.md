@@ -1,6 +1,6 @@
 ---
 title: "第8章 · 决策树、Checklist 与落地模板"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 8
 description: "给出三张决策树（版本承载机制、检查模式、失败策略）、Skill 作者与 API 提供者的双向 Checklist、一份完整 manifest 模板，以及全书反模式总清单与二十条结论"
 date: "2026-10-06"

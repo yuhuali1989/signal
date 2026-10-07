@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第5章: 资源调度与GPU隔离"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "5"
+title: "Ray + vLLM 离线推理优化全书 - 第15章: 资源调度与 GPU 隔离"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "15"
 chapterTitle: "资源调度与 GPU 隔离"
 description: "对比两种架构下 GPU 所有权、显存分配、CPU 调度、Placement Group 的使用方式，以及多模型并存的资源管理策略"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "显存管理"
   - "Ray"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 5 章：资源调度与 GPU 隔离

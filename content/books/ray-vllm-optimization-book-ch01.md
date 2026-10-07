@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第1章: vLLM 参数全景地图"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第1章: vLLM 参数全景地图：从初始化到推理的完整参数体系"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "1"
 chapterTitle: "vLLM 参数全景地图：从初始化到推理的完整参数体系"
 description: "系统梳理 vLLM LLM 类初始化参数和 SamplingParams 的完整参数体系，建立全局视角，为后续逐类深度调优奠定基础"
@@ -14,7 +14,15 @@ tags:
   - "离线推理"
   - "性能优化"
 type: "book"
+part: "篇一 · 参数调优"
 ---
+
+# 第 1 章：vLLM 参数全景地图
+
+> **全书结构（20 章 · 两篇）**
+>
+> - **篇一 · 参数调优（1–10 章）**：vLLM 参数全景、显存管理、调度器与批处理、量化策略（FP8/AWQ/GPTQ）、KV Cache 量化、投机解码、并行策略与 Ray 协同、Prefix Caching、torch.compile、Ray 层综合调优
+> - **篇二 · 架构对比与选型（11–20 章）**：Ray+Triton 与 Ray+vLLM 两种离线推理架构的诞生背景、各自详解、通信开销、资源调度与 GPU 隔离、批处理对比、容错、性能基准、完整代码与选型决策树
 
 # 第 1 章：vLLM 参数全景地图
 

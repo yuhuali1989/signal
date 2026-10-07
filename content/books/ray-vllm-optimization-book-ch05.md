@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第5章: KV Cache 量化专项分析"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第5章: KV Cache 量化专项分析：收益、陷阱与最佳实践"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "5"
 chapterTitle: "KV Cache 量化专项分析：收益、陷阱与最佳实践"
 description: "深入分析 KV Cache 量化的独立收益、与权重量化的组合效果、不同精度对长上下文的影响，以及生产环境的最佳配置"
@@ -14,6 +14,7 @@ tags:
   - "INT8"
   - "量化"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 5 章：KV Cache 量化专项分析

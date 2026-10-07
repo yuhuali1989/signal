@@ -1,7 +1,7 @@
 ---
-title: "第1章 · 定位与决策：为什么自建，以及自建的边界在哪"
-book: "marimo-internal-platform-book"
-chapter: 1
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第17章: 定位与决策：为什么自建，以及自建的边界在哪"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "17"
 description: "厘清 marimo 开源三件套（OSS 引擎 / molab 托管 / WASM playground）的实际能力边界，给出自建 vs 采购 SaaS 的判据，并明确「开源引擎不等于平台」这一核心前提"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "产品定位"
   - "Apache 2.0"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 1.1 先厘清：marimo 现在到底有什么

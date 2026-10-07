@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第8章: Prefix Caching 与数据预处理优化"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第8章: Prefix Caching 与数据预处理优化：离线推理的独有优势"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "8"
 chapterTitle: "Prefix Caching 与数据预处理优化：离线推理的独有优势"
 description: "深入解析 Prefix Caching 的 Block 级哈希机制，以及离线场景下通过数据排序、分桶、预 tokenize 等预处理策略最大化缓存命中率和吞吐"
@@ -14,6 +14,7 @@ tags:
   - "缓存命中"
   - "离线优化"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 8 章：Prefix Caching 与数据预处理优化

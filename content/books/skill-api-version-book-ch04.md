@@ -1,6 +1,6 @@
 ---
 title: "第4章 · 能力协商优于版本号比较"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 4
 description: "讲清版本号比较为何在灰度、可选能力、租户差异下失效，提出能力探测优先的原则，并以 MCP 官方规范的版本与能力协商机制为完整实证案例，给出缺失能力时的回退与拒绝矩阵"
 date: "2026-10-06"

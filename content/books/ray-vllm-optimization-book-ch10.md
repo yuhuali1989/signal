@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第10章: Ray 层优化与综合调优实战"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第10章: Ray 层优化与综合调优实战：从参数到架构的完整优化链路"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "10"
 chapterTitle: "Ray 层优化与综合调优实战：从参数到架构的完整优化链路"
 description: "讲解 Ray Actor 资源配置、并发控制、数据流转等 Ray 层优化，给出完整的调优 checklist 和不同场景的最优配置模板"
@@ -17,6 +17,7 @@ tags:
   - "多模态 caption"
   - "离线批处理"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 10 章：Ray 层优化与综合调优实战

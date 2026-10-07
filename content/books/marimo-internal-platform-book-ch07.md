@@ -1,7 +1,7 @@
 ---
-title: "第7章 · 投入：团队、工期与成本清单"
-book: "marimo-internal-platform-book"
-chapter: 7
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第23章: 投入：团队、工期与成本清单"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "23"
 description: "给出内部 marimo 平台的团队配置与分阶段工期，拆解人力、算力、存储、模型与持续运维五项成本，并与采购 SaaS 做诚实的成本对比，指出纯许可费替代视角下自建并不必然省钱"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "成本对比"
   - "TCO"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 7.1 团队配置

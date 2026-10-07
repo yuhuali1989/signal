@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第4章: 量化策略全解：FP8/AWQ/GPTQ/bitsandbytes 实测对比"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第4章: 量化策略全解：FP8/AWQ/GPTQ/bitsandbytes 实测对比与选型"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "4"
 chapterTitle: "量化策略全解：FP8/AWQ/GPTQ/bitsandbytes 实测对比与选型"
 description: "用实测数据回答'量化有没有用'这个问题，对比 FP8/AWQ/GPTQ/bitsandbytes 在精度、速度、显存三个维度的表现，给出选型决策框架"
@@ -15,6 +15,7 @@ tags:
   - "GPTQ"
   - "INT4"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 4 章：量化策略全解——量化到底有没有用

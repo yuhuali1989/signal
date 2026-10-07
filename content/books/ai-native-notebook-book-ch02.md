@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第2章: 架构总览与 AI 层的两种范式"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "2"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第10章: 架构总览：五层模型与 AI 层的两种集成范式"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "10"
 chapterTitle: "架构总览：五层模型与 AI 层的两种集成范式"
 description: "给出 AI Native Notebook 的五层架构（交互层、AI 层、执行层、状态与数据层、平台服务层），重点对比 AI 层的两种集成范式：外挂式工具访问（Jupyter AI 的 MCP 与 ACP）与内生式内核工作区（marimo pair 在 kernel 内执行）"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "kernel"
   - "Notebook"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 2.1 五层架构总览

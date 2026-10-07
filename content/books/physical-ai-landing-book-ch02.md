@@ -1,6 +1,6 @@
 ---
 title: "第2章 · 底层架构最新研究：Transformer 之后是什么"
-book: "physical-ai-landing-book"
+book: "物理 AI 落地全书：最新模型架构研究与工程路径"
 chapter: 2
 description: "梳理 2026 年模型架构的最新进展：SSM 与 Mamba 系列（含 ICLR 2026 的 Mamba-3）、混合架构成为默认、稀疏与线性注意力、MoE 条件计算、扩散语言模型与神经长期记忆，并指出它们对物理 AI 的特殊价值"
 date: "2026-10-06"

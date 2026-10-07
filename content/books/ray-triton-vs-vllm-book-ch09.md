@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第9章: 完整代码实现"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "9"
+title: "Ray + vLLM 离线推理优化全书 - 第19章: 完整代码实现：两种架构的生产级代码"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "19"
 chapterTitle: "完整代码实现：两种架构的生产级代码"
 description: "提供 Ray+Triton 和 Ray+vLLM Actor 两种架构的完整生产级代码实现，包含数据预处理、推理、断点续传、监控等完整功能"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "vLLM"
   - "生产级"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 9 章：完整代码实现

@@ -1,7 +1,7 @@
 ---
-title: "第8章 · 如何组合：从探索到交付的管线与决策"
-book: "notebook-vs-script-vs-html-book"
-chapter: 8
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第8章: 如何组合：从探索到交付的管线与决策"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "8"
 description: "给出「Notebook 探索 → 脚本固化 → HTML/App 交付」的标准管线，列出从 notebook 转脚本的六个信号、直接产出 HTML 与升级为 App 的判据，并附决策树、反模式清单与全书二十条结论"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "转脚本信号"
   - "全书总结"
 type: "book"
+part: "篇一 · 形态与原理"
 ---
 
 ## 8.1 ★ 标准管线：三者是接力，不是三选一

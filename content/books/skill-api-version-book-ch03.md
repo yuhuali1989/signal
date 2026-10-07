@@ -1,6 +1,6 @@
 ---
 title: "第3章 · Skill 侧的版本元数据与兼容矩阵"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 3
 description: "设计 Skill manifest 的版本元数据字段（版本区间、必需与可选能力），讲清兼容性矩阵怎么画、语义化版本在消费方怎么用，以及为什么声明永远替代不了运行时验证"
 date: "2026-10-06"

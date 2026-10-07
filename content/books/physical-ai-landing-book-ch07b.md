@@ -1,7 +1,7 @@
 ---
 title: "第7章（续）· 数据飞轮的四个工程组件"
-book: "physical-ai-landing-book"
-chapter: 7
+book: "物理 AI 落地全书：最新模型架构研究与工程路径"
+chapter: "7.5"
 description: "把数据飞轮拆成采集触发器、自动标注、失败模式聚类、仿真校准四个可落地的工程组件，并说明它们如何串成闭环、如何度量飞轮是否在转"
 date: "2026-10-06"
 updatedAt: "2026-10-06"

@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第3章: 执行引擎与内核"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "3"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第11章: 执行引擎与内核：有状态内核 vs 响应式 DAG"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "11"
 chapterTitle: "执行引擎与内核：有状态内核 vs 响应式 DAG"
 description: "拆解 Notebook 的执行引擎：Jupyter 有状态内核模型与响应式 DAG 模型的原理差异，深入分析 hidden state 问题的根源与代价，并讨论远程执行、沙箱安全与多语言内核等工程议题"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "DAG"
   - "可复现"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 3.1 执行层为什么是最核心的一层

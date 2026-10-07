@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第8章: 性能模型与基准测试"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "8"
+title: "Ray + vLLM 离线推理优化全书 - 第18章: 性能模型与基准测试"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "18"
 chapterTitle: "性能模型与基准测试"
 description: "建立两种架构的端到端性能模型，从通信开销、padding 浪费、调度效率三个维度推导理论吞吐差距，并与实测数据对照"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "瓶颈分析"
   - "性能对比"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 8 章：性能模型与基准测试

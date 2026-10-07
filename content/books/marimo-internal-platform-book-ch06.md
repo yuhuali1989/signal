@@ -1,7 +1,7 @@
 ---
-title: "第6章 · AI Native 接入：让 Agent 真的能跑代码"
-book: "marimo-internal-platform-book"
-chapter: 6
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第22章: AI Native 接入：让 Agent 真的能跑代码"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "22"
 description: "基于 marimo 已有的 AI 接口（marimo pair 让 agent 连接运行中的 session、编辑器 AI 支持自带密钥与本地模型），设计内部模型接入方案、典型 AI 场景，以及必须划清的安全边界"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "内部模型"
   - "安全边界"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 6.1 marimo 已经给了什么（不用从零做）

@@ -1,6 +1,6 @@
 ---
 title: "第7章 · 可观测与治理"
-book: "skill-api-version-book"
+book: "Skill 与服务 API 版本对应全书"
 chapter: 7
 description: "建立版本兼容的观测与治理体系：版本漂移的核心指标、消费者驱动的契约测试、Sunset 与 Deprecation 头的自动告警、兼容性看板，以及组织级的废弃时间表与治理规范"
 date: "2026-10-06"

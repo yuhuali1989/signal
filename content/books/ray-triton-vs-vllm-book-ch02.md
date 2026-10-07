@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第2章: Ray+Triton 架构详解"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "2"
+title: "Ray + vLLM 离线推理优化全书 - 第12章: Ray + 远程 Triton 架构详解"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "12"
 chapterTitle: "Ray + 远程 Triton 架构详解"
 description: "深入解析 Triton Inference Server 的进程模型、模型仓库、Dynamic Batcher 机制，以及 Ray 如何编排数据流水线并通过 gRPC 与 Triton 交互"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "Dynamic Batching"
   - "离线推理"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 2 章：Ray + 远程 Triton 架构详解

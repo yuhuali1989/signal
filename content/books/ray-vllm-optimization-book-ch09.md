@@ -1,6 +1,6 @@
 ---
-title: "Ray+vLLM 参数优化深度全书 - 第9章: torch.compile 与 Kernel 优化参数"
-book: "Ray+vLLM 离线推理参数优化深度全书"
+title: "Ray + vLLM 离线推理优化全书 - 第9章: torch.compile 与 Kernel 优化参数：CUDA Graph、算子融合与编译配置"
+book: "Ray + vLLM 离线推理优化全书"
 chapter: "9"
 chapterTitle: "torch.compile 与 Kernel 优化参数：CUDA Graph、算子融合与编译配置"
 description: "深入解析 enforce_eager、CUDA Graph、torch.compile、compilation_config 等 Kernel 级优化参数的原理和配置，分析离线推理中的编译策略"
@@ -14,6 +14,7 @@ tags:
   - "算子融合"
   - "Kernel优化"
 type: "book"
+part: "篇一 · 参数调优"
 ---
 
 # 第 9 章：torch.compile 与 Kernel 优化参数

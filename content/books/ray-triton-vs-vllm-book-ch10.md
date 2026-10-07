@@ -1,7 +1,7 @@
 ---
-title: "Ray+Triton vs Ray+vLLM 离线推理架构对比 - 第10章: 选型决策树"
-book: "Ray+Triton vs Ray+vLLM：离线推理架构对比"
-chapter: "10"
+title: "Ray + vLLM 离线推理优化全书 - 第20章: 选型决策树与实战建议"
+book: "Ray + vLLM 离线推理优化全书"
+chapter: "20"
 chapterTitle: "选型决策树与实战建议"
 description: "提供系统化的选型决策矩阵，从模型规模、数据特征、基础设施、团队技能、容错需求五个维度给出明确的选择建议，并附带真实案例分析"
 date: "2026-08-01"
@@ -14,6 +14,7 @@ tags:
   - "案例研究"
   - "最佳实践"
 type: "book"
+part: "篇二 · 架构对比与选型"
 ---
 
 # 第 10 章：选型决策树与实战建议

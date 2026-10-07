@@ -1,7 +1,7 @@
 ---
-title: "第4章 · 技术架构：执行面、存储、鉴权与交付怎么搭"
-book: "marimo-internal-platform-book"
-chapter: 4
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第20章: 技术架构：执行面、存储、鉴权与交付怎么搭"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "20"
 description: "给出内部 marimo 平台的完整技术架构：分层拓扑、会话执行面与镜像策略、存储与依赖管理、数据源凭证代管、鉴权与多租户、调度与产物归档、App 交付托管，以及可观测与成本计量"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -14,6 +14,7 @@ tags:
   - "App 托管"
   - "可观测"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 4.1 总体分层

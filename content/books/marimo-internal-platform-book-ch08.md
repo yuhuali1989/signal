@@ -1,7 +1,7 @@
 ---
-title: "第8章 · 产出与价值：怎么量化、多久回本、做不做的判据"
-book: "marimo-internal-platform-book"
-chapter: 8
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第24章: 产出与价值：怎么量化、多久回本、做不做的判据"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "24"
 description: "拆解内部 marimo 平台的四层价值来源，给出 App 交付替代、可复现减少返工、许可费替代三项的量化模型与 ROI 敏感度分析，以及采用度量指标、Go/No-Go 判据与止损线"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -13,6 +13,7 @@ tags:
   - "度量指标"
   - "Go/No-Go"
 type: "book"
+part: "篇三 · 自建与落地"
 ---
 
 ## 8.1 价值的四个层次（按可信度排序）

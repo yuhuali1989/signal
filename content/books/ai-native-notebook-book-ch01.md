@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第1章: 演进、定义与 2026 版图"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "1"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第9章: 演进、定义与 2026 版图：从 REPL 到 Agent 的工作台"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "9"
 chapterTitle: "演进、定义与 2026 版图：从 REPL 到 Agent 的工作台"
 description: "梳理 Notebook 的四次演进，给出 AI Native 的严格定义与五个特征，并按经典 / 响应式 / 出版 / 协作 SaaS 四类划分 2026 年的 Notebook 版图，说明为什么单纯比较工具总会得出错误结论"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "平台选型"
   - "数据科学"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 1.1 Notebook 的本质：为什么它长盛不衰

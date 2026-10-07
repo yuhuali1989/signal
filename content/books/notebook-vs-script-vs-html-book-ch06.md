@@ -1,7 +1,7 @@
 ---
-title: "第6章 · 工程化：测试、CI、参数化与调度"
-book: "notebook-vs-script-vs-html-book"
-chapter: 6
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第6章: 工程化：测试、CI、参数化与调度"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "6"
 description: "对比三种形态在单元测试、持续集成、参数化运行、定时调度与模块化复用上的能力差距，重点论证「被 cron 依赖的 notebook 已经变成带漂亮 UI 的技术债」这一判断"
 date: "2026-10-06"
 updatedAt: "2026-10-06"
@@ -14,6 +14,7 @@ tags:
   - "模块化"
   - "技术债"
 type: "book"
+part: "篇一 · 形态与原理"
 ---
 
 ## 6.1 测试：谁能被单测覆盖

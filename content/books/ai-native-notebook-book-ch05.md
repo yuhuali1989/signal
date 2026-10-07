@@ -1,7 +1,7 @@
 ---
-title: "AI Native Notebook 平台架构与选型全书 - 第5章: 状态、数据与可复现"
-book: "AI Native Notebook 平台架构与选型全书"
-chapter: "5"
+title: "Notebook 全书：形态差异、平台选型与自建落地 - 第13章: 状态、数据与可复现：文件格式、环境与数据连接"
+book: "Notebook 全书：形态差异、平台选型与自建落地"
+chapter: "13"
 chapterTitle: "状态、数据与可复现：文件格式、环境与数据连接"
 description: "对比 .ipynb、.py、.qmd 与专有格式在版本管理与可复现上的差异，分析环境漂移与依赖管理，讨论数据连接与大数据下推、缓存与产物管理，并给出一份可复现性 Checklist"
 date: "2026-10-06"
@@ -15,6 +15,7 @@ tags:
   - "数据连接"
   - "缓存"
 type: "book"
+part: "篇二 · 平台与选型"
 ---
 
 ## 5.1 文件格式：可复现的第一道门
