@@ -5,9 +5,8 @@ date: "2026-04-30"
 updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
-  - "RAG"
-  - "知识库"
   - "检索增强"
+  - "开源生态"
 type: "article"
 category: "工具与生态"
 ---

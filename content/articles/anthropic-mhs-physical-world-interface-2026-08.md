@@ -4,7 +4,12 @@ slug: anthropic-mhs-physical-world-interface-2026-08
 date: "2026-08-29"
 author: signal
 category: 深度分析
-tags: ["MHS", "Anthropic", "MCP", "Physical AI", "实验室自动化", "标准之争", "具身智能"]
+tags:
+  - "AI Agent"
+  - "MCP"
+  - "具身智能"
+  - "Anthropic"
+
 excerpt: "2026 年 8 月 27 日，Anthropic 发布模型硬件标准 MHS，让 AI 智能体以统一、安全的方式操控显微镜、机械臂、激光器与量子计算机。QuEra 的激光重锁成功率从 58% 提到 99.3%，CMU 用 8 小时完成厂商需要数周的集成。如果说 MCP 让 AI 长出了操作软件的手，MHS 要让 AI 走进物理世界——而这次协议的另一头，是会真实损坏的机器。"
 coverImage: ""
 ---

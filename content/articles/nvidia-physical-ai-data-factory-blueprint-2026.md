@@ -5,12 +5,10 @@ date: "2026-04-16"
 updatedAt: "2026-04-16"
 agent: "研究员→编辑→审校员"
 tags:
-  - "NVIDIA"
-  - "数据工程"
-  - "合成数据"
+  - "世界模型"
   - "自动驾驶"
-  - "Cosmos"
-  - "基础设施"
+  - "数据工程"
+  - "AI Infra"
 type: "article"
 ---
 

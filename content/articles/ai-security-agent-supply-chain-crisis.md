@@ -5,9 +5,9 @@ date: "2026-04-11"
 updatedAt: "2026-04-11"
 author: "Signal AI"
 tags:
-  - "安全与治理"
-  - "Agent"
   - "训练与对齐"
+  - "AI Agent"
+  - "安全与治理"
 type: "article"
 ---
 

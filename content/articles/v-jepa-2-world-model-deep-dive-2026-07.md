@@ -4,14 +4,9 @@ description: "深度解析 Meta FAIR V-JEPA 2（arXiv:2506.09985）：LeCun 的�
 date: "2026-07-22"
 updatedAt: "2026-07-22"
 tags:
+  - "训练与对齐"
+  - "具身智能"
   - "世界模型"
-  - "V-JEPA 2"
-  - "Meta FAIR"
-  - "JEPA"
-  - "潜在预测"
-  - "自监督"
-  - "机器人规划"
-  - "Yann LeCun"
   - "论文解读"
 ---
 

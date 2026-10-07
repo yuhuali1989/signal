@@ -4,14 +4,10 @@ description: "深度解析 Google DeepMind Genie 3（720p@24fps 实时交互、�
 date: "2026-07-22"
 updatedAt: "2026-07-22"
 tags:
-  - "世界模型"
-  - "Genie 3"
-  - "Google DeepMind"
-  - "实时交互"
-  - "自回归生成"
-  - "可提示世界事件"
+  - "推理优化"
+  - "多模态"
   - "具身智能"
-  - "论文解读"
+  - "世界模型"
 ---
 
 # Genie 3 世界模型深度解读：实时可交互 SOTA 与数据管道全解析

@@ -4,7 +4,12 @@ slug: agent-runtime-wars-harness-open-source-2026-08
 date: "2026-08-23"
 author: signal
 category: 深度分析
-tags: ["Harness", "Codex", "DeepSeek", "Agent", "运行时", "Qwen-UI-Agent", "GEN-1.5", "开源"]
+tags:
+  - "推理优化"
+  - "AI Agent"
+  - "开源生态"
+  - "AI 编程"
+
 excerpt: "2026 年 8 月，OpenAI 开源 Codex Harness，DeepSeek DSH 一周三更收编 Claude Code 与 Codex 为子代理。同一个 GPT-5.6 Sol 换个 Harness，ARC-AGI-3 得分从 13.3% 涨到 38.3%。模型是大脑，Harness 才是让大脑干活 的操作系统——Agent 竞争的下半场，正在从模型跑分转向运行时之战。"
 coverImage: ""
 ---

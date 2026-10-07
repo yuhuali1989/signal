@@ -3,12 +3,9 @@ title: "多模态基础模型预训练数据格式与Megatron/DeepSpeed框架适
 date: "2026-06-15"
 author: "Signal AI 编辑"
 tags:
+  - "训练与对齐"
   - "多模态"
-  - "预训练"
-  - "Megatron"
-  - "DeepSpeed"
-  - "数据格式"
-  - "大模型训练"
+  - "数据工程"
 category: "infra"
 summary: "深入解析多模态基础模型预训练中的数据格式设计原则、Megatron-LM和DeepSpeed框架的数据加载机制，以及图文交错数据、视频数据、JSONL格式适配的最佳实践与常见陷阱。"
 ---

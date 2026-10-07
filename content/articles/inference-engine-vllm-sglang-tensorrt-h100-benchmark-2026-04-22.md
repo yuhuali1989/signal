@@ -1,7 +1,11 @@
 ---
 title: "2026 推理引擎三强争霸：vLLM vs SGLang vs TensorRT-LLM H100 实测全解析"
 date: "2026-04-22"
-tags: ["vLLM", "SGLang", "TensorRT-LLM", "推理引擎", "H100", "Benchmark"]
+tags:
+  - "推理优化"
+  - "数据工程"
+  - "评测"
+
 summary: "基于 H100 GPU 同条件基准测试，系统对比三大推理引擎在吞吐量、首 Token 延迟和显存效率上的差异，为生产环境选型提供数据参考。"
 category: "infra"
 type: "article"

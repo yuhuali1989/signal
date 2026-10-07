@@ -1,7 +1,12 @@
 ---
 title: "Gemini 3.5 Flash 与通义 3.7 同日发布：AI 竞赛格局的重塑"
 date: "2026-05-20"
-tags: ["llm", "multimodal", "agent", "open-source", "reasoning"]
+tags:
+  - "训练与对齐"
+  - "多模态"
+  - "AI Agent"
+  - "开源生态"
+
 summary: "2026年5月19-20日 Google I/O 与阿里云峰会相继发布旗舰模型，AI 竞赛进入新阶段。Gemini 3.5 Flash 多模态 + 通义 3.7 登顶 Arena AI 中文榜，双城记下的格局重塑。"
 category: "article"
 ---

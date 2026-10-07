@@ -5,8 +5,8 @@ date: "2026-04-11"
 author: "Signal AI"
 category: "industry-analysis"
 tags:
+  - "AI Agent"
   - "行业动态"
-  - "Agent"
 type: "article"
 description: "【前瞻分析】OpenAI 关停 Sora 视频应用、全力押注 AI Agent 的决策分析（基于公开报道，部分细节为推测），反映整个行业从生成到执行的范式转移趋势"
 ---

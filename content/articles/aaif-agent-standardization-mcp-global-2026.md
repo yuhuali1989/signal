@@ -5,11 +5,9 @@ date: "2026-04-18"
 updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
-  - "Agent"
+  - "AI Agent"
   - "MCP"
-  - "基础设施"
-  - "标准化"
-  - "AAIF"
+  - "AI Infra"
 type: "article"
 ---
 

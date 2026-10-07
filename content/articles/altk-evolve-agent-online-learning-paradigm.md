@@ -6,7 +6,7 @@ updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "训练与对齐"
-  - "Agent"
+  - "AI Agent"
   - "安全与治理"
 type: "article"
 category: "模型与训练"

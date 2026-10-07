@@ -4,7 +4,12 @@ slug: post-training-scaling-revolution-2026-08
 date: "2026-08-22"
 author: signal
 category: 深度分析
-tags: ["后训练", "GLM-5.3", "DeepSeek V4 Pro", "Muse Glimmer", "Anthropic IPO", "RL", "开源", "范式转折"]
+tags:
+  - "训练与对齐"
+  - "开源生态"
+  - "融资并购"
+  - "DeepSeek"
+
 excerpt: "2026 年 8 月，GLM-5.3 和 DeepSeek V4 Pro 0813 证明：不改基座，纯靠后训练就能实现 50% 性能跃升。Meta 重返开源，Anthropic 冲刺 2 万亿 IPO。这不是一次普通的迭代，而是 AI 发展范式的根本性转折。"
 coverImage: ""
 ---

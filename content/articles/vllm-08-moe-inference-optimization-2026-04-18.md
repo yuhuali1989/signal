@@ -2,7 +2,11 @@
 title: "vLLM 0.8 深度解析：MoE 推理吞吐提升 40% 的技术路径与生产实践"
 date: "2026-04-18"
 type: "article"
-tags: ["vLLM", "推理优化", "MoE", "LLM Infra", "Speculative Decoding"]
+tags:
+  - "MoE"
+  - "推理优化"
+  - "AI Infra"
+
 summary: "vLLM 0.8 通过优化 MoE 专家路由调度、升级 Speculative Decoding 2.0 管道、原生适配 Llama 4/Qwen 3 等新模型，实现 MoE 模型推理吞吐提升 40%。本文深入分析其技术实现路径、H100 基准数据和生产部署最佳实践。"
 category: "AI Infra"
 ---

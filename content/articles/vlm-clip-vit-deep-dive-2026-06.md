@@ -3,12 +3,9 @@ title: "VLM 视觉语言模型深度解析：CLIP 对齐、ViT 编码与多模�
 date: "2026-06-21"
 author: "Signal AI 编辑"
 tags:
-  - "VLM"
-  - "CLIP"
-  - "ViT"
+  - "训练与对齐"
   - "多模态"
-  - "视觉语言模型"
-  - "图文对齐"
+  - "VLM"
 category: "llm"
 summary: "深入解析 VLM（视觉语言模型）的核心技术栈：CLIP 对比学习如何对齐图文语义空间、ViT 如何将图像分割为 Patch 序列、图文融合架构的演进（从拼接 Cross-Attention 到统一序列），以及 VLM 的训练策略与数据流水线。"
 ---

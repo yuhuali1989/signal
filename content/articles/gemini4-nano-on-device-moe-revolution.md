@@ -3,10 +3,9 @@ title: "Gemini 4 Nano：端侧 100B MoE 如何实现 40 tok/s 推理"
 description: "【前瞻分析】Gemini 4 Nano 技术架构推测：端侧 MoE 稀疏激活、INT4 量化和 On-Device RAG 三大核心技术分析，截至写作时该模型尚未正式发布"
 date: "2026-04-14"
 tags:
-  - "Gemini"
-  - "端侧AI"
   - "MoE"
-  - "量化"
+  - "推理优化"
+  - "Google"
 type: "article"
 ---
 

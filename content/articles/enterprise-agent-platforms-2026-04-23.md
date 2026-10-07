@@ -1,7 +1,12 @@
 ---
 title: "2026 企业 Agent 平台四强对比：OpenAI vs Google vs AWS vs Microsoft"
 date: "2026-04-23"
-tags: ["agent", "enterprise", "openai", "google", "aws", "microsoft"]
+tags:
+  - "AI Agent"
+  - "AI Infra"
+  - "行业动态"
+  - "OpenAI"
+
 summary: "OpenAI Workspace Agents、Google Agent Development Kit、AWS Bedrock Agents、Microsoft Copilot Studio 四大企业 Agent 平台同步发力，本文从架构、能力、生态和定价四个维度进行系统化对比。"
 category: "agent"
 ---

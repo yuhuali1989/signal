@@ -4,7 +4,12 @@ slug: china-ai-five-models-eight-weeks-2026-08
 date: "2026-08-07"
 author: signal
 category: 深度分析
-tags: ["中国AI", "Qwen3.8-Max", "Kimi K3", "DeepSeek V4-Flash", "GLM-5.2", "Seedance 2.5", "开源", "MoE", "后训练"]
+tags:
+  - "MoE"
+  - "训练与对齐"
+  - "推理优化"
+  - "多模态"
+
 excerpt: "八周内五款重磅中国大模型接连亮相，这不是简单的发布密度提升，而是 AI 竞争从参数规模转向工程效率、开源生态和真实部署的系统性转折。本文深度拆解五款模型的技术路线、性能数据和产业影响。"
 coverImage: ""
 ---

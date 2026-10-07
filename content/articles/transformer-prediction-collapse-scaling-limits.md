@@ -5,11 +5,9 @@ date: "2026-04-12"
 updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
-  - "Transformer"
-  - "Scaling Law"
-  - "时间序列"
-  - "理论分析"
-  - "预测崩溃"
+  - "训练与对齐"
+  - "数据工程"
+  - "行业动态"
 type: "article"
 ---
 

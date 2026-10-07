@@ -2,7 +2,10 @@
 title: "KV Cache 优化工程实践全景：从 PagedAttention 到 MLA 的部署指南"
 date: "2026-04-30"
 author: "Signal AI"
-tags: ["KV Cache", "推理优化", "MLA", "GQA", "vLLM", "大模型部署"]
+tags:
+  - "训练与对齐"
+  - "推理优化"
+
 summary: "系统梳理大模型推理中 KV Cache 的核心瓶颈与优化路径，覆盖 MHA→GQA→MQA→MLA 的架构演进、PagedAttention/Prefix Caching/Chunked Prefill 等工程优化，以及 FP8 KV Cache 量化等前沿方向。"
 ---
 

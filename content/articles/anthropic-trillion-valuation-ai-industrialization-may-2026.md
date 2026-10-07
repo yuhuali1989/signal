@@ -1,7 +1,12 @@
 ---
 title: "Anthropic 万亿估值与 AI 产业的「工业化」时刻"
 date: "2026-05-31"
-tags: ["llm", "agent", "industry", "china", "infra"]
+tags:
+  - "AI Agent"
+  - "AI Infra"
+  - "行业动态"
+  - "国产AI"
+
 summary: "Anthropic 完成 650 亿美元 H 轮融资估值 9650 亿，逼近万亿门槛。从融资规模到算力支出，AI 正在经历从「软件行业」到「工业级基础设施」的根本性转变。"
 category: "article"
 ---

@@ -2,7 +2,11 @@
 title: "CrewAI 深度解析：双模式架构设计与核心 API 实战指南"
 date: "2026-05-07"
 type: "article"
-tags: ["CrewAI", "多智能体", "Agent", "框架设计", "AI Infra", "Flow", "开源"]
+tags:
+  - "AI Agent"
+  - "AI Infra"
+  - "开源生态"
+
 summary: "CrewAI v1.14 完全脱离 LangChain 重写核心引擎，创造性地提出 Crews（角色协作）+ Flows（事件驱动）双模式架构。本文深入解析其系统设计哲学、核心四件套 API（Agent/Task/Crew/Flow）、Memory/Knowledge/Tool 三大基础设施，以及生产级多 Agent 流水线的最佳实践。"
 category: "AI Infra"
 ---

@@ -5,11 +5,9 @@ date: "2026-04-12"
 updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
+  - "检索增强"
+  - "安全与治理"
   - "可解释性"
-  - "Mechanistic Interpretability"
-  - "情绪向量"
-  - "Activation Steering"
-  - "AI 安全"
 type: "article"
 ---
 

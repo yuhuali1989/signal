@@ -1,7 +1,12 @@
 ---
 title: "从实验室到量产：VLA 模型的车端部署优化与 Physical AI 生态全景"
 date: "2026-04-19"
-tags: ["VLA", "自动驾驶", "Physical AI", "推理优化", "小鹏", "FlashDrive", "量产化"]
+tags:
+  - "推理优化"
+  - "具身智能"
+  - "VLA"
+  - "自动驾驶"
+
 summary: "2026年4月，小鹏VLA 2.0在北京车展展示Physical AI生态，将同一VLA基座扩展到智驾/机器人/飞行器。本文梳理VLA模型从实验室到量产的完整技术链路，深入分析车端推理优化、跨域迁移和产业化挑战。"
 type: "article"
 category: "自动驾驶"

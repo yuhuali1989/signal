@@ -3,13 +3,8 @@ title: "Apple WWDC 2026 Siri AI 全面升级：端侧+私有云混合架构深�
 date: "2026-06-09"
 author: "Signal AI 编辑"
 tags:
-  - "Apple"
-  - "Siri"
-  - "WWDC"
-  - "Apple Intelligence"
-  - "AI助理"
-  - "端侧推理"
-  - "私有云计算"
+  - "推理优化"
+  - "AI Infra"
 category: "agent"
 summary: "Apple 在 WWDC 2026 发布了史上最大 Siri 升级——Siri AI，采用端侧 + 私有云计算混合架构，具备视觉智能、多轮对话、个人上下文理解和系统级应用操作能力，标志着 AI 助理从『语音助手』向『智能体』的关键跃迁。"
 ---

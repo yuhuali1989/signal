@@ -6,6 +6,7 @@ updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI 编程"
+  - "开源生态"
 type: "article"
 category: "工具与生态"
 ---

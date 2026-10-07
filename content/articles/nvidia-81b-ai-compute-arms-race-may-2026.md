@@ -1,7 +1,11 @@
 ---
 title: "NVIDIA 816 亿美元季报与 AI 算力军备竞赛：谁在为万亿参数买单"
 date: "2026-05-22"
-tags: ["infra", "gpu", "training", "inference", "llm"]
+tags:
+  - "训练与对齐"
+  - "推理优化"
+  - "AI Infra"
+
 summary: "NVIDIA Q1 FY2027 营收 816 亿美元，同比 +85%。但 Anthropic 每月烧 12.5 亿买算力、xAI 亏 64 亿扩张——AI 算力军备竞赛进入「烧钱验证」阶段。"
 category: "article"
 ---

@@ -2,7 +2,11 @@
 title: "VLA-World 论文精读：想象-反思-行动三阶段范式如何刷新自动驾驶规划 SOTA"
 date: "2026-04-18"
 type: "article"
-tags: ["自动驾驶", "VLA", "世界模型", "端到端", "nuScenes"]
+tags:
+  - "世界模型"
+  - "VLA"
+  - "自动驾驶"
+
 summary: "VLA-World（arXiv 2604.09059）首次在 VLA 框架中统一预测想象与反思推理能力，提出想象-反思-行动三阶段推理循环，在 nuScenes 规划任务上实现 L2 误差 0.58m，碰撞率 0.15%，刷新双 SOTA。本文深度解析其架构设计、训练策略和工程启示。"
 category: "自动驾驶"
 ---

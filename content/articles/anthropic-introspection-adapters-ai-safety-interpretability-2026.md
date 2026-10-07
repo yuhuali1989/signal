@@ -1,7 +1,12 @@
 ---
 title: "Anthropic 内省适配器：让大模型「自我坦白」隐藏行为的可解释性新范式"
 date: "2026-05-04"
-tags: ["Anthropic", "可解释性", "AI安全", "LoRA", "内省", "AuditBench", "机制可解释性"]
+tags:
+  - "训练与对齐"
+  - "安全与治理"
+  - "可解释性"
+  - "Anthropic"
+
 summary: "Anthropic 研究团队提出内省适配器（Introspection Adapters），一种轻量级 LoRA 插件，能让大模型自行解码内部激活状态并以自然语言报告隐藏行为，在 AuditBench 基准中以 59% 成功率超越全部现有审计方法，标志 AI 安全审计从「外部审讯」转向「内部自白」的范式革命。"
 ---
 

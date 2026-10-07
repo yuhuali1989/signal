@@ -5,11 +5,8 @@ date: "2026-06-05"
 updatedAt: "2026-06-05"
 author: "Signal AI"
 tags:
-  - "YOLOX"
-  - "目标检测"
-  - "Anchor-Free"
-  - "边缘推理"
-  - "NPU部署"
+  - "推理优化"
+  - "多模态"
 type: "article"
 ---
 

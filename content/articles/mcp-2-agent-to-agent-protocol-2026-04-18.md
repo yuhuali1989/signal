@@ -1,7 +1,11 @@
 ---
 title: "MCP 2.0 深度解析：Agent-to-Agent 协议如何重塑多智能体系统"
 date: "2026-04-18"
-tags: ["MCP", "Agent", "多智能体", "协议标准", "AI Infra"]
+tags:
+  - "AI Agent"
+  - "MCP"
+  - "AI Infra"
+
 summary: "MCP 2.0 发布，新增 Agent-to-Agent 通信、流式工具调用和权限沙箱三大核心能力。本文深度解析 MCP 2.0 的技术架构、与 1.0 的关键差异，以及对企业级 Multi-Agent 系统设计的影响。"
 type: "article"
 category: "agent"

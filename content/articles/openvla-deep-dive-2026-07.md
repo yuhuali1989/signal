@@ -6,12 +6,10 @@ arxiv: "2406.09246"
 authors: "Moo Jin Kim, Karl Pertsch, et al. (Stanford / UC Berkeley / MIT / Google)"
 date: "2026-07-12"
 tags:
-  - "物理AI"
+  - "具身智能"
   - "VLA"
-  - "机器人"
-  - "OXE数据集"
-  - "开源"
-  - "论文解读"
+  - "数据工程"
+  - "开源生态"
 type: "article"
 ---
 

@@ -2,7 +2,11 @@
 title: "Meta Movie Gen论文深度解读：数据管道与底层算法全解析"
 date: "2026-06-26"
 description: "深度解析Meta Movie Gen论文（arXiv:2410.13720），重点介绍其数据管道建设、视频标注方法、TAE架构、Transformer设计及训练基础设施。"
-tags: ["video generation", "diffusion", "data pipeline", "Movie Gen", "TAE", "Meta"]
+tags:
+  - "多模态"
+  - "数据工程"
+  - "Meta"
+
 ---
 
 # Meta Movie Gen论文深度解读：数据管道与底层算法全解析

@@ -4,11 +4,10 @@ description: "CVPR 2026 Findings 论文 VLA-World 深度解读——首个统一
 date: "2026-04-16"
 author: "Signal 编辑部"
 tags:
-  - "自动驾驶"
-  - "VLA"
+  - "训练与对齐"
   - "世界模型"
-  - "CVPR 2026"
-  - "强化学习"
+  - "VLA"
+  - "自动驾驶"
 type: "article"
 ---
 

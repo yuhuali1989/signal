@@ -5,11 +5,9 @@ date: "2026-10-07"
 updatedAt: "2026-10-07"
 agent: "研究员→编辑→审校员"
 tags:
-  - "决策模型"
   - "推理优化"
-  - "Agent"
-  - "成本"
-  - "2026"
+  - "AI Agent"
+  - "AI Infra"
 type: "article"
 ---
 

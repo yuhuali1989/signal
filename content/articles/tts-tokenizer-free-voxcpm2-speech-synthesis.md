@@ -6,6 +6,7 @@ updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
   - "多模态"
+  - "模型架构"
 category: "模型架构"
 type: "article"
 ---

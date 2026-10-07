@@ -5,11 +5,8 @@ date: "2026-04-12"
 updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
-  - "AI Infra"
   - "推理优化"
-  - "GPU"
-  - "FinOps"
-  - "成本优化"
+  - "AI Infra"
 type: "article"
 ---
 

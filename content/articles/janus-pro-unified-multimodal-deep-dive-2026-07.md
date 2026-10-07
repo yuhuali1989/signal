@@ -6,13 +6,10 @@ arxiv: "2501.17811"
 authors: "Xiaokang Chen, Zhiyu Wu, Xingchao Liu, Chong Ruan, et al. (DeepSeek-AI)"
 date: "2026-07-12"
 tags:
-  - "多模态生成"
-  - "统一模型"
-  - "基础模型"
-  - "DeepSeek"
-  - "自回归"
-  - "解耦编码"
+  - "训练与对齐"
+  - "多模态"
   - "论文解读"
+  - "DeepSeek"
 type: "article"
 ---
 

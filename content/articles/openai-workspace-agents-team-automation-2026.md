@@ -1,7 +1,12 @@
 ---
 title: "OpenAI Workspace Agents：ChatGPT 从聊天机器人进化为团队自动化平台"
 date: "2026-04-23"
-tags: ["OpenAI", "ChatGPT", "AI Agent", "Codex", "企业AI", "自动化"]
+tags:
+  - "AI Agent"
+  - "AI 编程"
+  - "行业动态"
+  - "OpenAI"
+
 summary: "OpenAI 正式推出 ChatGPT Workspace Agents，由 Codex 驱动，将 ChatGPT 从对话工具升级为能够自主执行复杂团队工作流的自动化平台。本文深度解析其技术架构、与 Custom GPTs 的本质差异，以及对企业 AI 采用格局的深远影响。"
 category: "agent"
 ---

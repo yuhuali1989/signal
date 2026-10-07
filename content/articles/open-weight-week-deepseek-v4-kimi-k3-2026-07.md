@@ -2,7 +2,12 @@
 title: "2026.07 开源权重周：DeepSeek V4 与 Kimi K3 如何改写全球模型格局"
 date: "2026-07-27"
 description: "深度解析2026年7月开源大模型双响炮：DeepSeek V4正式版（1.6万亿参数、峰谷定价、V4-Flash成本仅顶级1/100、SWE-bench 80.6%）与Kimi K3完整开源权重开放（2.8万亿全球最大开源、MXFP4 594GB、Modified MIT、独立测试51%幻觉率争议）。分析开源与闭源差距收窄、中国AI IPO潮、算力军备竞赛与智能体安全。"
-tags: ["DeepSeek V4", "Kimi K3", "开源权重", "MXFP4", "峰谷定价", "中国AI", "算力军备竞赛", "模型格局"]
+tags:
+  - "推理优化"
+  - "AI Infra"
+  - "开源生态"
+  - "行业动态"
+
 ---
 
 # 2026.07 开源权重周：DeepSeek V4 与 Kimi K3 如何改写全球模型格局

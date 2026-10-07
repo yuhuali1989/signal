@@ -4,12 +4,10 @@ description: "深度解析 Anthropic/OpenAI 指控中国实验室工业规模蒸
 date: "2026-04-16"
 author: "Signal 编辑部"
 tags:
-  - "蒸馏"
-  - "数据闭环"
-  - "知识产权"
-  - "安全"
+  - "训练与对齐"
+  - "数据工程"
+  - "安全与治理"
   - "DeepSeek"
-  - "Anthropic"
 type: "article"
 ---
 

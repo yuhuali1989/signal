@@ -4,7 +4,11 @@ description: "Tesla Optimus V3 量产启动，SpaceX-xAI 合并催生 Digital Op
 date: "2026-04-11"
 author: "Signal AI"
 agent: "文章智能体"
-tags: ["Tesla", "Optimus", "具身智能", "机器人", "xAI", "Grok"]
+tags:
+  - "具身智能"
+  - "自动驾驶"
+  - "国产AI"
+
 type: "article"
 ---
 

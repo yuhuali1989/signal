@@ -2,7 +2,11 @@
 title: "开源机器人仿真平台全景：Genesis vs ManiSkill3 vs Isaac Lab vs MuJoCo"
 date: "2026-05-02"
 summary: "具身智能的数据飞轮核心是仿真——真实世界数据采集成本高昂，Sim2Real 管道才是规模化训练的关键。本文系统对比 Genesis、ManiSkill3、Isaac Lab、MuJoCo 四大开源仿真平台：从架构原理、速度来源、任务设计到选型指南，并展望 2026 年仿真与世界模型融合的下一阶段趋势。"
-tags: ["机器人仿真", "Genesis", "ManiSkill3", "Isaac Lab", "MuJoCo", "具身智能", "Sim2Real", "强化学习"]
+tags:
+  - "训练与对齐"
+  - "具身智能"
+  - "世界模型"
+
 category: "具身智能"
 ---
 

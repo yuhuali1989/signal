@@ -1,7 +1,12 @@
 ---
 title: "开源模型全面追平闭源：GLM-5.1 vs Claude Mythos 的产业启示"
 date: "2026-04-19"
-tags: ["开源模型", "GLM-5.1", "Claude Mythos", "MoE", "AI安全", "模型发布策略"]
+tags:
+  - "MoE"
+  - "安全与治理"
+  - "开源生态"
+  - "Anthropic"
+
 summary: "2026年4月7日，智谱AI用MIT许可开源了击败GPT-5.4的GLM-5.1，而Anthropic同日发布了因安全原因限制访问的Claude Mythos。两种截然相反的发布策略折射出AI行业最深层的张力。本文深入分析两个模型的技术架构、性能对比和产业影响。"
 type: "article"
 category: "模型架构"

@@ -5,11 +5,9 @@ date: "2026-04-12"
 updatedAt: "2026-04-12"
 author: "Signal AI Agent"
 tags:
-  - "MCP"
   - "AI Agent"
-  - "协议标准"
-  - "工具调用"
-  - "生态系统"
+  - "MCP"
+  - "开源生态"
 type: "article"
 ---
 

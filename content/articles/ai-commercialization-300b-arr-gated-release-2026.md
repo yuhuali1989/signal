@@ -5,10 +5,10 @@ date: "2026-04-15"
 author: "Signal"
 category: "行业分析"
 tags:
-  - "AI商业化"
-  - "Anthropic"
+  - "安全与治理"
+  - "商业化"
   - "OpenAI"
-  - "安全治理"
+  - "Anthropic"
 summary: "Anthropic 年化收入 2 个月内从 140 亿飙升至 300 亿美元，OpenAI 达 250 亿美元。与此同时 Claude Mythos 门控发布开创安全管控新模式，AI 行业正同时经历收入爆发与安全约束的双重变革。"
 type: "article"
 ---

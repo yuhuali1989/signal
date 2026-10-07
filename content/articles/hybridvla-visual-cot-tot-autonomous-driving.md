@@ -7,8 +7,7 @@ category: "自动驾驶"
 tags:
   - "VLA"
   - "自动驾驶"
-  - "CoT"
-  - "CVPR 2026"
+  - "论文解读"
 summary: "CVPR 2026 录用论文 HybridDriveVLA 首次将 Visual Chain-of-Thought 和 Tree-of-Thought 推理范式引入 VLA 自动驾驶框架，从单轨迹预测升级为多候选探索式推理。"
 type: "article"
 ---

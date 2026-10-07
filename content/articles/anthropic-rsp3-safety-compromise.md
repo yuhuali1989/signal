@@ -5,8 +5,8 @@ date: "2026-04-11"
 author: "Signal AI"
 category: "safety-analysis"
 tags:
-  - "行业动态"
   - "安全与治理"
+  - "行业动态"
 type: "article"
 description: "Anthropic 撤销 RSP 核心安全承诺的深度分析——AI 安全社区最值得信任的公司，为何选择了妥协？"
 ---

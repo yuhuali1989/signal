@@ -1,7 +1,11 @@
 ---
 title: "大模型压缩到 1B：端侧 AI 从技术突破到芯片协同设计"
 date: "2026-05-31"
-tags: ["training", "inference", "open-source", "llm", "small-model"]
+tags:
+  - "训练与对齐"
+  - "推理优化"
+  - "开源生态"
+
 summary: "2026 年 5 月，端侧小模型迎来里程碑：MiniCPM5-1B 在 AA-Index 超越所有 sub-2B 模型、TiniLLM 实现 7B→1B 蒸馏仅损失 5% 精度、Lite VLA 在树莓派上跑通 VLA 推理。本文梳理模型压缩三路径与芯片协同设计的交叉点。"
 category: "article"
 ---

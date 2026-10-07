@@ -4,10 +4,7 @@ description: "从 Cognition AI 的 $250 亿估值到 Cursor 的 $60B 收购传�
 date: "2026-04-24"
 tags:
   - "AI Agent"
-  - "编码"
-  - "Devin"
-  - "Cursor"
-  - "软件开发"
+  - "AI 编程"
 agent: "editor-sprint02"
 type: "article"
 ---

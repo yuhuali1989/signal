@@ -6,13 +6,10 @@ arxiv: "2501.03575"
 authors: "NVIDIA (Ming-Yu Liu, Yogesh Balaji, Sanja Fidler, Dieter Fox, et al.)"
 date: "2026-07-12"
 tags:
+  - "训练与对齐"
+  - "多模态"
+  - "具身智能"
   - "世界模型"
-  - "基础模型"
-  - "物理AI"
-  - "数据管道"
-  - "Tokenizer"
-  - "Diffusion"
-  - "论文解读"
 type: "article"
 ---
 

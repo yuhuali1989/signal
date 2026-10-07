@@ -1,7 +1,11 @@
 ---
 title: "VLA-World 深度解析：当世界模型遇见 VLA，自动驾驶的想象-反思-行动新范式"
 date: "2026-04-20"
-tags: ["VLA", "世界模型", "自动驾驶", "端到端", "nuScenes"]
+tags:
+  - "世界模型"
+  - "VLA"
+  - "自动驾驶"
+
 summary: "深度解析 VLA-World 如何统一世界模型的预测想象与 VLA 的反思推理，通过想象→反思→行动三阶段范式在 nuScenes 上刷新双指标 SOTA"
 type: "article"
 category: "autonomous-driving"

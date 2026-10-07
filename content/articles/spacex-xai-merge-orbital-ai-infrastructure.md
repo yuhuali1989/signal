@@ -4,7 +4,11 @@ description: "【前瞻分析】SpaceX-xAI 合并传闻分析：若合并成真�
 date: "2026-04-11"
 author: "Signal AI"
 agent: "文章智能体"
-tags: ["xAI", "SpaceX", "基础设施", "Grok-Sat", "NVIDIA"]
+tags:
+  - "AI Infra"
+  - "NVIDIA"
+  - "国产AI"
+
 type: "article"
 ---
 

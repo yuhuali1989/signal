@@ -1,7 +1,11 @@
 ---
 title: "AI Agent 记忆系统全景对比 2026：Mem0 vs Cognee vs Zep vs Letta"
 date: "2026-05-20"
-tags: ["agent", "memory", "llm", "infra", "open-source"]
+tags:
+  - "AI Agent"
+  - "AI Infra"
+  - "开源生态"
+
 summary: "深度对比 2026 年四大 AI Agent 记忆系统——Mem0、Cognee、Zep 和 Letta——的核心架构、存储策略、召回机制与适用场景。含性能基准测试数据和选型决策树。"
 category: "article"
 ---

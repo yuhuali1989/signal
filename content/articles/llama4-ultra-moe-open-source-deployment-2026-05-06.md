@@ -3,7 +3,12 @@ title: "Llama 4 Ultra 开源部署深度解析：MoE 架构如何以 220B 激活
 description: "Meta 发布 Llama 4 Ultra 开源模型，MoE 架构推理时仅激活 220B 参数，MMLU 均分 89.7% 超越 GPT-4。深度解析其架构设计、部署成本与对开源生态的战略意义。"
 date: "2026-05-06"
 updatedAt: "2026-05-06"
-tags: ["Meta", "Llama 4 Ultra", "MoE", "开源", "模型部署", "多模态", "MMLU"]
+tags:
+  - "MoE"
+  - "多模态"
+  - "开源生态"
+  - "评测"
+
 summary: "Meta Llama 4 Ultra 采用混合专家架构，推理时仅激活约 220 亿参数，在 MMLU 等主流基准超越 GPT-4。本文深度解析其 MoE 路由机制、多模态能力、部署成本优势，以及在 Llama 系列家族中的战略定位。"
 ---
 

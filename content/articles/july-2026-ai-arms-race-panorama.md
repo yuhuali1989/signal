@@ -2,7 +2,12 @@
 title: "7月 AI 军备竞赛全景：开源反超、半价劲敌、全栈硬件对决"
 date: "2026-07-31"
 description: "2026年7月成为AI史上最密集发布月：Inkling-Small 276B反超975B原版、Claude Opus 5半价对标Fable 5、DeepSeek V4.5 MIT开源GPQA 91.8%、GLM 5.2开源首次击败GPT-5/Claude、Gemini 3.2 Pro 2M上下文、AMD Helios vs NVIDIA Vera Rubin七芯片全栈对决。69个发布创纪录。"
-tags: ["Claude Opus 5", "Inkling-Small", "DeepSeek V4.5", "GLM 5.2", "Gemini 3.2 Pro", "Vera Rubin", "AMD Helios", "开源", "MoE", "军备竞赛"]
+tags:
+  - "MoE"
+  - "推理优化"
+  - "多模态"
+  - "开源生态"
+
 ---
 
 # 7月 AI 军备竞赛全景：开源反超、半价劲敌、全栈硬件对决

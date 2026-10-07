@@ -1,7 +1,12 @@
 ---
 title: "Google Cloud Next '26 全景：第8代 TPU、Agent 平台与 Workspace AI 层的战略布局"
 date: "2026-04-23"
-tags: ["Google", "TPU", "AI Agent", "Cloud Next", "Workspace AI", "云计算", "企业AI"]
+tags:
+  - "推理优化"
+  - "AI Agent"
+  - "AI Infra"
+  - "AI 编程"
+
 summary: "Google 在 Cloud Next '26 大会上发布第8代 TPU、全新 Agent 平台和 Workspace AI 层，展示了从芯片到应用的全栈 AI 能力。本文深度解析三大发布的技术细节，以及 Google 与 Microsoft、AWS 在企业 AI 市场的竞争格局。"
 category: "infra"
 ---

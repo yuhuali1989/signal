@@ -2,7 +2,12 @@
 title: "AI 编码工具供应链安全：从 Vercel 事件看 Agent 时代的新型攻击面"
 type: article
 date: "2026-04-20"
-tags: ["AI安全", "供应链攻击", "Agent", "开发者工具", "Vercel"]
+tags:
+  - "AI Agent"
+  - "AI Infra"
+  - "安全与治理"
+  - "AI 编程"
+
 summary: "2026 年 4 月 Vercel 因第三方 AI 编码工具被入侵导致内部系统暴露。本文系统分析 AI 编码工具供应链的 5 大攻击面、真实案例、防御框架，以及企业应对 Agent 时代新型安全威胁的落地路径。"
 category: "security"
 ---

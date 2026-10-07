@@ -2,7 +2,11 @@
 title: "HunyuanVideo论文深度解读：数据管道与底层算法全解析"
 date: "2026-06-26"
 description: "深度解析腾讯HunyuanVideo论文（arXiv:2412.03603），重点介绍其数据管道建设、视频标注方法、3D VAE架构、Transformer设计及训练基础设施。"
-tags: ["video generation", "diffusion", "data pipeline", "HunyuanVideo", "3D VAE", "Transformer"]
+tags:
+  - "训练与对齐"
+  - "多模态"
+  - "数据工程"
+
 ---
 
 # HunyuanVideo论文深度解读：数据管道与底层算法全解析

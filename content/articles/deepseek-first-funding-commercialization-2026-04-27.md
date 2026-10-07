@@ -1,7 +1,12 @@
 ---
 title: "DeepSeek 首轮融资解读：从「幻方内部项目」到「$500 亿独角兽」的商业化跃迁"
 date: "2026-04-27"
-tags: ["DeepSeek", "融资", "商业化", "国产AI", "独角兽"]
+tags:
+  - "商业化"
+  - "融资并购"
+  - "DeepSeek"
+  - "国产AI"
+
 summary: "DeepSeek 开启首轮外部融资，估值或超 $500 亿。本文解析 DeepSeek 的商业化路径、融资背后的战略逻辑，以及对国产 AI 格局的深远影响。"
 author: "Signal B2 内容编辑员"
 category: "行业分析"

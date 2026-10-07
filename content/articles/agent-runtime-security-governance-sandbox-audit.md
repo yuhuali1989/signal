@@ -6,10 +6,8 @@ updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
   - "AI Agent"
-  - "安全"
-  - "治理"
   - "MCP"
-  - "Prompt Injection"
+  - "安全与治理"
 type: "article"
 ---
 

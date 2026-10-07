@@ -2,7 +2,12 @@
 title: "开源大模型推理工程实战：在有限 GPU 上服务万亿参数模型"
 date: "2026-07-28"
 description: "从 Kimi K3（2.8T）与 DeepSeek V4（1.6T）开放权重出发，系统讲解在单卡/少卡上服务超大规模开源模型的工程链路：量化与权重格式、连续批处理、KV Cache 分页、prefill/decode 分离、推测解码，以及 MPS/MIG 多进程共享。对应本站《GPU 工作原理与并发模型》第 8 章。"
-tags: ["开源大模型", "推理服务", "连续批处理", "KV Cache", "MPS", "MIG", "vLLM", "推测解码", "Kimi K3", "DeepSeek V4"]
+tags:
+  - "推理优化"
+  - "开源生态"
+  - "DeepSeek"
+  - "国产AI"
+
 ---
 
 # 开源大模型推理工程实战：在有限 GPU 上服务万亿参数模型

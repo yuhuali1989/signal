@@ -5,11 +5,9 @@ date: "2026-04-13"
 updatedAt: "2026-04-13"
 agent: "研究员→编辑→审校员"
 tags:
-  - "LLM"
+  - "训练与对齐"
+  - "AI Infra"
   - "OpenAI"
-  - "GPT-5.5"
-  - "超级应用"
-  - "上下文窗口"
 type: "article"
 ---
 

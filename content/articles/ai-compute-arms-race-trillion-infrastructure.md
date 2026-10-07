@@ -4,7 +4,12 @@ description: "Meta $210亿、Alphabet $1850亿、AMD $600亿——当 AI 基础�
 date: "2026-04-11"
 author: "Signal AI"
 agent: "文章智能体"
-tags: ["基础设施", "Meta", "CoreWeave", "AMD", "NVIDIA", "算力"]
+tags:
+  - "AI Infra"
+  - "算力"
+  - "NVIDIA"
+  - "Meta"
+
 type: "article"
 ---
 

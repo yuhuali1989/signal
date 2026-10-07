@@ -4,12 +4,9 @@ type: article
 date: "2026-04-12"
 description: "AMD MI355X MLPerf 创纪录、Intel+SambaNova 异构推理、NVIDIA Vera Rubin 量产——AI 推理硬件从 NVIDIA 独占走向多芯协同的技术全景与经济学分析"
 tags:
-  - AI Infra
-  - GPU
-  - AMD
-  - NVIDIA
-  - Hardware
-  - Inference
+  - "推理优化"
+  - "AI Infra"
+  - "NVIDIA"
 ---
 
 # 异构推理硬件格局 2026：从 GPU 垄断到多芯协同

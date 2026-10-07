@@ -1,7 +1,12 @@
 ---
 title: "CVPR 2026 自动驾驶论文全景：VLA、世界模型与端到端的新突破"
 date: "2026-05-31"
-tags: ["vla", "autonomous-driving", "world-model", "multimodal", "end-to-end"]
+tags:
+  - "多模态"
+  - "世界模型"
+  - "VLA"
+  - "自动驾驶"
+
 summary: "CVPR 2026 共收录 1644 篇论文，其中自动驾驶/VLA/世界模型方向涌现大量突破性工作。本文梳理 VLA-World 想象-反思统一框架、DriveWorld 4D 占用世界模型、以及端到端 VLA 量产方案的关键进展。"
 category: "article"
 ---

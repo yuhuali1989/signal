@@ -4,11 +4,8 @@ date: "2026-06-14"
 author: "Signal AI 编辑"
 tags:
   - "AI Agent"
-  - "金融交易"
-  - "Omnigent"
-  - "Robinhood"
-  - "Databricks"
-  - "自主交易"
+  - "AI Infra"
+  - "融资并购"
 category: "agent"
 summary: "Databricks 开源 Omnigent 元工具编排多 Agent 协作，Robinhood 宣布允许 AI Agent 执行股票交易，AI Agent 正式从代码编写延伸至金融交易。"
 ---

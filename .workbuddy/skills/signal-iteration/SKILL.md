@@ -138,11 +138,24 @@ console.log('进化日志最新:', latest(e));
 
 | 模块 | 必查项 | 修法要点 |
 |---|---|---|
-| **文章** | ① 日期三态（见坑清单）② 同标题重复 | 日期一律 `"YYYY-MM-DD"` 带引号；重复比对正文规模，**删短保长**（无 redirects，删除即 404，需确认覆盖） |
+| **文章** | ① 日期三态（见坑清单）② 同标题重复 ③ **标签是否越权（不在受控词表）** | 日期一律 `"YYYY-MM-DD"` 带引号；重复比对正文规模，**删短保长**（无 redirects，删除即 404，需确认覆盖）；标签治理见下方「文章标签受控词表」 |
 | **论文** | ① `category` 是否在 `categories.json` 内 ② 缺 `date` | 非法值归一（`ad`→`autonomous-driving`、`reasoning`→`arch`）；★**从 `arxivUrl` 的 arXiv ID 补 date**：`/abs/1706.03762` → `YYMM` → `YYYY-MM`（`≥90` 记 19xx，否则 20xx），一次可补数十条且准确 |
 | **模型** | ① 缺 `date`/`type` ② 缺 `typeLabel`/`typeIcon` ③ 是否按时间排序 | 只补缺失，**typeLabel 不强行统一**（双语义，见坑清单）；★**按 `date` 升序重排 JSON 即等于页面按时间线展示** |
 
 收尾同主线 A：进化日志（每动过的模块各一条）→ wiki → 两条硬校验 → commit → 验证 → **★push**。
+
+### ★ 文章标签受控词表（32 个，越权即需治理）
+
+治理前实测：142 篇文章用了 **421 种标签，其中 327 种只出现 1 次**（产品名、会议名、一次性术语），毫无索引价值。
+
+**技术类 21**：模型架构 · MoE · 训练与对齐 · 推理优化 · 多模态 · VLM · AI Agent · MCP · 具身智能 · 世界模型 · VLA · 自动驾驶 · 数据工程 · 检索增强 · AI Infra · 算力 · 安全与治理 · 开源生态 · 评测 · 可解释性 · AI 编程
+**非技术 4**：论文解读 · 行业动态 · 商业化 · 融资并购
+**厂商 7**：DeepSeek · OpenAI · Anthropic · NVIDIA · Google · Meta · 国产AI
+
+治理规则：
+- **每篇 ≤ 4 个**，按上表顺序排列（保证同类文章顺序一致）
+- 无法归类的标签**直接丢弃**（不要迁就它新增词表）
+- ⚠️ **短 ASCII 关键词必须用全等/分词匹配，不能用 `includes`**——`open-source` 含子串 `rce`、`world` 含 `rl`，都会误判到完全不相干的分类
 
 > 排序比较键：日期存在 `YYYY-MM` 与 `YYYY-MM-DD` 两种精度，用 `String(d).padEnd(10,'-01')` 归一化后再 `localeCompare`，避免混合精度排序错乱。
 
@@ -195,6 +208,9 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 | ★模型 `typeLabel` 是双语义字段 | `moe`/`ssm`/`small`/`reasoning`/`video`/`image` 存「类型名」；`llm`/`multimodal`/`vlm`/`autonomous` 存**每个模型自己的个性化定位语**（llm 下 48 种各不同，如「极致性价比 MoE 旗舰」）。**只补缺失值，绝不按 type 强行统一**——统一会抹掉定位信息 |
 | 删重复文章前 | 必须先比对**正文规模**（行数/字节）。同标题的两篇里，短的是初版、长的是扩写版 → 删短保长。站点**无 redirects 配置**，删掉即 404，只在确认内容完全覆盖时才删 |
 | 想改页面展示顺序 | `src/app/models/page.js`、`papers/page.tsx` **都没有 sort**，纯按 JSON 数组顺序渲染 → **排序 JSON 文件 = 改变页面展示顺序**，不用改代码 |
+| ★全部 md 都是 CRLF | `content/**/*.md` 无一例外是 `\r\n`。正则里写 `\n` 或 `^xxx:\n((?:  - .*\n)+)` 会**静默匹配失败**（曾导致 142 篇里只处理了 78 篇）→ 一律写 `\r?\n`，`$` 前留 `\r?`，写回时用检测到的 EOL（`raw.includes('\r\n') ? '\r\n' : '\n'`） |
+| ★正则改写 tags/frontmatter 可能拼成一行 | 追加列表项时若换行处理错，会产生 `  - "A"  - "B"` 这种拼行 → **首页 500**。改完**必须**跑 `check_frontmatter.mjs` 且 curl 首页确认 200；发现拼行用 `^([ \t]*-[ \t]*"[^"]*")[ \t]*(-[ \t]*".*")$` 拆回两行 |
+| 批量改 md 前 | 先用 `git checkout -- <dir>` 确认可回滚；脚本分小步跑，每步后跑 frontmatter 校验，别一次改完全量才验 |
 
 ## 资源
 - `scripts/qa_check.mjs` — 数据质检（JSON / id 唯一 / 字段完整 / rank 连续）

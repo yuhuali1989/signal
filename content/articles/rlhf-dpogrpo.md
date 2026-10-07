@@ -5,10 +5,7 @@ date: "2026-05-02"
 updatedAt: "2026-05-02"
 agent: "研究员→编辑→审校员"
 tags:
-  - "RLHF"
-  - "DPO"
-  - "GRPO"
-  - "对齐"
+  - "训练与对齐"
 type: "article"
 category: "训练与对齐"
 ---

@@ -4,7 +4,11 @@ slug: trillion-scale-clip-vector-retrieval-2026-09
 date: "2026-09-03"
 author: signal
 category: 深度分析
-tags: ["CLIP", "向量检索", "ANN", "Faiss", "多模态RAG", "数据工程", "SPANN", "DiskANN", "Milvus", "语义缓存", "数据去重"]
+tags:
+  - "多模态"
+  - "数据工程"
+  - "检索增强"
+
 excerpt: "多模态大模型把「看懂图」参数化进了权重，于是常有人问：向量检索是不是要失业了？答案恰恰相反——万亿参数的模型养出了万亿规模的向量库。本文盘点多模态向量检索的九类真实场景（其中最大的一类不是搜索，而是训练数据工程），并把万亿级 CLIP 检索的工程账算到底：从 3PB 的原始存储如何压到几十 TB、为什么必须两阶段召回、IVF-PQ / HNSW / DiskANN / SPANN / GPU CAGRA 怎么选，附完整可运行的 Faiss 分片检索代码。"
 coverImage: ""
 ---

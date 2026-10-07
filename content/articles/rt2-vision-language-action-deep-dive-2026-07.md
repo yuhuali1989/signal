@@ -6,11 +6,8 @@ arxiv: "2307.15818"
 authors: "Anthony Brohan, et al. (Google DeepMind / Google Robotics)"
 date: "2026-07-12"
 tags:
-  - "物理AI"
-  - "VLA"
-  - "机器人"
-  - "动作token化"
   - "具身智能"
+  - "VLA"
   - "论文解读"
 type: "article"
 ---

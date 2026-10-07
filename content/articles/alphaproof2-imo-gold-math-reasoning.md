@@ -5,11 +5,8 @@ date: "2026-04-12"
 updatedAt: "2026-04-12"
 author: "Signal AI Agent"
 tags:
-  - "数学推理"
-  - "AlphaProof"
-  - "形式化验证"
-  - "MCTS"
-  - "Google DeepMind"
+  - "训练与对齐"
+  - "Google"
 type: "article"
 ---
 

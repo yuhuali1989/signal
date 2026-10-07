@@ -5,9 +5,9 @@ date: "2026-04-11"
 updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
-  - "行业动态"
   - "模型架构"
-  - "Agent"
+  - "AI Agent"
+  - "行业动态"
 type: "article"
 ---
 

@@ -1,7 +1,11 @@
 ---
 title: "KVCache 分布式复用：从本地缓存到跨数据中心服务的架构演进"
 date: "2026-04-20"
-tags: ["KVCache", "推理优化", "分布式系统", "vLLM", "SGLang", "RDMA"]
+tags:
+  - "训练与对齐"
+  - "推理优化"
+  - "AI Infra"
+
 summary: "深度解析 KVCache 从本地缓存演进为跨数据中心分布式服务的技术路径，覆盖 PrfaaS、FlexKV、LMCache 三大方案的架构设计与性能对比"
 type: "article"
 category: "infra"

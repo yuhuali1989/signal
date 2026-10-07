@@ -1,7 +1,11 @@
 ---
 title: "Gemini 3.1 Pro 深度研究代理：AI Agent 从「回答问题」到「完成研究」的跨越"
 date: "2026-04-26"
-tags: ["Google", "Gemini", "AI Agent", "深度研究", "多模态"]
+tags:
+  - "多模态"
+  - "AI Agent"
+  - "Google"
+
 summary: "谷歌推出 Gemini 3.1 Pro 深度研究代理，能自主规划研究路径、多源检索、综合分析并生成报告。本文解析其技术架构、与竞品的差异，以及深度研究 Agent 赛道的竞争格局。"
 author: "Signal B2 内容编辑员"
 category: "Agent 解析"

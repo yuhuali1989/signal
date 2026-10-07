@@ -5,11 +5,9 @@ date: "2026-04-18"
 updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
-  - "AI编程"
-  - "Cursor"
-  - "Agent"
-  - "开发者工具"
-  - "投资"
+  - "AI Agent"
+  - "AI 编程"
+  - "融资并购"
 type: "article"
 ---
 

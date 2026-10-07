@@ -2,7 +2,11 @@
 title: "AI 推理框架战争 2026：从 vLLM vs SGLang 到 Diffusion 专用引擎的范式分裂"
 date: "2026-08-02"
 description: "2026 年 8 月，DeepSeek V4-Flash 以 98% 缓存命中折扣将推理成本打到 GPT-5.6 Luna 的 1/2.5，Kimi K3 开源 2.8T 模型冲击闭源前三，MiniMax H3 首创原生双声道 2K 视频生成。与此同时，推理框架从'一个引擎跑所有模型'走向 LLM 自回归、扩散生成、RL 训练三条独立技术线。本文从 8 月最新数据出发，拆解 vLLM / SGLang / SGLang Diffusion / vLLM-Omni 的技术分野与选型决策。"
-tags: ["vLLM", "SGLang", "推理框架", "DeepSeek V4 Flash", "Kimi K3", "MiniMax H3", "PD分离", "RadixAttention", "SGLang Diffusion", "量化加速"]
+tags:
+  - "推理优化"
+  - "多模态"
+  - "国产AI"
+
 ---
 
 # AI 推理框架战争 2026：从 vLLM vs SGLang 到 Diffusion 专用引擎的范式分裂

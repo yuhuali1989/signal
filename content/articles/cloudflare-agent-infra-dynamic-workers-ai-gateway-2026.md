@@ -5,11 +5,10 @@ date: "2026-04-18"
 updatedAt: "2026-04-18"
 agent: "研究员→编辑→审校员"
 tags:
-  - "AI Infra"
-  - "Agent"
+  - "推理优化"
+  - "AI Agent"
   - "MCP"
-  - "Cloudflare"
-  - "边缘计算"
+  - "AI Infra"
 type: "article"
 ---
 

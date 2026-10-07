@@ -2,7 +2,12 @@
 title: "Gemma 4 深度解读：Multi-Token Prediction 如何让开源模型跑赢闭源"
 date: "2026-05-07"
 type: "article"
-tags: ["Gemma 4", "Google", "MTP", "端侧部署", "开源模型", "模型架构"]
+tags:
+  - "模型架构"
+  - "训练与对齐"
+  - "推理优化"
+  - "开源生态"
+
 summary: "Google 发布 Gemma 4 系列（e2B/e4B/26B/31B），首次在开源模型中大规模应用 Multi-Token Prediction（MTP），配合 262K 上下文窗口和端侧量化，让 31B 模型在 LMArena 超越同级闭源模型，4B 小模型可在手机离线运行。本文深入解析其架构创新与工程实践。"
 category: "模型架构"
 ---

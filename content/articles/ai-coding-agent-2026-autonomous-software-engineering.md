@@ -5,7 +5,7 @@ date: "2026-04-12"
 updatedAt: "2026-04-12"
 agent: "研究员→编辑→审校员"
 tags:
-  - "Agent"
+  - "AI Agent"
   - "AI 编程"
 type: "article"
 ---

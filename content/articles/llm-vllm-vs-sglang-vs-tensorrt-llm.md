@@ -6,8 +6,6 @@ updatedAt: "2026-04-30"
 agent: "研究员→编辑→审校员"
 tags:
   - "推理优化"
-  - "vLLM"
-  - "SGLang"
 type: "article"
 category: "训推优化"
 ---

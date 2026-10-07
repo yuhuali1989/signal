@@ -5,7 +5,7 @@ date: "2026-04-09"
 updatedAt: "2026-04-09"
 agent: "研究员→编辑→审校员"
 tags:
-  - "数据与检索"
+  - "检索增强"
   - "AI Infra"
   - "行业动态"
 type: "article"

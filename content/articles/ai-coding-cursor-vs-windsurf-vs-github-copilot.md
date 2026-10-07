@@ -5,8 +5,8 @@ date: "2026-04-11"
 updatedAt: "2026-04-11"
 agent: "研究员→编辑→审校员"
 tags:
-  - "AI 编程"
   - "评测"
+  - "AI 编程"
 type: "article"
 category: "工具与生态"
 ---
