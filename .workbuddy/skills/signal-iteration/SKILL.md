@@ -132,6 +132,20 @@ console.log('进化日志最新:', latest(e));
 7. 起服务，curl 该书第 1 章页 + 书架页确认 200。
 8. **★push（必做，完成即推）** —— 写完即推，本轮才算结束。
 
+## 主线 C：内容整理（用户说「有点乱 / 整理下」时走这条）
+
+整理 ≠ 加数据，是**修数据质量**。按模块逐个巡检 → 修 → 复核：
+
+| 模块 | 必查项 | 修法要点 |
+|---|---|---|
+| **文章** | ① 日期三态（见坑清单）② 同标题重复 | 日期一律 `"YYYY-MM-DD"` 带引号；重复比对正文规模，**删短保长**（无 redirects，删除即 404，需确认覆盖） |
+| **论文** | ① `category` 是否在 `categories.json` 内 ② 缺 `date` | 非法值归一（`ad`→`autonomous-driving`、`reasoning`→`arch`）；★**从 `arxivUrl` 的 arXiv ID 补 date**：`/abs/1706.03762` → `YYMM` → `YYYY-MM`（`≥90` 记 19xx，否则 20xx），一次可补数十条且准确 |
+| **模型** | ① 缺 `date`/`type` ② 缺 `typeLabel`/`typeIcon` ③ 是否按时间排序 | 只补缺失，**typeLabel 不强行统一**（双语义，见坑清单）；★**按 `date` 升序重排 JSON 即等于页面按时间线展示** |
+
+收尾同主线 A：进化日志（每动过的模块各一条）→ wiki → 两条硬校验 → commit → 验证 → **★push**。
+
+> 排序比较键：日期存在 `YYYY-MM` 与 `YYYY-MM-DD` 两种精度，用 `String(d).padEnd(10,'-01')` 归一化后再 `localeCompare`，避免混合精度排序错乱。
+
 ## 两条硬校验（不做会出线上故障）
 
 ### ① frontmatter 全量校验（防首页 500）
@@ -177,6 +191,10 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 | 论文 `category` 用非法值 | 必须用 `categories.json` 里的 id；历史遗留的 `ad` / `reasoning` 不要用 |
 | 巡检脚本遇 `Date` 类型日期 | YAML 日期被 gray-matter 解析成 `Date` 对象，直接 `.slice` 会崩 → 先 `String(d)` 再正则归一化为 `YYYY-MM-DD` |
 | ★dev server 中途停止 | 长时间会话后 `npm run dev` 会退出，验证时**全部返回 HTTP 000**（不是代码问题）→ 重启 dev server 再验；**验证前先探测端口**，别把 000 误判为页面故障 |
+| ★YAML 日期三态 | 文章 frontmatter 的 `date`/`updatedAt` 存在三种形态：① 字符串 `2026-04-11`；② 带时分 `2026-04-11 15:41`；③ **无引号被解析成 `Date` 对象**（7 篇曾中招）。统一修法：一律写成 `date: "YYYY-MM-DD"`（**必须带引号**，否则无引号也会被转 Date） |
+| ★模型 `typeLabel` 是双语义字段 | `moe`/`ssm`/`small`/`reasoning`/`video`/`image` 存「类型名」；`llm`/`multimodal`/`vlm`/`autonomous` 存**每个模型自己的个性化定位语**（llm 下 48 种各不同，如「极致性价比 MoE 旗舰」）。**只补缺失值，绝不按 type 强行统一**——统一会抹掉定位信息 |
+| 删重复文章前 | 必须先比对**正文规模**（行数/字节）。同标题的两篇里，短的是初版、长的是扩写版 → 删短保长。站点**无 redirects 配置**，删掉即 404，只在确认内容完全覆盖时才删 |
+| 想改页面展示顺序 | `src/app/models/page.js`、`papers/page.tsx` **都没有 sort**，纯按 JSON 数组顺序渲染 → **排序 JSON 文件 = 改变页面展示顺序**，不用改代码 |
 
 ## 资源
 - `scripts/qa_check.mjs` — 数据质检（JSON / id 唯一 / 字段完整 / rank 连续）
