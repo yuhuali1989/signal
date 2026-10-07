@@ -1524,5 +1524,56 @@
     "hasReview": false,
     "date": "2026-10",
     "summary": "Hinton 领衔 22 位学者（含 Bengio、图灵奖得主 Barto、OpenAI 首席科学家 Pachocki）的首篇 RSI 论文，探讨 AI 参与研发下一代 AI 是否会触发智能爆炸。★关键数据：引用 Anthropic 内部数据，**AI 生成并经审核的代码占比已从 2025 年 1 月的个位数升至 2026 年 5 月的 80% 以上**；论文估算若 AI 研发实现全自动化，技术进展速度可能在约 **1.5 年内提升十倍**。★但作者强调当前证据**尚不足以证明智能爆炸已发生**——算力、数据、实验时间与科研收益递减仍是主要制约因素。"
+  },
+  {
+    "id": "mllms-fail-to-refuse-agentic-tools-2026",
+    "title": "MLLMs Fail to Refuse when Using Tools Agentically",
+    "authors": "arXiv 2610 (October 2026 track)",
+    "venue": "arXiv",
+    "category": "agent",
+    "importance": 5,
+    "tags": [
+      "多模态",
+      "工具调用",
+      "安全对齐",
+      "拒绝机制"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "★研究发现多模态大模型在**代理式调用工具**时存在拒绝执行不当请求的安全缺陷——即模型在对话中能拒绝的危险请求，一旦以「智能体 + 工具调用」的形式出现就可能不再拒绝。★这对智能体产品是硬警报：**对齐不能只在对话层做，必须覆盖工具调用路径**。"
+  },
+  {
+    "id": "opentpu-agent-designed-inference-chip-2026",
+    "title": "openTPU: An Agent-Designed and Validated Open Inference Accelerator",
+    "authors": "openTPU 开源项目（Hacker News）",
+    "venue": "开源项目 / FPGA 验证",
+    "category": "arch",
+    "importance": 4,
+    "tags": [
+      "AI 设计芯片",
+      "TPU",
+      "FPGA",
+      "端到端验证"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "由 AI 智能体设计并验证的 openTPU 硬件架构，在 FPGA 上为 10 个现代模型（含 LFM2.5-230M）实现推理加速。使用 SystemVerilog 硬件描述、指令集定义与**位精确模拟器**做端到端验证，达到 **DRAM 带宽利用率 82%–94%** 且与模拟器逐位匹配。★需保留判断：FPGA 验证与真实流片量产之间仍有巨大距离，当前属机制验证。"
+  },
+  {
+    "id": "jagged-competence-origin-2026",
+    "title": "Where Does Jagged Competence Come From?",
+    "authors": "arXiv 2610",
+    "venue": "arXiv",
+    "category": "alignment",
+    "importance": 4,
+    "tags": [
+      "参差能力",
+      "能力不均衡",
+      "评测",
+      "理论分析"
+    ],
+    "hasReview": false,
+    "date": "2026-10",
+    "summary": "通过**双层任务结构**探究 AI 系统「参差能力（jagged competence）」产生的根本原因——即模型在相邻难度任务上表现断层、局部失败的现象。★对工程的含义：**平均分不能代表可用性**，必须按任务族分别评估；这也解释了为什么「实验室 95%」在生产环境会掉到「60%」。"
   }
 ]
