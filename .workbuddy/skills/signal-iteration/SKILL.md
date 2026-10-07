@@ -176,6 +176,7 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 | ★新闻 id 序号撞车 | 同一天多轮迭代时 `news-YYYY-MM-DD-N` 会撞号 → **新内容被去重静默跳过**。脚本自动探测下一个可用序号，加完按关键词回查是否落库 |
 | 论文 `category` 用非法值 | 必须用 `categories.json` 里的 id；历史遗留的 `ad` / `reasoning` 不要用 |
 | 巡检脚本遇 `Date` 类型日期 | YAML 日期被 gray-matter 解析成 `Date` 对象，直接 `.slice` 会崩 → 先 `String(d)` 再正则归一化为 `YYYY-MM-DD` |
+| ★dev server 中途停止 | 长时间会话后 `npm run dev` 会退出，验证时**全部返回 HTTP 000**（不是代码问题）→ 重启 dev server 再验；**验证前先探测端口**，别把 000 误判为页面故障 |
 
 ## 资源
 - `scripts/qa_check.mjs` — 数据质检（JSON / id 唯一 / 字段完整 / rank 连续）
