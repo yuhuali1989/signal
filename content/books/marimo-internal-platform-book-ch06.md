@@ -13,8 +13,9 @@ tags:
   - "内部模型"
   - "安全边界"
 type: "book"
-part: "篇三 · 自建与落地"
+part: "篇五 · 自建：基于 marimo 的内部平台"
 ---
+# 第 22 章 · AI Native 接入：让 Agent 真的能跑代码
 
 ## 6.1 marimo 已经给了什么（不用从零做）
 

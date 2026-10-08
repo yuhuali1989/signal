@@ -14,8 +14,9 @@ tags:
   - "Pyodide"
   - "uv"
 type: "book"
-part: "篇三 · 自建与落地"
+part: "篇五 · 自建：基于 marimo 的内部平台"
 ---
+# 第 18 章 · marimo 开源代码拆解：能复用什么、必须懂什么
 
 ## 2.1 总体技术栈
 
