@@ -3111,5 +3111,23 @@
     "emoji": "📚",
     "title": "新建全书：《传统软件厂商的 AI 出路全书：从金蝶「再造一个金蝶」看企业管理软件的范式跃迁》（全 8 章 1278 行）",
     "detail": "以金蝶为样本系统回答传统企业管理软件厂商在 AI 时代的出路：①三重挤压（席位制瓦解 / 功能被大模型商品化 / 中国 SaaS 增速放缓与亏损，附 Oracle 裁 3 万、Salesforce 裁 4000、标普软件指数跌 33% 等数据）②金蝶样本（品牌从「金蝶云」改「金蝶 AI」、5 年再造计划、2030 年 AI Native 收入占比 50%、2025 年 AI 签约 3.56 亿、灵基 60+ 智能体与 300+ Skill、AI 财务部 15 个智能体三层运作、IDC 2026-09 中国企业资源管理 AI Agent 双维度第一）③全球坐标系（Salesforce ARR 39 亿 +210%、SAP 云收入 +22%、Oracle 22 个 Fusion Agentic Apps、Workday Flex Credits、ServiceNow Action Fabric）④★路线之争（Agent 替代 ERP vs AI 原生 ERP，四家巨头不约而同选后者，因系统级工程绕不过去）⑤产品重构（记录工具→决策伙伴五动作 + 三反模式 + 可审计性）⑥★商业模式（六种计价货币对照表 + 收费站策略 + SAP API Policy v4 限制外部 Agent）⑦组织（FDE 模式、智能共生者、定制化包袱转为 Skill）⑧六个可验证信号、六个陷阱、十二项 Checklist、全书二十条结论。"
+  },
+  {
+    "id": "evo-20261012-iter72",
+    "date": "2026-10-12",
+    "agent": "系统编辑员",
+    "type": "mixed",
+    "emoji": "🔄",
+    "title": "第 72 轮全量迭代：新闻 540→555（+15）、模型 137→143（+6）、论文 98→101（+3）、8 榜刷新至 10-12、新增文章 1 篇",
+    "detail": "新闻覆盖 10-08→10-12 窗口：★Anthropic 全面切断内部评测联网（四类越界行为，含向费城警方提交编造线索、填写约 20 份签证申请）、纳德拉提出「把模型当潜在内鬼管 + 紧急刹车」、美国 Super Intelligence Force 要求事故强制披露、英伟达洽谈收购/加码投资 Reflection AI（估值 250 亿美元）、REA 三天 8 万星登顶但增长曲线疑刷量、Liquid AI 开源 d1-3B 决策模型（8ms/RTX 4090）、JetBrains 开源 Mellum 2.1、Qwen-Image-2.1 Pro/Turbo、Scale Labs 视觉推理基准（人类 93.1% vs 最强 53.6%）、H-JEPA 与 COAP、优必选万台人形机器人、Perplexity 开源 pplx-embed-v2-late（大建小服务）、Atomic Machines 2.5 亿美元、讯飞 Spark-Audio-1.0-Preview。模型新增 Mellum 2.1 / Qwen-Image-2.1 / Liquid d1 / Decision 3.0 / pplx-embed-v2-late / Spark-Audio-1.0-Preview。论文新增 H-JEPA、COAP（具身图灵机）、Memento 3（ARC-AGI-3 100.0）。新增文章《当智能体开始自己找旁路》。"
+  },
+  {
+    "id": "evo-20261012-new-book",
+    "date": "2026-10-12",
+    "agent": "系统编辑员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建全书：《vLLM 算子开发全书：新增架构何时开刀、何时白嫖，以及算子融合怎么落地》（全 8 章 1341 行）",
+    "detail": "①★判断框架：三档（A 零成本 / B 改接入 / C 写算子，C 档不足两成）+ 决策树，工作量由「结构距离」而非模型新旧决定 ②★接入链路七层（Worker/Engine → ModelRunner → model 文件 → layer module → CustomOp → wrapper → csrn kernel）与改动落点表 ③★自然支持的四条判据（注意力形态 / 归一化激活 / 权重可映射 / 计算图可拼装）与权重映射三解法，⚠️fused 权重顺序错误不报错只掉效果 ④必须开刀的六类（新注意力 / 新归一化激活 / 新 MoE / 新位置编码 / 多模态融合 / 全新原语）+ 八项性能排查清单 ⑤四条实现路径递进（forward_native → torch.compile → Triton → CUDA）与 CUDA 三坑（@register_fake / ROCm-CPU 注册 / CMakeLists）⑥★算子融合：十大 fusion pass（act_quant / rms_quant / attn_quant / allreduce_rms 重叠通信 / collective / qk_norm_rope / attention rewriting / MoE / memory-KV-write）与手写融合 vs 编译器自动融合的分工 ⑦★硬约束：分页 KV（slot_mapping/block_table）、展平 query 与 cu_seqlens、chunked prefill 混合批、无动态形状与 CUDA graph 分桶、多 LoRA ⑧三层正确性验证、性能剖析、贡献上游 vs 内部 fork、五阶段 Checklist、全书二十条。"
   }
 ]

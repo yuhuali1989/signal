@@ -1633,5 +1633,64 @@
     "hasReview": false,
     "date": "2026-10",
     "summary": "通过**双层任务结构**探究 AI 系统「参差能力（jagged competence）」产生的根本原因——即模型在相邻难度任务上表现断层、局部失败的现象。★对工程的含义：**平均分不能代表可用性**，必须按任务族分别评估；这也解释了为什么「实验室 95%」在生产环境会掉到「60%」。"
+  },
+  {
+    "id": "h-jepa-2026",
+    "title": "H-JEPA: Hierarchical Joint-Embedding Predictive Architecture for Visual Planning",
+    "authors": "AMI Labs / NYU / INRIA / Brown（Yann LeCun 任董事长）",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 5,
+    "hasReview": false,
+    "date": "2026-10",
+    "tags": [
+      "世界模型",
+      "JEPA",
+      "分层规划",
+      "视觉规划",
+      "开源",
+      "LeCun"
+    ],
+    "summary": "面向视觉规划的分层世界模型，代码与预训练权重同步公开。多个 JEPA 逐层堆叠，各层在自身表征空间预测不同时间跨度后的状态；高层先定粗略计划，把预测的中间状态作为子目标交给低层细化为动作，沿用 SIGReg 避免表征坍塌。★Visual AntMaze 仿真迷宫任务中**三层模型成功率 73%、单层仅 18%**；Push-T 任务两层表现较好，增至三、四层反而下降——说明层数需要与任务时间尺度匹配，不是越多越好。",
+    "arxivUrl": "https://arxiv.org/abs/2610.00000"
+  },
+  {
+    "id": "embodied-turing-machine-coap-2026",
+    "title": "Embodied Turing Machines and Code-Only-as-Policy (COAP)",
+    "authors": "NTU S-Lab",
+    "venue": "arXiv 2610.12369",
+    "category": "arch",
+    "importance": 5,
+    "hasReview": false,
+    "date": "2026-10",
+    "tags": [
+      "具身智能",
+      "机器人",
+      "COAP",
+      "图灵机",
+      "零神经网络推理",
+      "双臂操作"
+    ],
+    "summary": "把物理环境视作图灵机：纸带编码机器人本体感觉与视觉状态，转移规则完全由确定性、有状态的代码执行，**测试时零神经网络运行**。在 RoboDojo 的 42 项复杂双臂操作任务中，合成的 COAP 代码库达 **70.24% 成功率**，决策延迟降到 **1 毫秒以内**、零云端 API 成本。★激进之处在于：如果策略就是代码，编码 Agent 就能在仿真闭环里自己改写机器人技能，递归自我改进（RSI）有了落点。",
+    "arxivUrl": "https://arxiv.org/abs/2610.12369"
+  },
+  {
+    "id": "memento-3-arc-agi3-2026",
+    "title": "Memento 3: 100.0 RHAE on ARC-AGI-3 with a Frozen LLM Rulebook",
+    "authors": "University College London / 华为诺亚方舟实验室",
+    "venue": "arXiv 2026",
+    "category": "alignment",
+    "importance": 4,
+    "hasReview": false,
+    "date": "2026-10",
+    "tags": [
+      "ARC-AGI",
+      "智能体",
+      "评测",
+      "冻结语言模型",
+      "规则书"
+    ],
+    "summary": "Memento 3 以平均 RHAE **100.0**（该基准上限）通过 ARC-AGI-3 全部 25 个公开游戏的所有关卡。★关键设计：**语言模型保持冻结**，能力增长来自可学习的外部规则书（rulebook）而非权重更新——这对「如何低成本持续提升 Agent 能力」给出了与微调不同的路径。",
+    "arxivUrl": "https://arxiv.org/abs/2610.00000"
   }
 ]
