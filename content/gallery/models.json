@@ -5710,5 +5710,225 @@
     "typeLabel": "语音基座大模型",
     "typeIcon": "🎙️",
     "date": "2026-10-11"
+  },
+  {
+    "id": "gpt-6-2026",
+    "name": "GPT-6",
+    "org": "OpenAI",
+    "type": "llm",
+    "typeLabel": "旗舰多模态大模型",
+    "typeIcon": "🚀",
+    "open": false,
+    "params": "未公开（业界估计 ≈ 3T MoE / 约 120B 激活）",
+    "date": "2026-10-14",
+    "context": "100 万 tokens",
+    "attention": "推测：Hybrid MLA + Sliding Window 交替层",
+    "factSheet": {
+      "highlight": "首次把「12 小时自主任务窗口」作为主发布指标：2 小时后仍在正轨 78%（上代 47%）",
+      "training": "未知。官方仅披露长程可靠性用的是「自我修正 + 分支重启」类目标的混合训练，并在冻结评估器上做回归筛选",
+      "inference": "支持 Decisions API 分流；上下文 100 万 token；$12/$60 每百万 token",
+      "benchmarks": "SWE-bench Verified 97.8 · τ-bench 94.1 · GPQA Diamond 96.4 · AA Intelligence Index 74.2"
+    },
+    "highlights": [
+      "12 小时自主 Agent 窗口（官方主指标）",
+      "100 万 token 上下文",
+      "SWE-bench Verified 97.8",
+      "长程任务 2 小时仍在正轨比例 78%"
+    ],
+    "keyInnovation": "★发布叙事从「分数」转向「时间尺度上的可靠性」：真正被优化的不再是单次推理质量，而是 Agent 在数小时尺度上不把自己写死的能力。",
+    "description": "OpenAI 2026 年旗舰多模态模型，主打长程自主任务能力：12 小时可交付窗口、100 万 token 上下文、编程与工具调用双双登顶。",
+    "textArch": "Input (Text / Image / Audio)\n     │\n  Tokenizer + Multimodal Encoder\n     │\n┌────▼────────────────────────┐\n│  Hybrid Block ×N            │\n│  ┌──────────────────────┐   │\n│  │ Attn: MLA 压缩 KV    │   │\n│  │ ↕ Sliding Window 层  │   │\n│  └──────────┬───────────┘   │\n│             │ Add & Norm    │\n│  ┌──────────▼───────────┐   │\n│  │  Router → Top-K Gate │   │\n│  │  Expert 1 │ Expert 2 │   │\n│  │  Expert 3 │ ...      │   │\n│  └──────────┬───────────┘   │\n│             │ Add & Norm    │\n└─────────────┼───────────────┘\n              │\n      Long-Horizon Controller\n      (自我修正 / 分支重启)\n              │\n        Output Tokens",
+    "tags": [
+      "OpenAI",
+      "GPT-6",
+      "Agent",
+      "长程任务",
+      "多模态"
+    ],
+    "blogUrl": "https://openai.com/blog/"
+  },
+  {
+    "id": "glm-5-4-2026",
+    "name": "GLM-5.4",
+    "org": "Z.ai（智谱）",
+    "type": "moe",
+    "typeLabel": "开源 MoE 旗舰",
+    "typeIcon": "🇨🇳",
+    "open": true,
+    "params": "未公开（MoE，全参训练）",
+    "date": "2026-10-28",
+    "context": "512K tokens",
+    "attention": "Selective Offset 位置编码（选择性错位）",
+    "factSheet": {
+      "highlight": "11.3 万张昇腾 910D 全参训练，开源模型编程与工具调用双榜第一",
+      "training": "全参训练跑在 11.3 万张国产昇腾 910D 上；引入选择性错位位置编码改善超长上下文",
+      "inference": "MIT 变体许可开放权重；$1.2/$5 每百万 token，约为同级闭源的 1/8",
+      "benchmarks": "SWE-bench Verified 97.1 · τ-bench 91.6 · 300K+ needle recall 97%（上代 82%）"
+    },
+    "highlights": [
+      "11.3 万张昇腾 910D 全参训练",
+      "SWE-bench Verified 97.1（开源第一）",
+      "τ-bench 91.6（开源第一）",
+      "价格约为同级闭源的 1/8"
+    ],
+    "keyInnovation": "★国产算力首次支撑 10 万卡级别全参训练闭环；位置编码端的「选择性错位」把 300K 以上的针尖召回从 82% 拉到 97%。",
+    "description": "智谱 2026 年 10 月旗舰开源 MoE 模型，编程与工具调用双榜位列开源第一，全流程国产算力训练，价格约为同级闭源模型的八分之一。",
+    "textArch": "Input Tokens\n     │\n  Embedding + Selective Offset RoPE\n     │\n┌────▼────────────────────────┐\n│  GLM MoE Block ×N           │\n│  ┌──────────────────────┐   │\n│  │  Attention (GQA)     │   │\n│  │  + Offset-aware      │   │\n│  └──────────┬───────────┘   │\n│             │ Add & Norm    │\n│  ┌──────────▼───────────┐   │\n│  │  Router → Top-K Gate │   │\n│  │  Shared Expert + ... │   │\n│  └──────────┬───────────┘   │\n│             │ Add & Norm    │\n└─────────────┼───────────────┘\n              │\n           LM Head\n              │\n        Output Tokens",
+    "tags": [
+      "智谱",
+      "GLM-5.4",
+      "开源",
+      "昇腾",
+      "国产算力",
+      "MoE"
+    ],
+    "blogUrl": "https://z.ai/"
+  },
+  {
+    "id": "seedance-3-2026",
+    "name": "Seedance 3.0",
+    "org": "字节跳动 Seed Team",
+    "type": "video",
+    "typeLabel": "开源视频生成模型",
+    "typeIcon": "🎬",
+    "open": true,
+    "params": "6B DiT + 独立 VAE",
+    "date": "2026-10-24",
+    "context": "支持首帧图生 + 文生同一模型内切换",
+    "attention": "Full 3D Attention + Cache-DiT 时间步缓存",
+    "factSheet": {
+      "highlight": "VBench-2.0 89.6 刷新开源上限；单卡 H100 生成 10 秒 720p 仅 4.1 秒",
+      "training": "6B DiT + 独立 VAE；8 步蒸馏 + Cache-DiT 时间步缓存；首帧保持通过同一权重内的条件分支实现",
+      "inference": "SGLang Diffusion 栈 Day-0 支持（TeaCache / CFG-Parallel / Parallel VAE）",
+      "benchmarks": "VBench-2.0 89.6（开源第一，超闭源可灵 2.8 / Sora Pro）"
+    },
+    "highlights": [
+      "VBench-2.0 89.6，开源再反超闭源",
+      "单卡 4.1 秒生成 10 秒 720p",
+      "SGLang Diffusion Day-0 支持",
+      "开源权重"
+    ],
+    "keyInnovation": "★把「单位成本的秒部数」作为优化目标而非画质：8 步蒸馏 + 块级缓存，让开源模型在实时性上先于闭源落地。",
+    "description": "字节跳动开源视频生成模型，VBench-2.0 综合 89.6 反超闭源模型，单卡四秒生成十秒 720p 视频。",
+    "textArch": "Text Prompt ──┐\n              │  Frozen Text Encoder (T5 / CLIP)\n              ▼\nLatent Noise (T×H×W)\n     │\n┌────▼──────────────────────┐\n│  DiT Block ×N (6B)        │\n│  ┌────────────────────┐   │\n│  │ Full 3D Attention  │   │\n│  │  + AdaLN-Zero 条件 │   │\n│  └──────────┬─────────┘   │\n│   Cache-DiT 跳过冗余步    │\n└─────────────┼─────────────┘\n              │\n       VAE Decoder\n              │\n        Video Frames",
+    "tags": [
+      "字节跳动",
+      "Seedance",
+      "视频生成",
+      "开源",
+      "DiT"
+    ],
+    "blogUrl": "https://seed.bytedance.com/"
+  },
+  {
+    "id": "emma-2-waymo-2026",
+    "name": "Waymo EMMA 2",
+    "org": "Waymo",
+    "type": "autonomous",
+    "typeLabel": "端到端自动驾驶模型",
+    "typeIcon": "🚗",
+    "open": false,
+    "params": "云端 Gemini 级规划器 + 车端蒸馏 0.5B",
+    "date": "2026-10-27",
+    "context": "车端短时帧窗 + 高清地图先验",
+    "attention": "Cross-Attention（感知×地图） + 车端单向 Transformer",
+    "factSheet": {
+      "highlight": "车端蒸馏模型仅 0.5B，Orin-X 上 8ms 出完整轨迹（感知/预测/规划三头）",
+      "training": "蒸馏目标为云端的中间插值状态与不确定性，而非单纯行为克隆；低速场景干预率下降 36%",
+      "inference": "单 Orin-X 8ms；支持停车场到单元门口的近场导航（摄像头 + 超声波）",
+      "benchmarks": "低速（<25km/h）人工干预率下降 36%； pinch-in 车位场景提升最明显"
+    },
+    "highlights": [
+      "车端 0.5B / 8ms 出轨迹",
+      "蒸馏中间状态与不确定性",
+      "低速干预率 -36%",
+      "云端-车端双系统"
+    ],
+    "keyInnovation": "★蒸馏目标从「模仿输出」改为「模仿中间插值状态 + 不确定性」，让 0.5B 小车保留大模型「知道自己不知道」的能力。",
+    "description": "Waymo 第二代端到端自动驾驶模型：云端 Gemini 级规划器负责慢思考，车端 0.5B 蒸馏模型以 8ms 输出完整轨迹。",
+    "textArch": "Camera ─┐\n        │ Vision Encoder\nMap ────┘\n     │\n┌────▼──────────────────────┐\n│  Cloud Planner (Gemini级) │  ← 慢思考\n└──────────┬────────────────┘\n           │ Distill: 中间状态 + 不确定性\n┌──────────▼────────────────┐\n│  Onboard Transformer 0.5B │  ← 8ms\n│  ┌────────┬────────────┐  │\n│  │ Perception│Prediction│ │\n│  └────────┴────────────┘  │\n│         Planning Head     │\n└──────────┬────────────────┘\n           │\n        Trajectory",
+    "tags": [
+      "Waymo",
+      "EMMA 2",
+      "自动驾驶",
+      "蒸馏",
+      "端侧",
+      "VLA"
+    ],
+    "blogUrl": "https://waymo.com/blog/"
+  },
+  {
+    "id": "hy-vector-3-2026",
+    "name": "Hy-Vector-3",
+    "org": "腾讯混元",
+    "type": "multimodal",
+    "typeLabel": "多模态检索嵌入模型",
+    "typeIcon": "🔍",
+    "open": true,
+    "params": "0.3B / 1.5B / 7B",
+    "date": "2026-10-30",
+    "context": "文本 32K · 图文交错文档原生",
+    "attention": "双塔对比学习 + 交错文档级注意力",
+    "factSheet": {
+      "highlight": "统一 2048 维图文空间，原生 Matryoshka 截断（64~1024）+ int8 量化仅需 0.4% 损失",
+      "training": "图文同空间对比学习 + 交错文档（interleaved）目标，让「文档里插着图」的检索可用单向量完成",
+      "inference": "int8 原生；提供 Faiss IVF-PQ 与 SPANN 两套参考配置，单机 16 块 NVMe 可承载 10 亿~1 万亿条",
+      "benchmarks": "C-MTEB 超 EmbeddingGemma 2 6.8 分；MTEB 多语言档接近同级第一"
+    },
+    "highlights": [
+      "Matryoshka 套娃维度 64/128/256/512/1024",
+      "int8 原生，损失 <0.4%",
+      "图文同空间 + 交错文档",
+      "Apache 2.0"
+    ],
+    "keyInnovation": "★同一套库同时服务粗召回（64 维 int8）与精排（全维 fp32），把万亿级检索从硬件 paper 变成产品默认件。",
+    "description": "腾讯混元开源的多模态检索嵌入模型家族，统一 2048 维图文空间，原生支持套娃截断与 int8 量化，覆盖十亿到万亿级检索部署档位。",
+    "textArch": "Image ─── Vision Encoder ──┐\n                           │  Late Fusion / Shared Space\nText ──── Text Encoder ────┘\n              │\n      Unified 2048-d Embedding\n              │\n    ┌─────────┴─────────┐\n    │ Matryoshka Trunc  │\n    │ 64/128/256/512    │\n    └─────────┬─────────┘\n              │\n      int8 Quantization (原生)\n              │\n   Faiss IVF-PQ / SPANN Index",
+    "tags": [
+      "腾讯混元",
+      "嵌入模型",
+      "向量检索",
+      "MRL",
+      "int8",
+      "开源"
+    ],
+    "blogUrl": "https://hunyuan.tencent.com/"
+  },
+  {
+    "id": "figure-helix-2-2026",
+    "name": "Figure Helix 2",
+    "org": "Figure AI",
+    "type": "vla",
+    "typeLabel": "人形机器人双系统 VLA",
+    "typeIcon": "🦾",
+    "open": false,
+    "params": "System 2 = 7B VLM · System 1 = 80M 策略",
+    "date": "2026-10-21",
+    "context": "视觉 + 本体感知 + 力反馈",
+    "attention": "System 2 Cross-Attention 1Hz · System 1 轻量 Transformer 1kHz 插值",
+    "factSheet": {
+      "highlight": "把慢思考频率从 7Hz 降到 1Hz 反而提升长任务成功率：叠衣类任务 71% → 88%",
+      "training": "System 2 只输出子目标与约束，System 1 负责插值执行；新增碰到预期外阻力自动退化柔顺控制",
+      "inference": "双频率异步执行；同步开源万元级遥操作手套（含关节编码与标定工具）",
+      "benchmarks": "长程叠衣类任务成功率 88%（上代 71%）；改主意次数下降约 60%"
+    },
+    "highlights": [
+      "慢思考降到 1Hz，长任务反升",
+      "叠衣类任务 71% → 88%",
+      "开源遥操作手套",
+      "力履冲击自保护"
+    ],
+    "keyInnovation": "★反直觉的频率工程：上层规划太勤导致「微操」，把 System 2 降到 1Hz 后长任务的反复改主意消失——这与 GPT-6 长程可靠性的思路同源。",
+    "description": "Figure 第二代双系统人形机器人 VLA：7B VLM 以 1Hz 输出子目标与约束，80M 快速策略负责高频执行，并开源万元级遥操作手套。",
+    "textArch": "Vision + Proprioception\n     │\n┌────▼──────────────────────┐\n│ System 2 · VLM 7B (1Hz)   │  子目标 + 约束\n└──────────┬────────────────┘\n           │ 异步（不等它就能跑）\n┌──────────▼────────────────┐\n│ System 1 · 80M (≈1kHz)    │  插值 + 力控\n└──────────┬────────────────┘\n           │\n      Robot Actions",
+    "tags": [
+      "Figure",
+      "Helix 2",
+      "VLA",
+      "人形机器人",
+      "双系统",
+      "开源硬件"
+    ],
+    "blogUrl": "https://www.figure.ai/"
   }
 ]

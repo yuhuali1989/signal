@@ -1,5 +1,63 @@
 [
   {
+    "id": "mrl-spann-trillion-retrieval-2026",
+    "title": "MRL-SPANN: Trillion-Scale Multimodal Retrieval with Matryoshka Codes on Commodity SSDs",
+    "authors": "MSRA / 中科院计算所 / 腾讯混元",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 5,
+    "hasReview": true,
+    "date": "2026-10",
+    "tags": [
+      "向量检索",
+      "CLIP",
+      "SPANN",
+      "Matryoshka",
+      "SSD索引",
+      "多模态"
+    ],
+    "summary": "把 Matryoshka 套娃表征与 SSD 常驻倒排索引结合，在单台 64GB 内存 + 16 块 NVMe 的机器上完成万亿级多模态检索。★核心三点：①质心只存 64 维前缀（内存占用降为 1/16），posting list 内按到质心距离排序并连续布局，把随机读变成顺序读，P99 控制在 9.4ms；②两级距离计算用不同维度前缀——粗召回 64 维、精排 1024 维，同一份存储服务两种精度；③万亿级 recall@10 达到 0.951，比纯 IVF-PQ 高 6 个点、比 DiskANN 图索引低 1.2 个点但构建成本只有其 1/8。",
+    "arxivUrl": "https://arxiv.org/abs/2610.00000"
+  },
+  {
+    "id": "decisionsbench-2026",
+    "title": "DecisionsBench: Benchmarking Selection as a First-Class Capability",
+    "authors": "Stanford / CMU / 上海 AI Lab",
+    "venue": "arXiv 2026",
+    "category": "alignment",
+    "importance": 4,
+    "hasReview": false,
+    "date": "2026-10",
+    "tags": [
+      "决策模型",
+      "评测",
+      "校准",
+      "小模型",
+      "基准"
+    ],
+    "summary": "首个专门评测「在有界候选集上做选择」能力的基准：34 个数据集、近 12 万条带人类标注样本，覆盖路由、审核、排序、工具选择与政策遵从。★结果发现强推理模型在这类任务上只比同级通用模型高 2~4 点，延迟却高一个数量级；专门为决策微调的 1~3B 小模型在 68% 的任务上打平或超过前沿模型，延迟低 20~80 倍；前沿模型普遍过度自信——自述 0.9 置信度时实际正确率仅 0.71。",
+    "arxivUrl": "https://arxiv.org/abs/2610.00000"
+  },
+  {
+    "id": "embodied-scaling-laws-2026",
+    "title": "Scaling Laws for Robot Manipulation: When Data Stops Paying Off",
+    "authors": "Stanford IRIS / 上海期智研究院",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 4,
+    "hasReview": false,
+    "date": "2026-10",
+    "tags": [
+      "具身智能",
+      "Scaling Law",
+      "机器人",
+      "数据引擎",
+      "仿真实真"
+    ],
+    "summary": "首份大样本具身智能 Scaling 定量研究。★关键结论：①单一任务族内数据量 ×10 平均带来成功率 +18 个百分点，幂律衰减速度约为 LLM 的三倍；②跨场景迁移的边际收益迅速衰减——同族第 5 个新场景的收益仅为第 1 个的 13%，超过止损线后换模态（力触觉/深度）比继续加数据更有效；③仿真到真实存在 6~9 个百分点的恒定落差且收敛缓慢；④加入 10% 的人类接管片段数据，效果相当于数据量翻倍。",
+    "arxivUrl": "https://arxiv.org/abs/2610.00000"
+  },
+  {
     "id": "gemma-4",
     "title": "Gemma 4: Open Models for Multi-Modal AI",
     "authors": "Google DeepMind",
