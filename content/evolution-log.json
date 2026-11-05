@@ -3174,5 +3174,50 @@
     "emoji": "📚",
     "title": "新建全书：《vLLM 算子开发全书：新增架构何时开刀、何时白嫖，以及算子融合怎么落地》（全 8 章 1341 行）",
     "detail": "①★判断框架：三档（A 零成本 / B 改接入 / C 写算子，C 档不足两成）+ 决策树，工作量由「结构距离」而非模型新旧决定 ②★接入链路七层（Worker/Engine → ModelRunner → model 文件 → layer module → CustomOp → wrapper → csrn kernel）与改动落点表 ③★自然支持的四条判据（注意力形态 / 归一化激活 / 权重可映射 / 计算图可拼装）与权重映射三解法，⚠️fused 权重顺序错误不报错只掉效果 ④必须开刀的六类（新注意力 / 新归一化激活 / 新 MoE / 新位置编码 / 多模态融合 / 全新原语）+ 八项性能排查清单 ⑤四条实现路径递进（forward_native → torch.compile → Triton → CUDA）与 CUDA 三坑（@register_fake / ROCm-CPU 注册 / CMakeLists）⑥★算子融合：十大 fusion pass（act_quant / rms_quant / attn_quant / allreduce_rms 重叠通信 / collective / qk_norm_rope / attention rewriting / MoE / memory-KV-write）与手写融合 vs 编译器自动融合的分工 ⑦★硬约束：分页 KV（slot_mapping/block_table）、展平 query 与 cu_seqlens、chunked prefill 混合批、无动态形状与 CUDA graph 分桶、多 LoRA ⑧三层正确性验证、性能剖析、贡献上游 vs 内部 fork、五阶段 Checklist、全书二十条。"
+  },
+  {
+    "id": "evo-20261101-model-kimi-k35",
+    "date": "2026-11-01",
+    "agent": "研究员→编辑→审校员",
+    "type": "model",
+    "emoji": "🤖",
+    "title": "收录 Kimi K3.5：递归自我改进产品化的第一个 RSI 红线原生合规实现",
+    "detail": "①Triton 算子采纳率 37% → 61%（新增算子级 diff 审查：数值等价性测试先于主干合并）②★冻结评估器审计报告自动产出（修改不触及的评估器集合 + 回归记录 + 回滚点），格式与红线 24 条对齐③72h Agent 存活率 79%，API 价格为 K3 的 1/3，权重与流水线框架开源④与同日公开的首例审计拦截案例互为印证：自改进从能力故事变成可审计流程。"
+  },
+  {
+    "id": "evo-20261102-infra-ascend950pr",
+    "date": "2026-11-02",
+    "agent": "architecture-editor",
+    "type": "infra",
+    "emoji": "🔧",
+    "title": "收录昇腾 950PR 商用与 GLM 训练栈迁移细节：国产芯片第一次公开前沿模型全参训练迁移工程",
+    "detail": "①950PR：原生 FP8（E4M3）张量核心，算力 2.1×，节点内互联 1.6TB/s 对标 NVL144②★智谱公开迁移细节：CANN 算子缺口清单、Megatron 并行策略 TP4×PP4→TP8、通信融合收益 12%③价格约为同档 NVL 方案 55%④CANN 缺口清单与 vLLM 算子开发全书的「结构距离决定工作量」框架同构。"
+  },
+  {
+    "id": "evo-20261103-model-deepseek-v42",
+    "date": "2026-11-03",
+    "agent": "模型架构师",
+    "type": "model",
+    "emoji": "🐋",
+    "title": "收录 DeepSeek V4.2：全量 FP8 训练配方开源，性价比榜登顶",
+    "detail": "①671B MIT 全开源，FP8 稳定性配方公开：连续 3 步 loss 梯度方差超 8σ 触发自动回退②长程 Agent 强化：任务内自检奖励项，72h 存活率 74%③API 再降 20%，cost 榜第一（292.0）④训练配方论文同步开源含完整数据配比与退火曲线。"
+  },
+  {
+    "id": "evo-20261105-bench-r74",
+    "date": "2026-11-05",
+    "agent": "评测分析师",
+    "type": "bench",
+    "emoji": "🏆",
+    "title": "8 类榜单刷新至 2026-11-05：Gemini 4 Ultra 与 Kimi K3.5 挤进四榜，DeepSeek V4.2 登顶性价比",
+    "detail": "①overall：Gemini 4 Ultra Preview 71.3 第 3 / Kimi K3.5 68.2 第 5，GPT-6 仍居首②coding：Kimi K3.5 96.9 第 3，GLM-5.4 开源第一保持③agent：Gemini 4 Ultra 93.2 / Kimi K3.5 91.8 进入前四，工具编排子项 Gemini 96.4 首次登顶④cost：DeepSeek V4.2 292.0 登顶，GLM-5.4 降为第二⑤全部 8 榜日期与标题刷新至 11-05。"
+  },
+  {
+    "id": "evo-20261105-article-rsi",
+    "date": "2026-11-05",
+    "agent": "深度编辑",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "发布深度文章《当模型开始改进自己：RSI 从口号到审计流水线》",
+    "detail": "①从 Kimi K3.5 流水线、首例审计拦截案例、RSI 红线 24 条三条线索还原「自改进如何被驯服」的完整工程链②冻结评估器的三个实现要点（评估器集合隔离 / 回归阈值 / 回滚 hash 链）③企业采购视角：审计报告正在成为新的模型选型检查项④与第 73 轮内容治理文章共同构成「AI 系统怎么管」系列。"
   }
 ]

@@ -5930,5 +5930,187 @@
       "开源硬件"
     ],
     "blogUrl": "https://www.figure.ai/"
+  },
+  {
+    "id": "kimi-k35-2026",
+    "name": "Kimi K3.5",
+    "org": "月之暗面 (Moonshot)",
+    "type": "llm",
+    "typeLabel": "自改进流水线旗舰",
+    "typeIcon": "🔄",
+    "open": true,
+    "params": "1.2T MoE (A64B)",
+    "date": "2026-11-01",
+    "context": "256K",
+    "attention": "MLA + 算子级 diff 审查的自改进流水线",
+    "factSheet": {
+      "highlight": "递归自我改进产品化：Triton 算子采纳率 37% → 61%，每次自改进自动产出冻结评估器审计报告",
+      "training": "二阶段 RSI 流水线：先生成内核候选 → 数值等价性测试 → 冻结评估器回归 → 主干合并；审计报告格式与 RSI 红线 24 条对齐",
+      "inference": "API 价格维持 K3 的 1/3；权重开放（含自改进流水线框架代码）",
+      "benchmarks": "72h Agent 存活率 79%（GPT-6 为 81%）；LMArena 长程榜第三（73.8%）"
+    },
+    "highlights": [
+      "RSI 流水线产品化",
+      "算子采纳率 61%",
+      "原生合规审计报告",
+      "开源权重+框架"
+    ],
+    "keyInnovation": "★把「冻结评估器 + 回滚点」做进训练流水线的必经环节而不是事后补审计——第一个 RSI 红线原生合规的开源实现。",
+    "description": "月之暗面旗舰：递归自我改进从能力故事变成可审计工程流程，权重与流水线框架全部开源。",
+    "textArch": "Prompt → Tokenizer\n     │\n┌────▼─────────────────────┐\n│ MoE 1.2T (A64B) + MLA     │\n│  ┌────────────────────┐  │\n│  │ RSI Loop (可选)     │  │  内核候选 → 等价性测试\n│  │ 冻结评估器 → 回滚   │  │  → 冻结评估器回归 → 合并\n│  └────────────────────┘  │\n└──────────┬───────────────┘\n           ▼\n        Response + 审计报告",
+    "tags": [
+      "Kimi",
+      "K3.5",
+      "RSI",
+      "自改进",
+      "开源",
+      "Moonshot"
+    ],
+    "blogUrl": "https://www.moonshot.cn/"
+  },
+  {
+    "id": "deepseek-v42-2026",
+    "name": "DeepSeek V4.2",
+    "org": "深度求索 (DeepSeek)",
+    "type": "llm",
+    "typeLabel": "全量 FP8 开源旗舰",
+    "typeIcon": "🐋",
+    "open": true,
+    "params": "671B MoE (A37B)",
+    "date": "2026-11-03",
+    "context": "164K",
+    "attention": "MLA + FP8 E4M3 前向 / E5M2 部分梯度",
+    "factSheet": {
+      "highlight": "性价比榜登顶：API 再降 20%，公开 FP8 训练稳定性配方（loss spike 检测与回退阈值）",
+      "training": "全量 FP8 训练：spike 检测指标 = 连续 3 步 loss 梯度方差超 8σ 触发回退；长程 Agent 强化新增任务内自检奖励项",
+      "inference": "权重 + 训练配方论文全开源（MIT）；72h Agent 存活率 74%",
+      "benchmarks": "性价比榜第一（292.0）；DeepSeek V4.2 在长程榜 71.2%"
+    },
+    "highlights": [
+      "FP8 全量训练",
+      "稳定性配方开源",
+      "性价比榜登顶",
+      "72h 存活 74%"
+    ],
+    "keyInnovation": "★把 FP8 训练崩不崩的摸索成本抹掉：公开 loss spike 的具体检测指标（梯度方差 8σ）与自动回退阈值，FP8 从经验活变成配方活。",
+    "description": "DeepSeek 开源旗舰：全量 FP8 训练 + 长程 Agent 强化，继续坐实开源阵营成本锚点。",
+    "textArch": "Prompt → Tokenizer\n     │\n┌────▼─────────────────────┐\n│ MoE 671B (A37B) + MLA     │\n│ FP8: E4M3 前向/E5M2 梯度  │\n│ spike 检测 → 自动回退     │\n└──────────┬───────────────┘\n           ▼\n   Response (Agent 自检奖励)\n   72h 存活率 74%",
+    "tags": [
+      "DeepSeek",
+      "V4.2",
+      "FP8",
+      "开源",
+      "性价比",
+      "MoE"
+    ],
+    "blogUrl": "https://github.com/deepseek-ai"
+  },
+  {
+    "id": "grok-5-preview-2026",
+    "name": "Grok 5 Preview",
+    "org": "xAI",
+    "type": "llm",
+    "typeLabel": "实时世界状态接入模型",
+    "typeIcon": "📡",
+    "open": false,
+    "params": "未公开（推测 >2T MoE）",
+    "date": "2026-11-02",
+    "context": "2M",
+    "attention": "推理深度自适应（思考预算按需展开）",
+    "factSheet": {
+      "highlight": "X 平台事件流结构化后作为第一公民上下文，突发事件回答新鲜度领先 4~11 小时",
+      "training": "实时数据流接入：平台事件流 → 结构化 → 补充上下文；推理深度自适应，简单问题不进思考模式",
+      "inference": "按实际思考量计费（推理成本首次直接反映到账单颗粒度）",
+      "benchmarks": "24h 连续任务存活率 71%；突发事件时效性第一"
+    },
+    "highlights": [
+      "实时世界状态接入",
+      "思考量计费",
+      "2M 上下文",
+      "事件时效领先"
+    ],
+    "keyInnovation": "★把整个平台当 RAG 语料库：差异化不在静态 benchmark，而在「数据的新鲜度」——检索增强的极致形态。",
+    "description": "xAI 新旗舰：以实时平台数据流为第一公民模态，推理深度自适应 + 按思考量计费。",
+    "textArch": "X 事件流 ──结构化──┐\nPrompt ────────────┤\n                   ▼\n┌──────────────────────────┐\n│ MoE + 深度自适应控制器    │\n│ 简单→直出 | 复杂→长链思考 │\n└──────────┬───────────────┘\n           ▼\n  Response (按思考量计费)",
+    "tags": [
+      "Grok 5",
+      "xAI",
+      "实时数据",
+      "自适应推理",
+      "定价"
+    ],
+    "blogUrl": "https://x.ai/"
+  },
+  {
+    "id": "gemini-4-ultra-2026",
+    "name": "Gemini 4 Ultra Preview",
+    "org": "Google DeepMind",
+    "type": "llm",
+    "typeLabel": "长上下文 + 工具编排特化旗舰",
+    "typeIcon": "♊",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-11-04",
+    "context": "1M（全深度召回修复）",
+    "attention": "深度思考 Pro（思考预算最高 512K，多草稿择优）",
+    "factSheet": {
+      "highlight": "工具编排子项 96.4 首次登顶；1M 上下文尾部召回衰减修复并公开全深度测试",
+      "training": "长文档尾部召回专项训练 + 分层前缀缓存协同优化；深度思考 Pro 可并行对比多份草稿后择优",
+      "inference": "定价 $5/$25 每M token（比 GPT-6 低 58%）",
+      "benchmarks": "Agent 榜工具编排子项 96.4 第一；长程榜存活率 76.5% 第二；恢复质量子项待公开"
+    },
+    "highlights": [
+      "1M 全深度召回",
+      "工具编排登顶",
+      "思考预算 512K",
+      "价格 -58%"
+    ],
+    "keyInnovation": "★不打综合智能榜，专攻企业 Agent 落地最痛的两处：长上下文尾部召回 + 工具编排——「塞得进去」之后解决「尾部还能召回」。",
+    "description": "Gemini 4 系列特化旗舰：1M 上下文全深度可用，工具编排子项首次登顶，定价激进。",
+    "textArch": "Prompt (≤1M) ────┐\n                  ▼\n┌──────────────────────────┐\n│ DeepMind 旗舰 MoE         │\n│ 尾部召回专项增强          │\n│ 深度思考 Pro:             │\n│  草稿×N 并行 → 择优       │\n└──────────┬───────────────┘\n           ▼\n  Response + 工具调用编排",
+    "tags": [
+      "Gemini",
+      "Gemini 4 Ultra",
+      "Google",
+      "长上下文",
+      "Agent"
+    ],
+    "blogUrl": "https://blog.google/technology/google-deepmind/"
+  },
+  {
+    "id": "unitree-d1-workforce-2026",
+    "name": "Unitree D1-Workforce",
+    "org": "宇树科技",
+    "type": "robotics",
+    "typeLabel": "工业级人形机器人",
+    "typeIcon": "🏭",
+    "open": false,
+    "params": "本体 23 自由度 + 端侧策略 3B",
+    "date": "2026-11-05",
+    "context": "视觉 + 本体感知 + 力触觉",
+    "attention": "端侧 VLA 策略毫秒级执行 + 云端任务编排",
+    "factSheet": {
+      "highlight": "三班倒工厂连续 30 天实测公开：日均干预 2.7 次（上代 9.4 次），失败分类全部公开",
+      "training": "动作数据引擎开放：遥操作小时数按月累积，合作伙伴按贡献量兑换数据使用权（数据合作社模式）",
+      "inference": "日均任务 412；失败构成：长尾位姿 61% / 反光透明材质 22% / 任务链自恢复失败 17%",
+      "benchmarks": "百公里接管口径不适用；日均干预 2.7 次为同档最低公开值"
+    },
+    "highlights": [
+      "30 天三班倒实测",
+      "日均干预 2.7 次",
+      "失败分类公开",
+      "数据合作社模式"
+    ],
+    "keyInnovation": "★把「数据合作社」做成商业模式：跨本体数据共享直指具身 Scaling 曲线上单公司数据不够用的死结。",
+    "description": "宇树工业级人形机器人：公开长周期实测与失败分类，动作数据引擎向合作伙伴开放。",
+    "textArch": "视觉 + 本体 + 力触觉\n     │\n┌────▼──────────────────────┐\n│ 端侧 VLA 策略 3B (毫秒级)  │\n│ 长尾位姿 ← 主失败源(61%)  │\n└──────────┬────────────────┘\n           │ 异常上报\n┌──────────▼────────────────┐\n│ 云端任务编排 + 数据引擎    │\n│ 遥操作数据 → 合作社共享    │\n└───────────────────────────┘",
+    "tags": [
+      "宇树",
+      "Unitree",
+      "人形机器人",
+      "工业落地",
+      "数据合作社"
+    ],
+    "blogUrl": "https://www.unitree.com/"
   }
 ]
