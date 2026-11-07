@@ -3264,5 +3264,14 @@
     "emoji": "✍️",
     "title": "发布深度文章《从单机多卡到多机多卡：Ray Serve 多副本部署的四个旋钮》",
     "detail": "①把 num_replicas / num_gpus / TP×PP / Placement Group strategy 四个旋钮拆成可运行配置，覆盖单机多副本、单机 TP、多机 TP、副本×TP 组合四种拓扑②★优先级判据：能多副本就多副本，放不下才 TP，TP 放不下才跨机③gotcha：num_gpus 是逻辑资源不可超卖、冷启动与 standby 预热池、多副本破坏前缀缓存需会话亲和、head 节点别放重型副本④与第 73/74 轮 Ray 离线批、vLLM 1.1 内容形成在线服务侧闭环。"
+  },
+  {
+    "id": "evo-20261107-new-book-full-duplex-omni",
+    "date": "2026-11-07",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建全书：《全双工全模态工程全书：一个例子讲透词表、Embedding 与生成》（全 10 章 1610 行）",
+    "detail": "①★全书只用一个贯穿例子：t=3200ms 用户举金属保温杯问「这个能微波吗」、t=3600ms 插话「我是说盖子」；固定 d=4096/32层/V=75840/80ms 片/一片 87 槽位，每章回到同一块时间片②词表选哪个：三套方案对比后选混合式（理解侧连续 + 生成侧离散统一词表），V=75840 四段分区与具体 ID 手册，一个 ID 绑两套向量（E[id] 进主干 / codec.codebook[id-offset] 出信号）③三路 embedding：文本查表、音频 Mimi 12.5Hz split-RVQ、视频不查表投影且 186MB→512KB 约 360×④怎么混合：87 槽位 + 四层身份标签（type/stream/边界符/(t,h,w)）+ TMRoPE 绝对毫秒 + chunk-causal⑤逐层 shape 与融合点：主干无模态专属结构，融合只在 scores[1,32,87,87] 的 Q·K，指代消解权重 0.02→0.31⑥怎么输出：一个 head 75840 logits + mask 状态机，每片 1 文本 ID + 8 音频 ID → codec 1920 samples；画面走 BOV+1024 视觉 ID 但应异步独立分支⑦效果到底好不好：Moshi 160/200ms、GPT-4o 320ms、Qwen3-Omni 234ms、SeedRealtime 节奏问题减半；六类评测口径 + 五种失败模式 + 成本贵 3~10 倍；结论「买到的是交互节奏不是智能水平」。"
   }
 ]
