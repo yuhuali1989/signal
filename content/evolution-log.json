@@ -3282,5 +3282,14 @@
     "emoji": "🔄",
     "title": "按 Higgs Realtime Duplex 真实数据校准《全双工全模态工程全书》（10章→11章 / 1610→1848行）",
     "detail": "①调研 Boson AI 2026-11-05 发布的 Higgs Realtime Duplex（45B MoE、技术贡献者含李沐 Mu Li / Alex Smola）官方技术博客与多路报道 ②修订 ch01/02/04/07/08/09/10 共九条断言：全双工不必 codec 直接重建（真实用因果流匹配解码器）、真实产品每片出画面（2 image latents→因果 DiT）、输出侧连续 latent 而非离散 ID、75840 四段词表与 8 层 RVQ 属教学设定、87 槽位/1087 tok/s/171GB KV 放大约 20 倍、时间片 160ms 非 80ms、静音期间视频帧持续流入、成本结论需加限定、Full-Duplex-Bench v1.5 75.5 输给 GPT-Live-1 80.1 ③新增 ch11 逐条对账表 ④真实 token 预算：音频入 1/片、出 2/片、视频每 6 片 1 帧约 12 token、面部 2 latent/片 → 2.6K~5K token/分钟、5 分钟窗口 13K~25K（渐进 compaction），修正优先级为「先压预算→再 compaction→最后 KV 剪枝」⑤补本书遗漏三层：前台/后台多线程异步（工具结果 payload 进输入 chunk）、MOPD 多教师 on-policy 蒸馏 + GRPO 专家教师 + RSI 闭环、配置即 prompt（参考音频/图只进 decoder）⑥八条结论被印证；七项 benchmark 仅一项第一；权重未开、API waitlist、无定价。"
+  },
+  {
+    "id": "evo-20261107-new-book-rsi-engineering",
+    "date": "2026-11-07",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建全书：《递归自我改进（RSI）工程全书：从 Gödel Machine 到冻结评估器》（全 12 章 1646 行）",
+    "detail": "①把此前 RSI 调研（站内新闻时间线 / 论文 index / 第74轮审计流水线文章 + 三篇综述与代表系统公开数据）扩成一部完整工程全书，content/books/rsi-engineering-book-ch01~12.md ②核心论点：RSI 在 2026 年落地的是有界自精化 L1 而非智能爆炸，L2 公开达标数 0；瓶颈是验证不是生成；self-improvement 与 self-poisoning 只差一个 oracle ③结构：ch01 概念拆解（一层/二层循环 + 四判据）ch02 理论源头（Gödel Machine 可证明→DGM 可验证→产业可审计三次降级）ch03 技术版图（改什么×闭环程度，③评估器×C2 原理性空白、④研究流程×C2 能力性空白）ch04/05 代表系统上下（AlphaEvolve 48次矩阵乘 / DGM 20→50% 与删作弊标记事故 / SEAL / LADDER 1→82% / AIDE² 90%拒绝率自评L1 / Memento3 / Auriga / Hy4 37% / K3.5 61%）与三个口径陷阱 ch06 验证层级 V0–V4 + 四类失败 + 防护四件套 ch07 L0–L3 证据阶梯 + 点火判据 + 治理级测量空白 ch08 Operational RSI Claim Protocol 五件套 + 六条一票否决 F1–F6 ch09 治理三线合流 + 红线24条五类 + MLCommons清单 + 企业采购十问 ch10 站内 08-28→11-06 时间线与三个「第一次」ch11 首篇 RSI 论文与三篇综述精读 + 待补解读清单 ch12 五大制约 / 决策树 / 八步落地手册 / 全书十条结论 ④与站内 VLA 数据引擎、万亿检索、内容治理、全双工全书收口为同构原理「真值决定边界，架构只是让路」⑤ai-wiki 快照：书籍 31→32 部、章节 254→266、进化日志 401→402。"
   }
 ]
