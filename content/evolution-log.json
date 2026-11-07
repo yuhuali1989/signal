@@ -3219,5 +3219,50 @@
     "emoji": "✍️",
     "title": "发布深度文章《当模型开始改进自己：RSI 从口号到审计流水线》",
     "detail": "①从 Kimi K3.5 流水线、首例审计拦截案例、RSI 红线 24 条三条线索还原「自改进如何被驯服」的完整工程链②冻结评估器的三个实现要点（评估器集合隔离 / 回归阈值 / 回滚 hash 链）③企业采购视角：审计报告正在成为新的模型选型检查项④与第 73 轮内容治理文章共同构成「AI 系统怎么管」系列。"
+  },
+  {
+    "id": "evo-20261106-model-wan26",
+    "date": "2026-11-06",
+    "agent": "模型架构师",
+    "type": "model",
+    "emoji": "🎞️",
+    "title": "收录 Wan2.6：VBench-2.0 90.2 登顶，视频生成竞争焦点转向推理栈协同",
+    "detail": "①14B DiT 开源 + 1.3B 蒸馏版（24G 可跑 480P）②★CFG-Parallel 原生：正负条件分支拆到不同 GPU 并行，配合 TeaCache 单卡吞吐 2.2×③Parallel VAE 高度分片 + halo_exchange，长视频解码显存峰值 -41%④VBench 90.2 首次把 Seedance 3.0 拉下榜首，video-gen 榜替换榜首。"
+  },
+  {
+    "id": "evo-20261106-infra-rubin-cpx",
+    "date": "2026-11-06",
+    "agent": "architecture-editor",
+    "type": "infra",
+    "emoji": "🔧",
+    "title": "收录 Rubin CPX 机柜参考设计：PD 分离从调度策略落到硬件分池",
+    "detail": "①prefill 池用 CPX（大算力/低 HBM 2.3kW）、decode 池用 Rubin Ultra（288GB HBM4），机柜内配比 1:3，KV 经 NVLink-C2C 直传②同功耗吞吐较同型卡混合部署 +1.9×，长上下文收益最大③与 vLLM 1.1 默认 PD 分离、SGLang Mooncake/NIXL 传输层对齐④液冷强制，云厂商改造周期两季度。"
+  },
+  {
+    "id": "evo-20261107-model-opus55",
+    "date": "2026-11-07",
+    "agent": "研究员→编辑→审校员",
+    "type": "model",
+    "emoji": "🕰️",
+    "title": "收录 Claude Opus 5.5：三家头部全部把「跑完一天」当主指标",
+    "detail": "①12h 自主任务窗口存活率 80.4%，首次反超 GPT-6（78%）②★自恢复质量 88% 为已公开最高——企业采购在意的是「断了自己爬起来」这个下限③SWE-Bench Pro 97.5 / AgentBench-Pro 93.8，coding/agent/reasoning/overall 四榜均进前二④定价维持 $15/$75 未跟进降价⑤与 GPT-6、LMArena 长程榜共同确认：静态 benchmark 竞争阶段结束。"
+  },
+  {
+    "id": "evo-20261107-iter75",
+    "date": "2026-11-07",
+    "agent": "editor-v2",
+    "type": "mixed",
+    "emoji": "🔄",
+    "title": "第 75 轮迭代：声浪 588→600，覆盖 11-06 → 11-07",
+    "detail": "①新闻 +12：Ray 3.1/Serve LLM 2.0 四旋钮统一部署、Claude Opus 5.5、Qwen VLM 训练配比 50% 红线、LMArena 会话亲和子项、弹性副本计费、π0.6 跨本体开源、Wan2.6、RSI 冻结集最低清单、Rubin CPX 硬件分池、MCP 2.0 互操作、Qwen3.9-VL/M3.5、DynamicANN-1T 动态向量检索②模型 +4③文章 +1《Ray Serve 多副本部署的四个旋钮》④8 榜刷新至 11-07⑤★首页依赖 getNewsFeed().slice(0,12) 且 loader 不排序，新批次按日期降序 unshift 到数组最前，确保首页取到最新两天。"
+  },
+  {
+    "id": "evo-20261107-article-rayserve",
+    "date": "2026-11-07",
+    "agent": "深度编辑",
+    "type": "article",
+    "emoji": "✍️",
+    "title": "发布深度文章《从单机多卡到多机多卡：Ray Serve 多副本部署的四个旋钮》",
+    "detail": "①把 num_replicas / num_gpus / TP×PP / Placement Group strategy 四个旋钮拆成可运行配置，覆盖单机多副本、单机 TP、多机 TP、副本×TP 组合四种拓扑②★优先级判据：能多副本就多副本，放不下才 TP，TP 放不下才跨机③gotcha：num_gpus 是逻辑资源不可超卖、冷启动与 standby 预热池、多副本破坏前缀缓存需会话亲和、head 节点别放重型副本④与第 73/74 轮 Ray 离线批、vLLM 1.1 内容形成在线服务侧闭环。"
   }
 ]

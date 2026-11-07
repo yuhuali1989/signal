@@ -6112,5 +6112,153 @@
       "数据合作社"
     ],
     "blogUrl": "https://www.unitree.com/"
+  },
+  {
+    "id": "claude-opus-55-2026",
+    "name": "Claude Opus 5.5",
+    "org": "Anthropic",
+    "type": "llm",
+    "typeLabel": "长程可靠性旗舰",
+    "typeIcon": "🕰️",
+    "open": false,
+    "params": "未公开",
+    "date": "2026-11-07",
+    "context": "500K",
+    "attention": "长程任务状态追踪 + 中断自恢复",
+    "factSheet": {
+      "highlight": "12 小时自主任务窗口存活率 80.4%，首次在该口径反超 GPT-6（78%）",
+      "training": "以「时间尺度上的可靠性」为主指标：新增中途打断后的自恢复训练目标，任务状态显式外置为可续接快照",
+      "inference": "定价维持 $15/$75 每M token；恢复质量 88% 为已公开最高",
+      "benchmarks": "SWE-Bench Pro 97.5（coding 榜第 2）· AgentBench-Pro 93.8（agent 榜第 2）· LMArena 长程榜存活率第一"
+    },
+    "highlights": [
+      "12h 存活率 80.4%",
+      "恢复质量 88%",
+      "coding/agent 双榜前二",
+      "发布叙事绑定可靠性"
+    ],
+    "keyInnovation": "★把「断了自己爬起来」做成一等训练目标：企业采购真正在意的是长任务的下限（自恢复），不是静态 benchmark 的上限。",
+    "description": "Anthropic 旗舰：以长程任务不跑偏为主指标，12 小时窗口存活率首次反超 GPT-6。",
+    "textArch": "Prompt → Tokenizer\n     │\n┌────▼──────────────────────┐\n│ Opus 5.5 Transformer      │\n│  ┌────────────────────┐  │\n│  │ 任务状态快照(外置)  │  │  中断 → 快照续接\n│  │ 自恢复训练目标      │  │  不重跑已完成步\n│  └────────────────────┘  │\n└──────────┬───────────────┘\n           ▼\n   Response (12h 存活 80.4%)",
+    "tags": [
+      "Claude",
+      "Opus 5.5",
+      "Anthropic",
+      "长程任务",
+      "自恢复",
+      "Agent"
+    ],
+    "blogUrl": "https://www.anthropic.com/news"
+  },
+  {
+    "id": "qwen39-vl-2026",
+    "name": "Qwen3.9-VL",
+    "org": "阿里巴巴（通义千问）",
+    "type": "vlm",
+    "typeLabel": "长视频理解 VLM",
+    "typeIcon": "🎬",
+    "open": true,
+    "params": "未公开（ViT + LLM 级联）",
+    "date": "2026-11-06",
+    "context": "2 小时视频 / 256K",
+    "attention": "关键帧检索 + 时间轴定位 Cross-Attention",
+    "factSheet": {
+      "highlight": "原生支持 2 小时视频输入，长视频 QA 榜第一；配套公开 VLM 训练配比与冻结时机技术报告",
+      "training": "★三阶段文本配比 62%→48%→55%；对齐阶段 LLM 全冻，SFT 解冻且学习率压到纯文本阶段的 1/20；文本占比低于 50% 即出现可测语言退化",
+      "inference": "权重开放；关键帧走 CLIP 向量检索召回后再进 LLM，避免全帧灌入",
+      "benchmarks": "长视频 QA 榜第一；MMLU/数学/代码与纯文本基座持平（未退化）"
+    },
+    "highlights": [
+      "2 小时视频原生输入",
+      "文本占比 50% 红线",
+      "冻结时机定量判据",
+      "语言能力未退化"
+    ],
+    "keyInnovation": "★首个把「多模态是否拖累语言」量化并写进发布材料的模型：50% 文本占比红线 + 1/20 解冻学习率，把训练策略从经验变成参数。",
+    "description": "阿里长视频理解 VLM：原生 2 小时视频输入，配套公开 VLM 训练配比与冻结时机报告。",
+    "textArch": "视频 (2h) → 关键帧检索(CLIP)\n     │  Top-K 帧 + 时间轴编码\n┌────▼──────────────────────┐\n│ ViT (冻结) → Projector    │\n│ 阶段①: LLM 全冻 (对齐)    │\n│ 阶段②: LLM 解冻 (LR×1/20)│\n│ 文本占比 62→48→55%        │\n└──────────┬───────────────┘\n           ▼\n  QA + 时间轴定位",
+    "tags": [
+      "Qwen3.9-VL",
+      "Qwen",
+      "长视频",
+      "VLM",
+      "训练策略",
+      "开源"
+    ],
+    "blogUrl": "https://qwenlm.github.io/"
+  },
+  {
+    "id": "wan26-2026",
+    "name": "Wan2.6",
+    "org": "阿里通义万相",
+    "type": "video",
+    "typeLabel": "开源视频生成 DiT",
+    "typeIcon": "🎞️",
+    "open": true,
+    "params": "14B DiT（蒸馏版 1.3B）",
+    "date": "2026-11-06",
+    "context": "文/图生视频 · 最长 30s",
+    "attention": "CFG-Parallel + TeaCache + Parallel VAE",
+    "factSheet": {
+      "highlight": "VBench-2.0 90.2 登顶视频生成榜，开源首次反超 Seedance 3.0（89.6）",
+      "training": "14B DiT + 蒸馏版 1.3B（24G 消费级可跑 480P）；文本编码器沿用冻结 T5/UmT5 路线",
+      "inference": "★正负条件分支拆到不同 GPU 并行（CFG-Parallel）；Parallel VAE 高度分片 + halo_exchange，长视频解码显存峰值 -41%",
+      "benchmarks": "VBench-2.0 90.2（榜首）；单卡吞吐较 Wan2.5 提升 2.2 倍"
+    },
+    "highlights": [
+      "VBench 90.2 登顶",
+      "CFG-Parallel 原生",
+      "显存峰值 -41%",
+      "开源 + 1.3B 蒸馏版"
+    ],
+    "keyInnovation": "★视频生成竞争焦点转向推理栈协同：CFG-Parallel 与 Parallel VAE 都是 DiT 侧并行工程，与 SGLang Diffusion 调度抽象贴合度决定实际吞吐。",
+    "description": "开源视频生成新榜首：14B DiT，原生 CFG-Parallel 与 Parallel VAE，附 1.3B 蒸馏版。",
+    "textArch": "Prompt → T5/UmT5 (全程冻结)\n     │  text embedding\n┌────▼──────────────────────┐\n│ DiT 14B · 去噪 T 步       │\n│  ┌─────────┬─────────┐   │\n│  │ 正条件   │ 负条件   │   │ GPU 并行(CFG)\n│  └────┬────┴────┬────┘   │\n│  TeaCache 步级复用        │\n└──────────┬───────────────┘\n           ▼\n Parallel VAE (高度分片 + halo)\n           ▼\n        Video",
+    "tags": [
+      "Wan2.6",
+      "视频生成",
+      "DiT",
+      "开源",
+      "SGLang Diffusion",
+      "VBench"
+    ],
+    "blogUrl": "https://github.com/Wan-Video"
+  },
+  {
+    "id": "minimax-m35-2026",
+    "name": "MiniMax M3.5",
+    "org": "稀宇科技（MiniMax）",
+    "type": "moe",
+    "typeLabel": "极致性价比 MoE",
+    "typeIcon": "⚡",
+    "open": true,
+    "params": "230B MoE (A10B)",
+    "date": "2026-11-06",
+    "context": "1M（按实际命中计费）",
+    "attention": "稀疏注意力 + 长上下文命中感知计费",
+    "factSheet": {
+      "highlight": "API 价格较 M2 再降 34%，性价比榜进入前二；1M 上下文只按实际命中 token 计费",
+      "training": "230B MoE 激活 10B；★公布 MMLU 与纯文本基座持平数据，强调多模态训练未牺牲语言能力",
+      "inference": "按命中计费（不按整个窗口计费），长文档场景账单下降约 60%",
+      "benchmarks": "性价比榜 279.5（第 2）；长上下文大海捞针 1M 全深度通过"
+    },
+    "highlights": [
+      "价格再降 34%",
+      "按命中计费",
+      "1M 全深度通过",
+      "语言能力未退化"
+    ],
+    "keyInnovation": "★长上下文普及后的定价演进：把「窗口大小」与「实际使用量」解耦，按命中计费让 1M 窗口不再等于 1M 账单。",
+    "description": "MiniMax 性价比 MoE：230B/A10B，1M 上下文按命中计费，价格再降 34%。",
+    "textArch": "Prompt (≤1M) → 稀疏注意力\n     │  仅命中块参与计费\n┌────▼──────────────────────┐\n│ MoE 230B (A10B)           │\n│ Router → Top-2 专家        │\n│ 语言能力锚定纯文本基座     │\n└──────────┬───────────────┘\n           ▼\n   Response (按命中 token 计费)",
+    "tags": [
+      "MiniMax",
+      "M3.5",
+      "MoE",
+      "性价比",
+      "长上下文",
+      "计费"
+    ],
+    "blogUrl": "https://www.minimaxi.com/"
   }
 ]

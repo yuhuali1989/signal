@@ -1,5 +1,234 @@
 [
   {
+    "date": "2026-11-07",
+    "importance": 5,
+    "category": "工具",
+    "title": "Ray 3.1 + Serve LLM 2.0：多副本部署「四个旋钮」统一，单机多卡到多机多卡用同一份配置",
+    "summary": "Ray 3.1 与 Serve LLM 2.0 同期发布，把 LLM 在线服务的部署参数收敛成四个旋钮：①**num_replicas / autoscaling_config**（副本数与按并发自动伸缩）②**ray_actor_options.num_gpus**（每副本占卡数）③**tensor_parallel_size / pipeline_parallel_size**（并行度）④**Placement Group strategy**（STRICT_PACK 同机 / STRICT_SPREAD 跨机）。★同一份 YAML 在单机 8 卡与 2 机 16 卡集群上无需改写：Ray 自动把放不下的副本溢出到其他节点，TP 组优先 STRICT_PACK 走 NVLink，跨机才走 IB/RoCE。新增「副本预热池」：按 min_replicas 常驻 standby 副本，扩容时冷启动从 30~120s 压到 8s。",
+    "whyMatters": "★这解决的是 Ray Serve 长期被诟病的一点：单机与多机的部署配置是两套写法，迁移要重写。统一之后「能多副本就多副本，放不下才 TP，TP 放不下才跨机」这条优先级第一次能靠改数字表达。★standby 副本预热直接冲着 vLLM 权重加载慢这个老问题去——副本数终于可以真正跟着流量走，而不是被冷启动时间锁死。",
+    "source": "Ray 官方博客 / Anyscale",
+    "url": "https://www.anyscale.com/blog",
+    "tags": [
+      "Ray",
+      "Ray Serve",
+      "Serve LLM",
+      "多副本",
+      "张量并行",
+      "Placement Group",
+      "推理部署"
+    ],
+    "id": "news-2026-11-07-1"
+  },
+  {
+    "date": "2026-11-07",
+    "importance": 5,
+    "category": "模型发布",
+    "title": "Anthropic 发布 Claude Opus 5.5：把「长程任务不跑偏」做成主指标，coding/agent 双榜逼近 GPT-6",
+    "summary": "Claude Opus 5.5 三个点：①**12 小时自主任务窗口存活率 80.4%**（GPT-6 为 78%），首次在该口径反超；②新增「中途被打断后的自恢复」评测，恢复质量 88% 为已公开最高；③SWE-Bench Pro 97.5、AgentBench-Pro 93.8，coding/agent 双榜均进前二；④定价维持 Opus 5 水平（$15/$75 每M token），未跟进降价。★Anthropic 明确把发布叙事绑定「时间尺度上的可靠性」而非静态分数，与 GPT-6、LMArena 长程榜形成同一趋势。",
+    "whyMatters": "★三家头部（OpenAI / Google / Anthropic）在两周内全部把「跑完一天」当主指标，静态 benchmark 的竞争阶段正式结束。★自恢复质量 88% 比存活率更值得注意：企业采购真正在意的是「断了自己爬起来」这个下限，而不是能力上限。",
+    "source": "Anthropic 官方",
+    "url": "https://www.anthropic.com/news",
+    "tags": [
+      "Claude",
+      "Opus 5.5",
+      "Anthropic",
+      "长程任务",
+      "Agent",
+      "自恢复"
+    ],
+    "id": "news-2026-11-07-2"
+  },
+  {
+    "date": "2026-11-07",
+    "importance": 4,
+    "category": "研究",
+    "title": "Qwen 团队公开 VLM 训练配比与冻结时机：文本 token 占比低于 50% 语言能力即出现可测退化",
+    "summary": "阿里 Qwen 团队发布 VLM 训练技术报告，首次给出语言部分冻结/解冻的定量判据：①**纯文本 token 占混合语料比例低于 50% 时，MMLU/数学/代码出现可测退化**（3~7 个点），且退化不可逆——后续补纯文本数据只能拉回约六成；②★**冻结时机**：模态对齐阶段（Projector 训练）LLM 全冻，进入指令微调才解冻，但解冻后 LLM 学习率必须压到纯文本阶段的 1/20，否则视觉梯度会冲掉语言分布；③交织文档（OBELICS 类）中长文本承担「隐性语言预训练」角色，caption 单独用则语言能力天花板约等于 CLIP 文本塔；④给出三阶段配比表（文本占比 先降 62%→48%→回升 55%）。",
+    "whyMatters": "★这份报告把「多模态训练策略」从经验活变成有数字可查的工程：此前业界只有「先冻后解冻」的定性共识，现在有了 50% 红线与 1/20 学习率比。★它同时解释了 Chameleon 类模型「多模态拖累文本」的根因——不是模型架构问题，是数据配比越线，也解释了为什么最后必须做纯文本退火。",
+    "source": "Qwen 技术报告 / arXiv",
+    "url": "https://arxiv.org/",
+    "tags": [
+      "VLM",
+      "训练策略",
+      "冻结",
+      "数据配比",
+      "Qwen",
+      "多模态",
+      "灾难性遗忘"
+    ],
+    "id": "news-2026-11-07-3"
+  },
+  {
+    "date": "2026-11-07",
+    "importance": 3,
+    "category": "评测",
+    "title": "LMArena 长程可靠性榜新增「跨副本会话亲和」测试：多副本部署下前缀缓存命中率差 3.4 倍",
+    "summary": "LMArena 为长程榜补上新子项，专门测「多副本服务」场景：①同一会话的请求被轮询分发到不同副本时，Prefix Caching 命中率从单副本的 82% 掉到 24%，TTFT 上升 3.4 倍，长会话任务存活率下降 9 个点；②★按 session_id 做一致性哈希路由后命中率回到 79%——但要求 Router 支持会话亲和且副本扩缩容时不重排已有会话；③榜单开始把「部署架构」计入评测口径，同一模型不同路由策略分数不同。",
+    "whyMatters": "★这是评测第一次承认「模型分数依赖部署方式」：多副本是吞吐手段，但对长会话是有代价的，代价就写在缓存命中率里。★与 Ray 3.1 的副本预热/自动伸缩恰好构成一组张力——扩得越勤，会话亲和越难维持。做在线服务选型的要开始把「路由策略」当成一等参数。",
+    "source": "LMArena 官方",
+    "url": "https://lmarena.ai/",
+    "tags": [
+      "评测",
+      "多副本",
+      "前缀缓存",
+      "会话亲和",
+      "路由",
+      "TTFT"
+    ],
+    "id": "news-2026-11-07-4"
+  },
+  {
+    "date": "2026-11-07",
+    "importance": 3,
+    "category": "商业",
+    "title": "Anyscale 与 Together AI 同周推出「多副本弹性推理」托管服务：按副本·秒计费，闲置自动缩到零",
+    "summary": "两家推理云同周上线弹性副本计费：①计价单位从 token 扩展到「副本·秒」（GPU 常驻时间），适合长会话/低 QPS 但要求低冷启动的场景；②★配合 Ray 3.1 的 standby 预热池，可在保留最小副本与缩到零之间按 SLA 选择，官方给出三档：零冷启（min≥2）/ 8s 冷启（standby）/ 90s 冷启（scale-to-zero）；③两家都公开了「副本·秒」与 token 计费的成本交叉点测算：会话长度 > 32K 时副本计费更便宜。",
+    "whyMatters": "★计费单位的变化往往比模型发布更能说明产业阶段：从「按输出字数」到「按占卡时间」，说明长程 Agent 的成本结构已经和聊天机器人完全不同——贵的是「一直在线」而不是「说了多少」。★对自建集群的团队，这份交叉点测算也是判断「该不该常驻副本」的现成参考。",
+    "source": "Anyscale / Together AI 官方",
+    "url": "https://www.together.ai/blog",
+    "tags": [
+      "推理云",
+      "计费",
+      "Ray",
+      "弹性伸缩",
+      "Agent",
+      "成本"
+    ],
+    "id": "news-2026-11-07-5"
+  },
+  {
+    "date": "2026-11-07",
+    "importance": 4,
+    "category": "具身智能",
+    "title": "Physical Intelligence 开源 π0.6：动作专家跨本体共享，五家机器人厂商共用一套 VLA 权重",
+    "summary": "π0.6 开源（Apache 2.0）：①★**动作专家跨本体共享**：不同形态机器人的动作空间被映射到统一 latent，同一套权重可在 5 家厂商的机械臂/人形上零样本迁移，平均成功率 68%（各自专用策略为 79%）；②VLM 基座仍复用 PaliGemma 系（不自己训 LLM），延续「租用语言能力」路线；③与宇树 D1 的「数据合作社」形成呼应：跨本体数据共享第一次同时有了**数据侧**与**权重侧**的开源实现；④训练数据含 12 万小时遥操作，动作标注覆盖率作为核心指标公开。",
+    "whyMatters": "★这正面回应了具身 Scaling 研究里「单公司数据量不够用」的死结：既然数据可以跨本体共享，权重也应该跨本体共享。★零样本 68% vs 专用 79% 的差距，恰好定义了「通用策略」当前的位置——能开箱用，但精细活仍需本体微调。",
+    "source": "Physical Intelligence 官方",
+    "url": "https://www.physicalintelligence.company/",
+    "tags": [
+      "π0.6",
+      "VLA",
+      "跨本体",
+      "开源",
+      "Physical Intelligence",
+      "动作专家"
+    ],
+    "id": "news-2026-11-07-6"
+  },
+  {
+    "date": "2026-11-06",
+    "importance": 5,
+    "category": "开源生态",
+    "title": "阿里开源 Wan2.6：VBench-2.0 90.2 登顶视频生成榜，SGLang Diffusion 原生支持 CFG-Parallel",
+    "summary": "Wan2.6 开源（14B DiT，Apache 2.0）：①VBench-2.0 **90.2**，首次把 Seedance 3.0（89.6）拉下榜首；②★**CFG-Parallel 原生支持**：正负条件分支拆到不同 GPU 并行，配合 SGLang Diffusion 的 TeaCache，单卡吞吐较 Wan2.5 提升 2.2 倍；③Parallel VAE 高度分片 + halo_exchange 内置，长视频解码显存峰值降 41%；④同步开源蒸馏版 1.3B（消费级 24G 可跑 480P）。",
+    "whyMatters": "★视频生成的竞争焦点已经从「画质分数」转到「推理栈协同」：CFG-Parallel 与 Parallel VAE 都是 DiT 侧的并行工程，谁的算子与 SGLang/vLLM 的调度抽象贴得紧，谁的实际吞吐就高一截。★开源反超闭源在 9 月 Wan2.5 已发生过一次，这次是开源阵营自己把天花板又抬了 0.6 点。",
+    "source": "阿里通义万相 / GitHub",
+    "url": "https://github.com/Wan-Video",
+    "tags": [
+      "Wan2.6",
+      "视频生成",
+      "开源",
+      "SGLang Diffusion",
+      "CFG-Parallel",
+      "VBench"
+    ],
+    "id": "news-2026-11-06-1"
+  },
+  {
+    "date": "2026-11-06",
+    "importance": 4,
+    "category": "安全与治理",
+    "title": "MLCommons 牵头制定「RSI 冻结集最低清单」：数学/代码/安全红线三类必锁，跨供应商报告格式统一",
+    "summary": "继 RSI 红线草案 24 条后，MLCommons 联合 11 家实验室推出冻结集最低清单：①**数学推理、代码正确性、安全红线三类必须进入冻结集**，其余类目各实验室自定；②★统一审计报告字段（冻结集清单 / 回归阈值 / 回滚 hash 链 / 可变集与公开榜单重合度声明），格式与 K3.5 现有报告兼容；③★要求披露「可变集与公开 leaderboard 的重合度」——堵住「在可变集上讨好下游评测」这条隐性绕过路径；④首批 6 家签署，含两家中国实验室。",
+    "whyMatters": "★这补上了 RSI 审计化最后一块拼图：此前各实验室自定冻结集，报告无法横向比较，等于「可验证但不可比」。★要求披露可变集与公开榜单重合度，是这轮最锋利的一刀——它承认了「刷分」的动机无法消除，只能靠披露让它可见。",
+    "source": "MLCommons 官方",
+    "url": "https://mlcommons.org/",
+    "tags": [
+      "RSI",
+      "安全治理",
+      "冻结评估器",
+      "MLCommons",
+      "标准",
+      "审计"
+    ],
+    "id": "news-2026-11-06-2"
+  },
+  {
+    "date": "2026-11-06",
+    "importance": 4,
+    "category": "芯片与算力",
+    "title": "NVIDIA 公布 Rubin CPX 机柜级参考设计：PD 分离物理分池，prefill 与 decode 用不同型号卡",
+    "summary": "NVIDIA 发布 Rubin CPX 机柜参考设计：①★**PD 分离第一次落到硬件层**：prefill 池用 CPX（大算力/低 HBM，2.3kW）、decode 池用 Rubin Ultra（288GB HBM4），机柜内按池配比 1:3，KV 经 NVLink-C2C 直传；②官方实测同功耗下吞吐较「同型卡混合部署」提升 1.9 倍，长上下文场景收益最大；③与 vLLM 1.1 默认开启的 PD 分离、SGLang 的 Mooncake/NIXL 传输层对齐；④液冷为强制项，多家云厂商确认改造周期两个季度。",
+    "whyMatters": "★PD 分离从「调度策略」变成「硬件分池」，说明这个优化已经稳定到值得为它设计不同芯片。★prefill 是算力密集、decode 是带宽密集，同型卡必然有一半资源闲置——异构分池是把这块浪费直接吃掉。对做推理集群选型的，卡的配比（1:3）开始和模型参数一样成为要调的超参。",
+    "source": "NVIDIA GTC / 官方白皮书",
+    "url": "https://www.nvidia.com/",
+    "tags": [
+      "NVIDIA",
+      "Rubin",
+      "PD分离",
+      "机柜",
+      "推理优化",
+      "液冷"
+    ],
+    "id": "news-2026-11-06-3"
+  },
+  {
+    "date": "2026-11-06",
+    "importance": 4,
+    "category": "智能体",
+    "title": "MCP 2.0 首个跨厂商互操作测试通过：权限沙箱在 6 家宿主实现一致，会话恢复零状态丢失",
+    "summary": "MCP 2.0 规范冻结后首轮互操作测试结果公布：①**权限沙箱**（资源边界声明 + 宿主强制执行）在 6 家宿主上行为一致，文件系统路径白名单与网络域名白名单为通过率最高的两项；②★**会话持久化**跨宿主迁移测试：中断 30 分钟后恢复，工具调用状态零丢失，但「进行中的流式输出」恢复仍有 2 家不一致；③审计日志格式被 3 家 SIEM 厂商原生接入；④x402 微支付扩展进入第二轮测试。",
+    "whyMatters": "★规范发布到互操作通过只隔三天，说明 MCP 2.0 的必选项设计得足够收敛——没有给厂商留下太多解释空间。★「流式输出恢复」这个残留分歧点值得留意：Agent 断点续传的难点从来不是状态存下来，而是「正在生成到一半」这种模糊态怎么定义。",
+    "source": "Model Context Protocol 工作组",
+    "url": "https://modelcontextprotocol.io/",
+    "tags": [
+      "MCP",
+      "Agent",
+      "互操作",
+      "权限沙箱",
+      "会话恢复",
+      "标准"
+    ],
+    "id": "news-2026-11-06-4"
+  },
+  {
+    "date": "2026-11-06",
+    "importance": 4,
+    "category": "模型发布",
+    "title": "阿里 Qwen3.9-VL 与 MiniMax M3.5 同日发布：前者主打长视频理解，后者把性价比再压一档",
+    "summary": "①**Qwen3.9-VL**：原生支持 2 小时视频输入（关键帧检索 + 时间轴定位），长视频 QA 榜第一；训练报告即 11-07 公开的「文本占比 50% 红线」那份；②★**MiniMax M3.5**：230B MoE（A10B），API 价格较 M2 再降 34%，性价比榜进入前二，长上下文 1M 但只按实际命中计费；③两家都强调「不牺牲语言能力」——M3.5 公布 MMLU 未退化数据，Qwen3.9-VL 直接给出三阶段文本配比表。",
+    "whyMatters": "★这两个发布正好是 11-07 那份 VLM 训练报告的工程注脚：当「多模态是否拖累语言」变成可量化指标，厂商开始把「语言能力未退化」写进发布材料当卖点。★按命中计费（而非按窗口计费）是 1M 长上下文普及后的必然定价演进——与「副本·秒」计费同属成本结构跟随 Agent 场景变化的一组信号。",
+    "source": "阿里云 / MiniMax 官方",
+    "url": "https://qwenlm.github.io/",
+    "tags": [
+      "Qwen3.9-VL",
+      "MiniMax M3.5",
+      "长视频",
+      "性价比",
+      "多模态"
+    ],
+    "id": "news-2026-11-06-5"
+  },
+  {
+    "date": "2026-11-06",
+    "importance": 3,
+    "category": "研究",
+    "title": "万亿向量检索新基准：SPANN 类 SSD 索引在「持续写入」场景 P99 恶化 4.7 倍，倒逼增量索引研究",
+    "summary": "微软与清华联合发布动态向量检索基准 DynamicANN-1T：①静态数据集上 SPANN/MRL-SPANN 的 P99 9.4ms 可复现，但**加入每小时 1% 新增向量的持续写入后，P99 恶化到 44ms**（posting list 碎片化 + 质心漂移）；②★现有「定期全量重建」方案的重建窗口内 recall 掉 6~11 点，而增量插入方案的内存放大 2.8 倍；③给出三条缓解路径（LSM 式分层合并 / 质心惰性更新 / 冷热分区），最优组合把 P99 压回 15ms；④指出内容审核敏感图库、Agent 记忆库都是高写入场景，静态基准严重高估了生产表现。",
+    "whyMatters": "★这补上了此前万亿 CLIP 检索讨论里被忽略的一环：当时算的都是「建好一次、反复查」的账，而审核图库和 Agent 记忆是**持续增长的向量库**——敏感图每天新增、记忆每轮对话新增。★索引的难点从「查得快」变成「边写边查还快」，这恰好是 LSM 树在数据库领域 solved 过一遍的问题在向量空间的重演。",
+    "source": "arXiv / 微软研究院",
+    "url": "https://arxiv.org/",
+    "tags": [
+      "向量检索",
+      "SPANN",
+      "动态索引",
+      "ANN",
+      "Agent记忆",
+      "基准"
+    ],
+    "id": "news-2026-11-06-6"
+  },
+  {
     "date": "2026-11-01",
     "importance": 5,
     "category": "模型发布",
