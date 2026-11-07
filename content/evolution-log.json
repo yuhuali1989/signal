@@ -3273,5 +3273,14 @@
     "emoji": "📚",
     "title": "新建全书：《全双工全模态工程全书：一个例子讲透词表、Embedding 与生成》（全 10 章 1610 行）",
     "detail": "①★全书只用一个贯穿例子：t=3200ms 用户举金属保温杯问「这个能微波吗」、t=3600ms 插话「我是说盖子」；固定 d=4096/32层/V=75840/80ms 片/一片 87 槽位，每章回到同一块时间片②词表选哪个：三套方案对比后选混合式（理解侧连续 + 生成侧离散统一词表），V=75840 四段分区与具体 ID 手册，一个 ID 绑两套向量（E[id] 进主干 / codec.codebook[id-offset] 出信号）③三路 embedding：文本查表、音频 Mimi 12.5Hz split-RVQ、视频不查表投影且 186MB→512KB 约 360×④怎么混合：87 槽位 + 四层身份标签（type/stream/边界符/(t,h,w)）+ TMRoPE 绝对毫秒 + chunk-causal⑤逐层 shape 与融合点：主干无模态专属结构，融合只在 scores[1,32,87,87] 的 Q·K，指代消解权重 0.02→0.31⑥怎么输出：一个 head 75840 logits + mask 状态机，每片 1 文本 ID + 8 音频 ID → codec 1920 samples；画面走 BOV+1024 视觉 ID 但应异步独立分支⑦效果到底好不好：Moshi 160/200ms、GPT-4o 320ms、Qwen3-Omni 234ms、SeedRealtime 节奏问题减半；六类评测口径 + 五种失败模式 + 成本贵 3~10 倍；结论「买到的是交互节奏不是智能水平」。"
+  },
+  {
+    "id": "evo-20261107-book-calibration-higgs",
+    "date": "2026-11-07",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "🔄",
+    "title": "按 Higgs Realtime Duplex 真实数据校准《全双工全模态工程全书》（10章→11章 / 1610→1848行）",
+    "detail": "①调研 Boson AI 2026-11-05 发布的 Higgs Realtime Duplex（45B MoE、技术贡献者含李沐 Mu Li / Alex Smola）官方技术博客与多路报道 ②修订 ch01/02/04/07/08/09/10 共九条断言：全双工不必 codec 直接重建（真实用因果流匹配解码器）、真实产品每片出画面（2 image latents→因果 DiT）、输出侧连续 latent 而非离散 ID、75840 四段词表与 8 层 RVQ 属教学设定、87 槽位/1087 tok/s/171GB KV 放大约 20 倍、时间片 160ms 非 80ms、静音期间视频帧持续流入、成本结论需加限定、Full-Duplex-Bench v1.5 75.5 输给 GPT-Live-1 80.1 ③新增 ch11 逐条对账表 ④真实 token 预算：音频入 1/片、出 2/片、视频每 6 片 1 帧约 12 token、面部 2 latent/片 → 2.6K~5K token/分钟、5 分钟窗口 13K~25K（渐进 compaction），修正优先级为「先压预算→再 compaction→最后 KV 剪枝」⑤补本书遗漏三层：前台/后台多线程异步（工具结果 payload 进输入 chunk）、MOPD 多教师 on-policy 蒸馏 + GRPO 专家教师 + RSI 闭环、配置即 prompt（参考音频/图只进 decoder）⑥八条结论被印证；七项 benchmark 仅一项第一；权重未开、API waitlist、无定价。"
   }
 ]

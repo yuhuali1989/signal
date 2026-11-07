@@ -44,9 +44,24 @@ part: "篇五 · 效果与选型"
 | **AIDE² / BayLing-Duplex**（2026） | 后者 92% 话轮转换成功率、100% 打断成功率 | 纯 LLM + 特殊 token + 40 万条全双工语料 |
 | **GPT-Live-1**（站内 2026-07-09） | 可随时打断、实时附和、捕捉语气停顿 | 前后台分离：前台语音流畅，后台挂 GPT-5.5 做深度推理 |
 | **SeedRealtime**（站内 2026-08-05） | 边看边听边说，对话节奏问题较级联模型**减半** | 原生音视频全双工，豆包 App 全量上线 |
+| **Higgs Realtime Duplex**（Boson AI, 2026-11-05） | 45B MoE；160ms chunk；约 200ms 响应；Big Bench Audio **98.9**（对比组最高）、IFEval 94.1、τ-Voice 69.8、QIVD 56.0、Full-Duplex-Bench v1.5 **75.5** | 权重未开、API waitlist、无定价；参数量约为 TML Interaction Small（276B）的 1/6，成绩互有胜负 |
 | **Hy4 / Kimi K3.5**（站内 2026） | 算子采纳率 37%→61%、训练算力 -25% | RSI 侧，与交互自然度无关，别混为一类指标 |
 
 人类基准：话轮间隔约 **230ms**（跨 10 语言统计），重叠语音占口语时长 10~20%。Moshi 的 200ms 是「达到人类节奏」的证据，不是「超越人类智能」。
+
+**Higgs Realtime Duplex 七项实测（官方博客，2026-11-05）**：
+
+| 评测 | Higgs 45B MoE | 最强对手 | 读法 |
+|---|---|---|---|
+| Big Bench Audio（口语 QA） | **98.9** | Gemini 3.8 Live Ext. 98 / RT-2 High 97 | 最高分，语言理解扎实 |
+| Audio MultiChallenge（APR） | 44.9 | RT-2 xHigh 48.5 | 第二，略输 |
+| Full-Duplex-Bench v1.5 | 75.5 | **GPT-Live-1 80.1** / TML 77.8 | **输了**，交互节奏仍非第一 |
+| QIVD（流式音视频联合） | 56.0 | RT-2 xHigh 58.2 | 略输 |
+| ProactiveVideoQA（主动开口） | 31.9 | TML 33.5 | 第二 |
+| τ-Voice（Agent 任务完成） | 69.8 | GPT-Live-1 Astra 74.5 | 第二 |
+| IFEval（文本指令遵循） | 94.1 | RT-2 xHigh 95.2 | 第二，语言能力没被拖垮 |
+
+**这张表最诚实的信息是「七项里只拿了一项第一」**。Boson 自己的解读是「领域还早，数据/架构/训练方法比参数量更重要」——45B 对 276B 打平支持这个判断，但也说明**全双工交互本身还没被解决**。把它当「全双工已成熟」的证据是误读。第 11 章会展开这个判断。
 
 ## 10.3 三条口径陷阱（引用数字时必须带上）
 
@@ -83,6 +98,8 @@ part: "篇五 · 效果与选型"
 前四种都能在第 5、6、9 章的检查清单里提前拦住。第五种必须在压测阶段就跑满 5 分钟会话。
 
 ## 10.6 成本账（决定能不能上线）
+
+> **2026-11-07 校准**：Higgs 给了一个可对照的产业目标——**1 小时模型时间 ≤ 1 小时人工成本的 1/10**，做法是「前台 45B 自己能答就自己答，只在必要时委派给更大的后端模型」，而不是把所有推理都丢给大模型。它的 2.6K~5K token/分钟预算让长会话成本可控；反过来，Thinking Machines 那种「全部推理放后台」的路线可能造成 10 秒以上空档且成本由大模型决定。本书下面按示意配置算的 171GB KV 是**上界**，不是量产值。
 
 ```
 单会话：12.5 片/秒 × 87 token/片 = 1087 token/秒
@@ -144,4 +161,6 @@ t=3600ms 用户插话 → 75782 BARGE_IN → 闭嘴 → 改答「盖子是塑料
 - [ ] KV cache 有压缩；部署有会话亲和与 standby
 - [ ] 评测含时间/轮次/重叠/回归/长程/成本六类
 
-> 全书完。相关延伸：`content/books/93f28994-ch05.md`（VQ-VAE 与视频 DiT）、`content/articles/ray-serve-multi-replica-deployment-2026-11.md`（多副本部署）、`content/articles/rsi-audit-pipeline-2026-11.md`（自改进治理）。
+> 下一章（2026-11-07 补）：用 Higgs Realtime Duplex 的真实参数逐条对账，明确哪些是教学示意、哪些是量产事实、哪些结论必须改。
+>
+> 相关延伸：`content/books/93f28994-ch05.md`（VQ-VAE 与视频 DiT）、`content/articles/ray-serve-multi-replica-deployment-2026-11.md`（多副本部署）、`content/articles/rsi-audit-pipeline-2026-11.md`（自改进治理）。
