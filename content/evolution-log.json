@@ -3300,5 +3300,14 @@
     "emoji": "🔄",
     "title": "按 Hugging Face 视频 tokenizer 实例校准《全双工全模态工程全书》（11章→12章 / 2001行）",
     "detail": "①读者质疑「视频 embedding 没有词表写得太绝对」，核实后确认属实且比措辞问题更严重：ch02 2.7 把「视频输入也要查表」列为常见误解，但 Emu3/Chameleon 统一离散路线里这是标准做法，属事实性错误 ②调研 Hugging Face 官方文档与 model card：Emu3 Emu3VQVAEConfig(codebook_size=32768, embed_dim=4, temporal_downsample_factor=4) 与 Emu3TextConfig(vocab_size=184622)，4×512×512 视频→4096 离散 token 直接进 input_ids 查主干表；O2-MAGVIT2-preview(CofeAI, Apache-2.0, 0.4B) LFQ 2^18=262144；Cosmos Tokenizer 离散版 FSQ ~64K / 连续版 C=16；C-ViViT VQ 8192；MAGVIT-v1 1024；Wan/Sora 3D 因果 VAE 无码本 ③修订 ch01/02/03/04/10/11 共 17 处断言（19 次替换）：把「理解侧不查表」全部改为「本书所选方案 B 不查表」，ch04 标题改「连续投影路线」，ch11 ③「量产全双工干脆不用视觉离散词表」收紧为「Higgs 这条路线未使用、官方只是未公开」④新增 ch12《词表再校准：视频到底有没有词表》：拆开词表三种含义（主干 embedding 表 / 量化码本 / 连续投影的无限词表）、指出 LFQ 有 ID 空间但无可查表、给出「token 离散还是连续 × ID 查主干还是只喂 decoder」的 A/B/C/D 四种组合、HF 实例表、金属杯同一帧在四条路线里的代码对照、前 11 章修订清单与选型决策表 ⑤纠正原判据：「这个模态要被采样吗」不普适，正确判据是「要不要一个统一的离散符号空间」⑥沿用第 11 章校准范式：保留教学基准 + 逐处加限定 + 另起一章对账，不推翻重写 ⑦ai-wiki 快照：章节 266→267、进化日志 402→403。"
+  },
+  {
+    "id": "evo-20261108-new-book-higgs-realtime-duplex",
+    "date": "2026-11-08",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "📚",
+    "title": "新建全书：《Higgs Realtime Duplex 深度拆解：从 160ms 时间片到因果 DiT》（全 12 章 1799 行）",
+    "detail": "①把 11-08 的深度调研（官方 blog 2026-11-05 / 李沐 44 分钟分享视频 / 官方 docs / blog 图注数字 / 李沐交大讲座）扩成一部专门拆解单个产品的工程全书，content/books/higgs-realtime-duplex-book-ch01~12.md ②★方法论创新：建立四级证据标注纪律【官方】【图注】【推断】【未公开】，凡推断必给算式、凡未公开绝不写进配置表，直接吸收 11-08 词表校准「写得太绝对」的教训 ③单 chunk 精确演算：24kHz×160ms=3840 samples【推断】、音频入 1 token=3840:1 压缩、音频出 2 frames 每 frame 1920 samples、视频每 6 片 1 帧≈1.04fps 约 12 token、面部 2 latent/片；★7 槽位/片 × 375 片 = 2625 ≈ 2.6K/分钟，可由可运行脚本复算，四条分项 375/750/750/750 全部对上 ④5 分钟窗口 13K~25K（13K 是刚性音视频地板、约 12K 是压缩后文本余量）、渐进 compaction 的正确性标准是任务状态不丢、GQA 假设下 KV 约 1.6~3.1GB、压缩优先级修正为「压预算 → compaction → KV 剪枝」⑤主干与输出：45B MoE 是总参且被 160ms 墙钟倒逼、从文本基座续训约 2T token 保语言能力（IFEval 94.1）、输出侧连续 latent 配因果流匹配 + 因果 DiT、参考条件只进 decoder、★判据是逐 chunk 因果 + 每片算力恒定而非重建 vs 生成、词表官方未公开（输出侧可定位为 D 类连续表示，输入侧离散与否无法确定）⑥后台与策略：One model many threads、与 Thinking Machines 的分水岭（前台自己 think/call tools，避免 10s+ 与每轮成本）、payload 无固定配额、任务状态维护；四个官方 demo 逐帧复盘；上一代 server_vad 四阈值（0.85/300ms/500ms/0.125s）与 conversation.item.truncate 校正 → MOPD 的 interactive behavior 教师把话轮训成策略 ⑦训练：MOPD 四类专家教师（自然对话/交互行为/动态委派/任务完成）+ GRPO on-policy 蒸馏成单一学生、RSI 闭环与仿真四类干扰、按站内 L0–L3 尺子定为 L1 有界自精化非 L2 点火 ⑧七项 benchmark 完整对照（1 项第一 4 项第二、Full-Duplex-Bench 75.5 输 GPT-Live-1 80.1、45B 对 276B 打平）、未公开总清单、产品状态（research preview / waitlist / 权重未开 / 在售是上一代）、与全双工全书 15 项逐条对账、七条可迁移原则与全书十条结论 ⑨结论：买到的是交互节奏不是智能水平。ai-wiki 快照：书籍 32→33 部、章节 267→279、进化日志 403→404。"
   }
 ]
