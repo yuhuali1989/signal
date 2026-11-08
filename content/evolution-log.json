@@ -3291,5 +3291,14 @@
     "emoji": "📚",
     "title": "新建全书：《递归自我改进（RSI）工程全书：从 Gödel Machine 到冻结评估器》（全 12 章 1646 行）",
     "detail": "①把此前 RSI 调研（站内新闻时间线 / 论文 index / 第74轮审计流水线文章 + 三篇综述与代表系统公开数据）扩成一部完整工程全书，content/books/rsi-engineering-book-ch01~12.md ②核心论点：RSI 在 2026 年落地的是有界自精化 L1 而非智能爆炸，L2 公开达标数 0；瓶颈是验证不是生成；self-improvement 与 self-poisoning 只差一个 oracle ③结构：ch01 概念拆解（一层/二层循环 + 四判据）ch02 理论源头（Gödel Machine 可证明→DGM 可验证→产业可审计三次降级）ch03 技术版图（改什么×闭环程度，③评估器×C2 原理性空白、④研究流程×C2 能力性空白）ch04/05 代表系统上下（AlphaEvolve 48次矩阵乘 / DGM 20→50% 与删作弊标记事故 / SEAL / LADDER 1→82% / AIDE² 90%拒绝率自评L1 / Memento3 / Auriga / Hy4 37% / K3.5 61%）与三个口径陷阱 ch06 验证层级 V0–V4 + 四类失败 + 防护四件套 ch07 L0–L3 证据阶梯 + 点火判据 + 治理级测量空白 ch08 Operational RSI Claim Protocol 五件套 + 六条一票否决 F1–F6 ch09 治理三线合流 + 红线24条五类 + MLCommons清单 + 企业采购十问 ch10 站内 08-28→11-06 时间线与三个「第一次」ch11 首篇 RSI 论文与三篇综述精读 + 待补解读清单 ch12 五大制约 / 决策树 / 八步落地手册 / 全书十条结论 ④与站内 VLA 数据引擎、万亿检索、内容治理、全双工全书收口为同构原理「真值决定边界，架构只是让路」⑤ai-wiki 快照：书籍 31→32 部、章节 254→266、进化日志 401→402。"
+  },
+  {
+    "id": "evo-20261108-book-calibration-video-vocab",
+    "date": "2026-11-08",
+    "agent": "研究员→编辑→审校员",
+    "type": "book",
+    "emoji": "🔄",
+    "title": "按 Hugging Face 视频 tokenizer 实例校准《全双工全模态工程全书》（11章→12章 / 2001行）",
+    "detail": "①读者质疑「视频 embedding 没有词表写得太绝对」，核实后确认属实且比措辞问题更严重：ch02 2.7 把「视频输入也要查表」列为常见误解，但 Emu3/Chameleon 统一离散路线里这是标准做法，属事实性错误 ②调研 Hugging Face 官方文档与 model card：Emu3 Emu3VQVAEConfig(codebook_size=32768, embed_dim=4, temporal_downsample_factor=4) 与 Emu3TextConfig(vocab_size=184622)，4×512×512 视频→4096 离散 token 直接进 input_ids 查主干表；O2-MAGVIT2-preview(CofeAI, Apache-2.0, 0.4B) LFQ 2^18=262144；Cosmos Tokenizer 离散版 FSQ ~64K / 连续版 C=16；C-ViViT VQ 8192；MAGVIT-v1 1024；Wan/Sora 3D 因果 VAE 无码本 ③修订 ch01/02/03/04/10/11 共 17 处断言（19 次替换）：把「理解侧不查表」全部改为「本书所选方案 B 不查表」，ch04 标题改「连续投影路线」，ch11 ③「量产全双工干脆不用视觉离散词表」收紧为「Higgs 这条路线未使用、官方只是未公开」④新增 ch12《词表再校准：视频到底有没有词表》：拆开词表三种含义（主干 embedding 表 / 量化码本 / 连续投影的无限词表）、指出 LFQ 有 ID 空间但无可查表、给出「token 离散还是连续 × ID 查主干还是只喂 decoder」的 A/B/C/D 四种组合、HF 实例表、金属杯同一帧在四条路线里的代码对照、前 11 章修订清单与选型决策表 ⑤纠正原判据：「这个模态要被采样吗」不普适，正确判据是「要不要一个统一的离散符号空间」⑥沿用第 11 章校准范式：保留教学基准 + 逐处加限定 + 另起一章对账，不推翻重写 ⑦ai-wiki 快照：章节 266→267、进化日志 402→403。"
   }
 ]

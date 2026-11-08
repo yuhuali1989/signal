@@ -63,7 +63,7 @@ Higgs 用因果流匹配解码器，属于生成式解码，照样 200ms。区�
 Higgs 每片都在渲染面部视频。正确说法是「**不让主干逐 token 采画面**」：主干每片只多付 2 个连续 latent，像素生成外包给独立的因果 DiT，条件是一张参考图 + 前两个 latent。既因果、又恒定算力、还不撑爆 KV cache。
 
 **③「生成侧必须有离散 ID 才能采样」——错。**（第 2、7、8 章）
-输出侧是连续 latent + 生成式解码。这也顺带回答了「视频词表为什么不能用原版 VQ-GAN」：**量产全双工干脆不用视觉离散词表**，用极低维连续 latent 配因果 DiT，同时避开码本坍缩、逐帧闪烁和非因果泄漏三个坑。本书的四段统一词表仍是最容易讲清「ID 区间 / logits mask / 状态机」的教具，但不是业界共识。
+输出侧是连续 latent + 生成式解码。这也顺带回答了「视频词表为什么不能用原版 VQ-GAN」：**Higgs 这条量产路线没有使用视觉离散词表**，改用极低维连续 latent 配因果 DiT，同时避开码本坍缩、逐帧闪烁和非因果泄漏三个坑。★2026-11-08 收紧：官方只是**未公开词表**，不能由此推出「量产全双工不用视觉词表」——Hugging Face 上 Emu3 / MAGVIT-v2 / Cosmos Tokenizer 等视频 tokenizer 都带词表，只是用途不同（见第 12 章）。本书的四段统一词表仍是最容易讲清「ID 区间 / logits mask / 状态机」的教具，但不是业界共识。
 
 **④「75840 统一词表 / 8 层 RVQ 是通用做法」——未证实。**（第 2、3 章）
 官方没有公开词表结构。可确认的只有「每片音频入 1、出 2、视频约 12/帧、面部 2 latent」这些**极稀疏的 token 数**。把本书配置写成「全模态模型就是这样」是过度外推。
@@ -172,4 +172,4 @@ Higgs 七项 benchmark 里**只拿了一项第一**（Big Bench Audio 98.9），
 - 本书遗漏的三层：前台/后台并行（多线程而非顺序时间片）、极紧 token 预算 + 渐进 compaction、MOPD + RSI 闭环训练。
 - 效果修正：七项 benchmark 只拿一项第一，Full-Duplex-Bench 输给 GPT-Live-1；架构跑通 ≠ 交互智能解决；研究预览、权重未开、无定价。
 
-> 全书完（11 章）。相关延伸：`content/articles/rsi-audit-pipeline-2026-11.md`（MOPD/RSI 闭环的治理约束）、`content/articles/ray-serve-multi-replica-deployment-2026-11.md`（在线服务的副本与 KV 账）、`content/books/93f28994-ch05.md`（VQ-VAE 与视频 DiT 基础）。
+> 本轮校准告一段落，但「词表」这个词的歧义还没拆干净——下一章（2026-11-08 补）专门处理：为什么「视频没有词表」写绝对了。相关延伸：`content/articles/rsi-audit-pipeline-2026-11.md`（MOPD/RSI 闭环的治理约束）、`content/articles/ray-serve-multi-replica-deployment-2026-11.md`（在线服务的副本与 KV 账）、`content/books/93f28994-ch05.md`（VQ-VAE 与视频 DiT 基础）。
