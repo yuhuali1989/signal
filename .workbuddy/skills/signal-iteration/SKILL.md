@@ -21,14 +21,14 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 - **★Bash 沙箱 HOME ≠ 真实 HOME**：沙箱内 HOME 被设为 `/c/ProgramData/WorkBuddy/users/17a0f284`，所以在沙箱里查 `~/.ssh` 看不到真实私钥。真实私钥在 `C:\Users\于华丽\.ssh\id_ed25519`（ED25519，无 passphrase）。推送必须绕过沙箱并显式加载该私钥。
 - 关键数据文件（相对仓库根）：
 
-| 文件 | 用途 | 规模（2026-11-14 · 第 76 轮） |
+| 文件 | 用途 | 规模（2026-11-14 · 第 76 轮 + 待办收口） |
 |---|---|---|
-| `content/news/news-feed.json` | AI 声浪（新闻） | 615 |
-| `content/gallery/models.json` | 模型库 | 163 |
-| `content/papers/papers-index.json` | **论文库** | 108 |
+| `content/news/news-feed.json` | AI 声浪（新闻） | 615（12 个标准中文类目） |
+| `content/gallery/models.json` | 模型库 | 163（textArch 全覆盖） |
+| `content/papers/papers-index.json` | **论文库** | 108（68 已解读，md 69 篇） |
 | `content/papers/categories.json` | 论文分类（arch / alignment / inference / data / autonomous-driving / agent / hf-picks） | 7 |
 | `content/benchmarks/benchmarks.json` | 8 类排行榜 | 8 榜 |
-| `content/evolution-log.json` | 进化日志 | 411 |
+| `content/evolution-log.json` | 进化日志 | 414 |
 | `content/articles/*.md` | 文章 | 147 |
 | `content/books/*.md` | 书籍 | 34 部 / 291 md |
 | `ai-wiki.md` | 站点总索引（最后更新时间 + 本轮更新记录） | — |
@@ -237,7 +237,8 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 | 模型 id 重复 | 先查后写；已存在则校正而非新增 |
 | 榜单 rank 不连续 | 重排后必须 1..N |
 | 误以为有 `github` remote | 只有 `origin` |
-| 质检报历史遗留问题 | 用起始日期参数区分，不阻断本轮 |
+| 质检报历史遗留问题 | 用起始日期参数区分，不阻断本轮；★**但「收口轮」应把零风险可修的当场修掉**：重复 id（news / evo）、缺失的展示元数据（categoryIcon/Color/Name）、缺 textArch —— 这些改 id / 补展示字段不动内容，安全。★**需要生成内容的字段一律不臆造**：`blogUrl`（约 130 个缺失，属可选字段）、`keyInnovation` / `description` / `importance` / `whyMatters` / `platform`，只记账不动手；`qa_check` 报的「models 字段缺失 12 个（旧 schema）」就属于这一类 |
+| ★数据债收口轮的正确顺序 | ①先跑 `check_frontmatter.mjs` + `qa_check.mjs` 拿到完整债项清单 ②按「零风险可修 / 需生成内容」二分 ③只修前者，且**只补缺失绝不覆盖已有细粒度值**（如 103 条「AI Infra/量化」类 categoryName、87 张手写 textArch）④修完复跑质检确认归零 ⑤需生成内容的债项写进工作日志与轮次日志，等有真实来源再补 |
 | ★★新闻 append 到数组末尾 → 首页看不到新数据 | 首页 `getNewsFeed().slice(0, 12)` 不排序，直接取前 12 条。**历史 SOP 曾误写「数组按时间正序追加」，是错的**：新批次必须按日期降序 `unshift` 到最前，写完校验 `slice(0,12)` 全为本轮窗口 |
 | ★★榜单按分数全局排序 | 榜内混有 Elo / 百分比 / 越小越好三套口径，`sort` 会把 0.28 排到 97.8 前。只做定点 `splice` 插入 + 重排 rank，绝不全局排序；改前先 `cp` 备份 4 个 JSON |
 | ★论文模块停更 | 每轮开工跑「快速巡检命令」，比对新闻/模型/论文/榜单/日志五个模块最新日期；论文最易漏（第 76 轮巡检发现停在 2026-10 而窗口已是 11 月，当场补录 4 条）。补录时 category 必须取 `categories.json` 合法 id、importance ∈ {4,5}、date 用 `YYYY-MM` |
