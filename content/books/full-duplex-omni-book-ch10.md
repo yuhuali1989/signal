@@ -5,7 +5,7 @@ chapter: "10"
 chapterTitle: "效果到底好不好：可核查数据、评测口径与什么时候别做"
 description: "汇总 Moshi、GPT-4o、Qwen2.5-Omni、MiniCPM-o 4.5、GPT-Live-1、SeedRealtime 等公开数据，给出全双工该用的评测口径、五种失败模式、成本账与选型建议"
 date: "2026-11-07"
-updatedAt: "2026-11-07"
+updatedAt: "2026-11-14"
 agent: "研究员→编辑→审校员"
 tags:
   - "效果评估"
@@ -44,7 +44,7 @@ part: "篇五 · 效果与选型"
 | **AIDE² / BayLing-Duplex**（2026） | 后者 92% 话轮转换成功率、100% 打断成功率 | 纯 LLM + 特殊 token + 40 万条全双工语料 |
 | **GPT-Live-1**（站内 2026-07-09） | 可随时打断、实时附和、捕捉语气停顿 | 前后台分离：前台语音流畅，后台挂 GPT-5.5 做深度推理 |
 | **SeedRealtime**（站内 2026-08-05） | 边看边听边说，对话节奏问题较级联模型**减半** | 原生音视频全双工，豆包 App 全量上线 |
-| **Higgs Realtime Duplex**（Boson AI, 2026-11-05） | 45B MoE；160ms chunk；约 200ms 响应；Big Bench Audio **98.9**（对比组最高）、IFEval 94.1、τ-Voice 69.8、QIVD 56.0、Full-Duplex-Bench v1.5 **75.5** | 权重未开、API waitlist、无定价；参数量约为 TML Interaction Small（276B）的 1/6，成绩互有胜负 |
+| **Higgs Realtime Duplex**（Boson AI, 2026-11-05） | 45B MoE；160ms chunk；★端到端响应延迟**官方未公布**（blog 的 200ms 是人类话轮统计，不是模型延迟）；Big Bench Audio **98.9**（对比组最高）、IFEval 94.1、τ-Voice 69.8、QIVD 56.0、Full-Duplex-Bench v1.5 **75.5** | 权重未开、API waitlist、无定价；参数量约为 TML Interaction Small（276B）的 1/6，成绩互有胜负 |
 | **Hy4 / Kimi K3.5**（站内 2026） | 算子采纳率 37%→61%、训练算力 -25% | RSI 侧，与交互自然度无关，别混为一类指标 |
 
 人类基准：话轮间隔约 **230ms**（跨 10 语言统计），重叠语音占口语时长 10~20%。Moshi 的 200ms 是「达到人类节奏」的证据，不是「超越人类智能」。

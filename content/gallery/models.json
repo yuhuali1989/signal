@@ -2648,7 +2648,8 @@
       "开源",
       "中国"
     ],
-    "archDiagramType": "dense"
+    "archDiagramType": "dense",
+    "textArch": "MiniCPM5-1B  ·  面壁智能/清华/OpenBMB\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ 轻量 Transformer (共享权重)   │\n│  GQA + 量化 KV Cache          │\n└───────────────────────────────┘\n      ↓\n端侧推理 → Next Token\n\n参数 1B  |  上下文 32K tokens\n注意力 GQA"
   },
   {
     "id": "kimi-k26",
@@ -2810,7 +2811,8 @@
       "128K 上下文窗口",
       "NVIDIA 开源策略延续：Nemotron 系列旗舰"
     ],
-    "description": "Nemotron-3-Ultra-550B 是 NVIDIA 于 2026年6月发布的超大 MoE 语言模型，550B 参数（激活 55B），在 Hugging Face 上开源发布。"
+    "description": "Nemotron-3-Ultra-550B 是 NVIDIA 于 2026年6月发布的超大 MoE 语言模型，550B 参数（激活 55B），在 Hugging Face 上开源发布。",
+    "textArch": "Nemotron-3-Ultra-550B  ·  NVIDIA\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 550B（激活 55B MoE）  |  上下文 128K tokens\n注意力 GQA + MLA"
   },
   {
     "id": "diffusiongemma-26b",
@@ -2849,7 +2851,8 @@
       "开源发布",
       "文本扩散新范式"
     ],
-    "description": "DiffusionGemma-26B 是 Google DeepMind 于 2026年6月发布的文本扩散MoE模型，实现4倍生成速度提升。"
+    "description": "DiffusionGemma-26B 是 Google DeepMind 于 2026年6月发布的文本扩散MoE模型，实现4倍生成速度提升。",
+    "textArch": "DiffusionGemma-26B  ·  Google DeepMind\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 26B（MoE）  |  上下文 8K tokens\n注意力 GQA"
   },
   {
     "id": "glm-52-2026",
@@ -2889,7 +2892,8 @@
       "三个月三版本迭代",
       "ZCode 3.0 自研Agent内核配套"
     ],
-    "description": "GLM-5.2 是智谱AI于2026年6月13日发布的开源大模型，支持1M上下文，MIT协议下周开源。"
+    "description": "GLM-5.2 是智谱AI于2026年6月13日发布的开源大模型，支持1M上下文，MIT协议下周开源。",
+    "textArch": "GLM-5.2  ·  智谱AI (Zhipu AI)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开（MoE架构）  |  上下文 1M tokens\n注意力 GQA + MLA"
   },
   {
     "id": "kimi-k27-code",
@@ -2927,7 +2931,8 @@
       "配套 Kimi Work 桌面 Agent",
       "支持300+子Agent Swarm"
     ],
-    "description": "Kimi K2.7-Code 是 Moonshot AI 于 2026年6月发布的编程专用模型，配套 Kimi Work 桌面代理。"
+    "description": "Kimi K2.7-Code 是 Moonshot AI 于 2026年6月发布的编程专用模型，配套 Kimi Work 桌面代理。",
+    "textArch": "Kimi K2.7-Code  ·  Moonshot AI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 128K tokens\n注意力 MLA"
   },
   {
     "id": "claude-sonnet-45-2026",
@@ -2966,7 +2971,8 @@
       "安全性和对齐重大改进",
       "新一代主力模型"
     ],
-    "description": "Claude Sonnet 4.5是Anthropic于2026年6月21日发布的大语言模型，在编码和Agent任务上取得突破。"
+    "description": "Claude Sonnet 4.5是Anthropic于2026年6月21日发布的大语言模型，在编码和Agent任务上取得突破。",
+    "textArch": "Claude Sonnet 4.5  ·  Anthropic\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 200K tokens\n注意力 未公开"
   },
   {
     "id": "gpt-56-sol-2026",
@@ -3005,7 +3011,8 @@
       "Max推理强度",
       "Ultra模式+子智能体"
     ],
-    "description": "GPT-5.6 Sol是OpenAI于2026年6月26日发布的旗舰大语言模型，是GPT-5.6系列中能力最强的模型。"
+    "description": "GPT-5.6 Sol是OpenAI于2026年6月26日发布的旗舰大语言模型，是GPT-5.6系列中能力最强的模型。",
+    "textArch": "GPT-5.6 Sol  ·  OpenAI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 128K tokens\n注意力 未公开"
   },
   {
     "id": "gpt-56-terra-2026",
@@ -3043,7 +3050,8 @@
       "日常办公场景优化",
       "推理效率更高"
     ],
-    "description": "GPT-5.6 Terra是OpenAI于2026年6月26日发布的均衡大语言模型，主打日常办公场景。"
+    "description": "GPT-5.6 Terra是OpenAI于2026年6月26日发布的均衡大语言模型，主打日常办公场景。",
+    "textArch": "GPT-5.6 Terra  ·  OpenAI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 128K tokens\n注意力 未公开"
   },
   {
     "id": "gpt-56-luna-2026",
@@ -3081,7 +3089,8 @@
       "大规模部署优化",
       "低成本应用"
     ],
-    "description": "GPT-5.6 Luna是OpenAI于2026年6月26日发布的轻量大语言模型，主打性价比。"
+    "description": "GPT-5.6 Luna是OpenAI于2026年6月26日发布的轻量大语言模型，主打性价比。",
+    "textArch": "GPT-5.6 Luna  ·  OpenAI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 128K tokens\n注意力 未公开"
   },
   {
     "id": "grok-45-2026",
@@ -3121,7 +3130,8 @@
       "与Cursor联合训练",
       "成本$2/$6每百万Token"
     ],
-    "description": "Grok 4.5是SpaceXAI于2026年7月9日发布的编程智能体模型，与Cursor联合训练，1.5万亿参数。"
+    "description": "Grok 4.5是SpaceXAI于2026年7月9日发布的编程智能体模型，与Cursor联合训练，1.5万亿参数。",
+    "textArch": "Grok 4.5  ·  SpaceXAI (xAI)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 1.5万亿（1.5T）  |  上下文 256K tokens\n注意力 未公开"
   },
   {
     "id": "swe-17-2026",
@@ -3160,7 +3170,8 @@
       "接近GPT-5.5水平",
       "成本大幅降低"
     ],
-    "description": "SWE-1.7是Cognition于2026年7月9日发布的高速编程模型，基于Kimi K2.7 Code，生成速度达1000 TPS。"
+    "description": "SWE-1.7是Cognition于2026年7月9日发布的高速编程模型，基于Kimi K2.7 Code，生成速度达1000 TPS。",
+    "textArch": "SWE-1.7  ·  Cognition\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 128K tokens\n注意力 未公开"
   },
   {
     "id": "muse-spark-11-2026",
@@ -3200,7 +3211,8 @@
       "多模态推理",
       "长上下文跨应用协调"
     ],
-    "description": "Muse Spark 1.1是Meta于2026年7月10日发布的多模态Agent模型，主打智能体编程和计算机操作。"
+    "description": "Muse Spark 1.1是Meta于2026年7月10日发布的多模态Agent模型，主打智能体编程和计算机操作。",
+    "textArch": "Muse Spark 1.1  ·  Meta\nImage → ViT patch → Projector ┐\n                              ├→ 交错序列 → LLM → Text\nText  → BPE → Embedding      ┘\n\n参数 未公开  |  上下文 未公开\n注意力 未公开"
   },
   {
     "id": "seedream-50-pro-2026",
@@ -3238,7 +3250,8 @@
       "专业可视化能力",
       "文生图升级"
     ],
-    "description": "Seedream 5.0 Pro是字节跳动于2026年7月10日发布的设计级图像生成模型。"
+    "description": "Seedream 5.0 Pro是字节跳动于2026年7月10日发布的设计级图像生成模型。",
+    "textArch": "Seedream 5.0 Pro  ·  字节跳动 (ByteDance)\nText Prompt → Text Encoder → conditioning\nNoise  ─────────────────────────┐\n                                ↓\n┌───────────────────────────────────────┐\n│ DiT / UNet  × N 步 (Cross-Attention) │\n└───────────────────────────────────────┘\n                ↓  VAE Decoder → Image\n\n参数 未公开  |  上下文 N/A\n注意力 N/A"
   },
   {
     "id": "kimi-k3-2026",
@@ -3286,7 +3299,8 @@
       "2026-07-27 开放完整权重(594GB MXFP4/Modified MIT)",
       "2026-07-28 开源 24h HuggingFace 下载破 120 万，社区 30+ 微调/量化版"
     ],
-    "description": "Kimi K3是月之暗面于2026年7月16日发布的旗舰开源大模型，总参数2.8万亿(896专家/激活16)，基于KDA混合线性注意力与注意力残差构建，1M上下文，前端编程Code Arena登顶全球第一，权重将于7月27日以Modified MIT开放。 完整开源权重已于2026年7月27日开放：MXFP4格式约594GB(约1.4TB存储)、Modified MIT协议，企业/个人可8-16节点H100/B200集群自托管；独立测试提示约51%事实性幻觉率，投产前需按场景实测。"
+    "description": "Kimi K3是月之暗面于2026年7月16日发布的旗舰开源大模型，总参数2.8万亿(896专家/激活16)，基于KDA混合线性注意力与注意力残差构建，1M上下文，前端编程Code Arena登顶全球第一，权重将于7月27日以Modified MIT开放。 完整开源权重已于2026年7月27日开放：MXFP4格式约594GB(约1.4TB存储)、Modified MIT协议，企业/个人可8-16节点H100/B200集群自托管；独立测试提示约51%事实性幻觉率，投产前需按场景实测。",
+    "textArch": "Kimi K3  ·  月之暗面 (Moonshot AI)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 2.8万亿 (MoE, 896专家激活16)  |  上下文 1M tokens\n注意力 KDA (Kimi Delta Attention) + AttnRes"
   },
   {
     "id": "gemini-36-flash-2026",
@@ -3323,7 +3337,8 @@
       "Flash 定价接近前沿推理",
       "Artificial Analysis 80 分"
     ],
-    "description": "Gemini 3.6 Flash 是 Google 于 2026-07-21 发布的 Flash 级推理模型。以 Flash 定价实现 GPQA 92.8%，超越 Claude Opus 4.8 和 GPT-5.4 等旗舰模型。1M 上下文，BenchAlign 75.27 分。证明 Flash 级模型已具备接近前沿的推理能力，加速 AI 推理价格趋零。"
+    "description": "Gemini 3.6 Flash 是 Google 于 2026-07-21 发布的 Flash 级推理模型。以 Flash 定价实现 GPQA 92.8%，超越 Claude Opus 4.8 和 GPT-5.4 等旗舰模型。1M 上下文，BenchAlign 75.27 分。证明 Flash 级模型已具备接近前沿的推理能力，加速 AI 推理价格趋零。",
+    "textArch": "Gemini 3.6 Flash  ·  Google\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开 (推测 MoE)  |  上下文 1M tokens\n注意力 GQA + Sliding Window + Flash 优化"
   },
   {
     "id": "deepseek-v4-2026",
@@ -3366,7 +3381,8 @@
       "峰谷定价落地",
       "港股上市估值710亿美元"
     ],
-    "description": "DeepSeek V4是深度求索于2026年7月24日发布的正式版大模型，参数规模约1.6万亿(MoE)。V4-Flash定价每百万Token输入0.14美元、输出0.28美元，比顶级美国模型便宜约100倍；最佳版本SWE-bench软件工程测试得分80.6%。旧版deepseek-chat与deepseek-reasoner端点同日下线。"
+    "description": "DeepSeek V4是深度求索于2026年7月24日发布的正式版大模型，参数规模约1.6万亿(MoE)。V4-Flash定价每百万Token输入0.14美元、输出0.28美元，比顶级美国模型便宜约100倍；最佳版本SWE-bench软件工程测试得分80.6%。旧版deepseek-chat与deepseek-reasoner端点同日下线。",
+    "textArch": "DeepSeek V4  ·  深度求索 (DeepSeek)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 1.6万亿 (MoE)  |  上下文 未公开\n注意力 MoE (推测)"
   },
   {
     "id": "claude-opus-5-2026",
@@ -3403,7 +3419,8 @@
       "1M 上下文 + Extended Thinking 默认",
       "$5/$25 半价对标 Fable 5"
     ],
-    "description": "Claude Opus 5 是 Anthropic 在 2026-07-24 发布的接近前沿旗舰模型，以 Opus 4.8 同价实现接近 Fable 5 的性能。在编码（Frontier-Bench 43.3%）、推理（ARC-AGI-3 30.2%）、计算机使用（OSWorld 2.0 70.6%）三大领域达到或接近 SOTA。引入 per-request effort toggle，成为 Claude Max 默认模型。"
+    "description": "Claude Opus 5 是 Anthropic 在 2026-07-24 发布的接近前沿旗舰模型，以 Opus 4.8 同价实现接近 Fable 5 的性能。在编码（Frontier-Bench 43.3%）、推理（ARC-AGI-3 30.2%）、计算机使用（OSWorld 2.0 70.6%）三大领域达到或接近 SOTA。引入 per-request effort toggle，成为 Claude Max 默认模型。",
+    "textArch": "Claude Opus 5  ·  Anthropic\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开 (推测 MoE)  |  上下文 1M tokens\n注意力 GQA + Extended Thinking"
   },
   {
     "id": "claude-fable-5-2026",
@@ -3446,7 +3463,8 @@
       "ExploitBench 78.0%",
       "与 Opus 5 双旗舰"
     ],
-    "description": "Anthropic于2026年7月24日发布的前沿模型。AA Intelligence Index 62.1分全球第二（仅次于Claude Opus 5），HLE 55.5%和SciCode 60.2%均全球第一。在科学推理和安全能力上领先，ExploitBench 78.0%。与Opus 5构成Anthropic双旗舰策略，分别覆盖通用推理和深度科学场景。"
+    "description": "Anthropic于2026年7月24日发布的前沿模型。AA Intelligence Index 62.1分全球第二（仅次于Claude Opus 5），HLE 55.5%和SciCode 60.2%均全球第一。在科学推理和安全能力上领先，ExploitBench 78.0%。与Opus 5构成Anthropic双旗舰策略，分别覆盖通用推理和深度科学场景。",
+    "textArch": "Claude Fable 5  ·  Anthropic\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 200K\n注意力 Transformer"
   },
   {
     "id": "qwen37-flash-2026",
@@ -3482,7 +3500,8 @@
       "Flash 级低延迟",
       "Artificial Analysis 40 分"
     ],
-    "description": "Qwen3.7 Flash 是阿里巴巴通义千问于 2026-07-27 发布的 Flash 级开源模型，1M 上下文，Apache 2.0 协议。定位为低延迟高性价比版本，与旗舰 Qwen3-Max 形成高低搭配。"
+    "description": "Qwen3.7 Flash 是阿里巴巴通义千问于 2026-07-27 发布的 Flash 级开源模型，1M 上下文，Apache 2.0 协议。定位为低延迟高性价比版本，与旗舰 Qwen3-Max 形成高低搭配。",
+    "textArch": "Qwen3.7 Flash  ·  阿里巴巴（通义千问）\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开 (推测 MoE)  |  上下文 1M tokens\n注意力 GQA + 推测解码"
   },
   {
     "id": "gpt-56-mini-2026",
@@ -3518,7 +3537,8 @@
       "MMLU-Pro 84 / HumanEval 92",
       "定价约 0.10/0.20 美元每 MTok"
     ],
-    "description": "GPT-5.6 mini 是 OpenAI 于 2026 年 7 月 28 日发布的紧凑型闭源模型，约 9B 激活参数（MoE 总 120B），256K 上下文，单张 24GB 消费级 GPU 即可本地推理，MMLU-Pro 84、HumanEval 92，定价约 0.10/0.20 美元每 MTok。定位为对 Kimi K3 / DeepSeek V4 等开源性价比冲击的正面回应——不强求开源，但以小博大覆盖边缘与私有部署场景。"
+    "description": "GPT-5.6 mini 是 OpenAI 于 2026 年 7 月 28 日发布的紧凑型闭源模型，约 9B 激活参数（MoE 总 120B），256K 上下文，单张 24GB 消费级 GPU 即可本地推理，MMLU-Pro 84、HumanEval 92，定价约 0.10/0.20 美元每 MTok。定位为对 Kimi K3 / DeepSeek V4 等开源性价比冲击的正面回应——不强求开源，但以小博大覆盖边缘与私有部署场景。",
+    "textArch": "GPT-5.6 mini  ·  OpenAI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 9B 激活 (MoE 总 120B)  |  上下文 256K tokens\n注意力 MLA (推测)"
   },
   {
     "id": "qwen3-max-2026",
@@ -3555,7 +3575,8 @@
       "编码与 Agent 国产第一",
       "Apache 2.0 开源"
     ],
-    "description": "Qwen3-Max 是阿里巴巴通义千问于 2026 年 7 月 29 日发布的旗舰开源大模型，约 3 万亿 MoE 参数、256K 上下文，编码（SWE-bench 85）与 Agent 能力登顶国产第一，采用 Apache 2.0 协议，企业可多节点 H100/B200 集群自托管，定位为对标 Kimi K3 / DeepSeek V4 的国产开源顶梁柱。"
+    "description": "Qwen3-Max 是阿里巴巴通义千问于 2026 年 7 月 29 日发布的旗舰开源大模型，约 3 万亿 MoE 参数、256K 上下文，编码（SWE-bench 85）与 Agent 能力登顶国产第一，采用 Apache 2.0 协议，企业可多节点 H100/B200 集群自托管，定位为对标 Kimi K3 / DeepSeek V4 的国产开源顶梁柱。",
+    "textArch": "Qwen3-Max  ·  阿里巴巴（通义千问）\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 约 3 万亿 (MoE, 推测)  |  上下文 256K tokens\n注意力 GQA + 推测解码"
   },
   {
     "id": "inkling-small-2026",
@@ -3593,7 +3614,8 @@
       "原生图文音频多模态 + 1M 上下文",
       "NVFP4 单卡 B300 可跑 (180GB)"
     ],
-    "description": "Inkling-Small 是 Thinking Machines Lab 于 2026-07-30 发布的高效开源 MoE 模型。276B 总参仅 12B 激活，在 NVIDIA GB300 NVL72 上训练。以原版 1/4 的规模在多项 Agent 编码和推理基准上反超 975B 的 Inkling，支持原生图文音频多模态和 1M 上下文。Apache 2.0 开源，BF16 需 4xB300，NVFP4 量化仅 1xB300 即可运行。"
+    "description": "Inkling-Small 是 Thinking Machines Lab 于 2026-07-30 发布的高效开源 MoE 模型。276B 总参仅 12B 激活，在 NVIDIA GB300 NVL72 上训练。以原版 1/4 的规模在多项 Agent 编码和推理基准上反超 975B 的 Inkling，支持原生图文音频多模态和 1M 上下文。Apache 2.0 开源，BF16 需 4xB300，NVFP4 量化仅 1xB300 即可运行。",
+    "textArch": "Inkling-Small  ·  Thinking Machines Lab\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 276B (MoE, 12B 激活)  |  上下文 1M tokens\n注意力 GQA + Hybrid Local/Global + 可变思考强度"
   },
   {
     "id": "deepseek-v4-flash-0731-2026",
@@ -3631,7 +3653,8 @@
       "输出 $0.28/M token（顶级模型 1/100）",
       "纯后训练优化，结构不变"
     ],
-    "description": "DeepSeek V4 Flash 0731 是 2026-07-31 上线公测的正式版。2840 亿参数 MoE / 130 亿激活，1M 上下文，思考/非思考双模式。凭借 98% 缓存命中率实现极致性价比，单任务成本比 GPT-5.6 Luna 低 60%。证明后训练优化对 MoE 模型的巨大杠杆。"
+    "description": "DeepSeek V4 Flash 0731 是 2026-07-31 上线公测的正式版。2840 亿参数 MoE / 130 亿激活，1M 上下文，思考/非思考双模式。凭借 98% 缓存命中率实现极致性价比，单任务成本比 GPT-5.6 Luna 低 60%。证明后训练优化对 MoE 模型的巨大杠杆。",
+    "textArch": "DeepSeek V4 Flash 0731  ·  DeepSeek\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 2840 亿 (MoE, 130 亿激活)  |  上下文 1M tokens\n注意力 MLA + GQA + 思考/非思考双模式"
   },
   {
     "id": "qwen38-2026",
@@ -3676,7 +3699,8 @@
       "1M tokens 上下文",
       "Apache 2.0 开源"
     ],
-    "description": "Qwen3.8-Max是阿里2026年8月3日发布的通义千问系列旗舰大模型，2.4万亿总参数、95B激活参数MoE架构，支持视觉理解和1M tokens上下文。Arena全球第二仅次于Claude系列，编程能力可自主运行16天完成真实项目交付。官方宣布下周开源权重(Apache 2.0)，同步开源27B版本，这是Qwen-Max级别首次开源。"
+    "description": "Qwen3.8-Max是阿里2026年8月3日发布的通义千问系列旗舰大模型，2.4万亿总参数、95B激活参数MoE架构，支持视觉理解和1M tokens上下文。Arena全球第二仅次于Claude系列，编程能力可自主运行16天完成真实项目交付。官方宣布下周开源权重(Apache 2.0)，同步开源27B版本，这是Qwen-Max级别首次开源。",
+    "textArch": "Qwen3.8-Max  ·  阿里 (Alibaba)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 2.4万亿 (MoE, 激活95B)  |  上下文 1M Tokens\n注意力 MoE"
   },
   {
     "id": "minimax-h3-2026",
@@ -3714,7 +3738,8 @@
       "多模态精准编辑（人物/物体/场景/声音）",
       "面向商用场景（影视/广告/电商/游戏）"
     ],
-    "description": "MiniMax H3 是稀宇科技于 2026-08-03 开源的通用多模态视频模型，首个将原生双声道音频与 2K 视频生成统一到单一模型。支持多模态输入理解与生成、多维度精准编辑，2K 分辨率每秒价格不到主流模型 1/3。面向影视/广告/电商/游戏等商用场景。"
+    "description": "MiniMax H3 是稀宇科技于 2026-08-03 开源的通用多模态视频模型，首个将原生双声道音频与 2K 视频生成统一到单一模型。支持多模态输入理解与生成、多维度精准编辑，2K 分辨率每秒价格不到主流模型 1/3。面向影视/广告/电商/游戏等商用场景。",
+    "textArch": "MiniMax H3  ·  稀宇科技（MiniMax）\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 未公开  |  上下文 15s 2K 视频\n注意力 H3-Omni Transformer + Contextual Omni Representation"
   },
   {
     "id": "lfm25-2026",
@@ -3758,7 +3783,8 @@
       "34万亿 token 训练",
       "支持 llama.cpp/MLX/vLLM/SGLang/ONNX"
     ],
-    "description": "LFM2.5-2.6B是Liquid AI于2026年8月4日发布的2.6B参数端侧Agent模型，可在手机上完全本地运行规划、工具调用和多步任务。基于34万亿token训练，128K上下文。Apple M5 Max达220 tok/s，智能手机约30 tok/s，H100高并发近15000 tok/s，CPU内存低于2.5GB。开放权重，支持llama.cpp/MLX/vLLM/SGLang/ONNX。"
+    "description": "LFM2.5-2.6B是Liquid AI于2026年8月4日发布的2.6B参数端侧Agent模型，可在手机上完全本地运行规划、工具调用和多步任务。基于34万亿token训练，128K上下文。Apple M5 Max达220 tok/s，智能手机约30 tok/s，H100高并发近15000 tok/s，CPU内存低于2.5GB。开放权重，支持llama.cpp/MLX/vLLM/SGLang/ONNX。",
+    "textArch": "LFM2.5-2.6B  ·  Liquid AI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 2.6B  |  上下文 128K\n注意力 LFM (非Transformer)"
   },
   {
     "id": "hy3-2026",
@@ -3802,7 +3828,8 @@
       "WorkBuddy 任务成功率90%+",
       "全球开发者平台广泛接入"
     ],
-    "description": "Tencent Hy3（原混元）是腾讯2026年7月6日发布、8月5日全球开放的混合快慢思考MoE大模型，295B总参数21B激活，256K上下文。性能可比2-5倍参数旗舰模型。上线一周OpenRouter调用量超上代68倍登顶全球第一。Apache 2.0开源，已接入WorkBuddy/Miora/TokenHub及多家全球开发者平台。"
+    "description": "Tencent Hy3（原混元）是腾讯2026年7月6日发布、8月5日全球开放的混合快慢思考MoE大模型，295B总参数21B激活，256K上下文。性能可比2-5倍参数旗舰模型。上线一周OpenRouter调用量超上代68倍登顶全球第一。Apache 2.0开源，已接入WorkBuddy/Miora/TokenHub及多家全球开发者平台。",
+    "textArch": "Tencent Hy3  ·  腾讯 (Tencent)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 295B (MoE, 激活21B)  |  上下文 256K\n注意力 MoE"
   },
   {
     "id": "seedrealtime-2026",
@@ -3845,7 +3872,8 @@
       "抗背景干扰",
       "豆包App全量上线"
     ],
-    "description": "SeedRealtime是字节跳动2026年8月5日推出的原生音视频全双工大模型，用统一架构原生融合音频、视频与文本，在连续多模态信息流上实时交互。告别传统ASR→LLM→TTS级联架构，实现边看、边听、边说的全新体验。已在豆包App全量上线。"
+    "description": "SeedRealtime是字节跳动2026年8月5日推出的原生音视频全双工大模型，用统一架构原生融合音频、视频与文本，在连续多模态信息流上实时交互。告别传统ASR→LLM→TTS级联架构，实现边看、边听、边说的全新体验。已在豆包App全量上线。",
+    "textArch": "SeedRealtime  ·  字节跳动 (ByteDance)\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 未公开  |  上下文 连续多模态流\n注意力 统一架构"
   },
   {
     "id": "grok46-2026",
@@ -3887,7 +3915,8 @@
       "4周一版发布节奏",
       "直击幻觉率问题"
     ],
-    "description": "Grok 4.6是xAI于2026年8月7日发布的前沿大语言模型，保持Grok 4.5的1.5万亿参数V9架构，改进全部来自SFT和RL后训练。定价$2/$6每百万token不变，API端点不变。Grok 4.5此前在AA智能指数排第四(54分)，SWE-Bench Pro 64.7%，但幻觉率高达54%。4.7版本(2.1T参数)预计数周后发布。"
+    "description": "Grok 4.6是xAI于2026年8月7日发布的前沿大语言模型，保持Grok 4.5的1.5万亿参数V9架构，改进全部来自SFT和RL后训练。定价$2/$6每百万token不变，API端点不变。Grok 4.5此前在AA智能指数排第四(54分)，SWE-Bench Pro 64.7%，但幻觉率高达54%。4.7版本(2.1T参数)预计数周后发布。",
+    "textArch": "Grok 4.6  ·  xAI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 1.5万亿 (V9架构)  |  上下文 500K\n注意力 MoE"
   },
   {
     "id": "ling30-flash-2026",
@@ -3931,7 +3960,8 @@
       "开源",
       "任务成本$0.04"
     ],
-    "description": "Ling-3.0-flash是蚂蚁集团2026年8月7日开源的新一代原生混合推理模型，124B总参数5.1B激活参数MoE架构。MXFP4/INT4版本可在单台NVIDIA DGX Spark上端到端推理，高性能部署平均输出速率突破1100 tokens/s。在AA Intelligence Index榜单中每任务加权成本约$0.04、解码约1.4分钟。"
+    "description": "Ling-3.0-flash是蚂蚁集团2026年8月7日开源的新一代原生混合推理模型，124B总参数5.1B激活参数MoE架构。MXFP4/INT4版本可在单台NVIDIA DGX Spark上端到端推理，高性能部署平均输出速率突破1100 tokens/s。在AA Intelligence Index榜单中每任务加权成本约$0.04、解码约1.4分钟。",
+    "textArch": "Ling-3.0-flash  ·  蚂蚁集团 (Ant Group)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 124B (MoE, 激活5.1B)  |  上下文 未公开\n注意力 MoE"
   },
   {
     "id": "muse-glimmer-2026",
@@ -3975,7 +4005,8 @@
       "量化损失 <1.0%",
       "Muse Spark 蒸馏训练"
     ],
-    "description": "Meta MSL 于2026年8月10日开源的30B参数稠密Agent模型。通过Muse Spark logit蒸馏+中期训练+SFT+RL四阶段训练。4-bit量化后权重<20GB，在24GB显存上运行规划/工具调用/多步推理/故障恢复。DFlash投机解码3.1x加速。Apache 2.0协议，HuggingFace/Ollama/LM Studio全平台上线。Meta重返开源的标志产品。"
+    "description": "Meta MSL 于2026年8月10日开源的30B参数稠密Agent模型。通过Muse Spark logit蒸馏+中期训练+SFT+RL四阶段训练。4-bit量化后权重<20GB，在24GB显存上运行规划/工具调用/多步推理/故障恢复。DFlash投机解码3.1x加速。Apache 2.0协议，HuggingFace/Ollama/LM Studio全平台上线。Meta重返开源的标志产品。",
+    "textArch": "Muse Glimmer  ·  Meta (MSL)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 30B  |  上下文 120K+\n注意力 Dense Transformer"
   },
   {
     "id": "nemotron-3-5-lightning",
@@ -4013,7 +4044,8 @@
       "长时 Agent 执行层优化",
       "NVIDIA 官方开源"
     ],
-    "description": "NVIDIA 2026 年 8 月开源的轻量 Agent 执行层模型，专为长时间智能体任务设计，端侧单 GPU 即可部署。"
+    "description": "NVIDIA 2026 年 8 月开源的轻量 Agent 执行层模型，专为长时间智能体任务设计，端侧单 GPU 即可部署。",
+    "textArch": "Nemotron 3.5 Lightning  ·  NVIDIA\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 轻量级  |  上下文 —\n注意力 —"
   },
   {
     "id": "gemini-37-flash-2026",
@@ -4055,7 +4087,8 @@
       "160+ 国家同步上线",
       "FrontierCode 43.6%"
     ],
-    "description": "Google于2026年8月13日发布的Gemini 3.7 Flash模型。1M输入/64K输出，在DeepSWE/FrontierCode/WebDev Arena/AutomationBench等编码和Agent基准上大幅超越前代3.6 Flash。AA Intelligence Index 56分，$0.75/$3.75定价使其成为性价比最高的编程级模型之一。"
+    "description": "Google于2026年8月13日发布的Gemini 3.7 Flash模型。1M输入/64K输出，在DeepSWE/FrontierCode/WebDev Arena/AutomationBench等编码和Agent基准上大幅超越前代3.6 Flash。AA Intelligence Index 56分，$0.75/$3.75定价使其成为性价比最高的编程级模型之一。",
+    "textArch": "Gemini 3.7 Flash  ·  Google\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 ~Flash级  |  上下文 1,048,576\n注意力 Transformer"
   },
   {
     "id": "deepseek-v4-pro-0813-2026",
@@ -4101,7 +4134,8 @@
       "1M 上下文 / 384K 输出",
       "价格为 Fable 5 的 1/57"
     ],
-    "description": "DeepSeek于2026年8月13日发布的V4 Pro正式版。1.6万亿参数MoE架构，每token激活490亿，100万上下文/38.4万输出。Terminal-Bench 87.9、DeepSWE 62.7，AA Index 53。MIT协议开源，定价仅为Fable 5的1/57。同步推出Harness Agent框架，从模型公司转型为AI基础设施平台。"
+    "description": "DeepSeek于2026年8月13日发布的V4 Pro正式版。1.6万亿参数MoE架构，每token激活490亿，100万上下文/38.4万输出。Terminal-Bench 87.9、DeepSWE 62.7，AA Index 53。MIT协议开源，定价仅为Fable 5的1/57。同步推出Harness Agent框架，从模型公司转型为AI基础设施平台。",
+    "textArch": "DeepSeek V4 Pro 0813  ·  DeepSeek\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 1.6T (49B active)  |  上下文 1,048,576\n注意力 MoE + MLA"
   },
   {
     "id": "glm-53-2026",
@@ -4147,7 +4181,8 @@
       "权重 staged release 先例",
       "Anthropic 称最强网络能力开源模型"
     ],
-    "description": "Z.ai(智谱)于2026年8月14日发布的GLM-5.3。744B参数MoE基座与GLM-5.2完全相同，所有提升来自后训练Scaling。Terminal-Bench 3.0从4.6暴涨至28.3(开源SOTA)，CyberGym 84.5%超越Claude Mythos 5和GPT-5.6 Sol。安全能力爆发导致权重staged release——首次因安全考虑延迟开源。"
+    "description": "Z.ai(智谱)于2026年8月14日发布的GLM-5.3。744B参数MoE基座与GLM-5.2完全相同，所有提升来自后训练Scaling。Terminal-Bench 3.0从4.6暴涨至28.3(开源SOTA)，CyberGym 84.5%超越Claude Mythos 5和GPT-5.6 Sol。安全能力爆发导致权重staged release——首次因安全考虑延迟开源。",
+    "textArch": "GLM-5.3  ·  Z.ai (智谱)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 744B (40B active)  |  上下文 1,000,000\n注意力 MoE"
   },
   {
     "id": "qwen3-8-27b",
@@ -4189,7 +4224,8 @@
       "消费级显卡可跑",
       "Apache 2.0"
     ],
-    "description": "阿里 2026 年 8 月 14 日开源的 27B 原生视觉语言稠密模型，编程与办公能力反超更大模型，量化后消费级硬件可部署，262K 上下文可扩展至 1M。"
+    "description": "阿里 2026 年 8 月 14 日开源的 27B 原生视觉语言稠密模型，编程与办公能力反超更大模型，量化后消费级硬件可部署，262K 上下文可扩展至 1M。",
+    "textArch": "Qwen3.8-27B  ·  阿里 (Qwen)\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 27B Dense  |  上下文 262,144 (YaRN→1M)\n注意力 Dense"
   },
   {
     "id": "dots3-note",
@@ -4229,7 +4265,8 @@
       "内容社区首个大规模开源",
       "Agent 能力原生"
     ],
-    "description": "小红书 2026 年 8 月开源的 280B/16B 三模态 Agent 模型，512K 上下文，标志着垂直内容社区加入大模型开源卡位战。"
+    "description": "小红书 2026 年 8 月开源的 280B/16B 三模态 Agent 模型，512K 上下文，标志着垂直内容社区加入大模型开源卡位战。",
+    "textArch": "dots3-note  ·  小红书\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 280B (16B active)  |  上下文 512K\n注意力 MoE"
   },
   {
     "id": "qwen3-max-2026-open",
@@ -4274,7 +4311,8 @@
       "1M 上下文",
       "Apache 2.0 协议"
     ],
-    "description": "阿里通义千问于2026年8月15日首次开放Max级旗舰模型权重。2.4万亿参数MoE架构(A95B)，AA Intelligence Index 58.1全球第五，VisionArena全球第二。可连续自主编程16天。Apache 2.0协议，同步开源27B稠密版。国内定价仅为Opus 5的24-40%。"
+    "description": "阿里通义千问于2026年8月15日首次开放Max级旗舰模型权重。2.4万亿参数MoE架构(A95B)，AA Intelligence Index 58.1全球第五，VisionArena全球第二。可连续自主编程16天。Apache 2.0协议，同步开源27B稠密版。国内定价仅为Opus 5的24-40%。",
+    "textArch": "Qwen3.8-Max (Open Weights)  ·  阿里 (Qwen)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 2.4T (95B active)  |  上下文 1,000,000\n注意力 MoE"
   },
   {
     "id": "qwen-ui-agent",
@@ -4317,7 +4355,8 @@
       "GUI + CLI 混合动作空间",
       "10000 并发环境在线 RL"
     ],
-    "description": "阿里 2026 年 8 月 20 日发布的 GUI 智能体基座模型，覆盖移动/桌面/网页/深度搜索四大环境，以真机训练打通模拟到现实的鸿沟，移动端基准全面超越 GPT 与 Claude。"
+    "description": "阿里 2026 年 8 月 20 日发布的 GUI 智能体基座模型，覆盖移动/桌面/网页/深度搜索四大环境，以真机训练打通模拟到现实的鸿沟，移动端基准全面超越 GPT 与 Claude。",
+    "textArch": "Qwen-UI-Agent  ·  阿里 (通义千问)\nGoal → Planner → Tool Call → Observation\n  ↑                              ↓\n  └──────── Memory + 状态回灌 ───┘\n      ↓\n最终答案 / 动作\n\n参数 未公开 (Qwen基座)  |  上下文 —\n注意力 VLM + 混合动作空间"
   },
   {
     "id": "gen-1-5",
@@ -4359,7 +4398,8 @@
       "连续预训练 8 个月",
       "李飞飞/黄仁勋/贝索斯参投"
     ],
-    "description": "Generalist AI 2026 年 8 月发布的具身基础模型，以\"物理提示\"实现一次演示学习新任务，被研究者类比为具身智能的 GPT-3 时刻，机器人任务适配成本从月级降到秒级。"
+    "description": "Generalist AI 2026 年 8 月发布的具身基础模型，以\"物理提示\"实现一次演示学习新任务，被研究者类比为具身智能的 GPT-3 时刻，机器人任务适配成本从月级降到秒级。",
+    "textArch": "GEN-1.5  ·  Generalist AI\nCamera + 本体感觉 → VLM / 世界模型\n      ↓  高层语义计划\n┌──────────────────────────────┐\n│ Action Expert (flow/DiT)     │\n└──────────────────────────────┘\n      ↓  关节控制指令\n执行器 + 仿真/遥操作闭环\n\n参数 未公开  |  上下文 30 秒感觉运动记忆\n注意力 多模态融合"
   },
   {
     "id": "deepseek-v4-flash-vision-2026",
@@ -4404,7 +4444,8 @@
       "2840B/13B MoE架构",
       "Muon 算法加速训练"
     ],
-    "description": "DeepSeek于2026年8月21日发布的V4 Flash Vision实验版多模态模型。基于V4 Flash 2840B/13B MoE架构，在ALE和ZeroBench视觉基准中超越Anthropic Opus 4.8。HCA+CSA技术压缩KV缓存使百万token算力降低73%。定价与文本模型一致，目前仅付费平台可用，未来可能开源。"
+    "description": "DeepSeek于2026年8月21日发布的V4 Flash Vision实验版多模态模型。基于V4 Flash 2840B/13B MoE架构，在ALE和ZeroBench视觉基准中超越Anthropic Opus 4.8。HCA+CSA技术压缩KV缓存使百万token算力降低73%。定价与文本模型一致，目前仅付费平台可用，未来可能开源。",
+    "textArch": "DeepSeek V4 Flash Vision Exp  ·  DeepSeek\nImage → ViT patch → Projector ┐\n                              ├→ 交错序列 → LLM → Text\nText  → BPE → Embedding      ┘\n\n参数 2840B (13B active)  |  上下文 128K\n注意力 MoE + MLA"
   },
   {
     "id": "sensenova-u1-5-lite",
@@ -4446,7 +4487,8 @@
       "自然语言视觉编辑",
       "中英文本渲染媲美商用模型"
     ],
-    "description": "商汤 2026 年 8 月开源的 8B 轻量统一多模态模型，原生 4K 分辨率输入输出，统一文本/信息图/视觉编辑能力，大幅降低多模态部署门槛。"
+    "description": "商汤 2026 年 8 月开源的 8B 轻量统一多模态模型，原生 4K 分辨率输入输出，统一文本/信息图/视觉编辑能力，大幅降低多模态部署门槛。",
+    "textArch": "SenseNova U1.5 Lite  ·  商汤科技\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 8B (MoE)  |  上下文 3-4K (原生分辨率)\n注意力 MoE 统一架构"
   },
   {
     "id": "thomson-1-0-small",
@@ -4486,7 +4528,8 @@
       "35B 开放权重",
       "专业语料沉淀"
     ],
-    "description": "汤森路透 2026 年 8 月发布的首个自研法律税务模型，训练成本 4000 万美元，35B 版本以开放权重形式供学术与非商业使用。"
+    "description": "汤森路透 2026 年 8 月发布的首个自研法律税务模型，训练成本 4000 万美元，35B 版本以开放权重形式供学术与非商业使用。",
+    "textArch": "Thomson 1.0 Small  ·  Thomson Reuters\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 35B  |  上下文 —\n注意力 Dense"
   },
   {
     "id": "echowm",
@@ -4527,7 +4570,8 @@
       "听觉纳入统一生成框架",
       "面向具身智能仿真环境"
     ],
-    "description": "京东探索研究院 Joy Future Academy 2026 年 8 月发布的全模态世界模型，生成 720p 视频的同时匹配环境音与语音，支持相机逐步操控漫游。"
+    "description": "京东探索研究院 Joy Future Academy 2026 年 8 月发布的全模态世界模型，生成 720p 视频的同时匹配环境音与语音，支持相机逐步操控漫游。",
+    "textArch": "EchoWM  ·  京东探索研究院\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 未公开  |  上下文 可交互场景\n注意力 —"
   },
   {
     "id": "granite-4-2",
@@ -4569,7 +4613,8 @@
       "512K 上下文",
       "企业级可自托管"
     ],
-    "description": "IBM 2026 年 8 月开源的稠密推理模型家族（3B/8B/30B），Apache 2.0，带 thinking 开关与 Agentic 工具调用能力，512K 上下文。"
+    "description": "IBM 2026 年 8 月开源的稠密推理模型家族（3B/8B/30B），Apache 2.0，带 thinking 开关与 Agentic 工具调用能力，512K 上下文。",
+    "textArch": "Granite 4.2  ·  IBM\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 3B / 8B / 30B  |  上下文 512K\n注意力 Dense"
   },
   {
     "id": "qwen3-8-flash",
@@ -4612,7 +4657,8 @@
       "Muon 优化器重拟合 Scaling Law",
       "输入 0.8 元 / 百万 token"
     ],
-    "description": "阿里 2026 年 8 月 26 日开源的 Qwen4 架构预览版，125B 参数仅激活 6B 即达 Opus 4.6 级性能，训练成本降至前代 1/9，把旗舰能力压到小模型开销水平。"
+    "description": "阿里 2026 年 8 月 26 日开源的 Qwen4 架构预览版，125B 参数仅激活 6B 即达 Opus 4.6 级性能，训练成本降至前代 1/9，把旗舰能力压到小模型开销水平。",
+    "textArch": "Qwen3.8-Flash  ·  阿里 (Qwen)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 125B + 51B N-gram (6B active)  |  上下文 262,144 (YaRN→1M)\n注意力 Gated DeltaNet + QSA 混合"
   },
   {
     "id": "glm-5-3-flash",
@@ -4655,7 +4701,8 @@
       "1M 上下文原生多模态",
       "匿名测试期调用量 62T token"
     ],
-    "description": "智谱 2026 年 8 月 26 日开源的原生多模态模型（前身匿名模型 Ox-Alpha/牛来），320B/18B，AA 57 分持平 Opus 4.8，全部流量由 10 万张国产芯片承载，MIT 协议价格仅 Opus 4.8 的 1/40。"
+    "description": "智谱 2026 年 8 月 26 日开源的原生多模态模型（前身匿名模型 Ox-Alpha/牛来），320B/18B，AA 57 分持平 Opus 4.8，全部流量由 10 万张国产芯片承载，MIT 协议价格仅 Opus 4.8 的 1/40。",
+    "textArch": "GLM-5.3-Flash (Ox-Alpha)  ·  智谱 AI\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 320B (18B active)  |  上下文 1,000,000\n注意力 稀疏注意力 + 线性注意力混合"
   },
   {
     "id": "gemini-3-5-transcribe",
@@ -4697,7 +4744,8 @@
       "自动去除口语语气词",
       "并入 Gemini Agent 栈"
     ],
-    "description": "Google DeepMind 2026 年 8 月发布的专用语音转写模型，词错率压到 2.6%，支持 85+ 语言，并作为感知层并入 Gemini 智能体栈。"
+    "description": "Google DeepMind 2026 年 8 月发布的专用语音转写模型，词错率压到 2.6%，支持 85+ 语言，并作为感知层并入 Gemini 智能体栈。",
+    "textArch": "Gemini 3.5 Transcribe  ·  Google DeepMind\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 未公开  |  上下文 流式 / 非流式\n注意力 —"
   },
   {
     "id": "hunyuan-hy4-preview",
@@ -4740,7 +4788,8 @@
       "Apache 2.0，缓存命中 0.3 元/百万",
       "两月一个大版本迭代节奏"
     ],
-    "description": "腾讯混元 2026 年 8 月 28 日开源的 770B/49B 旗舰模型，1M 上下文，内部盲测超过 GLM-5.3 与 Kimi K3，并首次实现模型参与自身研发全链路的递归自我改进。"
+    "description": "腾讯混元 2026 年 8 月 28 日开源的 770B/49B 旗舰模型，1M 上下文，内部盲测超过 GLM-5.3 与 Kimi K3，并首次实现模型参与自身研发全链路的递归自我改进。",
+    "textArch": "Hy4 preview  ·  腾讯混元\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 770B (49B active)  |  上下文 1,000,000\n注意力 Gated DSA + IndexCache"
   },
   {
     "id": "gemini-35-pro-video-2026",
@@ -4781,7 +4830,8 @@
       "保留音频轨",
       "Vertex AI 商用"
     ],
-    "description": "Gemini 3.5 Pro Video（Google，2026-08-30 GA）支持 1 小时原生视频输入，Video-MME 89.2 创新高，时序定位误差中位数 2.1 秒，每分钟 0.35 美元，是首个规模商用的原生长视频理解 API，YouTube 创作者工具率先接入。"
+    "description": "Gemini 3.5 Pro Video（Google，2026-08-30 GA）支持 1 小时原生视频输入，Video-MME 89.2 创新高，时序定位误差中位数 2.1 秒，每分钟 0.35 美元，是首个规模商用的原生长视频理解 API，YouTube 创作者工具率先接入。",
+    "textArch": "Gemini 3.5 Pro Video  ·  Google\nAudio in ─┐\nVideo in ─┼→ 统一时间片 (t,h,w) → 共享主干\nText in  ─┘                       ↓\n                    Text 头 + 语音/图像 Decoder\n\n参数 未公开  |  上下文 1小时原生视频\n注意力 推测"
   },
   {
     "id": "wan25-2026",
@@ -4824,7 +4874,8 @@
       "FP8 单卡 H20 可跑",
       "SGLang 原生支持"
     ],
-    "description": "Wan2.5 是阿里通义万相 2026 年 8 月 31 日开源的视频生成模型（Apache 2.0），14B 双流 DiT 架构，支持 720p/24fps、最长 15 秒与首尾帧控制。VBench-2.0 综合 88.7 首次让开源反超闭源头部；FP8 量化后单卡 H20 可推理，SGLang Diffusion 栈原生支持使自托管成本降至商用 API 的 1/6。"
+    "description": "Wan2.5 是阿里通义万相 2026 年 8 月 31 日开源的视频生成模型（Apache 2.0），14B 双流 DiT 架构，支持 720p/24fps、最长 15 秒与首尾帧控制。VBench-2.0 综合 88.7 首次让开源反超闭源头部；FP8 量化后单卡 H20 可推理，SGLang Diffusion 栈原生支持使自托管成本降至商用 API 的 1/6。",
+    "textArch": "Wan2.5  ·  阿里 (Alibaba)\nText → Text Encoder → conditioning\nNoise [T,H,W] ─────────────────┐\n                               ↓\n┌──────────────────────────────────────┐\n│ 3D 因果 VAE latent + 时空 DiT       │\n│ Space-Attn / Time-Attn 分离          │\n└──────────────────────────────────────┘\n                ↓  Decoder → Frames\n\n参数 14B (双流DiT)  |  上下文 ≤15s 720p/24fps\n注意力 文本-时空联合注意力"
   },
   {
     "id": "glm-53-ultra-2026",
@@ -4867,7 +4918,8 @@
       "解码吞吐 3.2x",
       "Opus 5 价格的 1/3"
     ],
-    "description": "GLM-5.3-Ultra 是智谱 2026 年 9 月 1 日发布的旗舰模型，400B 总参/32B 激活 MoE，全程在国产昇腾 910D 集群完成全参训练，AA Intelligence Index 63.4 首次超越 Claude Opus 5 登顶全球榜首。混合稀疏+线性注意力支持 1M 上下文，编码与 Agent 双榜前列，API 定价为 Opus 5 的三分之一。"
+    "description": "GLM-5.3-Ultra 是智谱 2026 年 9 月 1 日发布的旗舰模型，400B 总参/32B 激活 MoE，全程在国产昇腾 910D 集群完成全参训练，AA Intelligence Index 63.4 首次超越 Claude Opus 5 登顶全球榜首。混合稀疏+线性注意力支持 1M 上下文，编码与 Agent 双榜前列，API 定价为 Opus 5 的三分之一。",
+    "textArch": "GLM-5.3-Ultra  ·  智谱 (Zhipu)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 400B (MoE, 激活32B)  |  上下文 1M Tokens\n注意力 稀疏+线性混合"
   },
   {
     "id": "hy4-stable-2026",
@@ -4907,7 +4959,8 @@
       "API 降价20%",
       "10月开源权重"
     ],
-    "description": "混元 Hy4 正式版（腾讯，2026-09-02）将递归自我改进推进到基础设施层：自动生成 Triton 算子回灌训练栈，新算子采纳率 37%，端到端训练算力较 preview 再降 25%。770B/49B MoE、1M 上下文，API 同步降价 20%，权重预计 10 月以 Apache 2.0 开放。"
+    "description": "混元 Hy4 正式版（腾讯，2026-09-02）将递归自我改进推进到基础设施层：自动生成 Triton 算子回灌训练栈，新算子采纳率 37%，端到端训练算力较 preview 再降 25%。770B/49B MoE、1M 上下文，API 同步降价 20%，权重预计 10 月以 Apache 2.0 开放。",
+    "textArch": "Hy4 (正式版)  ·  腾讯 (Tencent)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 770B (MoE, 激活49B)  |  上下文 1M Tokens\n注意力 MoE"
   },
   {
     "id": "kimi-k3-preview-2026",
@@ -4948,7 +5001,8 @@
       "BrowseComp 41.2",
       "1T/48B MoE"
     ],
-    "description": "Kimi K3 Preview（月之暗面，2026-09-02）主打长程 Agent：1T/48B MoE，原生 256K 上下文中预留结构化记忆区，分层摘要 + 指针回指使记忆检索延迟降低 70%。SWE-bench Verified 94.9，正式版与权重开放时间待定。"
+    "description": "Kimi K3 Preview（月之暗面，2026-09-02）主打长程 Agent：1T/48B MoE，原生 256K 上下文中预留结构化记忆区，分层摘要 + 指针回指使记忆检索延迟降低 70%。SWE-bench Verified 94.9，正式版与权重开放时间待定。",
+    "textArch": "Kimi K3 Preview  ·  月之暗面 (Moonshot)\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 1T (MoE, 激活48B)  |  上下文 256K (含结构化记忆区)\n注意力 MoE"
   },
   {
     "id": "gpt-6-astra-2026",
@@ -4989,7 +5043,8 @@
       "多平台同步 GA（09-10）",
       "$10/$50 每M token"
     ],
-    "description": "GPT-6 Astra（OpenAI，2026-09-04 发布，09-10 全面 GA）是 OpenAI 新一代旗舰，具备 100 万 token 上下文、更强的推理与专业写作能力，以及原生的计算机与浏览器操作能力，已登陆 Amazon Bedrock、Microsoft Copilot、Foundry 与 GitHub Copilot。"
+    "description": "GPT-6 Astra（OpenAI，2026-09-04 发布，09-10 全面 GA）是 OpenAI 新一代旗舰，具备 100 万 token 上下文、更强的推理与专业写作能力，以及原生的计算机与浏览器操作能力，已登陆 Amazon Bedrock、Microsoft Copilot、Foundry 与 GitHub Copilot。",
+    "textArch": "GPT-6 Astra  ·  OpenAI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 1M Tokens\n注意力 未公开"
   },
   {
     "id": "spark-x25-2026",
@@ -5028,7 +5083,8 @@
       "全国产算力训练",
       "09-07 旗舰发布"
     ],
-    "description": "星火 X2.5（科大讯飞，2026-09-07 旗舰发布）系列中，端侧 X2.5-4B 与 1.7B 于 9 月 1 日开源，是端侧首个原生支持 100 万 token 上下文的模型，基于全国产算力训练，已上架 Hugging Face 与 GitHub。"
+    "description": "星火 X2.5（科大讯飞，2026-09-07 旗舰发布）系列中，端侧 X2.5-4B 与 1.7B 于 9 月 1 日开源，是端侧首个原生支持 100 万 token 上下文的模型，基于全国产算力训练，已上架 Hugging Face 与 GitHub。",
+    "textArch": "星火 X2.5  ·  科大讯飞\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开（旗舰）；端侧开源 4B / 1.7B  |  上下文 100万 token（端侧模型原生支持）\n注意力 未公开"
   },
   {
     "id": "gpt-live-1-2026",
@@ -5068,7 +5124,8 @@
       "后台联动GPT-5.5推理",
       "mini版免费用户可用"
     ],
-    "description": "GPT-Live-1是OpenAI于2026年7月9日发布的全双工语音模型，支持自然双向语音交流。"
+    "description": "GPT-Live-1是OpenAI于2026年7月9日发布的全双工语音模型，支持自然双向语音交流。",
+    "textArch": "GPT-Live-1  ·  OpenAI\nWaveform → 因果 Codec Encoder → Audio Tokens\n      ↓\n┌──────────────────────────────────┐\n│ 流式 Transformer (双流 / chunk) │\n└──────────────────────────────────┘\n      ↓\nCodec / 流匹配 Decoder → Waveform\n\n参数 未公开  |  上下文 实时流式\n注意力 未公开"
   },
   {
     "id": "deepseek-v41-flash-2026",
@@ -5109,7 +5166,8 @@
       "≈1% 成本对标 Astra 98%",
       "筹备 750 亿上海 IPO"
     ],
-    "description": "DeepSeek V4.1-Flash（2026-09-10）是 5520 亿参数 MoE 模型，首次披露非对称结构，cached input 每百万 token 0.003 美元，官方称以约 1% 成本达到 GPT-6 Astra 98% 的分数，进一步巩固高性价比开源模型市场地位。"
+    "description": "DeepSeek V4.1-Flash（2026-09-10）是 5520 亿参数 MoE 模型，首次披露非对称结构，cached input 每百万 token 0.003 美元，官方称以约 1% 成本达到 GPT-6 Astra 98% 的分数，进一步巩固高性价比开源模型市场地位。",
+    "textArch": "DeepSeek V4.1-Flash  ·  DeepSeek\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 5520亿 (MoE，非对称结构)  |  上下文 未公开\n注意力 未公开"
   },
   {
     "id": "nasa-ibm-lunar-fm-2026",
@@ -5150,7 +5208,8 @@
       "开源发布",
       "科研观测数据驱动"
     ],
-    "description": "NASA-IBM Lunar Foundation Model（2026-09-10，开源）由 IBM 与 NASA 联合发布，基于 NASA 四项任务九种仪器的 30 余层月球观测数据训练，可识别冰层、陨石坑与火山地貌，关键地貌识别准确率最高较传统方法提升 23%。"
+    "description": "NASA-IBM Lunar Foundation Model（2026-09-10，开源）由 IBM 与 NASA 联合发布，基于 NASA 四项任务九种仪器的 30 余层月球观测数据训练，可识别冰层、陨石坑与火山地貌，关键地貌识别准确率最高较传统方法提升 23%。",
+    "textArch": "NASA-IBM Lunar Foundation Model  ·  IBM + NASA\nImage → ViT patch → Projector ┐\n                              ├→ 交错序列 → LLM → Text\nText  → BPE → Embedding      ┘\n\n参数 未公开  |  上下文 N/A（遥感观测数据）\n注意力 未公开"
   },
   {
     "id": "mimo-v26-pro-rl-2026",
@@ -5187,7 +5246,8 @@
       "全模态输入",
       "100万上下文"
     ],
-    "description": "MiMo-V2.6-Pro-RL（小米，2026-09-21）是 1.02 万亿参数 MoE 模型（42B 激活），支持全模态输入与 100 万 Token 上下文，以 MIT 许可发布权重与代码，Pro 版暂列开源第一。"
+    "description": "MiMo-V2.6-Pro-RL（小米，2026-09-21）是 1.02 万亿参数 MoE 模型（42B 激活），支持全模态输入与 100 万 Token 上下文，以 MIT 许可发布权重与代码，Pro 版暂列开源第一。",
+    "textArch": "MiMo-V2.6-Pro-RL  ·  小米\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 1.02万亿 (MoE, 42B 激活)  |  上下文 1M Tokens\n注意力 MoE"
   },
   {
     "id": "iquest-q1-2026",
@@ -5220,7 +5280,8 @@
       "150亿激活",
       "开源基座"
     ],
-    "description": "IQuest-Q1（至知创新研究院，2026-09-29）是 320B 总参数、15B 激活的稀疏 MoE 开源基座模型。"
+    "description": "IQuest-Q1（至知创新研究院，2026-09-29）是 320B 总参数、15B 激活的稀疏 MoE 开源基座模型。",
+    "textArch": "IQuest-Q1  ·  至知创新研究院\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 3200亿 (150亿激活)  |  上下文 未公开\n注意力 MoE"
   },
   {
     "id": "gemini-4-argon-2026",
@@ -5257,7 +5318,8 @@
       "1M 上下文",
       "$2/$10 定价"
     ],
-    "description": "Gemini 4 Argon（Google DeepMind，2026-09-30）是 Google 下一代前沿模型，主打真实场景编程，支持 100 万 token 上下文，定价每百万 token 输入 2 美元、输出 10 美元，并在 LMArena Text Arena 登顶第一。"
+    "description": "Gemini 4 Argon（Google DeepMind，2026-09-30）是 Google 下一代前沿模型，主打真实场景编程，支持 100 万 token 上下文，定价每百万 token 输入 2 美元、输出 10 美元，并在 LMArena Text Arena 登顶第一。",
+    "textArch": "Gemini 4 Argon  ·  Google DeepMind\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 1M Tokens\n注意力 未公开"
   },
   {
     "id": "cloudflare-clef-2026",
@@ -5294,7 +5356,8 @@
       "中位延迟 209ms",
       "决策模型新品类"
     ],
-    "description": "Clef（Cloudflare，2026-10-01）是 Cloudflare 首个自研开放决策模型，直接返回带概率的类型化答案而非生成文本，仅对输入计费，中位决策延迟 209ms。"
+    "description": "Clef（Cloudflare，2026-10-01）是 Cloudflare 首个自研开放决策模型，直接返回带概率的类型化答案而非生成文本，仅对输入计费，中位决策延迟 209ms。",
+    "textArch": "Clef  ·  Cloudflare\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 未公开  |  上下文 决策场景\n注意力 未公开"
   },
   {
     "id": "kolibri-2026",
@@ -5331,7 +5394,8 @@
       "面向 EU AI Act / GDPR",
       "主权定位"
     ],
-    "description": "Kolibri（Aleph Alpha，2026-10-03）是 781 亿参数的英德双语主权开源模型（约 34.6 亿激活/token），Apache 2.0 许可，在德国与芬兰用 768 张 B200 训练，面向受监管的公共管理与工业场景。"
+    "description": "Kolibri（Aleph Alpha，2026-10-03）是 781 亿参数的英德双语主权开源模型（约 34.6 亿激活/token），Apache 2.0 许可，在德国与芬兰用 768 张 B200 训练，面向受监管的公共管理与工业场景。",
+    "textArch": "Kolibri  ·  Aleph Alpha\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 781亿 (34.6亿激活/token)  |  上下文 1M Tokens\n注意力 MoE"
   },
   {
     "id": "reflection-beam-2026",
@@ -5368,7 +5432,8 @@
       "Nvidia 支持",
       "AI 工厂商业模式"
     ],
-    "description": "Beam（Reflection AI，2026-10-05）是 Nvidia 支持的首个前沿开源 MoE 模型：5010 亿总参数、每 token 激活约 23B，100 万 token 上下文，预训练 23.8T token，权重承诺本月晚些公开，背后商业模式是向企业出售自建 AI 工厂的算力。"
+    "description": "Beam（Reflection AI，2026-10-05）是 Nvidia 支持的首个前沿开源 MoE 模型：5010 亿总参数、每 token 激活约 23B，100 万 token 上下文，预训练 23.8T token，权重承诺本月晚些公开，背后商业模式是向企业出售自建 AI 工厂的算力。",
+    "textArch": "Beam  ·  Reflection AI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 5010亿 (23B 激活/token)  |  上下文 1M Tokens\n注意力 MoE"
   },
   {
     "id": "mai-thinking-1-2026",
@@ -5404,7 +5469,8 @@
       "256K 上下文，35B 激活参数 MoE",
       "配套 Maia 200 芯片与 MXC OS 级隔离执行层"
     ],
-    "description": "微软 MAI 模型家族的推理旗舰，2026 年 6 月 Build 2026 随七款 MAI 模型一同发布，10 月 7 日活动上宣布随 Surface Laptop Ultra（NVIDIA RTX Spark）走向本地执行。性能基准均为厂商自报、未经第三方审计。"
+    "description": "微软 MAI 模型家族的推理旗舰，2026 年 6 月 Build 2026 随七款 MAI 模型一同发布，10 月 7 日活动上宣布随 Surface Laptop Ultra（NVIDIA RTX Spark）走向本地执行。性能基准均为厂商自报、未经第三方审计。",
+    "textArch": "MAI-Thinking-1  ·  Microsoft\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Attention + Router (Top-k)    │\n│   ├─ Expert 1  ┐              │\n│   ├─ Expert 2  ├ 稀疏激活     │\n│   └─ Expert N  ┘              │\n└───────────────────────────────┘\n      ↓\nLM Head → Next Token\n\n参数 35B 激活（MoE）  |  上下文 256K\n注意力 Interleaved Attention"
   },
   {
     "id": "mistral-large-4-2026",
@@ -5438,7 +5504,8 @@
       "主打推理与多语言",
       "代号 Le Chonk"
     ],
-    "description": "Mistral AI 于 2026 年 10 月 7 日发布的新一代大语言模型，为 Mistral Large 3 的后继。"
+    "description": "Mistral AI 于 2026 年 10 月 7 日发布的新一代大语言模型，为 Mistral Large 3 的后继。",
+    "textArch": "Mistral Large 4（Le Chonk）  ·  Mistral AI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Attention + Router (Top-k)    │\n│   ├─ Expert 1  ┐              │\n│   ├─ Expert 2  ├ 稀疏激活     │\n│   └─ Expert N  ┘              │\n└───────────────────────────────┘\n      ↓\nLM Head → Next Token\n\n参数 1.05T 总参数 / 49B 激活  |  上下文 512K\n注意力 未公开"
   },
   {
     "id": "embeddinggemma-2-2026",
@@ -5474,7 +5541,8 @@
       "多模态搜索（语音 → 视频片段定位）",
       "与 Gemma 4 搭配做端侧私密 RAG"
     ],
-    "description": "Google 于 2026 年 10 月 7 日发布的开源嵌入模型，权重可在 HuggingFace 与 Kaggle 获取。"
+    "description": "Google 于 2026 年 10 月 7 日发布的开源嵌入模型，权重可在 HuggingFace 与 Kaggle 获取。",
+    "textArch": "EmbeddingGemma 2  ·  Google\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ 轻量 Transformer (共享权重)   │\n│  GQA + 量化 KV Cache          │\n└───────────────────────────────┘\n      ↓\n端侧推理 → Next Token\n\n参数 740M  |  上下文 嵌入模型\n注意力 Full Attention"
   },
   {
     "id": "falcon-emirati-7b-2026",
@@ -5508,7 +5576,8 @@
       "含区域习语与文化语境",
       "开放权重"
     ],
-    "description": "阿布扎比 TII 于 2026 年 10 月发布的区域语言模型，面向海湾阿拉伯语场景。"
+    "description": "阿布扎比 TII 于 2026 年 10 月发布的区域语言模型，面向海湾阿拉伯语场景。",
+    "textArch": "Falcon-Emirati-7B  ·  TII（阿联酋技术创新研究院）\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ 轻量 Transformer (共享权重)   │\n│  GQA + 量化 KV Cache          │\n└───────────────────────────────┘\n      ↓\n端侧推理 → Next Token\n\n参数 7B  |  上下文 未公开\n注意力 Full Attention"
   },
   {
     "id": "policy-lm-17b-2026",
@@ -5542,7 +5611,8 @@
       "政策变更无需重训",
       "开放权重"
     ],
-    "description": "Musubi 于 2026 年 10 月发布的开放权重决策模型，面向实时内容审核；与 Cloudflare Clef、AWS Strands Decider、OpenAI Decisions API 同属决策模型赛道。"
+    "description": "Musubi 于 2026 年 10 月发布的开放权重决策模型，面向实时内容审核；与 Cloudflare Clef、AWS Strands Decider、OpenAI Decisions API 同属决策模型赛道。",
+    "textArch": "PolicyLM-1.7B  ·  Musubi\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ 轻量 Transformer (共享权重)   │\n│  GQA + 量化 KV Cache          │\n└───────────────────────────────┘\n      ↓\n端侧推理 → Next Token\n\n参数 1.7B  |  上下文 审核/决策场景\n注意力 Full Attention"
   },
   {
     "org": "JetBrains",
@@ -5570,7 +5640,8 @@
     "type": "llm",
     "typeLabel": "开源编码智能体模型",
     "typeIcon": "🌐",
-    "date": "2026-10-08"
+    "date": "2026-10-08",
+    "textArch": "Mellum 2.1  ·  JetBrains\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 12B (激活 2.5B)  |  上下文 未公开\n注意力 Full Attention"
   },
   {
     "org": "阿里巴巴",
@@ -5598,7 +5669,8 @@
     "type": "image",
     "typeLabel": "开源图像生成模型",
     "typeIcon": "🎨",
-    "date": "2026-10-11"
+    "date": "2026-10-11",
+    "textArch": "Qwen-Image-2.1 Pro / Turbo  ·  阿里巴巴\nText Prompt → Text Encoder → conditioning\nNoise  ─────────────────────────┐\n                                ↓\n┌───────────────────────────────────────┐\n│ DiT / UNet  × N 步 (Cross-Attention) │\n└───────────────────────────────────────┘\n                ↓  VAE Decoder → Image\n\n参数 未公开  |  上下文 未公开\n注意力 Diffusion"
   },
   {
     "org": "Liquid AI",
@@ -5626,7 +5698,8 @@
     "type": "small",
     "typeLabel": "决策模型",
     "typeIcon": "🔬",
-    "date": "2026-10-09"
+    "date": "2026-10-09",
+    "textArch": "Liquid d1-3B / d1-omni-600M  ·  Liquid AI\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ 轻量 Transformer (共享权重)   │\n│  GQA + 量化 KV Cache          │\n└───────────────────────────────┘\n      ↓\n端侧推理 → Next Token\n\n参数 3B / 600M  |  上下文 未公开\n注意力 Liquid"
   },
   {
     "org": "vLLM Semantic Router",
@@ -5654,7 +5727,8 @@
     "type": "small",
     "typeLabel": "多模态决策模型",
     "typeIcon": "🔬",
-    "date": "2026-10-12"
+    "date": "2026-10-12",
+    "textArch": "Decision 3.0  ·  vLLM Semantic Router\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ 轻量 Transformer (共享权重)   │\n│  GQA + 量化 KV Cache          │\n└───────────────────────────────┘\n      ↓\n端侧推理 → Next Token\n\n参数 0.6B–27B  |  上下文 未公开\n注意力 Full Attention"
   },
   {
     "org": "Perplexity",
@@ -5682,7 +5756,8 @@
     "type": "llm",
     "typeLabel": "开源嵌入模型",
     "typeIcon": "🌐",
-    "date": "2026-10-07"
+    "date": "2026-10-07",
+    "textArch": "pplx-embed-v2-late  ·  Perplexity\nInput Tokens → Embedding\n      ↓\n┌───────────────────────────────┐\n│ Transformer × N               │\n│  RMSNorm → Self-Attention     │\n│  RMSNorm → FFN (SwiGLU)       │\n└───────────────────────────────┘\n      ↓\nLM Head → Softmax → Next Token\n\n参数 0.6B / 9B  |  上下文 未公开\n注意力 Late Interaction"
   },
   {
     "org": "科大讯飞",
@@ -5709,7 +5784,8 @@
     "type": "audio",
     "typeLabel": "语音基座大模型",
     "typeIcon": "🎙️",
-    "date": "2026-10-11"
+    "date": "2026-10-11",
+    "textArch": "Spark-Audio-1.0-Preview  ·  科大讯飞\nWaveform → 因果 Codec Encoder → Audio Tokens\n      ↓\n┌──────────────────────────────────┐\n│ 流式 Transformer (双流 / chunk) │\n└──────────────────────────────────┘\n      ↓\nCodec / 流匹配 Decoder → Waveform\n\n参数 0.65B 编码器 + 30B MoE  |  上下文 未公开\n注意力 Full Attention"
   },
   {
     "id": "gpt-6-2026",

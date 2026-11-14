@@ -1637,7 +1637,7 @@
       "AI 安全",
       "智能爆炸"
     ],
-    "hasReview": false,
+    "hasReview": true,
     "date": "2026-10",
     "summary": "Hinton 领衔 22 位学者（含 Bengio、图灵奖得主 Barto、OpenAI 首席科学家 Pachocki）的首篇 RSI 论文，探讨 AI 参与研发下一代 AI 是否会触发智能爆炸。★关键数据：引用 Anthropic 内部数据，**AI 生成并经审核的代码占比已从 2025 年 1 月的个位数升至 2026 年 5 月的 80% 以上**；论文估算若 AI 研发实现全自动化，技术进展速度可能在约 **1.5 年内提升十倍**。★但作者强调当前证据**尚不足以证明智能爆炸已发生**——算力、数据、实验时间与科研收益递减仍是主要制约因素。"
   },
@@ -1758,7 +1758,7 @@
     "venue": "arXiv 2026",
     "category": "arch",
     "importance": 5,
-    "hasReview": false,
+    "hasReview": true,
     "date": "2026-11",
     "tags": [
       "视频 tokenizer",
@@ -1777,7 +1777,7 @@
     "venue": "Boson AI Technical Blog 2026-11-05",
     "category": "arch",
     "importance": 5,
-    "hasReview": false,
+    "hasReview": true,
     "date": "2026-11",
     "tags": [
       "全双工",
