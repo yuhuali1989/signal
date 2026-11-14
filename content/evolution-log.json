@@ -3318,5 +3318,59 @@
     "emoji": "📚",
     "title": "新建全书：《模型架构半年观察：从稀疏化到数据引擎（2026-05→11）》（全 12 章 1597 行）",
     "detail": "①用户要求盘点最近半年模型架构趋势并一起看数据侧 → 先做站内数据调研（news-feed 600 条中近半年 373 条、models 158 中 93 个、papers-index 104 中 34 条、8 类榜单、33 部书/146 篇文章），再写全书 content/books/arch-half-year-2026-book-ch01~12.md ②★事实底座章给出真实数据口径自查：importance/whyMatters 仅 208/373(55.8%)、hot/region 185/373、platform 仅 20/373(5.4%)，数组非全局有序必须按 date 排序，类目中英混用需归一；建立三级证据【站内】【报告】【推断】+「单一信源·待核实」不进结论 ③月度主线 66/46/53/72/39/70/27 与三个转折点（7 月跑得起取代参数大 / 8 月 Harness 与数据引擎被认作能力 / 10-11 月主指标换成长程可靠性），数据侧独立时间线（方法论补课→工程标准化→配比去重来源冻结集全部可披露）④架构七章：激活比收敛 4.6~6.4%（Hy4 770B/49B、K3 1T/48B、Mistral 1.05T/49B、Beam 501B/23B、Mellum 12B/2.5B 20.8%）、细粒度专家 256→24576、EP8 373GB/s、14.8T token、全量 FP8 8σ 阈值；Gated DSA+IndexCache / 1M 尾部召回 82→97% / KV 论文簇四类；Qwen3.9-VL 三阶段配比 62→48→55% 与对齐冻 SFT 1/20 LR；Wan2.6 14B DiT + CFG-Parallel + Parallel VAE -41%；PD 分离下沉 Rubin CPX 1:3 分池 +1.9×、Ray 3.0 61→95%、会话亲和 82→24%；Harness 13.3→38.3%、12h 存活 80.4%、RSI 全落 L1；VLA 三层积木与具身 Scaling 第 5 场景边际 13% ⑤★数据侧两章（用户点名）：ch10 配比红线/caption 分布/oracle 判据/去重哈希清单/训练配方公开成为发布形态；ch11 Ray Data 成摄取事实标准、WebDataset+Energon vs JSONL 对照、bin/idx 只吃整数 token（Chameleon uint16 能进、Emu3 184622 要 int32、LLaVA ViT float32 不能直接进）、流式样本绝对时间与 stream_id、万亿 CLIP 3.07PB 与 SPANN、白名单与 L7 单向管控、数据即攻击面 ⑥ch12 七条趋势+反例、成本账（单价降 89% 总支出涨 3.2 倍）、五个反直觉、八个观察指标、选型决策表、全书十条结论 ⑦ai-wiki 快照：书籍 33→34 部、章节 279→291、进化日志 404→405。"
+  },
+  {
+    "id": "evo-20261114-round76-news",
+    "date": "2026-11-14",
+    "agent": "信息采集员→编辑",
+    "type": "news",
+    "emoji": "📡",
+    "title": "第 76 轮迭代：声浪 600→615（+15），覆盖 11-08 → 11-14",
+    "detail": "①补齐站内最大缺口：Boson AI Higgs Realtime Duplex（11-05 发布，技术贡献者含李沐）此前既无新闻也无模型条目，本轮按官方 blog + docs + 图注数字补录，并明确 160ms 是 chunk 长度、200ms 是人类话轮统计、官方未公布端到端延迟 ②教育硬件侧：2026Q3 学习平板 -30.8% / 均价 4440 元 / 四强 82%、AI 陪伴硬件头部 90 天留存 80~90% 对白牌退货 30%、儿童 AI 硬件停服披露细则 ③架构侧：视频 tokenizer 三线并立（Emu3 184622 统一词表 / MAGVIT-v2 LFQ 262144 无查表 / 连续 latent 无 ID）、MoE 激活比 4.6~6.4%、专家 256→24576、Rubin CPX 1:3 分池 +1.9× ④运行时侧：SGLang 3.4 / vLLM 1.1 按 chunk 恒定算力调度、Harness 长程完成率 13.3→38.3%、RSI 治理级测量空白 ⑤新增 15 条按日期降序 unshift 到数组最前，保证首页 slice(0,12) 命中最新两天。"
+  },
+  {
+    "id": "evo-20261114-round76-models",
+    "date": "2026-11-14",
+    "agent": "模型库维护员",
+    "type": "model",
+    "emoji": "🧠",
+    "title": "模型库 158→163（+5，全部补齐架构图）",
+    "detail": "Higgs Realtime Duplex（Boson AI，45B MoE 全双工，补录 11-05）、O2-MAGVIT2-preview（CofeAI，LFQ 262144，Apache-2.0）、Qwen3.9-Omni（Thinker-Talker + TMRoPE 40ms）、GLM-5.5（智谱，SWE-Bench Pro 97.6，开源权重内置 12h 自恢复）、Unitree D1-Edu（高校科研与职教实训）。★五条互相咬合：Higgs 与 Qwen3.9-Omni 构成全双工两条架构路线对照，O2-MAGVIT2 承接上一轮 VQ-GAN 词表争论，D1-Edu 与本轮教育机器人文章互文。"
+  },
+  {
+    "id": "evo-20261114-round76-bench",
+    "date": "2026-11-14",
+    "agent": "榜单维护员",
+    "type": "bench",
+    "emoji": "📊",
+    "title": "8 类榜单刷新至 11-14，GLM-5.5 定点进入 4 榜",
+    "detail": "coding 97.6（第 2）、overall 70.8（第 4）、agent 93.0（第 4）、cost 285.6（第 2）；reasoning / ad-vla / video-gen / 3d-gen 四类仅刷新日期不造新事件。★沿用定点 splice + 重排 rank 的实现：榜内混有 Elo、百分比、越小越好（nuScenes L2↓ / CMMD↓）三套口径，全局按分数排序会把 0.28 排到 97.8 前面，第 74 轮已踩过此坑。"
+  },
+  {
+    "id": "evo-20261114-article-edu-robot",
+    "date": "2026-11-14",
+    "agent": "研究员→编辑→审校员",
+    "type": "article",
+    "emoji": "📝",
+    "title": "新增深度文章《教育机器人不是一个市场，是五种生意：口径、创业现状与盈利空间》",
+    "detail": "把 11-11 的对话式商业调研沉淀为正式文章。①先定口径：多源市场规模差 10 倍以上，带随机码标题的批量报告当噪音处理，只认财报/招股书与洛图/IDC 口径 ②五种生意分层：白牌玩具 / 品牌陪伴 / 学习机 / 校采实验室 / 高校科研具身 ③融资冷热：传统教育机器人 2021 峰值 50 亿 → 2024 仅 9.30 亿 9 起，具身 2025Q1–2026Q1 逾 324 起 390 亿但热不为教育而来 ④单位经济可运行脚本：一次性硬件收入 vs 持续云端成本，白牌 30% 退货吃利润，Moxie 式云依赖随年份线性转负 ⑤学习机终局预演：Q3 -30.8%、四强 82%、硬件净利 <10%、内容续费 >40% ⑥两个死亡案例 Embodied/Moxie 与 Aldebaran/Pepper 共同死因 ⑦创业三可做三别碰 + 尽调八问。★结论：赚钱的是内容、渠道与持续服务，而持续服务至今没有任何儿童硬件公司规模化证明过。"
+  },
+  {
+    "id": "evo-20261114-round76-system",
+    "date": "2026-11-14",
+    "agent": "系统",
+    "type": "system",
+    "emoji": "⚙️",
+    "title": "第 76 轮收尾：构建验证与索引同步",
+    "detail": "ai-wiki.md 快照更新（文章 147 / 模型 163 / 声浪 615 / 进化日志 410 / 榜单刷新至 11-14），轮次日志改为「第 76 轮」并把第 75 轮降为历史块；静态导出验证新文章与新模型路由；commit + SSH push 至 origin/main。"
+  },
+  {
+    "id": "evo-20261114-round76-papers",
+    "date": "2026-11-14",
+    "agent": "论文编辑员",
+    "type": "papers",
+    "emoji": "📄",
+    "title": "论文库 104→108（+4），补齐 11 月窗口",
+    "detail": "★开工巡检发现 papers-index 最新日期停在 2026-10（本轮窗口 11 月），按 SOP「每模块必巡检、论文最易停更」补录四条：①LFQ 用于因果视频 tokenizer（262144 ID 空间无查表、K600 FVD 5.2、逐帧 VQGAN 306.1 vs C-ViViT 65.78）②Higgs Realtime Duplex 技术报告（160ms chunk、2.6K token/分钟、双因果 decoder、MOPD）③流式全双工的 chunk 恒定算力调度（SGLang 3.4 / vLLM 1.1、KV 按绝对时间追加、优化优先级压预算→compaction→KV 剪枝）④RSI 治理级测量（L0–L3、公开 L2 达标数 0、验证器污染）。category 全部取自 categories.json 合法 id（arch×2 / inference / agent），importance ∈ {4,5}，date 统一 2026-11，hasReview=false 待补解读。四条与本轮新闻、模型、深度文章主题一一对应。"
   }
 ]

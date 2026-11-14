@@ -6260,5 +6260,197 @@
       "计费"
     ],
     "blogUrl": "https://www.minimaxi.com/"
+  },
+  {
+    "id": "higgs-realtime-duplex-2026",
+    "name": "Higgs Realtime Duplex",
+    "org": "Boson AI",
+    "type": "audio",
+    "typeLabel": "原生全双工全模态模型",
+    "typeIcon": "🎙️",
+    "open": false,
+    "params": "45B MoE（激活参数未公开）",
+    "date": "2026-11-05",
+    "context": "5 分钟窗口 13K~25K token（渐进 compaction）",
+    "attention": "160ms chunk + 绝对时间 ID + chunk-causal，静音占格、静音期间视频帧持续流入",
+    "factSheet": {
+      "highlight": "2026-11-05 发布，第 76 轮补录。每分钟音视觉 token 预算 2.6K~5K：audio in 375 / audio out 750 / video in 750 / face out 750",
+      "training": "文本基座续训约 2T token（自建 H100 集群 + Megatron）；MOPD 多教师 on-policy 蒸馏，GRPO 专家教师分别教自然对话 / 交互行为 / 动态委派 / 任务完成；RSI 仿真闭环需重现打断、重叠语音、旁人对话与背景噪声",
+      "inference": "前台 45B MoE 自己思考与调工具，必要时把 full shared context 委派给更大后端模型；工具结果以 payload 进输入 chunk，文本无固定每片配额；每片 2 audio frames + 2 image latents 进双因果 decoder",
+      "benchmarks": "Big Bench Audio 98.9（唯一第一）；Full-Duplex-Bench v1.5 75.5（GPT-Live-1 80.1 / TML 77.8）；Audio MultiChallenge 44.9；QIVD 56.0；ProactiveVideoQA 31.9；τ-Voice 69.8；IFEval 94.1"
+    },
+    "highlights": [
+      "160ms 时间片",
+      "2.6K token/分钟",
+      "45B MoE 前台",
+      "因果流匹配 + 因果 DiT",
+      "MOPD + RSI"
+    ],
+    "keyInnovation": "★把全双工从「按话轮切分」改成「按 160ms 时间片组织」：六条泳道并行、静音也占格、慢任务跨 chunk 异步回灌，且输出侧用连续 latent 而非离散 ID。官方未公布端到端延迟，160ms 是 chunk 长度、200ms 是人类对话统计。",
+    "description": "Boson AI 全双工全模态研究预览（2026-11-05 发布，本轮补录）：45B MoE 前台 + 后台委派，160ms chunk、2.6K token/分钟预算，因果流匹配与因果 DiT 双解码。研究预览、权重未开、API waitlist。",
+    "textArch": "Mic 24kHz × 160ms = 3840 samples\n     │  audio_enc → 1 token (6.25 tok/s)\nCamera 每 6 片 1 帧 → 12 token (≈1.04 fps)\n     │  工具 payload / 思考线程 → 可变文本\n┌────▼─────────────────────────────────┐\n│ 45B MoE 前台 (chunk-causal)          │\n│ think / call tools / 必要时 delegate │\n│ older history as text + compaction    │\n└──────┬───────────────────┬───────────┘\n       │ 2 audio frames    │ 2 image latents\n       ▼                   ▼\n因果流匹配 decoder      因果 DiT\n(参考音频定音色)      (参考图 + 前 2 latent 定长相)\n       │                   │\n   3840 samples          1 帧面部",
+    "tags": [
+      "Higgs",
+      "Boson AI",
+      "全双工",
+      "李沐",
+      "MoE",
+      "因果流匹配",
+      "因果 DiT",
+      "MOPD"
+    ],
+    "blogUrl": "https://www.boson.ai/blog/higgs-realtime-duplex"
+  },
+  {
+    "id": "o2-magvit2-preview-2026",
+    "name": "O2-MAGVIT2-preview",
+    "org": "CofeAI",
+    "type": "video",
+    "typeLabel": "开源 3D 因果视频 tokenizer",
+    "typeIcon": "🎬",
+    "open": true,
+    "params": "0.4B",
+    "date": "2026-11-10",
+    "context": "3D 因果时空压缩（时间 4× / 空间 8×）",
+    "attention": "LFQ 无查表量化，2^18 = 262144 ID 空间；因果 3D 卷积，帧预测只看过去",
+    "factSheet": {
+      "highlight": "Apache-2.0 开源；LFQ 从原理上消除最近邻 + STE 造成的码本坍缩与死码问题",
+      "training": "3D 因果 CNN tokenizer + 重建 / 感知 / 对抗目标；语义监督可插拔",
+      "inference": "视频 → [21, 56, 56, 16] latent → 逐位置 LFQ 得到整数 ID → causal decoder 还原；Kinetics-600 帧预测 FVD 5.2±0.2（非因果 11.6±0.6）",
+      "benchmarks": "逐帧 VQGAN 重建 FVD 306.1 vs C-ViViT 65.78（4.7×）；MAGVIT-v1 码本 1024、C-ViViT 8192、Cosmos 离散版 FSQ ~64K"
+    },
+    "highlights": [
+      "LFQ 262144",
+      "无码本表",
+      "3D 因果",
+      "Apache-2.0",
+      "FVD 5.2"
+    ],
+    "keyInnovation": "★有 ID 空间但没有可查的表：262144 是组合编码空间，不是 nn.Embedding。这既解决死码，也带来统一词表对接难题——26 万视觉 ID 塞进 75840 级统一表会让输出头涨到约 2.6GB（bf16）。",
+    "description": "CofeAI 开源的 3D 因果视频 tokenizer（0.4B，Apache-2.0）：LFQ 2^18=262144 ID 空间、无码本坍缩，Kinetics-600 帧预测 FVD 5.2。",
+    "textArch": "Video [B,3,T,H,W]\n     │  3D 因果卷积 (T 4× / 空间 8×)\n     ▼\n  z [21, 56, 56, 16]   浮点 latent\n     │  LFQ：按通道二值化 → 18 bit\n     ▼\n ids [21, 56, 56]      0..262143 整数\n     │  ★无 nn.Embedding 查表\n     ▼\n Causal Decoder → 重建帧\n\n对照：逐帧 VQGAN 每帧 argmin → flicker\n     非因果 3D VAE → 未来帧泄漏",
+    "tags": [
+      "O2-MAGVIT2",
+      "LFQ",
+      "视频 tokenizer",
+      "码本坍缩",
+      "因果卷积",
+      "Apache-2.0"
+    ],
+    "blogUrl": "https://huggingface.co/CofeAI/O2-MAGVIT2-preview"
+  },
+  {
+    "id": "qwen39-omni-2026",
+    "name": "Qwen3.9-Omni",
+    "org": "阿里巴巴（通义千问）",
+    "type": "multimodal",
+    "typeLabel": "原生音视频全双工大模型",
+    "typeIcon": "🌐",
+    "open": true,
+    "params": "未公开（Thinker / Talker 双模块）",
+    "date": "2026-11-12",
+    "context": "音视频按 40ms 一个绝对时间 ID 交错排布",
+    "attention": "TMRoPE 三维时间位置编码；视觉侧 chunk-causal ViT + resampler，不量化不查词表",
+    "factSheet": {
+      "highlight": "Thinker 只出文本与隐状态、Talker 独立小模型出语音 token，语音训练不触碰主干语言能力",
+      "training": "沿用 Qwen3.9-VL 三阶段文本配比 62%→48%→55%；文本 token 占比低于 50% 即出现不可逆语言退化；对齐阶段冻结 LLM，SFT 解冻且 LR 压到纯文本阶段 1/20",
+      "inference": "视频帧 → ViT patch → resampler 固定预算 → 加 type_emb / stream_id / (t,h,w) → 与音频文本交错进共享主干；输出侧文本与语音分头",
+      "benchmarks": "官方称语言能力与纯文本基座持平；音视频共时事件对齐为主要评测方向"
+    },
+    "highlights": [
+      "Thinker-Talker 隔离",
+      "TMRoPE 40ms",
+      "理解侧不量化",
+      "50% 文本红线",
+      "1/20 解冻 LR"
+    ],
+    "keyInnovation": "★用结构隔离而非冻结或数据配比来解决「多模态拖累文本」：文本流一直作为锚存在，语音由独立 Talker 生成。与 Higgs 的「参考条件只进 decoder」是同一设计哲学的两种实现。",
+    "description": "阿里全双工音视觉模型：Thinker-Talker 结构隔离 + TMRoPE 绝对时间对齐，视频理解侧连续 embedding 不查词表，沿用 50% 文本占比红线。",
+    "textArch": "Video → ViT patches → Resampler(64)\n                     │ 连续向量，无 ID\nAudio → 因果 codec → 离散 token\nText  → BPE ids → Embedding\n     │  + type_emb + stream_id + (t,h,w)\n     ▼\n┌──────────────────────────────┐\n│ 共享主干 (TMRoPE / chunk-causal)│\n└───────┬──────────────┬───────┘\n        ▼              ▼\n   Thinker(文本)   Talker(语音 token)\n   ★语言能力锚     ★梯度不回主干",
+    "tags": [
+      "Qwen3.9-Omni",
+      "Thinker-Talker",
+      "TMRoPE",
+      "全双工",
+      "训练配比",
+      "结构隔离"
+    ],
+    "blogUrl": "https://qwenlm.github.io/"
+  },
+  {
+    "id": "glm-55-2026",
+    "name": "GLM-5.5",
+    "org": "智谱 AI",
+    "type": "moe",
+    "typeLabel": "开源长程可靠性旗舰",
+    "typeIcon": "🔀",
+    "open": true,
+    "params": "未公开（稀疏 MoE）",
+    "date": "2026-11-13",
+    "context": "12 小时自主任务窗口（带一致性检查点）",
+    "attention": "全参训练跑在昇腾 950PR；同步公开 CANN 算子缺口清单第二版",
+    "factSheet": {
+      "highlight": "开放权重内置长程任务自恢复：12 小时窗口内检测偏离后自动回滚到最近一致检查点，自恢复质量 86%",
+      "training": "昇腾 950PR 全参训练；沿用国产芯片迁移工程栈",
+      "inference": "API 定价维持 GLM-5.4 水平；性价比指数 285.6",
+      "benchmarks": "SWE-Bench Pro 97.6（编码榜第 2）；AgentBench-Pro 93.0；AA Intelligence Index 70.8"
+    },
+    "highlights": [
+      "开源权重",
+      "SWE-Bench Pro 97.6",
+      "12h 自恢复 86%",
+      "昇腾 950PR",
+      "性价比 285.6"
+    ],
+    "keyInnovation": "★「12 小时不跑偏」原本是三家闭源旗舰的专属叙事，GLM-5.5 把它下放成开源基线能力，长程可靠性正从卖点变成入场券。",
+    "description": "智谱开源旗舰：SWE-Bench Pro 97.6 进编码榜前二，首次在开源权重里内置 12 小时长程任务自恢复，昇腾 950PR 全参训练。",
+    "textArch": "Prompt (≤ 长程任务窗口)\n     │\n┌────▼─────────────────────────┐\n│ 稀疏 MoE (Router → Top-k)    │\n│ 一致性检查点持续写入          │\n│ 偏离检测 → 自动回滚           │\n└──────────┬──────────────────┘\n           ▼\n  12h 自恢复质量 86%",
+    "tags": [
+      "GLM-5.5",
+      "智谱",
+      "开源权重",
+      "长程可靠性",
+      "SWE-Bench Pro",
+      "昇腾"
+    ],
+    "blogUrl": "https://github.com/zai-org"
+  },
+  {
+    "id": "unitree-d1-edu-2026",
+    "name": "Unitree D1-Edu",
+    "org": "宇树科技",
+    "type": "robotics",
+    "typeLabel": "教育科研版人形机器人",
+    "typeIcon": "🏭",
+    "open": false,
+    "params": "关节级控制接口 + 仿真迁移工具链 + 课程实验包",
+    "date": "2026-11-14",
+    "context": "面向高校科研与职教实训",
+    "attention": "开放底层控制与 sim-to-real 工具链，单价低于工业版",
+    "factSheet": {
+      "highlight": "宇树 2025 营收 17.08 亿元（+335%），人形出货 5500 台，其中约 3/4 销往高校科研",
+      "training": "配套课程实验包与仿真迁移环境",
+      "inference": "关节级实时控制、遥操作采集、策略部署",
+      "benchmarks": "对照：优必选 FY2025 AI 教育 4.13 亿元（+13.7%）、B2G 毛利 56.14%；乐聚智能招股书自述教育线天花板不高"
+    },
+    "highlights": [
+      "高校科研",
+      "职教实训",
+      "关节级接口",
+      "sim-to-real",
+      "3/4 出货去向"
+    ],
+    "keyInnovation": "★财报口径下「教育」的真实形态：不是 K12 课堂规模化，而是科研设备采购与渠道现金流。具身智能融资热与教育机器人融资冷（2024 全年 9.30 亿元 / 9 起）并不矛盾——教育只是下游。",
+    "description": "宇树面向高校科研与职教实训的人形本体：开放关节级控制、仿真迁移与课程实验包，对应人形出货约 3/4 流向科研教育的财报事实。",
+    "textArch": "课程实验包 / 仿真环境\n     │  sim-to-real 迁移\n┌────▼──────────────────────┐\n│ 关节级控制接口            │\n│ 遥操作采集 → 策略训练     │\n│ 端侧实时控制回环          │\n└──────────┬───────────────┘\n           ▼\n  高校科研 / 职教实训采购",
+    "tags": [
+      "宇树",
+      "D1-Edu",
+      "教育科研",
+      "人形机器人",
+      "sim-to-real",
+      "B2G"
+    ],
+    "blogUrl": "https://www.unitree.com/"
   }
 ]

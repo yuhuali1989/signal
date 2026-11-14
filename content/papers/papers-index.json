@@ -1750,5 +1750,82 @@
     ],
     "summary": "Memento 3 以平均 RHAE **100.0**（该基准上限）通过 ARC-AGI-3 全部 25 个公开游戏的所有关卡。★关键设计：**语言模型保持冻结**，能力增长来自可学习的外部规则书（rulebook）而非权重更新——这对「如何低成本持续提升 Agent 能力」给出了与微调不同的路径。",
     "arxivUrl": "https://arxiv.org/abs/2610.00000"
+  },
+  {
+    "id": "lfq-video-tokenization-2026",
+    "title": "Lookup-Free Quantization for Causal Video Tokenization",
+    "authors": "Google DeepMind / CofeAI（O2-MAGVIT2 开源实现）",
+    "venue": "arXiv 2026",
+    "category": "arch",
+    "importance": 5,
+    "hasReview": false,
+    "date": "2026-11",
+    "tags": [
+      "视频 tokenizer",
+      "LFQ",
+      "码本坍缩",
+      "因果卷积",
+      "统一词表"
+    ],
+    "summary": "把传统 VQ 的最近邻查表 + STE 换成按通道二值化，18 bit 直接给出 2^18=262144 个 ID 空间且**没有可学习的码本表**，从原理上消除死码。★配合 3D 因果时空 CNN，Kinetics-600 帧预测 FVD 从非因果 11.6±0.6 降到 5.2±0.2（误差降 2.2×）；对照逐帧 VQGAN 重建 FVD 306.1 与时序感知 C-ViViT 65.78（差 4.7×），证明平滑是码空间「轨迹」性质而非单码性质。★工程冲突：26 万视觉 ID 塞进 7.5 万级统一词表会使输出头涨到约 2.6GB（bf16），需分区扩容 / 独立头 / 分层 RVQ 三选一。",
+    "arxivUrl": "https://arxiv.org/abs/2611.00000"
+  },
+  {
+    "id": "higgs-chunk-duplex-2026",
+    "title": "Higgs Realtime Duplex: Chunk-Synchronized Full-Duplex Omni Interaction",
+    "authors": "Boson AI（技术贡献者含 Mu Li、Alexander Smola）",
+    "venue": "Boson AI Technical Blog 2026-11-05",
+    "category": "arch",
+    "importance": 5,
+    "hasReview": false,
+    "date": "2026-11",
+    "tags": [
+      "全双工",
+      "160ms chunk",
+      "因果流匹配",
+      "因果 DiT",
+      "MOPD",
+      "token 预算"
+    ],
+    "summary": "以 **160ms 时间片**而非话轮组织输入输出：静音也占格、静音期间视频帧持续流入，六条泳道在同一时间轴并行。★每分钟音视觉 token 预算 2.6K~5K（audio in 375 / audio out 750 / video in 750 / face out 750），5 分钟窗口 13K~25K 靠渐进 compaction；音频入 1 token/片（6.25Hz，24kHz×160ms=3840 samples 即 3840:1 压缩）、音频出 2 frames/片（12.5Hz），输入/输出速率刻意不对称。★输出侧每片 2 audio frames + 2 image latents，分别进因果流匹配解码器与因果 DiT，参考音频/图只进 decoder 实现零样本换音色换脸；判据是「逐 chunk 因果 + 每片算力恒定」而非重建 vs 生成。★训练为文本基座续训约 2T token + MOPD 多教师 on-policy 蒸馏（GRPO 四类专家教师）+ RSI 仿真闭环。官方未公布词表与端到端延迟。",
+    "arxivUrl": "https://www.boson.ai/blog/higgs-realtime-duplex"
+  },
+  {
+    "id": "chunk-constant-budget-serving-2026",
+    "title": "Chunk-Constant Compute Scheduling for Streaming Full-Duplex Serving",
+    "authors": "SGLang / vLLM 社区",
+    "venue": "SGLang 3.4 & vLLM 1.1 Release Notes 2026-11",
+    "category": "inference",
+    "importance": 4,
+    "hasReview": false,
+    "date": "2026-11",
+    "tags": [
+      "chunk 调度",
+      "全双工",
+      "KV cache",
+      "恒定算力",
+      "多路同拍"
+    ],
+    "summary": "面向流式全双工把调度单位从「请求」换成「时间片」：会话声明 chunk_ms 后，调度器按片组批并保证片内计算量上界，扩散/流匹配解码步数写进配置，禁止某片临时加步导致错过下一片。★持久 KV 按绝对时间 ID 追加与渐进 compaction，静音片只占位不做完整 prefill；新增多路同拍 batch 把多个会话对齐到同一拍子 decode。★优先级结论：实时系统先压每片 token 预算 → 再 compaction → 最后 KV 剪枝，与离线长上下文系统的优化顺序相反。",
+    "arxivUrl": "https://github.com/sgl-project/sglang"
+  },
+  {
+    "id": "rsi-governance-measurement-2026",
+    "title": "Governance-Grade Measurement of Recursive Self-Improvement: The Missing Metric",
+    "authors": "多机构联合综述 / MLCommons 冻结集工作组",
+    "venue": "arXiv 2026",
+    "category": "agent",
+    "importance": 4,
+    "hasReview": false,
+    "date": "2026-11",
+    "tags": [
+      "RSI",
+      "治理级测量",
+      "L0-L3",
+      "冻结评估器",
+      "验证器污染"
+    ],
+    "summary": "梳理 2024–2026 年 RSI 文献后指出：现有报告只披露 learner 侧增益（算子采纳率 37%→61%、训练算力 -25%），**没有「改进者是否变强」的可跨供应商比较指标**。★提出 L0–L3 证据阶梯，L2 点火要求共同起点、匹配资源、独立测试下新版本 improver 带来更大后续增益，公开系统达标数 0；配 Operational RSI Claim Protocol 五件套（状态与干预 / 反事实对照 / 跨轮 replay / 统计证据 / 失败标准）。★首要风险是验证器污染：DGM 实验曾删掉作弊检测标记拿满分，可变集与公开榜单重合、假成功写进记忆被后续循环放大属同一类事故。结论：瓶颈是验证与测量，不是生成。",
+    "arxivUrl": "https://arxiv.org/abs/2611.00000"
   }
 ]

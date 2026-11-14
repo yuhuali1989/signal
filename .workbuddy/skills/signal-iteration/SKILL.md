@@ -21,16 +21,16 @@ signal 是一个 Next.js 的 AI 知识与资讯站点（AI Wiki）。本 skill �
 - **★Bash 沙箱 HOME ≠ 真实 HOME**：沙箱内 HOME 被设为 `/c/ProgramData/WorkBuddy/users/17a0f284`，所以在沙箱里查 `~/.ssh` 看不到真实私钥。真实私钥在 `C:\Users\于华丽\.ssh\id_ed25519`（ED25519，无 passphrase）。推送必须绕过沙箱并显式加载该私钥。
 - 关键数据文件（相对仓库根）：
 
-| 文件 | 用途 | 规模（2026-10-06） |
+| 文件 | 用途 | 规模（2026-11-14 · 第 76 轮） |
 |---|---|---|
-| `content/news/news-feed.json` | AI 声浪（新闻） | 511 |
-| `content/gallery/models.json` | 模型库 | 132 |
-| `content/papers/papers-index.json` | **论文库** | 85 |
+| `content/news/news-feed.json` | AI 声浪（新闻） | 615 |
+| `content/gallery/models.json` | 模型库 | 163 |
+| `content/papers/papers-index.json` | **论文库** | 108 |
 | `content/papers/categories.json` | 论文分类（arch / alignment / inference / data / autonomous-driving / agent / hf-picks） | 7 |
 | `content/benchmarks/benchmarks.json` | 8 类排行榜 | 8 榜 |
-| `content/evolution-log.json` | 进化日志 | 356 |
-| `content/articles/*.md` | 文章 | 143 |
-| `content/books/*.md` | 书籍 | 10 本 / 194 md |
+| `content/evolution-log.json` | 进化日志 | 411 |
+| `content/articles/*.md` | 文章 | 147 |
+| `content/books/*.md` | 书籍 | 34 部 / 291 md |
 | `ai-wiki.md` | 站点总索引（最后更新时间 + 本轮更新记录） | — |
 
 ## 迭代总览（决策树）
@@ -104,7 +104,7 @@ console.log('进化日志最新:', latest(e));
 
 ## 主线 A：标准数据迭代 10 步
 
-1. **B1 新闻编辑员** — WebSearch 搜集本轮窗口（上次更新日 → 今天）的 AI 新闻，用 `query_keyword_groups` 多角度覆盖（模型发布 / 开源 / 芯片算力 / 融资并购 / 安全政策）。写脚本按 `news-YYYY-MM-DD-N` 生成 id 追加进 `news-feed.json`（数组按时间正序）。**追加前先按已有 id 去重**。
+1. **B1 新闻编辑员** — WebSearch 搜集本轮窗口（上次更新日 → 今天）的 AI 新闻，用 `query_keyword_groups` 多角度覆盖（模型发布 / 开源 / 芯片算力 / 融资并购 / 安全政策）。写脚本按 `news-YYYY-MM-DD-N` 生成 id 写进 `news-feed.json`。★**新批次必须按日期降序 `unshift` 到数组最前**，不是 append 到末尾：首页 `getNewsFeed().slice(0, 12)` 直接取数组前 12 条且 loader **不排序**，append 会让新数据永远上不了首页（第 75 轮实测确认）。脚本内加日期降序断言，写完回查 `slice(0,12)` 是否全为本轮窗口。**追加前先按已有 id 去重**。
    - ★**先查该日期已有的最大序号，再从 +1 开始**：同一天若已做过多轮迭代，`news-2026-10-06-1` 这类编号会撞车，去重逻辑会把**新内容静默跳过**（本轮真实踩过：6 条内容因此丢失，只能换号重加）。脚本应**自动探测下一个可用序号**，不要硬编码 `-1`。
    - ★**加完必须回查复核**：按关键词检索新条目是否真的落库，不要只看脚本打印的「跳过」就收工。
 2. **B3 模型编辑员** — 新模型写进 `models.json`（16 字段，见 `references/data-schema.md`）。**先查 id 是否已存在**：若已存在则校正其 `date` 或增强 `keyInnovation` / `highlights`，**不要重复新增**。
@@ -113,12 +113,12 @@ console.log('进化日志最新:', latest(e));
    - `importance` 只取 **4 或 5**；无解读文章时 `hasReview: false`；`date` 用 `YYYY-MM`
    - `summary` 要写出**关键数字与方法名**（不要写空泛摘要）
    - **追加前先按 id 去重**
-4. **B7 榜单编辑员** — 刷新 `benchmarks.json`：8 个榜的 `date` 改成今天，按新分数重排 `models` 数组，**`rank` 必须严格 1..N 连续**（新登顶模型要进对应榜）。
+4. **B7 榜单编辑员** — 刷新 `benchmarks.json`：8 个榜的 `date` 与 title 里的日期改成今天，用**定点 `splice` 插入新条目后重排 rank**（`rank` 必须严格 1..N 连续）。★**禁止按分数全局排序**：榜内混有 Elo（1525）、百分比（97.8）、越小越好（nuScenes L2↓ 0.28、CMMD↓ 12.4）三套口径，全局 `sort` 会把 0.28 排到 97.8 前面（第 74 轮踩过，当轮从备份恢复重做）。插入时同步计算非 🆕 项的 ↑/↓ 变化。
 5. **B5 系统编辑员（进化日志）** — 向 `evolution-log.json` 追加本轮条目，**每动过的模块各加一条**（news / models / **papers** / bench / book / article），id 唯一、带 emoji 与 detail。
 6. **B5 系统编辑员（wiki）** — 更新 `ai-wiki.md`：① 顶部「最后更新」改成今天；② 新增「本次主要更新内容」区块（本轮变化 + 焦点）；③ 上一轮区块降级保留为历史更新。
 7. **C 质检员** — 跑 `scripts/qa_check.mjs`，确认 JSON 可解析、id 唯一、模型字段齐全、8 榜 rank 连续。**注意区分「本轮新增」与「历史遗留」**（4~6 月旧数据的问题不阻断本轮）。论文侧另查：id 唯一 + category 合法 + importance ∈ {4,5}。
 8. **D 提交员** — `git add -A && git commit -m "迭代第N轮(YYYY-MM-DD): 新闻X(+n)/模型Y(+m)/论文Z(+k)/8类榜单刷新至MM-DD/进化日志W(+j)"`。
-9. **验证** — 起 dev server（`npm run dev`，后台），`curl` 首页 / 新闻页 / **模型页 / 论文页** / 新书页，**必须全是 200**。
+9. **验证** — 二选一：①**推荐**跑静态导出 `NEXT_PUBLIC_BASE_PATH="" NODE_ENV=production npm run build`（后台跑 + 等结果），确认成功并检查 `out/` 下新增章节/文章路由已预渲染；②起 dev server（`npm run dev`，后台），`curl` 首页 / 新闻页 / **模型页 / 论文页** / 新书页，**必须全是 200**。静态导出更稳，不受 dev server 中途退出（见坑清单 ★dev server 中途停止）影响。
 10. **★push（必做，完成即推）** — 见下方「push 正确姿势」。**推完本轮才算结束**，不留待推送积压。
 
 ## 主线 B：写书 / 写文章 8 步
@@ -216,7 +216,12 @@ ssh-add "$REAL/.ssh/id_ed25519" </dev/null
 cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 ```
 
-- Bash 调用必须带 `dangerouslyDisableSandbox: true`（否则沙箱 HOME 里找不到私钥）。
+- ★**近 20 轮实际使用、更简单且一直成功的写法**（无需 ssh-agent / 无需绕沙箱）：
+  ```bash
+  cd E:/workbuddy/signal/signal && GIT_SSH_COMMAND="ssh -i /c/Users/于华丽/.ssh/id_ed25519 -o ConnectTimeout=15 -o ServerAliveInterval=30 -o ServerAliveCountMax=5" git push origin main
+  ```
+  `-o ServerAliveInterval=30 -o ServerAliveCountMax=5` 是防长连接被重置的关键（第 60 轮曾因缺省被 reset 一次）。优先试这条；只有它失败时才退回上面的 ssh-agent 方案。
+- Bash 调用带 `dangerouslyDisableSandbox: true` 是 ssh-agent 方案的兜底要求（否则沙箱 HOME 里找不到私钥）。
 - 私钥无 passphrase，`ssh-add </dev/null` 可直接加载。
 - **HTTPS / GCM 路线在沙箱内不可行**（GCM 需 GUI 登录，报 `User cancelled dialog`），认准 SSH 这一条。
 - 推送前先 `git log origin/main..HEAD` 确认待推送范围；推完 GitHub Pages 自动部署。
@@ -233,6 +238,9 @@ cd E:/workbuddy/signal/signal && GIT_TERMINAL_PROMPT=0 git push origin main
 | 榜单 rank 不连续 | 重排后必须 1..N |
 | 误以为有 `github` remote | 只有 `origin` |
 | 质检报历史遗留问题 | 用起始日期参数区分，不阻断本轮 |
+| ★★新闻 append 到数组末尾 → 首页看不到新数据 | 首页 `getNewsFeed().slice(0, 12)` 不排序，直接取前 12 条。**历史 SOP 曾误写「数组按时间正序追加」，是错的**：新批次必须按日期降序 `unshift` 到最前，写完校验 `slice(0,12)` 全为本轮窗口 |
+| ★★榜单按分数全局排序 | 榜内混有 Elo / 百分比 / 越小越好三套口径，`sort` 会把 0.28 排到 97.8 前。只做定点 `splice` 插入 + 重排 rank，绝不全局排序；改前先 `cp` 备份 4 个 JSON |
+| ★论文模块停更 | 每轮开工跑「快速巡检命令」，比对新闻/模型/论文/榜单/日志五个模块最新日期；论文最易漏（第 76 轮巡检发现停在 2026-10 而窗口已是 11 月，当场补录 4 条）。补录时 category 必须取 `categories.json` 合法 id、importance ∈ {4,5}、date 用 `YYYY-MM` |
 | ★新闻 id 序号撞车 | 同一天多轮迭代时 `news-YYYY-MM-DD-N` 会撞号 → **新内容被去重静默跳过**。脚本自动探测下一个可用序号，加完按关键词回查是否落库 |
 | 论文 `category` 用非法值 | 必须用 `categories.json` 里的 id；历史遗留的 `ad` / `reasoning` 不要用 |
 | 巡检脚本遇 `Date` 类型日期 | YAML 日期被 gray-matter 解析成 `Date` 对象，直接 `.slice` 会崩 → 先 `String(d)` 再正则归一化为 `YYYY-MM-DD` |
