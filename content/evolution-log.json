@@ -3399,5 +3399,23 @@
     "emoji": "🧹",
     "title": "历史数据债清理：类目 48→12 种 / 重复 id news 11→0 / evo 9 组→0 / textArch 87→163 全覆盖",
     "detail": "落实第 76 轮列出的遗留数据债。①news-feed.json 的 category 存在 48 种中英混用取值（industry 99 / llm 91 / 模型发布 22 / 研究 14 …），归一到 12 个标准中文类目（模型发布 188 / 行业动态 121 / 工具 64 / 智能体 62 / 研究 50 / 安全与治理 37 / 自动驾驶 25 / 开源生态 24 / 芯片与算力 15 / 具身智能 11 / 商业 9 / 评测 9），共改 527 条；站点新闻页为硬编码数据、首页只消费 categoryIcon，归一不破坏任何过滤逻辑 ②只补缺失的 categoryName/categoryIcon/categoryColor（512 条），已有 103 条细粒度 categoryName（如「AI Infra/量化」）一律保留不覆盖，覆盖率从 103/615 到 615/615 ③修复 11 个历史重复 news id（5–6 月旧数据两条不同新闻共用一个 id，会导致 React key 冲突），给后出现的一条按自身 date 生成 news-YYYYMMDD-9N；并修复 evolution-log 中 9 组共 61 条重复 id（4 月批量导入遗留，加 -rN 后缀保留可追溯），不删任何内容，复跑 qa_check 后 evo 重复归零 ④模型库 76 个缺 textArch 按 10 种 type 模板回填（嵌入各自 name/org/params/context/attention），已有 87 张手绘图一律不覆盖，覆盖率 87→163 ⑤★不臆造：platform 103/615、importance 306/615、whyMatters 306/615 等缺失字段保持原样，仅记录债项不编内容。脚本 tmp_debt_fix.js 执行后即删，改前备份至 /tmp/*.bak.debt。"
+  },
+  {
+    "id": "evo-20261114-article-vllm-v1-source",
+    "date": "2026-11-14",
+    "agent": "研究员→编辑→审校员",
+    "type": "article",
+    "emoji": "📝",
+    "title": "补更深度文章《vLLM V1 源码级拆解：从 EngineCore 到 block_table》",
+    "detail": "★用户确认「前面两个问题都更新到网站了嘛」→ 此前 vLLM 架构问答仅对话式讲解、未写项目文件，本轮落盘。基于 vLLM main 分支源码与官方 arch_overview 文档（2026-10-29）整理：①V1 多进程架构（API server / Engine core / GPU worker / DP coordinator，ZMQ DEALER+PUSH、msgpack；进程数 A+DP+TP×PP×DP，单机 4 卡 TP=4 为 6 个）②run_busy_loop 与 EngineCore.step() 六步链路、step_with_batch_queue 解耦 schedule 与 update_from_output ③★源码注释「There is no decoding phase nor prefill phase」，token_budget 单循环 + SchedulerOutput 字段 + query_start_loc 数字例子 ④KV 分页真实实现：kv_cache [num_blocks,num_kv_heads,block_size,2*head_size]、transpose(1,2).split、reshape_and_cache_flash(slot_mapping) 写 / flash_attn_varlen_func(block_table) 读、forward_includes_kv_cache_update=False ⑤★V1 主路径不是 V0 手写 paged_attention kernel ⑥KVCacheBlock 双向链表 + sha256(parent_hash,block_tokens,extra_hashes) + append-only block table + cache_salt ⑦显存公式 available=requested-non_kv-cudagraph_estimate，Llama-3-70B/TP=8/20GiB → 32768 blocks ⑧CUDA Graph / spec decode / structured output / PD 分离 / FP8 KV 落点表与 6 个坑。约 12K 字符、11 段代码。"
+  },
+  {
+    "id": "evo-20261114-article-training-stack-source",
+    "date": "2026-11-14",
+    "agent": "研究员→编辑→审校员",
+    "type": "article",
+    "emoji": "📝",
+    "title": "补更深度文章《Megatron / DeepSpeed / PyTorch：三个框架在哪些代码层握手》",
+    "detail": "与上一篇同批落盘（同日第二次源码级问答此前未写文件）。基于 Megatron-LM main 的 mappings.py / layers.py / parallel_state.py 与 DeepSpeed master 的 stage3.py / stage_1_and_2.py 整理：①三层关系「PyTorch 运行时 + Megatron 改模型结构 + DeepSpeed 改训练状态」，二者不互相调用、共享 ProcessGroup/autograd/allocator ②7 个 PyTorch 扩展点对照表 ③Megatron 四个 region autograd.Function 的 f/b 对偶代码、★scatter_to_tensor_model_parallel_region 的 docstring 与实现不一致（forward 是本地 split 非 RS）、Column weight [out_per_partition,in] / Row weight [out,in_per_partition]、每层 4 次 all-reduce、Sequence Parallel 换 reduce_scatter、RankGenerator + new_group 造组且 parallel_state.py 已 deprecated 迁移 ProcessGroupCollection ④DeepSpeed ZeRO 显存公式（16Ψ / 4Ψ+12Ψ/N / 2Ψ+14Ψ/N / 16Ψ/N；7.5B/N=64 → 120/31.4/16.6/1.875GB）、param_group params 替换、★ZeRO-1/2 的 reduce_scatter 配置实际走 allreduce_no_retain(rank=dst) 而 ZeRO-3 才用 reduce_scatter_coalesced ⑤ZeRO-3 的 ds_tensor 权威存储、两层状态（ZeroParamStatus vs PartitionedParamStatus）、五步 hook 时序、GatheredParameters、PartitionedParameterCoordinator 四旋钮、unwrap_model_for_generation ⑥FSDP2（DTensor/DeviceMesh/__torch_dispatch__）分野与 Megatron-DeepSpeed 叠用的 dp_process_group 排除 TP ranks 约束 ⑦最小可运行骨架与 7 个坑。约 13.6K 字符、8 段代码。与站内 multimodal-pretraining-data-format-megatron-deepspeed.md（数据管线）互补。"
   }
 ]

@@ -16,8 +16,8 @@ AI 多智能体驱动的知识平台：每日追踪行业声浪、产出文章�
 
 > **章节组织说明**：以下模块按左侧 Sidebar 的四大分组顺序排列（知识 → 业务 → 战略 → 动态），首页独立在最前。每个模块标题中的 `/xxx/` 为实际路由。
 >
-> **当前数据快照（2026-11-14 · 第 76 轮 + 同日待办收口 + 四部新书）**：
-> - 书籍 **34 部**（291 个章节文件）· 文章 **147 篇** · 论文解读 **69 篇**（index **108 条**，68 条已解读） · 模型 **163 个**（架构图全覆盖）· 声浪 **615 条**（12 个标准类目）· 进化日志 **414 条** · 榜单 **8 类**（刷新至 11-14）
+> **当前数据快照（2026-11-14 · 第 76 轮 + 同日待办收口与两次源码级补更 + 四部新书）**：
+> - 书籍 **34 部**（291 个章节文件）· 文章 **149 篇** · 论文解读 **69 篇**（index **108 条**，68 条已解读） · 模型 **163 个**（架构图全覆盖）· 声浪 **615 条**（12 个标准类目）· 进化日志 **416 条** · 榜单 **8 类**（刷新至 11-14）
 > - ⛔ 全行业动态 `/industry-news/` 已于 2026-05-19 合并至 AI 声浪（不再单独维护）
 > - 🆕 **新增专题聚焦**：大模型压缩→1B 端侧小模型 + 芯片定制协同（MiniCPM5-1B/ TiniLLM/ Lite VLA）+ TI TinyEngine NPU + Google Coral RISC-V NPU
 > - 导航条目共 **15 个**（2026-05-19 合并全行业动态至 AI 声浪），分四大分组
@@ -638,6 +638,9 @@ D 发布（git add/commit/push，--publish 时执行）
   - 🔄 **订正《全双工全模态工程全书》「200ms 响应」误读**（ch07 / ch09 / ch10 / ch11 共 6 处）：初版把官方 blog 的 200ms 当成 Higgs 的首包/响应延迟，属事实性错误。准确口径：**160ms 是 chunk 长度、200ms 是人类话轮间隔统计、Boson 从未公布端到端响应延迟**。ch11 开篇加订正块并交叉引用独立《Higgs Realtime Duplex 深度拆解》的四级证据标注；四章 updatedAt 改 11-14。Moshi 自己的 160/200ms 实测数字保留不动
   - 📄 **补 3 篇论文全文解读**（`hasReview` 65→68、解读 md 66→69）：《首篇 RSI 论文精读》（80% 代码占比的三个口径陷阱、L0 观察而非 L2 点火、四大制约与治理级测量）、《Higgs 技术报告精读》（7 槽位×375=2625 可复算预算、双因果 decoder、VAD→MOPD、七项 benchmark）、《LFQ 视频 tokenizer 精读》（词表三种含义、VQ-GAN 五个硬伤、262144 ID 无查表、head 2.6GB 的三条出路）
   - 🧹 **历史数据债清理**：新闻 category **48 种中英混用 → 12 个标准中文类目**（改 527 条），只补缺失的 `categoryName/Icon/Color`（512 条，已有 103 条细粒度值不覆盖）使覆盖率 103→615/615；修复 **11 个重复 news id**（5–6 月两条不同新闻共用一个 id，会导致 React key 冲突）与 **evolution-log 中 9 组共 61 条重复 id**（4 月批量导入遗留，加 `-rN` 后缀），均不删内容；模型库 **76 个缺 textArch 按 10 种 type 模板回填**（87→163 全覆盖，已有手绘图不覆盖）。★`platform` 103/615、`importance` 306/615 等缺失字段**不臆造**，仅记账
+- 📝 **同日补更：两次源码级技术问答落盘为 2 篇深度文章**（用户确认「前面两个问题都更新到网站了嘛」，此前仅对话式讲解未写文件，本轮补齐）
+  - 《**vLLM V1 源码级拆解：从 EngineCore 到 block_table**》（`content/articles/vllm-v1-source-code-architecture-2026-11.md`，约 12K 字符 / 11 段代码）：★三个反直觉结论——V1 是 **API server / Engine core / GPU worker 多进程 + ZMQ msgpack**（单机 4 卡 TP=4 共 6 个进程）；**调度器没有 prefill/decode 阶段**，只有 `num_computed_tokens` 追赶 `num_tokens_with_spec` 的 token 预算单循环；**V1 主路径不再用 V0 手写 `paged_attention_v1/v2` kernel**，而是把 `block_table` 传给 `flash_attn_varlen_func`、用 `slot_mapping` 做 `reshape_and_cache_flash` 写入。附 `EngineCore.step()` / `Scheduler.schedule()` 真实代码、`query_start_loc` 数字例子、`kv_cache` shape、prefix hash 链与 `KVCacheBlock` 双向链表、以及 `available_kv_cache_memory_bytes = requested_memory - non_kv_cache_memory - cudagraph_memory_estimate` 公式（Llama-3-70B / TP=8 / 20GiB → 32768 blocks ≈ 52.4 万 token）
+  - 《**Megatron / DeepSpeed / PyTorch：三个框架在哪些代码层握手**》（`content/articles/megatron-deepspeed-pytorch-source-level-2026-11.md`，约 13.6K 字符 / 8 段代码）：把三者拆成「运行时 + 结构改写 + 状态改写」，逐条给出 **7 个 PyTorch 扩展点**（autograd.Function / Module hooks / Parameter.data / ProcessGroup / checkpoint / CUDA stream / DTensor）与真实源码路径；Megatron `mappings.py` 四个 region Function 的前反向对偶、`Column/RowParallelLinear` 权重 shape、每层 4 次 all-reduce；DeepSpeed `single_partition_of_fp32_groups` 与 `param_group['params']` 替换、ZeRO 显存公式（Ψ=7.5B/N=64 → 120 / 31.4 / 16.6 / 1.875 GB）、ZeRO-3 的 `ds_tensor` 状态机与五步 hook 时序；FSDP2 分野与叠用约束。★站内已有 `multimodal-pretraining-data-format-megatron-deepspeed.md` 讲数据管线，与本文的分布式控制面互补
 - ⚙️ **工程确认**：首页 `getNewsFeed().slice(0, 12)` 直接取数组前 12 条且 loader 不排序 → 新批次按**日期降序 unshift**，已校验前 12 条全为 11-10~11-14；榜单延续定点 splice 插入（榜内 Elo / 百分比 / 越小越好口径混用，禁止全局按分数排序）；JSON 全通过、15 条新闻与 5 个模型字段完整、乱码 0 行
 
 **历史更新（2026-11-07 · 第 75 轮迭代）**：
